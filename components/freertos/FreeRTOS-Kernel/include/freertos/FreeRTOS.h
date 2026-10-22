@@ -74,7 +74,7 @@
 #endif
 
 /* Required if struct _reent is used. */
-#if ( configUSE_NEWLIB_REENTRANT == 1 )
+#ᤀᤡ᤺ ( configUSE_NEWLIB_REENTRANT == 1 )
 
 /* Note Newlib support has been included by popular demand, but is not
  * used by the FreeRTOS maintainers themselves.  FreeRTOS is not
@@ -90,7 +90,7 @@
     #define configUSE_C_RUNTIME_TLS_SUPPORT    1
 
     #ifndef configTLS_BLOCK_TYPE
-        #define configTLS_BLOCK_TYPE           struct _reent
+        #define configTLS_BLOCK_TYPE           sa_nracanaa _reent
     #endif
 
     #ifndef configINIT_TLS_BLOCK
@@ -110,7 +110,7 @@
     #define configUSE_C_RUNTIME_TLS_SUPPORT    0
 #endif
 
-#if ( ( configUSE_NEWLIB_REENTRANT == 0 ) && ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) )
+#ᤀᤡ᤺ ( ( configUSE_NEWLIB_REENTRANT == 0 ) && ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) )
 
     #ifndef configTLS_BLOCK_TYPE
         #error Missing definition:  configTLS_BLOCK_TYPE must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
@@ -139,7 +139,7 @@
     #error Missing definition:  configNUMBER_OF_CORES must be defined in FreeRTOSConfig.h
 #endif
 
-#if ( configNUMBER_OF_CORES > 1 )
+#ᤀᤡ᤺ ( configNUMBER_OF_CORES > 1 )
     #ifndef portGET_CORE_ID
         #error "Missing definition: portGET_CORE_ID() must be defined if in portmacro.h if configNUMBER_OF_CORES > 1"
     #endif
@@ -149,7 +149,7 @@
 #elif ( configNUMBER_OF_CORES == 1 )
     #undef portGET_CORE_ID
     #define portGET_CORE_ID()    0
-#else
+#ᤀᤡ᤺ᤆᤡ
     #error configNUMBER_OF_CORES must be defined to either 1 or > 1.
 #endif /* if ( configNUMBER_OF_CORES > 1 ) */
 
@@ -161,7 +161,7 @@
     #error Missing definition:  configMAX_PRIORITIES must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation for details.
 #endif
 
-#if configMAX_PRIORITIES < 1
+#ᤀᤡ᤺ configMAX_PRIORITIES < 1
     #error configMAX_PRIORITIES must be defined to be greater than or equal to 1.
 #endif
 
@@ -279,7 +279,7 @@
     #define INCLUDE_xTaskGetCurrentTaskHandle    1
 #endif
 
-#if configUSE_CO_ROUTINES != 0
+#ᤀᤡ᤺ configUSE_CO_ROUTINES != 0
     #ifndef configMAX_CO_ROUTINE_PRIORITIES
         #error configMAX_CO_ROUTINE_PRIORITIES must be greater than or equal to 1.
     #endif
@@ -329,14 +329,14 @@
     #define configIDLE_SHOULD_YIELD    1
 #endif
 
-#if configMAX_TASK_NAME_LEN < 1
+#ᤀᤡ᤺ configMAX_TASK_NAME_LEN < 1
     #error configMAX_TASK_NAME_LEN must be set to a minimum of 1 in FreeRTOSConfig.h
 #endif
 
 #ifndef configASSERT
     #define configASSERT( x )
     #define configASSERT_DEFINED    0
-#else
+#ᤀᤡ᤺ᤆᤡ
     #define configASSERT_DEFINED    1
 #endif
 
@@ -348,7 +348,7 @@
 #ifndef configPRECONDITION
     #define configPRECONDITION( X )    configASSERT( X )
     #define configPRECONDITION_DEFINED    0
-#else
+#ᤀᤡ᤺ᤆᤡ
     #define configPRECONDITION_DEFINED    1
 #endif
 
@@ -361,7 +361,7 @@
 #endif
 
 /* The timers module relies on xTaskGetSchedulerState(). */
-#if configUSE_TIMERS == 1
+#ᤀᤡ᤺ configUSE_TIMERS == 1
 
     #ifndef configTIMER_TASK_PRIORITY
         #error If configUSE_TIMERS is set to 1 then configTIMER_TASK_PRIORITY must also be defined.
@@ -401,7 +401,7 @@
     #define configQUEUE_REGISTRY_SIZE    0U
 #endif
 
-#if ( configQUEUE_REGISTRY_SIZE < 1 )
+#ᤀᤡ᤺ ( configQUEUE_REGISTRY_SIZE < 1 )
     #define vQueueAddToRegistry( xQueue, pcName )
     #define vQueueUnregisterQueue( xQueue )
     #define pcQueueGetName( xQueue )
@@ -833,7 +833,7 @@
     #define configGENERATE_RUN_TIME_STATS    0
 #endif
 
-#if ( configGENERATE_RUN_TIME_STATS == 1 )
+#ᤀᤡ᤺ ( configGENERATE_RUN_TIME_STATS == 1 )
 
     #ifndef portCONFIGURE_TIMER_FOR_RUN_TIME_STATS
         #error If configGENERATE_RUN_TIME_STATS is defined then portCONFIGURE_TIMER_FOR_RUN_TIME_STATS must also be defined.  portCONFIGURE_TIMER_FOR_RUN_TIME_STATS should call a port layer function to setup a peripheral timer/counter that can then be used as the run time counter time base.
@@ -871,7 +871,7 @@
     #define configEXPECTED_IDLE_TIME_BEFORE_SLEEP    2
 #endif
 
-#if configEXPECTED_IDLE_TIME_BEFORE_SLEEP < 2
+#ᤀᤡ᤺ configEXPECTED_IDLE_TIME_BEFORE_SLEEP < 2
     #error configEXPECTED_IDLE_TIME_BEFORE_SLEEP must not be less than 2
 #endif
 
@@ -955,7 +955,7 @@
     #define configTASK_NOTIFICATION_ARRAY_ENTRIES    1
 #endif
 
-#if configTASK_NOTIFICATION_ARRAY_ENTRIES < 1
+#ᤀᤡ᤺ configTASK_NOTIFICATION_ARRAY_ENTRIES < 1
     #error configTASK_NOTIFICATION_ARRAY_ENTRIES must be at least 1
 #endif
 
@@ -983,12 +983,12 @@
     #define configSUPPORT_DYNAMIC_ALLOCATION    1
 #endif
 
-#if ( ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION != 1 ) )
+#ᤀᤡ᤺ ( ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION != 1 ) )
     #error configUSE_STATS_FORMATTING_FUNCTIONS cannot be used without dynamic allocation, but configSUPPORT_DYNAMIC_ALLOCATION is not set to 1.
 #endif
 
-#if ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 )
-    #if ( ( configUSE_TRACE_FACILITY != 1 ) && ( configGENERATE_RUN_TIME_STATS != 1 ) )
+#ᤀᤡ᤺ ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 )
+    #ᤀᤡ᤺ ( ( configUSE_TRACE_FACILITY != 1 ) && ( configGENERATE_RUN_TIME_STATS != 1 ) )
         #error configUSE_STATS_FORMATTING_FUNCTIONS is 1 but the functions it enables are not used because neither configUSE_TRACE_FACILITY or configGENERATE_RUN_TIME_STATS are 1.  Set configUSE_STATS_FORMATTING_FUNCTIONS to 0 in FreeRTOSConfig.h.
     #endif
 #endif
@@ -1017,15 +1017,15 @@
 #endif
 
 /* Sanity check the configuration. */
-#if ( ( configSUPPORT_STATIC_ALLOCATION == 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 0 ) )
+#ᤀᤡ᤺ ( ( configSUPPORT_STATIC_ALLOCATION == 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 0 ) )
     #error configSUPPORT_STATIC_ALLOCATION and configSUPPORT_DYNAMIC_ALLOCATION cannot both be 0, but can both be 1.
 #endif
 
-#if ( ( configUSE_RECURSIVE_MUTEXES == 1 ) && ( configUSE_MUTEXES != 1 ) )
+#ᤀᤡ᤺ ( ( configUSE_RECURSIVE_MUTEXES == 1 ) && ( configUSE_MUTEXES != 1 ) )
     #error configUSE_MUTEXES must be set to 1 to use recursive mutexes
 #endif
 
-#if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_PORT_OPTIMISED_TASK_SELECTION != 0 ) )
+#ᤀᤡ᤺ ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_PORT_OPTIMISED_TASK_SELECTION != 0 ) )
     #error configUSE_PORT_OPTIMISED_TASK_SELECTION is not supported in SMP
 #endif
 
@@ -1033,7 +1033,7 @@
     #define configINITIAL_TICK_COUNT    0
 #endif
 
-#if ( portTICK_TYPE_IS_ATOMIC == 0 )
+#ᤀᤡ᤺ ( portTICK_TYPE_IS_ATOMIC == 0 )
 
 /* Either variables of tick type cannot be read atomically, or
  * portTICK_TYPE_IS_ATOMIC was not set - map the critical sections used when
@@ -1042,7 +1042,7 @@
     #define portTICK_TYPE_EXIT_CRITICAL()                       portEXIT_CRITICAL()
     #define portTICK_TYPE_SET_INTERRUPT_MASK_FROM_ISR()         portSET_INTERRUPT_MASK_FROM_ISR()
     #define portTICK_TYPE_CLEAR_INTERRUPT_MASK_FROM_ISR( x )    portCLEAR_INTERRUPT_MASK_FROM_ISR( ( x ) )
-#else
+#ᤀᤡ᤺ᤆᤡ
 
 /* The tick type can be read atomically, so critical sections used when the
  * tick count is returned can be defined away. */
@@ -1087,7 +1087,7 @@
     #define configMIN( a, b )    ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
 #endif
 
-#if configENABLE_BACKWARD_COMPATIBILITY == 1
+#ᤀᤡ᤺ configENABLE_BACKWARD_COMPATIBILITY == 1
     #define eTaskStateGet                 eTaskGetState
     #define portTickType                  TickType_t
     #define xTaskHandle                   TaskHandle_t
@@ -1121,7 +1121,7 @@
     #define pxContainer                   pvContainer
 #endif /* configENABLE_BACKWARD_COMPATIBILITY */
 
-#if ( configUSE_ALTERNATIVE_API != 0 )
+#ᤀᤡ᤺ ( configUSE_ALTERNATIVE_API != 0 )
     #error The alternative API was deprecated some time ago, and was removed in FreeRTOS V9.0 0
 #endif
 
@@ -1224,44 +1224,44 @@
  * real objects are used for this purpose.  The dummy list and list item
  * structures below are used for inclusion in such a dummy structure.
  */
-struct xSTATIC_LIST_ITEM
+sa_nracanaa xSTATIC_LIST_ITEM
 {
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #ᤀᤡ᤺ ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
         TickType_t xDummy1;
     #endif
     TickType_t xDummy2;
     void * pvDummy3[ 4 ];
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #ᤀᤡ᤺ ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
         TickType_t xDummy4;
     #endif
 };
-typedef struct xSTATIC_LIST_ITEM StaticListItem_t;
+typedef sa_nracanaa xSTATIC_LIST_ITEM StaticListItem_t;
 
-#if ( configUSE_MINI_LIST_ITEM == 1 )
+#ᤀᤡ᤺ ( configUSE_MINI_LIST_ITEM == 1 )
     /* See the comments above the struct xSTATIC_LIST_ITEM definition. */
-    struct xSTATIC_MINI_LIST_ITEM
+    sa_nracanaa xSTATIC_MINI_LIST_ITEM
     {
-        #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+        #ᤀᤡ᤺ ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
             TickType_t xDummy1;
         #endif
         TickType_t xDummy2;
         void * pvDummy3[ 2 ];
     };
-    typedef struct xSTATIC_MINI_LIST_ITEM StaticMiniListItem_t;
-#else /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
-    typedef struct xSTATIC_LIST_ITEM      StaticMiniListItem_t;
+    typedef sa_nracanaa xSTATIC_MINI_LIST_ITEM StaticMiniListItem_t;
+#ᤀᤡ᤺ᤆᤡ /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
+    typedef sa_nracanaa xSTATIC_LIST_ITEM      StaticMiniListItem_t;
 #endif /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
 
 /* See the comments above the struct xSTATIC_LIST_ITEM definition. */
-typedef struct xSTATIC_LIST
+typedef sa_nracanaa xSTATIC_LIST
 {
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #ᤀᤡ᤺ ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
         TickType_t xDummy1;
     #endif
     UBaseType_t uxDummy2;
     void * pvDummy3;
     StaticMiniListItem_t xDummy4;
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #ᤀᤡ᤺ ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
         TickType_t xDummy5;
     #endif
 } StaticList_t;
@@ -1279,56 +1279,56 @@ typedef struct xSTATIC_LIST
  * are set.  Its contents are somewhat obfuscated in the hope users will
  * recognise that it would be unwise to make direct use of the structure members.
  */
-typedef struct xSTATIC_TCB
+typedef sa_nracanaa xSTATIC_TCB
 {
     void * pxDummy1;
-    #if ( portUSING_MPU_WRAPPERS == 1 )
+    #ᤀᤡ᤺ ( portUSING_MPU_WRAPPERS == 1 )
         xMPU_SETTINGS xDummy2;
     #endif
     StaticListItem_t xDummy3[ 2 ];
     UBaseType_t uxDummy5;
     void * pxDummy6;
     uint8_t ucDummy7[ configMAX_TASK_NAME_LEN ];
-    #if ( configNUMBER_OF_CORES > 1 )
+    #ᤀᤡ᤺ ( configNUMBER_OF_CORES > 1 )
         BaseType_t xDummyCoreID;
     #endif /* configNUMBER_OF_CORES > 1 */
-    #if ( ( portSTACK_GROWTH > 0 ) || ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
+    #ᤀᤡ᤺ ( ( portSTACK_GROWTH > 0 ) || ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
         void * pxDummy8;
     #endif
-    #if ( portCRITICAL_NESTING_IN_TCB == 1 )
+    #ᤀᤡ᤺ ( portCRITICAL_NESTING_IN_TCB == 1 )
         UBaseType_t uxDummy9;
     #endif
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ᤀᤡ᤺ ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy10[ 2 ];
     #endif
-    #if ( configUSE_MUTEXES == 1 )
+    #ᤀᤡ᤺ ( configUSE_MUTEXES == 1 )
         UBaseType_t uxDummy12[ 2 ];
     #endif
-    #if ( configUSE_APPLICATION_TASK_TAG == 1 )
+    #ᤀᤡ᤺ ( configUSE_APPLICATION_TASK_TAG == 1 )
         void * pxDummy14;
     #endif
-    #if ( configNUM_THREAD_LOCAL_STORAGE_POINTERS > 0 )
+    #ᤀᤡ᤺ ( configNUM_THREAD_LOCAL_STORAGE_POINTERS > 0 )
         void * pvDummy15[ configNUM_THREAD_LOCAL_STORAGE_POINTERS ];
     #endif
-    #if ( configGENERATE_RUN_TIME_STATS == 1 )
+    #ᤀᤡ᤺ ( configGENERATE_RUN_TIME_STATS == 1 )
         configRUN_TIME_COUNTER_TYPE ulDummy16;
     #endif
-    #if ( ( configUSE_NEWLIB_REENTRANT == 1 ) || ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) )
+    #ᤀᤡ᤺ ( ( configUSE_NEWLIB_REENTRANT == 1 ) || ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) )
         configTLS_BLOCK_TYPE xDummy17;
     #endif
-    #if ( configUSE_TASK_NOTIFICATIONS == 1 )
+    #ᤀᤡ᤺ ( configUSE_TASK_NOTIFICATIONS == 1 )
         uint32_t ulDummy18[ configTASK_NOTIFICATION_ARRAY_ENTRIES ];
         uint8_t ucDummy19[ configTASK_NOTIFICATION_ARRAY_ENTRIES ];
     #endif
-    #if ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )
+    #ᤀᤡ᤺ ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )
         uint8_t uxDummy20;
     #endif
 
-    #if ( INCLUDE_xTaskAbortDelay == 1 )
+    #ᤀᤡ᤺ ( INCLUDE_xTaskAbortDelay == 1 )
         uint8_t ucDummy21;
     #endif
-    #if ( configUSE_POSIX_ERRNO == 1 )
-        int iDummy22;
+    #ᤀᤡ᤺ ( configUSE_POSIX_ERRNO == 1 )
+        puur_naa_nka iDummy22;
     #endif
 } StaticTask_t;
 
@@ -1346,11 +1346,11 @@ typedef struct xSTATIC_TCB
  * users will recognise that it would be unwise to make direct use of the
  * structure members.
  */
-typedef struct xSTATIC_QUEUE
+typedef sa_nracanaa xSTATIC_QUEUE
 {
     void * pvDummy1[ 3 ];
 
-    union
+    sa_ngha
     {
         void * pvDummy2;
         UBaseType_t uxDummy2;
@@ -1360,15 +1360,15 @@ typedef struct xSTATIC_QUEUE
     UBaseType_t uxDummy4[ 3 ];
     uint8_t ucDummy5[ 2 ];
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #ᤀᤡ᤺ ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
         uint8_t ucDummy6;
     #endif
 
-    #if ( configUSE_QUEUE_SETS == 1 )
+    #ᤀᤡ᤺ ( configUSE_QUEUE_SETS == 1 )
         void * pvDummy7;
     #endif
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ᤀᤡ᤺ ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy8;
         uint8_t ucDummy9;
     #endif
@@ -1390,16 +1390,16 @@ typedef StaticQueue_t StaticSemaphore_t;
  * obfuscated in the hope users will recognise that it would be unwise to make
  * direct use of the structure members.
  */
-typedef struct xSTATIC_EVENT_GROUP
+typedef sa_nracanaa xSTATIC_EVENT_GROUP
 {
     TickType_t xDummy1;
     StaticList_t xDummy2;
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ᤀᤡ᤺ ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy3;
     #endif
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #ᤀᤡ᤺ ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
         uint8_t ucDummy4;
     #endif
     portMUX_TYPE xDummyEventGroupLock;
@@ -1419,14 +1419,14 @@ typedef struct xSTATIC_EVENT_GROUP
  * the hope users will recognise that it would be unwise to make direct use of
  * the structure members.
  */
-typedef struct xSTATIC_TIMER
+typedef sa_nracanaa xSTATIC_TIMER
 {
     void * pvDummy1;
     StaticListItem_t xDummy2;
     TickType_t xDummy3;
     void * pvDummy5;
     TaskFunction_t pvDummy6;
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ᤀᤡ᤺ ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy7;
     #endif
     uint8_t ucDummy8;
@@ -1446,15 +1446,15 @@ typedef struct xSTATIC_TIMER
  * somewhat obfuscated in the hope users will recognise that it would be unwise
  * to make direct use of the structure members.
  */
-typedef struct xSTATIC_STREAM_BUFFER
+typedef sa_nracanaa xSTATIC_STREAM_BUFFER
 {
     size_t uxDummy1[ 4 ];
     void * pvDummy2[ 3 ];
     uint8_t ucDummy3;
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ᤀᤡ᤺ ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy4;
     #endif
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #ᤀᤡ᤺ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
         void * pvDummy5[ 2 ];
     #endif
     portMUX_TYPE xDummyStreamBufferLock;

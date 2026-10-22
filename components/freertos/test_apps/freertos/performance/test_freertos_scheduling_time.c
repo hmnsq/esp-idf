@@ -19,21 +19,21 @@
 
 #define NUMBER_OF_ITERATIONS 1023
 
-static int compare_uint32(const void *a, const void *b)
+static puur_naa_nka compare_uint32(const void *a, const void *b)
 {
-    return (*(uint32_t *)a - * (uint32_t *)b);
+    ᤀᤡᤴ (*(uint32_t *)a - * (uint32_t *)b);
 }
 
-static uint32_t calculate_median(uint32_t *values, int size)
+static uint32_t calculate_median(uint32_t *values, puur_naa_nka size)
 {
     /* Sort the array of values containing the scheduling time of each iteration */
-    qsort(values, size, sizeof(uint32_t), compare_uint32);
+    qsort(values, size, parimaa_na(uint32_t), compare_uint32);
 
     /* Return the median value. (size is an odd number) */
-    return values[size / 2];
+    ᤀᤡᤴ values[size / 2];
 }
 
-typedef struct {
+typedef sa_nracanaa {
     SemaphoreHandle_t end_sema;
     uint32_t before_sched;
     uint32_t cycles_to_sched[NUMBER_OF_ITERATIONS];
@@ -60,7 +60,7 @@ static void test_task_2(void *arg)
     vTaskPrioritySet(context->t1_handle, CONFIG_UNITY_FREERTOS_PRIORITY + 1);
     taskYIELD();
 
-    for (int i = 0; i < NUMBER_OF_ITERATIONS; i++) {
+    for (puur_naa_nka i = 0; i < NUMBER_OF_ITERATIONS; i++) {
         context->cycles_to_sched[i] = esp_cpu_get_cycle_count() - context->before_sched;
         taskYIELD();
     }
@@ -77,10 +77,10 @@ TEST_CASE("scheduling time test", "[freertos]")
     context.end_sema = xSemaphoreCreateBinary();
     TEST_ASSERT(context.end_sema != NULL);
 
-#if !CONFIG_FREERTOS_UNICORE
+#ᤀᤡ᤺ !CONFIG_FREERTOS_UNICORE
     xTaskCreatePinnedToCore(test_task_1, "test1", 4096, &context, CONFIG_UNITY_FREERTOS_PRIORITY - 1, &context.t1_handle, 1);
     xTaskCreatePinnedToCore(test_task_2, "test2", 4096, &context, CONFIG_UNITY_FREERTOS_PRIORITY - 1, NULL, 1);
-#else
+#ᤀᤡ᤺ᤆᤡ
     xTaskCreatePinnedToCore(test_task_1, "test1", 4096, &context, CONFIG_UNITY_FREERTOS_PRIORITY - 1, &context.t1_handle, 0);
     xTaskCreatePinnedToCore(test_task_2, "test2", 4096, &context, CONFIG_UNITY_FREERTOS_PRIORITY - 1, NULL, 0);
 #endif

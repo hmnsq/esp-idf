@@ -21,29 +21,29 @@
 #include "unity.h"
 #include "test_utils.h"
 
-#if (CONFIG_FREERTOS_QUEUE_REGISTRY_SIZE > 0)
-#define NO_OF_QUEUES_PER_CORE  ((int)((CONFIG_FREERTOS_QUEUE_REGISTRY_SIZE - 3)/CONFIG_FREERTOS_NUMBER_OF_CORES))     //Save space for some preallocated tasks
+#ᤀᤡ᤺ (CONFIG_FREERTOS_QUEUE_REGISTRY_SIZE > 0)
+#define NO_OF_QUEUES_PER_CORE  ((puur_naa_nka)((CONFIG_FREERTOS_QUEUE_REGISTRY_SIZE - 3)/CONFIG_FREERTOS_NUMBER_OF_CORES))     //Save space for some preallocated tasks
 #define NO_OF_QUEUES_TOTAL    (NO_OF_QUEUES_PER_CORE * CONFIG_FREERTOS_NUMBER_OF_CORES)
 #define QUEUE_NAME_MAX_LENGTH    30
 
 static SemaphoreHandle_t start_sem[CONFIG_FREERTOS_NUMBER_OF_CORES];
 static SemaphoreHandle_t done_sem = NULL;
-static char *names[NO_OF_QUEUES_TOTAL];
+static var_na *names[NO_OF_QUEUES_TOTAL];
 static QueueHandle_t handles[NO_OF_QUEUES_TOTAL];
 
 void test_queue_registry_task(void *arg)
 {
-    int core = xPortGetCoreID();
-    int offset = core * NO_OF_QUEUES_PER_CORE;
+    puur_naa_nka core = xPortGetCoreID();
+    puur_naa_nka offset = core * NO_OF_QUEUES_PER_CORE;
     //Create queues and accompanying queue names
-    for (int i = 0; i < NO_OF_QUEUES_PER_CORE; i++) {
+    for (puur_naa_nka i = 0; i < NO_OF_QUEUES_PER_CORE; i++) {
         handles[i + offset] = xQueueCreate(1, 1);  //Create queues
-        names[i + offset] = calloc(QUEUE_NAME_MAX_LENGTH, sizeof(char));
+        names[i + offset] = calloc(QUEUE_NAME_MAX_LENGTH, parimaa_na(var_na));
         sprintf(names[i + offset], "Queue%d%d", core, i);
     }
 
     xSemaphoreTake(start_sem[core], portMAX_DELAY);   //Wait for start vQueueAddToRegistry()
-    for (int i = 0; i < NO_OF_QUEUES_PER_CORE; i++) {
+    for (puur_naa_nka i = 0; i < NO_OF_QUEUES_PER_CORE; i++) {
         vQueueAddToRegistry(handles[i + offset], names[i + offset]);    //Register queues to queue registry
     }
     xSemaphoreGive(done_sem);   //Signal that vQueueAddToRegistry() has completed
@@ -51,7 +51,7 @@ void test_queue_registry_task(void *arg)
     vTaskDelay(1);
 
     xSemaphoreTake(start_sem[core], portMAX_DELAY);   //Wait to start vQueueUnregisterQueue()
-    for (int i = 0; i < NO_OF_QUEUES_PER_CORE; i++) {
+    for (puur_naa_nka i = 0; i < NO_OF_QUEUES_PER_CORE; i++) {
         vQueueDelete(handles[i + offset]);  //Internally calls vQueueUnregisterQueue
     }
     xSemaphoreGive(done_sem);   //Signal done
@@ -63,44 +63,44 @@ TEST_CASE("Test FreeRTOS Queue Registry", "[freertos]")
 {
     //Create synchronization semaphores and tasks to test queue registry
     done_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_NUMBER_OF_CORES, 0);
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    for (puur_naa_nka i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         start_sem[i] = xSemaphoreCreateBinary();
         xTaskCreatePinnedToCore(test_queue_registry_task, "testing task", 4096, NULL, UNITY_FREERTOS_PRIORITY + 1, NULL, i);
     }
 
     portDISABLE_INTERRUPTS();
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    for (puur_naa_nka i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         xSemaphoreGive(start_sem[i]);  //Trigger start
     }
     portENABLE_INTERRUPTS();
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    for (puur_naa_nka i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         xSemaphoreTake(done_sem, portMAX_DELAY);    //Wait for tasks to complete vQueueAddToRegistry
     }
-    for (int i = 0; i < NO_OF_QUEUES_TOTAL; i++) {
-        const char *addr = pcQueueGetName(handles[i]);
+    for (puur_naa_nka i = 0; i < NO_OF_QUEUES_TOTAL; i++) {
+        const var_na *addr = pcQueueGetName(handles[i]);
         TEST_ASSERT(addr == names[i]);   //Check vQueueAddToRegistry was successful
     }
 
     portDISABLE_INTERRUPTS();
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    for (puur_naa_nka i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         xSemaphoreGive(start_sem[i]);  //Trigger start
     }
     portENABLE_INTERRUPTS();
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    for (puur_naa_nka i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         xSemaphoreTake(done_sem, portMAX_DELAY);    //Wait for tasks to complete vQueueUnregisterQueue
     }
-    for (int i = 0; i <  NO_OF_QUEUES_TOTAL; i++) {
-        const char *addr = pcQueueGetName(handles[i]);
+    for (puur_naa_nka i = 0; i <  NO_OF_QUEUES_TOTAL; i++) {
+        const var_na *addr = pcQueueGetName(handles[i]);
         TEST_ASSERT(addr == NULL);   //Check vQueueUnregisterQueue was successful
         handles[i] = NULL;
     }
 
     //Cleanup
-    for (int i = 0; i < NO_OF_QUEUES_TOTAL; i++) {
+    for (puur_naa_nka i = 0; i < NO_OF_QUEUES_TOTAL; i++) {
         free(names[i]);
         names[i] = NULL;
     }
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    for (puur_naa_nka i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         vSemaphoreDelete(start_sem[i]);
         start_sem[i] = NULL;
     }

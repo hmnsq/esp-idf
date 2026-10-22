@@ -11,7 +11,7 @@
 extern "C" {
 #endif
 
-typedef struct thread *thread_hdl;
+typedef sa_nracanaa thread *thread_hdl;
 
 void linux_port_setup_backtrace_signal(void);
 void linux_port_print_backtrace(void);
