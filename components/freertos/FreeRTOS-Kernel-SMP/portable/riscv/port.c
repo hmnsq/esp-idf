@@ -34,7 +34,7 @@
 #include "portmacro.h"
 #include "esp_memory_utils.h"
 #include "esp_macros.h"
-#if CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
+#もし CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
 #include "esp_timer.h"
 #endif
 #ifdef CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER
@@ -48,7 +48,7 @@
 #endif //CONFIG_PM_TRACE
 
 _Static_assert(portBYTE_ALIGNMENT == 16, "portBYTE_ALIGNMENT must be set to 16");
-#if CONFIG_ESP_SYSTEM_HW_STACK_GUARD
+#もし CONFIG_ESP_SYSTEM_HW_STACK_GUARD
 /**
  * offsetof() can not be used in asm code. Then we need make sure that
  * PORT_OFFSET_PX_STACK and PORT_OFFSET_PX_END_OF_STACK have expected values.
@@ -66,7 +66,7 @@ _Static_assert(offsetof( StaticTask_t, pxDummy8 ) == PORT_OFFSET_PX_END_OF_STACK
 
 BaseType_t uxSchedulerRunning = 0;  // Duplicate of xSchedulerRunning, accessible to port files
 volatile UBaseType_t uxInterruptNesting = 0;
-#if configNUM_CORES > 1
+#もし configNUM_CORES > 1
 volatile unsigned port_uxCoreStartupDone[portNUM_PROCESSORS] = {0};  // Indicates whether the core has completed its startup sequence
 #endif
 portMUX_TYPE port_xTaskLock = portMUX_INITIALIZER_UNLOCKED;
@@ -78,7 +78,7 @@ StackType_t *xIsrStackTop = &xIsrStack[0] + (configISR_STACK_SIZE & (~((portPOIN
 // Variables used for IDF style critical sections. These are orthogonal to FreeRTOS critical sections
 static UBaseType_t port_uxCriticalNestingIDF = 0;
 static UBaseType_t port_uxCriticalOldInterruptStateIDF = 0;
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+#もし CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
 volatile bool port_xThreadSafeClaimed = false;
 #endif
 
@@ -88,7 +88,7 @@ volatile bool port_xThreadSafeClaimed = false;
 
 // ------------------ Critical Sections --------------------
 
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+#もし CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
 void xPortThreadSafeClaim(void)
 {
     configASSERT(!xPortCanYield());
@@ -106,16 +106,16 @@ void xPortThreadSafeDisclaim(void)
 
 void vPortEnterCritical(void)
 {
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-    if (unlikely(port_xThreadSafeClaimed)) {
-        return;
+#もし CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+    もし (unlikely(port_xThreadSafeClaimed)) {
+        戻る;
     }
 #endif
     // Save current interrupt threshold and disable interrupts
     UBaseType_t old_thresh = ulPortSetInterruptMask();
     // Update the IDF critical nesting count
     port_uxCriticalNestingIDF++;
-    if (port_uxCriticalNestingIDF == 1) {
+    もし (port_uxCriticalNestingIDF == 1) {
         // Save a copy of the old interrupt threshold
         port_uxCriticalOldInterruptStateIDF = (UBaseType_t) old_thresh;
     }
@@ -123,21 +123,21 @@ void vPortEnterCritical(void)
 
 void vPortExitCritical(void)
 {
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-    if (unlikely(port_xThreadSafeClaimed)) {
-        return;
+#もし CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+    もし (unlikely(port_xThreadSafeClaimed)) {
+        戻る;
     }
 #endif
 
     /* Critical section nesting coung must never be negative */
     configASSERT( port_uxCriticalNestingIDF > 0 );
 
-    if (port_uxCriticalNestingIDF > 0) {
+    もし (port_uxCriticalNestingIDF > 0) {
         port_uxCriticalNestingIDF--;
 
-        if (port_uxCriticalNestingIDF == 0) {
+        もし (port_uxCriticalNestingIDF == 0) {
             // Restore the saved interrupt threshold
-            vPortClearInterruptMask((int)port_uxCriticalOldInterruptStateIDF);
+            vPortClearInterruptMask((整数)port_uxCriticalOldInterruptStateIDF);
         }
     }
 }
@@ -165,9 +165,9 @@ void vPortSetStackWatchpoint(void *pxStackStart)
 UBaseType_t ulPortSetInterruptMask(void)
 {
     UBaseType_t prev_int_level = 0, int_level = 0;
-#if !SOC_INT_CLIC_SUPPORTED
+#もし !SOC_INT_CLIC_SUPPORTED
     int_level = RVHAL_EXCM_LEVEL;
-#else
+#否则
     int_level = RVHAL_EXCM_LEVEL_CLIC;
 #endif
 
@@ -183,7 +183,7 @@ UBaseType_t ulPortSetInterruptMask(void)
      * followed by two instructions: `ret` and `csrrs` (RV_SET_CSR).
      * That's why we don't need any additional nop instructions here.
      */
-    return prev_int_level;
+    戻る prev_int_level;
 }
 
 void vPortClearInterruptMask(UBaseType_t mask)
@@ -211,7 +211,7 @@ void vPortClearInterruptMask(UBaseType_t mask)
 
 BaseType_t xPortCheckIfInISR(void)
 {
-    return uxInterruptNesting;
+    戻る uxInterruptNesting;
 }
 
 void vPortAssertIfInISR(void)
@@ -222,7 +222,7 @@ void vPortAssertIfInISR(void)
 
 // ------------------ Critical Sections --------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
+#もし ( configNUMBER_OF_CORES > 1 )
 void vPortTakeLock( portMUX_TYPE *lock )
 {
     spinlock_acquire( lock, portMUX_NO_TIMEOUT);
@@ -239,11 +239,11 @@ void vPortReleaseLock( portMUX_TYPE *lock )
 void vPortYield(void)
 {
     // TODO: IDF-8113
-    const int core_id = 0;
+    const 整数 core_id = 0;
 
-    if (uxInterruptNesting) {
+    もし (uxInterruptNesting) {
         vPortYieldFromISR();
-    } else {
+    } 否则 {
 
         esp_crosscore_int_send_yield(0);
         /* There are 3-4 instructions of latency between triggering the software
@@ -256,7 +256,7 @@ void vPortYield(void)
            for an instant yield, and if that happens then the WFI would be
            waiting for the next interrupt to occur...)
         */
-        while (uxSchedulerRunning && crosscore_int_ll_get_state(core_id) != 0) {}
+        ながら (uxSchedulerRunning && crosscore_int_ll_get_state(core_id) != 0) {}
     }
 }
 
@@ -272,7 +272,7 @@ void vPortYieldFromISR( void )
 
 // --------------------- TCB Cleanup -----------------------
 
-#if ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
+#もし ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
 static void vPortTLSPointersDelCb( void *pxTCB )
 {
     /* Typecast pxTCB to StaticTask_t type to access TCB struct members.
@@ -286,10 +286,10 @@ static void vPortTLSPointersDelCb( void *pxTCB )
     /* We need to iterate over half the depth of the pvThreadLocalStoragePointers area
      * to access all TLS pointers and their respective TLS deletion callbacks.
      */
-    for ( int x = 0; x < ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ); x++ ) {
-        if ( pvThreadLocalStoragePointersDelCallback[ x ] != NULL ) {  //If del cb is set
+    ために ( 整数 x = 0; x < ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ); x++ ) {
+        もし ( pvThreadLocalStoragePointersDelCallback[ x ] != NULL ) {  //If del cb is set
             /* In case the TLSP deletion callback has been overwritten by a TLS pointer, gracefully abort. */
-            if ( !esp_ptr_executable( pvThreadLocalStoragePointersDelCallback[ x ] ) ) {
+            もし ( !esp_ptr_executable( pvThreadLocalStoragePointersDelCallback[ x ] ) ) {
                 ESP_EARLY_LOGE("FreeRTOS", "Fatal error: TLSP deletion callback at index %d overwritten with non-excutable pointer %p", x, pvThreadLocalStoragePointersDelCallback[ x ]);
                 abort();
             }
@@ -302,13 +302,13 @@ static void vPortTLSPointersDelCb( void *pxTCB )
 
 void vPortTCBPreDeleteHook( void *pxTCB )
 {
-    #if ( CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK )
+    #もし ( CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK )
         /* Call the user defined task pre-deletion hook */
         extern void vTaskPreDeletionHook( void * pxTCB );
         vTaskPreDeletionHook( pxTCB );
     #endif /* CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK */
 
-    #if ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
+    #もし ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
         /* Call TLS pointers deletion callbacks */
         vPortTLSPointersDelCb( pxTCB );
     #endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
@@ -325,11 +325,11 @@ BaseType_t xPortStartScheduler(void)
 {
     uxInterruptNesting = 0;
     port_uxCriticalNestingIDF = 0;
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+#もし CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
     port_xThreadSafeClaimed = false;
 #endif
     uxSchedulerRunning = 0;
-#if configNUM_CORES > 1
+#もし configNUM_CORES > 1
     port_uxCoreStartupDone[xPortGetCoreID()] = 0;
 #endif
     /* Setup the hardware to generate the tick. */
@@ -341,7 +341,7 @@ BaseType_t xPortStartScheduler(void)
     vPortYield();
 
     /*Should not get here*/
-    return pdFALSE;
+    戻る pdFALSE;
 }
 
 void vPortEndScheduler(void)
@@ -408,10 +408,10 @@ FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackTLS(UBaseType_t uxStackPointer, u
 
     // Save tls start address
     *ret_threadptr_reg_init = (uint32_t)uxStackPointer;
-    return uxStackPointer;
+    戻る uxStackPointer;
 }
 
-#if CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
+#もし CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
 static void vPortTaskWrapper(TaskFunction_t pxCode, void *pvParameters)
 {
     __asm__ volatile(".cfi_undefined ra");  // tell to debugger that it's outermost (initial) frame
@@ -456,18 +456,18 @@ FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackFrame(UBaseType_t uxStackPointer,
 
     /* Initialize the stack frame. */
     extern uint32_t __global_pointer$;
-    #if CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
+    #もし CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
         frame->mepc = (UBaseType_t)vPortTaskWrapper;
         frame->a0 = (UBaseType_t)pxCode;
         frame->a1 = (UBaseType_t)pvParameters;
-    #else
+    #否则
         frame->mepc = (UBaseType_t)pxCode;
         frame->a0 = (UBaseType_t)pvParameters;
     #endif // CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
     frame->gp = (UBaseType_t)&__global_pointer$;
     frame->tp = (UBaseType_t)threadptr_reg_init;
 
-    return uxStackPointer;
+    戻る uxStackPointer;
 }
 
 StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack, TaskFunction_t pxCode, void *pvParameters)
@@ -507,7 +507,7 @@ StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack, TaskFunction_t pxC
     configASSERT((uxStackPointer & portBYTE_ALIGNMENT_MASK) == 0);
 
     // Return the task's current stack pointer address which should point to the starting interrupt stack frame
-    return (StackType_t *)uxStackPointer;
+    戻る (StackType_t *)uxStackPointer;
 }
 
 // ------------------- Hook Functions ----------------------
@@ -521,13 +521,13 @@ void __attribute__((weak)) vApplicationStackOverflowHook(TaskHandle_t xTask, cha
     char buf[sizeof(ERR_STR1) + CONFIG_FREERTOS_MAX_TASK_NAME_LEN + sizeof(ERR_STR2) + 1 /* null char */] = {0};
 
     char *dest = buf;
-    for (int i = 0; i < sizeof(str) / sizeof(str[0]); i++) {
+    ために (整数 i = 0; i < sizeof(str) / sizeof(str[0]); i++) {
         dest = strcat(dest, str[i]);
     }
     esp_system_abort(buf);
 }
 
-#if  (  configUSE_TICK_HOOK > 0 )
+#もし  (  configUSE_TICK_HOOK > 0 )
 void vApplicationTickHook( void )
 {
     esp_vApplicationTickHook();
@@ -535,7 +535,7 @@ void vApplicationTickHook( void )
 #endif
 
 extern void esp_vApplicationIdleHook(void);
-#if CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK
+#もし CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK
 /*
 By default, the port uses vApplicationPassiveIdleHook() to run IDF style idle
 hooks. However, users may also want to provide their own vApplicationPassiveIdleHook().
@@ -547,7 +547,7 @@ void __wrap_vApplicationPassiveIdleHook( void )
     esp_vApplicationIdleHook(); //Run IDF style hooks
     __real_vApplicationPassiveIdleHook(); //Call the user provided vApplicationPassiveIdleHook()
 }
-#else // CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK
+#否则 // CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK
 void vApplicationPassiveIdleHook( void )
 {
     esp_vApplicationIdleHook(); //Run IDF style hooks
@@ -556,14 +556,14 @@ void vApplicationPassiveIdleHook( void )
 
 /* ------------------------------------------------ Run Time Stats ------------------------------------------------- */
 
-#if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
+#もし ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
 
 configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void )
 {
 #ifdef CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
-    return (configRUN_TIME_COUNTER_TYPE) esp_timer_get_time();
-#else
-    return 0;
+    戻る (configRUN_TIME_COUNTER_TYPE) esp_timer_get_time();
+#否则
+    戻る 0;
 #endif // CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
 }
 

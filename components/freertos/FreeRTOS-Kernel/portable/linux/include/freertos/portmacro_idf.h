@@ -45,7 +45,7 @@ void vPortYieldOtherCore(BaseType_t coreid);
  */
 static inline BaseType_t xPortGetCoreID(void)
 {
-    return (BaseType_t) 0;
+    戻る (BaseType_t) 0;
 }
 
 /**
@@ -101,7 +101,7 @@ BaseType_t xPortCheckIfInISR(void);
 static inline BaseType_t xPortInIsrContext(void)
 {
     //Just call the FreeRTOS port interface version
-    return xPortCheckIfInISR();
+    戻る xPortCheckIfInISR();
 }
 
 static inline void vPortAssertIfInISR(void)

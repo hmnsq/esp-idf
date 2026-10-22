@@ -152,7 +152,7 @@ typedef struct xTASK_PARAMETERS
     UBaseType_t uxPriority;
     StackType_t * puxStackBuffer;
     MemoryRegion_t xRegions[ portNUM_CONFIGURABLE_REGIONS ];
-    #if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
+    #もし ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
         StaticTask_t * const pxTaskBuffer;
     #endif
 } TaskParameters_t;
@@ -171,12 +171,12 @@ typedef struct xTASK_STATUS
     UBaseType_t uxBasePriority;                   /**< The priority to which the task will return if the task's current priority has been inherited to avoid unbounded priority inversion when obtaining a mutex.  Only valid if configUSE_MUTEXES is defined as 1 in FreeRTOSConfig.h. */
     configRUN_TIME_COUNTER_TYPE ulRunTimeCounter; /**< The total run time allocated to the task so far, as defined by the run time stats clock.  See https://www.FreeRTOS.org/rtos-run-time-stats.html.  Only valid when configGENERATE_RUN_TIME_STATS is defined as 1 in FreeRTOSConfig.h. */
     StackType_t * pxStackBase;                    /**< Points to the lowest address of the task's stack area. */
-    #if ( ( portSTACK_GROWTH > 0 ) && ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
+    #もし ( ( portSTACK_GROWTH > 0 ) && ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
         StackType_t * pxTopOfStack;               /**< Points to the top address of the task's stack area. */
         StackType_t * pxEndOfStack;               /**< Points to the end address of the task's stack area. */
     #endif
     configSTACK_DEPTH_TYPE usStackHighWaterMark;  /**< The minimum amount of stack space that has remained for the task since the task was created.  The closer this value is to zero the closer the task has come to overflowing its stack. */
-    #if ( configTASKLIST_INCLUDE_COREID == 1 )
+    #もし ( configTASKLIST_INCLUDE_COREID == 1 )
         BaseType_t xCoreID;                       /**< Core this task is pinned to (0, 1, or tskNO_AFFINITY). If configNUMBER_OF_CORES == 1, this will always be 0. */
     #endif
 } TaskStatus_t;
@@ -186,7 +186,7 @@ typedef enum
 {
     eAbortSleep = 0,           /**< A task has been made ready or a context switch pended since portSUPPRESS_TICKS_AND_SLEEP() was called - abort entering a sleep mode. */
     eStandardSleep,            /**< Enter a sleep mode that will not last any longer than the expected idle time. */
-    #if ( INCLUDE_vTaskSuspend == 1 )
+    #もし ( INCLUDE_vTaskSuspend == 1 )
         eNoTasksWaitingTimeout /**< No tasks are waiting for a timeout so it is safe to enter a sleep mode that can only be exited by an external interrupt. */
     #endif /* INCLUDE_vTaskSuspend */
 } eSleepModeStatus;
@@ -365,7 +365,7 @@ typedef enum
  * @endcode
  * \ingroup Tasks
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+#もし ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
     static inline __attribute__( ( always_inline ) )
     BaseType_t xTaskCreate( TaskFunction_t pxTaskCode,
                             const char * const pcName, /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
@@ -390,7 +390,7 @@ typedef enum
          * Call the "PinnedToCore" version with tskNO_AFFINITY to create
          * an unpinned task.
          */
-        return xTaskCreatePinnedToCore( pxTaskCode,
+        戻る xTaskCreatePinnedToCore( pxTaskCode,
                                         pcName,
                                         usStackDepth,
                                         pvParameters,
@@ -500,7 +500,7 @@ typedef enum
  * @endcode
  * \ingroup Tasks
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#もし ( configSUPPORT_STATIC_ALLOCATION == 1 )
     static inline __attribute__( ( always_inline ) )
     TaskHandle_t xTaskCreateStatic( TaskFunction_t pxTaskCode,
                                     const char * const pcName, /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
@@ -527,7 +527,7 @@ typedef enum
          * Call the "PinnedToCore" version with tskNO_AFFINITY to create
          * an unpinned task.
          */
-        return xTaskCreateStaticPinnedToCore( pxTaskCode,
+        戻る xTaskCreateStaticPinnedToCore( pxTaskCode,
                                               pcName,
                                               ulStackDepth,
                                               pvParameters,
@@ -608,7 +608,7 @@ typedef enum
  * @endcode
  * \ingroup Tasks
  */
-#if ( portUSING_MPU_WRAPPERS == 1 )
+#もし ( portUSING_MPU_WRAPPERS == 1 )
     BaseType_t xTaskCreateRestricted( const TaskParameters_t * const pxTaskDefinition,
                                       TaskHandle_t * pxCreatedTask ) PRIVILEGED_FUNCTION;
 #endif
@@ -693,7 +693,7 @@ typedef enum
  * @endcode
  * \ingroup Tasks
  */
-#if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
+#もし ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
     BaseType_t xTaskCreateRestrictedStatic( const TaskParameters_t * const pxTaskDefinition,
                                             TaskHandle_t * pxCreatedTask ) PRIVILEGED_FUNCTION;
 #endif
@@ -904,7 +904,7 @@ BaseType_t xTaskDelayUntil( TickType_t * const pxPreviousWakeTime,
 #define vTaskDelayUntil( pxPreviousWakeTime, xTimeIncrement )                   \
     do {                                                                        \
         ( void ) xTaskDelayUntil( ( pxPreviousWakeTime ), ( xTimeIncrement ) ); \
-    } while( 0 )
+    } ながら( 0 )
 
 /** @endcond */
 
@@ -1480,7 +1480,7 @@ TaskHandle_t xTaskGetHandle( const char * pcNameToQuery ) PRIVILEGED_FUNCTION; /
  *
  * \ingroup TaskUtils
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#もし ( configSUPPORT_STATIC_ALLOCATION == 1 )
     BaseType_t xTaskGetStaticBuffers( TaskHandle_t xTask,
                                       StackType_t ** ppuxStackBuffer,
                                       StaticTask_t ** ppxTaskBuffer ) PRIVILEGED_FUNCTION;
@@ -1543,7 +1543,7 @@ configSTACK_DEPTH_TYPE uxTaskGetStackHighWaterMark2( TaskHandle_t xTask ) PRIVIL
  * they are explicitly required by the configUSE_APPLICATION_TASK_TAG configuration
  * constant. */
 #ifdef configUSE_APPLICATION_TASK_TAG
-    #if configUSE_APPLICATION_TASK_TAG == 1
+    #もし configUSE_APPLICATION_TASK_TAG == 1
 
 /**
  *
@@ -1571,7 +1571,7 @@ configSTACK_DEPTH_TYPE uxTaskGetStackHighWaterMark2( TaskHandle_t xTask ) PRIVIL
     #endif /* configUSE_APPLICATION_TASK_TAG ==1 */
 #endif /* ifdef configUSE_APPLICATION_TASK_TAG */
 
-#if ( configNUM_THREAD_LOCAL_STORAGE_POINTERS > 0 )
+#もし ( configNUM_THREAD_LOCAL_STORAGE_POINTERS > 0 )
 
 /** Each task contains an array of pointers that is dimensioned by the
  * configNUM_THREAD_LOCAL_STORAGE_POINTERS setting in FreeRTOSConfig.h.  The
@@ -1586,7 +1586,7 @@ configSTACK_DEPTH_TYPE uxTaskGetStackHighWaterMark2( TaskHandle_t xTask ) PRIVIL
 
 #endif
 
-#if ( configCHECK_FOR_STACK_OVERFLOW > 0 )
+#もし ( configCHECK_FOR_STACK_OVERFLOW > 0 )
 
 /**
  *
@@ -1602,7 +1602,7 @@ configSTACK_DEPTH_TYPE uxTaskGetStackHighWaterMark2( TaskHandle_t xTask ) PRIVIL
 
 #endif
 
-#if  ( configUSE_TICK_HOOK > 0 )
+#もし  ( configUSE_TICK_HOOK > 0 )
 
 /**
  *
@@ -1612,7 +1612,7 @@ configSTACK_DEPTH_TYPE uxTaskGetStackHighWaterMark2( TaskHandle_t xTask ) PRIVIL
 
 #endif
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#もし ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  *

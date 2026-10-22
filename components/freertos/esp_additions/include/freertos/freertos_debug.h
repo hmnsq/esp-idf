@@ -65,7 +65,7 @@ typedef struct TaskIterator
  *       If a broken or corrupted task is encountered, the task handle is set to NULL.
  *
  */
-int xTaskGetNext( TaskIterator_t * xIterator );
+整数 xTaskGetNext( TaskIterator_t * xIterator );
 
 /**
  * @brief Fill a TaskSnapshot_t structure for specified task.

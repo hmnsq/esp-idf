@@ -109,7 +109,7 @@
  * the application.   These may catch the list data structures being overwritten in
  * memory.  They will not catch data errors caused by incorrect configuration or
  * use of FreeRTOS.*/
-#if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 )
+#もし ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 )
     /* Define the macros to do nothing. */
     #define listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE
     #define listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE
@@ -121,7 +121,7 @@
     #define listSET_LIST_INTEGRITY_CHECK_2_VALUE( pxList )
     #define listTEST_LIST_ITEM_INTEGRITY( pxItem )
     #define listTEST_LIST_INTEGRITY( pxList )
-#else /* if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 ) */
+#否则 /* if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 ) */
     /* Define macros that add new members into the list structures. */
     #define listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE     TickType_t xListItemIntegrityValue1;
     #define listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE    TickType_t xListItemIntegrityValue2;
@@ -157,7 +157,7 @@ struct xLIST_ITEM
 };
 typedef struct xLIST_ITEM ListItem_t;
 
-#if ( configUSE_MINI_LIST_ITEM == 1 )
+#もし ( configUSE_MINI_LIST_ITEM == 1 )
     struct xMINI_LIST_ITEM
     {
         listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE /**< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
@@ -166,7 +166,7 @@ typedef struct xLIST_ITEM ListItem_t;
         struct xLIST_ITEM * configLIST_VOLATILE pxPrevious;
     };
     typedef struct xMINI_LIST_ITEM MiniListItem_t;
-#else
+#否则
     typedef struct xLIST_ITEM      MiniListItem_t;
 #endif
 
@@ -286,20 +286,20 @@ typedef struct xLIST
  * \page listGET_OWNER_OF_NEXT_ENTRY listGET_OWNER_OF_NEXT_ENTRY
  * \ingroup LinkedList
  */
-#if ( configNUMBER_OF_CORES == 1 )
+#もし ( configNUMBER_OF_CORES == 1 )
     #define listGET_OWNER_OF_NEXT_ENTRY( pxTCB, pxList )                                       \
     do {                                                                                       \
         List_t * const pxConstList = ( pxList );                                               \
         /* Increment the index to the next item and return the item, ensuring */               \
         /* we don't return the marker used at the end of the list.  */                         \
         ( pxConstList )->pxIndex = ( pxConstList )->pxIndex->pxNext;                           \
-        if( ( void * ) ( pxConstList )->pxIndex == ( void * ) &( ( pxConstList )->xListEnd ) ) \
+        もし( ( void * ) ( pxConstList )->pxIndex == ( void * ) &( ( pxConstList )->xListEnd ) ) \
         {                                                                                      \
             ( pxConstList )->pxIndex = ( pxConstList )->xListEnd.pxNext;                       \
         }                                                                                      \
         ( pxTCB ) = ( pxConstList )->pxIndex->pvOwner;                                         \
-    } while( 0 )
-#else /* #if ( configNUMBER_OF_CORES == 1 ) */
+    } ながら( 0 )
+#否则 /* #if ( configNUMBER_OF_CORES == 1 ) */
 
 /* This function is not required in SMP. FreeRTOS SMP scheduler doesn't use
  * pxIndex and it should always point to the xListEnd. Not defining this macro
@@ -332,14 +332,14 @@ typedef struct xLIST
         ( pxItemToRemove )->pxNext->pxPrevious = ( pxItemToRemove )->pxPrevious;                    \
         ( pxItemToRemove )->pxPrevious->pxNext = ( pxItemToRemove )->pxNext;                        \
         /* Make sure the index is left pointing to a valid item. */                                 \
-        if( pxList->pxIndex == ( pxItemToRemove ) )                                                 \
+        もし( pxList->pxIndex == ( pxItemToRemove ) )                                                 \
         {                                                                                           \
             pxList->pxIndex = ( pxItemToRemove )->pxPrevious;                                       \
         }                                                                                           \
                                                                                                     \
         ( pxItemToRemove )->pxContainer = NULL;                                                     \
         ( ( pxList )->uxNumberOfItems ) = ( UBaseType_t ) ( ( ( pxList )->uxNumberOfItems ) - 1U ); \
-    } while( 0 )
+    } ながら( 0 )
 
 /*
  * Inline version of vListInsertEnd() to provide slight optimisation for
@@ -386,7 +386,7 @@ typedef struct xLIST
         ( pxNewListItem )->pxContainer = ( pxList );                                                \
                                                                                                     \
         ( ( pxList )->uxNumberOfItems ) = ( UBaseType_t ) ( ( ( pxList )->uxNumberOfItems ) + 1U ); \
-    } while( 0 )
+    } ながら( 0 )
 
 /*
  * Access function to obtain the owner of the first entry in a list.  Lists

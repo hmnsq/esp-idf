@@ -17,7 +17,7 @@
 #include "test_utils.h"
 
 /* PIE instructions set is currently only supported in GCC compiler */
-#if SOC_CPU_HAS_PIE
+#もし SOC_CPU_HAS_PIE
 
 /**
  * @brief Performs the signed sum of two 4-word vectors using the PIE.
@@ -41,7 +41,7 @@ void pie_vector_xor(const int32_t a[4], const int32_t b[4], int32_t dst[4]);
 
 typedef struct {
     int32_t cst;
-    TaskHandle_t main;
+    TaskHandle_t メインページ;
     SemaphoreHandle_t sem;
 } pie_params_t;
 
@@ -79,7 +79,7 @@ static void pinned_task(void *arg)
 
     pie_vector_signed_add(a, b, dst);
 
-    for (int i = 0; i < sizeof(a) / sizeof(uint32_t); i++) {
+    ために (整数 i = 0; i < sizeof(a) / sizeof(uint32_t); i++) {
         TEST_ASSERT_EQUAL(dst[i], a[i] + b[i]);
     }
 
@@ -93,13 +93,13 @@ TEST_CASE("PIE: Usage in task", "[freertos]")
     SemaphoreHandle_t done_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_NUMBER_OF_CORES * TEST_PINNED_NUM_TASKS, 0);
     TEST_ASSERT_NOT_EQUAL(NULL, done_sem);
 
-    for (int iter = 0; iter < TEST_PINNED_NUM_ITERS; iter++) {
+    ために (整数 iter = 0; iter < TEST_PINNED_NUM_ITERS; iter++) {
         TaskHandle_t task_handles[CONFIG_FREERTOS_NUMBER_OF_CORES][TEST_PINNED_NUM_TASKS];
         pie_params_t params[CONFIG_FREERTOS_NUMBER_OF_CORES][TEST_PINNED_NUM_TASKS];
 
         // Create test tasks for each core
-        for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-            for (int j = 0; j < TEST_PINNED_NUM_TASKS; j++) {
+        ために (整数 i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+            ために (整数 j = 0; j < TEST_PINNED_NUM_TASKS; j++) {
                 params[i][j] = (pie_params_t) {
                     .cst = i + j + 1,
                     .sem = done_sem,
@@ -109,20 +109,20 @@ TEST_CASE("PIE: Usage in task", "[freertos]")
         }
 
         // Start the created tasks
-        for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-            for (int j = 0; j < TEST_PINNED_NUM_TASKS; j++) {
+        ために (整数 i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+            ために (整数 j = 0; j < TEST_PINNED_NUM_TASKS; j++) {
                 xTaskNotifyGive(task_handles[i][j]);
             }
         }
 
         // Wait for the tasks to complete
-        for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES * TEST_PINNED_NUM_TASKS; i++) {
+        ために (整数 i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES * TEST_PINNED_NUM_TASKS; i++) {
             xSemaphoreTake(done_sem, portMAX_DELAY);
         }
 
         // Delete the tasks
-        for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-            for (int j = 0; j < TEST_PINNED_NUM_TASKS; j++) {
+        ために (整数 i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+            ために (整数 j = 0; j < TEST_PINNED_NUM_TASKS; j++) {
                 vTaskDelete(task_handles[i][j]);
             }
         }
@@ -154,16 +154,16 @@ Expected:
     - Each task cleans up its PIE context on deletion
 */
 
-#if CONFIG_FREERTOS_NUMBER_OF_CORES > 1
+#もし CONFIG_FREERTOS_NUMBER_OF_CORES > 1
 
 #define TEST_UNPINNED_NUM_ITERS     5
 
 static void check_core_affinity(void)
 {
-#if CONFIG_IDF_TARGET_ESP32S31
+#もし CONFIG_IDF_TARGET_ESP32S31
     /* On the ESP32-S31, only core 1 has PIE support, so all tasks should be pinned to core 1 */
     BaseType_t core_num = 1;
-#else
+#否则
     BaseType_t core_num = xTaskGetCoreID(NULL);
 #endif
 
@@ -173,7 +173,7 @@ static void check_core_affinity(void)
 static void unpinned_task(void *arg)
 {
     // Check that the task is unpinned
-#if !CONFIG_FREERTOS_UNICORE
+#もし !CONFIG_FREERTOS_UNICORE
     TEST_ASSERT_EQUAL(tskNO_AFFINITY, xTaskGetCoreID(NULL));
 #endif // !CONFIG_FREERTOS_UNICORE
 
@@ -183,11 +183,11 @@ static void unpinned_task(void *arg)
 
     pie_vector_signed_add(a, b, dst);
 
-    for (int i = 0; i < sizeof(a) / sizeof(uint32_t); i++) {
+    ために (整数 i = 0; i < sizeof(a) / sizeof(uint32_t); i++) {
         TEST_ASSERT_EQUAL(dst[i], a[i] + b[i]);
     }
 
-#if !CONFIG_FREERTOS_UNICORE
+#もし !CONFIG_FREERTOS_UNICORE
     check_core_affinity();
 #endif // !CONFIG_FREERTOS_UNICORE
 
@@ -199,7 +199,7 @@ static void unpinned_task(void *arg)
 TEST_CASE("PIE: Usage in unpinned task", "[freertos]")
 {
     TaskHandle_t unity_task_handle = xTaskGetCurrentTaskHandle();
-    for (int iter = 0; iter < TEST_UNPINNED_NUM_ITERS; iter++) {
+    ために (整数 iter = 0; iter < TEST_UNPINNED_NUM_ITERS; iter++) {
         // Create unpinned task
         xTaskCreate(unpinned_task, "unpin", 4096, (void *)unity_task_handle, UNITY_FREERTOS_PRIORITY + 1, NULL);
         // Wait for task to complete
@@ -219,7 +219,7 @@ static void pie_calculation(void* arg)
     int32_t a[4] = { cst, cst, cst, cst };
     int32_t dst[4] = { 0 };
 
-    for (int i = 0; i < 10; i++) {
+    ために (整数 i = 0; i < 10; i++) {
         pie_vector_signed_add(a, dst, dst);
 
         /* Give some time to the other to interrupt us before checking `f` value */
@@ -235,7 +235,7 @@ static void pie_calculation(void* arg)
     /* Make sure the result is correct */
     assert((dst[0] * cst == 10));
 
-    xTaskNotifyGive(p->main);
+    xTaskNotifyGive(p->メインページ);
     vTaskDelete(NULL);
 }
 
@@ -245,8 +245,8 @@ TEST_CASE("PIE: Unsolicited context switch between tasks using the PIE", "[freer
     TaskHandle_t unity_task_handle = xTaskGetCurrentTaskHandle();
     TaskHandle_t tasks[2];
     pie_params_t params[2] = {
-        { .cst =  1, .main = unity_task_handle },
-        { .cst = -1, .main = unity_task_handle },
+        { .cst =  1, .メインページ = unity_task_handle },
+        { .cst = -1, .メインページ = unity_task_handle },
     };
 
     xTaskCreatePinnedToCore(pie_calculation, "Task1", 2048, params + 0, UNITY_FREERTOS_PRIORITY + 1, &tasks[0], 1);
@@ -256,13 +256,13 @@ TEST_CASE("PIE: Unsolicited context switch between tasks using the PIE", "[freer
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 }
 
-#if CONFIG_IDF_TARGET_ESP32S31
+#もし CONFIG_IDF_TARGET_ESP32S31
 
 static void core0_fpu_pie(void *arg)
 {
     /* Use the FPU in this task and make sure we are pinned to core 0 */
     float f = 1.0f;
-    for (int i = 0; i < 10; i++) {
+    ために (整数 i = 0; i < 10; i++) {
         f = f * 2.0f;
     }
     TEST_ASSERT_EQUAL(1024.0f, f);
@@ -279,7 +279,7 @@ static void core0_fpu_pie(void *arg)
 
     TEST_ASSERT_EQUAL(1, xTaskGetCoreID(NULL));
 
-    for (int i = 0; i < sizeof(a) / sizeof(uint32_t); i++) {
+    ために (整数 i = 0; i < sizeof(a) / sizeof(uint32_t); i++) {
         TEST_ASSERT_EQUAL(dst[i], (a[i] + b[i]));
     }
 
@@ -329,7 +329,7 @@ static void core0_pie_instr_task(void *arg)
     }
     }
     /* Indicate done and wait for deletion */
-    xTaskNotifyGive(param->main);
+    xTaskNotifyGive(param->メインページ);
     vTaskDelay(portMAX_DELAY);
 }
 
@@ -343,11 +343,11 @@ TEST_CASE("PIE: Core 0 parses PIE instructions properly", "[freertos]")
 {
     TaskHandle_t task_handle;
     pie_params_t param = { 0 };
-    param.main = xTaskGetCurrentTaskHandle();
+    param.メインページ = xTaskGetCurrentTaskHandle();
 
     /* Create tasks that will run on core 0 only. Each of them will execute one PIE instruction.
      * If they don't crash, it's a success.*/
-    for (int i = 0; i < PIE_INSTR_COUNT; i++) {
+    ために (整数 i = 0; i < PIE_INSTR_COUNT; i++) {
         param.cst = i;
         xTaskCreatePinnedToCore(core0_pie_instr_task, "Core0PIE", 2048, &param, UNITY_FREERTOS_PRIORITY + 1, &task_handle, 0);
         /* Wait for the task to complete */
@@ -360,7 +360,7 @@ TEST_CASE("PIE: Core 0 parses PIE instructions properly", "[freertos]")
 
 #endif /* CONFIG_FREERTOS_NUMBER_OF_CORES > 1 */
 
-#if CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
+#もし CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
 
 TEST_CASE("PIE: Blacklist setter and getter", "[freertos]")
 {
@@ -386,7 +386,7 @@ static void pie_after_cleared_blacklist(void *arg)
     vTaskSetPieBlacklisted(NULL, pdFALSE);
     pie_vector_signed_add(a, b, dst);
 
-    for (int i = 0; i < 4; i++) {
+    ために (整数 i = 0; i < 4; i++) {
         TEST_ASSERT_EQUAL(a[i] + b[i], dst[i]);
     }
 

@@ -21,7 +21,7 @@
 #include "unity.h"
 #include "test_utils.h"
 
-#if SOC_GPTIMER_SUPPORTED
+#もし SOC_GPTIMER_SUPPORTED
 
 #define NO_OF_NOTIFS    4
 #define NO_OF_TASKS     2       //Sender and receiver
@@ -43,19 +43,19 @@ static bool wrong_core = false;
 static bool on_alarm_sender_cb(gptimer_handle_t timer, const gptimer_alarm_event_data_t *edata, void *user_ctx)
 {
     gptimer_stop(timer);
-    if (!test_start) {
-        return false;
+    もし (!test_start) {
+        戻る false;
     }
-    int curcore = xPortGetCoreID();
-    if (isr_give) { //Test vTaskNotifyGiveFromISR() on same core
+    整数 curcore = xPortGetCoreID();
+    もし (isr_give) { //Test vTaskNotifyGiveFromISR() on same core
         notifs_sent++;
         vTaskNotifyGiveFromISR(recv_task_handle, NULL);
-    } else { //Test xTaskNotifyFromISR()
+    } 否则 { //Test xTaskNotifyFromISR()
         notifs_sent++;
         xTaskNotifyFromISR(recv_task_handle, (MESSAGE << curcore), eSetValueWithOverwrite, NULL);
     }
     // always trigger a task switch when exit ISR context
-    return true;
+    戻る true;
 }
 
 static void test_gptimer_start(void *arg)
@@ -73,7 +73,7 @@ static void test_gptimer_start(void *arg)
 static void sender_task(void *arg)
 {
     gptimer_handle_t gptimer = (gptimer_handle_t)arg;
-    int curcore = xPortGetCoreID();
+    整数 curcore = xPortGetCoreID();
 
     //Test xTaskNotify
     xSemaphoreTake(trigger_send_semphr, portMAX_DELAY);
@@ -106,7 +106,7 @@ static void receiver_task(void *arg)
 
     //Test xTaskNotifyWait from task
     xTaskNotifyWait(0, 0xFFFFFFFF, &notify_value, portMAX_DELAY);
-    if (notify_value != send_core_message) {
+    もし (notify_value != send_core_message) {
         wrong_core = true;
     }
     notifs_rec++;
@@ -119,7 +119,7 @@ static void receiver_task(void *arg)
     //Test xTaskNotifyWait from ISR
     xSemaphoreGive(trigger_send_semphr);
     xTaskNotifyWait(0, 0xFFFFFFFF, &notify_value, portMAX_DELAY);
-    if (notify_value != send_core_message) {
+    もし (notify_value != send_core_message) {
         wrong_core = true;
     }
     notifs_rec++;
@@ -136,7 +136,7 @@ static void receiver_task(void *arg)
 
 static void install_gptimer_on_core(void *arg)
 {
-    int core_id = (int)arg;
+    整数 core_id = (整数)arg;
     gptimer_config_t timer_config = {
         .clk_src = GPTIMER_CLK_SRC_DEFAULT,
         .direction = GPTIMER_COUNT_UP,
@@ -158,7 +158,7 @@ TEST_CASE("Test Task_Notify", "[freertos]")
     test_start = false;
     trigger_send_semphr = xSemaphoreCreateBinary();
     task_delete_semphr = xQueueCreateCountingSemaphore(10, 0);
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    ために (整数 i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         xTaskCreatePinnedToCore(install_gptimer_on_core, "install_gptimer", 4096, (void *const)i, UNITY_FREERTOS_PRIORITY + 1, NULL, i);
         TEST_ASSERT(xSemaphoreTake(task_delete_semphr, pdMS_TO_TICKS(1000)));
     }
@@ -166,8 +166,8 @@ TEST_CASE("Test Task_Notify", "[freertos]")
     vTaskDelay(10);
     // test start
     test_start = true;
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) { //Sending Core
-        for (int j = 0; j < CONFIG_FREERTOS_NUMBER_OF_CORES; j++) { //Receiving Core
+    ために (整数 i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) { //Sending Core
+        ために (整数 j = 0; j < CONFIG_FREERTOS_NUMBER_OF_CORES; j++) { //Receiving Core
             //Reset Values
             notifs_sent = 0;
             notifs_rec = 0;
@@ -179,7 +179,7 @@ TEST_CASE("Test Task_Notify", "[freertos]")
             vTaskDelay(5);      //Wait for task creation to complete
 
             xSemaphoreGive(trigger_send_semphr);    //Trigger sender task
-            for (int k = 0; k < NO_OF_TASKS; k++) { //Wait for sender and receiver task deletion
+            ために (整数 k = 0; k < NO_OF_TASKS; k++) { //Wait for sender and receiver task deletion
                 TEST_ASSERT(xSemaphoreTake(task_delete_semphr, pdMS_TO_TICKS(2000)));
             }
             vTaskDelay(5);      //Give time tasks to delete
@@ -193,7 +193,7 @@ TEST_CASE("Test Task_Notify", "[freertos]")
     //Delete Semaphroes and timer ISRs
     vSemaphoreDelete(trigger_send_semphr);
     vSemaphoreDelete(task_delete_semphr);
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    ために (整数 i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         TEST_ESP_OK(gptimer_disable(gptimers[i]));
         TEST_ESP_OK(gptimer_del_timer(gptimers[i]));
     }
@@ -218,7 +218,7 @@ TEST_CASE("Notify Wait too high index fails", "[ignore]")
     xTaskNotifyWaitIndexed(2, 0, 0, &notification_value, pdMS_TO_TICKS(10));
 }
 
-#if CONFIG_FREERTOS_TASK_NOTIFICATION_ARRAY_ENTRIES > 1
+#もし CONFIG_FREERTOS_TASK_NOTIFICATION_ARRAY_ENTRIES > 1
 const uint32_t NOTIFICATION_VALUE_0 = 47;
 const uint32_t NOTIFICATION_VALUE_1 = 48;
 

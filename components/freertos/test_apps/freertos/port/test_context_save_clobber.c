@@ -8,10 +8,10 @@
 #include "unity.h"
 #include "esp_intr_alloc.h"
 
-#if defined(__XTENSA__) && CONFIG_FREERTOS_CORETIMER_0
+#もし defined(__XTENSA__) && CONFIG_FREERTOS_CORETIMER_0
 #include "xtensa/config/core-isa.h"
 #include "xtensa/hal.h"
-#if defined(XCHAL_HAVE_WINDOWED)
+#もし defined(XCHAL_HAVE_WINDOWED)
 /* Regression test for a0 register being corrupted in _xt_context_save.
  *
  * The idea in this test is to have a function which recursively calls itself
@@ -27,14 +27,14 @@ extern void test_context_save_clober_func(void);
 static void int_timer_handler(void *arg)
 {
     xthal_set_ccompare(1, xthal_get_ccount() + 10000);
-    (*(int*) arg)++;
+    (*(整数*) arg)++;
 }
 
 TEST_CASE("context save doesn't corrupt return address register", "[freertos]")
 {
     /* set up an interrupt */
     intr_handle_t ih;
-    int int_triggered = 0;
+    整数 int_triggered = 0;
     TEST_ESP_OK(esp_intr_alloc(ETS_INTERNAL_TIMER1_INTR_SOURCE, 0, int_timer_handler, &int_triggered, &ih));
     xthal_set_ccompare(1, xthal_get_ccount() + 10000);
 
