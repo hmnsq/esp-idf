@@ -83,7 +83,7 @@ extern void vPortYieldWithinApi( void );
 extern void vPortYield( void );
 #define portYIELD() vPortYield()
 
-#define portEND_SWITCHING_ISR( xSwitchRequired ) if( (xSwitchRequired) != pdFALSE ) vPortYield()
+#define portEND_SWITCHING_ISR( xSwitchRequired ) если( (xSwitchRequired) != pdFALSE ) vPortYield()
 #define portYIELD_FROM_ISR( x ) portEND_SWITCHING_ISR( x )
 /*-----------------------------------------------------------*/
 
@@ -138,7 +138,7 @@ extern void vPortCancelThread( void *pxTaskToDelete );
 #define portMEMORY_BARRIER() __asm volatile( "" ::: "memory" )
 
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() /* no-op */
-#if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
+#если ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
 configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
 #define portGET_RUN_TIME_COUNTER_VALUE()         xPortGetRunTimeCounterValue()
 #endif

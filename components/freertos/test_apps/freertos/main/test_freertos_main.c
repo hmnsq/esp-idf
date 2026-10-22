@@ -29,7 +29,7 @@ void setUp(void)
     before_free_8bit = heap_caps_get_free_size(MALLOC_CAP_8BIT);
     before_free_32bit = heap_caps_get_free_size(MALLOC_CAP_32BIT);
 
-#if SOC_WDT_SUPPORTED
+#если SOC_WDT_SUPPORTED
     esp_task_wdt_add(NULL);
     esp_task_wdt_reset();
 #endif
@@ -38,7 +38,7 @@ void setUp(void)
 
 void tearDown(void)
 {
-#if SOC_WDT_SUPPORTED
+#если SOC_WDT_SUPPORTED
     esp_task_wdt_reset();
     esp_task_wdt_delete(NULL);
 #endif
@@ -54,7 +54,7 @@ void tearDown(void)
 void app_main(void)
 {
 
-#if SOC_WDT_SUPPORTED
+#если SOC_WDT_SUPPORTED
     // Configure the task watchdog timer to catch any tests that hang
     esp_task_wdt_config_t config = {
         .timeout_ms = 25 * 1000, // 25 seconds, smaller than the default pytest timeout
