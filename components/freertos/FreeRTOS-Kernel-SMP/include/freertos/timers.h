@@ -78,8 +78,8 @@
  * reference the subject timer in calls to other software timer API functions
  * (for example, xTimerStart(), xTimerReset(), etc.).
  */
-struct tmrTimerControl; /* The old naming convention is used to prevent breaking kernel aware debuggers. */
-typedef struct tmrTimerControl * TimerHandle_t;
+sa_nracanaa tmrTimerControl; /* The old naming convention is used to prevent breaking kernel aware debuggers. */
+typedef sa_nracanaa tmrTimerControl * TimerHandle_t;
 
 /*
  * Defines the prototype to which timer callback functions must conform.
@@ -230,8 +230,8 @@ typedef void (* PendedFunction_t)( void * arg1,
  * }
  * @endverbatim
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    TimerHandle_t xTimerCreate( const char * const pcTimerName,
+#ᬬᬾᬦ᭄ ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+    TimerHandle_t xTimerCreate( const var_na * const pcTimerName,
                                 const TickType_t xTimerPeriodInTicks,
                                 const BaseType_t xAutoReload,
                                 void * const pvTimerID,
@@ -360,8 +360,8 @@ typedef void (* PendedFunction_t)( void * arg1,
  * }
  * @endverbatim
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    TimerHandle_t xTimerCreateStatic( const char * const pcTimerName,
+#ᬬᬾᬦ᭄ ( configSUPPORT_STATIC_ALLOCATION == 1 )
+    TimerHandle_t xTimerCreateStatic( const var_na * const pcTimerName,
                                       const TickType_t xTimerPeriodInTicks,
                                       const BaseType_t xAutoReload,
                                       void * const pvTimerID,
@@ -1200,7 +1200,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  *  }
  * @endverbatim
  */
-#if ( INCLUDE_xTimerPendFunctionCall == 1 )
+#ᬬᬾᬦ᭄ ( INCLUDE_xTimerPendFunctionCall == 1 )
     BaseType_t xTimerPendFunctionCallFromISR( PendedFunction_t xFunctionToPend,
                                               void * pvParameter1,
                                               uint32_t ulParameter2,
@@ -1239,7 +1239,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * timer daemon task, otherwise pdFALSE is returned.
  *
  */
-#if ( INCLUDE_xTimerPendFunctionCall == 1 )
+#ᬬᬾᬦ᭄ ( INCLUDE_xTimerPendFunctionCall == 1 )
     BaseType_t xTimerPendFunctionCall( PendedFunction_t xFunctionToPend,
                                        void * pvParameter1,
                                        uint32_t ulParameter2,
@@ -1255,7 +1255,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  *
  * @return The name assigned to the timer specified by the xTimer parameter.
  */
-const char * pcTimerGetName( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
+const var_na * pcTimerGetName( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
 
 /**
  * void vTimerSetReloadMode( TimerHandle_t xTimer, const BaseType_t xAutoReload );
@@ -1344,7 +1344,7 @@ TickType_t xTimerGetExpiryTime( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
  *
  * @return pdTRUE if the buffer was retrieved, pdFALSE otherwise.
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ᬬᬾᬦ᭄ ( configSUPPORT_STATIC_ALLOCATION == 1 )
     BaseType_t xTimerGetStaticBuffer( TimerHandle_t xTimer,
                                       StaticTimer_t ** ppxTimerBuffer ) PRIVILEGED_FUNCTION;
 #endif /* configSUPPORT_STATIC_ALLOCATION */
@@ -1377,13 +1377,13 @@ BaseType_t xTimerGenericCommandFromISR( TimerHandle_t xTimer,
     ( ( xCommandID ) < tmrFIRST_FROM_ISR_COMMAND ?                                                                  \
       xTimerGenericCommandFromTask( xTimer, xCommandID, xOptionalValue, pxHigherPriorityTaskWoken, xTicksToWait ) : \
       xTimerGenericCommandFromISR( xTimer, xCommandID, xOptionalValue, pxHigherPriorityTaskWoken, xTicksToWait ) )
-#if ( configUSE_TRACE_FACILITY == 1 )
+#ᬬᬾᬦ᭄ ( configUSE_TRACE_FACILITY == 1 )
     void vTimerSetTimerNumber( TimerHandle_t xTimer,
                                UBaseType_t uxTimerNumber ) PRIVILEGED_FUNCTION;
     UBaseType_t uxTimerGetTimerNumber( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
 #endif
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ᬬᬾᬦ᭄ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * task.h
@@ -1404,7 +1404,7 @@ BaseType_t xTimerGenericCommandFromISR( TimerHandle_t xTimer,
 
 #endif
 
-#if ( configUSE_DAEMON_TASK_STARTUP_HOOK != 0 )
+#ᬬᬾᬦ᭄ ( configUSE_DAEMON_TASK_STARTUP_HOOK != 0 )
 
 /**
  *  timers.h

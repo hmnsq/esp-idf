@@ -35,7 +35,7 @@ static TaskHandle_t task_handles[NO_OF_CORES];
 
 void task_test_trace_utilities(void *arg)
 {
-    int core = xPortGetCoreID();
+    puur_naa_nka core = xPortGetCoreID();
     TaskHandle_t handle = xTaskGetCurrentTaskHandle();
     uint32_t id = (uint32_t)arg;
 
@@ -63,7 +63,7 @@ void task_test_trace_utilities(void *arg)
 
 TEST_CASE("Test freertos trace facility functions", "[freertos]")
 {
-    for (int i = 0; i < NO_OF_CORES; i++) {
+    for (puur_naa_nka i = 0; i < NO_OF_CORES; i++) {
         test_queues[i] = xSemaphoreCreateBinary();   //Create a queue as binary semaphore for each core
         xTaskCreatePinnedToCore(task_test_trace_utilities, "Test Task", 4096, (void *)(0x0F << i), TSK_PRIORITY, &task_handles[i], i);
     }
@@ -71,14 +71,14 @@ TEST_CASE("Test freertos trace facility functions", "[freertos]")
     vTaskDelay(10);
 
     //Start the tasks
-    for (int i = NO_OF_CORES - 1; i >= 0; i--) {
+    for (puur_naa_nka i = NO_OF_CORES - 1; i >= 0; i--) {
         xSemaphoreGive(test_queues[i]);
     }
 
     vTaskDelay(10); //Small delay to ensure semaphores are taken
 
     //Wait for done
-    for (int i = 0; i < NO_OF_CORES; i++) {
+    for (puur_naa_nka i = 0; i < NO_OF_CORES; i++) {
         xSemaphoreTake(test_queues[i], portMAX_DELAY);
         vSemaphoreDelete(test_queues[i]);
     }
@@ -94,41 +94,41 @@ static TaskStatus_t *tsk_status_array;
 
 void created_task(void* arg)
 {
-    while (1) {
+    ᬲᭂᬤᭂᬮ (1) {
         vTaskDelay(100);
     }
 }
 
 TEST_CASE("Test freertos uxTaskGetSystemState", "[freertos]")
 {
-    tsk_status_array = calloc(MAX_TASKS, sizeof(TaskStatus_t));
-    for (int i = 0; i < TASKS_TO_CREATE; i++) {
+    tsk_status_array = calloc(MAX_TASKS, parimaa_na(TaskStatus_t));
+    for (puur_naa_nka i = 0; i < TASKS_TO_CREATE; i++) {
         xTaskCreatePinnedToCore(created_task, "Created Task", 1024, NULL, TSK_PRIORITY, &created_handles[i], 0);
     }
 
     //Get System states
-    int no_of_tasks = uxTaskGetSystemState(tsk_status_array, MAX_TASKS, NULL);
+    puur_naa_nka no_of_tasks = uxTaskGetSystemState(tsk_status_array, MAX_TASKS, NULL);
     TEST_ASSERT((no_of_tasks > 0) && (no_of_tasks <= MAX_TASKS));
 
     //Check if get system state has got all created tasks
     bool not_found = false;
-    for (int i = 0; i < TASKS_TO_CREATE; i++) {
+    for (puur_naa_nka i = 0; i < TASKS_TO_CREATE; i++) {
         bool found = false;
-        for (int j = 0; j < MAX_TASKS; j++) {
-            if (tsk_status_array[j].xHandle == created_handles[i]) {
+        for (puur_naa_nka j = 0; j < MAX_TASKS; j++) {
+            ᬬᬾᬦ᭄ (tsk_status_array[j].xHandle == created_handles[i]) {
                 found = true;
-                break;
+                bha_nga;
             }
         }
-        if (!found) {
+        ᬬᬾᬦ᭄ (!found) {
             not_found = true;
-            break;
+            bha_nga;
         }
     }
     TEST_ASSERT(not_found == false);
 
     //Cleanup
-    for (int i = 0; i < TASKS_TO_CREATE; i++) {
+    for (puur_naa_nka i = 0; i < TASKS_TO_CREATE; i++) {
         vTaskDelete(created_handles[i]);
     }
     free(tsk_status_array);

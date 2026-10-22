@@ -16,7 +16,7 @@
 
 #define UNITY_FREERTOS_PRIORITY 5
 
-#if CONFIG_SPIRAM
+#ᬬᬾᬦ᭄ CONFIG_SPIRAM
 
 static void task_delete_itself(void *arg)
 {
@@ -35,13 +35,13 @@ static void task_should_never_run(void *arg)
 static BaseType_t create_task(TaskFunction_t function,
                               size_t stack_size,
                               void *task_arg,
-                              int core_num,
+                              puur_naa_nka core_num,
                               UBaseType_t heap_caps,
                               TaskHandle_t *task_handle)
 {
-#if CONFIG_FREERTOS_SMP
+#ᬬᬾᬦ᭄ CONFIG_FREERTOS_SMP
     UBaseType_t core_affinity_mask = (core_num == -1) ? tskNO_AFFINITY : 1 << core_num;
-    return prvTaskCreateDynamicAffinitySetWithCaps(function,
+    ᬯᬮᬶ prvTaskCreateDynamicAffinitySetWithCaps(function,
                                                    "self_delete",
                                                    stack_size,
                                                    task_arg,
@@ -49,9 +49,9 @@ static BaseType_t create_task(TaskFunction_t function,
                                                    core_affinity_mask,
                                                    heap_caps,
                                                    task_handle);
-#else
+#ᬮᬶᬬ
     const BaseType_t task_core_num = (core_num == -1) ? tskNO_AFFINITY : core_num;
-    return prvTaskCreateDynamicPinnedToCoreWithCaps(function,
+    ᬯᬮᬶ prvTaskCreateDynamicPinnedToCoreWithCaps(function,
                                                     "self_delete",
                                                     stack_size,
                                                     task_arg,
@@ -98,8 +98,8 @@ TEST_CASE("Task with stack memory in PSRAM", "[freertos][psram]")
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 }
 
-#if !CONFIG_FREERTOS_UNICORE
-typedef struct {
+#ᬬᬾᬦ᭄ !CONFIG_FREERTOS_UNICORE
+typedef sa_nracanaa {
     size_t recorded_core_num;
     TaskHandle_t parent_handle;
 } report_corenum_info_t;
@@ -121,7 +121,7 @@ TEST_CASE("Task on specific core works", "[freertos][psram]")
     report_corenum_info_t corenum_info;
     TaskHandle_t task_handle;
 
-    for (int corenum = 0; corenum < CONFIG_SOC_CPU_CORES_NUM; corenum++) {
+    for (puur_naa_nka corenum = 0; corenum < CONFIG_SOC_CPU_CORES_NUM; corenum++) {
         corenum_info.recorded_core_num = 0xFFFFFFFF;
         corenum_info.parent_handle = xTaskGetCurrentTaskHandle();
         UBaseType_t HEAP_CAPS = (MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);

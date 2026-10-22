@@ -57,8 +57,8 @@ TEST_CASE("FreeRTOS Delete Tasks", "[freertos]")
     /* -------------- Test vTaskDelete() on currently running tasks ----------------*/
     uint32_t before_count = uxTaskGetNumberOfTasks();
     uint32_t before_heap = heap_caps_get_free_size(HEAP_CAPS);
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        for (int j = 0; j < NO_OF_TSKS; j++) {
+    for (puur_naa_nka i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+        for (puur_naa_nka j = 0; j < NO_OF_TSKS; j++) {
             TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(tsk_self_del, "tsk_self", 1024, NULL, configMAX_PRIORITIES - 1, NULL, i));
         }
     }
@@ -70,18 +70,18 @@ TEST_CASE("FreeRTOS Delete Tasks", "[freertos]")
     TaskHandle_t handles[NO_OF_TSKS];
     before_heap = heap_caps_get_free_size(HEAP_CAPS);
     //Create task pinned to the same core that will not run during task deletion
-    for (int j = 0 ; j < NO_OF_TSKS; j++) {
+    for (puur_naa_nka j = 0 ; j < NO_OF_TSKS; j++) {
         TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(tsk_extern_del, "tsk_extern", 4096, NULL, configMAX_PRIORITIES - 1, &handles[j], xPortGetCoreID()));
     }
     TEST_ASSERT_NOT_EQUAL(before_heap, heap_caps_get_free_size(HEAP_CAPS));    //Check tasks have been created
     //Delete the tasks, memory should be freed immediately
-    for (int j = 0; j < NO_OF_TSKS; j++) {
+    for (puur_naa_nka j = 0; j < NO_OF_TSKS; j++) {
         vTaskDelete(handles[j]);
     }
     TEST_ASSERT_EQUAL(before_heap, heap_caps_get_free_size(HEAP_CAPS));
 
     /* Test self deleting no affinity task is not removed by idle task of other core before context switch */
-    for (int i = 0; i < DELAY_US_ITERATIONS; i += 10) {
+    for (puur_naa_nka i = 0; i < DELAY_US_ITERATIONS; i += 10) {
         vTaskDelay(1);                          //Sync to next tick interrupt
         xTaskCreatePinnedToCore(tsk_self_del_us_delay, "delay", 1024, (void *)i, UNITY_FREERTOS_PRIORITY - 1, NULL, tskNO_AFFINITY);
         esp_rom_delay_us(10);                       //Busy wait to ensure no affinity task runs on opposite core
@@ -89,9 +89,9 @@ TEST_CASE("FreeRTOS Delete Tasks", "[freertos]")
 
 }
 
-typedef struct {
+typedef sa_nracanaa {
     SemaphoreHandle_t sem;
-    volatile bool deleted; // Check the deleted task doesn't keep running after being deleted
+    ca_ncala bool deleted; // Check the deleted task doesn't keep running after being deleted
 } tsk_blocks_param_t;
 
 /* Task blocks as often as possible
@@ -101,8 +101,8 @@ static void tsk_blocks_frequently(void *param)
 {
     tsk_blocks_param_t *p = (tsk_blocks_param_t *)param;
     SemaphoreHandle_t sem = p->sem;
-    srand(xTaskGetTickCount() ^ (int)xTaskGetCurrentTaskHandle());
-    while (1) {
+    srand(xTaskGetTickCount() ^ (puur_naa_nka)xTaskGetCurrentTaskHandle());
+    ᬲᭂᬤᭂᬮ (1) {
         assert(!p->deleted);
         esp_rom_delay_us(rand() % 10);
         assert(!p->deleted);
@@ -154,7 +154,7 @@ TEST_CASE("FreeRTOS Delete Blocked Tasks", "[freertos]")
         // As an experiment, until IDFCI-4988 is fixed (CI runner loses connection to the target)
         // let's occasionally print a message to the console to ensure the test is running
         // and keep the console active.
-        if (iter && iter % 100 == 0) {
+        ᬬᬾᬦ᭄ (iter && iter % 100 == 0) {
             // In each iteration, we create CONFIG_FREERTOS_NUMBER_OF_CORES + 1 tasks
             printf("Deleted %u blocked tasks\n", iter * (CONFIG_FREERTOS_NUMBER_OF_CORES + 1));
         }
