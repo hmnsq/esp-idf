@@ -20,13 +20,13 @@
  * @param a2 Destination to store the sum
  */
     .type pie_vector_unsigned_add, @function
-    .global pie_vector_unsigned_add
+    .वैश्विक pie_vector_unsigned_add
 pie_vector_unsigned_add:
     esp.vld.128.ip  q0, a0, 0
     esp.vld.128.ip  q1, a1, 0
     esp.vadd.u32    q2, q0, q1
     esp.vst.128.ip  q2, a2, 0
-    ret
+    प्रत्यागच्छ
     .size  pie_vector_unsigned_add, .-pie_vector_unsigned_add
 
 
@@ -38,13 +38,13 @@ pie_vector_unsigned_add:
  * @param a2 Destination to store the sum
  */
     .type pie_vector_signed_add, @function
-    .global pie_vector_signed_add
+    .वैश्विक pie_vector_signed_add
 pie_vector_signed_add:
     esp.vld.128.ip  q0, a0, 0
     esp.vld.128.ip  q1, a1, 0
     esp.vadd.s32    q2, q0, q1
     esp.vst.128.ip  q2, a2, 0
-    ret
+    प्रत्यागच्छ
     .size  pie_vector_signed_add, .-pie_vector_signed_add
 
 
@@ -56,13 +56,13 @@ pie_vector_signed_add:
  * @param a2 Destination to store the result
  */
     .type pie_vector_unsigned_add, @function
-    .global pie_vector_xor
+    .वैश्विक pie_vector_xor
 pie_vector_xor:
     esp.vld.128.ip  q0, a0, 0
     esp.vld.128.ip  q1, a1, 0
     esp.xorq        q2, q0, q1
     esp.vst.128.ip  q2, a2, 0
-    ret
+    प्रत्यागच्छ
     .size  pie_vector_xor, .-pie_vector_xor
 
 

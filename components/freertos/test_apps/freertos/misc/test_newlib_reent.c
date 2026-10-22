@@ -8,52 +8,52 @@
  Test for multicore FreeRTOS. This test spins up threads, fiddles with queues etc.
 */
 
-#include <esp_types.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "unity.h"
-#include "test_utils.h"
+#अन्तर्भाव <esp_types.h>
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव <stdlib.h>
+#अन्तर्भाव "sdkconfig.h"
+#अन्तर्भाव "freertos/FreeRTOS.h"
+#अन्तर्भाव "freertos/task.h"
+#अन्तर्भाव "freertos/semphr.h"
+#अन्तर्भाव "freertos/queue.h"
+#अन्तर्भाव "unity.h"
+#अन्तर्भाव "test_utils.h"
 
-volatile static int done;
-volatile static int error;
+चञ्चल स्थिर पूर्णाङ्क समाप्तम्;
+चञ्चल स्थिर पूर्णाङ्क error;
 
-static void tskTestRand(void *pvParameters)
+स्थिर शून्य tskTestRand(शून्य *pvParameters)
 {
-    int l;
-    srand(0x1234);
-    vTaskDelay((int)pvParameters / portTICK_PERIOD_MS);
-    l = rand();
-    printf("Rand1: %d\n", l);
-    if (l != 869320854) {
+    पूर्णाङ्क l;
+    बीजं_रोपय(0x1234);
+    vTaskDelay((पूर्णाङ्क)pvParameters / पत्तनम्_TICK_PERIOD_MS);
+    l = यादृच्छिकम्();
+    प्रारूप_लिख("Rand1: %d\n", l);
+    यदि (l != 869320854) {
         error++;
     }
-    vTaskDelay((int)pvParameters / portTICK_PERIOD_MS);
-    l = rand();
-    printf("Rand2: %d\n", l);
-    if (l != 1148737841) {
+    vTaskDelay((पूर्णाङ्क)pvParameters / पत्तनम्_TICK_PERIOD_MS);
+    l = यादृच्छिकम्();
+    प्रारूप_लिख("Rand2: %d\n", l);
+    यदि (l != 1148737841) {
         error++;
     }
-    done++;
-    vTaskDelete(NULL);
+    समाप्तम्++;
+    vTaskDelete(रिक्त);
 }
 
 // TODO: split this thing into separate orthogonal tests
 TEST_CASE("Test for per-task non-reentrant tasks", "[freertos]")
 {
-    done = 0;
+    समाप्तम् = 0;
     error = 0;
-    const uint32_t stack_size = 3072;
-    xTaskCreatePinnedToCore(tskTestRand, "tsk1", stack_size, (void *)100, 3, NULL, 0);
-    xTaskCreatePinnedToCore(tskTestRand, "tsk2", stack_size, (void *)200, 3, NULL, 0);
-    xTaskCreatePinnedToCore(tskTestRand, "tsk3", stack_size, (void *)300, 3, NULL, CONFIG_FREERTOS_NUMBER_OF_CORES - 1);
-    xTaskCreatePinnedToCore(tskTestRand, "tsk4", stack_size, (void *)400, 3, NULL, 0);
-    while (done != 4) {
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    ध्रुव uint32_t राशिः_आकार_2 = 3072;
+    x_Task_Create_Pinned_गन्तव्यम्_Core(tskTestRand, "tsk1", राशिः_आकार_2, (शून्य *)100, 3, रिक्त, 0);
+    x_Task_Create_Pinned_गन्तव्यम्_Core(tskTestRand, "tsk2", राशिः_आकार_2, (शून्य *)200, 3, रिक्त, 0);
+    x_Task_Create_Pinned_गन्तव्यम्_Core(tskTestRand, "tsk3", राशिः_आकार_2, (शून्य *)300, 3, रिक्त, CONFIG_FREERTOS_सङ्ख्या_सम्बन्धि_CORES - 1);
+    x_Task_Create_Pinned_गन्तव्यम्_Core(tskTestRand, "tsk4", राशिः_आकार_2, (शून्य *)400, 3, रिक्त, 0);
+    यावत् (समाप्तम् != 4) {
+        vTaskDelay(1000 / पत्तनम्_TICK_PERIOD_MS);
     }
     TEST_ASSERT(error == 0);
 }

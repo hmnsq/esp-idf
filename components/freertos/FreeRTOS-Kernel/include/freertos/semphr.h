@@ -30,20 +30,20 @@
  *
  */
 
-#ifndef SEMAPHORE_H
-#define SEMAPHORE_H
+#यदि_अपरिभाषितम् SEMAPHORE_H
+#परिभाषय SEMAPHORE_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h" must appear in source files before "include semphr.h"
-#endif
+#यदि_अपरिभाषितम् INC_FREERTOS_H
+    #दोषः "include FreeRTOS.h" must appear अन्तर् source files before "include semphr.h"
+#यदि_अन्तः
 
-#include "queue.h"
+#अन्तर्भाव "queue.h"
 
-typedef QueueHandle_t SemaphoreHandle_t;
+प्रकारनिर्देश QueueHandle_t SemaphoreHandle_t;
 
-#define semBINARY_SEMAPHORE_QUEUE_LENGTH    ( ( uint8_t ) 1U )
-#define semSEMAPHORE_QUEUE_ITEM_LENGTH      ( ( uint8_t ) 0U )
-#define semGIVE_BLOCK_TIME                  ( ( TickType_t ) 0U )
+#परिभाषय sem_द्विमान_SEMAPHORE_QUEUE_दीर्घता    ( ( uint8_t ) 1U )
+#परिभाषय sem_SEMAPHORE_QUEUE_ITEM_दीर्घता      ( ( uint8_t ) 0U )
+#परिभाषय sem_GIVE_खण्डम्_TIME                  ( ( TickType_t ) 0U )
 
 
 /**
@@ -92,16 +92,16 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @endcode
  * \ingroup Semaphores
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    #define vSemaphoreCreateBinary( xSemaphore )                                                                                     \
+#यदि ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 )
+    #परिभाषय v_Semaphore_Create_द्विमान( xSemaphore )                                                                                     \
     {                                                                                                                                \
-        ( xSemaphore ) = xQueueGenericCreate( ( UBaseType_t ) 1, semSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_BINARY_SEMAPHORE ); \
-        if( ( xSemaphore ) != NULL )                                                                                                 \
+        ( xSemaphore ) = xQueueGenericCreate( ( UBaseType_t ) 1, sem_SEMAPHORE_QUEUE_ITEM_दीर्घता, queue_QUEUE_TYPE_द्विमान_SEMAPHORE ); \
+        यदि( ( xSemaphore ) != रिक्त )                                                                                                 \
         {                                                                                                                            \
-            ( void ) xSemaphoreGive( ( xSemaphore ) );                                                                               \
+            ( शून्य ) xSemaphoreGive( ( xSemaphore ) );                                                                               \
         }                                                                                                                            \
     }
-#endif
+#यदि_अन्तः
 
 /**
  *
@@ -157,9 +157,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @endcode
  * \ingroup Semaphores
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    #define xSemaphoreCreateBinary()    xQueueGenericCreate( ( UBaseType_t ) 1, semSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_BINARY_SEMAPHORE )
-#endif
+#यदि ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 )
+    #परिभाषय x_Semaphore_Create_द्विमान()    xQueueGenericCreate( ( UBaseType_t ) 1, sem_SEMAPHORE_QUEUE_ITEM_दीर्घता, queue_QUEUE_TYPE_द्विमान_SEMAPHORE )
+#यदि_अन्तः
 
 /**
  *
@@ -213,9 +213,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @endcode
  * \ingroup Semaphores
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xSemaphoreCreateBinaryStatic( pxStaticSemaphore )    xQueueGenericCreateStatic( ( UBaseType_t ) 1, semSEMAPHORE_QUEUE_ITEM_LENGTH, NULL, ( pxStaticSemaphore ), queueQUEUE_TYPE_BINARY_SEMAPHORE )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
+    #परिभाषय x_Semaphore_Create_द्विमान_Static( pxStaticSemaphore )    xQueueGenericCreateStatic( ( UBaseType_t ) 1, sem_SEMAPHORE_QUEUE_ITEM_दीर्घता, रिक्त, ( pxStaticSemaphore ), queue_QUEUE_TYPE_द्विमान_SEMAPHORE )
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  *
@@ -276,7 +276,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @endcode
  * \ingroup Semaphores
  */
-#define xSemaphoreTake( xSemaphore, xBlockTime )    xQueueSemaphoreTake( ( xSemaphore ), ( xBlockTime ) )
+#परिभाषय xSemaphoreTake( xSemaphore, x_खण्डम्_Time )    xQueueSemaphoreTake( ( xSemaphore ), ( x_खण्डम्_Time ) )
 
 /**
  *
@@ -363,9 +363,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @endcode
  * \ingroup Semaphores
  */
-#if ( configUSE_RECURSIVE_MUTEXES == 1 )
-    #define xSemaphoreTakeRecursive( xMutex, xBlockTime )    xQueueTakeMutexRecursive( ( xMutex ), ( xBlockTime ) )
-#endif
+#यदि ( configUSE_RECURSIVE_MUTEXES == 1 )
+    #परिभाषय xSemaphoreTakeRecursive( xMutex, x_खण्डम्_Time )    xQueueTakeMutexRecursive( ( xMutex ), ( x_खण्डम्_Time ) )
+#यदि_अन्तः
 
 /**
  *
@@ -425,7 +425,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @endcode
  * \ingroup Semaphores
  */
-#define xSemaphoreGive( xSemaphore )    xQueueGenericSend( ( QueueHandle_t ) ( xSemaphore ), NULL, semGIVE_BLOCK_TIME, queueSEND_TO_BACK )
+#परिभाषय xSemaphoreGive( xSemaphore )    xQueueGenericSend( ( QueueHandle_t ) ( xSemaphore ), रिक्त, sem_GIVE_खण्डम्_TIME, queue_SEND_गन्तव्यम्_पृष्ठभागः )
 
 /**
  *
@@ -506,9 +506,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @endcode
  * \ingroup Semaphores
  */
-#if ( configUSE_RECURSIVE_MUTEXES == 1 )
-    #define xSemaphoreGiveRecursive( xMutex )    xQueueGiveMutexRecursive( ( xMutex ) )
-#endif
+#यदि ( configUSE_RECURSIVE_MUTEXES == 1 )
+    #परिभाषय xSemaphoreGiveRecursive( xMutex )    xQueueGiveMutexRecursive( ( xMutex ) )
+#यदि_अन्तः
 
 /**
  *
@@ -592,7 +592,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @endcode
  * \ingroup Semaphores
  */
-#define xSemaphoreGiveFromISR( xSemaphore, pxHigherPriorityTaskWoken )    xQueueGiveFromISR( ( QueueHandle_t ) ( xSemaphore ), ( pxHigherPriorityTaskWoken ) )
+#परिभाषय xSemaphoreGiveFromISR( xSemaphore, px_Higher_प्राथमिकता_Task_Woken )    xQueueGiveFromISR( ( QueueHandle_t ) ( xSemaphore ), ( px_Higher_प्राथमिकता_Task_Woken ) )
 
 /**
  *
@@ -620,7 +620,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @return pdTRUE if the semaphore was successfully taken, otherwise
  * pdFALSE
  */
-#define xSemaphoreTakeFromISR( xSemaphore, pxHigherPriorityTaskWoken )    xQueueReceiveFromISR( ( QueueHandle_t ) ( xSemaphore ), NULL, ( pxHigherPriorityTaskWoken ) )
+#परिभाषय xSemaphoreTakeFromISR( xSemaphore, px_Higher_प्राथमिकता_Task_Woken )    xQueueReceiveFromISR( ( QueueHandle_t ) ( xSemaphore ), रिक्त, ( px_Higher_प्राथमिकता_Task_Woken ) )
 
 /**
  *
@@ -674,9 +674,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @endcode
  * \ingroup Semaphores
  */
-#if __DOXYGEN__ || ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configUSE_MUTEXES == 1 ) )
-    #define xSemaphoreCreateMutex()    xQueueCreateMutex( queueQUEUE_TYPE_MUTEX )
-#endif
+#यदि __DOXYGEN__ || ( ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 ) && ( configUSE_MUTEXES == 1 ) )
+    #परिभाषय xSemaphoreCreateMutex()    xQueueCreateMutex( queueQUEUE_TYPE_MUTEX )
+#यदि_अन्तः
 
 /**
  *
@@ -732,9 +732,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @endcode
  * \ingroup Semaphores
  */
-#if __DOXYGEN__ || ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configUSE_MUTEXES == 1 ) )
-    #define xSemaphoreCreateMutexStatic( pxMutexBuffer )    xQueueCreateMutexStatic( queueQUEUE_TYPE_MUTEX, ( pxMutexBuffer ) )
-#endif
+#यदि __DOXYGEN__ || ( ( config_SUPPORT_STATIC_आवण्टनम् == 1 ) && ( configUSE_MUTEXES == 1 ) )
+    #परिभाषय xSemaphoreCreateMutexStatic( px_Mutex_बफर )    xQueueCreateMutexStatic( queueQUEUE_TYPE_MUTEX, ( px_Mutex_बफर ) )
+#यदि_अन्तः
 
 
 /**
@@ -797,9 +797,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @endcode
  * \ingroup Semaphores
  */
-#if __DOXYGEN__ || ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configUSE_RECURSIVE_MUTEXES == 1 ) )
-    #define xSemaphoreCreateRecursiveMutex()    xQueueCreateMutex( queueQUEUE_TYPE_RECURSIVE_MUTEX )
-#endif
+#यदि __DOXYGEN__ || ( ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 ) && ( configUSE_RECURSIVE_MUTEXES == 1 ) )
+    #परिभाषय xSemaphoreCreateRecursiveMutex()    xQueueCreateMutex( queueQUEUE_TYPE_RECURSIVE_MUTEX )
+#यदि_अन्तः
 
 /**
  *
@@ -867,9 +867,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @endcode
  * \ingroup Semaphores
  */
-#if __DOXYGEN__ || ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configUSE_RECURSIVE_MUTEXES == 1 ) )
-    #define xSemaphoreCreateRecursiveMutexStatic( pxStaticSemaphore )    xQueueCreateMutexStatic( queueQUEUE_TYPE_RECURSIVE_MUTEX, ( pxStaticSemaphore ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#यदि __DOXYGEN__ || ( ( config_SUPPORT_STATIC_आवण्टनम् == 1 ) && ( configUSE_RECURSIVE_MUTEXES == 1 ) )
+    #परिभाषय xSemaphoreCreateRecursiveMutexStatic( pxStaticSemaphore )    xQueueCreateMutexStatic( queueQUEUE_TYPE_RECURSIVE_MUTEX, ( pxStaticSemaphore ) )
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  *
@@ -944,9 +944,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @endcode
  * \ingroup Semaphores
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    #define xSemaphoreCreateCounting( uxMaxCount, uxInitialCount )    xQueueCreateCountingSemaphore( ( uxMaxCount ), ( uxInitialCount ) )
-#endif
+#यदि ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 )
+    #परिभाषय xSemaphoreCreateCounting( ux_Max_गणनम्, ux_Initial_गणनम् )    xQueueCreateCountingSemaphore( ( ux_Max_गणनम् ), ( ux_Initial_गणनम् ) )
+#यदि_अन्तः
 
 /**
  *
@@ -1026,9 +1026,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @endcode
  * \ingroup Semaphores
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xSemaphoreCreateCountingStatic( uxMaxCount, uxInitialCount, pxSemaphoreBuffer )    xQueueCreateCountingSemaphoreStatic( ( uxMaxCount ), ( uxInitialCount ), ( pxSemaphoreBuffer ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
+    #परिभाषय xSemaphoreCreateCountingStatic( ux_Max_गणनम्, ux_Initial_गणनम्, px_Semaphore_बफर )    xQueueCreateCountingSemaphoreStatic( ( ux_Max_गणनम् ), ( ux_Initial_गणनम् ), ( px_Semaphore_बफर ) )
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  *
@@ -1039,7 +1039,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  *
  * \ingroup Semaphores
  */
-#define vSemaphoreDelete( xSemaphore )    vQueueDelete( ( QueueHandle_t ) ( xSemaphore ) )
+#परिभाषय vSemaphoreDelete( xSemaphore )    vQueueDelete( ( QueueHandle_t ) ( xSemaphore ) )
 
 /**
  *
@@ -1052,9 +1052,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * the holder may change between the function exiting and the returned value
  * being tested.
  */
-#if __DOXYGEN__ || ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
-    #define xSemaphoreGetMutexHolder( xSemaphore )    xQueueGetMutexHolder( ( xSemaphore ) )
-#endif
+#यदि __DOXYGEN__ || ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
+    #परिभाषय xSemaphoreGetMutexHolder( xSemaphore )    xQueueGetMutexHolder( ( xSemaphore ) )
+#यदि_अन्तः
 
 /**
  *
@@ -1063,9 +1063,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * by a task), return NULL.
  *
  */
-#if __DOXYGEN__ || ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
-    #define xSemaphoreGetMutexHolderFromISR( xSemaphore )    xQueueGetMutexHolderFromISR( ( xSemaphore ) )
-#endif
+#यदि __DOXYGEN__ || ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
+    #परिभाषय xSemaphoreGetMutexHolderFromISR( xSemaphore )    xQueueGetMutexHolderFromISR( ( xSemaphore ) )
+#यदि_अन्तः
 
 /**
  *
@@ -1075,7 +1075,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * semaphore is not available.
  *
  */
-#define uxSemaphoreGetCount( xSemaphore )           uxQueueMessagesWaiting( ( QueueHandle_t ) ( xSemaphore ) )
+#परिभाषय ux_Semaphore_Get_गणनम्( xSemaphore )           ux_Queue_Messages_प्रतीक्षा( ( QueueHandle_t ) ( xSemaphore ) )
 
 /**
  * semphr.h
@@ -1089,7 +1089,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * semaphore is not available.
  *
  */
-#define uxSemaphoreGetCountFromISR( xSemaphore )    uxQueueMessagesWaitingFromISR( ( QueueHandle_t ) ( xSemaphore ) )
+#परिभाषय ux_Semaphore_Get_गणनम्_From_ISR( xSemaphore )    ux_Queue_Messages_प्रतीक्षा_From_ISR( ( QueueHandle_t ) ( xSemaphore ) )
 
 /**
  *
@@ -1104,8 +1104,8 @@ typedef QueueHandle_t SemaphoreHandle_t;
  *
  * @return pdTRUE if buffer was retrieved, pdFALSE otherwise.
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xSemaphoreGetStaticBuffer( xSemaphore, ppxSemaphoreBuffer )    xQueueGenericGetStaticBuffers( ( QueueHandle_t ) ( xSemaphore ), NULL, ( ppxSemaphoreBuffer ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
+    #परिभाषय x_Semaphore_Get_Static_बफर( xSemaphore, ppx_Semaphore_बफर )    xQueueGenericGetStaticBuffers( ( QueueHandle_t ) ( xSemaphore ), रिक्त, ( ppx_Semaphore_बफर ) )
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION */
 
-#endif /* SEMAPHORE_H */
+#यदि_अन्तः /* SEMAPHORE_H */

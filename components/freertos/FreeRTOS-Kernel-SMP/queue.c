@@ -30,32 +30,32 @@
  *
  */
 
-#include <stdlib.h>
-#include <string.h>
+#अन्तर्भाव <stdlib.h>
+#अन्तर्भाव <string.h>
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
  * task.h is included from an application file. */
-#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#परिभाषय MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
+#अन्तर्भाव "FreeRTOS.h"
+#अन्तर्भाव "task.h"
+#अन्तर्भाव "queue.h"
 
-#if ( configUSE_CO_ROUTINES == 1 )
-    #include "croutine.h"
-#endif
+#यदि ( configUSE_CO_ROUTINES == 1 )
+    #अन्तर्भाव "croutine.h"
+#यदि_अन्तः
 
 /* The MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined
  * for the header files above, but not in this file, in order to generate the
  * correct privileged Vs unprivileged linkage and placement. */
-#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#अपरिभाषय MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 
 /* Constants used with the cRxLock and cTxLock structure members. */
-#define queueUNLOCKED             ( ( int8_t ) -1 )
-#define queueLOCKED_UNMODIFIED    ( ( int8_t ) 0 )
-#define queueINT8_MAX             ( ( int8_t ) 127 )
+#परिभाषय queueUNLOCKED             ( ( int8_t ) -1 )
+#परिभाषय queueLOCKED_UNMODIFIED    ( ( int8_t ) 0 )
+#परिभाषय queueINT8_MAX             ( ( int8_t ) 127 )
 
 /* When the Queue_t structure is used to represent a base queue its pcHead and
  * pcTail members are used as pointers into the queue storage area.  When the
@@ -66,82 +66,82 @@
  * is maintained.  The QueuePointers_t and SemaphoreData_t types are used to form
  * a union as their usage is mutually exclusive dependent on what the queue is
  * being used for. */
-#define uxQueueType               pcHead
-#define queueQUEUE_IS_MUTEX       NULL
+#परिभाषय uxQueueType               pc_शीर्ष
+#परिभाषय queueQUEUE_IS_MUTEX       रिक्त
 
-typedef struct QueuePointers
+प्रकारनिर्देश संरचना Queue_सूचकाः
 {
-    int8_t * pcTail;     /**< Points to the byte at the end of the queue storage area.  Once more byte is allocated than necessary to store the queue items, this is used as a marker. */
+    int8_t * pc_पुच्छ;     /**< Points to the byte at the end of the queue storage area.  Once more byte is allocated than necessary to store the queue items, this is used as a marker. */
     int8_t * pcReadFrom; /**< Points to the last place that a queued item was read from when the structure is used as a queue. */
-} QueuePointers_t;
+} Queue_सूचकाः_t;
 
-typedef struct SemaphoreData
+प्रकारनिर्देश संरचना Semaphore_दत्त
 {
     TaskHandle_t xMutexHolder;        /**< The handle of the task that holds the mutex. */
-    UBaseType_t uxRecursiveCallCount; /**< Maintains a count of the number of times a recursive mutex has been recursively 'taken' when the structure is used as a mutex. */
-} SemaphoreData_t;
+    UBaseType_t ux_Recursive_Call_गणनम्; /**< Maintains a count of the number of times a recursive mutex has been recursively 'taken' when the structure is used as a mutex. */
+} Semaphore_दत्त_t;
 
 /* Semaphores do not actually store or copy data, so have an item size of
  * zero. */
-#define queueSEMAPHORE_QUEUE_ITEM_LENGTH    ( ( UBaseType_t ) 0 )
-#define queueMUTEX_GIVE_BLOCK_TIME          ( ( TickType_t ) 0U )
+#परिभाषय queue_SEMAPHORE_QUEUE_ITEM_दीर्घता    ( ( UBaseType_t ) 0 )
+#परिभाषय queue_MUTEX_GIVE_खण्डम्_TIME          ( ( TickType_t ) 0U )
 
-#if ( configUSE_PREEMPTION == 0 )
+#यदि ( configUSE_PREEMPTION == 0 )
 
 /* If the cooperative scheduler is being used then a yield should not be
  * performed just because a higher priority task has been woken. */
-    #define queueYIELD_IF_USING_PREEMPTION()
-#else
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define queueYIELD_IF_USING_PREEMPTION()    portYIELD_WITHIN_API()
-    #else /* #if ( configNUMBER_OF_CORES == 1 ) */
-        #define queueYIELD_IF_USING_PREEMPTION()    vTaskYieldWithinAPI()
-    #endif /* #if ( configNUMBER_OF_CORES == 1 ) */
-#endif
+    #परिभाषय queueYIELD_IF_USING_PREEMPTION()
+#अन्यथा
+    #यदि ( config_सङ्ख्या_सम्बन्धि_CORES == 1 )
+        #परिभाषय queueYIELD_IF_USING_PREEMPTION()    पत्तनम्_YIELD_WITHIN_API()
+    #अन्यथा /* #if ( configNUMBER_OF_CORES == 1 ) */
+        #परिभाषय queueYIELD_IF_USING_PREEMPTION()    vTaskYieldWithinAPI()
+    #यदि_अन्तः /* #if ( configNUMBER_OF_CORES == 1 ) */
+#यदि_अन्तः
 
 /*
  * Definition of the queue used by the scheduler.
  * Items are queued by copy, not reference.  See the following link for the
  * rationale: https://www.FreeRTOS.org/Embedded-RTOS-Queues.html
  */
-typedef struct QueueDefinition /* The old naming convention is used to prevent breaking kernel aware debuggers. */
+प्रकारनिर्देश संरचना QueueDefinition /* The old naming convention is used to prevent breaking kernel aware debuggers. */
 {
-    int8_t * pcHead;           /**< Points to the beginning of the queue storage area. */
-    int8_t * pcWriteTo;        /**< Points to the free next place in the storage area. */
+    int8_t * pc_शीर्ष;           /**< Points to the beginning of the queue storage area. */
+    int8_t * pc_Write_गन्तव्यम्;        /**< Points to the free next place in the storage area. */
 
-    union
+    सङ्घ
     {
-        QueuePointers_t xQueue;     /**< Data required exclusively when this structure is used as a queue. */
-        SemaphoreData_t xSemaphore; /**< Data required exclusively when this structure is used as a semaphore. */
+        Queue_सूचकाः_t xQueue;     /**< Data required exclusively when this structure is used as a queue. */
+        Semaphore_दत्त_t xSemaphore; /**< Data required exclusively when this structure is used as a semaphore. */
     } u;
 
-    List_t xTasksWaitingToSend;             /**< List of tasks that are blocked waiting to post onto this queue.  Stored in priority order. */
-    List_t xTasksWaitingToReceive;          /**< List of tasks that are blocked waiting to read from this queue.  Stored in priority order. */
+    List_t x_Tasks_प्रतीक्षा_गन्तव्यम्_Send;             /**< List of tasks that are blocked waiting to post onto this queue.  Stored in priority order. */
+    List_t x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive;          /**< List of tasks that are blocked waiting to read from this queue.  Stored in priority order. */
 
-    volatile UBaseType_t uxMessagesWaiting; /**< The number of items currently in the queue. */
-    UBaseType_t uxLength;                   /**< The length of the queue defined as the number of items it will hold, not the number of bytes. */
-    UBaseType_t uxItemSize;                 /**< The size of each items that the queue will hold. */
+    चञ्चल UBaseType_t ux_Messages_प्रतीक्षा; /**< The number of items currently in the queue. */
+    UBaseType_t ux_दीर्घता;                   /**< The length of the queue defined as the number of items it will hold, not the number of bytes. */
+    UBaseType_t ux_Item_आकार;                 /**< The size of each items that the queue will hold. */
 
-    volatile int8_t cRxLock;                /**< Stores the number of items received from the queue (removed from the queue) while the queue was locked.  Set to queueUNLOCKED when the queue is not locked. */
-    volatile int8_t cTxLock;                /**< Stores the number of items transmitted to the queue (added to the queue) while the queue was locked.  Set to queueUNLOCKED when the queue is not locked. */
+    चञ्चल int8_t c_Rx_तालकम्;                /**< Stores the number of items received from the queue (removed from the queue) while the queue was locked.  Set to queueUNLOCKED when the queue is not locked. */
+    चञ्चल int8_t c_Tx_तालकम्;                /**< Stores the number of items transmitted to the queue (added to the queue) while the queue was locked.  Set to queueUNLOCKED when the queue is not locked. */
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #यदि ( ( config_SUPPORT_STATIC_आवण्टनम् == 1 ) && ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 ) )
         uint8_t ucStaticallyAllocated; /**< Set to pdTRUE if the memory used by the queue was statically allocated to ensure no attempt is made to free the memory. */
-    #endif
+    #यदि_अन्तः
 
-    #if ( configUSE_QUEUE_SETS == 1 )
-        struct QueueDefinition * pxQueueSetContainer;
-    #endif
+    #यदि ( configUSE_QUEUE_SETS == 1 )
+        संरचना QueueDefinition * px_Queue_समुच्चयः_Container;
+    #यदि_अन्तः
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
-        UBaseType_t uxQueueNumber;
+    #यदि ( configUSE_TRACE_FACILITY == 1 )
+        UBaseType_t ux_Queue_सङ्ख्या;
         uint8_t ucQueueType;
-    #endif
+    #यदि_अन्तः
 } xQUEUE;
 
 /* The old xQUEUE name is maintained above then typedefed to the new Queue_t
  * name below to enable the use of older kernel aware debuggers. */
-typedef xQUEUE Queue_t;
+प्रकारनिर्देश xQUEUE Queue_t;
 
 /*-----------------------------------------------------------*/
 
@@ -149,21 +149,21 @@ typedef xQUEUE Queue_t;
  * The queue registry is just a means for kernel aware debuggers to locate
  * queue structures.  It has no other purpose so is an optional component.
  */
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
+#यदि ( config_QUEUE_REGISTRY_आकार > 0 )
 
 /* The type stored within the queue registry array.  This allows a name
  * to be assigned to each queue making kernel aware debugging a little
  * more user friendly. */
-    typedef struct QUEUE_REGISTRY_ITEM
+    प्रकारनिर्देश संरचना QUEUE_REGISTRY_ITEM
     {
-        const char * pcQueueName;
+        ध्रुव वर्ण * pcQueueName;
         QueueHandle_t xHandle;
     } xQueueRegistryItem;
 
 /* The old xQueueRegistryItem name is maintained above then typedefed to the
  * new xQueueRegistryItem name below to enable the use of older kernel aware
  * debuggers. */
-    typedef xQueueRegistryItem QueueRegistryItem_t;
+    प्रकारनिर्देश xQueueRegistryItem QueueRegistryItem_t;
 
 /* The queue registry is simply an array of QueueRegistryItem_t structures.
  * The pcQueueName member of a structure being NULL is indicative of the
@@ -172,9 +172,9 @@ typedef xQUEUE Queue_t;
 /* MISRA Ref 8.4.2 [Declaration shall be visible] */
 /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-84 */
 /* coverity[misra_c_2012_rule_8_4_violation] */
-    PRIVILEGED_DATA QueueRegistryItem_t xQueueRegistry[ configQUEUE_REGISTRY_SIZE ];
+    PRIVILEGED_दत्त QueueRegistryItem_t xQueueRegistry[ config_QUEUE_REGISTRY_आकार ];
 
-#endif /* configQUEUE_REGISTRY_SIZE */
+#यदि_अन्तः /* configQUEUE_REGISTRY_SIZE */
 
 /*
  * Unlocks a queue locked by a call to prvLockQueue.  Locking a queue does not
@@ -184,53 +184,53 @@ typedef xQUEUE Queue_t;
  * to indicate that a task may require unblocking.  When the queue in unlocked
  * these lock counts are inspected, and the appropriate action taken.
  */
-static void prvUnlockQueue( Queue_t * const pxQueue ) PRIVILEGED_FUNCTION;
+स्थिर शून्य prvUnlockQueue( Queue_t * ध्रुव pxQueue ) PRIVILEGED_FUNCTION;
 
 /*
  * Uses a critical section to determine if there is any data in a queue.
  *
  * @return pdTRUE if the queue contains no items, otherwise pdFALSE.
  */
-static BaseType_t prvIsQueueEmpty( const Queue_t * pxQueue ) PRIVILEGED_FUNCTION;
+स्थिर आधारः_Type_t prv_Is_Queue_रिक्तानि( ध्रुव Queue_t * pxQueue ) PRIVILEGED_FUNCTION;
 
 /*
  * Uses a critical section to determine if there is any space in a queue.
  *
  * @return pdTRUE if there is no space, otherwise pdFALSE;
  */
-static BaseType_t prvIsQueueFull( const Queue_t * pxQueue ) PRIVILEGED_FUNCTION;
+स्थिर आधारः_Type_t prv_Is_Queue_पूर्णम्( ध्रुव Queue_t * pxQueue ) PRIVILEGED_FUNCTION;
 
 /*
  * Copies an item into the queue, either at the front of the queue or the
  * back of the queue.
  */
-static BaseType_t prvCopyDataToQueue( Queue_t * const pxQueue,
-                                      const void * pvItemToQueue,
-                                      const BaseType_t xPosition ) PRIVILEGED_FUNCTION;
+स्थिर आधारः_Type_t prv_Copy_दत्त_गन्तव्यम्_Queue( Queue_t * ध्रुव pxQueue,
+                                      ध्रुव शून्य * pv_Item_गन्तव्यम्_Queue,
+                                      ध्रुव आधारः_Type_t xPosition ) PRIVILEGED_FUNCTION;
 
 /*
  * Copies an item out of a queue.
  */
-static void prvCopyDataFromQueue( Queue_t * const pxQueue,
-                                  void * const pvBuffer ) PRIVILEGED_FUNCTION;
+स्थिर शून्य prv_Copy_दत्त_From_Queue( Queue_t * ध्रुव pxQueue,
+                                  शून्य * ध्रुव pv_बफर ) PRIVILEGED_FUNCTION;
 
-#if ( configUSE_QUEUE_SETS == 1 )
+#यदि ( configUSE_QUEUE_SETS == 1 )
 
 /*
  * Checks to see if a queue is a member of a queue set, and if so, notifies
  * the queue set that the queue contains data.
  */
-    static BaseType_t prvNotifyQueueSetContainer( const Queue_t * const pxQueue ) PRIVILEGED_FUNCTION;
-#endif
+    स्थिर आधारः_Type_t prv_Notify_Queue_समुच्चयः_Container( ध्रुव Queue_t * ध्रुव pxQueue ) PRIVILEGED_FUNCTION;
+#यदि_अन्तः
 
 /*
  * Called after a Queue_t structure has been allocated either statically or
  * dynamically to fill in the structure's members.
  */
-static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
-                                   const UBaseType_t uxItemSize,
+स्थिर शून्य prvInitialiseNewQueue( ध्रुव UBaseType_t ux_Queue_दीर्घता,
+                                   ध्रुव UBaseType_t ux_Item_आकार,
                                    uint8_t * pucQueueStorage,
-                                   const uint8_t ucQueueType,
+                                   ध्रुव uint8_t ucQueueType,
                                    Queue_t * pxNewQueue ) PRIVILEGED_FUNCTION;
 
 /*
@@ -238,11 +238,11 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
  * queue is created, then prvInitialiseMutex() is called to configure the queue
  * as a mutex.
  */
-#if ( configUSE_MUTEXES == 1 )
-    static void prvInitialiseMutex( Queue_t * pxNewQueue ) PRIVILEGED_FUNCTION;
-#endif
+#यदि ( configUSE_MUTEXES == 1 )
+    स्थिर शून्य prvInitialiseMutex( Queue_t * pxNewQueue ) PRIVILEGED_FUNCTION;
+#यदि_अन्तः
 
-#if ( configUSE_MUTEXES == 1 )
+#यदि ( configUSE_MUTEXES == 1 )
 
 /*
  * If a task waiting for a mutex causes the mutex holder to inherit a
@@ -251,24 +251,24 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
  * other tasks that are waiting for the same mutex.  This function returns
  * that priority.
  */
-    static UBaseType_t prvGetDisinheritPriorityAfterTimeout( const Queue_t * const pxQueue ) PRIVILEGED_FUNCTION;
-#endif
+    स्थिर UBaseType_t prv_Get_Disinherit_प्राथमिकता_After_Timeout( ध्रुव Queue_t * ध्रुव pxQueue ) PRIVILEGED_FUNCTION;
+#यदि_अन्तः
 /*-----------------------------------------------------------*/
 
 /*
  * Macro to mark a queue as locked.  Locking a queue prevents an ISR from
  * accessing the queue event lists.
  */
-#define prvLockQueue( pxQueue )                            \
+#परिभाषय prv_तालकम्_Queue( pxQueue )                            \
     taskENTER_CRITICAL();                                  \
     {                                                      \
-        if( ( pxQueue )->cRxLock == queueUNLOCKED )        \
+        यदि( ( pxQueue )->c_Rx_तालकम् == queueUNLOCKED )        \
         {                                                  \
-            ( pxQueue )->cRxLock = queueLOCKED_UNMODIFIED; \
+            ( pxQueue )->c_Rx_तालकम् = queueLOCKED_UNMODIFIED; \
         }                                                  \
-        if( ( pxQueue )->cTxLock == queueUNLOCKED )        \
+        यदि( ( pxQueue )->c_Tx_तालकम् == queueUNLOCKED )        \
         {                                                  \
-            ( pxQueue )->cTxLock = queueLOCKED_UNMODIFIED; \
+            ( pxQueue )->c_Tx_तालकम् = queueLOCKED_UNMODIFIED; \
         }                                                  \
     }                                                      \
     taskEXIT_CRITICAL()
@@ -278,89 +278,89 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
  * capped at the number of tasks in the system as we cannot unblock more
  * tasks than the number of tasks in the system.
  */
-#define prvIncrementQueueTxLock( pxQueue, cTxLock )                           \
-    do {                                                                      \
-        const UBaseType_t uxNumberOfTasks = uxTaskGetNumberOfTasks();         \
-        if( ( UBaseType_t ) ( cTxLock ) < uxNumberOfTasks )                   \
+#परिभाषय prv_Increment_Queue_Tx_तालकम्( pxQueue, c_Tx_तालकम् )                           \
+    कुरु {                                                                      \
+        ध्रुव UBaseType_t ux_सङ्ख्या_सम्बन्धि_Tasks = ux_Task_Get_सङ्ख्या_सम्बन्धि_Tasks();         \
+        यदि( ( UBaseType_t ) ( c_Tx_तालकम् ) < ux_सङ्ख्या_सम्बन्धि_Tasks )                   \
         {                                                                     \
-            configASSERT( ( cTxLock ) != queueINT8_MAX );                     \
-            ( pxQueue )->cTxLock = ( int8_t ) ( ( cTxLock ) + ( int8_t ) 1 ); \
+            configASSERT( ( c_Tx_तालकम् ) != queueINT8_MAX );                     \
+            ( pxQueue )->c_Tx_तालकम् = ( int8_t ) ( ( c_Tx_तालकम् ) + ( int8_t ) 1 ); \
         }                                                                     \
-    } while( 0 )
+    } यावत्( 0 )
 
 /*
  * Macro to increment cRxLock member of the queue data structure. It is
  * capped at the number of tasks in the system as we cannot unblock more
  * tasks than the number of tasks in the system.
  */
-#define prvIncrementQueueRxLock( pxQueue, cRxLock )                           \
-    do {                                                                      \
-        const UBaseType_t uxNumberOfTasks = uxTaskGetNumberOfTasks();         \
-        if( ( UBaseType_t ) ( cRxLock ) < uxNumberOfTasks )                   \
+#परिभाषय prv_Increment_Queue_Rx_तालकम्( pxQueue, c_Rx_तालकम् )                           \
+    कुरु {                                                                      \
+        ध्रुव UBaseType_t ux_सङ्ख्या_सम्बन्धि_Tasks = ux_Task_Get_सङ्ख्या_सम्बन्धि_Tasks();         \
+        यदि( ( UBaseType_t ) ( c_Rx_तालकम् ) < ux_सङ्ख्या_सम्बन्धि_Tasks )                   \
         {                                                                     \
-            configASSERT( ( cRxLock ) != queueINT8_MAX );                     \
-            ( pxQueue )->cRxLock = ( int8_t ) ( ( cRxLock ) + ( int8_t ) 1 ); \
+            configASSERT( ( c_Rx_तालकम् ) != queueINT8_MAX );                     \
+            ( pxQueue )->c_Rx_तालकम् = ( int8_t ) ( ( c_Rx_तालकम् ) + ( int8_t ) 1 ); \
         }                                                                     \
-    } while( 0 )
+    } यावत्( 0 )
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueGenericReset( QueueHandle_t xQueue,
-                               BaseType_t xNewQueue )
+आधारः_Type_t xQueueGenericReset( QueueHandle_t xQueue,
+                               आधारः_Type_t xNewQueue )
 {
-    BaseType_t xReturn = pdPASS;
-    Queue_t * const pxQueue = xQueue;
+    आधारः_Type_t xReturn = pdPASS;
+    Queue_t * ध्रुव pxQueue = xQueue;
 
     traceENTER_xQueueGenericReset( xQueue, xNewQueue );
 
     configASSERT( pxQueue );
 
-    if( ( pxQueue != NULL ) &&
-        ( pxQueue->uxLength >= 1U ) &&
+    यदि( ( pxQueue != रिक्त ) &&
+        ( pxQueue->ux_दीर्घता >= 1U ) &&
         /* Check for multiplication overflow. */
-        ( ( SIZE_MAX / pxQueue->uxLength ) >= pxQueue->uxItemSize ) )
+        ( ( SIZE_MAX / pxQueue->ux_दीर्घता ) >= pxQueue->ux_Item_आकार ) )
     {
         taskENTER_CRITICAL();
         {
-            pxQueue->u.xQueue.pcTail = pxQueue->pcHead + ( pxQueue->uxLength * pxQueue->uxItemSize );
-            pxQueue->uxMessagesWaiting = ( UBaseType_t ) 0U;
-            pxQueue->pcWriteTo = pxQueue->pcHead;
-            pxQueue->u.xQueue.pcReadFrom = pxQueue->pcHead + ( ( pxQueue->uxLength - 1U ) * pxQueue->uxItemSize );
-            pxQueue->cRxLock = queueUNLOCKED;
-            pxQueue->cTxLock = queueUNLOCKED;
+            pxQueue->u.xQueue.pc_पुच्छ = pxQueue->pc_शीर्ष + ( pxQueue->ux_दीर्घता * pxQueue->ux_Item_आकार );
+            pxQueue->ux_Messages_प्रतीक्षा = ( UBaseType_t ) 0U;
+            pxQueue->pc_Write_गन्तव्यम् = pxQueue->pc_शीर्ष;
+            pxQueue->u.xQueue.pcReadFrom = pxQueue->pc_शीर्ष + ( ( pxQueue->ux_दीर्घता - 1U ) * pxQueue->ux_Item_आकार );
+            pxQueue->c_Rx_तालकम् = queueUNLOCKED;
+            pxQueue->c_Tx_तालकम् = queueUNLOCKED;
 
-            if( xNewQueue == pdFALSE )
+            यदि( xNewQueue == pdFALSE )
             {
                 /* If there are tasks blocked waiting to read from the queue, then
                  * the tasks will remain blocked as after this function exits the queue
                  * will still be empty.  If there are tasks blocked waiting to write to
                  * the queue, then one should be unblocked as after this function exits
                  * it will be possible to write to it. */
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
+                यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ) ) == pdFALSE )
                 {
-                    if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToSend ) ) != pdFALSE )
+                    यदि( xTaskRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ) ) != pdFALSE )
                     {
                         queueYIELD_IF_USING_PREEMPTION();
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                अन्यथा
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            अन्यथा
             {
                 /* Ensure the event queues start in the correct state. */
-                vListInitialise( &( pxQueue->xTasksWaitingToSend ) );
-                vListInitialise( &( pxQueue->xTasksWaitingToReceive ) );
+                vListInitialise( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ) );
+                vListInitialise( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) );
             }
         }
         taskEXIT_CRITICAL();
     }
-    else
+    अन्यथा
     {
         xReturn = pdFAIL;
     }
@@ -371,46 +371,46 @@ BaseType_t xQueueGenericReset( QueueHandle_t xQueue,
      * versions. */
     traceRETURN_xQueueGenericReset( xReturn );
 
-    return xReturn;
+    प्रत्यागम xReturn;
 }
 /*-----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
-    QueueHandle_t xQueueGenericCreateStatic( const UBaseType_t uxQueueLength,
-                                             const UBaseType_t uxItemSize,
+    QueueHandle_t xQueueGenericCreateStatic( ध्रुव UBaseType_t ux_Queue_दीर्घता,
+                                             ध्रुव UBaseType_t ux_Item_आकार,
                                              uint8_t * pucQueueStorage,
                                              StaticQueue_t * pxStaticQueue,
-                                             const uint8_t ucQueueType )
+                                             ध्रुव uint8_t ucQueueType )
     {
-        Queue_t * pxNewQueue = NULL;
+        Queue_t * pxNewQueue = रिक्त;
 
-        traceENTER_xQueueGenericCreateStatic( uxQueueLength, uxItemSize, pucQueueStorage, pxStaticQueue, ucQueueType );
+        traceENTER_xQueueGenericCreateStatic( ux_Queue_दीर्घता, ux_Item_आकार, pucQueueStorage, pxStaticQueue, ucQueueType );
 
         /* The StaticQueue_t structure and the queue storage area must be
          * supplied. */
         configASSERT( pxStaticQueue );
 
-        if( ( uxQueueLength > ( UBaseType_t ) 0 ) &&
-            ( pxStaticQueue != NULL ) &&
+        यदि( ( ux_Queue_दीर्घता > ( UBaseType_t ) 0 ) &&
+            ( pxStaticQueue != रिक्त ) &&
 
             /* A queue storage area should be provided if the item size is not 0, and
              * should not be provided if the item size is 0. */
-            ( !( ( pucQueueStorage != NULL ) && ( uxItemSize == 0U ) ) ) &&
-            ( !( ( pucQueueStorage == NULL ) && ( uxItemSize != 0U ) ) ) )
+            ( !( ( pucQueueStorage != रिक्त ) && ( ux_Item_आकार == 0U ) ) ) &&
+            ( !( ( pucQueueStorage == रिक्त ) && ( ux_Item_आकार != 0U ) ) ) )
         {
-            #if ( configASSERT_DEFINED == 1 )
+            #यदि ( configASSERT_DEFINED == 1 )
             {
                 /* Sanity check that the size of the structure used to declare a
                  * variable of type StaticQueue_t or StaticSemaphore_t equals the size of
                  * the real queue and semaphore structures. */
-                volatile size_t xSize = sizeof( StaticQueue_t );
+                चञ्चल size_t x_आकार = परिमाण( StaticQueue_t );
 
                 /* This assertion cannot be branch covered in unit tests */
-                configASSERT( xSize == sizeof( Queue_t ) ); /* LCOV_EXCL_BR_LINE */
-                ( void ) xSize;                             /* Prevent unused variable warning when configASSERT() is not defined. */
+                configASSERT( x_आकार == परिमाण( Queue_t ) ); /* LCOV_EXCL_BR_LINE */
+                ( शून्य ) x_आकार;                             /* Prevent unused variable warning when configASSERT() is not defined. */
             }
-            #endif /* configASSERT_DEFINED */
+            #यदि_अन्तः /* configASSERT_DEFINED */
 
             /* The address of a statically allocated queue was passed in, use it.
              * The address of a statically allocated storage area was also passed in
@@ -420,18 +420,18 @@ BaseType_t xQueueGenericReset( QueueHandle_t xQueue,
             /* coverity[misra_c_2012_rule_11_3_violation] */
             pxNewQueue = ( Queue_t * ) pxStaticQueue;
 
-            #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+            #यदि ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 )
             {
                 /* Queues can be allocated either statically or dynamically, so
                  * note this queue was allocated statically in case the queue is
                  * later deleted. */
                 pxNewQueue->ucStaticallyAllocated = pdTRUE;
             }
-            #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+            #यदि_अन्तः /* configSUPPORT_DYNAMIC_ALLOCATION */
 
-            prvInitialiseNewQueue( uxQueueLength, uxItemSize, pucQueueStorage, ucQueueType, pxNewQueue );
+            prvInitialiseNewQueue( ux_Queue_दीर्घता, ux_Item_आकार, pucQueueStorage, ucQueueType, pxNewQueue );
         }
-        else
+        अन्यथा
         {
             configASSERT( pxNewQueue );
             mtCOVERAGE_TEST_MARKER();
@@ -439,34 +439,34 @@ BaseType_t xQueueGenericReset( QueueHandle_t xQueue,
 
         traceRETURN_xQueueGenericCreateStatic( pxNewQueue );
 
-        return pxNewQueue;
+        प्रत्यागम pxNewQueue;
     }
 
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
-    BaseType_t xQueueGenericGetStaticBuffers( QueueHandle_t xQueue,
+    आधारः_Type_t xQueueGenericGetStaticBuffers( QueueHandle_t xQueue,
                                               uint8_t ** ppucQueueStorage,
                                               StaticQueue_t ** ppxStaticQueue )
     {
-        BaseType_t xReturn;
-        Queue_t * const pxQueue = xQueue;
+        आधारः_Type_t xReturn;
+        Queue_t * ध्रुव pxQueue = xQueue;
 
         traceENTER_xQueueGenericGetStaticBuffers( xQueue, ppucQueueStorage, ppxStaticQueue );
 
         configASSERT( pxQueue );
         configASSERT( ppxStaticQueue );
 
-        #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+        #यदि ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 )
         {
             /* Check if the queue was statically allocated. */
-            if( pxQueue->ucStaticallyAllocated == ( uint8_t ) pdTRUE )
+            यदि( pxQueue->ucStaticallyAllocated == ( uint8_t ) pdTRUE )
             {
-                if( ppucQueueStorage != NULL )
+                यदि( ppucQueueStorage != रिक्त )
                 {
-                    *ppucQueueStorage = ( uint8_t * ) pxQueue->pcHead;
+                    *ppucQueueStorage = ( uint8_t * ) pxQueue->pc_शीर्ष;
                 }
 
                 /* MISRA Ref 11.3.1 [Misaligned access] */
@@ -475,85 +475,85 @@ BaseType_t xQueueGenericReset( QueueHandle_t xQueue,
                 *ppxStaticQueue = ( StaticQueue_t * ) pxQueue;
                 xReturn = pdTRUE;
             }
-            else
+            अन्यथा
             {
                 xReturn = pdFALSE;
             }
         }
-        #else /* configSUPPORT_DYNAMIC_ALLOCATION */
+        #अन्यथा /* configSUPPORT_DYNAMIC_ALLOCATION */
         {
             /* Queue must have been statically allocated. */
-            if( ppucQueueStorage != NULL )
+            यदि( ppucQueueStorage != रिक्त )
             {
-                *ppucQueueStorage = ( uint8_t * ) pxQueue->pcHead;
+                *ppucQueueStorage = ( uint8_t * ) pxQueue->pc_शीर्ष;
             }
 
             *ppxStaticQueue = ( StaticQueue_t * ) pxQueue;
             xReturn = pdTRUE;
         }
-        #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+        #यदि_अन्तः /* configSUPPORT_DYNAMIC_ALLOCATION */
 
         traceRETURN_xQueueGenericGetStaticBuffers( xReturn );
 
-        return xReturn;
+        प्रत्यागम xReturn;
     }
 
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 )
 
-    QueueHandle_t xQueueGenericCreate( const UBaseType_t uxQueueLength,
-                                       const UBaseType_t uxItemSize,
-                                       const uint8_t ucQueueType )
+    QueueHandle_t xQueueGenericCreate( ध्रुव UBaseType_t ux_Queue_दीर्घता,
+                                       ध्रुव UBaseType_t ux_Item_आकार,
+                                       ध्रुव uint8_t ucQueueType )
     {
-        Queue_t * pxNewQueue = NULL;
-        size_t xQueueSizeInBytes;
+        Queue_t * pxNewQueue = रिक्त;
+        size_t x_Queue_आकार_अन्तर्_अष्टकानि;
         uint8_t * pucQueueStorage;
 
-        traceENTER_xQueueGenericCreate( uxQueueLength, uxItemSize, ucQueueType );
+        traceENTER_xQueueGenericCreate( ux_Queue_दीर्घता, ux_Item_आकार, ucQueueType );
 
-        if( ( uxQueueLength > ( UBaseType_t ) 0 ) &&
+        यदि( ( ux_Queue_दीर्घता > ( UBaseType_t ) 0 ) &&
             /* Check for multiplication overflow. */
-            ( ( SIZE_MAX / uxQueueLength ) >= uxItemSize ) &&
+            ( ( SIZE_MAX / ux_Queue_दीर्घता ) >= ux_Item_आकार ) &&
             /* Check for addition overflow. */
-            ( ( UBaseType_t ) ( SIZE_MAX - sizeof( Queue_t ) ) >= ( uxQueueLength * uxItemSize ) ) )
+            ( ( UBaseType_t ) ( SIZE_MAX - परिमाण( Queue_t ) ) >= ( ux_Queue_दीर्घता * ux_Item_आकार ) ) )
         {
             /* Allocate enough space to hold the maximum number of items that
              * can be in the queue at any time.  It is valid for uxItemSize to be
              * zero in the case the queue is used as a semaphore. */
-            xQueueSizeInBytes = ( size_t ) ( ( size_t ) uxQueueLength * ( size_t ) uxItemSize );
+            x_Queue_आकार_अन्तर्_अष्टकानि = ( size_t ) ( ( size_t ) ux_Queue_दीर्घता * ( size_t ) ux_Item_आकार );
 
             /* MISRA Ref 11.5.1 [Malloc memory assignment] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
             /* coverity[misra_c_2012_rule_11_5_violation] */
-            pxNewQueue = ( Queue_t * ) pvPortMalloc( sizeof( Queue_t ) + xQueueSizeInBytes );
+            pxNewQueue = ( Queue_t * ) pv_पत्तनम्_Malloc( परिमाण( Queue_t ) + x_Queue_आकार_अन्तर्_अष्टकानि );
 
-            if( pxNewQueue != NULL )
+            यदि( pxNewQueue != रिक्त )
             {
                 /* Jump past the queue structure to find the location of the queue
                  * storage area. */
                 pucQueueStorage = ( uint8_t * ) pxNewQueue;
-                pucQueueStorage += sizeof( Queue_t );
+                pucQueueStorage += परिमाण( Queue_t );
 
-                #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+                #यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
                 {
                     /* Queues can be created either statically or dynamically, so
                      * note this task was created dynamically in case it is later
                      * deleted. */
                     pxNewQueue->ucStaticallyAllocated = pdFALSE;
                 }
-                #endif /* configSUPPORT_STATIC_ALLOCATION */
+                #यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION */
 
-                prvInitialiseNewQueue( uxQueueLength, uxItemSize, pucQueueStorage, ucQueueType, pxNewQueue );
+                prvInitialiseNewQueue( ux_Queue_दीर्घता, ux_Item_आकार, pucQueueStorage, ucQueueType, pxNewQueue );
             }
-            else
+            अन्यथा
             {
                 traceQUEUE_CREATE_FAILED( ucQueueType );
                 mtCOVERAGE_TEST_MARKER();
             }
         }
-        else
+        अन्यथा
         {
             configASSERT( pxNewQueue );
             mtCOVERAGE_TEST_MARKER();
@@ -561,139 +561,139 @@ BaseType_t xQueueGenericReset( QueueHandle_t xQueue,
 
         traceRETURN_xQueueGenericCreate( pxNewQueue );
 
-        return pxNewQueue;
+        प्रत्यागम pxNewQueue;
     }
 
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
-                                   const UBaseType_t uxItemSize,
+स्थिर शून्य prvInitialiseNewQueue( ध्रुव UBaseType_t ux_Queue_दीर्घता,
+                                   ध्रुव UBaseType_t ux_Item_आकार,
                                    uint8_t * pucQueueStorage,
-                                   const uint8_t ucQueueType,
+                                   ध्रुव uint8_t ucQueueType,
                                    Queue_t * pxNewQueue )
 {
     /* Remove compiler warnings about unused parameters should
      * configUSE_TRACE_FACILITY not be set to 1. */
-    ( void ) ucQueueType;
+    ( शून्य ) ucQueueType;
 
-    if( uxItemSize == ( UBaseType_t ) 0 )
+    यदि( ux_Item_आकार == ( UBaseType_t ) 0 )
     {
         /* No RAM was allocated for the queue storage area, but PC head cannot
          * be set to NULL because NULL is used as a key to say the queue is used as
          * a mutex.  Therefore just set pcHead to point to the queue as a benign
          * value that is known to be within the memory map. */
-        pxNewQueue->pcHead = ( int8_t * ) pxNewQueue;
+        pxNewQueue->pc_शीर्ष = ( int8_t * ) pxNewQueue;
     }
-    else
+    अन्यथा
     {
         /* Set the head to the start of the queue storage area. */
-        pxNewQueue->pcHead = ( int8_t * ) pucQueueStorage;
+        pxNewQueue->pc_शीर्ष = ( int8_t * ) pucQueueStorage;
     }
 
     /* Initialise the queue members as described where the queue type is
      * defined. */
-    pxNewQueue->uxLength = uxQueueLength;
-    pxNewQueue->uxItemSize = uxItemSize;
-    ( void ) xQueueGenericReset( pxNewQueue, pdTRUE );
+    pxNewQueue->ux_दीर्घता = ux_Queue_दीर्घता;
+    pxNewQueue->ux_Item_आकार = ux_Item_आकार;
+    ( शून्य ) xQueueGenericReset( pxNewQueue, pdTRUE );
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #यदि ( configUSE_TRACE_FACILITY == 1 )
     {
         pxNewQueue->ucQueueType = ucQueueType;
     }
-    #endif /* configUSE_TRACE_FACILITY */
+    #यदि_अन्तः /* configUSE_TRACE_FACILITY */
 
-    #if ( configUSE_QUEUE_SETS == 1 )
+    #यदि ( configUSE_QUEUE_SETS == 1 )
     {
-        pxNewQueue->pxQueueSetContainer = NULL;
+        pxNewQueue->px_Queue_समुच्चयः_Container = रिक्त;
     }
-    #endif /* configUSE_QUEUE_SETS */
+    #यदि_अन्तः /* configUSE_QUEUE_SETS */
 
     traceQUEUE_CREATE( pxNewQueue );
 }
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_MUTEXES == 1 )
+#यदि ( configUSE_MUTEXES == 1 )
 
-    static void prvInitialiseMutex( Queue_t * pxNewQueue )
+    स्थिर शून्य prvInitialiseMutex( Queue_t * pxNewQueue )
     {
-        if( pxNewQueue != NULL )
+        यदि( pxNewQueue != रिक्त )
         {
             /* The queue create function will set all the queue structure members
             * correctly for a generic queue, but this function is creating a
             * mutex.  Overwrite those members that need to be set differently -
             * in particular the information required for priority inheritance. */
-            pxNewQueue->u.xSemaphore.xMutexHolder = NULL;
+            pxNewQueue->u.xSemaphore.xMutexHolder = रिक्त;
             pxNewQueue->uxQueueType = queueQUEUE_IS_MUTEX;
 
             /* In case this is a recursive mutex. */
-            pxNewQueue->u.xSemaphore.uxRecursiveCallCount = 0;
+            pxNewQueue->u.xSemaphore.ux_Recursive_Call_गणनम् = 0;
 
             traceCREATE_MUTEX( pxNewQueue );
 
             /* Start with the semaphore in the expected state. */
-            ( void ) xQueueGenericSend( pxNewQueue, NULL, ( TickType_t ) 0U, queueSEND_TO_BACK );
+            ( शून्य ) xQueueGenericSend( pxNewQueue, रिक्त, ( TickType_t ) 0U, queue_SEND_गन्तव्यम्_पृष्ठभागः );
         }
-        else
+        अन्यथा
         {
             traceCREATE_MUTEX_FAILED();
         }
     }
 
-#endif /* configUSE_MUTEXES */
+#यदि_अन्तः /* configUSE_MUTEXES */
 /*-----------------------------------------------------------*/
 
-#if ( ( configUSE_MUTEXES == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+#यदि ( ( configUSE_MUTEXES == 1 ) && ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 ) )
 
-    QueueHandle_t xQueueCreateMutex( const uint8_t ucQueueType )
+    QueueHandle_t xQueueCreateMutex( ध्रुव uint8_t ucQueueType )
     {
         QueueHandle_t xNewQueue;
-        const UBaseType_t uxMutexLength = ( UBaseType_t ) 1, uxMutexSize = ( UBaseType_t ) 0;
+        ध्रुव UBaseType_t ux_Mutex_दीर्घता = ( UBaseType_t ) 1, ux_Mutex_आकार = ( UBaseType_t ) 0;
 
         traceENTER_xQueueCreateMutex( ucQueueType );
 
-        xNewQueue = xQueueGenericCreate( uxMutexLength, uxMutexSize, ucQueueType );
+        xNewQueue = xQueueGenericCreate( ux_Mutex_दीर्घता, ux_Mutex_आकार, ucQueueType );
         prvInitialiseMutex( ( Queue_t * ) xNewQueue );
 
         traceRETURN_xQueueCreateMutex( xNewQueue );
 
-        return xNewQueue;
+        प्रत्यागम xNewQueue;
     }
 
-#endif /* configUSE_MUTEXES */
+#यदि_अन्तः /* configUSE_MUTEXES */
 /*-----------------------------------------------------------*/
 
-#if ( ( configUSE_MUTEXES == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
+#यदि ( ( configUSE_MUTEXES == 1 ) && ( config_SUPPORT_STATIC_आवण्टनम् == 1 ) )
 
-    QueueHandle_t xQueueCreateMutexStatic( const uint8_t ucQueueType,
+    QueueHandle_t xQueueCreateMutexStatic( ध्रुव uint8_t ucQueueType,
                                            StaticQueue_t * pxStaticQueue )
     {
         QueueHandle_t xNewQueue;
-        const UBaseType_t uxMutexLength = ( UBaseType_t ) 1, uxMutexSize = ( UBaseType_t ) 0;
+        ध्रुव UBaseType_t ux_Mutex_दीर्घता = ( UBaseType_t ) 1, ux_Mutex_आकार = ( UBaseType_t ) 0;
 
         traceENTER_xQueueCreateMutexStatic( ucQueueType, pxStaticQueue );
 
         /* Prevent compiler warnings about unused parameters if
          * configUSE_TRACE_FACILITY does not equal 1. */
-        ( void ) ucQueueType;
+        ( शून्य ) ucQueueType;
 
-        xNewQueue = xQueueGenericCreateStatic( uxMutexLength, uxMutexSize, NULL, pxStaticQueue, ucQueueType );
+        xNewQueue = xQueueGenericCreateStatic( ux_Mutex_दीर्घता, ux_Mutex_आकार, रिक्त, pxStaticQueue, ucQueueType );
         prvInitialiseMutex( ( Queue_t * ) xNewQueue );
 
         traceRETURN_xQueueCreateMutexStatic( xNewQueue );
 
-        return xNewQueue;
+        प्रत्यागम xNewQueue;
     }
 
-#endif /* configUSE_MUTEXES */
+#यदि_अन्तः /* configUSE_MUTEXES */
 /*-----------------------------------------------------------*/
 
-#if ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
+#यदि ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
 
     TaskHandle_t xQueueGetMutexHolder( QueueHandle_t xSemaphore )
     {
         TaskHandle_t pxReturn;
-        Queue_t * const pxSemaphore = ( Queue_t * ) xSemaphore;
+        Queue_t * ध्रुव pxSemaphore = ( Queue_t * ) xSemaphore;
 
         traceENTER_xQueueGetMutexHolder( xSemaphore );
 
@@ -706,26 +706,26 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
          * following critical section exiting and the function returning. */
         taskENTER_CRITICAL();
         {
-            if( pxSemaphore->uxQueueType == queueQUEUE_IS_MUTEX )
+            यदि( pxSemaphore->uxQueueType == queueQUEUE_IS_MUTEX )
             {
                 pxReturn = pxSemaphore->u.xSemaphore.xMutexHolder;
             }
-            else
+            अन्यथा
             {
-                pxReturn = NULL;
+                pxReturn = रिक्त;
             }
         }
         taskEXIT_CRITICAL();
 
         traceRETURN_xQueueGetMutexHolder( pxReturn );
 
-        return pxReturn;
+        प्रत्यागम pxReturn;
     }
 
-#endif /* if ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) ) */
+#यदि_अन्तः /* if ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-#if ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
+#यदि ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
 
     TaskHandle_t xQueueGetMutexHolderFromISR( QueueHandle_t xSemaphore )
     {
@@ -738,29 +738,29 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
         /* Mutexes cannot be used in interrupt service routines, so the mutex
          * holder should not change in an ISR, and therefore a critical section is
          * not required here. */
-        if( ( ( Queue_t * ) xSemaphore )->uxQueueType == queueQUEUE_IS_MUTEX )
+        यदि( ( ( Queue_t * ) xSemaphore )->uxQueueType == queueQUEUE_IS_MUTEX )
         {
             pxReturn = ( ( Queue_t * ) xSemaphore )->u.xSemaphore.xMutexHolder;
         }
-        else
+        अन्यथा
         {
-            pxReturn = NULL;
+            pxReturn = रिक्त;
         }
 
         traceRETURN_xQueueGetMutexHolderFromISR( pxReturn );
 
-        return pxReturn;
+        प्रत्यागम pxReturn;
     }
 
-#endif /* if ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) ) */
+#यदि_अन्तः /* if ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_RECURSIVE_MUTEXES == 1 )
+#यदि ( configUSE_RECURSIVE_MUTEXES == 1 )
 
-    BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex )
+    आधारः_Type_t xQueueGiveMutexRecursive( QueueHandle_t xMutex )
     {
-        BaseType_t xReturn;
-        Queue_t * const pxMutex = ( Queue_t * ) xMutex;
+        आधारः_Type_t xReturn;
+        Queue_t * ध्रुव pxMutex = ( Queue_t * ) xMutex;
 
         traceENTER_xQueueGiveMutexRecursive( xMutex );
 
@@ -772,7 +772,7 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
          * this is the only condition we are interested in it does not matter if
          * pxMutexHolder is accessed simultaneously by another task.  Therefore no
          * mutual exclusion is required to test the pxMutexHolder variable. */
-        if( pxMutex->u.xSemaphore.xMutexHolder == xTaskGetCurrentTaskHandle() )
+        यदि( pxMutex->u.xSemaphore.xMutexHolder == xTaskGetCurrentTaskHandle() )
         {
             traceGIVE_MUTEX_RECURSIVE( pxMutex );
 
@@ -781,23 +781,23 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
              * uxRecursiveCallCount is only modified by the mutex holder, and as
              * there can only be one, no mutual exclusion is required to modify the
              * uxRecursiveCallCount member. */
-            ( pxMutex->u.xSemaphore.uxRecursiveCallCount )--;
+            ( pxMutex->u.xSemaphore.ux_Recursive_Call_गणनम् )--;
 
             /* Has the recursive call count unwound to 0? */
-            if( pxMutex->u.xSemaphore.uxRecursiveCallCount == ( UBaseType_t ) 0 )
+            यदि( pxMutex->u.xSemaphore.ux_Recursive_Call_गणनम् == ( UBaseType_t ) 0 )
             {
                 /* Return the mutex.  This will automatically unblock any other
                  * task that might be waiting to access the mutex. */
-                ( void ) xQueueGenericSend( pxMutex, NULL, queueMUTEX_GIVE_BLOCK_TIME, queueSEND_TO_BACK );
+                ( शून्य ) xQueueGenericSend( pxMutex, रिक्त, queue_MUTEX_GIVE_खण्डम्_TIME, queue_SEND_गन्तव्यम्_पृष्ठभागः );
             }
-            else
+            अन्यथा
             {
                 mtCOVERAGE_TEST_MARKER();
             }
 
             xReturn = pdPASS;
         }
-        else
+        अन्यथा
         {
             /* The mutex cannot be given because the calling task is not the
              * holder. */
@@ -808,21 +808,21 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
 
         traceRETURN_xQueueGiveMutexRecursive( xReturn );
 
-        return xReturn;
+        प्रत्यागम xReturn;
     }
 
-#endif /* configUSE_RECURSIVE_MUTEXES */
+#यदि_अन्तः /* configUSE_RECURSIVE_MUTEXES */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_RECURSIVE_MUTEXES == 1 )
+#यदि ( configUSE_RECURSIVE_MUTEXES == 1 )
 
-    BaseType_t xQueueTakeMutexRecursive( QueueHandle_t xMutex,
-                                         TickType_t xTicksToWait )
+    आधारः_Type_t xQueueTakeMutexRecursive( QueueHandle_t xMutex,
+                                         TickType_t x_Ticks_गन्तव्यम्_Wait )
     {
-        BaseType_t xReturn;
-        Queue_t * const pxMutex = ( Queue_t * ) xMutex;
+        आधारः_Type_t xReturn;
+        Queue_t * ध्रुव pxMutex = ( Queue_t * ) xMutex;
 
-        traceENTER_xQueueTakeMutexRecursive( xMutex, xTicksToWait );
+        traceENTER_xQueueTakeMutexRecursive( xMutex, x_Ticks_गन्तव्यम्_Wait );
 
         configASSERT( pxMutex );
 
@@ -831,23 +831,23 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
 
         traceTAKE_MUTEX_RECURSIVE( pxMutex );
 
-        if( pxMutex->u.xSemaphore.xMutexHolder == xTaskGetCurrentTaskHandle() )
+        यदि( pxMutex->u.xSemaphore.xMutexHolder == xTaskGetCurrentTaskHandle() )
         {
-            ( pxMutex->u.xSemaphore.uxRecursiveCallCount )++;
+            ( pxMutex->u.xSemaphore.ux_Recursive_Call_गणनम् )++;
             xReturn = pdPASS;
         }
-        else
+        अन्यथा
         {
-            xReturn = xQueueSemaphoreTake( pxMutex, xTicksToWait );
+            xReturn = xQueueSemaphoreTake( pxMutex, x_Ticks_गन्तव्यम्_Wait );
 
             /* pdPASS will only be returned if the mutex was successfully
              * obtained.  The calling task may have entered the Blocked state
              * before reaching here. */
-            if( xReturn != pdFAIL )
+            यदि( xReturn != pdFAIL )
             {
-                ( pxMutex->u.xSemaphore.uxRecursiveCallCount )++;
+                ( pxMutex->u.xSemaphore.ux_Recursive_Call_गणनम् )++;
             }
-            else
+            अन्यथा
             {
                 traceTAKE_MUTEX_RECURSIVE_FAILED( pxMutex );
             }
@@ -855,39 +855,39 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
 
         traceRETURN_xQueueTakeMutexRecursive( xReturn );
 
-        return xReturn;
+        प्रत्यागम xReturn;
     }
 
-#endif /* configUSE_RECURSIVE_MUTEXES */
+#यदि_अन्तः /* configUSE_RECURSIVE_MUTEXES */
 /*-----------------------------------------------------------*/
 
-#if ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
+#यदि ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( config_SUPPORT_STATIC_आवण्टनम् == 1 ) )
 
-    QueueHandle_t xQueueCreateCountingSemaphoreStatic( const UBaseType_t uxMaxCount,
-                                                       const UBaseType_t uxInitialCount,
+    QueueHandle_t xQueueCreateCountingSemaphoreStatic( ध्रुव UBaseType_t ux_Max_गणनम्,
+                                                       ध्रुव UBaseType_t ux_Initial_गणनम्,
                                                        StaticQueue_t * pxStaticQueue )
     {
-        QueueHandle_t xHandle = NULL;
+        QueueHandle_t xHandle = रिक्त;
 
-        traceENTER_xQueueCreateCountingSemaphoreStatic( uxMaxCount, uxInitialCount, pxStaticQueue );
+        traceENTER_xQueueCreateCountingSemaphoreStatic( ux_Max_गणनम्, ux_Initial_गणनम्, pxStaticQueue );
 
-        if( ( uxMaxCount != 0U ) &&
-            ( uxInitialCount <= uxMaxCount ) )
+        यदि( ( ux_Max_गणनम् != 0U ) &&
+            ( ux_Initial_गणनम् <= ux_Max_गणनम् ) )
         {
-            xHandle = xQueueGenericCreateStatic( uxMaxCount, queueSEMAPHORE_QUEUE_ITEM_LENGTH, NULL, pxStaticQueue, queueQUEUE_TYPE_COUNTING_SEMAPHORE );
+            xHandle = xQueueGenericCreateStatic( ux_Max_गणनम्, queue_SEMAPHORE_QUEUE_ITEM_दीर्घता, रिक्त, pxStaticQueue, queueQUEUE_TYPE_COUNTING_SEMAPHORE );
 
-            if( xHandle != NULL )
+            यदि( xHandle != रिक्त )
             {
-                ( ( Queue_t * ) xHandle )->uxMessagesWaiting = uxInitialCount;
+                ( ( Queue_t * ) xHandle )->ux_Messages_प्रतीक्षा = ux_Initial_गणनम्;
 
                 traceCREATE_COUNTING_SEMAPHORE();
             }
-            else
+            अन्यथा
             {
                 traceCREATE_COUNTING_SEMAPHORE_FAILED();
             }
         }
-        else
+        अन्यथा
         {
             configASSERT( xHandle );
             mtCOVERAGE_TEST_MARKER();
@@ -895,38 +895,38 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
 
         traceRETURN_xQueueCreateCountingSemaphoreStatic( xHandle );
 
-        return xHandle;
+        प्रत्यागम xHandle;
     }
 
-#endif /* ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) ) */
+#यदि_अन्तः /* ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-#if ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+#यदि ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 ) )
 
-    QueueHandle_t xQueueCreateCountingSemaphore( const UBaseType_t uxMaxCount,
-                                                 const UBaseType_t uxInitialCount )
+    QueueHandle_t xQueueCreateCountingSemaphore( ध्रुव UBaseType_t ux_Max_गणनम्,
+                                                 ध्रुव UBaseType_t ux_Initial_गणनम् )
     {
-        QueueHandle_t xHandle = NULL;
+        QueueHandle_t xHandle = रिक्त;
 
-        traceENTER_xQueueCreateCountingSemaphore( uxMaxCount, uxInitialCount );
+        traceENTER_xQueueCreateCountingSemaphore( ux_Max_गणनम्, ux_Initial_गणनम् );
 
-        if( ( uxMaxCount != 0U ) &&
-            ( uxInitialCount <= uxMaxCount ) )
+        यदि( ( ux_Max_गणनम् != 0U ) &&
+            ( ux_Initial_गणनम् <= ux_Max_गणनम् ) )
         {
-            xHandle = xQueueGenericCreate( uxMaxCount, queueSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_COUNTING_SEMAPHORE );
+            xHandle = xQueueGenericCreate( ux_Max_गणनम्, queue_SEMAPHORE_QUEUE_ITEM_दीर्घता, queueQUEUE_TYPE_COUNTING_SEMAPHORE );
 
-            if( xHandle != NULL )
+            यदि( xHandle != रिक्त )
             {
-                ( ( Queue_t * ) xHandle )->uxMessagesWaiting = uxInitialCount;
+                ( ( Queue_t * ) xHandle )->ux_Messages_प्रतीक्षा = ux_Initial_गणनम्;
 
                 traceCREATE_COUNTING_SEMAPHORE();
             }
-            else
+            अन्यथा
             {
                 traceCREATE_COUNTING_SEMAPHORE_FAILED();
             }
         }
-        else
+        अन्यथा
         {
             configASSERT( xHandle );
             mtCOVERAGE_TEST_MARKER();
@@ -934,33 +934,33 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
 
         traceRETURN_xQueueCreateCountingSemaphore( xHandle );
 
-        return xHandle;
+        प्रत्यागम xHandle;
     }
 
-#endif /* ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) ) */
+#यदि_अन्तः /* ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
-                              const void * const pvItemToQueue,
-                              TickType_t xTicksToWait,
-                              const BaseType_t xCopyPosition )
+आधारः_Type_t xQueueGenericSend( QueueHandle_t xQueue,
+                              ध्रुव शून्य * ध्रुव pv_Item_गन्तव्यम्_Queue,
+                              TickType_t x_Ticks_गन्तव्यम्_Wait,
+                              ध्रुव आधारः_Type_t xCopyPosition )
 {
-    BaseType_t xEntryTimeSet = pdFALSE, xYieldRequired;
-    TimeOut_t xTimeOut;
-    Queue_t * const pxQueue = xQueue;
+    आधारः_Type_t x_प्रविष्टिः_Time_समुच्चयः = pdFALSE, xYieldRequired;
+    Time_बहिर्गमनम्_t x_Time_बहिर्गमनम्;
+    Queue_t * ध्रुव pxQueue = xQueue;
 
-    traceENTER_xQueueGenericSend( xQueue, pvItemToQueue, xTicksToWait, xCopyPosition );
+    traceENTER_xQueueGenericSend( xQueue, pv_Item_गन्तव्यम्_Queue, x_Ticks_गन्तव्यम्_Wait, xCopyPosition );
 
     configASSERT( pxQueue );
-    configASSERT( !( ( pvItemToQueue == NULL ) && ( pxQueue->uxItemSize != ( UBaseType_t ) 0U ) ) );
-    configASSERT( !( ( xCopyPosition == queueOVERWRITE ) && ( pxQueue->uxLength != 1 ) ) );
-    #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+    configASSERT( !( ( pv_Item_गन्तव्यम्_Queue == रिक्त ) && ( pxQueue->ux_Item_आकार != ( UBaseType_t ) 0U ) ) );
+    configASSERT( !( ( xCopyPosition == queueOVERWRITE ) && ( pxQueue->ux_दीर्घता != 1 ) ) );
+    #यदि ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
     {
-        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( x_Ticks_गन्तव्यम्_Wait != 0 ) ) );
     }
-    #endif
+    #यदि_अन्तः
 
-    for( ; ; )
+    प्रति( ; ; )
     {
         taskENTER_CRITICAL();
         {
@@ -968,44 +968,44 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
              * highest priority task wanting to access the queue.  If the head item
              * in the queue is to be overwritten then it does not matter if the
              * queue is full. */
-            if( ( pxQueue->uxMessagesWaiting < pxQueue->uxLength ) || ( xCopyPosition == queueOVERWRITE ) )
+            यदि( ( pxQueue->ux_Messages_प्रतीक्षा < pxQueue->ux_दीर्घता ) || ( xCopyPosition == queueOVERWRITE ) )
             {
                 traceQUEUE_SEND( pxQueue );
 
-                #if ( configUSE_QUEUE_SETS == 1 )
+                #यदि ( configUSE_QUEUE_SETS == 1 )
                 {
-                    const UBaseType_t uxPreviousMessagesWaiting = pxQueue->uxMessagesWaiting;
+                    ध्रुव UBaseType_t ux_Previous_Messages_प्रतीक्षा = pxQueue->ux_Messages_प्रतीक्षा;
 
-                    xYieldRequired = prvCopyDataToQueue( pxQueue, pvItemToQueue, xCopyPosition );
+                    xYieldRequired = prv_Copy_दत्त_गन्तव्यम्_Queue( pxQueue, pv_Item_गन्तव्यम्_Queue, xCopyPosition );
 
-                    if( pxQueue->pxQueueSetContainer != NULL )
+                    यदि( pxQueue->px_Queue_समुच्चयः_Container != रिक्त )
                     {
-                        if( ( xCopyPosition == queueOVERWRITE ) && ( uxPreviousMessagesWaiting != ( UBaseType_t ) 0 ) )
+                        यदि( ( xCopyPosition == queueOVERWRITE ) && ( ux_Previous_Messages_प्रतीक्षा != ( UBaseType_t ) 0 ) )
                         {
                             /* Do not notify the queue set as an existing item
                              * was overwritten in the queue so the number of items
                              * in the queue has not changed. */
                             mtCOVERAGE_TEST_MARKER();
                         }
-                        else if( prvNotifyQueueSetContainer( pxQueue ) != pdFALSE )
+                        अन्यथा यदि( prv_Notify_Queue_समुच्चयः_Container( pxQueue ) != pdFALSE )
                         {
                             /* The queue is a member of a queue set, and posting
                              * to the queue set caused a higher priority task to
                              * unblock. A context switch is required. */
                             queueYIELD_IF_USING_PREEMPTION();
                         }
-                        else
+                        अन्यथा
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else
+                    अन्यथा
                     {
                         /* If there was a task waiting for data to arrive on the
                          * queue then unblock it now. */
-                        if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                        यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) == pdFALSE )
                         {
-                            if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                            यदि( xTaskRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) != pdFALSE )
                             {
                                 /* The unblocked task has a priority higher than
                                  * our own so yield immediately.  Yes it is ok to
@@ -1013,12 +1013,12 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
                                  * kernel takes care of that. */
                                 queueYIELD_IF_USING_PREEMPTION();
                             }
-                            else
+                            अन्यथा
                             {
                                 mtCOVERAGE_TEST_MARKER();
                             }
                         }
-                        else if( xYieldRequired != pdFALSE )
+                        अन्यथा यदि( xYieldRequired != pdFALSE )
                         {
                             /* This path is a special case that will only get
                              * executed if the task was holding multiple mutexes
@@ -1026,21 +1026,21 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
                              * different to that in which they were taken. */
                             queueYIELD_IF_USING_PREEMPTION();
                         }
-                        else
+                        अन्यथा
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
                 }
-                #else /* configUSE_QUEUE_SETS */
+                #अन्यथा /* configUSE_QUEUE_SETS */
                 {
-                    xYieldRequired = prvCopyDataToQueue( pxQueue, pvItemToQueue, xCopyPosition );
+                    xYieldRequired = prv_Copy_दत्त_गन्तव्यम्_Queue( pxQueue, pv_Item_गन्तव्यम्_Queue, xCopyPosition );
 
                     /* If there was a task waiting for data to arrive on the
                      * queue then unblock it now. */
-                    if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                    यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) == pdFALSE )
                     {
-                        if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                        यदि( xTaskRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) != pdFALSE )
                         {
                             /* The unblocked task has a priority higher than
                              * our own so yield immediately.  Yes it is ok to do
@@ -1048,12 +1048,12 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
                              * takes care of that. */
                             queueYIELD_IF_USING_PREEMPTION();
                         }
-                        else
+                        अन्यथा
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else if( xYieldRequired != pdFALSE )
+                    अन्यथा यदि( xYieldRequired != pdFALSE )
                     {
                         /* This path is a special case that will only get
                          * executed if the task was holding multiple mutexes and
@@ -1061,22 +1061,22 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
                          * different to that in which they were taken. */
                         queueYIELD_IF_USING_PREEMPTION();
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                #endif /* configUSE_QUEUE_SETS */
+                #यदि_अन्तः /* configUSE_QUEUE_SETS */
 
                 taskEXIT_CRITICAL();
 
                 traceRETURN_xQueueGenericSend( pdPASS );
 
-                return pdPASS;
+                प्रत्यागम pdPASS;
             }
-            else
+            अन्यथा
             {
-                if( xTicksToWait == ( TickType_t ) 0 )
+                यदि( x_Ticks_गन्तव्यम्_Wait == ( TickType_t ) 0 )
                 {
                     /* The queue was full and no block time is specified (or
                      * the block time has expired) so leave now. */
@@ -1085,18 +1085,18 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
                     /* Return to the original privilege level before exiting
                      * the function. */
                     traceQUEUE_SEND_FAILED( pxQueue );
-                    traceRETURN_xQueueGenericSend( errQUEUE_FULL );
+                    traceRETURN_xQueueGenericSend( err_QUEUE_पूर्णम् );
 
-                    return errQUEUE_FULL;
+                    प्रत्यागम err_QUEUE_पूर्णम्;
                 }
-                else if( xEntryTimeSet == pdFALSE )
+                अन्यथा यदि( x_प्रविष्टिः_Time_समुच्चयः == pdFALSE )
                 {
                     /* The queue was full and a block time was specified so
                      * configure the timeout structure. */
-                    vTaskInternalSetTimeOutState( &xTimeOut );
-                    xEntryTimeSet = pdTRUE;
+                    v_Task_आन्तरिकम्_समुच्चयः_Time_बहिर्गमनम्_State( &x_Time_बहिर्गमनम् );
+                    x_प्रविष्टिः_Time_समुच्चयः = pdTRUE;
                 }
-                else
+                अन्यथा
                 {
                     /* Entry time was already set. */
                     mtCOVERAGE_TEST_MARKER();
@@ -1109,15 +1109,15 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
          * now the critical section has been exited. */
 
         vTaskSuspendAll();
-        prvLockQueue( pxQueue );
+        prv_तालकम्_Queue( pxQueue );
 
         /* Update the timeout state to see if it has expired yet. */
-        if( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE )
+        यदि( x_Task_Check_For_Time_बहिर्गमनम्( &x_Time_बहिर्गमनम्, &x_Ticks_गन्तव्यम्_Wait ) == pdFALSE )
         {
-            if( prvIsQueueFull( pxQueue ) != pdFALSE )
+            यदि( prv_Is_Queue_पूर्णम्( pxQueue ) != pdFALSE )
             {
                 traceBLOCKING_ON_QUEUE_SEND( pxQueue );
-                vTaskPlaceOnEventList( &( pxQueue->xTasksWaitingToSend ), xTicksToWait );
+                vTaskPlaceOnEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ), x_Ticks_गन्तव्यम्_Wait );
 
                 /* Unlocking the queue means queue events can effect the
                  * event list. It is possible that interrupts occurring now
@@ -1131,47 +1131,47 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
                  * task is already in the ready list before it yields - in which
                  * case the yield will not cause a context switch unless there
                  * is also a higher priority task in the pending ready list. */
-                if( xTaskResumeAll() == pdFALSE )
+                यदि( xTaskResumeAll() == pdFALSE )
                 {
                     taskYIELD_WITHIN_API();
                 }
             }
-            else
+            अन्यथा
             {
                 /* Try again. */
                 prvUnlockQueue( pxQueue );
-                ( void ) xTaskResumeAll();
+                ( शून्य ) xTaskResumeAll();
             }
         }
-        else
+        अन्यथा
         {
             /* The timeout has expired. */
             prvUnlockQueue( pxQueue );
-            ( void ) xTaskResumeAll();
+            ( शून्य ) xTaskResumeAll();
 
             traceQUEUE_SEND_FAILED( pxQueue );
-            traceRETURN_xQueueGenericSend( errQUEUE_FULL );
+            traceRETURN_xQueueGenericSend( err_QUEUE_पूर्णम् );
 
-            return errQUEUE_FULL;
+            प्रत्यागम err_QUEUE_पूर्णम्;
         }
     }
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueGenericSendFromISR( QueueHandle_t xQueue,
-                                     const void * const pvItemToQueue,
-                                     BaseType_t * const pxHigherPriorityTaskWoken,
-                                     const BaseType_t xCopyPosition )
+आधारः_Type_t xQueueGenericSendFromISR( QueueHandle_t xQueue,
+                                     ध्रुव शून्य * ध्रुव pv_Item_गन्तव्यम्_Queue,
+                                     आधारः_Type_t * ध्रुव px_Higher_प्राथमिकता_Task_Woken,
+                                     ध्रुव आधारः_Type_t xCopyPosition )
 {
-    BaseType_t xReturn;
-    UBaseType_t uxSavedInterruptStatus;
-    Queue_t * const pxQueue = xQueue;
+    आधारः_Type_t xReturn;
+    UBaseType_t ux_Saved_व्यवधानम्_स्थितिः;
+    Queue_t * ध्रुव pxQueue = xQueue;
 
-    traceENTER_xQueueGenericSendFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken, xCopyPosition );
+    traceENTER_xQueueGenericSendFromISR( xQueue, pv_Item_गन्तव्यम्_Queue, px_Higher_प्राथमिकता_Task_Woken, xCopyPosition );
 
     configASSERT( pxQueue );
-    configASSERT( !( ( pvItemToQueue == NULL ) && ( pxQueue->uxItemSize != ( UBaseType_t ) 0U ) ) );
-    configASSERT( !( ( xCopyPosition == queueOVERWRITE ) && ( pxQueue->uxLength != 1 ) ) );
+    configASSERT( !( ( pv_Item_गन्तव्यम्_Queue == रिक्त ) && ( pxQueue->ux_Item_आकार != ( UBaseType_t ) 0U ) ) );
+    configASSERT( !( ( xCopyPosition == queueOVERWRITE ) && ( pxQueue->ux_दीर्घता != 1 ) ) );
 
     /* RTOS ports that support interrupt nesting have the concept of a maximum
      * system call (or maximum API call) interrupt priority.  Interrupts that are
@@ -1187,7 +1187,7 @@ BaseType_t xQueueGenericSendFromISR( QueueHandle_t xQueue,
      * safe API to ensure interrupt entry is as fast and as simple as possible.
      * More information (albeit Cortex-M specific) is provided on the following
      * link: https://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html */
-    portASSERT_IF_INTERRUPT_PRIORITY_INVALID();
+    पत्तनम्_ASSERT_IF_व्यवधानम्_प्राथमिकता_INVALID();
 
     /* Similar to xQueueGenericSend, except without blocking if there is no room
      * in the queue.  Also don't directly wake a task that was blocked on a queue
@@ -1197,12 +1197,12 @@ BaseType_t xQueueGenericSendFromISR( QueueHandle_t xQueue,
     /* MISRA Ref 4.7.1 [Return value shall be checked] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
     /* coverity[misra_c_2012_directive_4_7_violation] */
-    uxSavedInterruptStatus = ( UBaseType_t ) taskENTER_CRITICAL_FROM_ISR();
+    ux_Saved_व्यवधानम्_स्थितिः = ( UBaseType_t ) taskENTER_CRITICAL_FROM_ISR();
     {
-        if( ( pxQueue->uxMessagesWaiting < pxQueue->uxLength ) || ( xCopyPosition == queueOVERWRITE ) )
+        यदि( ( pxQueue->ux_Messages_प्रतीक्षा < pxQueue->ux_दीर्घता ) || ( xCopyPosition == queueOVERWRITE ) )
         {
-            const int8_t cTxLock = pxQueue->cTxLock;
-            const UBaseType_t uxPreviousMessagesWaiting = pxQueue->uxMessagesWaiting;
+            ध्रुव int8_t c_Tx_तालकम् = pxQueue->c_Tx_तालकम्;
+            ध्रुव UBaseType_t ux_Previous_Messages_प्रतीक्षा = pxQueue->ux_Messages_प्रतीक्षा;
 
             traceQUEUE_SEND_FROM_ISR( pxQueue );
 
@@ -1211,133 +1211,133 @@ BaseType_t xQueueGenericSendFromISR( QueueHandle_t xQueue,
              *  in a task disinheriting a priority and prvCopyDataToQueue() can be
              *  called here even though the disinherit function does not check if
              *  the scheduler is suspended before accessing the ready lists. */
-            ( void ) prvCopyDataToQueue( pxQueue, pvItemToQueue, xCopyPosition );
+            ( शून्य ) prv_Copy_दत्त_गन्तव्यम्_Queue( pxQueue, pv_Item_गन्तव्यम्_Queue, xCopyPosition );
 
             /* The event list is not altered if the queue is locked.  This will
              * be done when the queue is unlocked later. */
-            if( cTxLock == queueUNLOCKED )
+            यदि( c_Tx_तालकम् == queueUNLOCKED )
             {
-                #if ( configUSE_QUEUE_SETS == 1 )
+                #यदि ( configUSE_QUEUE_SETS == 1 )
                 {
-                    if( pxQueue->pxQueueSetContainer != NULL )
+                    यदि( pxQueue->px_Queue_समुच्चयः_Container != रिक्त )
                     {
-                        if( ( xCopyPosition == queueOVERWRITE ) && ( uxPreviousMessagesWaiting != ( UBaseType_t ) 0 ) )
+                        यदि( ( xCopyPosition == queueOVERWRITE ) && ( ux_Previous_Messages_प्रतीक्षा != ( UBaseType_t ) 0 ) )
                         {
                             /* Do not notify the queue set as an existing item
                              * was overwritten in the queue so the number of items
                              * in the queue has not changed. */
                             mtCOVERAGE_TEST_MARKER();
                         }
-                        else if( prvNotifyQueueSetContainer( pxQueue ) != pdFALSE )
+                        अन्यथा यदि( prv_Notify_Queue_समुच्चयः_Container( pxQueue ) != pdFALSE )
                         {
                             /* The queue is a member of a queue set, and posting
                              * to the queue set caused a higher priority task to
                              * unblock.  A context switch is required. */
-                            if( pxHigherPriorityTaskWoken != NULL )
+                            यदि( px_Higher_प्राथमिकता_Task_Woken != रिक्त )
                             {
-                                *pxHigherPriorityTaskWoken = pdTRUE;
+                                *px_Higher_प्राथमिकता_Task_Woken = pdTRUE;
                             }
-                            else
+                            अन्यथा
                             {
                                 mtCOVERAGE_TEST_MARKER();
                             }
                         }
-                        else
+                        अन्यथा
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else
+                    अन्यथा
                     {
-                        if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                        यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) == pdFALSE )
                         {
-                            if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                            यदि( xTaskRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) != pdFALSE )
                             {
                                 /* The task waiting has a higher priority so
                                  *  record that a context switch is required. */
-                                if( pxHigherPriorityTaskWoken != NULL )
+                                यदि( px_Higher_प्राथमिकता_Task_Woken != रिक्त )
                                 {
-                                    *pxHigherPriorityTaskWoken = pdTRUE;
+                                    *px_Higher_प्राथमिकता_Task_Woken = pdTRUE;
                                 }
-                                else
+                                अन्यथा
                                 {
                                     mtCOVERAGE_TEST_MARKER();
                                 }
                             }
-                            else
+                            अन्यथा
                             {
                                 mtCOVERAGE_TEST_MARKER();
                             }
                         }
-                        else
+                        अन्यथा
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
                 }
-                #else /* configUSE_QUEUE_SETS */
+                #अन्यथा /* configUSE_QUEUE_SETS */
                 {
-                    if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                    यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) == pdFALSE )
                     {
-                        if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                        यदि( xTaskRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) != pdFALSE )
                         {
                             /* The task waiting has a higher priority so record that a
                              * context switch is required. */
-                            if( pxHigherPriorityTaskWoken != NULL )
+                            यदि( px_Higher_प्राथमिकता_Task_Woken != रिक्त )
                             {
-                                *pxHigherPriorityTaskWoken = pdTRUE;
+                                *px_Higher_प्राथमिकता_Task_Woken = pdTRUE;
                             }
-                            else
+                            अन्यथा
                             {
                                 mtCOVERAGE_TEST_MARKER();
                             }
                         }
-                        else
+                        अन्यथा
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
 
                     /* Not used in this path. */
-                    ( void ) uxPreviousMessagesWaiting;
+                    ( शून्य ) ux_Previous_Messages_प्रतीक्षा;
                 }
-                #endif /* configUSE_QUEUE_SETS */
+                #यदि_अन्तः /* configUSE_QUEUE_SETS */
             }
-            else
+            अन्यथा
             {
                 /* Increment the lock count so the task that unlocks the queue
                  * knows that data was posted while it was locked. */
-                prvIncrementQueueTxLock( pxQueue, cTxLock );
+                prv_Increment_Queue_Tx_तालकम्( pxQueue, c_Tx_तालकम् );
             }
 
             xReturn = pdPASS;
         }
-        else
+        अन्यथा
         {
             traceQUEUE_SEND_FROM_ISR_FAILED( pxQueue );
-            xReturn = errQUEUE_FULL;
+            xReturn = err_QUEUE_पूर्णम्;
         }
     }
-    taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );
+    taskEXIT_CRITICAL_FROM_ISR( ux_Saved_व्यवधानम्_स्थितिः );
 
     traceRETURN_xQueueGenericSendFromISR( xReturn );
 
-    return xReturn;
+    प्रत्यागम xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue,
-                              BaseType_t * const pxHigherPriorityTaskWoken )
+आधारः_Type_t xQueueGiveFromISR( QueueHandle_t xQueue,
+                              आधारः_Type_t * ध्रुव px_Higher_प्राथमिकता_Task_Woken )
 {
-    BaseType_t xReturn;
-    UBaseType_t uxSavedInterruptStatus;
-    Queue_t * const pxQueue = xQueue;
+    आधारः_Type_t xReturn;
+    UBaseType_t ux_Saved_व्यवधानम्_स्थितिः;
+    Queue_t * ध्रुव pxQueue = xQueue;
 
-    traceENTER_xQueueGiveFromISR( xQueue, pxHigherPriorityTaskWoken );
+    traceENTER_xQueueGiveFromISR( xQueue, px_Higher_प्राथमिकता_Task_Woken );
 
     /* Similar to xQueueGenericSendFromISR() but used with semaphores where the
      * item size is 0.  Don't directly wake a task that was blocked on a queue
@@ -1349,12 +1349,12 @@ BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue,
 
     /* xQueueGenericSendFromISR() should be used instead of xQueueGiveFromISR()
      * if the item size is not 0. */
-    configASSERT( pxQueue->uxItemSize == 0 );
+    configASSERT( pxQueue->ux_Item_आकार == 0 );
 
     /* Normally a mutex would not be given from an interrupt, especially if
      * there is a mutex holder, as priority inheritance makes no sense for an
      * interrupts, only tasks. */
-    configASSERT( !( ( pxQueue->uxQueueType == queueQUEUE_IS_MUTEX ) && ( pxQueue->u.xSemaphore.xMutexHolder != NULL ) ) );
+    configASSERT( !( ( pxQueue->uxQueueType == queueQUEUE_IS_MUTEX ) && ( pxQueue->u.xSemaphore.xMutexHolder != रिक्त ) ) );
 
     /* RTOS ports that support interrupt nesting have the concept of a maximum
      * system call (or maximum API call) interrupt priority.  Interrupts that are
@@ -1370,21 +1370,21 @@ BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue,
      * safe API to ensure interrupt entry is as fast and as simple as possible.
      * More information (albeit Cortex-M specific) is provided on the following
      * link: https://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html */
-    portASSERT_IF_INTERRUPT_PRIORITY_INVALID();
+    पत्तनम्_ASSERT_IF_व्यवधानम्_प्राथमिकता_INVALID();
 
     /* MISRA Ref 4.7.1 [Return value shall be checked] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
     /* coverity[misra_c_2012_directive_4_7_violation] */
-    uxSavedInterruptStatus = ( UBaseType_t ) taskENTER_CRITICAL_FROM_ISR();
+    ux_Saved_व्यवधानम्_स्थितिः = ( UBaseType_t ) taskENTER_CRITICAL_FROM_ISR();
     {
-        const UBaseType_t uxMessagesWaiting = pxQueue->uxMessagesWaiting;
+        ध्रुव UBaseType_t ux_Messages_प्रतीक्षा = pxQueue->ux_Messages_प्रतीक्षा;
 
         /* When the queue is used to implement a semaphore no data is ever
          * moved through the queue but it is still valid to see if the queue 'has
          * space'. */
-        if( uxMessagesWaiting < pxQueue->uxLength )
+        यदि( ux_Messages_प्रतीक्षा < pxQueue->ux_दीर्घता )
         {
-            const int8_t cTxLock = pxQueue->cTxLock;
+            ध्रुव int8_t c_Tx_तालकम् = pxQueue->c_Tx_तालकम्;
 
             traceQUEUE_SEND_FROM_ISR( pxQueue );
 
@@ -1394,169 +1394,169 @@ BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue,
              * can be assumed there is no mutex holder and no need to determine if
              * priority disinheritance is needed.  Simply increase the count of
              * messages (semaphores) available. */
-            pxQueue->uxMessagesWaiting = ( UBaseType_t ) ( uxMessagesWaiting + ( UBaseType_t ) 1 );
+            pxQueue->ux_Messages_प्रतीक्षा = ( UBaseType_t ) ( ux_Messages_प्रतीक्षा + ( UBaseType_t ) 1 );
 
             /* The event list is not altered if the queue is locked.  This will
              * be done when the queue is unlocked later. */
-            if( cTxLock == queueUNLOCKED )
+            यदि( c_Tx_तालकम् == queueUNLOCKED )
             {
-                #if ( configUSE_QUEUE_SETS == 1 )
+                #यदि ( configUSE_QUEUE_SETS == 1 )
                 {
-                    if( pxQueue->pxQueueSetContainer != NULL )
+                    यदि( pxQueue->px_Queue_समुच्चयः_Container != रिक्त )
                     {
-                        if( prvNotifyQueueSetContainer( pxQueue ) != pdFALSE )
+                        यदि( prv_Notify_Queue_समुच्चयः_Container( pxQueue ) != pdFALSE )
                         {
                             /* The semaphore is a member of a queue set, and
                              * posting to the queue set caused a higher priority
                              * task to unblock.  A context switch is required. */
-                            if( pxHigherPriorityTaskWoken != NULL )
+                            यदि( px_Higher_प्राथमिकता_Task_Woken != रिक्त )
                             {
-                                *pxHigherPriorityTaskWoken = pdTRUE;
+                                *px_Higher_प्राथमिकता_Task_Woken = pdTRUE;
                             }
-                            else
+                            अन्यथा
                             {
                                 mtCOVERAGE_TEST_MARKER();
                             }
                         }
-                        else
+                        अन्यथा
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else
+                    अन्यथा
                     {
-                        if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                        यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) == pdFALSE )
                         {
-                            if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                            यदि( xTaskRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) != pdFALSE )
                             {
                                 /* The task waiting has a higher priority so
                                  *  record that a context switch is required. */
-                                if( pxHigherPriorityTaskWoken != NULL )
+                                यदि( px_Higher_प्राथमिकता_Task_Woken != रिक्त )
                                 {
-                                    *pxHigherPriorityTaskWoken = pdTRUE;
+                                    *px_Higher_प्राथमिकता_Task_Woken = pdTRUE;
                                 }
-                                else
+                                अन्यथा
                                 {
                                     mtCOVERAGE_TEST_MARKER();
                                 }
                             }
-                            else
+                            अन्यथा
                             {
                                 mtCOVERAGE_TEST_MARKER();
                             }
                         }
-                        else
+                        अन्यथा
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
                 }
-                #else /* configUSE_QUEUE_SETS */
+                #अन्यथा /* configUSE_QUEUE_SETS */
                 {
-                    if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                    यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) == pdFALSE )
                     {
-                        if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                        यदि( xTaskRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) != pdFALSE )
                         {
                             /* The task waiting has a higher priority so record that a
                              * context switch is required. */
-                            if( pxHigherPriorityTaskWoken != NULL )
+                            यदि( px_Higher_प्राथमिकता_Task_Woken != रिक्त )
                             {
-                                *pxHigherPriorityTaskWoken = pdTRUE;
+                                *px_Higher_प्राथमिकता_Task_Woken = pdTRUE;
                             }
-                            else
+                            अन्यथा
                             {
                                 mtCOVERAGE_TEST_MARKER();
                             }
                         }
-                        else
+                        अन्यथा
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                #endif /* configUSE_QUEUE_SETS */
+                #यदि_अन्तः /* configUSE_QUEUE_SETS */
             }
-            else
+            अन्यथा
             {
                 /* Increment the lock count so the task that unlocks the queue
                  * knows that data was posted while it was locked. */
-                prvIncrementQueueTxLock( pxQueue, cTxLock );
+                prv_Increment_Queue_Tx_तालकम्( pxQueue, c_Tx_तालकम् );
             }
 
             xReturn = pdPASS;
         }
-        else
+        अन्यथा
         {
             traceQUEUE_SEND_FROM_ISR_FAILED( pxQueue );
-            xReturn = errQUEUE_FULL;
+            xReturn = err_QUEUE_पूर्णम्;
         }
     }
-    taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );
+    taskEXIT_CRITICAL_FROM_ISR( ux_Saved_व्यवधानम्_स्थितिः );
 
     traceRETURN_xQueueGiveFromISR( xReturn );
 
-    return xReturn;
+    प्रत्यागम xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueReceive( QueueHandle_t xQueue,
-                          void * const pvBuffer,
-                          TickType_t xTicksToWait )
+आधारः_Type_t xQueueReceive( QueueHandle_t xQueue,
+                          शून्य * ध्रुव pv_बफर,
+                          TickType_t x_Ticks_गन्तव्यम्_Wait )
 {
-    BaseType_t xEntryTimeSet = pdFALSE;
-    TimeOut_t xTimeOut;
-    Queue_t * const pxQueue = xQueue;
+    आधारः_Type_t x_प्रविष्टिः_Time_समुच्चयः = pdFALSE;
+    Time_बहिर्गमनम्_t x_Time_बहिर्गमनम्;
+    Queue_t * ध्रुव pxQueue = xQueue;
 
-    traceENTER_xQueueReceive( xQueue, pvBuffer, xTicksToWait );
+    traceENTER_xQueueReceive( xQueue, pv_बफर, x_Ticks_गन्तव्यम्_Wait );
 
     /* Check the pointer is not NULL. */
     configASSERT( ( pxQueue ) );
 
     /* The buffer into which data is received can only be NULL if the data size
      * is zero (so no data is copied into the buffer). */
-    configASSERT( !( ( ( pvBuffer ) == NULL ) && ( ( pxQueue )->uxItemSize != ( UBaseType_t ) 0U ) ) );
+    configASSERT( !( ( ( pv_बफर ) == रिक्त ) && ( ( pxQueue )->ux_Item_आकार != ( UBaseType_t ) 0U ) ) );
 
     /* Cannot block if the scheduler is suspended. */
-    #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+    #यदि ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
     {
-        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( x_Ticks_गन्तव्यम्_Wait != 0 ) ) );
     }
-    #endif
+    #यदि_अन्तः
 
-    for( ; ; )
+    प्रति( ; ; )
     {
         taskENTER_CRITICAL();
         {
-            const UBaseType_t uxMessagesWaiting = pxQueue->uxMessagesWaiting;
+            ध्रुव UBaseType_t ux_Messages_प्रतीक्षा = pxQueue->ux_Messages_प्रतीक्षा;
 
             /* Is there data in the queue now?  To be running the calling task
              * must be the highest priority task wanting to access the queue. */
-            if( uxMessagesWaiting > ( UBaseType_t ) 0 )
+            यदि( ux_Messages_प्रतीक्षा > ( UBaseType_t ) 0 )
             {
                 /* Data available, remove one item. */
-                prvCopyDataFromQueue( pxQueue, pvBuffer );
+                prv_Copy_दत्त_From_Queue( pxQueue, pv_बफर );
                 traceQUEUE_RECEIVE( pxQueue );
-                pxQueue->uxMessagesWaiting = ( UBaseType_t ) ( uxMessagesWaiting - ( UBaseType_t ) 1 );
+                pxQueue->ux_Messages_प्रतीक्षा = ( UBaseType_t ) ( ux_Messages_प्रतीक्षा - ( UBaseType_t ) 1 );
 
                 /* There is now space in the queue, were any tasks waiting to
                  * post to the queue?  If so, unblock the highest priority waiting
                  * task. */
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
+                यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ) ) == pdFALSE )
                 {
-                    if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToSend ) ) != pdFALSE )
+                    यदि( xTaskRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ) ) != pdFALSE )
                     {
                         queueYIELD_IF_USING_PREEMPTION();
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                अन्यथा
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
@@ -1565,29 +1565,29 @@ BaseType_t xQueueReceive( QueueHandle_t xQueue,
 
                 traceRETURN_xQueueReceive( pdPASS );
 
-                return pdPASS;
+                प्रत्यागम pdPASS;
             }
-            else
+            अन्यथा
             {
-                if( xTicksToWait == ( TickType_t ) 0 )
+                यदि( x_Ticks_गन्तव्यम्_Wait == ( TickType_t ) 0 )
                 {
                     /* The queue was empty and no block time is specified (or
                      * the block time has expired) so leave now. */
                     taskEXIT_CRITICAL();
 
                     traceQUEUE_RECEIVE_FAILED( pxQueue );
-                    traceRETURN_xQueueReceive( errQUEUE_EMPTY );
+                    traceRETURN_xQueueReceive( err_QUEUE_रिक्तानि );
 
-                    return errQUEUE_EMPTY;
+                    प्रत्यागम err_QUEUE_रिक्तानि;
                 }
-                else if( xEntryTimeSet == pdFALSE )
+                अन्यथा यदि( x_प्रविष्टिः_Time_समुच्चयः == pdFALSE )
                 {
                     /* The queue was empty and a block time was specified so
                      * configure the timeout structure. */
-                    vTaskInternalSetTimeOutState( &xTimeOut );
-                    xEntryTimeSet = pdTRUE;
+                    v_Task_आन्तरिकम्_समुच्चयः_Time_बहिर्गमनम्_State( &x_Time_बहिर्गमनम् );
+                    x_प्रविष्टिः_Time_समुच्चयः = pdTRUE;
                 }
-                else
+                अन्यथा
                 {
                     /* Entry time was already set. */
                     mtCOVERAGE_TEST_MARKER();
@@ -1600,51 +1600,51 @@ BaseType_t xQueueReceive( QueueHandle_t xQueue,
          * now the critical section has been exited. */
 
         vTaskSuspendAll();
-        prvLockQueue( pxQueue );
+        prv_तालकम्_Queue( pxQueue );
 
         /* Update the timeout state to see if it has expired yet. */
-        if( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE )
+        यदि( x_Task_Check_For_Time_बहिर्गमनम्( &x_Time_बहिर्गमनम्, &x_Ticks_गन्तव्यम्_Wait ) == pdFALSE )
         {
             /* The timeout has not expired.  If the queue is still empty place
              * the task on the list of tasks waiting to receive from the queue. */
-            if( prvIsQueueEmpty( pxQueue ) != pdFALSE )
+            यदि( prv_Is_Queue_रिक्तानि( pxQueue ) != pdFALSE )
             {
                 traceBLOCKING_ON_QUEUE_RECEIVE( pxQueue );
-                vTaskPlaceOnEventList( &( pxQueue->xTasksWaitingToReceive ), xTicksToWait );
+                vTaskPlaceOnEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ), x_Ticks_गन्तव्यम्_Wait );
                 prvUnlockQueue( pxQueue );
 
-                if( xTaskResumeAll() == pdFALSE )
+                यदि( xTaskResumeAll() == pdFALSE )
                 {
                     taskYIELD_WITHIN_API();
                 }
-                else
+                अन्यथा
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            अन्यथा
             {
                 /* The queue contains data again.  Loop back to try and read the
                  * data. */
                 prvUnlockQueue( pxQueue );
-                ( void ) xTaskResumeAll();
+                ( शून्य ) xTaskResumeAll();
             }
         }
-        else
+        अन्यथा
         {
             /* Timed out.  If there is no data in the queue exit, otherwise loop
              * back and attempt to read the data. */
             prvUnlockQueue( pxQueue );
-            ( void ) xTaskResumeAll();
+            ( शून्य ) xTaskResumeAll();
 
-            if( prvIsQueueEmpty( pxQueue ) != pdFALSE )
+            यदि( prv_Is_Queue_रिक्तानि( pxQueue ) != pdFALSE )
             {
                 traceQUEUE_RECEIVE_FAILED( pxQueue );
-                traceRETURN_xQueueReceive( errQUEUE_EMPTY );
+                traceRETURN_xQueueReceive( err_QUEUE_रिक्तानि );
 
-                return errQUEUE_EMPTY;
+                प्रत्यागम err_QUEUE_रिक्तानि;
             }
-            else
+            अन्यथा
             {
                 mtCOVERAGE_TEST_MARKER();
             }
@@ -1653,80 +1653,80 @@ BaseType_t xQueueReceive( QueueHandle_t xQueue,
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueSemaphoreTake( QueueHandle_t xQueue,
-                                TickType_t xTicksToWait )
+आधारः_Type_t xQueueSemaphoreTake( QueueHandle_t xQueue,
+                                TickType_t x_Ticks_गन्तव्यम्_Wait )
 {
-    BaseType_t xEntryTimeSet = pdFALSE;
-    TimeOut_t xTimeOut;
-    Queue_t * const pxQueue = xQueue;
+    आधारः_Type_t x_प्रविष्टिः_Time_समुच्चयः = pdFALSE;
+    Time_बहिर्गमनम्_t x_Time_बहिर्गमनम्;
+    Queue_t * ध्रुव pxQueue = xQueue;
 
-    #if ( configUSE_MUTEXES == 1 )
-        BaseType_t xInheritanceOccurred = pdFALSE;
-    #endif
+    #यदि ( configUSE_MUTEXES == 1 )
+        आधारः_Type_t xInheritanceOccurred = pdFALSE;
+    #यदि_अन्तः
 
-    traceENTER_xQueueSemaphoreTake( xQueue, xTicksToWait );
+    traceENTER_xQueueSemaphoreTake( xQueue, x_Ticks_गन्तव्यम्_Wait );
 
     /* Check the queue pointer is not NULL. */
     configASSERT( ( pxQueue ) );
 
     /* Check this really is a semaphore, in which case the item size will be
      * 0. */
-    configASSERT( pxQueue->uxItemSize == 0 );
+    configASSERT( pxQueue->ux_Item_आकार == 0 );
 
     /* Cannot block if the scheduler is suspended. */
-    #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+    #यदि ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
     {
-        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( x_Ticks_गन्तव्यम्_Wait != 0 ) ) );
     }
-    #endif
+    #यदि_अन्तः
 
-    for( ; ; )
+    प्रति( ; ; )
     {
         taskENTER_CRITICAL();
         {
             /* Semaphores are queues with an item size of 0, and where the
              * number of messages in the queue is the semaphore's count value. */
-            const UBaseType_t uxSemaphoreCount = pxQueue->uxMessagesWaiting;
+            ध्रुव UBaseType_t ux_Semaphore_गणनम् = pxQueue->ux_Messages_प्रतीक्षा;
 
             /* Is there data in the queue now?  To be running the calling task
              * must be the highest priority task wanting to access the queue. */
-            if( uxSemaphoreCount > ( UBaseType_t ) 0 )
+            यदि( ux_Semaphore_गणनम् > ( UBaseType_t ) 0 )
             {
                 traceQUEUE_RECEIVE( pxQueue );
 
                 /* Semaphores are queues with a data size of zero and where the
                  * messages waiting is the semaphore's count.  Reduce the count. */
-                pxQueue->uxMessagesWaiting = ( UBaseType_t ) ( uxSemaphoreCount - ( UBaseType_t ) 1 );
+                pxQueue->ux_Messages_प्रतीक्षा = ( UBaseType_t ) ( ux_Semaphore_गणनम् - ( UBaseType_t ) 1 );
 
-                #if ( configUSE_MUTEXES == 1 )
+                #यदि ( configUSE_MUTEXES == 1 )
                 {
-                    if( pxQueue->uxQueueType == queueQUEUE_IS_MUTEX )
+                    यदि( pxQueue->uxQueueType == queueQUEUE_IS_MUTEX )
                     {
                         /* Record the information required to implement
                          * priority inheritance should it become necessary. */
-                        pxQueue->u.xSemaphore.xMutexHolder = pvTaskIncrementMutexHeldCount();
+                        pxQueue->u.xSemaphore.xMutexHolder = pv_Task_Increment_Mutex_Held_गणनम्();
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                #endif /* configUSE_MUTEXES */
+                #यदि_अन्तः /* configUSE_MUTEXES */
 
                 /* Check to see if other tasks are blocked waiting to give the
                  * semaphore, and if so, unblock the highest priority such task. */
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
+                यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ) ) == pdFALSE )
                 {
-                    if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToSend ) ) != pdFALSE )
+                    यदि( xTaskRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ) ) != pdFALSE )
                     {
                         queueYIELD_IF_USING_PREEMPTION();
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                अन्यथा
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
@@ -1735,29 +1735,29 @@ BaseType_t xQueueSemaphoreTake( QueueHandle_t xQueue,
 
                 traceRETURN_xQueueSemaphoreTake( pdPASS );
 
-                return pdPASS;
+                प्रत्यागम pdPASS;
             }
-            else
+            अन्यथा
             {
-                if( xTicksToWait == ( TickType_t ) 0 )
+                यदि( x_Ticks_गन्तव्यम्_Wait == ( TickType_t ) 0 )
                 {
                     /* The semaphore count was 0 and no block time is specified
                      * (or the block time has expired) so exit now. */
                     taskEXIT_CRITICAL();
 
                     traceQUEUE_RECEIVE_FAILED( pxQueue );
-                    traceRETURN_xQueueSemaphoreTake( errQUEUE_EMPTY );
+                    traceRETURN_xQueueSemaphoreTake( err_QUEUE_रिक्तानि );
 
-                    return errQUEUE_EMPTY;
+                    प्रत्यागम err_QUEUE_रिक्तानि;
                 }
-                else if( xEntryTimeSet == pdFALSE )
+                अन्यथा यदि( x_प्रविष्टिः_Time_समुच्चयः == pdFALSE )
                 {
                     /* The semaphore count was 0 and a block time was specified
                      * so configure the timeout structure ready to block. */
-                    vTaskInternalSetTimeOutState( &xTimeOut );
-                    xEntryTimeSet = pdTRUE;
+                    v_Task_आन्तरिकम्_समुच्चयः_Time_बहिर्गमनम्_State( &x_Time_बहिर्गमनम् );
+                    x_प्रविष्टिः_Time_समुच्चयः = pdTRUE;
                 }
-                else
+                अन्यथा
                 {
                     /* Entry time was already set. */
                     mtCOVERAGE_TEST_MARKER();
@@ -1770,85 +1770,85 @@ BaseType_t xQueueSemaphoreTake( QueueHandle_t xQueue,
          * now the critical section has been exited. */
 
         vTaskSuspendAll();
-        prvLockQueue( pxQueue );
+        prv_तालकम्_Queue( pxQueue );
 
         /* Update the timeout state to see if it has expired yet. */
-        if( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE )
+        यदि( x_Task_Check_For_Time_बहिर्गमनम्( &x_Time_बहिर्गमनम्, &x_Ticks_गन्तव्यम्_Wait ) == pdFALSE )
         {
             /* A block time is specified and not expired.  If the semaphore
              * count is 0 then enter the Blocked state to wait for a semaphore to
              * become available.  As semaphores are implemented with queues the
              * queue being empty is equivalent to the semaphore count being 0. */
-            if( prvIsQueueEmpty( pxQueue ) != pdFALSE )
+            यदि( prv_Is_Queue_रिक्तानि( pxQueue ) != pdFALSE )
             {
                 traceBLOCKING_ON_QUEUE_RECEIVE( pxQueue );
 
-                #if ( configUSE_MUTEXES == 1 )
+                #यदि ( configUSE_MUTEXES == 1 )
                 {
-                    if( pxQueue->uxQueueType == queueQUEUE_IS_MUTEX )
+                    यदि( pxQueue->uxQueueType == queueQUEUE_IS_MUTEX )
                     {
                         taskENTER_CRITICAL();
                         {
-                            xInheritanceOccurred = xTaskPriorityInherit( pxQueue->u.xSemaphore.xMutexHolder );
+                            xInheritanceOccurred = x_Task_प्राथमिकता_Inherit( pxQueue->u.xSemaphore.xMutexHolder );
                         }
                         taskEXIT_CRITICAL();
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                #endif /* if ( configUSE_MUTEXES == 1 ) */
+                #यदि_अन्तः /* if ( configUSE_MUTEXES == 1 ) */
 
-                vTaskPlaceOnEventList( &( pxQueue->xTasksWaitingToReceive ), xTicksToWait );
+                vTaskPlaceOnEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ), x_Ticks_गन्तव्यम्_Wait );
                 prvUnlockQueue( pxQueue );
 
-                if( xTaskResumeAll() == pdFALSE )
+                यदि( xTaskResumeAll() == pdFALSE )
                 {
                     taskYIELD_WITHIN_API();
                 }
-                else
+                अन्यथा
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            अन्यथा
             {
                 /* There was no timeout and the semaphore count was not 0, so
                  * attempt to take the semaphore again. */
                 prvUnlockQueue( pxQueue );
-                ( void ) xTaskResumeAll();
+                ( शून्य ) xTaskResumeAll();
             }
         }
-        else
+        अन्यथा
         {
             /* Timed out. */
             prvUnlockQueue( pxQueue );
-            ( void ) xTaskResumeAll();
+            ( शून्य ) xTaskResumeAll();
 
             /* If the semaphore count is 0 exit now as the timeout has
              * expired.  Otherwise return to attempt to take the semaphore that is
              * known to be available.  As semaphores are implemented by queues the
              * queue being empty is equivalent to the semaphore count being 0. */
-            if( prvIsQueueEmpty( pxQueue ) != pdFALSE )
+            यदि( prv_Is_Queue_रिक्तानि( pxQueue ) != pdFALSE )
             {
-                #if ( configUSE_MUTEXES == 1 )
+                #यदि ( configUSE_MUTEXES == 1 )
                 {
                     /* xInheritanceOccurred could only have be set if
                      * pxQueue->uxQueueType == queueQUEUE_IS_MUTEX so no need to
                      * test the mutex type again to check it is actually a mutex. */
-                    if( xInheritanceOccurred != pdFALSE )
+                    यदि( xInheritanceOccurred != pdFALSE )
                     {
                         taskENTER_CRITICAL();
                         {
-                            UBaseType_t uxHighestWaitingPriority;
+                            UBaseType_t ux_Highest_प्रतीक्षा_प्राथमिकता;
 
                             /* This task blocking on the mutex caused another
                              * task to inherit this task's priority.  Now this task
                              * has timed out the priority should be disinherited
                              * again, but only as low as the next highest priority
                              * task that is waiting for the same mutex. */
-                            uxHighestWaitingPriority = prvGetDisinheritPriorityAfterTimeout( pxQueue );
+                            ux_Highest_प्रतीक्षा_प्राथमिकता = prv_Get_Disinherit_प्राथमिकता_After_Timeout( pxQueue );
 
                             /* vTaskPriorityDisinheritAfterTimeout uses the uxHighestWaitingPriority
                              * parameter to index pxReadyTasksLists when adding the task holding
@@ -1857,19 +1857,19 @@ BaseType_t xQueueSemaphoreTake( QueueHandle_t xQueue,
                              * uxHighestWaitingPriority, as returned by prvGetDisinheritPriorityAfterTimeout,
                              * is capped at ( configMAX_PRIORITIES - 1 ). */
                             /* coverity[overrun] */
-                            vTaskPriorityDisinheritAfterTimeout( pxQueue->u.xSemaphore.xMutexHolder, uxHighestWaitingPriority );
+                            v_Task_प्राथमिकता_Disinherit_After_Timeout( pxQueue->u.xSemaphore.xMutexHolder, ux_Highest_प्रतीक्षा_प्राथमिकता );
                         }
                         taskEXIT_CRITICAL();
                     }
                 }
-                #endif /* configUSE_MUTEXES */
+                #यदि_अन्तः /* configUSE_MUTEXES */
 
                 traceQUEUE_RECEIVE_FAILED( pxQueue );
-                traceRETURN_xQueueSemaphoreTake( errQUEUE_EMPTY );
+                traceRETURN_xQueueSemaphoreTake( err_QUEUE_रिक्तानि );
 
-                return errQUEUE_EMPTY;
+                प्रत्यागम err_QUEUE_रिक्तानि;
             }
-            else
+            अन्यथा
             {
                 mtCOVERAGE_TEST_MARKER();
             }
@@ -1878,47 +1878,47 @@ BaseType_t xQueueSemaphoreTake( QueueHandle_t xQueue,
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueuePeek( QueueHandle_t xQueue,
-                       void * const pvBuffer,
-                       TickType_t xTicksToWait )
+आधारः_Type_t xQueuePeek( QueueHandle_t xQueue,
+                       शून्य * ध्रुव pv_बफर,
+                       TickType_t x_Ticks_गन्तव्यम्_Wait )
 {
-    BaseType_t xEntryTimeSet = pdFALSE;
-    TimeOut_t xTimeOut;
+    आधारः_Type_t x_प्रविष्टिः_Time_समुच्चयः = pdFALSE;
+    Time_बहिर्गमनम्_t x_Time_बहिर्गमनम्;
     int8_t * pcOriginalReadPosition;
-    Queue_t * const pxQueue = xQueue;
+    Queue_t * ध्रुव pxQueue = xQueue;
 
-    traceENTER_xQueuePeek( xQueue, pvBuffer, xTicksToWait );
+    traceENTER_xQueuePeek( xQueue, pv_बफर, x_Ticks_गन्तव्यम्_Wait );
 
     /* Check the pointer is not NULL. */
     configASSERT( ( pxQueue ) );
 
     /* The buffer into which data is received can only be NULL if the data size
      * is zero (so no data is copied into the buffer. */
-    configASSERT( !( ( ( pvBuffer ) == NULL ) && ( ( pxQueue )->uxItemSize != ( UBaseType_t ) 0U ) ) );
+    configASSERT( !( ( ( pv_बफर ) == रिक्त ) && ( ( pxQueue )->ux_Item_आकार != ( UBaseType_t ) 0U ) ) );
 
     /* Cannot block if the scheduler is suspended. */
-    #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+    #यदि ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
     {
-        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( x_Ticks_गन्तव्यम्_Wait != 0 ) ) );
     }
-    #endif
+    #यदि_अन्तः
 
-    for( ; ; )
+    प्रति( ; ; )
     {
         taskENTER_CRITICAL();
         {
-            const UBaseType_t uxMessagesWaiting = pxQueue->uxMessagesWaiting;
+            ध्रुव UBaseType_t ux_Messages_प्रतीक्षा = pxQueue->ux_Messages_प्रतीक्षा;
 
             /* Is there data in the queue now?  To be running the calling task
              * must be the highest priority task wanting to access the queue. */
-            if( uxMessagesWaiting > ( UBaseType_t ) 0 )
+            यदि( ux_Messages_प्रतीक्षा > ( UBaseType_t ) 0 )
             {
                 /* Remember the read position so it can be reset after the data
                  * is read from the queue as this function is only peeking the
                  * data, not removing it. */
                 pcOriginalReadPosition = pxQueue->u.xQueue.pcReadFrom;
 
-                prvCopyDataFromQueue( pxQueue, pvBuffer );
+                prv_Copy_दत्त_From_Queue( pxQueue, pv_बफर );
                 traceQUEUE_PEEK( pxQueue );
 
                 /* The data is not being removed, so reset the read pointer. */
@@ -1926,19 +1926,19 @@ BaseType_t xQueuePeek( QueueHandle_t xQueue,
 
                 /* The data is being left in the queue, so see if there are
                  * any other tasks waiting for the data. */
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) == pdFALSE )
                 {
-                    if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                    यदि( xTaskRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) != pdFALSE )
                     {
                         /* The task waiting has a higher priority than this task. */
                         queueYIELD_IF_USING_PREEMPTION();
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                अन्यथा
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
@@ -1947,30 +1947,30 @@ BaseType_t xQueuePeek( QueueHandle_t xQueue,
 
                 traceRETURN_xQueuePeek( pdPASS );
 
-                return pdPASS;
+                प्रत्यागम pdPASS;
             }
-            else
+            अन्यथा
             {
-                if( xTicksToWait == ( TickType_t ) 0 )
+                यदि( x_Ticks_गन्तव्यम्_Wait == ( TickType_t ) 0 )
                 {
                     /* The queue was empty and no block time is specified (or
                      * the block time has expired) so leave now. */
                     taskEXIT_CRITICAL();
 
                     traceQUEUE_PEEK_FAILED( pxQueue );
-                    traceRETURN_xQueuePeek( errQUEUE_EMPTY );
+                    traceRETURN_xQueuePeek( err_QUEUE_रिक्तानि );
 
-                    return errQUEUE_EMPTY;
+                    प्रत्यागम err_QUEUE_रिक्तानि;
                 }
-                else if( xEntryTimeSet == pdFALSE )
+                अन्यथा यदि( x_प्रविष्टिः_Time_समुच्चयः == pdFALSE )
                 {
                     /* The queue was empty and a block time was specified so
                      * configure the timeout structure ready to enter the blocked
                      * state. */
-                    vTaskInternalSetTimeOutState( &xTimeOut );
-                    xEntryTimeSet = pdTRUE;
+                    v_Task_आन्तरिकम्_समुच्चयः_Time_बहिर्गमनम्_State( &x_Time_बहिर्गमनम् );
+                    x_प्रविष्टिः_Time_समुच्चयः = pdTRUE;
                 }
-                else
+                अन्यथा
                 {
                     /* Entry time was already set. */
                     mtCOVERAGE_TEST_MARKER();
@@ -1983,51 +1983,51 @@ BaseType_t xQueuePeek( QueueHandle_t xQueue,
          * now that the critical section has been exited. */
 
         vTaskSuspendAll();
-        prvLockQueue( pxQueue );
+        prv_तालकम्_Queue( pxQueue );
 
         /* Update the timeout state to see if it has expired yet. */
-        if( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE )
+        यदि( x_Task_Check_For_Time_बहिर्गमनम्( &x_Time_बहिर्गमनम्, &x_Ticks_गन्तव्यम्_Wait ) == pdFALSE )
         {
             /* Timeout has not expired yet, check to see if there is data in the
             * queue now, and if not enter the Blocked state to wait for data. */
-            if( prvIsQueueEmpty( pxQueue ) != pdFALSE )
+            यदि( prv_Is_Queue_रिक्तानि( pxQueue ) != pdFALSE )
             {
                 traceBLOCKING_ON_QUEUE_PEEK( pxQueue );
-                vTaskPlaceOnEventList( &( pxQueue->xTasksWaitingToReceive ), xTicksToWait );
+                vTaskPlaceOnEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ), x_Ticks_गन्तव्यम्_Wait );
                 prvUnlockQueue( pxQueue );
 
-                if( xTaskResumeAll() == pdFALSE )
+                यदि( xTaskResumeAll() == pdFALSE )
                 {
                     taskYIELD_WITHIN_API();
                 }
-                else
+                अन्यथा
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            अन्यथा
             {
                 /* There is data in the queue now, so don't enter the blocked
                  * state, instead return to try and obtain the data. */
                 prvUnlockQueue( pxQueue );
-                ( void ) xTaskResumeAll();
+                ( शून्य ) xTaskResumeAll();
             }
         }
-        else
+        अन्यथा
         {
             /* The timeout has expired.  If there is still no data in the queue
              * exit, otherwise go back and try to read the data again. */
             prvUnlockQueue( pxQueue );
-            ( void ) xTaskResumeAll();
+            ( शून्य ) xTaskResumeAll();
 
-            if( prvIsQueueEmpty( pxQueue ) != pdFALSE )
+            यदि( prv_Is_Queue_रिक्तानि( pxQueue ) != pdFALSE )
             {
                 traceQUEUE_PEEK_FAILED( pxQueue );
-                traceRETURN_xQueuePeek( errQUEUE_EMPTY );
+                traceRETURN_xQueuePeek( err_QUEUE_रिक्तानि );
 
-                return errQUEUE_EMPTY;
+                प्रत्यागम err_QUEUE_रिक्तानि;
             }
-            else
+            अन्यथा
             {
                 mtCOVERAGE_TEST_MARKER();
             }
@@ -2036,18 +2036,18 @@ BaseType_t xQueuePeek( QueueHandle_t xQueue,
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueReceiveFromISR( QueueHandle_t xQueue,
-                                 void * const pvBuffer,
-                                 BaseType_t * const pxHigherPriorityTaskWoken )
+आधारः_Type_t xQueueReceiveFromISR( QueueHandle_t xQueue,
+                                 शून्य * ध्रुव pv_बफर,
+                                 आधारः_Type_t * ध्रुव px_Higher_प्राथमिकता_Task_Woken )
 {
-    BaseType_t xReturn;
-    UBaseType_t uxSavedInterruptStatus;
-    Queue_t * const pxQueue = xQueue;
+    आधारः_Type_t xReturn;
+    UBaseType_t ux_Saved_व्यवधानम्_स्थितिः;
+    Queue_t * ध्रुव pxQueue = xQueue;
 
-    traceENTER_xQueueReceiveFromISR( xQueue, pvBuffer, pxHigherPriorityTaskWoken );
+    traceENTER_xQueueReceiveFromISR( xQueue, pv_बफर, px_Higher_प्राथमिकता_Task_Woken );
 
     configASSERT( pxQueue );
-    configASSERT( !( ( pvBuffer == NULL ) && ( pxQueue->uxItemSize != ( UBaseType_t ) 0U ) ) );
+    configASSERT( !( ( pv_बफर == रिक्त ) && ( pxQueue->ux_Item_आकार != ( UBaseType_t ) 0U ) ) );
 
     /* RTOS ports that support interrupt nesting have the concept of a maximum
      * system call (or maximum API call) interrupt priority.  Interrupts that are
@@ -2063,92 +2063,92 @@ BaseType_t xQueueReceiveFromISR( QueueHandle_t xQueue,
      * safe API to ensure interrupt entry is as fast and as simple as possible.
      * More information (albeit Cortex-M specific) is provided on the following
      * link: https://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html */
-    portASSERT_IF_INTERRUPT_PRIORITY_INVALID();
+    पत्तनम्_ASSERT_IF_व्यवधानम्_प्राथमिकता_INVALID();
 
     /* MISRA Ref 4.7.1 [Return value shall be checked] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
     /* coverity[misra_c_2012_directive_4_7_violation] */
-    uxSavedInterruptStatus = ( UBaseType_t ) taskENTER_CRITICAL_FROM_ISR();
+    ux_Saved_व्यवधानम्_स्थितिः = ( UBaseType_t ) taskENTER_CRITICAL_FROM_ISR();
     {
-        const UBaseType_t uxMessagesWaiting = pxQueue->uxMessagesWaiting;
+        ध्रुव UBaseType_t ux_Messages_प्रतीक्षा = pxQueue->ux_Messages_प्रतीक्षा;
 
         /* Cannot block in an ISR, so check there is data available. */
-        if( uxMessagesWaiting > ( UBaseType_t ) 0 )
+        यदि( ux_Messages_प्रतीक्षा > ( UBaseType_t ) 0 )
         {
-            const int8_t cRxLock = pxQueue->cRxLock;
+            ध्रुव int8_t c_Rx_तालकम् = pxQueue->c_Rx_तालकम्;
 
             traceQUEUE_RECEIVE_FROM_ISR( pxQueue );
 
-            prvCopyDataFromQueue( pxQueue, pvBuffer );
-            pxQueue->uxMessagesWaiting = ( UBaseType_t ) ( uxMessagesWaiting - ( UBaseType_t ) 1 );
+            prv_Copy_दत्त_From_Queue( pxQueue, pv_बफर );
+            pxQueue->ux_Messages_प्रतीक्षा = ( UBaseType_t ) ( ux_Messages_प्रतीक्षा - ( UBaseType_t ) 1 );
 
             /* If the queue is locked the event list will not be modified.
              * Instead update the lock count so the task that unlocks the queue
              * will know that an ISR has removed data while the queue was
              * locked. */
-            if( cRxLock == queueUNLOCKED )
+            यदि( c_Rx_तालकम् == queueUNLOCKED )
             {
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
+                यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ) ) == pdFALSE )
                 {
-                    if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToSend ) ) != pdFALSE )
+                    यदि( xTaskRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ) ) != pdFALSE )
                     {
                         /* The task waiting has a higher priority than us so
                          * force a context switch. */
-                        if( pxHigherPriorityTaskWoken != NULL )
+                        यदि( px_Higher_प्राथमिकता_Task_Woken != रिक्त )
                         {
-                            *pxHigherPriorityTaskWoken = pdTRUE;
+                            *px_Higher_प्राथमिकता_Task_Woken = pdTRUE;
                         }
-                        else
+                        अन्यथा
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                अन्यथा
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            अन्यथा
             {
                 /* Increment the lock count so the task that unlocks the queue
                  * knows that data was removed while it was locked. */
-                prvIncrementQueueRxLock( pxQueue, cRxLock );
+                prv_Increment_Queue_Rx_तालकम्( pxQueue, c_Rx_तालकम् );
             }
 
             xReturn = pdPASS;
         }
-        else
+        अन्यथा
         {
             xReturn = pdFAIL;
             traceQUEUE_RECEIVE_FROM_ISR_FAILED( pxQueue );
         }
     }
-    taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );
+    taskEXIT_CRITICAL_FROM_ISR( ux_Saved_व्यवधानम्_स्थितिः );
 
     traceRETURN_xQueueReceiveFromISR( xReturn );
 
-    return xReturn;
+    प्रत्यागम xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue,
-                              void * const pvBuffer )
+आधारः_Type_t xQueuePeekFromISR( QueueHandle_t xQueue,
+                              शून्य * ध्रुव pv_बफर )
 {
-    BaseType_t xReturn;
-    UBaseType_t uxSavedInterruptStatus;
+    आधारः_Type_t xReturn;
+    UBaseType_t ux_Saved_व्यवधानम्_स्थितिः;
     int8_t * pcOriginalReadPosition;
-    Queue_t * const pxQueue = xQueue;
+    Queue_t * ध्रुव pxQueue = xQueue;
 
-    traceENTER_xQueuePeekFromISR( xQueue, pvBuffer );
+    traceENTER_xQueuePeekFromISR( xQueue, pv_बफर );
 
     configASSERT( pxQueue );
-    configASSERT( !( ( pvBuffer == NULL ) && ( pxQueue->uxItemSize != ( UBaseType_t ) 0U ) ) );
-    configASSERT( pxQueue->uxItemSize != 0 ); /* Can't peek a semaphore. */
+    configASSERT( !( ( pv_बफर == रिक्त ) && ( pxQueue->ux_Item_आकार != ( UBaseType_t ) 0U ) ) );
+    configASSERT( pxQueue->ux_Item_आकार != 0 ); /* Can't peek a semaphore. */
 
     /* RTOS ports that support interrupt nesting have the concept of a maximum
      * system call (or maximum API call) interrupt priority.  Interrupts that are
@@ -2164,173 +2164,173 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue,
      * safe API to ensure interrupt entry is as fast and as simple as possible.
      * More information (albeit Cortex-M specific) is provided on the following
      * link: https://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html */
-    portASSERT_IF_INTERRUPT_PRIORITY_INVALID();
+    पत्तनम्_ASSERT_IF_व्यवधानम्_प्राथमिकता_INVALID();
 
     /* MISRA Ref 4.7.1 [Return value shall be checked] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
     /* coverity[misra_c_2012_directive_4_7_violation] */
-    uxSavedInterruptStatus = ( UBaseType_t ) taskENTER_CRITICAL_FROM_ISR();
+    ux_Saved_व्यवधानम्_स्थितिः = ( UBaseType_t ) taskENTER_CRITICAL_FROM_ISR();
     {
         /* Cannot block in an ISR, so check there is data available. */
-        if( pxQueue->uxMessagesWaiting > ( UBaseType_t ) 0 )
+        यदि( pxQueue->ux_Messages_प्रतीक्षा > ( UBaseType_t ) 0 )
         {
             traceQUEUE_PEEK_FROM_ISR( pxQueue );
 
             /* Remember the read position so it can be reset as nothing is
              * actually being removed from the queue. */
             pcOriginalReadPosition = pxQueue->u.xQueue.pcReadFrom;
-            prvCopyDataFromQueue( pxQueue, pvBuffer );
+            prv_Copy_दत्त_From_Queue( pxQueue, pv_बफर );
             pxQueue->u.xQueue.pcReadFrom = pcOriginalReadPosition;
 
             xReturn = pdPASS;
         }
-        else
+        अन्यथा
         {
             xReturn = pdFAIL;
             traceQUEUE_PEEK_FROM_ISR_FAILED( pxQueue );
         }
     }
-    taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );
+    taskEXIT_CRITICAL_FROM_ISR( ux_Saved_व्यवधानम्_स्थितिः );
 
     traceRETURN_xQueuePeekFromISR( xReturn );
 
-    return xReturn;
+    प्रत्यागम xReturn;
 }
 /*-----------------------------------------------------------*/
 
-UBaseType_t uxQueueMessagesWaiting( const QueueHandle_t xQueue )
+UBaseType_t ux_Queue_Messages_प्रतीक्षा( ध्रुव QueueHandle_t xQueue )
 {
     UBaseType_t uxReturn;
 
-    traceENTER_uxQueueMessagesWaiting( xQueue );
+    trace_ENTER_ux_Queue_Messages_प्रतीक्षा( xQueue );
 
     configASSERT( xQueue );
 
     taskENTER_CRITICAL();
     {
-        uxReturn = ( ( Queue_t * ) xQueue )->uxMessagesWaiting;
+        uxReturn = ( ( Queue_t * ) xQueue )->ux_Messages_प्रतीक्षा;
     }
     taskEXIT_CRITICAL();
 
-    traceRETURN_uxQueueMessagesWaiting( uxReturn );
+    trace_RETURN_ux_Queue_Messages_प्रतीक्षा( uxReturn );
 
-    return uxReturn;
+    प्रत्यागम uxReturn;
 }
 /*-----------------------------------------------------------*/
 
-UBaseType_t uxQueueSpacesAvailable( const QueueHandle_t xQueue )
+UBaseType_t ux_Queue_Spaces_उपलब्धम्( ध्रुव QueueHandle_t xQueue )
 {
     UBaseType_t uxReturn;
-    Queue_t * const pxQueue = xQueue;
+    Queue_t * ध्रुव pxQueue = xQueue;
 
-    traceENTER_uxQueueSpacesAvailable( xQueue );
+    trace_ENTER_ux_Queue_Spaces_उपलब्धम्( xQueue );
 
     configASSERT( pxQueue );
 
     taskENTER_CRITICAL();
     {
-        uxReturn = ( UBaseType_t ) ( pxQueue->uxLength - pxQueue->uxMessagesWaiting );
+        uxReturn = ( UBaseType_t ) ( pxQueue->ux_दीर्घता - pxQueue->ux_Messages_प्रतीक्षा );
     }
     taskEXIT_CRITICAL();
 
-    traceRETURN_uxQueueSpacesAvailable( uxReturn );
+    trace_RETURN_ux_Queue_Spaces_उपलब्धम्( uxReturn );
 
-    return uxReturn;
+    प्रत्यागम uxReturn;
 }
 /*-----------------------------------------------------------*/
 
-UBaseType_t uxQueueMessagesWaitingFromISR( const QueueHandle_t xQueue )
+UBaseType_t ux_Queue_Messages_प्रतीक्षा_From_ISR( ध्रुव QueueHandle_t xQueue )
 {
     UBaseType_t uxReturn;
-    Queue_t * const pxQueue = xQueue;
+    Queue_t * ध्रुव pxQueue = xQueue;
 
-    traceENTER_uxQueueMessagesWaitingFromISR( xQueue );
+    trace_ENTER_ux_Queue_Messages_प्रतीक्षा_From_ISR( xQueue );
 
     configASSERT( pxQueue );
-    uxReturn = pxQueue->uxMessagesWaiting;
+    uxReturn = pxQueue->ux_Messages_प्रतीक्षा;
 
-    traceRETURN_uxQueueMessagesWaitingFromISR( uxReturn );
+    trace_RETURN_ux_Queue_Messages_प्रतीक्षा_From_ISR( uxReturn );
 
-    return uxReturn;
+    प्रत्यागम uxReturn;
 }
 /*-----------------------------------------------------------*/
 
-void vQueueDelete( QueueHandle_t xQueue )
+शून्य vQueueDelete( QueueHandle_t xQueue )
 {
-    Queue_t * const pxQueue = xQueue;
+    Queue_t * ध्रुव pxQueue = xQueue;
 
     traceENTER_vQueueDelete( xQueue );
 
     configASSERT( pxQueue );
     traceQUEUE_DELETE( pxQueue );
 
-    #if ( configQUEUE_REGISTRY_SIZE > 0 )
+    #यदि ( config_QUEUE_REGISTRY_आकार > 0 )
     {
         vQueueUnregisterQueue( pxQueue );
     }
-    #endif
+    #यदि_अन्तः
 
-    #if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 0 ) )
+    #यदि ( ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 ) && ( config_SUPPORT_STATIC_आवण्टनम् == 0 ) )
     {
         /* The queue can only have been allocated dynamically - free it
          * again. */
-        vPortFree( pxQueue );
+        v_पत्तनम्_Free( pxQueue );
     }
-    #elif ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
+    #नोचेद्यदि ( ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 ) && ( config_SUPPORT_STATIC_आवण्टनम् == 1 ) )
     {
         /* The queue could have been allocated statically or dynamically, so
          * check before attempting to free the memory. */
-        if( pxQueue->ucStaticallyAllocated == ( uint8_t ) pdFALSE )
+        यदि( pxQueue->ucStaticallyAllocated == ( uint8_t ) pdFALSE )
         {
-            vPortFree( pxQueue );
+            v_पत्तनम्_Free( pxQueue );
         }
-        else
+        अन्यथा
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    #else /* if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 0 ) ) */
+    #अन्यथा /* if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 0 ) ) */
     {
         /* The queue must have been statically allocated, so is not going to be
          * deleted.  Avoid compiler warnings about the unused parameter. */
-        ( void ) pxQueue;
+        ( शून्य ) pxQueue;
     }
-    #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+    #यदि_अन्तः /* configSUPPORT_DYNAMIC_ALLOCATION */
 
     traceRETURN_vQueueDelete();
 }
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_TRACE_FACILITY == 1 )
+#यदि ( configUSE_TRACE_FACILITY == 1 )
 
-    UBaseType_t uxQueueGetQueueNumber( QueueHandle_t xQueue )
+    UBaseType_t ux_Queue_Get_Queue_सङ्ख्या( QueueHandle_t xQueue )
     {
-        traceENTER_uxQueueGetQueueNumber( xQueue );
+        trace_ENTER_ux_Queue_Get_Queue_सङ्ख्या( xQueue );
 
-        traceRETURN_uxQueueGetQueueNumber( ( ( Queue_t * ) xQueue )->uxQueueNumber );
+        trace_RETURN_ux_Queue_Get_Queue_सङ्ख्या( ( ( Queue_t * ) xQueue )->ux_Queue_सङ्ख्या );
 
-        return ( ( Queue_t * ) xQueue )->uxQueueNumber;
+        प्रत्यागम ( ( Queue_t * ) xQueue )->ux_Queue_सङ्ख्या;
     }
 
-#endif /* configUSE_TRACE_FACILITY */
+#यदि_अन्तः /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_TRACE_FACILITY == 1 )
+#यदि ( configUSE_TRACE_FACILITY == 1 )
 
-    void vQueueSetQueueNumber( QueueHandle_t xQueue,
-                               UBaseType_t uxQueueNumber )
+    शून्य v_Queue_समुच्चयः_Queue_सङ्ख्या( QueueHandle_t xQueue,
+                               UBaseType_t ux_Queue_सङ्ख्या )
     {
-        traceENTER_vQueueSetQueueNumber( xQueue, uxQueueNumber );
+        trace_ENTER_v_Queue_समुच्चयः_Queue_सङ्ख्या( xQueue, ux_Queue_सङ्ख्या );
 
-        ( ( Queue_t * ) xQueue )->uxQueueNumber = uxQueueNumber;
+        ( ( Queue_t * ) xQueue )->ux_Queue_सङ्ख्या = ux_Queue_सङ्ख्या;
 
-        traceRETURN_vQueueSetQueueNumber();
+        trace_RETURN_v_Queue_समुच्चयः_Queue_सङ्ख्या();
     }
 
-#endif /* configUSE_TRACE_FACILITY */
+#यदि_अन्तः /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_TRACE_FACILITY == 1 )
+#यदि ( configUSE_TRACE_FACILITY == 1 )
 
     uint8_t ucQueueGetQueueType( QueueHandle_t xQueue )
     {
@@ -2338,37 +2338,37 @@ void vQueueDelete( QueueHandle_t xQueue )
 
         traceRETURN_ucQueueGetQueueType( ( ( Queue_t * ) xQueue )->ucQueueType );
 
-        return ( ( Queue_t * ) xQueue )->ucQueueType;
+        प्रत्यागम ( ( Queue_t * ) xQueue )->ucQueueType;
     }
 
-#endif /* configUSE_TRACE_FACILITY */
+#यदि_अन्तः /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
-UBaseType_t uxQueueGetQueueItemSize( QueueHandle_t xQueue ) /* PRIVILEGED_FUNCTION */
+UBaseType_t ux_Queue_Get_Queue_Item_आकार( QueueHandle_t xQueue ) /* PRIVILEGED_FUNCTION */
 {
-    traceENTER_uxQueueGetQueueItemSize( xQueue );
+    trace_ENTER_ux_Queue_Get_Queue_Item_आकार( xQueue );
 
-    traceRETURN_uxQueueGetQueueItemSize( ( ( Queue_t * ) xQueue )->uxItemSize );
+    trace_RETURN_ux_Queue_Get_Queue_Item_आकार( ( ( Queue_t * ) xQueue )->ux_Item_आकार );
 
-    return ( ( Queue_t * ) xQueue )->uxItemSize;
+    प्रत्यागम ( ( Queue_t * ) xQueue )->ux_Item_आकार;
 }
 /*-----------------------------------------------------------*/
 
-UBaseType_t uxQueueGetQueueLength( QueueHandle_t xQueue ) /* PRIVILEGED_FUNCTION */
+UBaseType_t ux_Queue_Get_Queue_दीर्घता( QueueHandle_t xQueue ) /* PRIVILEGED_FUNCTION */
 {
-    traceENTER_uxQueueGetQueueLength( xQueue );
+    trace_ENTER_ux_Queue_Get_Queue_दीर्घता( xQueue );
 
-    traceRETURN_uxQueueGetQueueLength( ( ( Queue_t * ) xQueue )->uxLength );
+    trace_RETURN_ux_Queue_Get_Queue_दीर्घता( ( ( Queue_t * ) xQueue )->ux_दीर्घता );
 
-    return ( ( Queue_t * ) xQueue )->uxLength;
+    प्रत्यागम ( ( Queue_t * ) xQueue )->ux_दीर्घता;
 }
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_MUTEXES == 1 )
+#यदि ( configUSE_MUTEXES == 1 )
 
-    static UBaseType_t prvGetDisinheritPriorityAfterTimeout( const Queue_t * const pxQueue )
+    स्थिर UBaseType_t prv_Get_Disinherit_प्राथमिकता_After_Timeout( ध्रुव Queue_t * ध्रुव pxQueue )
     {
-        UBaseType_t uxHighestPriorityOfWaitingTasks;
+        UBaseType_t ux_Highest_प्राथमिकता_सम्बन्धि_प्रतीक्षा_Tasks;
 
         /* If a task waiting for a mutex causes the mutex holder to inherit a
          * priority, but the waiting task times out, then the holder should
@@ -2376,126 +2376,126 @@ UBaseType_t uxQueueGetQueueLength( QueueHandle_t xQueue ) /* PRIVILEGED_FUNCTION
          * other tasks that are waiting for the same mutex.  For this purpose,
          * return the priority of the highest priority task that is waiting for the
          * mutex. */
-        if( listCURRENT_LIST_LENGTH( &( pxQueue->xTasksWaitingToReceive ) ) > 0U )
+        यदि( list_CURRENT_LIST_दीर्घता( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) > 0U )
         {
-            uxHighestPriorityOfWaitingTasks = ( UBaseType_t ) ( ( UBaseType_t ) configMAX_PRIORITIES - ( UBaseType_t ) listGET_ITEM_VALUE_OF_HEAD_ENTRY( &( pxQueue->xTasksWaitingToReceive ) ) );
+            ux_Highest_प्राथमिकता_सम्बन्धि_प्रतीक्षा_Tasks = ( UBaseType_t ) ( ( UBaseType_t ) configMAX_PRIORITIES - ( UBaseType_t ) list_GET_ITEM_मानम्_सम्बन्धि_शीर्ष_प्रविष्टिः( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) );
         }
-        else
+        अन्यथा
         {
-            uxHighestPriorityOfWaitingTasks = tskIDLE_PRIORITY;
+            ux_Highest_प्राथमिकता_सम्बन्धि_प्रतीक्षा_Tasks = tsk_IDLE_प्राथमिकता;
         }
 
-        return uxHighestPriorityOfWaitingTasks;
+        प्रत्यागम ux_Highest_प्राथमिकता_सम्बन्धि_प्रतीक्षा_Tasks;
     }
 
-#endif /* configUSE_MUTEXES */
+#यदि_अन्तः /* configUSE_MUTEXES */
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvCopyDataToQueue( Queue_t * const pxQueue,
-                                      const void * pvItemToQueue,
-                                      const BaseType_t xPosition )
+स्थिर आधारः_Type_t prv_Copy_दत्त_गन्तव्यम्_Queue( Queue_t * ध्रुव pxQueue,
+                                      ध्रुव शून्य * pv_Item_गन्तव्यम्_Queue,
+                                      ध्रुव आधारः_Type_t xPosition )
 {
-    BaseType_t xReturn = pdFALSE;
-    UBaseType_t uxMessagesWaiting;
+    आधारः_Type_t xReturn = pdFALSE;
+    UBaseType_t ux_Messages_प्रतीक्षा;
 
     /* This function is called from a critical section. */
 
-    uxMessagesWaiting = pxQueue->uxMessagesWaiting;
+    ux_Messages_प्रतीक्षा = pxQueue->ux_Messages_प्रतीक्षा;
 
-    if( pxQueue->uxItemSize == ( UBaseType_t ) 0 )
+    यदि( pxQueue->ux_Item_आकार == ( UBaseType_t ) 0 )
     {
-        #if ( configUSE_MUTEXES == 1 )
+        #यदि ( configUSE_MUTEXES == 1 )
         {
-            if( pxQueue->uxQueueType == queueQUEUE_IS_MUTEX )
+            यदि( pxQueue->uxQueueType == queueQUEUE_IS_MUTEX )
             {
                 /* The mutex is no longer being held. */
-                xReturn = xTaskPriorityDisinherit( pxQueue->u.xSemaphore.xMutexHolder );
-                pxQueue->u.xSemaphore.xMutexHolder = NULL;
+                xReturn = x_Task_प्राथमिकता_Disinherit( pxQueue->u.xSemaphore.xMutexHolder );
+                pxQueue->u.xSemaphore.xMutexHolder = रिक्त;
             }
-            else
+            अन्यथा
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
-        #endif /* configUSE_MUTEXES */
+        #यदि_अन्तः /* configUSE_MUTEXES */
     }
-    else if( xPosition == queueSEND_TO_BACK )
+    अन्यथा यदि( xPosition == queue_SEND_गन्तव्यम्_पृष्ठभागः )
     {
-        ( void ) memcpy( ( void * ) pxQueue->pcWriteTo, pvItemToQueue, ( size_t ) pxQueue->uxItemSize );
-        pxQueue->pcWriteTo += pxQueue->uxItemSize;
+        ( शून्य ) स्मृतिं_प्रतिलिख( ( शून्य * ) pxQueue->pc_Write_गन्तव्यम्, pv_Item_गन्तव्यम्_Queue, ( size_t ) pxQueue->ux_Item_आकार );
+        pxQueue->pc_Write_गन्तव्यम् += pxQueue->ux_Item_आकार;
 
-        if( pxQueue->pcWriteTo >= pxQueue->u.xQueue.pcTail )
+        यदि( pxQueue->pc_Write_गन्तव्यम् >= pxQueue->u.xQueue.pc_पुच्छ )
         {
-            pxQueue->pcWriteTo = pxQueue->pcHead;
+            pxQueue->pc_Write_गन्तव्यम् = pxQueue->pc_शीर्ष;
         }
-        else
+        अन्यथा
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    अन्यथा
     {
-        ( void ) memcpy( ( void * ) pxQueue->u.xQueue.pcReadFrom, pvItemToQueue, ( size_t ) pxQueue->uxItemSize );
-        pxQueue->u.xQueue.pcReadFrom -= pxQueue->uxItemSize;
+        ( शून्य ) स्मृतिं_प्रतिलिख( ( शून्य * ) pxQueue->u.xQueue.pcReadFrom, pv_Item_गन्तव्यम्_Queue, ( size_t ) pxQueue->ux_Item_आकार );
+        pxQueue->u.xQueue.pcReadFrom -= pxQueue->ux_Item_आकार;
 
-        if( pxQueue->u.xQueue.pcReadFrom < pxQueue->pcHead )
+        यदि( pxQueue->u.xQueue.pcReadFrom < pxQueue->pc_शीर्ष )
         {
-            pxQueue->u.xQueue.pcReadFrom = ( pxQueue->u.xQueue.pcTail - pxQueue->uxItemSize );
+            pxQueue->u.xQueue.pcReadFrom = ( pxQueue->u.xQueue.pc_पुच्छ - pxQueue->ux_Item_आकार );
         }
-        else
+        अन्यथा
         {
             mtCOVERAGE_TEST_MARKER();
         }
 
-        if( xPosition == queueOVERWRITE )
+        यदि( xPosition == queueOVERWRITE )
         {
-            if( uxMessagesWaiting > ( UBaseType_t ) 0 )
+            यदि( ux_Messages_प्रतीक्षा > ( UBaseType_t ) 0 )
             {
                 /* An item is not being added but overwritten, so subtract
                  * one from the recorded number of items in the queue so when
                  * one is added again below the number of recorded items remains
                  * correct. */
-                --uxMessagesWaiting;
+                --ux_Messages_प्रतीक्षा;
             }
-            else
+            अन्यथा
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
-        else
+        अन्यथा
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
 
-    pxQueue->uxMessagesWaiting = ( UBaseType_t ) ( uxMessagesWaiting + ( UBaseType_t ) 1 );
+    pxQueue->ux_Messages_प्रतीक्षा = ( UBaseType_t ) ( ux_Messages_प्रतीक्षा + ( UBaseType_t ) 1 );
 
-    return xReturn;
+    प्रत्यागम xReturn;
 }
 /*-----------------------------------------------------------*/
 
-static void prvCopyDataFromQueue( Queue_t * const pxQueue,
-                                  void * const pvBuffer )
+स्थिर शून्य prv_Copy_दत्त_From_Queue( Queue_t * ध्रुव pxQueue,
+                                  शून्य * ध्रुव pv_बफर )
 {
-    if( pxQueue->uxItemSize != ( UBaseType_t ) 0 )
+    यदि( pxQueue->ux_Item_आकार != ( UBaseType_t ) 0 )
     {
-        pxQueue->u.xQueue.pcReadFrom += pxQueue->uxItemSize;
+        pxQueue->u.xQueue.pcReadFrom += pxQueue->ux_Item_आकार;
 
-        if( pxQueue->u.xQueue.pcReadFrom >= pxQueue->u.xQueue.pcTail )
+        यदि( pxQueue->u.xQueue.pcReadFrom >= pxQueue->u.xQueue.pc_पुच्छ )
         {
-            pxQueue->u.xQueue.pcReadFrom = pxQueue->pcHead;
+            pxQueue->u.xQueue.pcReadFrom = pxQueue->pc_शीर्ष;
         }
-        else
+        अन्यथा
         {
             mtCOVERAGE_TEST_MARKER();
         }
 
-        ( void ) memcpy( ( void * ) pvBuffer, ( void * ) pxQueue->u.xQueue.pcReadFrom, ( size_t ) pxQueue->uxItemSize );
+        ( शून्य ) स्मृतिं_प्रतिलिख( ( शून्य * ) pv_बफर, ( शून्य * ) pxQueue->u.xQueue.pcReadFrom, ( size_t ) pxQueue->ux_Item_आकार );
     }
 }
 /*-----------------------------------------------------------*/
 
-static void prvUnlockQueue( Queue_t * const pxQueue )
+स्थिर शून्य prvUnlockQueue( Queue_t * ध्रुव pxQueue )
 {
     /* THIS FUNCTION MUST BE CALLED WITH THE SCHEDULER SUSPENDED. */
 
@@ -2505,566 +2505,566 @@ static void prvUnlockQueue( Queue_t * const pxQueue )
      * updated. */
     taskENTER_CRITICAL();
     {
-        int8_t cTxLock = pxQueue->cTxLock;
+        int8_t c_Tx_तालकम् = pxQueue->c_Tx_तालकम्;
 
         /* See if data was added to the queue while it was locked. */
-        while( cTxLock > queueLOCKED_UNMODIFIED )
+        यावत्( c_Tx_तालकम् > queueLOCKED_UNMODIFIED )
         {
             /* Data was posted while the queue was locked.  Are any tasks
              * blocked waiting for data to become available? */
-            #if ( configUSE_QUEUE_SETS == 1 )
+            #यदि ( configUSE_QUEUE_SETS == 1 )
             {
-                if( pxQueue->pxQueueSetContainer != NULL )
+                यदि( pxQueue->px_Queue_समुच्चयः_Container != रिक्त )
                 {
-                    if( prvNotifyQueueSetContainer( pxQueue ) != pdFALSE )
+                    यदि( prv_Notify_Queue_समुच्चयः_Container( pxQueue ) != pdFALSE )
                     {
                         /* The queue is a member of a queue set, and posting to
                          * the queue set caused a higher priority task to unblock.
                          * A context switch is required. */
                         vTaskMissedYield();
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                अन्यथा
                 {
                     /* Tasks that are removed from the event list will get
                      * added to the pending ready list as the scheduler is still
                      * suspended. */
-                    if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                    यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) == pdFALSE )
                     {
-                        if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                        यदि( xTaskRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) != pdFALSE )
                         {
                             /* The task waiting has a higher priority so record that a
                              * context switch is required. */
                             vTaskMissedYield();
                         }
-                        else
+                        अन्यथा
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else
+                    अन्यथा
                     {
-                        break;
+                        भङ्ग;
                     }
                 }
             }
-            #else /* configUSE_QUEUE_SETS */
+            #अन्यथा /* configUSE_QUEUE_SETS */
             {
                 /* Tasks that are removed from the event list will get added to
                  * the pending ready list as the scheduler is still suspended. */
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) == pdFALSE )
                 {
-                    if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                    यदि( xTaskRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) != pdFALSE )
                     {
                         /* The task waiting has a higher priority so record that
                          * a context switch is required. */
                         vTaskMissedYield();
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                अन्यथा
                 {
-                    break;
+                    भङ्ग;
                 }
             }
-            #endif /* configUSE_QUEUE_SETS */
+            #यदि_अन्तः /* configUSE_QUEUE_SETS */
 
-            --cTxLock;
+            --c_Tx_तालकम्;
         }
 
-        pxQueue->cTxLock = queueUNLOCKED;
+        pxQueue->c_Tx_तालकम् = queueUNLOCKED;
     }
     taskEXIT_CRITICAL();
 
     /* Do the same for the Rx lock. */
     taskENTER_CRITICAL();
     {
-        int8_t cRxLock = pxQueue->cRxLock;
+        int8_t c_Rx_तालकम् = pxQueue->c_Rx_तालकम्;
 
-        while( cRxLock > queueLOCKED_UNMODIFIED )
+        यावत्( c_Rx_तालकम् > queueLOCKED_UNMODIFIED )
         {
-            if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
+            यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ) ) == pdFALSE )
             {
-                if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToSend ) ) != pdFALSE )
+                यदि( xTaskRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ) ) != pdFALSE )
                 {
                     vTaskMissedYield();
                 }
-                else
+                अन्यथा
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
 
-                --cRxLock;
+                --c_Rx_तालकम्;
             }
-            else
+            अन्यथा
             {
-                break;
+                भङ्ग;
             }
         }
 
-        pxQueue->cRxLock = queueUNLOCKED;
+        pxQueue->c_Rx_तालकम् = queueUNLOCKED;
     }
     taskEXIT_CRITICAL();
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvIsQueueEmpty( const Queue_t * pxQueue )
+स्थिर आधारः_Type_t prv_Is_Queue_रिक्तानि( ध्रुव Queue_t * pxQueue )
 {
-    BaseType_t xReturn;
+    आधारः_Type_t xReturn;
 
     taskENTER_CRITICAL();
     {
-        if( pxQueue->uxMessagesWaiting == ( UBaseType_t ) 0 )
+        यदि( pxQueue->ux_Messages_प्रतीक्षा == ( UBaseType_t ) 0 )
         {
             xReturn = pdTRUE;
         }
-        else
+        अन्यथा
         {
             xReturn = pdFALSE;
         }
     }
     taskEXIT_CRITICAL();
 
-    return xReturn;
+    प्रत्यागम xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueIsQueueEmptyFromISR( const QueueHandle_t xQueue )
+आधारः_Type_t x_Queue_Is_Queue_रिक्तानि_From_ISR( ध्रुव QueueHandle_t xQueue )
 {
-    BaseType_t xReturn;
-    Queue_t * const pxQueue = xQueue;
+    आधारः_Type_t xReturn;
+    Queue_t * ध्रुव pxQueue = xQueue;
 
-    traceENTER_xQueueIsQueueEmptyFromISR( xQueue );
+    trace_ENTER_x_Queue_Is_Queue_रिक्तानि_From_ISR( xQueue );
 
     configASSERT( pxQueue );
 
-    if( pxQueue->uxMessagesWaiting == ( UBaseType_t ) 0 )
+    यदि( pxQueue->ux_Messages_प्रतीक्षा == ( UBaseType_t ) 0 )
     {
         xReturn = pdTRUE;
     }
-    else
+    अन्यथा
     {
         xReturn = pdFALSE;
     }
 
-    traceRETURN_xQueueIsQueueEmptyFromISR( xReturn );
+    trace_RETURN_x_Queue_Is_Queue_रिक्तानि_From_ISR( xReturn );
 
-    return xReturn;
+    प्रत्यागम xReturn;
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvIsQueueFull( const Queue_t * pxQueue )
+स्थिर आधारः_Type_t prv_Is_Queue_पूर्णम्( ध्रुव Queue_t * pxQueue )
 {
-    BaseType_t xReturn;
+    आधारः_Type_t xReturn;
 
     taskENTER_CRITICAL();
     {
-        if( pxQueue->uxMessagesWaiting == pxQueue->uxLength )
+        यदि( pxQueue->ux_Messages_प्रतीक्षा == pxQueue->ux_दीर्घता )
         {
             xReturn = pdTRUE;
         }
-        else
+        अन्यथा
         {
             xReturn = pdFALSE;
         }
     }
     taskEXIT_CRITICAL();
 
-    return xReturn;
+    प्रत्यागम xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue )
+आधारः_Type_t x_Queue_Is_Queue_पूर्णम्_From_ISR( ध्रुव QueueHandle_t xQueue )
 {
-    BaseType_t xReturn;
-    Queue_t * const pxQueue = xQueue;
+    आधारः_Type_t xReturn;
+    Queue_t * ध्रुव pxQueue = xQueue;
 
-    traceENTER_xQueueIsQueueFullFromISR( xQueue );
+    trace_ENTER_x_Queue_Is_Queue_पूर्णम्_From_ISR( xQueue );
 
     configASSERT( pxQueue );
 
-    if( pxQueue->uxMessagesWaiting == pxQueue->uxLength )
+    यदि( pxQueue->ux_Messages_प्रतीक्षा == pxQueue->ux_दीर्घता )
     {
         xReturn = pdTRUE;
     }
-    else
+    अन्यथा
     {
         xReturn = pdFALSE;
     }
 
-    traceRETURN_xQueueIsQueueFullFromISR( xReturn );
+    trace_RETURN_x_Queue_Is_Queue_पूर्णम्_From_ISR( xReturn );
 
-    return xReturn;
+    प्रत्यागम xReturn;
 }
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_CO_ROUTINES == 1 )
+#यदि ( configUSE_CO_ROUTINES == 1 )
 
-    BaseType_t xQueueCRSend( QueueHandle_t xQueue,
-                             const void * pvItemToQueue,
-                             TickType_t xTicksToWait )
+    आधारः_Type_t xQueueCRSend( QueueHandle_t xQueue,
+                             ध्रुव शून्य * pv_Item_गन्तव्यम्_Queue,
+                             TickType_t x_Ticks_गन्तव्यम्_Wait )
     {
-        BaseType_t xReturn;
-        Queue_t * const pxQueue = xQueue;
+        आधारः_Type_t xReturn;
+        Queue_t * ध्रुव pxQueue = xQueue;
 
-        traceENTER_xQueueCRSend( xQueue, pvItemToQueue, xTicksToWait );
+        traceENTER_xQueueCRSend( xQueue, pv_Item_गन्तव्यम्_Queue, x_Ticks_गन्तव्यम्_Wait );
 
         /* If the queue is already full we may have to block.  A critical section
          * is required to prevent an interrupt removing something from the queue
          * between the check to see if the queue is full and blocking on the queue. */
-        portDISABLE_INTERRUPTS();
+        पत्तनम्_DISABLE_INTERRUPTS();
         {
-            if( prvIsQueueFull( pxQueue ) != pdFALSE )
+            यदि( prv_Is_Queue_पूर्णम्( pxQueue ) != pdFALSE )
             {
                 /* The queue is full - do we want to block or just leave without
                  * posting? */
-                if( xTicksToWait > ( TickType_t ) 0 )
+                यदि( x_Ticks_गन्तव्यम्_Wait > ( TickType_t ) 0 )
                 {
                     /* As this is called from a coroutine we cannot block directly, but
                      * return indicating that we need to block. */
-                    vCoRoutineAddToDelayedList( xTicksToWait, &( pxQueue->xTasksWaitingToSend ) );
-                    portENABLE_INTERRUPTS();
-                    return errQUEUE_BLOCKED;
+                    v_Co_Routine_सङ्कलय_गन्तव्यम्_Delayed_List( x_Ticks_गन्तव्यम्_Wait, &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ) );
+                    पत्तनम्_ENABLE_INTERRUPTS();
+                    प्रत्यागम errQUEUE_BLOCKED;
                 }
-                else
+                अन्यथा
                 {
-                    portENABLE_INTERRUPTS();
-                    return errQUEUE_FULL;
+                    पत्तनम्_ENABLE_INTERRUPTS();
+                    प्रत्यागम err_QUEUE_पूर्णम्;
                 }
             }
         }
-        portENABLE_INTERRUPTS();
+        पत्तनम्_ENABLE_INTERRUPTS();
 
-        portDISABLE_INTERRUPTS();
+        पत्तनम्_DISABLE_INTERRUPTS();
         {
-            if( pxQueue->uxMessagesWaiting < pxQueue->uxLength )
+            यदि( pxQueue->ux_Messages_प्रतीक्षा < pxQueue->ux_दीर्घता )
             {
                 /* There is room in the queue, copy the data into the queue. */
-                prvCopyDataToQueue( pxQueue, pvItemToQueue, queueSEND_TO_BACK );
+                prv_Copy_दत्त_गन्तव्यम्_Queue( pxQueue, pv_Item_गन्तव्यम्_Queue, queue_SEND_गन्तव्यम्_पृष्ठभागः );
                 xReturn = pdPASS;
 
                 /* Were any co-routines waiting for data to become available? */
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) == pdFALSE )
                 {
                     /* In this instance the co-routine could be placed directly
                      * into the ready list as we are within a critical section.
                      * Instead the same pending ready list mechanism is used as if
                      * the event were caused from within an interrupt. */
-                    if( xCoRoutineRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                    यदि( xCoRoutineRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) != pdFALSE )
                     {
                         /* The co-routine waiting has a higher priority so record
                          * that a yield might be appropriate. */
                         xReturn = errQUEUE_YIELD;
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                अन्यथा
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            अन्यथा
             {
-                xReturn = errQUEUE_FULL;
+                xReturn = err_QUEUE_पूर्णम्;
             }
         }
-        portENABLE_INTERRUPTS();
+        पत्तनम्_ENABLE_INTERRUPTS();
 
         traceRETURN_xQueueCRSend( xReturn );
 
-        return xReturn;
+        प्रत्यागम xReturn;
     }
 
-#endif /* configUSE_CO_ROUTINES */
+#यदि_अन्तः /* configUSE_CO_ROUTINES */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_CO_ROUTINES == 1 )
+#यदि ( configUSE_CO_ROUTINES == 1 )
 
-    BaseType_t xQueueCRReceive( QueueHandle_t xQueue,
-                                void * pvBuffer,
-                                TickType_t xTicksToWait )
+    आधारः_Type_t xQueueCRReceive( QueueHandle_t xQueue,
+                                शून्य * pv_बफर,
+                                TickType_t x_Ticks_गन्तव्यम्_Wait )
     {
-        BaseType_t xReturn;
-        Queue_t * const pxQueue = xQueue;
+        आधारः_Type_t xReturn;
+        Queue_t * ध्रुव pxQueue = xQueue;
 
-        traceENTER_xQueueCRReceive( xQueue, pvBuffer, xTicksToWait );
+        traceENTER_xQueueCRReceive( xQueue, pv_बफर, x_Ticks_गन्तव्यम्_Wait );
 
         /* If the queue is already empty we may have to block.  A critical section
          * is required to prevent an interrupt adding something to the queue
          * between the check to see if the queue is empty and blocking on the queue. */
-        portDISABLE_INTERRUPTS();
+        पत्तनम्_DISABLE_INTERRUPTS();
         {
-            if( pxQueue->uxMessagesWaiting == ( UBaseType_t ) 0 )
+            यदि( pxQueue->ux_Messages_प्रतीक्षा == ( UBaseType_t ) 0 )
             {
                 /* There are no messages in the queue, do we want to block or just
                  * leave with nothing? */
-                if( xTicksToWait > ( TickType_t ) 0 )
+                यदि( x_Ticks_गन्तव्यम्_Wait > ( TickType_t ) 0 )
                 {
                     /* As this is a co-routine we cannot block directly, but return
                      * indicating that we need to block. */
-                    vCoRoutineAddToDelayedList( xTicksToWait, &( pxQueue->xTasksWaitingToReceive ) );
-                    portENABLE_INTERRUPTS();
-                    return errQUEUE_BLOCKED;
+                    v_Co_Routine_सङ्कलय_गन्तव्यम्_Delayed_List( x_Ticks_गन्तव्यम्_Wait, &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) );
+                    पत्तनम्_ENABLE_INTERRUPTS();
+                    प्रत्यागम errQUEUE_BLOCKED;
                 }
-                else
+                अन्यथा
                 {
-                    portENABLE_INTERRUPTS();
-                    return errQUEUE_FULL;
+                    पत्तनम्_ENABLE_INTERRUPTS();
+                    प्रत्यागम err_QUEUE_पूर्णम्;
                 }
             }
-            else
+            अन्यथा
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
-        portENABLE_INTERRUPTS();
+        पत्तनम्_ENABLE_INTERRUPTS();
 
-        portDISABLE_INTERRUPTS();
+        पत्तनम्_DISABLE_INTERRUPTS();
         {
-            if( pxQueue->uxMessagesWaiting > ( UBaseType_t ) 0 )
+            यदि( pxQueue->ux_Messages_प्रतीक्षा > ( UBaseType_t ) 0 )
             {
                 /* Data is available from the queue. */
-                pxQueue->u.xQueue.pcReadFrom += pxQueue->uxItemSize;
+                pxQueue->u.xQueue.pcReadFrom += pxQueue->ux_Item_आकार;
 
-                if( pxQueue->u.xQueue.pcReadFrom >= pxQueue->u.xQueue.pcTail )
+                यदि( pxQueue->u.xQueue.pcReadFrom >= pxQueue->u.xQueue.pc_पुच्छ )
                 {
-                    pxQueue->u.xQueue.pcReadFrom = pxQueue->pcHead;
+                    pxQueue->u.xQueue.pcReadFrom = pxQueue->pc_शीर्ष;
                 }
-                else
+                अन्यथा
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
 
-                --( pxQueue->uxMessagesWaiting );
-                ( void ) memcpy( ( void * ) pvBuffer, ( void * ) pxQueue->u.xQueue.pcReadFrom, ( unsigned ) pxQueue->uxItemSize );
+                --( pxQueue->ux_Messages_प्रतीक्षा );
+                ( शून्य ) स्मृतिं_प्रतिलिख( ( शून्य * ) pv_बफर, ( शून्य * ) pxQueue->u.xQueue.pcReadFrom, ( अचिह्नित ) pxQueue->ux_Item_आकार );
 
                 xReturn = pdPASS;
 
                 /* Were any co-routines waiting for space to become available? */
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
+                यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ) ) == pdFALSE )
                 {
                     /* In this instance the co-routine could be placed directly
                      * into the ready list as we are within a critical section.
                      * Instead the same pending ready list mechanism is used as if
                      * the event were caused from within an interrupt. */
-                    if( xCoRoutineRemoveFromEventList( &( pxQueue->xTasksWaitingToSend ) ) != pdFALSE )
+                    यदि( xCoRoutineRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ) ) != pdFALSE )
                     {
                         xReturn = errQUEUE_YIELD;
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                अन्यथा
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            अन्यथा
             {
                 xReturn = pdFAIL;
             }
         }
-        portENABLE_INTERRUPTS();
+        पत्तनम्_ENABLE_INTERRUPTS();
 
         traceRETURN_xQueueCRReceive( xReturn );
 
-        return xReturn;
+        प्रत्यागम xReturn;
     }
 
-#endif /* configUSE_CO_ROUTINES */
+#यदि_अन्तः /* configUSE_CO_ROUTINES */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_CO_ROUTINES == 1 )
+#यदि ( configUSE_CO_ROUTINES == 1 )
 
-    BaseType_t xQueueCRSendFromISR( QueueHandle_t xQueue,
-                                    const void * pvItemToQueue,
-                                    BaseType_t xCoRoutinePreviouslyWoken )
+    आधारः_Type_t xQueueCRSendFromISR( QueueHandle_t xQueue,
+                                    ध्रुव शून्य * pv_Item_गन्तव्यम्_Queue,
+                                    आधारः_Type_t xCoRoutinePreviouslyWoken )
     {
-        Queue_t * const pxQueue = xQueue;
+        Queue_t * ध्रुव pxQueue = xQueue;
 
-        traceENTER_xQueueCRSendFromISR( xQueue, pvItemToQueue, xCoRoutinePreviouslyWoken );
+        traceENTER_xQueueCRSendFromISR( xQueue, pv_Item_गन्तव्यम्_Queue, xCoRoutinePreviouslyWoken );
 
         /* Cannot block within an ISR so if there is no space on the queue then
          * exit without doing anything. */
-        if( pxQueue->uxMessagesWaiting < pxQueue->uxLength )
+        यदि( pxQueue->ux_Messages_प्रतीक्षा < pxQueue->ux_दीर्घता )
         {
-            prvCopyDataToQueue( pxQueue, pvItemToQueue, queueSEND_TO_BACK );
+            prv_Copy_दत्त_गन्तव्यम्_Queue( pxQueue, pv_Item_गन्तव्यम्_Queue, queue_SEND_गन्तव्यम्_पृष्ठभागः );
 
             /* We only want to wake one co-routine per ISR, so check that a
              * co-routine has not already been woken. */
-            if( xCoRoutinePreviouslyWoken == pdFALSE )
+            यदि( xCoRoutinePreviouslyWoken == pdFALSE )
             {
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) == pdFALSE )
                 {
-                    if( xCoRoutineRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                    यदि( xCoRoutineRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) != pdFALSE )
                     {
-                        return pdTRUE;
+                        प्रत्यागम pdTRUE;
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                अन्यथा
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            अन्यथा
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
-        else
+        अन्यथा
         {
             mtCOVERAGE_TEST_MARKER();
         }
 
         traceRETURN_xQueueCRSendFromISR( xCoRoutinePreviouslyWoken );
 
-        return xCoRoutinePreviouslyWoken;
+        प्रत्यागम xCoRoutinePreviouslyWoken;
     }
 
-#endif /* configUSE_CO_ROUTINES */
+#यदि_अन्तः /* configUSE_CO_ROUTINES */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_CO_ROUTINES == 1 )
+#यदि ( configUSE_CO_ROUTINES == 1 )
 
-    BaseType_t xQueueCRReceiveFromISR( QueueHandle_t xQueue,
-                                       void * pvBuffer,
-                                       BaseType_t * pxCoRoutineWoken )
+    आधारः_Type_t xQueueCRReceiveFromISR( QueueHandle_t xQueue,
+                                       शून्य * pv_बफर,
+                                       आधारः_Type_t * pxCoRoutineWoken )
     {
-        BaseType_t xReturn;
-        Queue_t * const pxQueue = xQueue;
+        आधारः_Type_t xReturn;
+        Queue_t * ध्रुव pxQueue = xQueue;
 
-        traceENTER_xQueueCRReceiveFromISR( xQueue, pvBuffer, pxCoRoutineWoken );
+        traceENTER_xQueueCRReceiveFromISR( xQueue, pv_बफर, pxCoRoutineWoken );
 
         /* We cannot block from an ISR, so check there is data available. If
          * not then just leave without doing anything. */
-        if( pxQueue->uxMessagesWaiting > ( UBaseType_t ) 0 )
+        यदि( pxQueue->ux_Messages_प्रतीक्षा > ( UBaseType_t ) 0 )
         {
             /* Copy the data from the queue. */
-            pxQueue->u.xQueue.pcReadFrom += pxQueue->uxItemSize;
+            pxQueue->u.xQueue.pcReadFrom += pxQueue->ux_Item_आकार;
 
-            if( pxQueue->u.xQueue.pcReadFrom >= pxQueue->u.xQueue.pcTail )
+            यदि( pxQueue->u.xQueue.pcReadFrom >= pxQueue->u.xQueue.pc_पुच्छ )
             {
-                pxQueue->u.xQueue.pcReadFrom = pxQueue->pcHead;
+                pxQueue->u.xQueue.pcReadFrom = pxQueue->pc_शीर्ष;
             }
-            else
+            अन्यथा
             {
                 mtCOVERAGE_TEST_MARKER();
             }
 
-            --( pxQueue->uxMessagesWaiting );
-            ( void ) memcpy( ( void * ) pvBuffer, ( void * ) pxQueue->u.xQueue.pcReadFrom, ( unsigned ) pxQueue->uxItemSize );
+            --( pxQueue->ux_Messages_प्रतीक्षा );
+            ( शून्य ) स्मृतिं_प्रतिलिख( ( शून्य * ) pv_बफर, ( शून्य * ) pxQueue->u.xQueue.pcReadFrom, ( अचिह्नित ) pxQueue->ux_Item_आकार );
 
-            if( ( *pxCoRoutineWoken ) == pdFALSE )
+            यदि( ( *pxCoRoutineWoken ) == pdFALSE )
             {
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
+                यदि( list_LIST_IS_रिक्तानि( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ) ) == pdFALSE )
                 {
-                    if( xCoRoutineRemoveFromEventList( &( pxQueue->xTasksWaitingToSend ) ) != pdFALSE )
+                    यदि( xCoRoutineRemoveFromEventList( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Send ) ) != pdFALSE )
                     {
                         *pxCoRoutineWoken = pdTRUE;
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                अन्यथा
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            अन्यथा
             {
                 mtCOVERAGE_TEST_MARKER();
             }
 
             xReturn = pdPASS;
         }
-        else
+        अन्यथा
         {
             xReturn = pdFAIL;
         }
 
         traceRETURN_xQueueCRReceiveFromISR( xReturn );
 
-        return xReturn;
+        प्रत्यागम xReturn;
     }
 
-#endif /* configUSE_CO_ROUTINES */
+#यदि_अन्तः /* configUSE_CO_ROUTINES */
 /*-----------------------------------------------------------*/
 
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
+#यदि ( config_QUEUE_REGISTRY_आकार > 0 )
 
-    void vQueueAddToRegistry( QueueHandle_t xQueue,
-                              const char * pcQueueName )
+    शून्य v_Queue_सङ्कलय_गन्तव्यम्_Registry( QueueHandle_t xQueue,
+                              ध्रुव वर्ण * pcQueueName )
     {
         UBaseType_t ux;
-        QueueRegistryItem_t * pxEntryToWrite = NULL;
+        QueueRegistryItem_t * px_प्रविष्टिः_गन्तव्यम्_Write = रिक्त;
 
-        traceENTER_vQueueAddToRegistry( xQueue, pcQueueName );
+        trace_ENTER_v_Queue_सङ्कलय_गन्तव्यम्_Registry( xQueue, pcQueueName );
 
         configASSERT( xQueue );
 
-        if( pcQueueName != NULL )
+        यदि( pcQueueName != रिक्त )
         {
             /* See if there is an empty space in the registry.  A NULL name denotes
              * a free slot. */
-            for( ux = ( UBaseType_t ) 0U; ux < ( UBaseType_t ) configQUEUE_REGISTRY_SIZE; ux++ )
+            प्रति( ux = ( UBaseType_t ) 0U; ux < ( UBaseType_t ) config_QUEUE_REGISTRY_आकार; ux++ )
             {
                 /* Replace an existing entry if the queue is already in the registry. */
-                if( xQueue == xQueueRegistry[ ux ].xHandle )
+                यदि( xQueue == xQueueRegistry[ ux ].xHandle )
                 {
-                    pxEntryToWrite = &( xQueueRegistry[ ux ] );
-                    break;
+                    px_प्रविष्टिः_गन्तव्यम्_Write = &( xQueueRegistry[ ux ] );
+                    भङ्ग;
                 }
                 /* Otherwise, store in the next empty location */
-                else if( ( pxEntryToWrite == NULL ) && ( xQueueRegistry[ ux ].pcQueueName == NULL ) )
+                अन्यथा यदि( ( px_प्रविष्टिः_गन्तव्यम्_Write == रिक्त ) && ( xQueueRegistry[ ux ].pcQueueName == रिक्त ) )
                 {
-                    pxEntryToWrite = &( xQueueRegistry[ ux ] );
+                    px_प्रविष्टिः_गन्तव्यम्_Write = &( xQueueRegistry[ ux ] );
                 }
-                else
+                अन्यथा
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
         }
 
-        if( pxEntryToWrite != NULL )
+        यदि( px_प्रविष्टिः_गन्तव्यम्_Write != रिक्त )
         {
             /* Store the information on this queue. */
-            pxEntryToWrite->pcQueueName = pcQueueName;
-            pxEntryToWrite->xHandle = xQueue;
+            px_प्रविष्टिः_गन्तव्यम्_Write->pcQueueName = pcQueueName;
+            px_प्रविष्टिः_गन्तव्यम्_Write->xHandle = xQueue;
 
-            traceQUEUE_REGISTRY_ADD( xQueue, pcQueueName );
+            trace_QUEUE_REGISTRY_सङ्कलय( xQueue, pcQueueName );
         }
 
-        traceRETURN_vQueueAddToRegistry();
+        trace_RETURN_v_Queue_सङ्कलय_गन्तव्यम्_Registry();
     }
 
-#endif /* configQUEUE_REGISTRY_SIZE */
+#यदि_अन्तः /* configQUEUE_REGISTRY_SIZE */
 /*-----------------------------------------------------------*/
 
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
+#यदि ( config_QUEUE_REGISTRY_आकार > 0 )
 
-    const char * pcQueueGetName( QueueHandle_t xQueue )
+    ध्रुव वर्ण * pcQueueGetName( QueueHandle_t xQueue )
     {
         UBaseType_t ux;
-        const char * pcReturn = NULL;
+        ध्रुव वर्ण * pcReturn = रिक्त;
 
         traceENTER_pcQueueGetName( xQueue );
 
@@ -3073,14 +3073,14 @@ BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue )
         /* Note there is nothing here to protect against another task adding or
          * removing entries from the registry while it is being searched. */
 
-        for( ux = ( UBaseType_t ) 0U; ux < ( UBaseType_t ) configQUEUE_REGISTRY_SIZE; ux++ )
+        प्रति( ux = ( UBaseType_t ) 0U; ux < ( UBaseType_t ) config_QUEUE_REGISTRY_आकार; ux++ )
         {
-            if( xQueueRegistry[ ux ].xHandle == xQueue )
+            यदि( xQueueRegistry[ ux ].xHandle == xQueue )
             {
                 pcReturn = xQueueRegistry[ ux ].pcQueueName;
-                break;
+                भङ्ग;
             }
-            else
+            अन्यथा
             {
                 mtCOVERAGE_TEST_MARKER();
             }
@@ -3088,15 +3088,15 @@ BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue )
 
         traceRETURN_pcQueueGetName( pcReturn );
 
-        return pcReturn;
+        प्रत्यागम pcReturn;
     }
 
-#endif /* configQUEUE_REGISTRY_SIZE */
+#यदि_अन्तः /* configQUEUE_REGISTRY_SIZE */
 /*-----------------------------------------------------------*/
 
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
+#यदि ( config_QUEUE_REGISTRY_आकार > 0 )
 
-    void vQueueUnregisterQueue( QueueHandle_t xQueue )
+    शून्य vQueueUnregisterQueue( QueueHandle_t xQueue )
     {
         UBaseType_t ux;
 
@@ -3106,20 +3106,20 @@ BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue )
 
         /* See if the handle of the queue being unregistered in actually in the
          * registry. */
-        for( ux = ( UBaseType_t ) 0U; ux < ( UBaseType_t ) configQUEUE_REGISTRY_SIZE; ux++ )
+        प्रति( ux = ( UBaseType_t ) 0U; ux < ( UBaseType_t ) config_QUEUE_REGISTRY_आकार; ux++ )
         {
-            if( xQueueRegistry[ ux ].xHandle == xQueue )
+            यदि( xQueueRegistry[ ux ].xHandle == xQueue )
             {
                 /* Set the name to NULL to show that this slot if free again. */
-                xQueueRegistry[ ux ].pcQueueName = NULL;
+                xQueueRegistry[ ux ].pcQueueName = रिक्त;
 
                 /* Set the handle to NULL to ensure the same queue handle cannot
                  * appear in the registry twice if it is added, removed, then
                  * added again. */
                 xQueueRegistry[ ux ].xHandle = ( QueueHandle_t ) 0;
-                break;
+                भङ्ग;
             }
-            else
+            अन्यथा
             {
                 mtCOVERAGE_TEST_MARKER();
             }
@@ -3128,18 +3128,18 @@ BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue )
         traceRETURN_vQueueUnregisterQueue();
     }
 
-#endif /* configQUEUE_REGISTRY_SIZE */
+#यदि_अन्तः /* configQUEUE_REGISTRY_SIZE */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_TIMERS == 1 )
+#यदि ( configUSE_TIMERS == 1 )
 
-    void vQueueWaitForMessageRestricted( QueueHandle_t xQueue,
-                                         TickType_t xTicksToWait,
-                                         const BaseType_t xWaitIndefinitely )
+    शून्य v_Queue_Wait_For_सन्देशः_Restricted( QueueHandle_t xQueue,
+                                         TickType_t x_Ticks_गन्तव्यम्_Wait,
+                                         ध्रुव आधारः_Type_t xWaitIndefinitely )
     {
-        Queue_t * const pxQueue = xQueue;
+        Queue_t * ध्रुव pxQueue = xQueue;
 
-        traceENTER_vQueueWaitForMessageRestricted( xQueue, xTicksToWait, xWaitIndefinitely );
+        trace_ENTER_v_Queue_Wait_For_सन्देशः_Restricted( xQueue, x_Ticks_गन्तव्यम्_Wait, xWaitIndefinitely );
 
         /* This function should not be called by application code hence the
          * 'Restricted' in its name.  It is not part of the public API.  It is
@@ -3155,214 +3155,214 @@ BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue )
          *  time a yield will be performed.  If an item is added to the queue while
          *  the queue is locked, and the calling task blocks on the queue, then the
          *  calling task will be immediately unblocked when the queue is unlocked. */
-        prvLockQueue( pxQueue );
+        prv_तालकम्_Queue( pxQueue );
 
-        if( pxQueue->uxMessagesWaiting == ( UBaseType_t ) 0U )
+        यदि( pxQueue->ux_Messages_प्रतीक्षा == ( UBaseType_t ) 0U )
         {
             /* There is nothing in the queue, block for the specified period. */
-            vTaskPlaceOnEventListRestricted( &( pxQueue->xTasksWaitingToReceive ), xTicksToWait, xWaitIndefinitely );
+            vTaskPlaceOnEventListRestricted( &( pxQueue->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ), x_Ticks_गन्तव्यम्_Wait, xWaitIndefinitely );
         }
-        else
+        अन्यथा
         {
             mtCOVERAGE_TEST_MARKER();
         }
 
         prvUnlockQueue( pxQueue );
 
-        traceRETURN_vQueueWaitForMessageRestricted();
+        trace_RETURN_v_Queue_Wait_For_सन्देशः_Restricted();
     }
 
-#endif /* configUSE_TIMERS */
+#यदि_अन्तः /* configUSE_TIMERS */
 /*-----------------------------------------------------------*/
 
-#if ( ( configUSE_QUEUE_SETS == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+#यदि ( ( configUSE_QUEUE_SETS == 1 ) && ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 ) )
 
-    QueueSetHandle_t xQueueCreateSet( const UBaseType_t uxEventQueueLength )
+    Queue_समुच्चयः_Handle_t x_Queue_Create_समुच्चयः( ध्रुव UBaseType_t ux_Event_Queue_दीर्घता )
     {
-        QueueSetHandle_t pxQueue;
+        Queue_समुच्चयः_Handle_t pxQueue;
 
-        traceENTER_xQueueCreateSet( uxEventQueueLength );
+        trace_ENTER_x_Queue_Create_समुच्चयः( ux_Event_Queue_दीर्घता );
 
-        pxQueue = xQueueGenericCreate( uxEventQueueLength, ( UBaseType_t ) sizeof( Queue_t * ), queueQUEUE_TYPE_SET );
+        pxQueue = xQueueGenericCreate( ux_Event_Queue_दीर्घता, ( UBaseType_t ) परिमाण( Queue_t * ), queue_QUEUE_TYPE_समुच्चयः );
 
-        traceRETURN_xQueueCreateSet( pxQueue );
+        trace_RETURN_x_Queue_Create_समुच्चयः( pxQueue );
 
-        return pxQueue;
+        प्रत्यागम pxQueue;
     }
 
-#endif /* configUSE_QUEUE_SETS */
+#यदि_अन्तः /* configUSE_QUEUE_SETS */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_QUEUE_SETS == 1 )
+#यदि ( configUSE_QUEUE_SETS == 1 )
 
-    BaseType_t xQueueAddToSet( QueueSetMemberHandle_t xQueueOrSemaphore,
-                               QueueSetHandle_t xQueueSet )
+    आधारः_Type_t x_Queue_सङ्कलय_गन्तव्यम्_समुच्चयः( Queue_समुच्चयः_Member_Handle_t xQueueOrSemaphore,
+                               Queue_समुच्चयः_Handle_t x_Queue_समुच्चयः )
     {
-        BaseType_t xReturn;
+        आधारः_Type_t xReturn;
 
-        traceENTER_xQueueAddToSet( xQueueOrSemaphore, xQueueSet );
+        trace_ENTER_x_Queue_सङ्कलय_गन्तव्यम्_समुच्चयः( xQueueOrSemaphore, x_Queue_समुच्चयः );
 
         taskENTER_CRITICAL();
         {
-            if( ( ( Queue_t * ) xQueueOrSemaphore )->pxQueueSetContainer != NULL )
+            यदि( ( ( Queue_t * ) xQueueOrSemaphore )->px_Queue_समुच्चयः_Container != रिक्त )
             {
                 /* Cannot add a queue/semaphore to more than one queue set. */
                 xReturn = pdFAIL;
             }
-            else if( ( ( Queue_t * ) xQueueOrSemaphore )->uxMessagesWaiting != ( UBaseType_t ) 0 )
+            अन्यथा यदि( ( ( Queue_t * ) xQueueOrSemaphore )->ux_Messages_प्रतीक्षा != ( UBaseType_t ) 0 )
             {
                 /* Cannot add a queue/semaphore to a queue set if there are already
                  * items in the queue/semaphore. */
                 xReturn = pdFAIL;
             }
-            else
+            अन्यथा
             {
-                ( ( Queue_t * ) xQueueOrSemaphore )->pxQueueSetContainer = xQueueSet;
+                ( ( Queue_t * ) xQueueOrSemaphore )->px_Queue_समुच्चयः_Container = x_Queue_समुच्चयः;
                 xReturn = pdPASS;
             }
         }
         taskEXIT_CRITICAL();
 
-        traceRETURN_xQueueAddToSet( xReturn );
+        trace_RETURN_x_Queue_सङ्कलय_गन्तव्यम्_समुच्चयः( xReturn );
 
-        return xReturn;
+        प्रत्यागम xReturn;
     }
 
-#endif /* configUSE_QUEUE_SETS */
+#यदि_अन्तः /* configUSE_QUEUE_SETS */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_QUEUE_SETS == 1 )
+#यदि ( configUSE_QUEUE_SETS == 1 )
 
-    BaseType_t xQueueRemoveFromSet( QueueSetMemberHandle_t xQueueOrSemaphore,
-                                    QueueSetHandle_t xQueueSet )
+    आधारः_Type_t x_Queue_Remove_From_समुच्चयः( Queue_समुच्चयः_Member_Handle_t xQueueOrSemaphore,
+                                    Queue_समुच्चयः_Handle_t x_Queue_समुच्चयः )
     {
-        BaseType_t xReturn;
-        Queue_t * const pxQueueOrSemaphore = ( Queue_t * ) xQueueOrSemaphore;
+        आधारः_Type_t xReturn;
+        Queue_t * ध्रुव pxQueueOrSemaphore = ( Queue_t * ) xQueueOrSemaphore;
 
-        traceENTER_xQueueRemoveFromSet( xQueueOrSemaphore, xQueueSet );
+        trace_ENTER_x_Queue_Remove_From_समुच्चयः( xQueueOrSemaphore, x_Queue_समुच्चयः );
 
-        if( pxQueueOrSemaphore->pxQueueSetContainer != xQueueSet )
+        यदि( pxQueueOrSemaphore->px_Queue_समुच्चयः_Container != x_Queue_समुच्चयः )
         {
             /* The queue was not a member of the set. */
             xReturn = pdFAIL;
         }
-        else if( pxQueueOrSemaphore->uxMessagesWaiting != ( UBaseType_t ) 0 )
+        अन्यथा यदि( pxQueueOrSemaphore->ux_Messages_प्रतीक्षा != ( UBaseType_t ) 0 )
         {
             /* It is dangerous to remove a queue from a set when the queue is
              * not empty because the queue set will still hold pending events for
              * the queue. */
             xReturn = pdFAIL;
         }
-        else
+        अन्यथा
         {
             taskENTER_CRITICAL();
             {
                 /* The queue is no longer contained in the set. */
-                pxQueueOrSemaphore->pxQueueSetContainer = NULL;
+                pxQueueOrSemaphore->px_Queue_समुच्चयः_Container = रिक्त;
             }
             taskEXIT_CRITICAL();
             xReturn = pdPASS;
         }
 
-        traceRETURN_xQueueRemoveFromSet( xReturn );
+        trace_RETURN_x_Queue_Remove_From_समुच्चयः( xReturn );
 
-        return xReturn;
+        प्रत्यागम xReturn;
     }
 
-#endif /* configUSE_QUEUE_SETS */
+#यदि_अन्तः /* configUSE_QUEUE_SETS */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_QUEUE_SETS == 1 )
+#यदि ( configUSE_QUEUE_SETS == 1 )
 
-    QueueSetMemberHandle_t xQueueSelectFromSet( QueueSetHandle_t xQueueSet,
-                                                TickType_t const xTicksToWait )
+    Queue_समुच्चयः_Member_Handle_t x_Queue_Select_From_समुच्चयः( Queue_समुच्चयः_Handle_t x_Queue_समुच्चयः,
+                                                TickType_t ध्रुव x_Ticks_गन्तव्यम्_Wait )
     {
-        QueueSetMemberHandle_t xReturn = NULL;
+        Queue_समुच्चयः_Member_Handle_t xReturn = रिक्त;
 
-        traceENTER_xQueueSelectFromSet( xQueueSet, xTicksToWait );
+        trace_ENTER_x_Queue_Select_From_समुच्चयः( x_Queue_समुच्चयः, x_Ticks_गन्तव्यम्_Wait );
 
-        ( void ) xQueueReceive( ( QueueHandle_t ) xQueueSet, &xReturn, xTicksToWait );
+        ( शून्य ) xQueueReceive( ( QueueHandle_t ) x_Queue_समुच्चयः, &xReturn, x_Ticks_गन्तव्यम्_Wait );
 
-        traceRETURN_xQueueSelectFromSet( xReturn );
+        trace_RETURN_x_Queue_Select_From_समुच्चयः( xReturn );
 
-        return xReturn;
+        प्रत्यागम xReturn;
     }
 
-#endif /* configUSE_QUEUE_SETS */
+#यदि_अन्तः /* configUSE_QUEUE_SETS */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_QUEUE_SETS == 1 )
+#यदि ( configUSE_QUEUE_SETS == 1 )
 
-    QueueSetMemberHandle_t xQueueSelectFromSetFromISR( QueueSetHandle_t xQueueSet )
+    Queue_समुच्चयः_Member_Handle_t x_Queue_Select_From_समुच्चयः_From_ISR( Queue_समुच्चयः_Handle_t x_Queue_समुच्चयः )
     {
-        QueueSetMemberHandle_t xReturn = NULL;
+        Queue_समुच्चयः_Member_Handle_t xReturn = रिक्त;
 
-        traceENTER_xQueueSelectFromSetFromISR( xQueueSet );
+        trace_ENTER_x_Queue_Select_From_समुच्चयः_From_ISR( x_Queue_समुच्चयः );
 
-        ( void ) xQueueReceiveFromISR( ( QueueHandle_t ) xQueueSet, &xReturn, NULL );
+        ( शून्य ) xQueueReceiveFromISR( ( QueueHandle_t ) x_Queue_समुच्चयः, &xReturn, रिक्त );
 
-        traceRETURN_xQueueSelectFromSetFromISR( xReturn );
+        trace_RETURN_x_Queue_Select_From_समुच्चयः_From_ISR( xReturn );
 
-        return xReturn;
+        प्रत्यागम xReturn;
     }
 
-#endif /* configUSE_QUEUE_SETS */
+#यदि_अन्तः /* configUSE_QUEUE_SETS */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_QUEUE_SETS == 1 )
+#यदि ( configUSE_QUEUE_SETS == 1 )
 
-    static BaseType_t prvNotifyQueueSetContainer( const Queue_t * const pxQueue )
+    स्थिर आधारः_Type_t prv_Notify_Queue_समुच्चयः_Container( ध्रुव Queue_t * ध्रुव pxQueue )
     {
-        Queue_t * pxQueueSetContainer = pxQueue->pxQueueSetContainer;
-        BaseType_t xReturn = pdFALSE;
+        Queue_t * px_Queue_समुच्चयः_Container = pxQueue->px_Queue_समुच्चयः_Container;
+        आधारः_Type_t xReturn = pdFALSE;
 
         /* This function must be called form a critical section. */
 
         /* The following line is not reachable in unit tests because every call
          * to prvNotifyQueueSetContainer is preceded by a check that
          * pxQueueSetContainer != NULL */
-        configASSERT( pxQueueSetContainer ); /* LCOV_EXCL_BR_LINE */
-        configASSERT( pxQueueSetContainer->uxMessagesWaiting < pxQueueSetContainer->uxLength );
+        configASSERT( px_Queue_समुच्चयः_Container ); /* LCOV_EXCL_BR_LINE */
+        configASSERT( px_Queue_समुच्चयः_Container->ux_Messages_प्रतीक्षा < px_Queue_समुच्चयः_Container->ux_दीर्घता );
 
-        if( pxQueueSetContainer->uxMessagesWaiting < pxQueueSetContainer->uxLength )
+        यदि( px_Queue_समुच्चयः_Container->ux_Messages_प्रतीक्षा < px_Queue_समुच्चयः_Container->ux_दीर्घता )
         {
-            const int8_t cTxLock = pxQueueSetContainer->cTxLock;
+            ध्रुव int8_t c_Tx_तालकम् = px_Queue_समुच्चयः_Container->c_Tx_तालकम्;
 
-            traceQUEUE_SET_SEND( pxQueueSetContainer );
+            trace_QUEUE_समुच्चयः_SEND( px_Queue_समुच्चयः_Container );
 
             /* The data copied is the handle of the queue that contains data. */
-            xReturn = prvCopyDataToQueue( pxQueueSetContainer, &pxQueue, queueSEND_TO_BACK );
+            xReturn = prv_Copy_दत्त_गन्तव्यम्_Queue( px_Queue_समुच्चयः_Container, &pxQueue, queue_SEND_गन्तव्यम्_पृष्ठभागः );
 
-            if( cTxLock == queueUNLOCKED )
+            यदि( c_Tx_तालकम् == queueUNLOCKED )
             {
-                if( listLIST_IS_EMPTY( &( pxQueueSetContainer->xTasksWaitingToReceive ) ) == pdFALSE )
+                यदि( list_LIST_IS_रिक्तानि( &( px_Queue_समुच्चयः_Container->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) == pdFALSE )
                 {
-                    if( xTaskRemoveFromEventList( &( pxQueueSetContainer->xTasksWaitingToReceive ) ) != pdFALSE )
+                    यदि( xTaskRemoveFromEventList( &( px_Queue_समुच्चयः_Container->x_Tasks_प्रतीक्षा_गन्तव्यम्_Receive ) ) != pdFALSE )
                     {
                         /* The task waiting has a higher priority. */
                         xReturn = pdTRUE;
                     }
-                    else
+                    अन्यथा
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                अन्यथा
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            अन्यथा
             {
-                prvIncrementQueueTxLock( pxQueueSetContainer, cTxLock );
+                prv_Increment_Queue_Tx_तालकम्( px_Queue_समुच्चयः_Container, c_Tx_तालकम् );
             }
         }
-        else
+        अन्यथा
         {
             mtCOVERAGE_TEST_MARKER();
         }
 
-        return xReturn;
+        प्रत्यागम xReturn;
     }
 
-#endif /* configUSE_QUEUE_SETS */
+#यदि_अन्तः /* configUSE_QUEUE_SETS */

@@ -31,57 +31,57 @@
  */
 
 
-#ifndef QUEUE_H
-#define QUEUE_H
+#यदि_अपरिभाषितम् QUEUE_H
+#परिभाषय QUEUE_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h" must appear in source files before "include queue.h"
-#endif
+#यदि_अपरिभाषितम् INC_FREERTOS_H
+    #दोषः "include FreeRTOS.h" must appear अन्तर् source files before "include queue.h"
+#यदि_अन्तः
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#यदि_परिभाषितम् __cplusplus
+    बाह्य "C" {
+#यदि_अन्तः
 /* *INDENT-ON* */
 
-#include "task.h"
+#अन्तर्भाव "task.h"
 
 /**
  * Type by which queues are referenced.  For example, a call to xQueueCreate()
  * returns an QueueHandle_t variable that can then be used as a parameter to
  * xQueueSend(), xQueueReceive(), etc.
  */
-struct QueueDefinition; /* Using old naming convention so as not to break kernel aware debuggers. */
-typedef struct QueueDefinition   * QueueHandle_t;
+संरचना QueueDefinition; /* Using old naming convention so as not to break kernel aware debuggers. */
+प्रकारनिर्देश संरचना QueueDefinition   * QueueHandle_t;
 
 /**
  * Type by which queue sets are referenced.  For example, a call to
  * xQueueCreateSet() returns an xQueueSet variable that can then be used as a
  * parameter to xQueueSelectFromSet(), xQueueAddToSet(), etc.
  */
-typedef struct QueueDefinition   * QueueSetHandle_t;
+प्रकारनिर्देश संरचना QueueDefinition   * Queue_समुच्चयः_Handle_t;
 
 /**
  * Queue sets can contain both queues and semaphores, so the
  * QueueSetMemberHandle_t is defined as a type to be used where a parameter or
  * return value can be either an QueueHandle_t or an SemaphoreHandle_t.
  */
-typedef struct QueueDefinition   * QueueSetMemberHandle_t;
+प्रकारनिर्देश संरचना QueueDefinition   * Queue_समुच्चयः_Member_Handle_t;
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
 
 /* For internal use only. */
-#define queueSEND_TO_BACK                     ( ( BaseType_t ) 0 )
-#define queueSEND_TO_FRONT                    ( ( BaseType_t ) 1 )
-#define queueOVERWRITE                        ( ( BaseType_t ) 2 )
+#परिभाषय queue_SEND_गन्तव्यम्_पृष्ठभागः                     ( ( आधारः_Type_t ) 0 )
+#परिभाषय queue_SEND_गन्तव्यम्_FRONT                    ( ( आधारः_Type_t ) 1 )
+#परिभाषय queueOVERWRITE                        ( ( आधारः_Type_t ) 2 )
 
 /* For internal use only.  These definitions *must* match those in queue.c. */
-#define queueQUEUE_TYPE_BASE                  ( ( uint8_t ) 0U )
-#define queueQUEUE_TYPE_SET                   ( ( uint8_t ) 0U )
-#define queueQUEUE_TYPE_MUTEX                 ( ( uint8_t ) 1U )
-#define queueQUEUE_TYPE_COUNTING_SEMAPHORE    ( ( uint8_t ) 2U )
-#define queueQUEUE_TYPE_BINARY_SEMAPHORE      ( ( uint8_t ) 3U )
-#define queueQUEUE_TYPE_RECURSIVE_MUTEX       ( ( uint8_t ) 4U )
+#परिभाषय queue_QUEUE_TYPE_आधारः                  ( ( uint8_t ) 0U )
+#परिभाषय queue_QUEUE_TYPE_समुच्चयः                   ( ( uint8_t ) 0U )
+#परिभाषय queueQUEUE_TYPE_MUTEX                 ( ( uint8_t ) 1U )
+#परिभाषय queueQUEUE_TYPE_COUNTING_SEMAPHORE    ( ( uint8_t ) 2U )
+#परिभाषय queue_QUEUE_TYPE_द्विमान_SEMAPHORE      ( ( uint8_t ) 3U )
+#परिभाषय queueQUEUE_TYPE_RECURSIVE_MUTEX       ( ( uint8_t ) 4U )
 
 /** @endcond */
 
@@ -145,9 +145,9 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * @endcode
  * \ingroup QueueManagement
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    #define xQueueCreate( uxQueueLength, uxItemSize )    xQueueGenericCreate( ( uxQueueLength ), ( uxItemSize ), ( queueQUEUE_TYPE_BASE ) )
-#endif
+#यदि ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 )
+    #परिभाषय xQueueCreate( ux_Queue_दीर्घता, ux_Item_आकार )    xQueueGenericCreate( ( ux_Queue_दीर्घता ), ( ux_Item_आकार ), ( queue_QUEUE_TYPE_आधारः ) )
+#यदि_अन्तः
 
 /**
  *
@@ -221,9 +221,9 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * @endcode
  * \ingroup QueueManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xQueueCreateStatic( uxQueueLength, uxItemSize, pucQueueStorage, pxQueueBuffer )    xQueueGenericCreateStatic( ( uxQueueLength ), ( uxItemSize ), ( pucQueueStorage ), ( pxQueueBuffer ), ( queueQUEUE_TYPE_BASE ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
+    #परिभाषय xQueueCreateStatic( ux_Queue_दीर्घता, ux_Item_आकार, pucQueueStorage, px_Queue_बफर )    xQueueGenericCreateStatic( ( ux_Queue_दीर्घता ), ( ux_Item_आकार ), ( pucQueueStorage ), ( px_Queue_बफर ), ( queue_QUEUE_TYPE_आधारः ) )
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  *
@@ -243,9 +243,9 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  *
  * \ingroup QueueManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xQueueGetStaticBuffers( xQueue, ppucQueueStorage, ppxStaticQueue )    xQueueGenericGetStaticBuffers( ( xQueue ), ( ppucQueueStorage ), ( ppxStaticQueue ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
+    #परिभाषय xQueueGetStaticBuffers( xQueue, ppucQueueStorage, ppxStaticQueue )    xQueueGenericGetStaticBuffers( ( xQueue ), ( ppucQueueStorage ), ( ppxStaticQueue ) )
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  *
@@ -316,8 +316,8 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * @endcode
  * \ingroup QueueManagement
  */
-#define xQueueSendToFront( xQueue, pvItemToQueue, xTicksToWait ) \
-    xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_FRONT )
+#परिभाषय x_Queue_Send_गन्तव्यम्_Front( xQueue, pv_Item_गन्तव्यम्_Queue, x_Ticks_गन्तव्यम्_Wait ) \
+    xQueueGenericSend( ( xQueue ), ( pv_Item_गन्तव्यम्_Queue ), ( x_Ticks_गन्तव्यम्_Wait ), queue_SEND_गन्तव्यम्_FRONT )
 
 /**
  *
@@ -390,8 +390,8 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * @endcode
  * \ingroup QueueManagement
  */
-#define xQueueSendToBack( xQueue, pvItemToQueue, xTicksToWait ) \
-    xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_BACK )
+#परिभाषय x_Queue_Send_गन्तव्यम्_पृष्ठभागः( xQueue, pv_Item_गन्तव्यम्_Queue, x_Ticks_गन्तव्यम्_Wait ) \
+    xQueueGenericSend( ( xQueue ), ( pv_Item_गन्तव्यम्_Queue ), ( x_Ticks_गन्तव्यम्_Wait ), queue_SEND_गन्तव्यम्_पृष्ठभागः )
 
 /**
  *
@@ -466,8 +466,8 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * @endcode
  * \ingroup QueueManagement
  */
-#define xQueueSend( xQueue, pvItemToQueue, xTicksToWait ) \
-    xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_BACK )
+#परिभाषय xQueueSend( xQueue, pv_Item_गन्तव्यम्_Queue, x_Ticks_गन्तव्यम्_Wait ) \
+    xQueueGenericSend( ( xQueue ), ( pv_Item_गन्तव्यम्_Queue ), ( x_Ticks_गन्तव्यम्_Wait ), queue_SEND_गन्तव्यम्_पृष्ठभागः )
 
 /**
  *
@@ -542,8 +542,8 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * @endcode
  * \ingroup QueueManagement
  */
-#define xQueueOverwrite( xQueue, pvItemToQueue ) \
-    xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), 0, queueOVERWRITE )
+#परिभाषय xQueueOverwrite( xQueue, pv_Item_गन्तव्यम्_Queue ) \
+    xQueueGenericSend( ( xQueue ), ( pv_Item_गन्तव्यम्_Queue ), 0, queueOVERWRITE )
 
 
 /**
@@ -621,10 +621,10 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * @endcode
  * \ingroup QueueManagement
  */
-BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
-                              const void * const pvItemToQueue,
-                              TickType_t xTicksToWait,
-                              const BaseType_t xCopyPosition ) PRIVILEGED_FUNCTION;
+आधारः_Type_t xQueueGenericSend( QueueHandle_t xQueue,
+                              ध्रुव शून्य * ध्रुव pv_Item_गन्तव्यम्_Queue,
+                              TickType_t x_Ticks_गन्तव्यम्_Wait,
+                              ध्रुव आधारः_Type_t xCopyPosition ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -710,9 +710,9 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
  * @endcode
  * \ingroup QueueManagement
  */
-BaseType_t xQueuePeek( QueueHandle_t xQueue,
-                       void * const pvBuffer,
-                       TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+आधारः_Type_t xQueuePeek( QueueHandle_t xQueue,
+                       शून्य * ध्रुव pv_बफर,
+                       TickType_t x_Ticks_गन्तव्यम्_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -738,8 +738,8 @@ BaseType_t xQueuePeek( QueueHandle_t xQueue,
  *
  * \ingroup QueueManagement
  */
-BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue,
-                              void * const pvBuffer ) PRIVILEGED_FUNCTION;
+आधारः_Type_t xQueuePeekFromISR( QueueHandle_t xQueue,
+                              शून्य * ध्रुव pv_बफर ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -822,9 +822,9 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue,
  * @endcode
  * \ingroup QueueManagement
  */
-BaseType_t xQueueReceive( QueueHandle_t xQueue,
-                          void * const pvBuffer,
-                          TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+आधारः_Type_t xQueueReceive( QueueHandle_t xQueue,
+                          शून्य * ध्रुव pv_बफर,
+                          TickType_t x_Ticks_गन्तव्यम्_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -836,7 +836,7 @@ BaseType_t xQueueReceive( QueueHandle_t xQueue,
  *
  * \ingroup QueueManagement
  */
-UBaseType_t uxQueueMessagesWaiting( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_Queue_Messages_प्रतीक्षा( ध्रुव QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -850,7 +850,7 @@ UBaseType_t uxQueueMessagesWaiting( const QueueHandle_t xQueue ) PRIVILEGED_FUNC
  *
  * \ingroup QueueManagement
  */
-UBaseType_t uxQueueSpacesAvailable( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_Queue_Spaces_उपलब्धम्( ध्रुव QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -861,7 +861,7 @@ UBaseType_t uxQueueSpacesAvailable( const QueueHandle_t xQueue ) PRIVILEGED_FUNC
  *
  * \ingroup QueueManagement
  */
-void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+शून्य vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -922,8 +922,8 @@ void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
  *
  * \ingroup QueueManagement
  */
-#define xQueueSendToFrontFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken ) \
-    xQueueGenericSendFromISR( ( xQueue ), ( pvItemToQueue ), ( pxHigherPriorityTaskWoken ), queueSEND_TO_FRONT )
+#परिभाषय x_Queue_Send_गन्तव्यम्_Front_From_ISR( xQueue, pv_Item_गन्तव्यम्_Queue, px_Higher_प्राथमिकता_Task_Woken ) \
+    xQueueGenericSendFromISR( ( xQueue ), ( pv_Item_गन्तव्यम्_Queue ), ( px_Higher_प्राथमिकता_Task_Woken ), queue_SEND_गन्तव्यम्_FRONT )
 
 
 /**
@@ -985,8 +985,8 @@ void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
  *
  * \ingroup QueueManagement
  */
-#define xQueueSendToBackFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken ) \
-    xQueueGenericSendFromISR( ( xQueue ), ( pvItemToQueue ), ( pxHigherPriorityTaskWoken ), queueSEND_TO_BACK )
+#परिभाषय x_Queue_Send_गन्तव्यम्_पृष्ठभागः_From_ISR( xQueue, pv_Item_गन्तव्यम्_Queue, px_Higher_प्राथमिकता_Task_Woken ) \
+    xQueueGenericSendFromISR( ( xQueue ), ( pv_Item_गन्तव्यम्_Queue ), ( px_Higher_प्राथमिकता_Task_Woken ), queue_SEND_गन्तव्यम्_पृष्ठभागः )
 
 /**
  *
@@ -1064,8 +1064,8 @@ void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
  * @endcode
  * \ingroup QueueManagement
  */
-#define xQueueOverwriteFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken ) \
-    xQueueGenericSendFromISR( ( xQueue ), ( pvItemToQueue ), ( pxHigherPriorityTaskWoken ), queueOVERWRITE )
+#परिभाषय xQueueOverwriteFromISR( xQueue, pv_Item_गन्तव्यम्_Queue, px_Higher_प्राथमिकता_Task_Woken ) \
+    xQueueGenericSendFromISR( ( xQueue ), ( pv_Item_गन्तव्यम्_Queue ), ( px_Higher_प्राथमिकता_Task_Woken ), queueOVERWRITE )
 
 /**
  *
@@ -1130,8 +1130,8 @@ void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
  *
  * \ingroup QueueManagement
  */
-#define xQueueSendFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken ) \
-    xQueueGenericSendFromISR( ( xQueue ), ( pvItemToQueue ), ( pxHigherPriorityTaskWoken ), queueSEND_TO_BACK )
+#परिभाषय xQueueSendFromISR( xQueue, pv_Item_गन्तव्यम्_Queue, px_Higher_प्राथमिकता_Task_Woken ) \
+    xQueueGenericSendFromISR( ( xQueue ), ( pv_Item_गन्तव्यम्_Queue ), ( px_Higher_प्राथमिकता_Task_Woken ), queue_SEND_गन्तव्यम्_पृष्ठभागः )
 
 /**
  *
@@ -1200,12 +1200,12 @@ void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
  *
  * \ingroup QueueManagement
  */
-BaseType_t xQueueGenericSendFromISR( QueueHandle_t xQueue,
-                                     const void * const pvItemToQueue,
-                                     BaseType_t * const pxHigherPriorityTaskWoken,
-                                     const BaseType_t xCopyPosition ) PRIVILEGED_FUNCTION;
-BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue,
-                              BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+आधारः_Type_t xQueueGenericSendFromISR( QueueHandle_t xQueue,
+                                     ध्रुव शून्य * ध्रुव pv_Item_गन्तव्यम्_Queue,
+                                     आधारः_Type_t * ध्रुव px_Higher_प्राथमिकता_Task_Woken,
+                                     ध्रुव आधारः_Type_t xCopyPosition ) PRIVILEGED_FUNCTION;
+आधारः_Type_t xQueueGiveFromISR( QueueHandle_t xQueue,
+                              आधारः_Type_t * ध्रुव px_Higher_प्राथमिकता_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -1285,9 +1285,9 @@ BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue,
  * @endcode
  * \ingroup QueueManagement
  */
-BaseType_t xQueueReceiveFromISR( QueueHandle_t xQueue,
-                                 void * const pvBuffer,
-                                 BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+आधारः_Type_t xQueueReceiveFromISR( QueueHandle_t xQueue,
+                                 शून्य * ध्रुव pv_बफर,
+                                 आधारः_Type_t * ध्रुव px_Higher_प्राथमिकता_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /**
  * Queries a queue to determine if the queue is empty. This function should only be used in an ISR.
@@ -1295,7 +1295,7 @@ BaseType_t xQueueReceiveFromISR( QueueHandle_t xQueue,
  * @param xQueue The handle of the queue being queried
  * @return pdFALSE if the queue is not empty, or pdTRUE if the queue is empty.
  */
-BaseType_t xQueueIsQueueEmptyFromISR( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+आधारः_Type_t x_Queue_Is_Queue_रिक्तानि_From_ISR( ध्रुव QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
 
 /**
  * Queries a queue to determine if the queue is full. This function should only be used in an ISR.
@@ -1303,7 +1303,7 @@ BaseType_t xQueueIsQueueEmptyFromISR( const QueueHandle_t xQueue ) PRIVILEGED_FU
  * @param xQueue The handle of the queue being queried
  * @return pdFALSE if the queue is not full, or pdTRUE if the queue is full.
  */
-BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+आधारः_Type_t x_Queue_Is_Queue_पूर्णम्_From_ISR( ध्रुव QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
 
 /**
  * A version of uxQueueMessagesWaiting() that can be called from an ISR. Return the number of messages stored in a queue.
@@ -1311,7 +1311,7 @@ BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue ) PRIVILEGED_FUN
  * @param xQueue A handle to the queue being queried.
  * @return The number of messages available in the queue.
  */
-UBaseType_t uxQueueMessagesWaitingFromISR( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_Queue_Messages_प्रतीक्षा_From_ISR( ध्रुव QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
 
@@ -1324,34 +1324,34 @@ UBaseType_t uxQueueMessagesWaitingFromISR( const QueueHandle_t xQueue ) PRIVILEG
  * should not be called directly from application code.  Instead use the macro
  * wrappers defined within croutine.h.
  */
-BaseType_t xQueueCRSendFromISR( QueueHandle_t xQueue,
-                                const void * pvItemToQueue,
-                                BaseType_t xCoRoutinePreviouslyWoken );
-BaseType_t xQueueCRReceiveFromISR( QueueHandle_t xQueue,
-                                   void * pvBuffer,
-                                   BaseType_t * pxTaskWoken );
-BaseType_t xQueueCRSend( QueueHandle_t xQueue,
-                         const void * pvItemToQueue,
-                         TickType_t xTicksToWait );
-BaseType_t xQueueCRReceive( QueueHandle_t xQueue,
-                            void * pvBuffer,
-                            TickType_t xTicksToWait );
+आधारः_Type_t xQueueCRSendFromISR( QueueHandle_t xQueue,
+                                ध्रुव शून्य * pv_Item_गन्तव्यम्_Queue,
+                                आधारः_Type_t xCoRoutinePreviouslyWoken );
+आधारः_Type_t xQueueCRReceiveFromISR( QueueHandle_t xQueue,
+                                   शून्य * pv_बफर,
+                                   आधारः_Type_t * pxTaskWoken );
+आधारः_Type_t xQueueCRSend( QueueHandle_t xQueue,
+                         ध्रुव शून्य * pv_Item_गन्तव्यम्_Queue,
+                         TickType_t x_Ticks_गन्तव्यम्_Wait );
+आधारः_Type_t xQueueCRReceive( QueueHandle_t xQueue,
+                            शून्य * pv_बफर,
+                            TickType_t x_Ticks_गन्तव्यम्_Wait );
 
 /*
  * For internal use only.  Use xSemaphoreCreateMutex(),
  * xSemaphoreCreateCounting() or xSemaphoreGetMutexHolder() instead of calling
  * these functions directly.
  */
-QueueHandle_t xQueueCreateMutex( const uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
-QueueHandle_t xQueueCreateMutexStatic( const uint8_t ucQueueType,
+QueueHandle_t xQueueCreateMutex( ध्रुव uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
+QueueHandle_t xQueueCreateMutexStatic( ध्रुव uint8_t ucQueueType,
                                        StaticQueue_t * pxStaticQueue ) PRIVILEGED_FUNCTION;
-QueueHandle_t xQueueCreateCountingSemaphore( const UBaseType_t uxMaxCount,
-                                             const UBaseType_t uxInitialCount ) PRIVILEGED_FUNCTION;
-QueueHandle_t xQueueCreateCountingSemaphoreStatic( const UBaseType_t uxMaxCount,
-                                                   const UBaseType_t uxInitialCount,
+QueueHandle_t xQueueCreateCountingSemaphore( ध्रुव UBaseType_t ux_Max_गणनम्,
+                                             ध्रुव UBaseType_t ux_Initial_गणनम् ) PRIVILEGED_FUNCTION;
+QueueHandle_t xQueueCreateCountingSemaphoreStatic( ध्रुव UBaseType_t ux_Max_गणनम्,
+                                                   ध्रुव UBaseType_t ux_Initial_गणनम्,
                                                    StaticQueue_t * pxStaticQueue ) PRIVILEGED_FUNCTION;
-BaseType_t xQueueSemaphoreTake( QueueHandle_t xQueue,
-                                TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+आधारः_Type_t xQueueSemaphoreTake( QueueHandle_t xQueue,
+                                TickType_t x_Ticks_गन्तव्यम्_Wait ) PRIVILEGED_FUNCTION;
 TaskHandle_t xQueueGetMutexHolder( QueueHandle_t xSemaphore ) PRIVILEGED_FUNCTION;
 TaskHandle_t xQueueGetMutexHolderFromISR( QueueHandle_t xSemaphore ) PRIVILEGED_FUNCTION;
 
@@ -1359,9 +1359,9 @@ TaskHandle_t xQueueGetMutexHolderFromISR( QueueHandle_t xSemaphore ) PRIVILEGED_
  * For internal use only.  Use xSemaphoreTakeMutexRecursive() or
  * xSemaphoreGiveMutexRecursive() instead of calling these functions directly.
  */
-BaseType_t xQueueTakeMutexRecursive( QueueHandle_t xMutex,
-                                     TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
-BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
+आधारः_Type_t xQueueTakeMutexRecursive( QueueHandle_t xMutex,
+                                     TickType_t x_Ticks_गन्तव्यम्_Wait ) PRIVILEGED_FUNCTION;
+आधारः_Type_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
 
 /** @endcond */
 
@@ -1369,7 +1369,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * Reset a queue back to its original empty state.  The return value is now
  * obsolete and is always set to pdPASS.
  */
-#define xQueueReset( xQueue )    xQueueGenericReset( ( xQueue ), pdFALSE )
+#परिभाषय xQueueReset( xQueue )    xQueueGenericReset( ( xQueue ), pdFALSE )
 
 /**
  * The registry is provided as a means for kernel aware debuggers to
@@ -1397,10 +1397,10 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * stores a pointer to the string - so the string must be persistent (global or
  * preferably in ROM/Flash), not on the stack.
  */
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
-    void vQueueAddToRegistry( QueueHandle_t xQueue,
-                              const char * pcQueueName ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-#endif
+#यदि ( config_QUEUE_REGISTRY_आकार > 0 )
+    शून्य v_Queue_सङ्कलय_गन्तव्यम्_Registry( QueueHandle_t xQueue,
+                              ध्रुव वर्ण * pcQueueName ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+#यदि_अन्तः
 
 /**
  * The registry is provided as a means for kernel aware debuggers to
@@ -1412,9 +1412,9 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  *
  * @param xQueue The handle of the queue being removed from the registry.
  */
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
-    void vQueueUnregisterQueue( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
-#endif
+#यदि ( config_QUEUE_REGISTRY_आकार > 0 )
+    शून्य vQueueUnregisterQueue( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+#यदि_अन्तः
 
 /**
  * The queue registry is provided as a means for kernel aware debuggers to
@@ -1427,9 +1427,9 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * queue is returned.  If the queue is not in the registry then NULL is
  * returned.
  */
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
-    const char * pcQueueGetName( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-#endif
+#यदि ( config_QUEUE_REGISTRY_आकार > 0 )
+    ध्रुव वर्ण * pcQueueGetName( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+#यदि_अन्तः
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
 
@@ -1438,24 +1438,24 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * allocation.  This is called by other functions and macros that create other
  * RTOS objects that use the queue structure as their base.
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    QueueHandle_t xQueueGenericCreate( const UBaseType_t uxQueueLength,
-                                       const UBaseType_t uxItemSize,
-                                       const uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
-#endif
+#यदि ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 )
+    QueueHandle_t xQueueGenericCreate( ध्रुव UBaseType_t ux_Queue_दीर्घता,
+                                       ध्रुव UBaseType_t ux_Item_आकार,
+                                       ध्रुव uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
+#यदि_अन्तः
 
 /*
  * Generic version of the function used to create a queue using dynamic memory
  * allocation.  This is called by other functions and macros that create other
  * RTOS objects that use the queue structure as their base.
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    QueueHandle_t xQueueGenericCreateStatic( const UBaseType_t uxQueueLength,
-                                             const UBaseType_t uxItemSize,
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
+    QueueHandle_t xQueueGenericCreateStatic( ध्रुव UBaseType_t ux_Queue_दीर्घता,
+                                             ध्रुव UBaseType_t ux_Item_आकार,
                                              uint8_t * pucQueueStorage,
                                              StaticQueue_t * pxStaticQueue,
-                                             const uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
-#endif
+                                             ध्रुव uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
+#यदि_अन्तः
 
 /*
  * Generic version of the function used to retrieve the buffers of statically
@@ -1463,11 +1463,11 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * the buffers of other statically created RTOS objects that use the queue
  * structure as their base.
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    BaseType_t xQueueGenericGetStaticBuffers( QueueHandle_t xQueue,
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
+    आधारः_Type_t xQueueGenericGetStaticBuffers( QueueHandle_t xQueue,
                                               uint8_t ** ppucQueueStorage,
                                               StaticQueue_t ** ppxStaticQueue ) PRIVILEGED_FUNCTION;
-#endif
+#यदि_अन्तः
 
 /** @endcond */
 
@@ -1519,7 +1519,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * @return If the queue set is created successfully then a handle to the created
  * queue set is returned.  Otherwise NULL is returned.
  */
-QueueSetHandle_t xQueueCreateSet( const UBaseType_t uxEventQueueLength ) PRIVILEGED_FUNCTION;
+Queue_समुच्चयः_Handle_t x_Queue_Create_समुच्चयः( ध्रुव UBaseType_t ux_Event_Queue_दीर्घता ) PRIVILEGED_FUNCTION;
 
 /**
  * Adds a queue or semaphore to a queue set that was previously created by a
@@ -1543,8 +1543,8 @@ QueueSetHandle_t xQueueCreateSet( const UBaseType_t uxEventQueueLength ) PRIVILE
  * queue set because it is already a member of a different queue set then pdFAIL
  * is returned.
  */
-BaseType_t xQueueAddToSet( QueueSetMemberHandle_t xQueueOrSemaphore,
-                           QueueSetHandle_t xQueueSet ) PRIVILEGED_FUNCTION;
+आधारः_Type_t x_Queue_सङ्कलय_गन्तव्यम्_समुच्चयः( Queue_समुच्चयः_Member_Handle_t xQueueOrSemaphore,
+                           Queue_समुच्चयः_Handle_t x_Queue_समुच्चयः ) PRIVILEGED_FUNCTION;
 
 /**
  * Removes a queue or semaphore from a queue set.  A queue or semaphore can only
@@ -1563,8 +1563,8 @@ BaseType_t xQueueAddToSet( QueueSetMemberHandle_t xQueueOrSemaphore,
  * then pdPASS is returned.  If the queue was not in the queue set, or the
  * queue (or semaphore) was not empty, then pdFAIL is returned.
  */
-BaseType_t xQueueRemoveFromSet( QueueSetMemberHandle_t xQueueOrSemaphore,
-                                QueueSetHandle_t xQueueSet ) PRIVILEGED_FUNCTION;
+आधारः_Type_t x_Queue_Remove_From_समुच्चयः( Queue_समुच्चयः_Member_Handle_t xQueueOrSemaphore,
+                                Queue_समुच्चयः_Handle_t x_Queue_समुच्चयः ) PRIVILEGED_FUNCTION;
 
 /**
  * xQueueSelectFromSet() selects from the members of a queue set a queue or
@@ -1600,33 +1600,33 @@ BaseType_t xQueueRemoveFromSet( QueueSetMemberHandle_t xQueueOrSemaphore,
  * in the queue set that is available, or NULL if no such queue or semaphore
  * exists before before the specified block time expires.
  */
-QueueSetMemberHandle_t xQueueSelectFromSet( QueueSetHandle_t xQueueSet,
-                                            const TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+Queue_समुच्चयः_Member_Handle_t x_Queue_Select_From_समुच्चयः( Queue_समुच्चयः_Handle_t x_Queue_समुच्चयः,
+                                            ध्रुव TickType_t x_Ticks_गन्तव्यम्_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  * A version of xQueueSelectFromSet() that can be used from an ISR.
  */
-QueueSetMemberHandle_t xQueueSelectFromSetFromISR( QueueSetHandle_t xQueueSet ) PRIVILEGED_FUNCTION;
+Queue_समुच्चयः_Member_Handle_t x_Queue_Select_From_समुच्चयः_From_ISR( Queue_समुच्चयः_Handle_t x_Queue_समुच्चयः ) PRIVILEGED_FUNCTION;
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
 
 /* Not public API functions. */
-void vQueueWaitForMessageRestricted( QueueHandle_t xQueue,
-                                     TickType_t xTicksToWait,
-                                     const BaseType_t xWaitIndefinitely ) PRIVILEGED_FUNCTION;
-BaseType_t xQueueGenericReset( QueueHandle_t xQueue,
-                               BaseType_t xNewQueue ) PRIVILEGED_FUNCTION;
-void vQueueSetQueueNumber( QueueHandle_t xQueue,
-                           UBaseType_t uxQueueNumber ) PRIVILEGED_FUNCTION;
-UBaseType_t uxQueueGetQueueNumber( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+शून्य v_Queue_Wait_For_सन्देशः_Restricted( QueueHandle_t xQueue,
+                                     TickType_t x_Ticks_गन्तव्यम्_Wait,
+                                     ध्रुव आधारः_Type_t xWaitIndefinitely ) PRIVILEGED_FUNCTION;
+आधारः_Type_t xQueueGenericReset( QueueHandle_t xQueue,
+                               आधारः_Type_t xNewQueue ) PRIVILEGED_FUNCTION;
+शून्य v_Queue_समुच्चयः_Queue_सङ्ख्या( QueueHandle_t xQueue,
+                           UBaseType_t ux_Queue_सङ्ख्या ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_Queue_Get_Queue_सङ्ख्या( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
 uint8_t ucQueueGetQueueType( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
 
 /** @endcond */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#यदि_परिभाषितम् __cplusplus
     }
-#endif
+#यदि_अन्तः
 /* *INDENT-ON* */
 
-#endif /* QUEUE_H */
+#यदि_अन्तः /* QUEUE_H */

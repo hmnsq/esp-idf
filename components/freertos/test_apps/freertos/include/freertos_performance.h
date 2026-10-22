@@ -2,44 +2,44 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-#pragma once
+#निर्देशः once
 
-#include "sdkconfig.h"
+#अन्तर्भाव "sdkconfig.h"
 
-#ifndef IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-#define IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP     230
-#else
-#define IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP     215
-#endif
-#endif
-#ifndef IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP_PSRAM
-#define IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP_PSRAM               300
-#endif
-#ifndef IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP_UNICORE
-#define IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP_UNICORE             130
-#endif
+#यदि_अपरिभाषितम् IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_आवृत्तयः_प्रत्येकम्_OP
+#यदि CONFIG_FREERTOS_पत्तनम्_THREAD_SAFE_CLAIM
+#परिभाषय IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_आवृत्तयः_प्रत्येकम्_OP     230
+#अन्यथा
+#परिभाषय IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_आवृत्तयः_प्रत्येकम्_OP     215
+#यदि_अन्तः
+#यदि_अन्तः
+#यदि_अपरिभाषितम् IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_आवृत्तयः_प्रत्येकम्_OP_PSRAM
+#परिभाषय IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_आवृत्तयः_प्रत्येकम्_OP_PSRAM               300
+#यदि_अन्तः
+#यदि_अपरिभाषितम् IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_आवृत्तयः_प्रत्येकम्_OP_UNICORE
+#परिभाषय IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_आवृत्तयः_प्रत्येकम्_OP_UNICORE             130
+#यदि_अन्तः
 
-#ifndef IDF_PERFORMANCE_MAX_ISR_ENTER_CYCLES
-#define IDF_PERFORMANCE_MAX_ISR_ENTER_CYCLES                                    290
-#endif
-#ifndef IDF_PERFORMANCE_MAX_ISR_EXIT_CYCLES
-#define IDF_PERFORMANCE_MAX_ISR_EXIT_CYCLES                                     565
-#endif
+#यदि_अपरिभाषितम् IDF_PERFORMANCE_MAX_ISR_ENTER_आवृत्तयः
+#परिभाषय IDF_PERFORMANCE_MAX_ISR_ENTER_आवृत्तयः                                    290
+#यदि_अन्तः
+#यदि_अपरिभाषितम् IDF_PERFORMANCE_MAX_ISR_EXIT_आवृत्तयः
+#परिभाषय IDF_PERFORMANCE_MAX_ISR_EXIT_आवृत्तयः                                     565
+#यदि_अन्तः
 
-#ifndef IDF_PERFORMANCE_MAX_SCHEDULING_TIME
-#define IDF_PERFORMANCE_MAX_SCHEDULING_TIME                                     2000
-#endif
+#यदि_अपरिभाषितम् IDF_PERFORMANCE_MAX_SCHEDULING_TIME
+#परिभाषय IDF_PERFORMANCE_MAX_SCHEDULING_TIME                                     2000
+#यदि_अन्तः
 
 // Chip-Specific Data
-#if CONFIG_IDF_TARGET_ESP32P4 || CONFIG_IDF_TARGET_ESP32S31 || CONFIG_IDF_TARGET_ESP32H4
+#यदि CONFIG_IDF_TARGET_ESP32P4 || CONFIG_IDF_TARGET_ESP32S31 || CONFIG_IDF_TARGET_ESP32H4
 /* Spinlock performance on esp32p4/esp32s31/esp32h4 is slower. */
-#undef IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP
-#define IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP                     400
-#undef IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP_UNICORE
-#define IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP_UNICORE             150
+#अपरिभाषय IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_आवृत्तयः_प्रत्येकम्_OP
+#परिभाषय IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_आवृत्तयः_प्रत्येकम्_OP                     400
+#अपरिभाषय IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_आवृत्तयः_प्रत्येकम्_OP_UNICORE
+#परिभाषय IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_आवृत्तयः_प्रत्येकम्_OP_UNICORE             150
 
 /* Solicited yields (portYIELD() or taskYIELD()) take longer on esp32p4/esp32s31/esp32h4. TODO: IDF-2809 */
-#undef IDF_PERFORMANCE_MAX_SCHEDULING_TIME
-#define IDF_PERFORMANCE_MAX_SCHEDULING_TIME                                     3200
-#endif
+#अपरिभाषय IDF_PERFORMANCE_MAX_SCHEDULING_TIME
+#परिभाषय IDF_PERFORMANCE_MAX_SCHEDULING_TIME                                     3200
+#यदि_अन्तः

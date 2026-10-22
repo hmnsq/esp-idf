@@ -4,94 +4,94 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <esp_types.h>
-#include <stdio.h>
-#include <inttypes.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "esp_intr_alloc.h"
-#include "esp_cpu.h"
-#include "unity.h"
-#include "test_utils.h"
-#include "freertos_performance.h"
+#अन्तर्भाव <esp_types.h>
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव <inttypes.h>
+#अन्तर्भाव "freertos/FreeRTOS.h"
+#अन्तर्भाव "freertos/task.h"
+#अन्तर्भाव "freertos/semphr.h"
+#अन्तर्भाव "freertos/queue.h"
+#अन्तर्भाव "esp_intr_alloc.h"
+#अन्तर्भाव "esp_cpu.h"
+#अन्तर्भाव "unity.h"
+#अन्तर्भाव "test_utils.h"
+#अन्तर्भाव "freertos_performance.h"
 
-#define NUMBER_OF_ITERATIONS 1023
+#परिभाषय सङ्ख्या_सम्बन्धि_ITERATIONS 1023
 
-static int compare_uint32(const void *a, const void *b)
+स्थिर पूर्णाङ्क compare_uint32(ध्रुव शून्य *a, ध्रुव शून्य *b)
 {
-    return (*(uint32_t *)a - * (uint32_t *)b);
+    प्रत्यागम (*(uint32_t *)a - * (uint32_t *)b);
 }
 
-static uint32_t calculate_median(uint32_t *values, int size)
+स्थिर uint32_t calculate_median(uint32_t *मानानि, पूर्णाङ्क आकार)
 {
     /* Sort the array of values containing the scheduling time of each iteration */
-    qsort(values, size, sizeof(uint32_t), compare_uint32);
+    शीघ्रं_क्रमय(मानानि, आकार, परिमाण(uint32_t), compare_uint32);
 
     /* Return the median value. (size is an odd number) */
-    return values[size / 2];
+    प्रत्यागम मानानि[आकार / 2];
 }
 
-typedef struct {
-    SemaphoreHandle_t end_sema;
+प्रकारनिर्देश संरचना {
+    SemaphoreHandle_t अन्तः_sema;
     uint32_t before_sched;
-    uint32_t cycles_to_sched[NUMBER_OF_ITERATIONS];
+    uint32_t आवृत्तयः_गन्तव्यम्_sched[सङ्ख्या_सम्बन्धि_ITERATIONS];
     TaskHandle_t t1_handle;
 } test_context_t;
 
-static void test_task_1(void *arg)
+स्थिर शून्य test_task_1(शून्य *arg)
 {
     test_context_t *context = (test_context_t *)arg;
 
-    for (;;) {
-        context->before_sched = esp_cpu_get_cycle_count();
+    प्रति (;;) {
+        context->before_sched = esp_cpu_get_आवृत्तिः_गणनम्();
         taskYIELD();
     }
 
-    vTaskDelete(NULL);
+    vTaskDelete(रिक्त);
 }
 
-static void test_task_2(void *arg)
+स्थिर शून्य test_task_2(शून्य *arg)
 {
     test_context_t *context = (test_context_t *)arg;
 
-    vTaskPrioritySet(NULL, CONFIG_UNITY_FREERTOS_PRIORITY + 1);
-    vTaskPrioritySet(context->t1_handle, CONFIG_UNITY_FREERTOS_PRIORITY + 1);
+    v_Task_प्राथमिकता_समुच्चयः(रिक्त, CONFIG_UNITY_FREERTOS_प्राथमिकता + 1);
+    v_Task_प्राथमिकता_समुच्चयः(context->t1_handle, CONFIG_UNITY_FREERTOS_प्राथमिकता + 1);
     taskYIELD();
 
-    for (int i = 0; i < NUMBER_OF_ITERATIONS; i++) {
-        context->cycles_to_sched[i] = esp_cpu_get_cycle_count() - context->before_sched;
+    प्रति (पूर्णाङ्क i = 0; i < सङ्ख्या_सम्बन्धि_ITERATIONS; i++) {
+        context->आवृत्तयः_गन्तव्यम्_sched[i] = esp_cpu_get_आवृत्तिः_गणनम्() - context->before_sched;
         taskYIELD();
     }
 
-    xSemaphoreGive(context->end_sema);
+    xSemaphoreGive(context->अन्तः_sema);
     vTaskDelete(context->t1_handle);
-    vTaskDelete(NULL);
+    vTaskDelete(रिक्त);
 }
 
 TEST_CASE("scheduling time test", "[freertos]")
 {
     test_context_t context;
 
-    context.end_sema = xSemaphoreCreateBinary();
-    TEST_ASSERT(context.end_sema != NULL);
+    context.अन्तः_sema = x_Semaphore_Create_द्विमान();
+    TEST_ASSERT(context.अन्तः_sema != रिक्त);
 
-#if !CONFIG_FREERTOS_UNICORE
-    xTaskCreatePinnedToCore(test_task_1, "test1", 4096, &context, CONFIG_UNITY_FREERTOS_PRIORITY - 1, &context.t1_handle, 1);
-    xTaskCreatePinnedToCore(test_task_2, "test2", 4096, &context, CONFIG_UNITY_FREERTOS_PRIORITY - 1, NULL, 1);
-#else
-    xTaskCreatePinnedToCore(test_task_1, "test1", 4096, &context, CONFIG_UNITY_FREERTOS_PRIORITY - 1, &context.t1_handle, 0);
-    xTaskCreatePinnedToCore(test_task_2, "test2", 4096, &context, CONFIG_UNITY_FREERTOS_PRIORITY - 1, NULL, 0);
-#endif
+#यदि !CONFIG_FREERTOS_UNICORE
+    x_Task_Create_Pinned_गन्तव्यम्_Core(test_task_1, "test1", 4096, &context, CONFIG_UNITY_FREERTOS_प्राथमिकता - 1, &context.t1_handle, 1);
+    x_Task_Create_Pinned_गन्तव्यम्_Core(test_task_2, "test2", 4096, &context, CONFIG_UNITY_FREERTOS_प्राथमिकता - 1, रिक्त, 1);
+#अन्यथा
+    x_Task_Create_Pinned_गन्तव्यम्_Core(test_task_1, "test1", 4096, &context, CONFIG_UNITY_FREERTOS_प्राथमिकता - 1, &context.t1_handle, 0);
+    x_Task_Create_Pinned_गन्तव्यम्_Core(test_task_2, "test2", 4096, &context, CONFIG_UNITY_FREERTOS_प्राथमिकता - 1, रिक्त, 0);
+#यदि_अन्तः
 
-    BaseType_t result = xSemaphoreTake(context.end_sema, portMAX_DELAY);
-    TEST_ASSERT_EQUAL_HEX32(pdTRUE, result);
+    आधारः_Type_t परिणाम = xSemaphoreTake(context.अन्तः_sema, पत्तनम्_MAX_DELAY);
+    TEST_ASSERT_EQUAL_HEX32(pdTRUE, परिणाम);
 
     /* We calculate the median instead of the average to avoid outliers which may occur due to cache speed variabilities */
-    uint32_t median_cycles = calculate_median(context.cycles_to_sched, NUMBER_OF_ITERATIONS);
-    TEST_PERFORMANCE_LESS_THAN(SCHEDULING_TIME, "%"PRIu32" cycles", median_cycles);
+    uint32_t median_आवृत्तयः = calculate_median(context.आवृत्तयः_गन्तव्यम्_sched, सङ्ख्या_सम्बन्धि_ITERATIONS);
+    TEST_PERFORMANCE_LESS_THAN(SCHEDULING_TIME, "%"PRIu32" cycles", median_आवृत्तयः);
 
     /* Cleanup */
-    vSemaphoreDelete(context.end_sema);
+    vSemaphoreDelete(context.अन्तः_sema);
 }

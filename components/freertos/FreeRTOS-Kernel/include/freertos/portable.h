@@ -34,8 +34,8 @@
 * Portable layer API.  Each function must be defined for each port.
 *----------------------------------------------------------*/
 
-#ifndef PORTABLE_H
-#define PORTABLE_H
+#यदि_अपरिभाषितम् PORTABLE_H
+#परिभाषय PORTABLE_H
 
 /* Each FreeRTOS port has a unique portmacro.h header file.  Originally a
  * pre-processor definition was used to ensure the pre-processor found the correct
@@ -47,60 +47,60 @@
  * to make it clear that new projects should not use it, support for the port
  * specific constants has been moved into the deprecated_definitions.h header
  * file. */
-#include "deprecated_definitions.h"
+#अन्तर्भाव "deprecated_definitions.h"
 
 /* If portENTER_CRITICAL is not defined then including deprecated_definitions.h
  * did not result in a portmacro.h header file being included - and it should be
  * included here.  In this case the path to the correct portmacro.h header file
  * must be set in the compiler's include path. */
-#ifndef portENTER_CRITICAL
-    #include "portmacro.h"
-#endif
+#यदि_अपरिभाषितम् पत्तनम्_ENTER_CRITICAL
+    #अन्तर्भाव "portmacro.h"
+#यदि_अन्तः
 
-#if portBYTE_ALIGNMENT == 32
-    #define portBYTE_ALIGNMENT_MASK    ( 0x001f )
-#elif portBYTE_ALIGNMENT == 16
-    #define portBYTE_ALIGNMENT_MASK    ( 0x000f )
-#elif portBYTE_ALIGNMENT == 8
-    #define portBYTE_ALIGNMENT_MASK    ( 0x0007 )
-#elif portBYTE_ALIGNMENT == 4
-    #define portBYTE_ALIGNMENT_MASK    ( 0x0003 )
-#elif portBYTE_ALIGNMENT == 2
-    #define portBYTE_ALIGNMENT_MASK    ( 0x0001 )
-#elif portBYTE_ALIGNMENT == 1
-    #define portBYTE_ALIGNMENT_MASK    ( 0x0000 )
-#else /* if portBYTE_ALIGNMENT == 32 */
-    #error "Invalid portBYTE_ALIGNMENT definition"
-#endif /* if portBYTE_ALIGNMENT == 32 */
+#यदि पत्तनम्_BYTE_ALIGNMENT == 32
+    #परिभाषय पत्तनम्_BYTE_ALIGNMENT_आवरणम्    ( 0x001f )
+#नोचेद्यदि पत्तनम्_BYTE_ALIGNMENT == 16
+    #परिभाषय पत्तनम्_BYTE_ALIGNMENT_आवरणम्    ( 0x000f )
+#नोचेद्यदि पत्तनम्_BYTE_ALIGNMENT == 8
+    #परिभाषय पत्तनम्_BYTE_ALIGNMENT_आवरणम्    ( 0x0007 )
+#नोचेद्यदि पत्तनम्_BYTE_ALIGNMENT == 4
+    #परिभाषय पत्तनम्_BYTE_ALIGNMENT_आवरणम्    ( 0x0003 )
+#नोचेद्यदि पत्तनम्_BYTE_ALIGNMENT == 2
+    #परिभाषय पत्तनम्_BYTE_ALIGNMENT_आवरणम्    ( 0x0001 )
+#नोचेद्यदि पत्तनम्_BYTE_ALIGNMENT == 1
+    #परिभाषय पत्तनम्_BYTE_ALIGNMENT_आवरणम्    ( 0x0000 )
+#अन्यथा /* if portBYTE_ALIGNMENT == 32 */
+    #दोषः "Invalid portBYTE_ALIGNMENT definition"
+#यदि_अन्तः /* if portBYTE_ALIGNMENT == 32 */
 
-#ifndef portUSING_MPU_WRAPPERS
-    #define portUSING_MPU_WRAPPERS    0
-#endif
+#यदि_अपरिभाषितम् पत्तनम्_USING_MPU_WRAPPERS
+    #परिभाषय पत्तनम्_USING_MPU_WRAPPERS    0
+#यदि_अन्तः
 
-#ifndef portNUM_CONFIGURABLE_REGIONS
-    #define portNUM_CONFIGURABLE_REGIONS    1
-#endif
+#यदि_अपरिभाषितम् पत्तनम्_अङ्कः_CONFIGURABLE_REGIONS
+    #परिभाषय पत्तनम्_अङ्कः_CONFIGURABLE_REGIONS    1
+#यदि_अन्तः
 
-#ifndef portHAS_STACK_OVERFLOW_CHECKING
-    #define portHAS_STACK_OVERFLOW_CHECKING    0
-#endif
+#यदि_अपरिभाषितम् पत्तनम्_HAS_राशिः_अतिप्रवाहः_CHECKING
+    #परिभाषय पत्तनम्_HAS_राशिः_अतिप्रवाहः_CHECKING    0
+#यदि_अन्तः
 
-#ifndef portARCH_NAME
-    #define portARCH_NAME    NULL
-#endif
+#यदि_अपरिभाषितम् पत्तनम्_ARCH_NAME
+    #परिभाषय पत्तनम्_ARCH_NAME    रिक्त
+#यदि_अन्तः
 
-#ifndef configSTACK_ALLOCATION_FROM_SEPARATE_HEAP
+#यदि_अपरिभाषितम् config_राशिः_आवण्टनम्_FROM_SEPARATE_HEAP
     /* Defaults to 0 for backward compatibility. */
-    #define configSTACK_ALLOCATION_FROM_SEPARATE_HEAP    0
-#endif
+    #परिभाषय config_राशिः_आवण्टनम्_FROM_SEPARATE_HEAP    0
+#यदि_अन्तः
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#यदि_परिभाषितम् __cplusplus
+    बाह्य "C" {
+#यदि_अन्तः
 /* *INDENT-ON* */
 
-#include "mpu_wrappers.h"
+#अन्तर्भाव "mpu_wrappers.h"
 
 /*
  * Setup the stack of a new task so it is ready to be placed under the
@@ -108,50 +108,50 @@
  * the order that the port expects to find them.
  *
  */
-#if ( portUSING_MPU_WRAPPERS == 1 )
-    #if ( portHAS_STACK_OVERFLOW_CHECKING == 1 )
-        StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
-                                             StackType_t * pxEndOfStack,
-                                             TaskFunction_t pxCode,
-                                             void * pvParameters,
-                                             BaseType_t xRunPrivileged ) PRIVILEGED_FUNCTION;
-    #else
-        StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
-                                             TaskFunction_t pxCode,
-                                             void * pvParameters,
-                                             BaseType_t xRunPrivileged ) PRIVILEGED_FUNCTION;
-    #endif
-#else /* if ( portUSING_MPU_WRAPPERS == 1 ) */
-    #if ( portHAS_STACK_OVERFLOW_CHECKING == 1 )
-        StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
-                                             StackType_t * pxEndOfStack,
-                                             TaskFunction_t pxCode,
-                                             void * pvParameters ) PRIVILEGED_FUNCTION;
-    #else
-        StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
-                                             TaskFunction_t pxCode,
-                                             void * pvParameters ) PRIVILEGED_FUNCTION;
-    #endif
-#endif /* if ( portUSING_MPU_WRAPPERS == 1 ) */
+#यदि ( पत्तनम्_USING_MPU_WRAPPERS == 1 )
+    #यदि ( पत्तनम्_HAS_राशिः_अतिप्रवाहः_CHECKING == 1 )
+        राशिः_Type_t * px_पत्तनम्_Initialise_राशिः( राशिः_Type_t * px_शिखरम्_सम्बन्धि_राशिः,
+                                             राशिः_Type_t * px_अन्तः_सम्बन्धि_राशिः,
+                                             TaskFunction_t px_संहिता,
+                                             शून्य * pvParameters,
+                                             आधारः_Type_t x_सततम्_Privileged ) PRIVILEGED_FUNCTION;
+    #अन्यथा
+        राशिः_Type_t * px_पत्तनम्_Initialise_राशिः( राशिः_Type_t * px_शिखरम्_सम्बन्धि_राशिः,
+                                             TaskFunction_t px_संहिता,
+                                             शून्य * pvParameters,
+                                             आधारः_Type_t x_सततम्_Privileged ) PRIVILEGED_FUNCTION;
+    #यदि_अन्तः
+#अन्यथा /* if ( portUSING_MPU_WRAPPERS == 1 ) */
+    #यदि ( पत्तनम्_HAS_राशिः_अतिप्रवाहः_CHECKING == 1 )
+        राशिः_Type_t * px_पत्तनम्_Initialise_राशिः( राशिः_Type_t * px_शिखरम्_सम्बन्धि_राशिः,
+                                             राशिः_Type_t * px_अन्तः_सम्बन्धि_राशिः,
+                                             TaskFunction_t px_संहिता,
+                                             शून्य * pvParameters ) PRIVILEGED_FUNCTION;
+    #अन्यथा
+        राशिः_Type_t * px_पत्तनम्_Initialise_राशिः( राशिः_Type_t * px_शिखरम्_सम्बन्धि_राशिः,
+                                             TaskFunction_t px_संहिता,
+                                             शून्य * pvParameters ) PRIVILEGED_FUNCTION;
+    #यदि_अन्तः
+#यदि_अन्तः /* if ( portUSING_MPU_WRAPPERS == 1 ) */
 
 /* Used by heap_5.c to define the start address and size of each memory region
  * that together comprise the total FreeRTOS heap space. */
-typedef struct HeapRegion
+प्रकारनिर्देश संरचना HeapRegion
 {
-    uint8_t * pucStartAddress;
-    size_t xSizeInBytes;
+    uint8_t * puc_Start_स्थानाङ्कः;
+    size_t x_आकार_अन्तर्_अष्टकानि;
 } HeapRegion_t;
 
 /* Used to pass information about the heap out of vPortGetHeapStats(). */
-typedef struct xHeapStats
+प्रकारनिर्देश संरचना xHeapStats
 {
-    size_t xAvailableHeapSpaceInBytes;      /* The total heap size currently available - this is the sum of all the free blocks, not the largest block that can be allocated. */
-    size_t xSizeOfLargestFreeBlockInBytes;  /* The maximum size, in bytes, of all the free blocks within the heap at the time vPortGetHeapStats() is called. */
-    size_t xSizeOfSmallestFreeBlockInBytes; /* The minimum size, in bytes, of all the free blocks within the heap at the time vPortGetHeapStats() is called. */
-    size_t xNumberOfFreeBlocks;             /* The number of free memory blocks within the heap at the time vPortGetHeapStats() is called. */
-    size_t xMinimumEverFreeBytesRemaining;  /* The minimum amount of total free memory (sum of all free blocks) there has been in the heap since the system booted. */
-    size_t xNumberOfSuccessfulAllocations;  /* The number of calls to pvPortMalloc() that have returned a valid memory block. */
-    size_t xNumberOfSuccessfulFrees;        /* The number of calls to vPortFree() that has successfully freed a block of memory. */
+    size_t x_उपलब्धम्_Heap_Space_अन्तर्_अष्टकानि;      /* The total heap size currently available - this is the sum of all the free blocks, not the largest block that can be allocated. */
+    size_t x_आकार_सम्बन्धि_Largest_Free_खण्डम्_अन्तर्_अष्टकानि;  /* The maximum size, in bytes, of all the free blocks within the heap at the time vPortGetHeapStats() is called. */
+    size_t x_आकार_सम्बन्धि_Smallest_Free_खण्डम्_अन्तर्_अष्टकानि; /* The minimum size, in bytes, of all the free blocks within the heap at the time vPortGetHeapStats() is called. */
+    size_t x_सङ्ख्या_सम्बन्धि_Free_खण्डानि;             /* The number of free memory blocks within the heap at the time vPortGetHeapStats() is called. */
+    size_t x_Minimum_Ever_Free_अष्टकानि_Remaining;  /* The minimum amount of total free memory (sum of all free blocks) there has been in the heap since the system booted. */
+    size_t x_सङ्ख्या_सम्बन्धि_Successful_Allocations;  /* The number of calls to pvPortMalloc() that have returned a valid memory block. */
+    size_t x_सङ्ख्या_सम्बन्धि_Successful_Frees;        /* The number of calls to vPortFree() that has successfully freed a block of memory. */
 } HeapStats_t;
 
 /*
@@ -165,34 +165,34 @@ typedef struct xHeapStats
  * terminated by a HeapRegions_t structure that has a size of 0.  The region
  * with the lowest start address must appear first in the array.
  */
-void vPortDefineHeapRegions( const HeapRegion_t * const pxHeapRegions ) PRIVILEGED_FUNCTION;
+शून्य v_पत्तनम्_Define_Heap_Regions( ध्रुव HeapRegion_t * ध्रुव pxHeapRegions ) PRIVILEGED_FUNCTION;
 
 /*
  * Returns a HeapStats_t structure filled with information about the current
  * heap state.
  */
-void vPortGetHeapStats( HeapStats_t * pxHeapStats );
+शून्य v_पत्तनम्_Get_Heap_Stats( HeapStats_t * pxHeapStats );
 
 /*
  * Map to the memory management routines required for the port.
  */
-void * pvPortMalloc( size_t xSize ) PRIVILEGED_FUNCTION;
-void * pvPortCalloc( size_t xNum,
-                     size_t xSize ) PRIVILEGED_FUNCTION;
-void vPortFree( void * pv ) PRIVILEGED_FUNCTION;
-void vPortInitialiseBlocks( void ) PRIVILEGED_FUNCTION;
-size_t xPortGetFreeHeapSize( void ) PRIVILEGED_FUNCTION;
-size_t xPortGetMinimumEverFreeHeapSize( void ) PRIVILEGED_FUNCTION;
+शून्य * pv_पत्तनम्_Malloc( size_t x_आकार ) PRIVILEGED_FUNCTION;
+शून्य * pv_पत्तनम्_Calloc( size_t x_अङ्कः,
+                     size_t x_आकार ) PRIVILEGED_FUNCTION;
+शून्य v_पत्तनम्_Free( शून्य * pv ) PRIVILEGED_FUNCTION;
+शून्य v_पत्तनम्_Initialise_खण्डानि( शून्य ) PRIVILEGED_FUNCTION;
+size_t x_पत्तनम्_Get_Free_Heap_आकार( शून्य ) PRIVILEGED_FUNCTION;
+size_t x_पत्तनम्_Get_Minimum_Ever_Free_Heap_आकार( शून्य ) PRIVILEGED_FUNCTION;
 
-#if ( configSTACK_ALLOCATION_FROM_SEPARATE_HEAP == 1 )
-    void * pvPortMallocStack( size_t xSize ) PRIVILEGED_FUNCTION;
-    void vPortFreeStack( void * pv ) PRIVILEGED_FUNCTION;
-#else
-    #define pvPortMallocStack    pvPortMalloc
-    #define vPortFreeStack       vPortFree
-#endif
+#यदि ( config_राशिः_आवण्टनम्_FROM_SEPARATE_HEAP == 1 )
+    शून्य * pv_पत्तनम्_Malloc_राशिः( size_t x_आकार ) PRIVILEGED_FUNCTION;
+    शून्य v_पत्तनम्_Free_राशिः( शून्य * pv ) PRIVILEGED_FUNCTION;
+#अन्यथा
+    #परिभाषय pv_पत्तनम्_Malloc_राशिः    pv_पत्तनम्_Malloc
+    #परिभाषय v_पत्तनम्_Free_राशिः       v_पत्तनम्_Free
+#यदि_अन्तः
 
-#if ( configUSE_MALLOC_FAILED_HOOK == 1 )
+#यदि ( configUSE_MALLOC_FAILED_HOOK == 1 )
 
 /**
  * task.h
@@ -202,21 +202,21 @@ size_t xPortGetMinimumEverFreeHeapSize( void ) PRIVILEGED_FUNCTION;
  *
  * This hook function is called when allocation failed.
  */
-    void vApplicationMallocFailedHook( void ); /*lint !e526 Symbol not defined as it is an application callback. */
-#endif
+    शून्य vApplicationMallocFailedHook( शून्य ); /*lint !e526 Symbol not defined as it is an application callback. */
+#यदि_अन्तः
 
 /*
  * Setup the hardware ready for the scheduler to take control.  This generally
  * sets up a tick interrupt and sets timers for the correct tick frequency.
  */
-BaseType_t xPortStartScheduler( void ) PRIVILEGED_FUNCTION;
+आधारः_Type_t x_पत्तनम्_Start_Scheduler( शून्य ) PRIVILEGED_FUNCTION;
 
 /*
  * Undo any hardware/ISR setup that was performed by xPortStartScheduler() so
  * the hardware is left in its original condition after the scheduler stops
  * executing.
  */
-void vPortEndScheduler( void ) PRIVILEGED_FUNCTION;
+शून्य v_पत्तनम्_अन्तः_Scheduler( शून्य ) PRIVILEGED_FUNCTION;
 
 /*
  * The structures and methods of manipulating the MPU are contained within the
@@ -225,18 +225,18 @@ void vPortEndScheduler( void ) PRIVILEGED_FUNCTION;
  * Fills the xMPUSettings structure with the memory region information
  * contained in xRegions.
  */
-#if ( portUSING_MPU_WRAPPERS == 1 )
-    struct xMEMORY_REGION;
-    void vPortStoreTaskMPUSettings( xMPU_SETTINGS * xMPUSettings,
-                                    const struct xMEMORY_REGION * const xRegions,
-                                    StackType_t * pxBottomOfStack,
-                                    uint32_t ulStackDepth ) PRIVILEGED_FUNCTION;
-#endif
+#यदि ( पत्तनम्_USING_MPU_WRAPPERS == 1 )
+    संरचना x_स्मृतिः_REGION;
+    शून्य v_पत्तनम्_Store_Task_MPUSettings( xMPU_SETTINGS * xMPUSettings,
+                                    ध्रुव संरचना x_स्मृतिः_REGION * ध्रुव xRegions,
+                                    राशिः_Type_t * px_Bottom_सम्बन्धि_राशिः,
+                                    uint32_t ul_राशिः_गभीरता ) PRIVILEGED_FUNCTION;
+#यदि_अन्तः
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#यदि_परिभाषितम् __cplusplus
     }
-#endif
+#यदि_अन्तः
 /* *INDENT-ON* */
 
-#endif /* PORTABLE_H */
+#यदि_अन्तः /* PORTABLE_H */

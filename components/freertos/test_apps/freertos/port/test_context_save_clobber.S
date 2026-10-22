@@ -15,14 +15,14 @@ recursion_count:
     .word 0
 
     .text
-    .global     test_context_save_clober_func
+    .वैश्विक     test_context_save_clober_func
     .type       test_context_save_clober_func,@function
     .align      4
 
 /* This function recursively calls itself via call4, making sure each frame
  * uses only 4 registers. For this reason, recursion count can not be
  * a function argument (it would have to be in a6) and is placed into .data
- * section above.
+ * खण्डः above.
  */
 test_context_save_clober_func:
     entry a1, 16
@@ -31,7 +31,7 @@ test_context_save_clober_func:
     movi a3, recursion_count
     l32i a2, a3, 0
 
-    /* if it is zero, initialize it to 16 (=64 physical registers / 4 registers per call) */
+    /* if it is zero, initialize it to 16 (=64 physical registers / 4 registers per आह्वान) */
     bnez a2, 1f
     movi a2, 16
 1:
@@ -40,10 +40,10 @@ test_context_save_clober_func:
     addi a2, a2, -1
     s32i a2, a3, 0
 
-    /* counter not zero? do a recursive call */
+    /* counter not zero? do a recursive आह्वान */
     beqz a2, wait
     call4 test_context_save_clober_func
-    j end
+    j अन्तः_2
 
 wait:
     /* Counter has reached zero, and we have 16 frames on the stack.
@@ -54,7 +54,7 @@ wait:
     addi a3, a3, -1
     bnez a3, 1b
 
-end:
+अन्तः_2:
     retw
 
 #endif // XCHAL_HAVE_WINDOWED

@@ -30,17 +30,17 @@
  *
  */
 
-#ifndef MPU_WRAPPERS_H
-#define MPU_WRAPPERS_H
+#यदि_अपरिभाषितम् MPU_WRAPPERS_H
+#परिभाषय MPU_WRAPPERS_H
 
 /* This file redefines API functions to be called through a wrapper macro, but
  * only for ports that are using the MPU. */
-#if ( portUSING_MPU_WRAPPERS == 1 )
+#यदि ( पत्तनम्_USING_MPU_WRAPPERS == 1 )
 
 /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE will be defined when this file is
  * included from queue.c or task.c to prevent it from having an effect within
  * those files. */
-    #ifndef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+    #यदि_अपरिभाषितम् MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /*
  * Map standard (non MPU) API functions to equivalents that start
@@ -51,230 +51,230 @@
  */
 
 /* Map standard task.h API functions to the MPU equivalents. */
-        #define vTaskDelay                            MPU_vTaskDelay
-        #define xTaskDelayUntil                       MPU_xTaskDelayUntil
-        #define xTaskAbortDelay                       MPU_xTaskAbortDelay
-        #define uxTaskPriorityGet                     MPU_uxTaskPriorityGet
-        #define eTaskGetState                         MPU_eTaskGetState
-        #define vTaskGetInfo                          MPU_vTaskGetInfo
-        #define vTaskSuspend                          MPU_vTaskSuspend
-        #define vTaskResume                           MPU_vTaskResume
-        #define xTaskGetTickCount                     MPU_xTaskGetTickCount
-        #define uxTaskGetNumberOfTasks                MPU_uxTaskGetNumberOfTasks
-        #define uxTaskGetStackHighWaterMark           MPU_uxTaskGetStackHighWaterMark
-        #define uxTaskGetStackHighWaterMark2          MPU_uxTaskGetStackHighWaterMark2
-        #define vTaskSetApplicationTaskTag            MPU_vTaskSetApplicationTaskTag
-        #define xTaskGetApplicationTaskTag            MPU_xTaskGetApplicationTaskTag
-        #define vTaskSetThreadLocalStoragePointer     MPU_vTaskSetThreadLocalStoragePointer
-        #define pvTaskGetThreadLocalStoragePointer    MPU_pvTaskGetThreadLocalStoragePointer
-        #define xTaskGetIdleTaskHandle                MPU_xTaskGetIdleTaskHandle
-        #define uxTaskGetSystemState                  MPU_uxTaskGetSystemState
-        #define ulTaskGetIdleRunTimeCounter           MPU_ulTaskGetIdleRunTimeCounter
-        #define ulTaskGetIdleRunTimePercent           MPU_ulTaskGetIdleRunTimePercent
-        #define xTaskGenericNotify                    MPU_xTaskGenericNotify
-        #define xTaskGenericNotifyWait                MPU_xTaskGenericNotifyWait
-        #define ulTaskGenericNotifyTake               MPU_ulTaskGenericNotifyTake
-        #define xTaskGenericNotifyStateClear          MPU_xTaskGenericNotifyStateClear
-        #define ulTaskGenericNotifyValueClear         MPU_ulTaskGenericNotifyValueClear
-        #define vTaskSetTimeOutState                  MPU_vTaskSetTimeOutState
-        #define xTaskCheckForTimeOut                  MPU_xTaskCheckForTimeOut
-        #define xTaskGetCurrentTaskHandle             MPU_xTaskGetCurrentTaskHandle
-        #define xTaskGetSchedulerState                MPU_xTaskGetSchedulerState
+        #परिभाषय vTaskDelay                            MPU_vTaskDelay
+        #परिभाषय xTaskDelayUntil                       MPU_xTaskDelayUntil
+        #परिभाषय xTaskAbortDelay                       MPU_xTaskAbortDelay
+        #परिभाषय ux_Task_प्राथमिकता_Get                     MPU_ux_Task_प्राथमिकता_Get
+        #परिभाषय eTaskGetState                         MPU_eTaskGetState
+        #परिभाषय vTaskGetInfo                          MPU_vTaskGetInfo
+        #परिभाषय vTaskSuspend                          MPU_vTaskSuspend
+        #परिभाषय vTaskResume                           MPU_vTaskResume
+        #परिभाषय x_Task_Get_Tick_गणनम्                     MPU_x_Task_Get_Tick_गणनम्
+        #परिभाषय ux_Task_Get_सङ्ख्या_सम्बन्धि_Tasks                MPU_ux_Task_Get_सङ्ख्या_सम्बन्धि_Tasks
+        #परिभाषय ux_Task_Get_राशिः_उच्चः_Water_Mark           MPU_ux_Task_Get_राशिः_उच्चः_Water_Mark
+        #परिभाषय ux_Task_Get_राशिः_उच्चः_Water_Mark2          MPU_ux_Task_Get_राशिः_उच्चः_Water_Mark2
+        #परिभाषय v_Task_समुच्चयः_Application_Task_चिह्नकम्            MPU_v_Task_समुच्चयः_Application_Task_चिह्नकम्
+        #परिभाषय x_Task_Get_Application_Task_चिह्नकम्            MPU_x_Task_Get_Application_Task_चिह्नकम्
+        #परिभाषय v_Task_समुच्चयः_Thread_Local_Storage_Pointer     MPU_v_Task_समुच्चयः_Thread_Local_Storage_Pointer
+        #परिभाषय pvTaskGetThreadLocalStoragePointer    MPU_pvTaskGetThreadLocalStoragePointer
+        #परिभाषय xTaskGetIdleTaskHandle                MPU_xTaskGetIdleTaskHandle
+        #परिभाषय uxTaskGetSystemState                  MPU_uxTaskGetSystemState
+        #परिभाषय ul_Task_Get_Idle_सततम्_Time_गणक           MPU_ul_Task_Get_Idle_सततम्_Time_गणक
+        #परिभाषय ul_Task_Get_Idle_सततम्_Time_Percent           MPU_ul_Task_Get_Idle_सततम्_Time_Percent
+        #परिभाषय xTaskGenericNotify                    MPU_xTaskGenericNotify
+        #परिभाषय xTaskGenericNotifyWait                MPU_xTaskGenericNotifyWait
+        #परिभाषय ulTaskGenericNotifyTake               MPU_ulTaskGenericNotifyTake
+        #परिभाषय xTaskGenericNotifyStateClear          MPU_xTaskGenericNotifyStateClear
+        #परिभाषय ul_Task_Generic_Notify_मानम्_Clear         MPU_ul_Task_Generic_Notify_मानम्_Clear
+        #परिभाषय v_Task_समुच्चयः_Time_बहिर्गमनम्_State                  MPU_v_Task_समुच्चयः_Time_बहिर्गमनम्_State
+        #परिभाषय x_Task_Check_For_Time_बहिर्गमनम्                  MPU_x_Task_Check_For_Time_बहिर्गमनम्
+        #परिभाषय xTaskGetCurrentTaskHandle             MPU_xTaskGetCurrentTaskHandle
+        #परिभाषय xTaskGetSchedulerState                MPU_xTaskGetSchedulerState
 
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
-            #define ulTaskGetRunTimeCounter           MPU_ulTaskGetRunTimeCounter
-            #define ulTaskGetRunTimePercent           MPU_ulTaskGetRunTimePercent
-        #endif /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
+        #यदि ( configUSE_MPU_WRAPPERS_V1 == 0 )
+            #परिभाषय ul_Task_Get_सततम्_Time_गणक           MPU_ul_Task_Get_सततम्_Time_गणक
+            #परिभाषय ul_Task_Get_सततम्_Time_Percent           MPU_ul_Task_Get_सततम्_Time_Percent
+        #यदि_अन्तः /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 
 /* Privileged only wrappers for Task APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
-        #define xTaskCreate                              MPU_xTaskCreate
-        #define xTaskCreateStatic                        MPU_xTaskCreateStatic
-        #define vTaskDelete                              MPU_vTaskDelete
-        #define vTaskPrioritySet                         MPU_vTaskPrioritySet
-        #define xTaskGetHandle                           MPU_xTaskGetHandle
-        #define xTaskCallApplicationTaskHook             MPU_xTaskCallApplicationTaskHook
+        #परिभाषय xTaskCreate                              MPU_xTaskCreate
+        #परिभाषय xTaskCreateStatic                        MPU_xTaskCreateStatic
+        #परिभाषय vTaskDelete                              MPU_vTaskDelete
+        #परिभाषय v_Task_प्राथमिकता_समुच्चयः                         MPU_v_Task_प्राथमिकता_समुच्चयः
+        #परिभाषय xTaskGetHandle                           MPU_xTaskGetHandle
+        #परिभाषय xTaskCallApplicationTaskHook             MPU_xTaskCallApplicationTaskHook
 
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
-            #define pcTaskGetName                        MPU_pcTaskGetName
-            #define xTaskCreateRestricted                MPU_xTaskCreateRestricted
-            #define xTaskCreateRestrictedStatic          MPU_xTaskCreateRestrictedStatic
-            #define vTaskAllocateMPURegions              MPU_vTaskAllocateMPURegions
-            #define xTaskGetStaticBuffers                MPU_xTaskGetStaticBuffers
-            #define uxTaskPriorityGetFromISR             MPU_uxTaskPriorityGetFromISR
-            #define uxTaskBasePriorityGet                MPU_uxTaskBasePriorityGet
-            #define uxTaskBasePriorityGetFromISR         MPU_uxTaskBasePriorityGetFromISR
-            #define xTaskResumeFromISR                   MPU_xTaskResumeFromISR
-            #define xTaskGetApplicationTaskTagFromISR    MPU_xTaskGetApplicationTaskTagFromISR
-            #define xTaskGenericNotifyFromISR            MPU_xTaskGenericNotifyFromISR
-            #define vTaskGenericNotifyGiveFromISR        MPU_vTaskGenericNotifyGiveFromISR
-        #endif /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
+        #यदि ( configUSE_MPU_WRAPPERS_V1 == 0 )
+            #परिभाषय pcTaskGetName                        MPU_pcTaskGetName
+            #परिभाषय xTaskCreateRestricted                MPU_xTaskCreateRestricted
+            #परिभाषय xTaskCreateRestrictedStatic          MPU_xTaskCreateRestrictedStatic
+            #परिभाषय vTaskAllocateMPURegions              MPU_vTaskAllocateMPURegions
+            #परिभाषय xTaskGetStaticBuffers                MPU_xTaskGetStaticBuffers
+            #परिभाषय ux_Task_प्राथमिकता_Get_From_ISR             MPU_ux_Task_प्राथमिकता_Get_From_ISR
+            #परिभाषय ux_Task_आधारः_प्राथमिकता_Get                MPU_ux_Task_आधारः_प्राथमिकता_Get
+            #परिभाषय ux_Task_आधारः_प्राथमिकता_Get_From_ISR         MPU_ux_Task_आधारः_प्राथमिकता_Get_From_ISR
+            #परिभाषय xTaskResumeFromISR                   MPU_xTaskResumeFromISR
+            #परिभाषय x_Task_Get_Application_Task_चिह्नकम्_From_ISR    MPU_x_Task_Get_Application_Task_चिह्नकम्_From_ISR
+            #परिभाषय xTaskGenericNotifyFromISR            MPU_xTaskGenericNotifyFromISR
+            #परिभाषय vTaskGenericNotifyGiveFromISR        MPU_vTaskGenericNotifyGiveFromISR
+        #यदि_अन्तः /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 
 /* Map standard queue.h API functions to the MPU equivalents. */
-        #define xQueueGenericSend            MPU_xQueueGenericSend
-        #define xQueueReceive                MPU_xQueueReceive
-        #define xQueuePeek                   MPU_xQueuePeek
-        #define xQueueSemaphoreTake          MPU_xQueueSemaphoreTake
-        #define uxQueueMessagesWaiting       MPU_uxQueueMessagesWaiting
-        #define uxQueueSpacesAvailable       MPU_uxQueueSpacesAvailable
-        #define xQueueGetMutexHolder         MPU_xQueueGetMutexHolder
-        #define xQueueTakeMutexRecursive     MPU_xQueueTakeMutexRecursive
-        #define xQueueGiveMutexRecursive     MPU_xQueueGiveMutexRecursive
-        #define xQueueAddToSet               MPU_xQueueAddToSet
-        #define xQueueSelectFromSet          MPU_xQueueSelectFromSet
+        #परिभाषय xQueueGenericSend            MPU_xQueueGenericSend
+        #परिभाषय xQueueReceive                MPU_xQueueReceive
+        #परिभाषय xQueuePeek                   MPU_xQueuePeek
+        #परिभाषय xQueueSemaphoreTake          MPU_xQueueSemaphoreTake
+        #परिभाषय ux_Queue_Messages_प्रतीक्षा       MPU_ux_Queue_Messages_प्रतीक्षा
+        #परिभाषय ux_Queue_Spaces_उपलब्धम्       MPU_ux_Queue_Spaces_उपलब्धम्
+        #परिभाषय xQueueGetMutexHolder         MPU_xQueueGetMutexHolder
+        #परिभाषय xQueueTakeMutexRecursive     MPU_xQueueTakeMutexRecursive
+        #परिभाषय xQueueGiveMutexRecursive     MPU_xQueueGiveMutexRecursive
+        #परिभाषय x_Queue_सङ्कलय_गन्तव्यम्_समुच्चयः               MPU_x_Queue_सङ्कलय_गन्तव्यम्_समुच्चयः
+        #परिभाषय x_Queue_Select_From_समुच्चयः          MPU_x_Queue_Select_From_समुच्चयः
 
-        #if ( configQUEUE_REGISTRY_SIZE > 0 )
-            #define vQueueAddToRegistry      MPU_vQueueAddToRegistry
-            #define vQueueUnregisterQueue    MPU_vQueueUnregisterQueue
-            #define pcQueueGetName           MPU_pcQueueGetName
-        #endif /* #if ( configQUEUE_REGISTRY_SIZE > 0 ) */
+        #यदि ( config_QUEUE_REGISTRY_आकार > 0 )
+            #परिभाषय v_Queue_सङ्कलय_गन्तव्यम्_Registry      MPU_v_Queue_सङ्कलय_गन्तव्यम्_Registry
+            #परिभाषय vQueueUnregisterQueue    MPU_vQueueUnregisterQueue
+            #परिभाषय pcQueueGetName           MPU_pcQueueGetName
+        #यदि_अन्तः /* #if ( configQUEUE_REGISTRY_SIZE > 0 ) */
 
 /* Privileged only wrappers for Queue APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
-        #define vQueueDelete                           MPU_vQueueDelete
-        #define xQueueCreateMutex                      MPU_xQueueCreateMutex
-        #define xQueueCreateMutexStatic                MPU_xQueueCreateMutexStatic
-        #define xQueueCreateCountingSemaphore          MPU_xQueueCreateCountingSemaphore
-        #define xQueueCreateCountingSemaphoreStatic    MPU_xQueueCreateCountingSemaphoreStatic
-        #define xQueueGenericCreate                    MPU_xQueueGenericCreate
-        #define xQueueGenericCreateStatic              MPU_xQueueGenericCreateStatic
-        #define xQueueGenericReset                     MPU_xQueueGenericReset
-        #define xQueueCreateSet                        MPU_xQueueCreateSet
-        #define xQueueRemoveFromSet                    MPU_xQueueRemoveFromSet
+        #परिभाषय vQueueDelete                           MPU_vQueueDelete
+        #परिभाषय xQueueCreateMutex                      MPU_xQueueCreateMutex
+        #परिभाषय xQueueCreateMutexStatic                MPU_xQueueCreateMutexStatic
+        #परिभाषय xQueueCreateCountingSemaphore          MPU_xQueueCreateCountingSemaphore
+        #परिभाषय xQueueCreateCountingSemaphoreStatic    MPU_xQueueCreateCountingSemaphoreStatic
+        #परिभाषय xQueueGenericCreate                    MPU_xQueueGenericCreate
+        #परिभाषय xQueueGenericCreateStatic              MPU_xQueueGenericCreateStatic
+        #परिभाषय xQueueGenericReset                     MPU_xQueueGenericReset
+        #परिभाषय x_Queue_Create_समुच्चयः                        MPU_x_Queue_Create_समुच्चयः
+        #परिभाषय x_Queue_Remove_From_समुच्चयः                    MPU_x_Queue_Remove_From_समुच्चयः
 
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
-            #define xQueueGenericGetStaticBuffers      MPU_xQueueGenericGetStaticBuffers
-            #define xQueueGenericSendFromISR           MPU_xQueueGenericSendFromISR
-            #define xQueueGiveFromISR                  MPU_xQueueGiveFromISR
-            #define xQueuePeekFromISR                  MPU_xQueuePeekFromISR
-            #define xQueueReceiveFromISR               MPU_xQueueReceiveFromISR
-            #define xQueueIsQueueEmptyFromISR          MPU_xQueueIsQueueEmptyFromISR
-            #define xQueueIsQueueFullFromISR           MPU_xQueueIsQueueFullFromISR
-            #define uxQueueMessagesWaitingFromISR      MPU_uxQueueMessagesWaitingFromISR
-            #define xQueueGetMutexHolderFromISR        MPU_xQueueGetMutexHolderFromISR
-            #define xQueueSelectFromSetFromISR         MPU_xQueueSelectFromSetFromISR
-        #endif /* if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
+        #यदि ( configUSE_MPU_WRAPPERS_V1 == 0 )
+            #परिभाषय xQueueGenericGetStaticBuffers      MPU_xQueueGenericGetStaticBuffers
+            #परिभाषय xQueueGenericSendFromISR           MPU_xQueueGenericSendFromISR
+            #परिभाषय xQueueGiveFromISR                  MPU_xQueueGiveFromISR
+            #परिभाषय xQueuePeekFromISR                  MPU_xQueuePeekFromISR
+            #परिभाषय xQueueReceiveFromISR               MPU_xQueueReceiveFromISR
+            #परिभाषय x_Queue_Is_Queue_रिक्तानि_From_ISR          MPU_x_Queue_Is_Queue_रिक्तानि_From_ISR
+            #परिभाषय x_Queue_Is_Queue_पूर्णम्_From_ISR           MPU_x_Queue_Is_Queue_पूर्णम्_From_ISR
+            #परिभाषय ux_Queue_Messages_प्रतीक्षा_From_ISR      MPU_ux_Queue_Messages_प्रतीक्षा_From_ISR
+            #परिभाषय xQueueGetMutexHolderFromISR        MPU_xQueueGetMutexHolderFromISR
+            #परिभाषय x_Queue_Select_From_समुच्चयः_From_ISR         MPU_x_Queue_Select_From_समुच्चयः_From_ISR
+        #यदि_अन्तः /* if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 
 /* Map standard timer.h API functions to the MPU equivalents. */
-        #define pvTimerGetTimerID                 MPU_pvTimerGetTimerID
-        #define vTimerSetTimerID                  MPU_vTimerSetTimerID
-        #define xTimerIsTimerActive               MPU_xTimerIsTimerActive
-        #define xTimerGetTimerDaemonTaskHandle    MPU_xTimerGetTimerDaemonTaskHandle
-        #define xTimerGenericCommandFromTask      MPU_xTimerGenericCommandFromTask
-        #define pcTimerGetName                    MPU_pcTimerGetName
-        #define vTimerSetReloadMode               MPU_vTimerSetReloadMode
-        #define uxTimerGetReloadMode              MPU_uxTimerGetReloadMode
-        #define xTimerGetPeriod                   MPU_xTimerGetPeriod
-        #define xTimerGetExpiryTime               MPU_xTimerGetExpiryTime
+        #परिभाषय pvTimerGetTimerID                 MPU_pvTimerGetTimerID
+        #परिभाषय v_Timer_समुच्चयः_Timer_ID                  MPU_v_Timer_समुच्चयः_Timer_ID
+        #परिभाषय x_Timer_Is_Timer_सक्रिय               MPU_x_Timer_Is_Timer_सक्रिय
+        #परिभाषय xTimerGetTimerDaemonTaskHandle    MPU_xTimerGetTimerDaemonTaskHandle
+        #परिभाषय xTimerGenericCommandFromTask      MPU_xTimerGenericCommandFromTask
+        #परिभाषय pcTimerGetName                    MPU_pcTimerGetName
+        #परिभाषय v_Timer_समुच्चयः_Reload_बहुलकम्               MPU_v_Timer_समुच्चयः_Reload_बहुलकम्
+        #परिभाषय ux_Timer_Get_Reload_बहुलकम्              MPU_ux_Timer_Get_Reload_बहुलकम्
+        #परिभाषय xTimerGetPeriod                   MPU_xTimerGetPeriod
+        #परिभाषय xTimerGetExpiryTime               MPU_xTimerGetExpiryTime
 
 /* Privileged only wrappers for Timer APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
-            #define xTimerGetReloadMode            MPU_xTimerGetReloadMode
-            #define xTimerCreate                   MPU_xTimerCreate
-            #define xTimerCreateStatic             MPU_xTimerCreateStatic
-            #define xTimerGetStaticBuffer          MPU_xTimerGetStaticBuffer
-            #define xTimerGenericCommandFromISR    MPU_xTimerGenericCommandFromISR
-        #endif /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
+        #यदि ( configUSE_MPU_WRAPPERS_V1 == 0 )
+            #परिभाषय x_Timer_Get_Reload_बहुलकम्            MPU_x_Timer_Get_Reload_बहुलकम्
+            #परिभाषय xTimerCreate                   MPU_xTimerCreate
+            #परिभाषय xTimerCreateStatic             MPU_xTimerCreateStatic
+            #परिभाषय x_Timer_Get_Static_बफर          MPU_x_Timer_Get_Static_बफर
+            #परिभाषय xTimerGenericCommandFromISR    MPU_xTimerGenericCommandFromISR
+        #यदि_अन्तः /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 
 /* Map standard event_group.h API functions to the MPU equivalents. */
-        #define xEventGroupWaitBits          MPU_xEventGroupWaitBits
-        #define xEventGroupClearBits         MPU_xEventGroupClearBits
-        #define xEventGroupSetBits           MPU_xEventGroupSetBits
-        #define xEventGroupSync              MPU_xEventGroupSync
+        #परिभाषय x_Event_गणः_Wait_द्वयङ्काः          MPU_x_Event_गणः_Wait_द्वयङ्काः
+        #परिभाषय x_Event_गणः_Clear_द्वयङ्काः         MPU_x_Event_गणः_Clear_द्वयङ्काः
+        #परिभाषय x_Event_गणः_समुच्चयः_द्वयङ्काः           MPU_x_Event_गणः_समुच्चयः_द्वयङ्काः
+        #परिभाषय x_Event_गणः_Sync              MPU_x_Event_गणः_Sync
 
-        #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) )
-            #define uxEventGroupGetNumber    MPU_uxEventGroupGetNumber
-            #define vEventGroupSetNumber     MPU_vEventGroupSetNumber
-        #endif /* #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) ) */
+        #यदि ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) )
+            #परिभाषय ux_Event_गणः_Get_सङ्ख्या    MPU_ux_Event_गणः_Get_सङ्ख्या
+            #परिभाषय v_Event_गणः_समुच्चयः_सङ्ख्या     MPU_v_Event_गणः_समुच्चयः_सङ्ख्या
+        #यदि_अन्तः /* #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) ) */
 
 /* Privileged only wrappers for Event Group APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
-        #define xEventGroupCreate                  MPU_xEventGroupCreate
-        #define xEventGroupCreateStatic            MPU_xEventGroupCreateStatic
-        #define vEventGroupDelete                  MPU_vEventGroupDelete
+        #परिभाषय x_Event_गणः_Create                  MPU_x_Event_गणः_Create
+        #परिभाषय x_Event_गणः_Create_Static            MPU_x_Event_गणः_Create_Static
+        #परिभाषय v_Event_गणः_Delete                  MPU_v_Event_गणः_Delete
 
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
-            #define xEventGroupGetStaticBuffer     MPU_xEventGroupGetStaticBuffer
-            #define xEventGroupClearBitsFromISR    MPU_xEventGroupClearBitsFromISR
-            #define xEventGroupSetBitsFromISR      MPU_xEventGroupSetBitsFromISR
-            #define xEventGroupGetBitsFromISR      MPU_xEventGroupGetBitsFromISR
-        #endif /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
+        #यदि ( configUSE_MPU_WRAPPERS_V1 == 0 )
+            #परिभाषय x_Event_गणः_Get_Static_बफर     MPU_x_Event_गणः_Get_Static_बफर
+            #परिभाषय x_Event_गणः_Clear_द्वयङ्काः_From_ISR    MPU_x_Event_गणः_Clear_द्वयङ्काः_From_ISR
+            #परिभाषय x_Event_गणः_समुच्चयः_द्वयङ्काः_From_ISR      MPU_x_Event_गणः_समुच्चयः_द्वयङ्काः_From_ISR
+            #परिभाषय x_Event_गणः_Get_द्वयङ्काः_From_ISR      MPU_x_Event_गणः_Get_द्वयङ्काः_From_ISR
+        #यदि_अन्तः /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 
 /* Map standard message/stream_buffer.h API functions to the MPU
  * equivalents. */
-        #define xStreamBufferSend                      MPU_xStreamBufferSend
-        #define xStreamBufferReceive                   MPU_xStreamBufferReceive
-        #define xStreamBufferIsFull                    MPU_xStreamBufferIsFull
-        #define xStreamBufferIsEmpty                   MPU_xStreamBufferIsEmpty
-        #define xStreamBufferSpacesAvailable           MPU_xStreamBufferSpacesAvailable
-        #define xStreamBufferBytesAvailable            MPU_xStreamBufferBytesAvailable
-        #define xStreamBufferSetTriggerLevel           MPU_xStreamBufferSetTriggerLevel
-        #define xStreamBufferNextMessageLengthBytes    MPU_xStreamBufferNextMessageLengthBytes
+        #परिभाषय x_प्रवाहः_बफर_Send                      MPU_x_प्रवाहः_बफर_Send
+        #परिभाषय x_प्रवाहः_बफर_Receive                   MPU_x_प्रवाहः_बफर_Receive
+        #परिभाषय x_प्रवाहः_बफर_Is_पूर्णम्                    MPU_x_प्रवाहः_बफर_Is_पूर्णम्
+        #परिभाषय x_प्रवाहः_बफर_Is_रिक्तानि                   MPU_x_प्रवाहः_बफर_Is_रिक्तानि
+        #परिभाषय x_प्रवाहः_बफर_Spaces_उपलब्धम्           MPU_x_प्रवाहः_बफर_Spaces_उपलब्धम्
+        #परिभाषय x_प्रवाहः_बफर_अष्टकानि_उपलब्धम्            MPU_x_प्रवाहः_बफर_अष्टकानि_उपलब्धम्
+        #परिभाषय x_प्रवाहः_बफर_समुच्चयः_Trigger_Level           MPU_x_प्रवाहः_बफर_समुच्चयः_Trigger_Level
+        #परिभाषय x_प्रवाहः_बफर_अग्र_सन्देशः_दीर्घता_अष्टकानि    MPU_x_प्रवाहः_बफर_अग्र_सन्देशः_दीर्घता_अष्टकानि
 
 /* Privileged only wrappers for Stream Buffer APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
 
-        #define xStreamBufferGenericCreate                  MPU_xStreamBufferGenericCreate
-        #define xStreamBufferGenericCreateStatic            MPU_xStreamBufferGenericCreateStatic
-        #define vStreamBufferDelete                         MPU_vStreamBufferDelete
-        #define xStreamBufferReset                          MPU_xStreamBufferReset
+        #परिभाषय x_प्रवाहः_बफर_Generic_Create                  MPU_x_प्रवाहः_बफर_Generic_Create
+        #परिभाषय x_प्रवाहः_बफर_Generic_Create_Static            MPU_x_प्रवाहः_बफर_Generic_Create_Static
+        #परिभाषय v_प्रवाहः_बफर_Delete                         MPU_v_प्रवाहः_बफर_Delete
+        #परिभाषय x_प्रवाहः_बफर_Reset                          MPU_x_प्रवाहः_बफर_Reset
 
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
-            #define xStreamBufferGetStaticBuffers           MPU_xStreamBufferGetStaticBuffers
-            #define xStreamBufferSendFromISR                MPU_xStreamBufferSendFromISR
-            #define xStreamBufferReceiveFromISR             MPU_xStreamBufferReceiveFromISR
-            #define xStreamBufferSendCompletedFromISR       MPU_xStreamBufferSendCompletedFromISR
-            #define xStreamBufferReceiveCompletedFromISR    MPU_xStreamBufferReceiveCompletedFromISR
-            #define xStreamBufferResetFromISR               MPU_xStreamBufferResetFromISR
-        #endif /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
+        #यदि ( configUSE_MPU_WRAPPERS_V1 == 0 )
+            #परिभाषय x_प्रवाहः_बफर_Get_Static_Buffers           MPU_x_प्रवाहः_बफर_Get_Static_Buffers
+            #परिभाषय x_प्रवाहः_बफर_Send_From_ISR                MPU_x_प्रवाहः_बफर_Send_From_ISR
+            #परिभाषय x_प्रवाहः_बफर_Receive_From_ISR             MPU_x_प्रवाहः_बफर_Receive_From_ISR
+            #परिभाषय x_प्रवाहः_बफर_Send_Completed_From_ISR       MPU_x_प्रवाहः_बफर_Send_Completed_From_ISR
+            #परिभाषय x_प्रवाहः_बफर_Receive_Completed_From_ISR    MPU_x_प्रवाहः_बफर_Receive_Completed_From_ISR
+            #परिभाषय x_प्रवाहः_बफर_Reset_From_ISR               MPU_x_प्रवाहः_बफर_Reset_From_ISR
+        #यदि_अन्तः /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 
-        #if ( ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) )
+        #यदि ( ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) )
 
-            #define vGrantAccessToTask( xTask, xTaskToGrantAccess )                        vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xTaskToGrantAccess ) )
-            #define vRevokeAccessToTask( xTask, xTaskToRevokeAccess )                      vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xTaskToRevokeAccess ) )
+            #परिभाषय v_Grant_Access_गन्तव्यम्_Task( xTask, x_Task_गन्तव्यम्_Grant_Access )                        v_Grant_Access_गन्तव्यम्_Kernel_Object( ( xTask ), ( int32_t ) ( x_Task_गन्तव्यम्_Grant_Access ) )
+            #परिभाषय v_Revoke_Access_गन्तव्यम्_Task( xTask, x_Task_गन्तव्यम्_Revoke_Access )                      v_Revoke_Access_गन्तव्यम्_Kernel_Object( ( xTask ), ( int32_t ) ( x_Task_गन्तव्यम्_Revoke_Access ) )
 
-            #define vGrantAccessToSemaphore( xTask, xSemaphoreToGrantAccess )              vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xSemaphoreToGrantAccess ) )
-            #define vRevokeAccessToSemaphore( xTask, xSemaphoreToRevokeAccess )            vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xSemaphoreToRevokeAccess ) )
+            #परिभाषय v_Grant_Access_गन्तव्यम्_Semaphore( xTask, x_Semaphore_गन्तव्यम्_Grant_Access )              v_Grant_Access_गन्तव्यम्_Kernel_Object( ( xTask ), ( int32_t ) ( x_Semaphore_गन्तव्यम्_Grant_Access ) )
+            #परिभाषय v_Revoke_Access_गन्तव्यम्_Semaphore( xTask, x_Semaphore_गन्तव्यम्_Revoke_Access )            v_Revoke_Access_गन्तव्यम्_Kernel_Object( ( xTask ), ( int32_t ) ( x_Semaphore_गन्तव्यम्_Revoke_Access ) )
 
-            #define vGrantAccessToQueue( xTask, xQueueToGrantAccess )                      vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xQueueToGrantAccess ) )
-            #define vRevokeAccessToQueue( xTask, xQueueToRevokeAccess )                    vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xQueueToRevokeAccess ) )
+            #परिभाषय v_Grant_Access_गन्तव्यम्_Queue( xTask, x_Queue_गन्तव्यम्_Grant_Access )                      v_Grant_Access_गन्तव्यम्_Kernel_Object( ( xTask ), ( int32_t ) ( x_Queue_गन्तव्यम्_Grant_Access ) )
+            #परिभाषय v_Revoke_Access_गन्तव्यम्_Queue( xTask, x_Queue_गन्तव्यम्_Revoke_Access )                    v_Revoke_Access_गन्तव्यम्_Kernel_Object( ( xTask ), ( int32_t ) ( x_Queue_गन्तव्यम्_Revoke_Access ) )
 
-            #define vGrantAccessToQueueSet( xTask, xQueueSetToGrantAccess )                vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xQueueSetToGrantAccess ) )
-            #define vRevokeAccessToQueueSet( xTask, xQueueSetToRevokeAccess )              vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xQueueSetToRevokeAccess ) )
+            #परिभाषय v_Grant_Access_गन्तव्यम्_Queue_समुच्चयः( xTask, x_Queue_समुच्चयः_गन्तव्यम्_Grant_Access )                v_Grant_Access_गन्तव्यम्_Kernel_Object( ( xTask ), ( int32_t ) ( x_Queue_समुच्चयः_गन्तव्यम्_Grant_Access ) )
+            #परिभाषय v_Revoke_Access_गन्तव्यम्_Queue_समुच्चयः( xTask, x_Queue_समुच्चयः_गन्तव्यम्_Revoke_Access )              v_Revoke_Access_गन्तव्यम्_Kernel_Object( ( xTask ), ( int32_t ) ( x_Queue_समुच्चयः_गन्तव्यम्_Revoke_Access ) )
 
-            #define vGrantAccessToEventGroup( xTask, xEventGroupToGrantAccess )            vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xEventGroupToGrantAccess ) )
-            #define vRevokeAccessToEventGroup( xTask, xEventGroupToRevokeAccess )          vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xEventGroupToRevokeAccess ) )
+            #परिभाषय v_Grant_Access_गन्तव्यम्_Event_गणः( xTask, x_Event_गणः_गन्तव्यम्_Grant_Access )            v_Grant_Access_गन्तव्यम्_Kernel_Object( ( xTask ), ( int32_t ) ( x_Event_गणः_गन्तव्यम्_Grant_Access ) )
+            #परिभाषय v_Revoke_Access_गन्तव्यम्_Event_गणः( xTask, x_Event_गणः_गन्तव्यम्_Revoke_Access )          v_Revoke_Access_गन्तव्यम्_Kernel_Object( ( xTask ), ( int32_t ) ( x_Event_गणः_गन्तव्यम्_Revoke_Access ) )
 
-            #define vGrantAccessToStreamBuffer( xTask, xStreamBufferToGrantAccess )        vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xStreamBufferToGrantAccess ) )
-            #define vRevokeAccessToStreamBuffer( xTask, xStreamBufferToRevokeAccess )      vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xStreamBufferToRevokeAccess ) )
+            #परिभाषय v_Grant_Access_गन्तव्यम्_प्रवाहः_बफर( xTask, x_प्रवाहः_बफर_गन्तव्यम्_Grant_Access )        v_Grant_Access_गन्तव्यम्_Kernel_Object( ( xTask ), ( int32_t ) ( x_प्रवाहः_बफर_गन्तव्यम्_Grant_Access ) )
+            #परिभाषय v_Revoke_Access_गन्तव्यम्_प्रवाहः_बफर( xTask, x_प्रवाहः_बफर_गन्तव्यम्_Revoke_Access )      v_Revoke_Access_गन्तव्यम्_Kernel_Object( ( xTask ), ( int32_t ) ( x_प्रवाहः_बफर_गन्तव्यम्_Revoke_Access ) )
 
-            #define vGrantAccessToMessageBuffer( xTask, xMessageBufferToGrantAccess )      vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xMessageBufferToGrantAccess ) )
-            #define vRevokeAccessToMessageBuffer( xTask, xMessageBufferToRevokeAccess )    vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xMessageBufferToRevokeAccess ) )
+            #परिभाषय v_Grant_Access_गन्तव्यम्_सन्देशः_बफर( xTask, x_सन्देशः_बफर_गन्तव्यम्_Grant_Access )      v_Grant_Access_गन्तव्यम्_Kernel_Object( ( xTask ), ( int32_t ) ( x_सन्देशः_बफर_गन्तव्यम्_Grant_Access ) )
+            #परिभाषय v_Revoke_Access_गन्तव्यम्_सन्देशः_बफर( xTask, x_सन्देशः_बफर_गन्तव्यम्_Revoke_Access )    v_Revoke_Access_गन्तव्यम्_Kernel_Object( ( xTask ), ( int32_t ) ( x_सन्देशः_बफर_गन्तव्यम्_Revoke_Access ) )
 
-            #define vGrantAccessToTimer( xTask, xTimerToGrantAccess )                      vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xTimerToGrantAccess ) )
-            #define vRevokeAccessToTimer( xTask, xTimerToRevokeAccess )                    vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xTimerToRevokeAccess ) )
+            #परिभाषय v_Grant_Access_गन्तव्यम्_Timer( xTask, x_Timer_गन्तव्यम्_Grant_Access )                      v_Grant_Access_गन्तव्यम्_Kernel_Object( ( xTask ), ( int32_t ) ( x_Timer_गन्तव्यम्_Grant_Access ) )
+            #परिभाषय v_Revoke_Access_गन्तव्यम्_Timer( xTask, x_Timer_गन्तव्यम्_Revoke_Access )                    v_Revoke_Access_गन्तव्यम्_Kernel_Object( ( xTask ), ( int32_t ) ( x_Timer_गन्तव्यम्_Revoke_Access ) )
 
-        #endif /* #if ( ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) ) */
+        #यदि_अन्तः /* #if ( ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) ) */
 
-    #endif /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
+    #यदि_अन्तः /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
 
-    #define PRIVILEGED_FUNCTION     __attribute__( ( section( "privileged_functions" ) ) )
-    #define PRIVILEGED_DATA         __attribute__( ( section( "privileged_data" ) ) )
-    #define FREERTOS_SYSTEM_CALL    __attribute__( ( section( "freertos_system_calls" ) ) )
+    #परिभाषय PRIVILEGED_FUNCTION     __attribute__( ( section( "privileged_functions" ) ) )
+    #परिभाषय PRIVILEGED_दत्त         __attribute__( ( section( "privileged_data" ) ) )
+    #परिभाषय FREERTOS_SYSTEM_CALL    __attribute__( ( section( "freertos_system_calls" ) ) )
 
-#else /* portUSING_MPU_WRAPPERS */
+#अन्यथा /* portUSING_MPU_WRAPPERS */
 
-    #define PRIVILEGED_FUNCTION
-    #define PRIVILEGED_DATA
-    #define FREERTOS_SYSTEM_CALL
+    #परिभाषय PRIVILEGED_FUNCTION
+    #परिभाषय PRIVILEGED_दत्त
+    #परिभाषय FREERTOS_SYSTEM_CALL
 
-#endif /* portUSING_MPU_WRAPPERS */
+#यदि_अन्तः /* portUSING_MPU_WRAPPERS */
 
 
-#endif /* MPU_WRAPPERS_H */
+#यदि_अन्तः /* MPU_WRAPPERS_H */

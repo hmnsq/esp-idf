@@ -9,88 +9,88 @@
  * idf_additions.h
  */
 
-#include "sdkconfig.h"
-#include <stdint.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/queue.h"
-#include "freertos/semphr.h"
-#include "freertos/stream_buffer.h"
-#include "freertos/message_buffer.h"
-#include "freertos/idf_additions.h"
-#include "esp_heap_caps.h"
-#include "esp_log.h"
-#include "freertos/portmacro.h"
+#अन्तर्भाव "sdkconfig.h"
+#अन्तर्भाव <stdint.h>
+#अन्तर्भाव "freertos/FreeRTOS.h"
+#अन्तर्भाव "freertos/task.h"
+#अन्तर्भाव "freertos/queue.h"
+#अन्तर्भाव "freertos/semphr.h"
+#अन्तर्भाव "freertos/stream_buffer.h"
+#अन्तर्भाव "freertos/message_buffer.h"
+#अन्तर्भाव "freertos/idf_additions.h"
+#अन्तर्भाव "esp_heap_caps.h"
+#अन्तर्भाव "esp_log.h"
+#अन्तर्भाव "freertos/portmacro.h"
 
 /* -------------------------------------------- Creation With Memory Caps ------------------------------------------- */
 
 /* ---------------------------------- Tasks --------------------------------- */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
-    BaseType_t xTaskCreatePinnedToCoreWithCaps( TaskFunction_t pvTaskCode,
-                                                const char * const pcName,
-                                                const configSTACK_DEPTH_TYPE usStackDepth,
-                                                void * const pvParameters,
-                                                UBaseType_t uxPriority,
-                                                TaskHandle_t * const pvCreatedTask,
-                                                const BaseType_t xCoreID,
-                                                UBaseType_t uxMemoryCaps )
+    आधारः_Type_t x_Task_Create_Pinned_गन्तव्यम्_Core_With_Caps( TaskFunction_t pv_Task_संहिता,
+                                                ध्रुव वर्ण * ध्रुव pcName,
+                                                ध्रुव config_राशिः_गभीरता_TYPE us_राशिः_गभीरता,
+                                                शून्य * ध्रुव pvParameters,
+                                                UBaseType_t ux_प्राथमिकता,
+                                                TaskHandle_t * ध्रुव pvCreatedTask,
+                                                ध्रुव आधारः_Type_t xCoreID,
+                                                UBaseType_t ux_स्मृतिः_Caps )
     {
         TaskHandle_t xHandle;
-        StaticTask_t * pxTaskBuffer;
-        StackType_t * pxStack;
+        StaticTask_t * px_Task_बफर;
+        राशिः_Type_t * px_राशिः;
 
         /* Allocate memory for the task's TCB. We use pvPortMalloc() here as the
          * TCB must be in internal memory. */
-        pxTaskBuffer = pvPortMalloc( sizeof( StaticTask_t ) );
+        px_Task_बफर = pv_पत्तनम्_Malloc( परिमाण( StaticTask_t ) );
 
         /* Allocate memory for the task's stack using the provided memory caps
          * */
-        pxStack = heap_caps_malloc( ( ( size_t ) usStackDepth ) * sizeof( StackType_t ), ( uint32_t ) uxMemoryCaps );
+        px_राशिः = heap_caps_malloc( ( ( size_t ) us_राशिः_गभीरता ) * परिमाण( राशिः_Type_t ), ( uint32_t ) ux_स्मृतिः_Caps );
 
-        if( ( pxTaskBuffer == NULL ) || ( pxStack == NULL ) )
+        यदि( ( px_Task_बफर == रिक्त ) || ( px_राशिः == रिक्त ) )
         {
-            goto err;
+            गच्छ err;
         }
 
         /* Create the task using static creation API*/
-        xHandle = xTaskCreateStaticPinnedToCore( pvTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pxStack, pxTaskBuffer, xCoreID );
+        xHandle = x_Task_Create_Static_Pinned_गन्तव्यम्_Core( pv_Task_संहिता, pcName, us_राशिः_गभीरता, pvParameters, ux_प्राथमिकता, px_राशिः, px_Task_बफर, xCoreID );
 
-        if( xHandle == NULL )
+        यदि( xHandle == रिक्त )
         {
             /* Failed to create task */
-            goto err;
+            गच्छ err;
         }
-        else if( pvCreatedTask != NULL )
+        अन्यथा यदि( pvCreatedTask != रिक्त )
         {
             /* Task created successfully. Return the task handle */
             *pvCreatedTask = xHandle;
         }
 
-        return pdPASS;
+        प्रत्यागम pdPASS;
 
 err:
-        heap_caps_free( pxStack );
-        vPortFree( pxTaskBuffer );
-        return pdFAIL;
+        heap_caps_free( px_राशिः );
+        v_पत्तनम्_Free( px_Task_बफर );
+        प्रत्यागम pdFAIL;
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#यदि_अन्तः /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
-    static void prvTaskDeleteWithCaps( TaskHandle_t xTaskToDelete )
+    स्थिर शून्य prvTaskDeleteWithCaps( TaskHandle_t x_Task_गन्तव्यम्_Delete )
     {
         /* Return value unused if asserts are disabled */
-        BaseType_t __attribute__( ( unused ) ) xResult;
-        StaticTask_t * pxTaskBuffer;
-        StackType_t * puxStackBuffer;
+        आधारः_Type_t __attribute__( ( अप्रयुक्तम् ) ) x_परिणाम;
+        StaticTask_t * px_Task_बफर;
+        राशिः_Type_t * pux_राशिः_बफर;
 
         /* The task to be deleted must not be running.
          * So we suspend the task before deleting it. */
-        vTaskSuspend( xTaskToDelete );
+        vTaskSuspend( x_Task_गन्तव्यम्_Delete );
 
         /* Wait until the task is no longer the current task on any core.
          *
@@ -101,22 +101,22 @@ err:
          * prvDeleteTCB() runs synchronously before vTaskDelete() returns, so
          * the heap_caps_free() / vPortFree() that follow cannot race with the
          * IDLE task. */
-        for( ;; )
+        प्रति( ;; )
         {
-            BaseType_t xStillOnCore = pdFALSE;
+            आधारः_Type_t xStillOnCore = pdFALSE;
 
-            for( BaseType_t xCoreID = 0; xCoreID < configNUMBER_OF_CORES; xCoreID++ )
+            प्रति( आधारः_Type_t xCoreID = 0; xCoreID < config_सङ्ख्या_सम्बन्धि_CORES; xCoreID++ )
             {
-                if( xTaskGetCurrentTaskHandleForCore( xCoreID ) == xTaskToDelete )
+                यदि( xTaskGetCurrentTaskHandleForCore( xCoreID ) == x_Task_गन्तव्यम्_Delete )
                 {
                     xStillOnCore = pdTRUE;
-                    break;
+                    भङ्ग;
                 }
             }
 
-            if( xStillOnCore == pdFALSE )
+            यदि( xStillOnCore == pdFALSE )
             {
-                break;
+                भङ्ग;
             }
 
             taskYIELD();
@@ -126,39 +126,39 @@ err:
          * First, we must call `vTaskDelete` so that the port task delete callback is called.
          * On targets that have coprocessors, it may be possible that the stack pointer is modified (restored)
          * during this phase, hence, it must be done before getting the statuc buffers out of the task. */
-        vTaskDelete( xTaskToDelete );
+        vTaskDelete( x_Task_गन्तव्यम्_Delete );
 
         /* Free the memory buffers */
-        xResult = xTaskGetStaticBuffers( xTaskToDelete, &puxStackBuffer, &pxTaskBuffer );
-        configASSERT( xResult == pdTRUE );
-        configASSERT( puxStackBuffer != NULL );
-        configASSERT( pxTaskBuffer != NULL );
+        x_परिणाम = xTaskGetStaticBuffers( x_Task_गन्तव्यम्_Delete, &pux_राशिः_बफर, &px_Task_बफर );
+        configASSERT( x_परिणाम == pdTRUE );
+        configASSERT( pux_राशिः_बफर != रिक्त );
+        configASSERT( px_Task_बफर != रिक्त );
 
-        heap_caps_free( puxStackBuffer );
-        vPortFree( pxTaskBuffer );
+        heap_caps_free( pux_राशिः_बफर );
+        v_पत्तनम्_Free( px_Task_बफर );
     }
 
-    static void prvTaskDeleteWithCapsTask( void * pvParameters )
+    स्थिर शून्य prvTaskDeleteWithCapsTask( शून्य * pvParameters )
     {
-        TaskHandle_t xTaskToDelete = ( TaskHandle_t ) pvParameters;
+        TaskHandle_t x_Task_गन्तव्यम्_Delete = ( TaskHandle_t ) pvParameters;
 
         /* Delete the WithCaps task */
-        prvTaskDeleteWithCaps( xTaskToDelete );
+        prvTaskDeleteWithCaps( x_Task_गन्तव्यम्_Delete );
 
         /* Delete the temporary clean up task */
-        vTaskDelete( NULL );
+        vTaskDelete( रिक्त );
     }
 
-    void vTaskDeleteWithCaps( TaskHandle_t xTaskToDelete )
+    शून्य vTaskDeleteWithCaps( TaskHandle_t x_Task_गन्तव्यम्_Delete )
     {
         /* THIS FUNCTION SHOULD NOT BE CALLED FROM AN INTERRUPT CONTEXT. */
         /* TODO: Update it to use portASSERT_IF_IN_ISR() instead. (IDF-10540) */
-        vPortAssertIfInISR();
+        v_पत्तनम्_Assert_If_अन्तर्_ISR();
 
         TaskHandle_t xCurrentTaskHandle = xTaskGetCurrentTaskHandle();
-        configASSERT( xCurrentTaskHandle != NULL );
+        configASSERT( xCurrentTaskHandle != रिक्त );
 
-        if( ( xTaskToDelete == NULL ) || ( xTaskToDelete == xCurrentTaskHandle ) )
+        यदि( ( x_Task_गन्तव्यम्_Delete == रिक्त ) || ( x_Task_गन्तव्यम्_Delete == xCurrentTaskHandle ) )
         {
             /* The WithCaps task is deleting itself. While, the task can put itself on the
              * xTasksWaitingTermination list via the vTaskDelete() call, the idle
@@ -187,17 +187,17 @@ err:
              *
              * 2. Have a post deletion hook/callback from the IDLE task to notify higher layers when it is safe to
              *    perform activities such as clearing up the TCB and stack memories. (IDF-10522) */
-            if( xTaskCreatePinnedToCore( ( TaskFunction_t ) prvTaskDeleteWithCapsTask, "prvTaskDeleteWithCapsTask", configMINIMAL_STACK_SIZE, xCurrentTaskHandle, uxTaskPriorityGet( xTaskToDelete ), NULL, xPortGetCoreID() ) != pdFAIL )
+            यदि( x_Task_Create_Pinned_गन्तव्यम्_Core( ( TaskFunction_t ) prvTaskDeleteWithCapsTask, "prvTaskDeleteWithCapsTask", config_अल्पिष्ठम्_राशिः_आकार, xCurrentTaskHandle, ux_Task_प्राथमिकता_Get( x_Task_गन्तव्यम्_Delete ), रिक्त, x_पत्तनम्_Get_Core_ID() ) != pdFAIL )
             {
                 /* Although the current task should get preemted immediately when prvTaskDeleteWithCapsTask is created,
                  * for safety, we suspend the current task and wait for prvTaskDeleteWithCapsTask to delete it. */
-                vTaskSuspend( xTaskToDelete );
+                vTaskSuspend( x_Task_गन्तव्यम्_Delete );
 
                 /* Should never reach here */
                 ESP_LOGE( "freertos_additions", "%s: Failed to suspend the task to be deleted", __func__ );
                 abort();
             }
-            else
+            अन्यथा
             {
                 /* Failed to create the task to delete the current task. */
                 ESP_LOGE( "freertos_additions", "%s: Failed to create the task to delete the current task", __func__ );
@@ -206,242 +206,242 @@ err:
         }
 
         /* Delete the WithCaps task */
-        prvTaskDeleteWithCaps( xTaskToDelete );
+        prvTaskDeleteWithCaps( x_Task_गन्तव्यम्_Delete );
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#यदि_अन्तः /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
 /* ---------------------------------- Queue --------------------------------- */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
-    QueueHandle_t xQueueCreateWithCaps( UBaseType_t uxQueueLength,
-                                        UBaseType_t uxItemSize,
-                                        UBaseType_t uxMemoryCaps )
+    QueueHandle_t xQueueCreateWithCaps( UBaseType_t ux_Queue_दीर्घता,
+                                        UBaseType_t ux_Item_आकार,
+                                        UBaseType_t ux_स्मृतिः_Caps )
     {
         QueueHandle_t xQueue;
-        StaticQueue_t * pxQueueBuffer;
-        uint8_t * pucQueueStorageBuffer;
+        StaticQueue_t * px_Queue_बफर;
+        uint8_t * puc_Queue_Storage_बफर;
 
         /* Allocate memory for the queue using the provided memory caps */
-        pxQueueBuffer = heap_caps_malloc( sizeof( StaticQueue_t ), ( uint32_t ) uxMemoryCaps );
+        px_Queue_बफर = heap_caps_malloc( परिमाण( StaticQueue_t ), ( uint32_t ) ux_स्मृतिः_Caps );
 
-        if( uxItemSize == 0 )
+        यदि( ux_Item_आकार == 0 )
         {
-            pucQueueStorageBuffer = NULL;
+            puc_Queue_Storage_बफर = रिक्त;
         }
-        else
+        अन्यथा
         {
-            pucQueueStorageBuffer = heap_caps_malloc( uxQueueLength * uxItemSize, ( uint32_t ) uxMemoryCaps );
+            puc_Queue_Storage_बफर = heap_caps_malloc( ux_Queue_दीर्घता * ux_Item_आकार, ( uint32_t ) ux_स्मृतिः_Caps );
         }
 
-        if( ( pxQueueBuffer == NULL ) || ( ( uxItemSize > 0 ) && ( pucQueueStorageBuffer == NULL ) ) )
+        यदि( ( px_Queue_बफर == रिक्त ) || ( ( ux_Item_आकार > 0 ) && ( puc_Queue_Storage_बफर == रिक्त ) ) )
         {
-            goto err;
+            गच्छ err;
         }
 
         /* Create the queue using static creation API */
-        xQueue = xQueueCreateStatic( uxQueueLength, uxItemSize, pucQueueStorageBuffer, pxQueueBuffer );
+        xQueue = xQueueCreateStatic( ux_Queue_दीर्घता, ux_Item_आकार, puc_Queue_Storage_बफर, px_Queue_बफर );
 
-        if( xQueue == NULL )
+        यदि( xQueue == रिक्त )
         {
-            goto err;
+            गच्छ err;
         }
 
-        return xQueue;
+        प्रत्यागम xQueue;
 
 err:
-        heap_caps_free( pucQueueStorageBuffer );
-        heap_caps_free( pxQueueBuffer );
-        return NULL;
+        heap_caps_free( puc_Queue_Storage_बफर );
+        heap_caps_free( px_Queue_बफर );
+        प्रत्यागम रिक्त;
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#यदि_अन्तः /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
-    void vQueueDeleteWithCaps( QueueHandle_t xQueue )
+    शून्य vQueueDeleteWithCaps( QueueHandle_t xQueue )
     {
         /* Return value unused if asserts are disabled */
-        BaseType_t __attribute__( ( unused ) ) xResult;
-        StaticQueue_t * pxQueueBuffer;
-        uint8_t * pucQueueStorageBuffer;
+        आधारः_Type_t __attribute__( ( अप्रयुक्तम् ) ) x_परिणाम;
+        StaticQueue_t * px_Queue_बफर;
+        uint8_t * puc_Queue_Storage_बफर;
 
         /* Retrieve the buffers used to create the queue before deleting it */
-        xResult = xQueueGetStaticBuffers( xQueue, &pucQueueStorageBuffer, &pxQueueBuffer );
-        configASSERT( xResult == pdTRUE );
+        x_परिणाम = xQueueGetStaticBuffers( xQueue, &puc_Queue_Storage_बफर, &px_Queue_बफर );
+        configASSERT( x_परिणाम == pdTRUE );
 
         /* Delete the queue */
         vQueueDelete( xQueue );
 
         /* Free the memory buffers */
-        heap_caps_free( pxQueueBuffer );
-        heap_caps_free( pucQueueStorageBuffer );
+        heap_caps_free( px_Queue_बफर );
+        heap_caps_free( puc_Queue_Storage_बफर );
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#यदि_अन्तः /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
 /* -------------------------------- Semaphore ------------------------------- */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
-    SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
-                                                       UBaseType_t uxInitialCount,
-                                                       const uint8_t ucQueueType,
-                                                       UBaseType_t uxMemoryCaps )
+    SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t ux_Max_गणनम्,
+                                                       UBaseType_t ux_Initial_गणनम्,
+                                                       ध्रुव uint8_t ucQueueType,
+                                                       UBaseType_t ux_स्मृतिः_Caps )
     {
         SemaphoreHandle_t xSemaphore;
-        StaticSemaphore_t * pxSemaphoreBuffer;
+        StaticSemaphore_t * px_Semaphore_बफर;
 
         /* Allocate memory for the semaphore using the provided memory caps */
-        pxSemaphoreBuffer = heap_caps_malloc( sizeof( StaticSemaphore_t ), ( uint32_t ) uxMemoryCaps );
+        px_Semaphore_बफर = heap_caps_malloc( परिमाण( StaticSemaphore_t ), ( uint32_t ) ux_स्मृतिः_Caps );
 
-        if( pxSemaphoreBuffer == NULL )
+        यदि( px_Semaphore_बफर == रिक्त )
         {
-            return NULL;
+            प्रत्यागम रिक्त;
         }
 
         /* Create the semaphore using static creation API */
-        if( ucQueueType == queueQUEUE_TYPE_MUTEX )
+        यदि( ucQueueType == queueQUEUE_TYPE_MUTEX )
         {
-            xSemaphore = xSemaphoreCreateMutexStatic( pxSemaphoreBuffer );
+            xSemaphore = xSemaphoreCreateMutexStatic( px_Semaphore_बफर );
         }
-        else if( ucQueueType == queueQUEUE_TYPE_COUNTING_SEMAPHORE )
+        अन्यथा यदि( ucQueueType == queueQUEUE_TYPE_COUNTING_SEMAPHORE )
         {
-            xSemaphore = xSemaphoreCreateCountingStatic( uxMaxCount, uxInitialCount, pxSemaphoreBuffer );
+            xSemaphore = xSemaphoreCreateCountingStatic( ux_Max_गणनम्, ux_Initial_गणनम्, px_Semaphore_बफर );
         }
-        else if( ucQueueType == queueQUEUE_TYPE_BINARY_SEMAPHORE )
+        अन्यथा यदि( ucQueueType == queue_QUEUE_TYPE_द्विमान_SEMAPHORE )
         {
-            xSemaphore = xSemaphoreCreateBinaryStatic( pxSemaphoreBuffer );
+            xSemaphore = x_Semaphore_Create_द्विमान_Static( px_Semaphore_बफर );
         }
-        else /* ucQueueType == queueQUEUE_TYPE_RECURSIVE_MUTEX */
+        अन्यथा /* ucQueueType == queueQUEUE_TYPE_RECURSIVE_MUTEX */
         {
-            xSemaphore = xSemaphoreCreateRecursiveMutexStatic( pxSemaphoreBuffer );
-        }
-
-        if( xSemaphore == NULL )
-        {
-            heap_caps_free( pxSemaphoreBuffer );
+            xSemaphore = xSemaphoreCreateRecursiveMutexStatic( px_Semaphore_बफर );
         }
 
-        return xSemaphore;
+        यदि( xSemaphore == रिक्त )
+        {
+            heap_caps_free( px_Semaphore_बफर );
+        }
+
+        प्रत्यागम xSemaphore;
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#यदि_अन्तः /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
-    void vSemaphoreDeleteWithCaps( SemaphoreHandle_t xSemaphore )
+    शून्य vSemaphoreDeleteWithCaps( SemaphoreHandle_t xSemaphore )
     {
         /* Return value unused if asserts are disabled */
-        BaseType_t __attribute__( ( unused ) ) xResult;
-        StaticSemaphore_t * pxSemaphoreBuffer;
+        आधारः_Type_t __attribute__( ( अप्रयुक्तम् ) ) x_परिणाम;
+        StaticSemaphore_t * px_Semaphore_बफर;
 
         /* Retrieve the buffer used to create the semaphore before deleting it
          * */
-        xResult = xSemaphoreGetStaticBuffer( xSemaphore, &pxSemaphoreBuffer );
-        configASSERT( xResult == pdTRUE );
+        x_परिणाम = x_Semaphore_Get_Static_बफर( xSemaphore, &px_Semaphore_बफर );
+        configASSERT( x_परिणाम == pdTRUE );
 
         /* Delete the semaphore */
         vSemaphoreDelete( xSemaphore );
 
         /* Free the memory buffer */
-        heap_caps_free( pxSemaphoreBuffer );
+        heap_caps_free( px_Semaphore_बफर );
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#यदि_अन्तः /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
 /* ------------------------- Stream & Message Buffers ----------------------- */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
-    StreamBufferHandle_t xStreamBufferGenericCreateWithCaps( size_t xBufferSizeBytes,
-                                                             size_t xTriggerLevelBytes,
-                                                             BaseType_t xIsMessageBuffer,
-                                                             UBaseType_t uxMemoryCaps )
+    प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर_Generic_Create_With_Caps( size_t x_बफर_आकार_अष्टकानि,
+                                                             size_t x_Trigger_Level_अष्टकानि,
+                                                             आधारः_Type_t x_Is_सन्देशः_बफर,
+                                                             UBaseType_t ux_स्मृतिः_Caps )
     {
-        StreamBufferHandle_t xStreamBuffer;
-        StaticStreamBuffer_t * pxStaticStreamBuffer;
-        uint8_t * pucStreamBufferStorageArea;
+        प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर;
+        Static_प्रवाहः_बफर_t * px_Static_प्रवाहः_बफर;
+        uint8_t * puc_प्रवाहः_बफर_Storage_Area;
 
         /* Allocate memory for the stream or message buffer using the provided
          * memory caps */
-        pxStaticStreamBuffer = heap_caps_malloc( sizeof( StaticStreamBuffer_t ), ( uint32_t ) uxMemoryCaps );
-        pucStreamBufferStorageArea = heap_caps_malloc( xBufferSizeBytes, ( uint32_t ) uxMemoryCaps );
+        px_Static_प्रवाहः_बफर = heap_caps_malloc( परिमाण( Static_प्रवाहः_बफर_t ), ( uint32_t ) ux_स्मृतिः_Caps );
+        puc_प्रवाहः_बफर_Storage_Area = heap_caps_malloc( x_बफर_आकार_अष्टकानि, ( uint32_t ) ux_स्मृतिः_Caps );
 
-        if( ( pxStaticStreamBuffer == NULL ) || ( pucStreamBufferStorageArea == NULL ) )
+        यदि( ( px_Static_प्रवाहः_बफर == रिक्त ) || ( puc_प्रवाहः_बफर_Storage_Area == रिक्त ) )
         {
-            goto err;
+            गच्छ err;
         }
 
         /* Create the stream or message buffer using static creation API */
-        if( xIsMessageBuffer == pdTRUE )
+        यदि( x_Is_सन्देशः_बफर == pdTRUE )
         {
-            xStreamBuffer = ( StreamBufferHandle_t ) xMessageBufferCreateStatic( xBufferSizeBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer );
+            x_प्रवाहः_बफर = ( प्रवाहः_बफर_Handle_t ) x_सन्देशः_बफर_Create_Static( x_बफर_आकार_अष्टकानि, puc_प्रवाहः_बफर_Storage_Area, px_Static_प्रवाहः_बफर );
         }
-        else
+        अन्यथा
         {
-            xStreamBuffer = xStreamBufferCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer );
-        }
-
-        if( xStreamBuffer == NULL )
-        {
-            goto err;
+            x_प्रवाहः_बफर = x_प्रवाहः_बफर_Create_Static( x_बफर_आकार_अष्टकानि, x_Trigger_Level_अष्टकानि, puc_प्रवाहः_बफर_Storage_Area, px_Static_प्रवाहः_बफर );
         }
 
-        return xStreamBuffer;
+        यदि( x_प्रवाहः_बफर == रिक्त )
+        {
+            गच्छ err;
+        }
+
+        प्रत्यागम x_प्रवाहः_बफर;
 
 err:
-        heap_caps_free( pucStreamBufferStorageArea );
-        heap_caps_free( pxStaticStreamBuffer );
-        return NULL;
+        heap_caps_free( puc_प्रवाहः_बफर_Storage_Area );
+        heap_caps_free( px_Static_प्रवाहः_बफर );
+        प्रत्यागम रिक्त;
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#यदि_अन्तः /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
-    void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
-                                             BaseType_t xIsMessageBuffer )
+    शून्य v_प्रवाहः_बफर_Generic_Delete_With_Caps( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर,
+                                             आधारः_Type_t x_Is_सन्देशः_बफर )
     {
         /* Return value unused if asserts are disabled */
-        BaseType_t __attribute__( ( unused ) ) xResult;
-        StaticStreamBuffer_t * pxStaticStreamBuffer;
-        uint8_t * pucStreamBufferStorageArea;
+        आधारः_Type_t __attribute__( ( अप्रयुक्तम् ) ) x_परिणाम;
+        Static_प्रवाहः_बफर_t * px_Static_प्रवाहः_बफर;
+        uint8_t * puc_प्रवाहः_बफर_Storage_Area;
 
         /* Retrieve the buffers used to create the stream or message buffer
          * before deleting it */
-        if( xIsMessageBuffer == pdTRUE )
+        यदि( x_Is_सन्देशः_बफर == pdTRUE )
         {
-            xResult = xMessageBufferGetStaticBuffers( xStreamBuffer, &pucStreamBufferStorageArea, &pxStaticStreamBuffer );
+            x_परिणाम = x_सन्देशः_बफर_Get_Static_Buffers( x_प्रवाहः_बफर, &puc_प्रवाहः_बफर_Storage_Area, &px_Static_प्रवाहः_बफर );
         }
-        else
+        अन्यथा
         {
-            xResult = xStreamBufferGetStaticBuffers( xStreamBuffer, &pucStreamBufferStorageArea, &pxStaticStreamBuffer );
+            x_परिणाम = x_प्रवाहः_बफर_Get_Static_Buffers( x_प्रवाहः_बफर, &puc_प्रवाहः_बफर_Storage_Area, &px_Static_प्रवाहः_बफर );
         }
 
-        configASSERT( xResult == pdTRUE );
+        configASSERT( x_परिणाम == pdTRUE );
 
         /* Delete the stream or message buffer */
-        if( xIsMessageBuffer == pdTRUE )
+        यदि( x_Is_सन्देशः_बफर == pdTRUE )
         {
-            vMessageBufferDelete( xStreamBuffer );
+            v_सन्देशः_बफर_Delete( x_प्रवाहः_बफर );
         }
-        else
+        अन्यथा
         {
-            vStreamBufferDelete( xStreamBuffer );
+            v_प्रवाहः_बफर_Delete( x_प्रवाहः_बफर );
         }
 
         /* Free the memory buffers */
-        heap_caps_free( pxStaticStreamBuffer );
-        heap_caps_free( pucStreamBufferStorageArea );
+        heap_caps_free( px_Static_प्रवाहः_बफर );
+        heap_caps_free( puc_प्रवाहः_बफर_Storage_Area );
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#यदि_अन्तः /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/

@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
+#अन्तर्भाव "sdkconfig.h"
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "unity.h"
-#include "test_utils.h"
+#अन्तर्भाव "freertos/FreeRTOS.h"
+#अन्तर्भाव "freertos/task.h"
+#अन्तर्भाव "unity.h"
+#अन्तर्भाव "test_utils.h"
 
 /*
 Test TLSP Deletion Callbacks
@@ -31,49 +31,49 @@ Expected:
     - After deletion, the integer values should be negated to indicate deletion callback execution
 */
 
-#define NUM_TLSP        CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_POINTERS
+#परिभाषय अङ्कः_TLSP        CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_सूचकाः
 
-static void tlsp_del_cb(int index, void *tlsp)
+स्थिर शून्य tlsp_del_cb(पूर्णाङ्क सूचकांक, शून्य *tlsp)
 {
-    int *val = (int *)tlsp;
+    पूर्णाङ्क *val = (पूर्णाङ्क *)tlsp;
 
     // Check that the TLSP's initialization value is correct
-    TEST_ASSERT_EQUAL(index, *val);
+    TEST_ASSERT_EQUAL(सूचकांक, *val);
     // Set the TLSP's value again to a negative value to indicate that the del cb has ran
     *val = -*val;
 }
 
-static void tlsp_task(void *arg)
+स्थिर शून्य tlsp_task(शून्य *arg)
 {
-    int *tlsps = (int *)arg;
+    पूर्णाङ्क *tlsps = (पूर्णाङ्क *)arg;
 
-    for (int index = 0; index < NUM_TLSP; index++) {
+    प्रति (पूर्णाङ्क सूचकांक = 0; सूचकांक < अङ्कः_TLSP; सूचकांक++) {
         // Initialize the TLSPs to a positive value
-        tlsps[index] = index;
+        tlsps[सूचकांक] = सूचकांक;
         // Set TLSPs and deletion callbacks
-        vTaskSetThreadLocalStoragePointerAndDelCallback(NULL, index, &tlsps[index], tlsp_del_cb);
+        v_Task_समुच्चयः_Thread_Local_Storage_Pointer_And_Del_Callback(रिक्त, सूचकांक, &tlsps[सूचकांक], tlsp_del_cb);
     }
 
     // Self delete to trigger TLSP del cb
-    vTaskDelete(NULL);
+    vTaskDelete(रिक्त);
 }
 
 TEST_CASE("Test TLSP deletion callbacks", "[freertos]")
 {
-    TaskHandle_t tasks[CONFIG_FREERTOS_NUMBER_OF_CORES];
-    int tlsps[CONFIG_FREERTOS_NUMBER_OF_CORES][NUM_TLSP];
+    TaskHandle_t tasks[CONFIG_FREERTOS_सङ्ख्या_सम्बन्धि_CORES];
+    पूर्णाङ्क tlsps[CONFIG_FREERTOS_सङ्ख्या_सम्बन्धि_CORES][अङ्कः_TLSP];
 
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCore(tlsp_task, "tlsp_tsk", configMINIMAL_STACK_SIZE * 2, (void *)&tlsps[i], UNITY_FREERTOS_PRIORITY - 1, &tasks[i], i));
+    प्रति (पूर्णाङ्क i = 0; i < CONFIG_FREERTOS_सङ्ख्या_सम्बन्धि_CORES; i++) {
+        TEST_ASSERT_EQUAL(pdPASS, x_Task_Create_Pinned_गन्तव्यम्_Core(tlsp_task, "tlsp_tsk", config_अल्पिष्ठम्_राशिः_आकार * 2, (शून्य *)&tlsps[i], UNITY_FREERTOS_प्राथमिकता - 1, &tasks[i], i));
     }
     // Significant delay to let tasks run and delete themselves
     vTaskDelay(100);
 
     // Check the values of the TLSPs to see if the del cb have ran
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        for (int index = 0; index < NUM_TLSP; index++) {
+    प्रति (पूर्णाङ्क i = 0; i < CONFIG_FREERTOS_सङ्ख्या_सम्बन्धि_CORES; i++) {
+        प्रति (पूर्णाङ्क सूचकांक = 0; सूचकांक < अङ्कः_TLSP; सूचकांक++) {
             // Del cb should have set the TLSP to a negative value
-            TEST_ASSERT_EQUAL(-index, tlsps[i][index]);
+            TEST_ASSERT_EQUAL(-सूचकांक, tlsps[i][सूचकांक]);
         }
     }
 }

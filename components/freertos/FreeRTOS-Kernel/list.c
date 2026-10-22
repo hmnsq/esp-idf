@@ -31,78 +31,78 @@
  */
 
 
-#include <stdlib.h>
+#अन्तर्भाव <stdlib.h>
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
  * task.h is included from an application file. */
-#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#परिभाषय MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#include "FreeRTOS.h"
-#include "list.h"
+#अन्तर्भाव "FreeRTOS.h"
+#अन्तर्भाव "list.h"
 
 /* Lint e9021, e961 and e750 are suppressed as a MISRA exception justified
  * because the MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be
  * defined for the header files above, but not in this file, in order to
  * generate the correct privileged Vs unprivileged linkage and placement. */
-#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE /*lint !e961 !e750 !e9021. */
+#अपरिभाषय MPU_WRAPPERS_INCLUDED_FROM_API_FILE /*lint !e961 !e750 !e9021. */
 
 /*-----------------------------------------------------------
 * PUBLIC LIST API documented in list.h
 *----------------------------------------------------------*/
 
-void vListInitialise( List_t * const pxList )
+शून्य vListInitialise( List_t * ध्रुव pxList )
 {
     /* The list structure contains a list item which is used to mark the
      * end of the list.  To initialise the list the list end is inserted
      * as the only list entry. */
-    pxList->pxIndex = ( ListItem_t * ) &( pxList->xListEnd ); /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
+    pxList->px_सूचकांक = ( ListItem_t * ) &( pxList->x_List_अन्तः ); /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
 
-    listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( &( pxList->xListEnd ) );
+    list_समुच्चयः_FIRST_LIST_ITEM_INTEGRITY_CHECK_मानम्( &( pxList->x_List_अन्तः ) );
 
     /* The list end value is the highest possible value in the list to
      * ensure it remains at the end of the list. */
-    pxList->xListEnd.xItemValue = portMAX_DELAY;
+    pxList->x_List_अन्तः.x_Item_मानम् = पत्तनम्_MAX_DELAY;
 
     /* The list end next and previous pointers point to itself so we know
      * when the list is empty. */
-    pxList->xListEnd.pxNext = ( ListItem_t * ) &( pxList->xListEnd );     /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
-    pxList->xListEnd.pxPrevious = ( ListItem_t * ) &( pxList->xListEnd ); /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
+    pxList->x_List_अन्तः.px_अग्र = ( ListItem_t * ) &( pxList->x_List_अन्तः );     /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
+    pxList->x_List_अन्तः.pxPrevious = ( ListItem_t * ) &( pxList->x_List_अन्तः ); /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
 
     /* Initialize the remaining fields of xListEnd when it is a proper ListItem_t */
-    #if ( configUSE_MINI_LIST_ITEM == 0 )
+    #यदि ( configUSE_MINI_LIST_ITEM == 0 )
     {
-        pxList->xListEnd.pvOwner = NULL;
-        pxList->xListEnd.pxContainer = NULL;
-        listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( &( pxList->xListEnd ) );
+        pxList->x_List_अन्तः.pvOwner = रिक्त;
+        pxList->x_List_अन्तः.pxContainer = रिक्त;
+        list_समुच्चयः_SECOND_LIST_ITEM_INTEGRITY_CHECK_मानम्( &( pxList->x_List_अन्तः ) );
     }
-    #endif
+    #यदि_अन्तः
 
-    pxList->uxNumberOfItems = ( UBaseType_t ) 0U;
+    pxList->ux_सङ्ख्या_सम्बन्धि_वस्तूनि = ( UBaseType_t ) 0U;
 
     /* Write known values into the list if
      * configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    listSET_LIST_INTEGRITY_CHECK_1_VALUE( pxList );
-    listSET_LIST_INTEGRITY_CHECK_2_VALUE( pxList );
+    list_समुच्चयः_LIST_INTEGRITY_CHECK_1_मानम्( pxList );
+    list_समुच्चयः_LIST_INTEGRITY_CHECK_2_मानम्( pxList );
 }
 /*-----------------------------------------------------------*/
 
-void vListInitialiseItem( ListItem_t * const pxItem )
+शून्य vListInitialiseItem( ListItem_t * ध्रुव pxItem )
 {
     /* Make sure the list item is not recorded as being on a list. */
-    pxItem->pxContainer = NULL;
+    pxItem->pxContainer = रिक्त;
 
     /* Write known values into the list item if
      * configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem );
-    listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem );
+    list_समुच्चयः_FIRST_LIST_ITEM_INTEGRITY_CHECK_मानम्( pxItem );
+    list_समुच्चयः_SECOND_LIST_ITEM_INTEGRITY_CHECK_मानम्( pxItem );
 }
 /*-----------------------------------------------------------*/
 
-void vListInsertEnd( List_t * const pxList,
-                     ListItem_t * const pxNewListItem )
+शून्य v_List_निवेशय_अन्तः( List_t * ध्रुव pxList,
+                     ListItem_t * ध्रुव pxNewListItem )
 {
-    ListItem_t * const pxIndex = pxList->pxIndex;
+    ListItem_t * ध्रुव px_सूचकांक = pxList->px_सूचकांक;
 
     /* Only effective when configASSERT() is also defined, these tests may catch
      * the list data structures being overwritten in memory.  They will not catch
@@ -113,27 +113,27 @@ void vListInsertEnd( List_t * const pxList,
     /* Insert a new list item into pxList, but rather than sort the list,
      * makes the new list item the last item to be removed by a call to
      * listGET_OWNER_OF_NEXT_ENTRY(). */
-    pxNewListItem->pxNext = pxIndex;
-    pxNewListItem->pxPrevious = pxIndex->pxPrevious;
+    pxNewListItem->px_अग्र = px_सूचकांक;
+    pxNewListItem->pxPrevious = px_सूचकांक->pxPrevious;
 
     /* Only used during decision coverage testing. */
     mtCOVERAGE_TEST_DELAY();
 
-    pxIndex->pxPrevious->pxNext = pxNewListItem;
-    pxIndex->pxPrevious = pxNewListItem;
+    px_सूचकांक->pxPrevious->px_अग्र = pxNewListItem;
+    px_सूचकांक->pxPrevious = pxNewListItem;
 
     /* Remember which list the item is in. */
     pxNewListItem->pxContainer = pxList;
 
-    ( pxList->uxNumberOfItems )++;
+    ( pxList->ux_सङ्ख्या_सम्बन्धि_वस्तूनि )++;
 }
 /*-----------------------------------------------------------*/
 
-void vListInsert( List_t * const pxList,
-                  ListItem_t * const pxNewListItem )
+शून्य v_List_निवेशय( List_t * ध्रुव pxList,
+                  ListItem_t * ध्रुव pxNewListItem )
 {
     ListItem_t * pxIterator;
-    const TickType_t xValueOfInsertion = pxNewListItem->xItemValue;
+    ध्रुव TickType_t x_मानम्_सम्बन्धि_Insertion = pxNewListItem->x_Item_मानम्;
 
     /* Only effective when configASSERT() is also defined, these tests may catch
      * the list data structures being overwritten in memory.  They will not catch
@@ -149,11 +149,11 @@ void vListInsert( List_t * const pxList,
      * share of the CPU.  However, if the xItemValue is the same as the back marker
      * the iteration loop below will not end.  Therefore the value is checked
      * first, and the algorithm slightly modified if necessary. */
-    if( xValueOfInsertion == portMAX_DELAY )
+    यदि( x_मानम्_सम्बन्धि_Insertion == पत्तनम्_MAX_DELAY )
     {
-        pxIterator = pxList->xListEnd.pxPrevious;
+        pxIterator = pxList->x_List_अन्तः.pxPrevious;
     }
-    else
+    अन्यथा
     {
         /* *** NOTE ***********************************************************
         *  If you find your application is crashing here then likely causes are
@@ -180,51 +180,51 @@ void vListInsert( List_t * const pxList,
         *      configMAX_SYSCALL_INTERRUPT_PRIORITY.
         **********************************************************************/
 
-        for( pxIterator = ( ListItem_t * ) &( pxList->xListEnd ); pxIterator->pxNext->xItemValue <= xValueOfInsertion; pxIterator = pxIterator->pxNext ) /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. *//*lint !e440 The iterator moves to a different value, not xValueOfInsertion. */
+        प्रति( pxIterator = ( ListItem_t * ) &( pxList->x_List_अन्तः ); pxIterator->px_अग्र->x_Item_मानम् <= x_मानम्_सम्बन्धि_Insertion; pxIterator = pxIterator->px_अग्र ) /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. *//*lint !e440 The iterator moves to a different value, not xValueOfInsertion. */
         {
             /* There is nothing to do here, just iterating to the wanted
              * insertion position. */
         }
     }
 
-    pxNewListItem->pxNext = pxIterator->pxNext;
-    pxNewListItem->pxNext->pxPrevious = pxNewListItem;
+    pxNewListItem->px_अग्र = pxIterator->px_अग्र;
+    pxNewListItem->px_अग्र->pxPrevious = pxNewListItem;
     pxNewListItem->pxPrevious = pxIterator;
-    pxIterator->pxNext = pxNewListItem;
+    pxIterator->px_अग्र = pxNewListItem;
 
     /* Remember which list the item is in.  This allows fast removal of the
      * item later. */
     pxNewListItem->pxContainer = pxList;
 
-    ( pxList->uxNumberOfItems )++;
+    ( pxList->ux_सङ्ख्या_सम्बन्धि_वस्तूनि )++;
 }
 /*-----------------------------------------------------------*/
 
-UBaseType_t uxListRemove( ListItem_t * const pxItemToRemove )
+UBaseType_t uxListRemove( ListItem_t * ध्रुव px_Item_गन्तव्यम्_Remove )
 {
 /* The list item knows which list it is in.  Obtain the list from the list
  * item. */
-    List_t * const pxList = pxItemToRemove->pxContainer;
+    List_t * ध्रुव pxList = px_Item_गन्तव्यम्_Remove->pxContainer;
 
-    pxItemToRemove->pxNext->pxPrevious = pxItemToRemove->pxPrevious;
-    pxItemToRemove->pxPrevious->pxNext = pxItemToRemove->pxNext;
+    px_Item_गन्तव्यम्_Remove->px_अग्र->pxPrevious = px_Item_गन्तव्यम्_Remove->pxPrevious;
+    px_Item_गन्तव्यम्_Remove->pxPrevious->px_अग्र = px_Item_गन्तव्यम्_Remove->px_अग्र;
 
     /* Only used during decision coverage testing. */
     mtCOVERAGE_TEST_DELAY();
 
     /* Make sure the index is left pointing to a valid item. */
-    if( pxList->pxIndex == pxItemToRemove )
+    यदि( pxList->px_सूचकांक == px_Item_गन्तव्यम्_Remove )
     {
-        pxList->pxIndex = pxItemToRemove->pxPrevious;
+        pxList->px_सूचकांक = px_Item_गन्तव्यम्_Remove->pxPrevious;
     }
-    else
+    अन्यथा
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    pxItemToRemove->pxContainer = NULL;
-    ( pxList->uxNumberOfItems )--;
+    px_Item_गन्तव्यम्_Remove->pxContainer = रिक्त;
+    ( pxList->ux_सङ्ख्या_सम्बन्धि_वस्तूनि )--;
 
-    return pxList->uxNumberOfItems;
+    प्रत्यागम pxList->ux_सङ्ख्या_सम्बन्धि_वस्तूनि;
 }
 /*-----------------------------------------------------------*/

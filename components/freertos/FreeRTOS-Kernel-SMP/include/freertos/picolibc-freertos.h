@@ -30,8 +30,8 @@
  *
  */
 
-#ifndef INC_PICOLIBC_FREERTOS_H
-#define INC_PICOLIBC_FREERTOS_H
+#यदि_अपरिभाषितम् INC_PICOLIBC_FREERTOS_H
+#परिभाषय INC_PICOLIBC_FREERTOS_H
 
 /* Use picolibc TLS support to allocate space for __thread variables,
  * initialize them at thread creation and set the TLS context at
@@ -41,55 +41,55 @@
  * https://github.com/picolibc/picolibc/blob/main/doc/tls.md
  * for additional information. */
 
-#include <picotls.h>
+#अन्तर्भाव <picotls.h>
 
-#define configUSE_C_RUNTIME_TLS_SUPPORT    1
+#परिभाषय configUSE_C_RUNTIME_TLS_SUPPORT    1
 
-#define configTLS_BLOCK_TYPE               void *
+#परिभाषय config_TLS_खण्डम्_TYPE               शून्य *
 
-#define picolibcTLS_SIZE                   ( ( portPOINTER_SIZE_TYPE ) _tls_size() )
-#define picolibcSTACK_ALIGNMENT_MASK       ( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK )
+#परिभाषय picolibc_TLS_आकार                   ( ( पत्तनम्_POINTER_आकार_TYPE ) tls_आकार() )
+#परिभाषय picolibc_राशिः_ALIGNMENT_आवरणम्       ( ( पत्तनम्_POINTER_आकार_TYPE ) पत्तनम्_BYTE_ALIGNMENT_आवरणम् )
 
-#if __PICOLIBC_MAJOR__ > 1 || __PICOLIBC_MINOR__ >= 8
+#यदि __PICOLIBC_MAJOR__ > 1 || __PICOLIBC_MINOR__ >= 8
 
 /* Picolibc 1.8 and newer have explicit alignment values provided
  * by the _tls_align() inline */
-    #define picolibcTLS_ALIGNMENT_MASK    ( ( portPOINTER_SIZE_TYPE ) ( _tls_align() - 1 ) )
-#else
+    #परिभाषय picolibc_TLS_ALIGNMENT_आवरणम्    ( ( पत्तनम्_POINTER_आकार_TYPE ) ( _tls_align() - 1 ) )
+#अन्यथा
 
 /* For older Picolibc versions, use the general port alignment value */
-    #define picolibcTLS_ALIGNMENT_MASK    ( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK )
-#endif
+    #परिभाषय picolibc_TLS_ALIGNMENT_आवरणम्    ( ( पत्तनम्_POINTER_आकार_TYPE ) पत्तनम्_BYTE_ALIGNMENT_आवरणम् )
+#यदि_अन्तः
 
 /* Allocate thread local storage block off the end of the
  * stack. The picolibcTLS_SIZE macro returns the size (in
  * bytes) of the total TLS area used by the application.
  * Calculate the top of stack address. */
-#if ( portSTACK_GROWTH < 0 )
+#यदि ( पत्तनम्_राशिः_GROWTH < 0 )
 
-    #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )                                  \
-    do {                                                                                     \
-        xTLSBlock = ( void * ) ( ( ( ( portPOINTER_SIZE_TYPE ) pxTopOfStack ) -              \
-                                   picolibcTLS_SIZE ) &                                      \
-                                 ~picolibcTLS_ALIGNMENT_MASK );                              \
-        pxTopOfStack = ( StackType_t * ) ( ( ( ( portPOINTER_SIZE_TYPE ) xTLSBlock ) - 1 ) & \
-                                           ~picolibcSTACK_ALIGNMENT_MASK );                  \
+    #परिभाषय config_INIT_TLS_खण्डम्( xTLSBlock, px_शिखरम्_सम्बन्धि_राशिः )                                  \
+    कुरु {                                                                                     \
+        xTLSBlock = ( शून्य * ) ( ( ( ( पत्तनम्_POINTER_आकार_TYPE ) px_शिखरम्_सम्बन्धि_राशिः ) -              \
+                                   picolibc_TLS_आकार ) &                                      \
+                                 ~picolibc_TLS_ALIGNMENT_आवरणम् );                              \
+        px_शिखरम्_सम्बन्धि_राशिः = ( राशिः_Type_t * ) ( ( ( ( पत्तनम्_POINTER_आकार_TYPE ) xTLSBlock ) - 1 ) & \
+                                           ~picolibc_राशिः_ALIGNMENT_आवरणम् );                  \
         _init_tls( xTLSBlock );                                                              \
-    } while( 0 )
-#else /* portSTACK_GROWTH */
-    #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )                                          \
-    do {                                                                                             \
-        xTLSBlock = ( void * ) ( ( ( portPOINTER_SIZE_TYPE ) pxTopOfStack +                          \
-                                   picolibcTLS_ALIGNMENT_MASK ) & ~picolibcTLS_ALIGNMENT_MASK );     \
-        pxTopOfStack = ( StackType_t * ) ( ( ( ( ( portPOINTER_SIZE_TYPE ) xTLSBlock ) +             \
-                                               picolibcTLS_SIZE ) + picolibcSTACK_ALIGNMENT_MASK ) & \
-                                           ~picolibcSTACK_ALIGNMENT_MASK );                          \
+    } यावत्( 0 )
+#अन्यथा /* portSTACK_GROWTH */
+    #परिभाषय config_INIT_TLS_खण्डम्( xTLSBlock, px_शिखरम्_सम्बन्धि_राशिः )                                          \
+    कुरु {                                                                                             \
+        xTLSBlock = ( शून्य * ) ( ( ( पत्तनम्_POINTER_आकार_TYPE ) px_शिखरम्_सम्बन्धि_राशिः +                          \
+                                   picolibc_TLS_ALIGNMENT_आवरणम् ) & ~picolibc_TLS_ALIGNMENT_आवरणम् );     \
+        px_शिखरम्_सम्बन्धि_राशिः = ( राशिः_Type_t * ) ( ( ( ( ( पत्तनम्_POINTER_आकार_TYPE ) xTLSBlock ) +             \
+                                               picolibc_TLS_आकार ) + picolibc_राशिः_ALIGNMENT_आवरणम् ) & \
+                                           ~picolibc_राशिः_ALIGNMENT_आवरणम् );                          \
         _init_tls( xTLSBlock );                                                                      \
-    } while( 0 )
-#endif /* portSTACK_GROWTH */
+    } यावत्( 0 )
+#यदि_अन्तः /* portSTACK_GROWTH */
 
-#define configSET_TLS_BLOCK( xTLSBlock )    _set_tls( xTLSBlock )
+#परिभाषय config_समुच्चयः_TLS_खण्डम्( xTLSBlock )    समुच्चयः_tls( xTLSBlock )
 
-#define configDEINIT_TLS_BLOCK( xTLSBlock )
+#परिभाषय config_DEINIT_TLS_खण्डम्( xTLSBlock )
 
-#endif /* INC_PICOLIBC_FREERTOS_H */
+#यदि_अन्तः /* INC_PICOLIBC_FREERTOS_H */

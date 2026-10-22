@@ -4,104 +4,104 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <esp_types.h>
-#include <stdio.h>
-#include <inttypes.h>
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "esp_intr_alloc.h"
-#include "esp_cpu.h"
-#include "unity.h"
-#include "test_utils.h"
-#include "freertos_performance.h"
+#अन्तर्भाव <esp_types.h>
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव <inttypes.h>
+#अन्तर्भाव "sdkconfig.h"
+#अन्तर्भाव "freertos/FreeRTOS.h"
+#अन्तर्भाव "freertos/task.h"
+#अन्तर्भाव "freertos/semphr.h"
+#अन्तर्भाव "freertos/queue.h"
+#अन्तर्भाव "esp_intr_alloc.h"
+#अन्तर्भाव "esp_cpu.h"
+#अन्तर्भाव "unity.h"
+#अन्तर्भाव "test_utils.h"
+#अन्तर्भाव "freertos_performance.h"
 
-#if CONFIG_IDF_TARGET_ARCH_XTENSA
-#include "xtensa/hal.h"
-#include "xtensa_api.h"     // Replace with interrupt allocator API (IDF-3891)
-#define TEST_SET_INT_MASK(mask) xt_set_intset(mask)
-#define TEST_CLR_INT_MASK(mask) xt_set_intclear(mask)
-#elif CONFIG_IDF_TARGET_ARCH_RISCV
-#include "riscv/interrupt.h"
-#define TEST_SET_INT_MASK(mask) esprv_int_enable(mask)
-#define TEST_CLR_INT_MASK(mask) esprv_int_disable(mask)
-#endif
+#यदि CONFIG_IDF_TARGET_ARCH_XTENSA
+#अन्तर्भाव "xtensa/hal.h"
+#अन्तर्भाव "xtensa_api.h"     // Replace with interrupt allocator API (IDF-3891)
+#परिभाषय TEST_समुच्चयः_INT_आवरणम्(आवरणम्) xt_समुच्चयः_intset(आवरणम्)
+#परिभाषय TEST_CLR_INT_आवरणम्(आवरणम्) xt_समुच्चयः_intclear(आवरणम्)
+#नोचेद्यदि CONFIG_IDF_TARGET_ARCH_RISCV
+#अन्तर्भाव "riscv/interrupt.h"
+#परिभाषय TEST_समुच्चयः_INT_आवरणम्(आवरणम्) esprv_int_enable(आवरणम्)
+#परिभाषय TEST_CLR_INT_आवरणम्(आवरणम्) esprv_int_disable(आवरणम्)
+#यदि_अन्तः
 
-#ifndef __riscv // TODO: IDF-4416
+#यदि_अपरिभाषितम् __riscv // TODO: IDF-4416
 
-#define SW_ISR_LEVEL_1  7
+#परिभाषय SW_ISR_LEVEL_1  7
 
-static SemaphoreHandle_t sync;
-static SemaphoreHandle_t end_sema;
-static uint32_t cycle_before_trigger;
-static uint32_t cycle_before_exit;
-static uint32_t delta_enter_cycles = 0;
-static uint32_t delta_exit_cycles = 0;
+स्थिर SemaphoreHandle_t sync;
+स्थिर SemaphoreHandle_t अन्तः_sema;
+स्थिर uint32_t आवृत्तिः_before_trigger;
+स्थिर uint32_t आवृत्तिः_before_exit;
+स्थिर uint32_t delta_enter_आवृत्तयः = 0;
+स्थिर uint32_t delta_exit_आवृत्तयः = 0;
 
-static void software_isr_using_parameter_vportyield(void *arg)
+स्थिर शून्य software_isr_using_parameter_vportyield(शून्य *arg)
 {
-    (void)arg;
-    BaseType_t yield;
-    delta_enter_cycles += esp_cpu_get_cycle_count() - cycle_before_trigger;
-    TEST_CLR_INT_MASK(1 << SW_ISR_LEVEL_1);
+    (शून्य)arg;
+    आधारः_Type_t yield;
+    delta_enter_आवृत्तयः += esp_cpu_get_आवृत्तिः_गणनम्() - आवृत्तिः_before_trigger;
+    TEST_CLR_INT_आवरणम्(1 << SW_ISR_LEVEL_1);
 
     xSemaphoreGiveFromISR(sync, &yield);
-    portYIELD_FROM_ISR(yield);
+    पत्तनम्_YIELD_FROM_ISR(yield);
 
-    cycle_before_exit = esp_cpu_get_cycle_count();
+    आवृत्तिः_before_exit = esp_cpu_get_आवृत्तिः_गणनम्();
 }
 
-static void software_isr_using_no_argument_vportyield(void *arg)
+स्थिर शून्य software_isr_using_no_तर्कः_vportyield(शून्य *arg)
 {
-    (void)arg;
-    BaseType_t yield;
-    delta_enter_cycles += esp_cpu_get_cycle_count() - cycle_before_trigger;
+    (शून्य)arg;
+    आधारः_Type_t yield;
+    delta_enter_आवृत्तयः += esp_cpu_get_आवृत्तिः_गणनम्() - आवृत्तिः_before_trigger;
 
-    TEST_CLR_INT_MASK(1 << SW_ISR_LEVEL_1);
+    TEST_CLR_INT_आवरणम्(1 << SW_ISR_LEVEL_1);
 
     xSemaphoreGiveFromISR(sync, &yield);
-    if (yield) {
-        portYIELD_FROM_ISR();
+    यदि (yield) {
+        पत्तनम्_YIELD_FROM_ISR();
     }
-    cycle_before_exit = esp_cpu_get_cycle_count();
+    आवृत्तिः_before_exit = esp_cpu_get_आवृत्तिः_गणनम्();
 }
 
-static void test_task(void *arg)
+स्थिर शून्य test_task(शून्य *arg)
 {
-    (void) arg;
+    (शून्य) arg;
 
-    for (int i = 0; i < 10000; i++) {
-        cycle_before_trigger = esp_cpu_get_cycle_count();
-        TEST_SET_INT_MASK(1 << SW_ISR_LEVEL_1);
-        xSemaphoreTake(sync, portMAX_DELAY);
-        delta_exit_cycles += esp_cpu_get_cycle_count() - cycle_before_exit;
+    प्रति (पूर्णाङ्क i = 0; i < 10000; i++) {
+        आवृत्तिः_before_trigger = esp_cpu_get_आवृत्तिः_गणनम्();
+        TEST_समुच्चयः_INT_आवरणम्(1 << SW_ISR_LEVEL_1);
+        xSemaphoreTake(sync, पत्तनम्_MAX_DELAY);
+        delta_exit_आवृत्तयः += esp_cpu_get_आवृत्तिः_गणनम्() - आवृत्तिः_before_exit;
     }
 
-    delta_enter_cycles /= 10000;
-    delta_exit_cycles /= 10000;
+    delta_enter_आवृत्तयः /= 10000;
+    delta_exit_आवृत्तयः /= 10000;
 
-    xSemaphoreGive(end_sema);
-    vTaskDelete(NULL);
+    xSemaphoreGive(अन्तः_sema);
+    vTaskDelete(रिक्त);
 }
 
 TEST_CASE("isr latency test vport-yield-from-isr with no parameter", "[freertos] [ignore]")
 {
     intr_handle_t handle;
-    esp_err_t err = esp_intr_alloc(ETS_INTERNAL_SW0_INTR_SOURCE, ESP_INTR_FLAG_LEVEL1, &software_isr_using_no_argument_vportyield, NULL, &handle);
+    esp_err_t err = esp_intr_alloc(ETS_आन्तरिकम्_SW0_INTR_SOURCE, ESP_INTR_FLAG_LEVEL1, &software_isr_using_no_तर्कः_vportyield, रिक्त, &handle);
     TEST_ASSERT_EQUAL_HEX32(ESP_OK, err);
 
-    sync = xSemaphoreCreateBinary();
-    TEST_ASSERT(sync != NULL);
-    end_sema = xSemaphoreCreateBinary();
-    TEST_ASSERT(end_sema != NULL);
-    xTaskCreatePinnedToCore(test_task, "tst", 4096, NULL, configMAX_PRIORITIES - 1, NULL, 0);
+    sync = x_Semaphore_Create_द्विमान();
+    TEST_ASSERT(sync != रिक्त);
+    अन्तः_sema = x_Semaphore_Create_द्विमान();
+    TEST_ASSERT(अन्तः_sema != रिक्त);
+    x_Task_Create_Pinned_गन्तव्यम्_Core(test_task, "tst", 4096, रिक्त, configMAX_PRIORITIES - 1, रिक्त, 0);
     vTaskDelay(100);
-    BaseType_t result = xSemaphoreTake(end_sema, portMAX_DELAY);
-    TEST_ASSERT_EQUAL_HEX32(pdTRUE, result);
-    TEST_PERFORMANCE_LESS_THAN(ISR_ENTER_CYCLES, "%"PRIu32" cycles", delta_enter_cycles);
-    TEST_PERFORMANCE_LESS_THAN(ISR_EXIT_CYCLES, "%"PRIu32" cycles", delta_exit_cycles);
+    आधारः_Type_t परिणाम = xSemaphoreTake(अन्तः_sema, पत्तनम्_MAX_DELAY);
+    TEST_ASSERT_EQUAL_HEX32(pdTRUE, परिणाम);
+    TEST_PERFORMANCE_LESS_THAN(ISR_ENTER_आवृत्तयः, "%"PRIu32" cycles", delta_enter_आवृत्तयः);
+    TEST_PERFORMANCE_LESS_THAN(ISR_EXIT_आवृत्तयः, "%"PRIu32" cycles", delta_exit_आवृत्तयः);
 
     esp_intr_free(handle);
 }
@@ -109,20 +109,20 @@ TEST_CASE("isr latency test vport-yield-from-isr with no parameter", "[freertos]
 TEST_CASE("isr latency test vport-yield-from-isr with parameter", "[freertos][ignore]")
 {
     intr_handle_t handle;
-    esp_err_t err = esp_intr_alloc(ETS_INTERNAL_SW0_INTR_SOURCE, ESP_INTR_FLAG_LEVEL1, &software_isr_using_parameter_vportyield, NULL, &handle);
+    esp_err_t err = esp_intr_alloc(ETS_आन्तरिकम्_SW0_INTR_SOURCE, ESP_INTR_FLAG_LEVEL1, &software_isr_using_parameter_vportyield, रिक्त, &handle);
     TEST_ASSERT_EQUAL_HEX32(ESP_OK, err);
 
-    sync = xSemaphoreCreateBinary();
-    TEST_ASSERT(sync != NULL);
-    end_sema = xSemaphoreCreateBinary();
-    TEST_ASSERT(end_sema != NULL);
-    xTaskCreatePinnedToCore(test_task, "tst", 4096, NULL, configMAX_PRIORITIES - 1, NULL, 0);
-    BaseType_t result = xSemaphoreTake(end_sema, portMAX_DELAY);
-    TEST_ASSERT_EQUAL_HEX32(pdTRUE, result);
-    TEST_PERFORMANCE_LESS_THAN(ISR_ENTER_CYCLES, "%"PRIu32" cycles", delta_enter_cycles);
-    TEST_PERFORMANCE_LESS_THAN(ISR_EXIT_CYCLES, "%"PRIu32" cycles", delta_exit_cycles);
+    sync = x_Semaphore_Create_द्विमान();
+    TEST_ASSERT(sync != रिक्त);
+    अन्तः_sema = x_Semaphore_Create_द्विमान();
+    TEST_ASSERT(अन्तः_sema != रिक्त);
+    x_Task_Create_Pinned_गन्तव्यम्_Core(test_task, "tst", 4096, रिक्त, configMAX_PRIORITIES - 1, रिक्त, 0);
+    आधारः_Type_t परिणाम = xSemaphoreTake(अन्तः_sema, पत्तनम्_MAX_DELAY);
+    TEST_ASSERT_EQUAL_HEX32(pdTRUE, परिणाम);
+    TEST_PERFORMANCE_LESS_THAN(ISR_ENTER_आवृत्तयः, "%"PRIu32" cycles", delta_enter_आवृत्तयः);
+    TEST_PERFORMANCE_LESS_THAN(ISR_EXIT_आवृत्तयः, "%"PRIu32" cycles", delta_exit_आवृत्तयः);
 
     esp_intr_free(handle);
 }
 
-#endif // __riscv
+#यदि_अन्तः // __riscv

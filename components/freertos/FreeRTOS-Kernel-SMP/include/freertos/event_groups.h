@@ -30,40 +30,40 @@
  *
  */
 
-#ifndef EVENT_GROUPS_H
-#define EVENT_GROUPS_H
+#यदि_अपरिभाषितम् EVENT_GROUPS_H
+#परिभाषय EVENT_GROUPS_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h" must appear in source files before "include event_groups.h"
-#endif
+#यदि_अपरिभाषितम् INC_FREERTOS_H
+    #दोषः "include FreeRTOS.h" must appear अन्तर् source files before "include event_groups.h"
+#यदि_अन्तः
 
 /* FreeRTOS includes. */
-#include "timers.h"
+#अन्तर्भाव "timers.h"
 
 /* The following bit fields convey control information in a task's event list
  * item value.  It is important they don't clash with the
  * taskEVENT_LIST_ITEM_VALUE_IN_USE definition. */
-#if ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS )
-    #define eventCLEAR_EVENTS_ON_EXIT_BIT    ( ( uint16_t ) 0x0100U )
-    #define eventUNBLOCKED_DUE_TO_BIT_SET    ( ( uint16_t ) 0x0200U )
-    #define eventWAIT_FOR_ALL_BITS           ( ( uint16_t ) 0x0400U )
-    #define eventEVENT_BITS_CONTROL_BYTES    ( ( uint16_t ) 0xff00U )
-#elif ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_32_BITS )
-    #define eventCLEAR_EVENTS_ON_EXIT_BIT    ( ( uint32_t ) 0x01000000U )
-    #define eventUNBLOCKED_DUE_TO_BIT_SET    ( ( uint32_t ) 0x02000000U )
-    #define eventWAIT_FOR_ALL_BITS           ( ( uint32_t ) 0x04000000U )
-    #define eventEVENT_BITS_CONTROL_BYTES    ( ( uint32_t ) 0xff000000U )
-#elif ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_64_BITS )
-    #define eventCLEAR_EVENTS_ON_EXIT_BIT    ( ( uint64_t ) 0x0100000000000000U )
-    #define eventUNBLOCKED_DUE_TO_BIT_SET    ( ( uint64_t ) 0x0200000000000000U )
-    #define eventWAIT_FOR_ALL_BITS           ( ( uint64_t ) 0x0400000000000000U )
-    #define eventEVENT_BITS_CONTROL_BYTES    ( ( uint64_t ) 0xff00000000000000U )
-#endif /* if ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS ) */
+#यदि ( config_TICK_TYPE_विस्तारः_अन्तर्_द्वयङ्काः == TICK_TYPE_विस्तारः_16_द्वयङ्काः )
+    #परिभाषय eventCLEAR_EVENTS_ON_EXIT_BIT    ( ( uint16_t ) 0x0100U )
+    #परिभाषय event_UNBLOCKED_DUE_गन्तव्यम्_BIT_समुच्चयः    ( ( uint16_t ) 0x0200U )
+    #परिभाषय event_WAIT_FOR_ALL_द्वयङ्काः           ( ( uint16_t ) 0x0400U )
+    #परिभाषय event_EVENT_द्वयङ्काः_CONTROL_अष्टकानि    ( ( uint16_t ) 0xff00U )
+#नोचेद्यदि ( config_TICK_TYPE_विस्तारः_अन्तर्_द्वयङ्काः == TICK_TYPE_विस्तारः_32_द्वयङ्काः )
+    #परिभाषय eventCLEAR_EVENTS_ON_EXIT_BIT    ( ( uint32_t ) 0x01000000U )
+    #परिभाषय event_UNBLOCKED_DUE_गन्तव्यम्_BIT_समुच्चयः    ( ( uint32_t ) 0x02000000U )
+    #परिभाषय event_WAIT_FOR_ALL_द्वयङ्काः           ( ( uint32_t ) 0x04000000U )
+    #परिभाषय event_EVENT_द्वयङ्काः_CONTROL_अष्टकानि    ( ( uint32_t ) 0xff000000U )
+#नोचेद्यदि ( config_TICK_TYPE_विस्तारः_अन्तर्_द्वयङ्काः == TICK_TYPE_विस्तारः_64_द्वयङ्काः )
+    #परिभाषय eventCLEAR_EVENTS_ON_EXIT_BIT    ( ( uint64_t ) 0x0100000000000000U )
+    #परिभाषय event_UNBLOCKED_DUE_गन्तव्यम्_BIT_समुच्चयः    ( ( uint64_t ) 0x0200000000000000U )
+    #परिभाषय event_WAIT_FOR_ALL_द्वयङ्काः           ( ( uint64_t ) 0x0400000000000000U )
+    #परिभाषय event_EVENT_द्वयङ्काः_CONTROL_अष्टकानि    ( ( uint64_t ) 0xff00000000000000U )
+#यदि_अन्तः /* if ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS ) */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#यदि_परिभाषितम् __cplusplus
+    बाह्य "C" {
+#यदि_अन्तः
 /* *INDENT-ON* */
 
 /**
@@ -103,8 +103,8 @@
  * \defgroup EventGroupHandle_t EventGroupHandle_t
  * \ingroup EventGroup
  */
-struct EventGroupDef_t;
-typedef struct EventGroupDef_t   * EventGroupHandle_t;
+संरचना Event_गणः_Def_t;
+प्रकारनिर्देश संरचना Event_गणः_Def_t   * Event_गणः_Handle_t;
 
 /*
  * The type that holds event bits always matches TickType_t - therefore the
@@ -114,7 +114,7 @@ typedef struct EventGroupDef_t   * EventGroupHandle_t;
  * \defgroup EventBits_t EventBits_t
  * \ingroup EventGroup
  */
-typedef TickType_t               EventBits_t;
+प्रकारनिर्देश TickType_t               Event_द्वयङ्काः_t;
 
 /**
  * event_groups.h
@@ -172,9 +172,9 @@ typedef TickType_t               EventBits_t;
  * \defgroup xEventGroupCreate xEventGroupCreate
  * \ingroup EventGroup
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    EventGroupHandle_t xEventGroupCreate( void ) PRIVILEGED_FUNCTION;
-#endif
+#यदि ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 )
+    Event_गणः_Handle_t x_Event_गणः_Create( शून्य ) PRIVILEGED_FUNCTION;
+#यदि_अन्तः
 
 /**
  * event_groups.h
@@ -229,9 +229,9 @@ typedef TickType_t               EventBits_t;
  *  xEventGroup = xEventGroupCreateStatic( &xEventGroupBuffer );
  * @endcode
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    EventGroupHandle_t xEventGroupCreateStatic( StaticEventGroup_t * pxEventGroupBuffer ) PRIVILEGED_FUNCTION;
-#endif
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
+    Event_गणः_Handle_t x_Event_गणः_Create_Static( Static_Event_गणः_t * px_Event_गणः_बफर ) PRIVILEGED_FUNCTION;
+#यदि_अन्तः
 
 /**
  * event_groups.h
@@ -329,11 +329,11 @@ typedef TickType_t               EventBits_t;
  * \defgroup xEventGroupWaitBits xEventGroupWaitBits
  * \ingroup EventGroup
  */
-EventBits_t xEventGroupWaitBits( EventGroupHandle_t xEventGroup,
-                                 const EventBits_t uxBitsToWaitFor,
-                                 const BaseType_t xClearOnExit,
-                                 const BaseType_t xWaitForAllBits,
-                                 TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+Event_द्वयङ्काः_t x_Event_गणः_Wait_द्वयङ्काः( Event_गणः_Handle_t x_Event_गणः,
+                                 ध्रुव Event_द्वयङ्काः_t ux_द्वयङ्काः_गन्तव्यम्_Wait_For,
+                                 ध्रुव आधारः_Type_t xClearOnExit,
+                                 ध्रुव आधारः_Type_t x_Wait_For_All_द्वयङ्काः,
+                                 TickType_t x_Ticks_गन्तव्यम्_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -393,8 +393,8 @@ EventBits_t xEventGroupWaitBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupClearBits xEventGroupClearBits
  * \ingroup EventGroup
  */
-EventBits_t xEventGroupClearBits( EventGroupHandle_t xEventGroup,
-                                  const EventBits_t uxBitsToClear ) PRIVILEGED_FUNCTION;
+Event_द्वयङ्काः_t x_Event_गणः_Clear_द्वयङ्काः( Event_गणः_Handle_t x_Event_गणः,
+                                  ध्रुव Event_द्वयङ्काः_t ux_द्वयङ्काः_गन्तव्यम्_Clear ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -456,13 +456,13 @@ EventBits_t xEventGroupClearBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupClearBitsFromISR xEventGroupClearBitsFromISR
  * \ingroup EventGroup
  */
-#if ( configUSE_TRACE_FACILITY == 1 )
-    BaseType_t xEventGroupClearBitsFromISR( EventGroupHandle_t xEventGroup,
-                                            const EventBits_t uxBitsToClear ) PRIVILEGED_FUNCTION;
-#else
-    #define xEventGroupClearBitsFromISR( xEventGroup, uxBitsToClear ) \
-    xTimerPendFunctionCallFromISR( vEventGroupClearBitsCallback, ( void * ) ( xEventGroup ), ( uint32_t ) ( uxBitsToClear ), NULL )
-#endif
+#यदि ( configUSE_TRACE_FACILITY == 1 )
+    आधारः_Type_t x_Event_गणः_Clear_द्वयङ्काः_From_ISR( Event_गणः_Handle_t x_Event_गणः,
+                                            ध्रुव Event_द्वयङ्काः_t ux_द्वयङ्काः_गन्तव्यम्_Clear ) PRIVILEGED_FUNCTION;
+#अन्यथा
+    #परिभाषय x_Event_गणः_Clear_द्वयङ्काः_From_ISR( x_Event_गणः, ux_द्वयङ्काः_गन्तव्यम्_Clear ) \
+    xTimerPendFunctionCallFromISR( v_Event_गणः_Clear_द्वयङ्काः_Callback, ( शून्य * ) ( x_Event_गणः ), ( uint32_t ) ( ux_द्वयङ्काः_गन्तव्यम्_Clear ), रिक्त )
+#यदि_अन्तः
 
 /**
  * event_groups.h
@@ -539,8 +539,8 @@ EventBits_t xEventGroupClearBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupSetBits xEventGroupSetBits
  * \ingroup EventGroup
  */
-EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
-                                const EventBits_t uxBitsToSet ) PRIVILEGED_FUNCTION;
+Event_द्वयङ्काः_t x_Event_गणः_समुच्चयः_द्वयङ्काः( Event_गणः_Handle_t x_Event_गणः,
+                                ध्रुव Event_द्वयङ्काः_t ux_द्वयङ्काः_गन्तव्यम्_समुच्चयः ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -614,14 +614,14 @@ EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupSetBitsFromISR xEventGroupSetBitsFromISR
  * \ingroup EventGroup
  */
-#if ( configUSE_TRACE_FACILITY == 1 )
-    BaseType_t xEventGroupSetBitsFromISR( EventGroupHandle_t xEventGroup,
-                                          const EventBits_t uxBitsToSet,
-                                          BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
-#else
-    #define xEventGroupSetBitsFromISR( xEventGroup, uxBitsToSet, pxHigherPriorityTaskWoken ) \
-    xTimerPendFunctionCallFromISR( vEventGroupSetBitsCallback, ( void * ) ( xEventGroup ), ( uint32_t ) ( uxBitsToSet ), ( pxHigherPriorityTaskWoken ) )
-#endif
+#यदि ( configUSE_TRACE_FACILITY == 1 )
+    आधारः_Type_t x_Event_गणः_समुच्चयः_द्वयङ्काः_From_ISR( Event_गणः_Handle_t x_Event_गणः,
+                                          ध्रुव Event_द्वयङ्काः_t ux_द्वयङ्काः_गन्तव्यम्_समुच्चयः,
+                                          आधारः_Type_t * px_Higher_प्राथमिकता_Task_Woken ) PRIVILEGED_FUNCTION;
+#अन्यथा
+    #परिभाषय x_Event_गणः_समुच्चयः_द्वयङ्काः_From_ISR( x_Event_गणः, ux_द्वयङ्काः_गन्तव्यम्_समुच्चयः, px_Higher_प्राथमिकता_Task_Woken ) \
+    xTimerPendFunctionCallFromISR( v_Event_गणः_समुच्चयः_द्वयङ्काः_Callback, ( शून्य * ) ( x_Event_गणः ), ( uint32_t ) ( ux_द्वयङ्काः_गन्तव्यम्_समुच्चयः ), ( px_Higher_प्राथमिकता_Task_Woken ) )
+#यदि_अन्तः
 
 /**
  * event_groups.h
@@ -750,10 +750,10 @@ EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupSync xEventGroupSync
  * \ingroup EventGroup
  */
-EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
-                             const EventBits_t uxBitsToSet,
-                             const EventBits_t uxBitsToWaitFor,
-                             TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+Event_द्वयङ्काः_t x_Event_गणः_Sync( Event_गणः_Handle_t x_Event_गणः,
+                             ध्रुव Event_द्वयङ्काः_t ux_द्वयङ्काः_गन्तव्यम्_समुच्चयः,
+                             ध्रुव Event_द्वयङ्काः_t ux_द्वयङ्काः_गन्तव्यम्_Wait_For,
+                             TickType_t x_Ticks_गन्तव्यम्_Wait ) PRIVILEGED_FUNCTION;
 
 
 /**
@@ -775,7 +775,7 @@ EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupGetBits xEventGroupGetBits
  * \ingroup EventGroup
  */
-#define xEventGroupGetBits( xEventGroup )    xEventGroupClearBits( ( xEventGroup ), 0 )
+#परिभाषय x_Event_गणः_Get_द्वयङ्काः( x_Event_गणः )    x_Event_गणः_Clear_द्वयङ्काः( ( x_Event_गणः ), 0 )
 
 /**
  * event_groups.h
@@ -795,7 +795,7 @@ EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupGetBitsFromISR xEventGroupGetBitsFromISR
  * \ingroup EventGroup
  */
-EventBits_t xEventGroupGetBitsFromISR( EventGroupHandle_t xEventGroup ) PRIVILEGED_FUNCTION;
+Event_द्वयङ्काः_t x_Event_गणः_Get_द्वयङ्काः_From_ISR( Event_गणः_Handle_t x_Event_गणः ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -812,7 +812,7 @@ EventBits_t xEventGroupGetBitsFromISR( EventGroupHandle_t xEventGroup ) PRIVILEG
  *
  * @param xEventGroup The event group being deleted.
  */
-void vEventGroupDelete( EventGroupHandle_t xEventGroup ) PRIVILEGED_FUNCTION;
+शून्य v_Event_गणः_Delete( Event_गणः_Handle_t x_Event_गणः ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -834,28 +834,28 @@ void vEventGroupDelete( EventGroupHandle_t xEventGroup ) PRIVILEGED_FUNCTION;
  *
  * @return pdTRUE if the buffer was retrieved, pdFALSE otherwise.
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    BaseType_t xEventGroupGetStaticBuffer( EventGroupHandle_t xEventGroup,
-                                           StaticEventGroup_t ** ppxEventGroupBuffer ) PRIVILEGED_FUNCTION;
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
+    आधारः_Type_t x_Event_गणः_Get_Static_बफर( Event_गणः_Handle_t x_Event_गणः,
+                                           Static_Event_गणः_t ** ppx_Event_गणः_बफर ) PRIVILEGED_FUNCTION;
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION */
 
 /* For internal use only. */
-void vEventGroupSetBitsCallback( void * pvEventGroup,
-                                 uint32_t ulBitsToSet ) PRIVILEGED_FUNCTION;
-void vEventGroupClearBitsCallback( void * pvEventGroup,
-                                   uint32_t ulBitsToClear ) PRIVILEGED_FUNCTION;
+शून्य v_Event_गणः_समुच्चयः_द्वयङ्काः_Callback( शून्य * pv_Event_गणः,
+                                 uint32_t ul_द्वयङ्काः_गन्तव्यम्_समुच्चयः ) PRIVILEGED_FUNCTION;
+शून्य v_Event_गणः_Clear_द्वयङ्काः_Callback( शून्य * pv_Event_गणः,
+                                   uint32_t ul_द्वयङ्काः_गन्तव्यम्_Clear ) PRIVILEGED_FUNCTION;
 
 
-#if ( configUSE_TRACE_FACILITY == 1 )
-    UBaseType_t uxEventGroupGetNumber( void * xEventGroup ) PRIVILEGED_FUNCTION;
-    void vEventGroupSetNumber( void * xEventGroup,
-                               UBaseType_t uxEventGroupNumber ) PRIVILEGED_FUNCTION;
-#endif
+#यदि ( configUSE_TRACE_FACILITY == 1 )
+    UBaseType_t ux_Event_गणः_Get_सङ्ख्या( शून्य * x_Event_गणः ) PRIVILEGED_FUNCTION;
+    शून्य v_Event_गणः_समुच्चयः_सङ्ख्या( शून्य * x_Event_गणः,
+                               UBaseType_t ux_Event_गणः_सङ्ख्या ) PRIVILEGED_FUNCTION;
+#यदि_अन्तः
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#यदि_परिभाषितम् __cplusplus
     }
-#endif
+#यदि_अन्तः
 /* *INDENT-ON* */
 
-#endif /* EVENT_GROUPS_H */
+#यदि_अन्तः /* EVENT_GROUPS_H */

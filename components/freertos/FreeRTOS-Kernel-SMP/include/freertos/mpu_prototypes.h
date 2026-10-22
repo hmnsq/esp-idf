@@ -39,355 +39,355 @@
  */
 
 
-#ifndef MPU_PROTOTYPES_H
-#define MPU_PROTOTYPES_H
+#यदि_अपरिभाषितम् MPU_PROTOTYPES_H
+#परिभाषय MPU_PROTOTYPES_H
 
-typedef struct xTaskGenericNotifyParams
+प्रकारनिर्देश संरचना xTaskGenericNotifyParams
 {
-    TaskHandle_t xTaskToNotify;
-    UBaseType_t uxIndexToNotify;
-    uint32_t ulValue;
+    TaskHandle_t x_Task_गन्तव्यम्_Notify;
+    UBaseType_t ux_सूचकांक_गन्तव्यम्_Notify;
+    uint32_t ul_मानम्;
     eNotifyAction eAction;
-    uint32_t * pulPreviousNotificationValue;
+    uint32_t * pul_Previous_Notification_मानम्;
 } xTaskGenericNotifyParams_t;
 
-typedef struct xTaskGenericNotifyWaitParams
+प्रकारनिर्देश संरचना xTaskGenericNotifyWaitParams
 {
-    UBaseType_t uxIndexToWaitOn;
-    uint32_t ulBitsToClearOnEntry;
-    uint32_t ulBitsToClearOnExit;
-    uint32_t * pulNotificationValue;
-    TickType_t xTicksToWait;
+    UBaseType_t ux_सूचकांक_गन्तव्यम्_Wait_On;
+    uint32_t ul_द्वयङ्काः_गन्तव्यम्_Clear_On_प्रविष्टिः;
+    uint32_t ul_द्वयङ्काः_गन्तव्यम्_Clear_On_Exit;
+    uint32_t * pul_Notification_मानम्;
+    TickType_t x_Ticks_गन्तव्यम्_Wait;
 } xTaskGenericNotifyWaitParams_t;
 
-typedef struct xTimerGenericCommandFromTaskParams
+प्रकारनिर्देश संरचना xTimerGenericCommandFromTaskParams
 {
     TimerHandle_t xTimer;
-    BaseType_t xCommandID;
-    TickType_t xOptionalValue;
-    BaseType_t * pxHigherPriorityTaskWoken;
-    TickType_t xTicksToWait;
+    आधारः_Type_t xCommandID;
+    TickType_t x_Optional_मानम्;
+    आधारः_Type_t * px_Higher_प्राथमिकता_Task_Woken;
+    TickType_t x_Ticks_गन्तव्यम्_Wait;
 } xTimerGenericCommandFromTaskParams_t;
 
-typedef struct xEventGroupWaitBitsParams
+प्रकारनिर्देश संरचना x_Event_गणः_Wait_द्वयङ्काः_Params
 {
-    EventGroupHandle_t xEventGroup;
-    EventBits_t uxBitsToWaitFor;
-    BaseType_t xClearOnExit;
-    BaseType_t xWaitForAllBits;
-    TickType_t xTicksToWait;
-} xEventGroupWaitBitsParams_t;
+    Event_गणः_Handle_t x_Event_गणः;
+    Event_द्वयङ्काः_t ux_द्वयङ्काः_गन्तव्यम्_Wait_For;
+    आधारः_Type_t xClearOnExit;
+    आधारः_Type_t x_Wait_For_All_द्वयङ्काः;
+    TickType_t x_Ticks_गन्तव्यम्_Wait;
+} x_Event_गणः_Wait_द्वयङ्काः_Params_t;
 
 /* MPU versions of task.h API functions. */
-void MPU_vTaskDelay( const TickType_t xTicksToDelay ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskDelayUntil( TickType_t * const pxPreviousWakeTime,
-                                const TickType_t xTimeIncrement ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskAbortDelay( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxTaskPriorityGet( const TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
+शून्य MPU_vTaskDelay( ध्रुव TickType_t x_Ticks_गन्तव्यम्_Delay ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_xTaskDelayUntil( TickType_t * ध्रुव pxPreviousWakeTime,
+                                ध्रुव TickType_t xTimeIncrement ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_xTaskAbortDelay( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Task_प्राथमिकता_Get( ध्रुव TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
 eTaskState MPU_eTaskGetState( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskGetInfo( TaskHandle_t xTask,
-                       TaskStatus_t * pxTaskStatus,
-                       BaseType_t xGetFreeStackSpace,
+शून्य MPU_vTaskGetInfo( TaskHandle_t xTask,
+                       Task_स्थितिः_t * px_Task_स्थितिः,
+                       आधारः_Type_t x_Get_Free_राशिः_Space,
                        eTaskState eState ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskSuspend( TaskHandle_t xTaskToSuspend ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskResume( TaskHandle_t xTaskToResume ) FREERTOS_SYSTEM_CALL;
-TickType_t MPU_xTaskGetTickCount( void ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxTaskGetNumberOfTasks( void ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxTaskGetStackHighWaterMark( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
-configSTACK_DEPTH_TYPE MPU_uxTaskGetStackHighWaterMark2( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskSetApplicationTaskTag( TaskHandle_t xTask,
+शून्य MPU_vTaskSuspend( TaskHandle_t x_Task_गन्तव्यम्_Suspend ) FREERTOS_SYSTEM_CALL;
+शून्य MPU_vTaskResume( TaskHandle_t x_Task_गन्तव्यम्_Resume ) FREERTOS_SYSTEM_CALL;
+TickType_t MPU_x_Task_Get_Tick_गणनम्( शून्य ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Task_Get_सङ्ख्या_सम्बन्धि_Tasks( शून्य ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Task_Get_राशिः_उच्चः_Water_Mark( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
+config_राशिः_गभीरता_TYPE MPU_ux_Task_Get_राशिः_उच्चः_Water_Mark2( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
+शून्य MPU_v_Task_समुच्चयः_Application_Task_चिह्नकम्( TaskHandle_t xTask,
                                      TaskHookFunction_t pxHookFunction ) FREERTOS_SYSTEM_CALL;
-TaskHookFunction_t MPU_xTaskGetApplicationTaskTag( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskSetThreadLocalStoragePointer( TaskHandle_t xTaskToSet,
-                                            BaseType_t xIndex,
-                                            void * pvValue ) FREERTOS_SYSTEM_CALL;
-void * MPU_pvTaskGetThreadLocalStoragePointer( TaskHandle_t xTaskToQuery,
-                                               BaseType_t xIndex ) FREERTOS_SYSTEM_CALL;
-TaskHandle_t MPU_xTaskGetIdleTaskHandle( void ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxTaskGetSystemState( TaskStatus_t * const pxTaskStatusArray,
-                                      const UBaseType_t uxArraySize,
-                                      configRUN_TIME_COUNTER_TYPE * const pulTotalRunTime ) FREERTOS_SYSTEM_CALL;
-configRUN_TIME_COUNTER_TYPE MPU_ulTaskGetRunTimeCounter( const TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
-configRUN_TIME_COUNTER_TYPE MPU_ulTaskGetRunTimePercent( const TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
-configRUN_TIME_COUNTER_TYPE MPU_ulTaskGetIdleRunTimeCounter( void ) FREERTOS_SYSTEM_CALL;
-configRUN_TIME_COUNTER_TYPE MPU_ulTaskGetIdleRunTimePercent( void ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskGenericNotify( TaskHandle_t xTaskToNotify,
-                                   UBaseType_t uxIndexToNotify,
-                                   uint32_t ulValue,
+TaskHookFunction_t MPU_x_Task_Get_Application_Task_चिह्नकम्( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
+शून्य MPU_v_Task_समुच्चयः_Thread_Local_Storage_Pointer( TaskHandle_t x_Task_गन्तव्यम्_समुच्चयः,
+                                            आधारः_Type_t x_सूचकांक,
+                                            शून्य * pv_मानम् ) FREERTOS_SYSTEM_CALL;
+शून्य * MPU_pvTaskGetThreadLocalStoragePointer( TaskHandle_t x_Task_गन्तव्यम्_Query,
+                                               आधारः_Type_t x_सूचकांक ) FREERTOS_SYSTEM_CALL;
+TaskHandle_t MPU_xTaskGetIdleTaskHandle( शून्य ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_uxTaskGetSystemState( Task_स्थितिः_t * ध्रुव px_Task_स्थितिः_Array,
+                                      ध्रुव UBaseType_t ux_Array_आकार,
+                                      config_सततम्_TIME_गणक_TYPE * ध्रुव pul_योग_सततम्_Time ) FREERTOS_SYSTEM_CALL;
+config_सततम्_TIME_गणक_TYPE MPU_ul_Task_Get_सततम्_Time_गणक( ध्रुव TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
+config_सततम्_TIME_गणक_TYPE MPU_ul_Task_Get_सततम्_Time_Percent( ध्रुव TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
+config_सततम्_TIME_गणक_TYPE MPU_ul_Task_Get_Idle_सततम्_Time_गणक( शून्य ) FREERTOS_SYSTEM_CALL;
+config_सततम्_TIME_गणक_TYPE MPU_ul_Task_Get_Idle_सततम्_Time_Percent( शून्य ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_xTaskGenericNotify( TaskHandle_t x_Task_गन्तव्यम्_Notify,
+                                   UBaseType_t ux_सूचकांक_गन्तव्यम्_Notify,
+                                   uint32_t ul_मानम्,
                                    eNotifyAction eAction,
-                                   uint32_t * pulPreviousNotificationValue ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskGenericNotifyEntry( const xTaskGenericNotifyParams_t * pxParams ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskGenericNotifyWait( UBaseType_t uxIndexToWaitOn,
-                                       uint32_t ulBitsToClearOnEntry,
-                                       uint32_t ulBitsToClearOnExit,
-                                       uint32_t * pulNotificationValue,
-                                       TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskGenericNotifyWaitEntry( const xTaskGenericNotifyWaitParams_t * pxParams ) FREERTOS_SYSTEM_CALL;
-uint32_t MPU_ulTaskGenericNotifyTake( UBaseType_t uxIndexToWaitOn,
-                                      BaseType_t xClearCountOnExit,
-                                      TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskGenericNotifyStateClear( TaskHandle_t xTask,
-                                             UBaseType_t uxIndexToClear ) FREERTOS_SYSTEM_CALL;
-uint32_t MPU_ulTaskGenericNotifyValueClear( TaskHandle_t xTask,
-                                            UBaseType_t uxIndexToClear,
-                                            uint32_t ulBitsToClear ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskSetTimeOutState( TimeOut_t * const pxTimeOut ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskCheckForTimeOut( TimeOut_t * const pxTimeOut,
-                                     TickType_t * const pxTicksToWait ) FREERTOS_SYSTEM_CALL;
-TaskHandle_t MPU_xTaskGetCurrentTaskHandle( void ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskGetSchedulerState( void ) FREERTOS_SYSTEM_CALL;
+                                   uint32_t * pul_Previous_Notification_मानम् ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_x_Task_Generic_Notify_प्रविष्टिः( ध्रुव xTaskGenericNotifyParams_t * pxParams ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_xTaskGenericNotifyWait( UBaseType_t ux_सूचकांक_गन्तव्यम्_Wait_On,
+                                       uint32_t ul_द्वयङ्काः_गन्तव्यम्_Clear_On_प्रविष्टिः,
+                                       uint32_t ul_द्वयङ्काः_गन्तव्यम्_Clear_On_Exit,
+                                       uint32_t * pul_Notification_मानम्,
+                                       TickType_t x_Ticks_गन्तव्यम्_Wait ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_x_Task_Generic_Notify_Wait_प्रविष्टिः( ध्रुव xTaskGenericNotifyWaitParams_t * pxParams ) FREERTOS_SYSTEM_CALL;
+uint32_t MPU_ulTaskGenericNotifyTake( UBaseType_t ux_सूचकांक_गन्तव्यम्_Wait_On,
+                                      आधारः_Type_t x_Clear_गणनम्_On_Exit,
+                                      TickType_t x_Ticks_गन्तव्यम्_Wait ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_xTaskGenericNotifyStateClear( TaskHandle_t xTask,
+                                             UBaseType_t ux_सूचकांक_गन्तव्यम्_Clear ) FREERTOS_SYSTEM_CALL;
+uint32_t MPU_ul_Task_Generic_Notify_मानम्_Clear( TaskHandle_t xTask,
+                                            UBaseType_t ux_सूचकांक_गन्तव्यम्_Clear,
+                                            uint32_t ul_द्वयङ्काः_गन्तव्यम्_Clear ) FREERTOS_SYSTEM_CALL;
+शून्य MPU_v_Task_समुच्चयः_Time_बहिर्गमनम्_State( Time_बहिर्गमनम्_t * ध्रुव px_Time_बहिर्गमनम् ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_x_Task_Check_For_Time_बहिर्गमनम्( Time_बहिर्गमनम्_t * ध्रुव px_Time_बहिर्गमनम्,
+                                     TickType_t * ध्रुव px_Ticks_गन्तव्यम्_Wait ) FREERTOS_SYSTEM_CALL;
+TaskHandle_t MPU_xTaskGetCurrentTaskHandle( शून्य ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_xTaskGetSchedulerState( शून्य ) FREERTOS_SYSTEM_CALL;
 
 /* Privileged only wrappers for Task APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
-BaseType_t MPU_xTaskCreate( TaskFunction_t pxTaskCode,
-                            const char * const pcName,
-                            const configSTACK_DEPTH_TYPE uxStackDepth,
-                            void * const pvParameters,
-                            UBaseType_t uxPriority,
-                            TaskHandle_t * const pxCreatedTask ) PRIVILEGED_FUNCTION;
-TaskHandle_t MPU_xTaskCreateStatic( TaskFunction_t pxTaskCode,
-                                    const char * const pcName,
-                                    const configSTACK_DEPTH_TYPE uxStackDepth,
-                                    void * const pvParameters,
-                                    UBaseType_t uxPriority,
-                                    StackType_t * const puxStackBuffer,
-                                    StaticTask_t * const pxTaskBuffer ) PRIVILEGED_FUNCTION;
-void MPU_vTaskDelete( TaskHandle_t xTaskToDelete ) PRIVILEGED_FUNCTION;
-void MPU_vTaskPrioritySet( TaskHandle_t xTask,
-                           UBaseType_t uxNewPriority ) PRIVILEGED_FUNCTION;
-TaskHandle_t MPU_xTaskGetHandle( const char * pcNameToQuery ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xTaskCallApplicationTaskHook( TaskHandle_t xTask,
-                                             void * pvParameter ) PRIVILEGED_FUNCTION;
-char * MPU_pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xTaskCreateRestricted( const TaskParameters_t * const pxTaskDefinition,
+आधारः_Type_t MPU_xTaskCreate( TaskFunction_t px_Task_संहिता,
+                            ध्रुव वर्ण * ध्रुव pcName,
+                            ध्रुव config_राशिः_गभीरता_TYPE ux_राशिः_गभीरता,
+                            शून्य * ध्रुव pvParameters,
+                            UBaseType_t ux_प्राथमिकता,
+                            TaskHandle_t * ध्रुव pxCreatedTask ) PRIVILEGED_FUNCTION;
+TaskHandle_t MPU_xTaskCreateStatic( TaskFunction_t px_Task_संहिता,
+                                    ध्रुव वर्ण * ध्रुव pcName,
+                                    ध्रुव config_राशिः_गभीरता_TYPE ux_राशिः_गभीरता,
+                                    शून्य * ध्रुव pvParameters,
+                                    UBaseType_t ux_प्राथमिकता,
+                                    राशिः_Type_t * ध्रुव pux_राशिः_बफर,
+                                    StaticTask_t * ध्रुव px_Task_बफर ) PRIVILEGED_FUNCTION;
+शून्य MPU_vTaskDelete( TaskHandle_t x_Task_गन्तव्यम्_Delete ) PRIVILEGED_FUNCTION;
+शून्य MPU_v_Task_प्राथमिकता_समुच्चयः( TaskHandle_t xTask,
+                           UBaseType_t ux_New_प्राथमिकता ) PRIVILEGED_FUNCTION;
+TaskHandle_t MPU_xTaskGetHandle( ध्रुव वर्ण * pc_Name_गन्तव्यम्_Query ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_xTaskCallApplicationTaskHook( TaskHandle_t xTask,
+                                             शून्य * pvParameter ) PRIVILEGED_FUNCTION;
+वर्ण * MPU_pcTaskGetName( TaskHandle_t x_Task_गन्तव्यम्_Query ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_xTaskCreateRestricted( ध्रुव TaskParameters_t * ध्रुव pxTaskDefinition,
                                       TaskHandle_t * pxCreatedTask ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xTaskCreateRestrictedStatic( const TaskParameters_t * const pxTaskDefinition,
+आधारः_Type_t MPU_xTaskCreateRestrictedStatic( ध्रुव TaskParameters_t * ध्रुव pxTaskDefinition,
                                             TaskHandle_t * pxCreatedTask ) PRIVILEGED_FUNCTION;
-void MPU_vTaskAllocateMPURegions( TaskHandle_t xTaskToModify,
-                                  const MemoryRegion_t * const xRegions ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xTaskGetStaticBuffers( TaskHandle_t xTask,
-                                      StackType_t ** ppuxStackBuffer,
-                                      StaticTask_t ** ppxTaskBuffer ) PRIVILEGED_FUNCTION;
-UBaseType_t MPU_uxTaskPriorityGetFromISR( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-UBaseType_t MPU_uxTaskBasePriorityGet( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-UBaseType_t MPU_uxTaskBasePriorityGetFromISR( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xTaskResumeFromISR( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
-TaskHookFunction_t MPU_xTaskGetApplicationTaskTagFromISR( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify,
-                                          UBaseType_t uxIndexToNotify,
-                                          uint32_t ulValue,
+शून्य MPU_vTaskAllocateMPURegions( TaskHandle_t x_Task_गन्तव्यम्_Modify,
+                                  ध्रुव स्मृतिः_Region_t * ध्रुव xRegions ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_xTaskGetStaticBuffers( TaskHandle_t xTask,
+                                      राशिः_Type_t ** ppux_राशिः_बफर,
+                                      StaticTask_t ** ppx_Task_बफर ) PRIVILEGED_FUNCTION;
+UBaseType_t MPU_ux_Task_प्राथमिकता_Get_From_ISR( ध्रुव TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+UBaseType_t MPU_ux_Task_आधारः_प्राथमिकता_Get( ध्रुव TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+UBaseType_t MPU_ux_Task_आधारः_प्राथमिकता_Get_From_ISR( ध्रुव TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_xTaskResumeFromISR( TaskHandle_t x_Task_गन्तव्यम्_Resume ) PRIVILEGED_FUNCTION;
+TaskHookFunction_t MPU_x_Task_Get_Application_Task_चिह्नकम्_From_ISR( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_xTaskGenericNotifyFromISR( TaskHandle_t x_Task_गन्तव्यम्_Notify,
+                                          UBaseType_t ux_सूचकांक_गन्तव्यम्_Notify,
+                                          uint32_t ul_मानम्,
                                           eNotifyAction eAction,
-                                          uint32_t * pulPreviousNotificationValue,
-                                          BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
-void MPU_vTaskGenericNotifyGiveFromISR( TaskHandle_t xTaskToNotify,
-                                        UBaseType_t uxIndexToNotify,
-                                        BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+                                          uint32_t * pul_Previous_Notification_मानम्,
+                                          आधारः_Type_t * px_Higher_प्राथमिकता_Task_Woken ) PRIVILEGED_FUNCTION;
+शून्य MPU_vTaskGenericNotifyGiveFromISR( TaskHandle_t x_Task_गन्तव्यम्_Notify,
+                                        UBaseType_t ux_सूचकांक_गन्तव्यम्_Notify,
+                                        आधारः_Type_t * px_Higher_प्राथमिकता_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /* MPU versions of queue.h API functions. */
-BaseType_t MPU_xQueueGenericSend( QueueHandle_t xQueue,
-                                  const void * const pvItemToQueue,
-                                  TickType_t xTicksToWait,
-                                  const BaseType_t xCopyPosition ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xQueueReceive( QueueHandle_t xQueue,
-                              void * const pvBuffer,
-                              TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xQueuePeek( QueueHandle_t xQueue,
-                           void * const pvBuffer,
-                           TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xQueueSemaphoreTake( QueueHandle_t xQueue,
-                                    TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxQueueMessagesWaiting( const QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxQueueSpacesAvailable( const QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_xQueueGenericSend( QueueHandle_t xQueue,
+                                  ध्रुव शून्य * ध्रुव pv_Item_गन्तव्यम्_Queue,
+                                  TickType_t x_Ticks_गन्तव्यम्_Wait,
+                                  ध्रुव आधारः_Type_t xCopyPosition ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_xQueueReceive( QueueHandle_t xQueue,
+                              शून्य * ध्रुव pv_बफर,
+                              TickType_t x_Ticks_गन्तव्यम्_Wait ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_xQueuePeek( QueueHandle_t xQueue,
+                           शून्य * ध्रुव pv_बफर,
+                           TickType_t x_Ticks_गन्तव्यम्_Wait ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_xQueueSemaphoreTake( QueueHandle_t xQueue,
+                                    TickType_t x_Ticks_गन्तव्यम्_Wait ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Queue_Messages_प्रतीक्षा( ध्रुव QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Queue_Spaces_उपलब्धम्( ध्रुव QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
 TaskHandle_t MPU_xQueueGetMutexHolder( QueueHandle_t xSemaphore ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xQueueTakeMutexRecursive( QueueHandle_t xMutex,
-                                         TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xQueueGiveMutexRecursive( QueueHandle_t pxMutex ) FREERTOS_SYSTEM_CALL;
-void MPU_vQueueAddToRegistry( QueueHandle_t xQueue,
-                              const char * pcName ) FREERTOS_SYSTEM_CALL;
-void MPU_vQueueUnregisterQueue( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
-const char * MPU_pcQueueGetName( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xQueueAddToSet( QueueSetMemberHandle_t xQueueOrSemaphore,
-                               QueueSetHandle_t xQueueSet ) FREERTOS_SYSTEM_CALL;
-QueueSetMemberHandle_t MPU_xQueueSelectFromSet( QueueSetHandle_t xQueueSet,
-                                                const TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-void MPU_vQueueSetQueueNumber( QueueHandle_t xQueue,
-                               UBaseType_t uxQueueNumber ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxQueueGetQueueNumber( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_xQueueTakeMutexRecursive( QueueHandle_t xMutex,
+                                         TickType_t x_Ticks_गन्तव्यम्_Wait ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_xQueueGiveMutexRecursive( QueueHandle_t pxMutex ) FREERTOS_SYSTEM_CALL;
+शून्य MPU_v_Queue_सङ्कलय_गन्तव्यम्_Registry( QueueHandle_t xQueue,
+                              ध्रुव वर्ण * pcName ) FREERTOS_SYSTEM_CALL;
+शून्य MPU_vQueueUnregisterQueue( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
+ध्रुव वर्ण * MPU_pcQueueGetName( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_x_Queue_सङ्कलय_गन्तव्यम्_समुच्चयः( Queue_समुच्चयः_Member_Handle_t xQueueOrSemaphore,
+                               Queue_समुच्चयः_Handle_t x_Queue_समुच्चयः ) FREERTOS_SYSTEM_CALL;
+Queue_समुच्चयः_Member_Handle_t MPU_x_Queue_Select_From_समुच्चयः( Queue_समुच्चयः_Handle_t x_Queue_समुच्चयः,
+                                                ध्रुव TickType_t x_Ticks_गन्तव्यम्_Wait ) FREERTOS_SYSTEM_CALL;
+शून्य MPU_v_Queue_समुच्चयः_Queue_सङ्ख्या( QueueHandle_t xQueue,
+                               UBaseType_t ux_Queue_सङ्ख्या ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Queue_Get_Queue_सङ्ख्या( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
 uint8_t MPU_ucQueueGetQueueType( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
 
 /* Privileged only wrappers for Queue APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
-void MPU_vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
-QueueHandle_t MPU_xQueueCreateMutex( const uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
-QueueHandle_t MPU_xQueueCreateMutexStatic( const uint8_t ucQueueType,
+शून्य MPU_vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+QueueHandle_t MPU_xQueueCreateMutex( ध्रुव uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
+QueueHandle_t MPU_xQueueCreateMutexStatic( ध्रुव uint8_t ucQueueType,
                                            StaticQueue_t * pxStaticQueue ) PRIVILEGED_FUNCTION;
-QueueHandle_t MPU_xQueueCreateCountingSemaphore( const UBaseType_t uxMaxCount,
-                                                 const UBaseType_t uxInitialCount ) PRIVILEGED_FUNCTION;
-QueueHandle_t MPU_xQueueCreateCountingSemaphoreStatic( const UBaseType_t uxMaxCount,
-                                                       const UBaseType_t uxInitialCount,
+QueueHandle_t MPU_xQueueCreateCountingSemaphore( ध्रुव UBaseType_t ux_Max_गणनम्,
+                                                 ध्रुव UBaseType_t ux_Initial_गणनम् ) PRIVILEGED_FUNCTION;
+QueueHandle_t MPU_xQueueCreateCountingSemaphoreStatic( ध्रुव UBaseType_t ux_Max_गणनम्,
+                                                       ध्रुव UBaseType_t ux_Initial_गणनम्,
                                                        StaticQueue_t * pxStaticQueue ) PRIVILEGED_FUNCTION;
-QueueHandle_t MPU_xQueueGenericCreate( const UBaseType_t uxQueueLength,
-                                       const UBaseType_t uxItemSize,
-                                       const uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
-QueueHandle_t MPU_xQueueGenericCreateStatic( const UBaseType_t uxQueueLength,
-                                             const UBaseType_t uxItemSize,
+QueueHandle_t MPU_xQueueGenericCreate( ध्रुव UBaseType_t ux_Queue_दीर्घता,
+                                       ध्रुव UBaseType_t ux_Item_आकार,
+                                       ध्रुव uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
+QueueHandle_t MPU_xQueueGenericCreateStatic( ध्रुव UBaseType_t ux_Queue_दीर्घता,
+                                             ध्रुव UBaseType_t ux_Item_आकार,
                                              uint8_t * pucQueueStorage,
                                              StaticQueue_t * pxStaticQueue,
-                                             const uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
-QueueSetHandle_t MPU_xQueueCreateSet( const UBaseType_t uxEventQueueLength ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xQueueRemoveFromSet( QueueSetMemberHandle_t xQueueOrSemaphore,
-                                    QueueSetHandle_t xQueueSet ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xQueueGenericReset( QueueHandle_t xQueue,
-                                   BaseType_t xNewQueue ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xQueueGenericGetStaticBuffers( QueueHandle_t xQueue,
+                                             ध्रुव uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
+Queue_समुच्चयः_Handle_t MPU_x_Queue_Create_समुच्चयः( ध्रुव UBaseType_t ux_Event_Queue_दीर्घता ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_x_Queue_Remove_From_समुच्चयः( Queue_समुच्चयः_Member_Handle_t xQueueOrSemaphore,
+                                    Queue_समुच्चयः_Handle_t x_Queue_समुच्चयः ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_xQueueGenericReset( QueueHandle_t xQueue,
+                                   आधारः_Type_t xNewQueue ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_xQueueGenericGetStaticBuffers( QueueHandle_t xQueue,
                                               uint8_t ** ppucQueueStorage,
                                               StaticQueue_t ** ppxStaticQueue ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xQueueGenericSendFromISR( QueueHandle_t xQueue,
-                                         const void * const pvItemToQueue,
-                                         BaseType_t * const pxHigherPriorityTaskWoken,
-                                         const BaseType_t xCopyPosition ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xQueueGiveFromISR( QueueHandle_t xQueue,
-                                  BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xQueuePeekFromISR( QueueHandle_t xQueue,
-                                  void * const pvBuffer ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xQueueReceiveFromISR( QueueHandle_t xQueue,
-                                     void * const pvBuffer,
-                                     BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xQueueIsQueueEmptyFromISR( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xQueueIsQueueFullFromISR( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
-UBaseType_t MPU_uxQueueMessagesWaitingFromISR( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_xQueueGenericSendFromISR( QueueHandle_t xQueue,
+                                         ध्रुव शून्य * ध्रुव pv_Item_गन्तव्यम्_Queue,
+                                         आधारः_Type_t * ध्रुव px_Higher_प्राथमिकता_Task_Woken,
+                                         ध्रुव आधारः_Type_t xCopyPosition ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_xQueueGiveFromISR( QueueHandle_t xQueue,
+                                  आधारः_Type_t * ध्रुव px_Higher_प्राथमिकता_Task_Woken ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_xQueuePeekFromISR( QueueHandle_t xQueue,
+                                  शून्य * ध्रुव pv_बफर ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_xQueueReceiveFromISR( QueueHandle_t xQueue,
+                                     शून्य * ध्रुव pv_बफर,
+                                     आधारः_Type_t * ध्रुव px_Higher_प्राथमिकता_Task_Woken ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_x_Queue_Is_Queue_रिक्तानि_From_ISR( ध्रुव QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_x_Queue_Is_Queue_पूर्णम्_From_ISR( ध्रुव QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+UBaseType_t MPU_ux_Queue_Messages_प्रतीक्षा_From_ISR( ध्रुव QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
 TaskHandle_t MPU_xQueueGetMutexHolderFromISR( QueueHandle_t xSemaphore ) PRIVILEGED_FUNCTION;
-QueueSetMemberHandle_t MPU_xQueueSelectFromSetFromISR( QueueSetHandle_t xQueueSet ) PRIVILEGED_FUNCTION;
+Queue_समुच्चयः_Member_Handle_t MPU_x_Queue_Select_From_समुच्चयः_From_ISR( Queue_समुच्चयः_Handle_t x_Queue_समुच्चयः ) PRIVILEGED_FUNCTION;
 
 /* MPU versions of timers.h API functions. */
-void * MPU_pvTimerGetTimerID( const TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
-void MPU_vTimerSetTimerID( TimerHandle_t xTimer,
-                           void * pvNewID ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTimerIsTimerActive( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
-TaskHandle_t MPU_xTimerGetTimerDaemonTaskHandle( void ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTimerGenericCommandFromTask( TimerHandle_t xTimer,
-                                             const BaseType_t xCommandID,
-                                             const TickType_t xOptionalValue,
-                                             BaseType_t * const pxHigherPriorityTaskWoken,
-                                             const TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTimerGenericCommandFromTaskEntry( const xTimerGenericCommandFromTaskParams_t * pxParams ) FREERTOS_SYSTEM_CALL;
-const char * MPU_pcTimerGetName( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
-void MPU_vTimerSetReloadMode( TimerHandle_t xTimer,
-                              const BaseType_t uxAutoReload ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTimerGetReloadMode( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxTimerGetReloadMode( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
+शून्य * MPU_pvTimerGetTimerID( ध्रुव TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
+शून्य MPU_v_Timer_समुच्चयः_Timer_ID( TimerHandle_t xTimer,
+                           शून्य * pvNewID ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_x_Timer_Is_Timer_सक्रिय( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
+TaskHandle_t MPU_xTimerGetTimerDaemonTaskHandle( शून्य ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_xTimerGenericCommandFromTask( TimerHandle_t xTimer,
+                                             ध्रुव आधारः_Type_t xCommandID,
+                                             ध्रुव TickType_t x_Optional_मानम्,
+                                             आधारः_Type_t * ध्रुव px_Higher_प्राथमिकता_Task_Woken,
+                                             ध्रुव TickType_t x_Ticks_गन्तव्यम्_Wait ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_x_Timer_Generic_Command_From_Task_प्रविष्टिः( ध्रुव xTimerGenericCommandFromTaskParams_t * pxParams ) FREERTOS_SYSTEM_CALL;
+ध्रुव वर्ण * MPU_pcTimerGetName( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
+शून्य MPU_v_Timer_समुच्चयः_Reload_बहुलकम्( TimerHandle_t xTimer,
+                              ध्रुव आधारः_Type_t uxAutoReload ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_x_Timer_Get_Reload_बहुलकम्( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Timer_Get_Reload_बहुलकम्( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
 TickType_t MPU_xTimerGetPeriod( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
 TickType_t MPU_xTimerGetExpiryTime( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
 
 /* Privileged only wrappers for Timer APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
-TimerHandle_t MPU_xTimerCreate( const char * const pcTimerName,
-                                const TickType_t xTimerPeriodInTicks,
-                                const UBaseType_t uxAutoReload,
-                                void * const pvTimerID,
+TimerHandle_t MPU_xTimerCreate( ध्रुव वर्ण * ध्रुव pcTimerName,
+                                ध्रुव TickType_t x_Timer_Period_अन्तर्_Ticks,
+                                ध्रुव UBaseType_t uxAutoReload,
+                                शून्य * ध्रुव pvTimerID,
                                 TimerCallbackFunction_t pxCallbackFunction ) PRIVILEGED_FUNCTION;
-TimerHandle_t MPU_xTimerCreateStatic( const char * const pcTimerName,
-                                      const TickType_t xTimerPeriodInTicks,
-                                      const UBaseType_t uxAutoReload,
-                                      void * const pvTimerID,
+TimerHandle_t MPU_xTimerCreateStatic( ध्रुव वर्ण * ध्रुव pcTimerName,
+                                      ध्रुव TickType_t x_Timer_Period_अन्तर्_Ticks,
+                                      ध्रुव UBaseType_t uxAutoReload,
+                                      शून्य * ध्रुव pvTimerID,
                                       TimerCallbackFunction_t pxCallbackFunction,
-                                      StaticTimer_t * pxTimerBuffer ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xTimerGetStaticBuffer( TimerHandle_t xTimer,
-                                      StaticTimer_t ** ppxTimerBuffer ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xTimerGenericCommandFromISR( TimerHandle_t xTimer,
-                                            const BaseType_t xCommandID,
-                                            const TickType_t xOptionalValue,
-                                            BaseType_t * const pxHigherPriorityTaskWoken,
-                                            const TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+                                      StaticTimer_t * px_Timer_बफर ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_x_Timer_Get_Static_बफर( TimerHandle_t xTimer,
+                                      StaticTimer_t ** ppx_Timer_बफर ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_xTimerGenericCommandFromISR( TimerHandle_t xTimer,
+                                            ध्रुव आधारः_Type_t xCommandID,
+                                            ध्रुव TickType_t x_Optional_मानम्,
+                                            आधारः_Type_t * ध्रुव px_Higher_प्राथमिकता_Task_Woken,
+                                            ध्रुव TickType_t x_Ticks_गन्तव्यम्_Wait ) PRIVILEGED_FUNCTION;
 
 /* MPU versions of event_group.h API functions. */
-EventBits_t MPU_xEventGroupWaitBits( EventGroupHandle_t xEventGroup,
-                                     const EventBits_t uxBitsToWaitFor,
-                                     const BaseType_t xClearOnExit,
-                                     const BaseType_t xWaitForAllBits,
-                                     TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-EventBits_t MPU_xEventGroupWaitBitsEntry( const xEventGroupWaitBitsParams_t * pxParams ) FREERTOS_SYSTEM_CALL;
-EventBits_t MPU_xEventGroupClearBits( EventGroupHandle_t xEventGroup,
-                                      const EventBits_t uxBitsToClear ) FREERTOS_SYSTEM_CALL;
-EventBits_t MPU_xEventGroupSetBits( EventGroupHandle_t xEventGroup,
-                                    const EventBits_t uxBitsToSet ) FREERTOS_SYSTEM_CALL;
-EventBits_t MPU_xEventGroupSync( EventGroupHandle_t xEventGroup,
-                                 const EventBits_t uxBitsToSet,
-                                 const EventBits_t uxBitsToWaitFor,
-                                 TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-#if ( configUSE_TRACE_FACILITY == 1 )
-    UBaseType_t MPU_uxEventGroupGetNumber( void * xEventGroup ) FREERTOS_SYSTEM_CALL;
-    void MPU_vEventGroupSetNumber( void * xEventGroup,
-                                   UBaseType_t uxEventGroupNumber ) FREERTOS_SYSTEM_CALL;
-#endif /* ( configUSE_TRACE_FACILITY == 1 )*/
+Event_द्वयङ्काः_t MPU_x_Event_गणः_Wait_द्वयङ्काः( Event_गणः_Handle_t x_Event_गणः,
+                                     ध्रुव Event_द्वयङ्काः_t ux_द्वयङ्काः_गन्तव्यम्_Wait_For,
+                                     ध्रुव आधारः_Type_t xClearOnExit,
+                                     ध्रुव आधारः_Type_t x_Wait_For_All_द्वयङ्काः,
+                                     TickType_t x_Ticks_गन्तव्यम्_Wait ) FREERTOS_SYSTEM_CALL;
+Event_द्वयङ्काः_t MPU_x_Event_गणः_Wait_द्वयङ्काः_प्रविष्टिः( ध्रुव x_Event_गणः_Wait_द्वयङ्काः_Params_t * pxParams ) FREERTOS_SYSTEM_CALL;
+Event_द्वयङ्काः_t MPU_x_Event_गणः_Clear_द्वयङ्काः( Event_गणः_Handle_t x_Event_गणः,
+                                      ध्रुव Event_द्वयङ्काः_t ux_द्वयङ्काः_गन्तव्यम्_Clear ) FREERTOS_SYSTEM_CALL;
+Event_द्वयङ्काः_t MPU_x_Event_गणः_समुच्चयः_द्वयङ्काः( Event_गणः_Handle_t x_Event_गणः,
+                                    ध्रुव Event_द्वयङ्काः_t ux_द्वयङ्काः_गन्तव्यम्_समुच्चयः ) FREERTOS_SYSTEM_CALL;
+Event_द्वयङ्काः_t MPU_x_Event_गणः_Sync( Event_गणः_Handle_t x_Event_गणः,
+                                 ध्रुव Event_द्वयङ्काः_t ux_द्वयङ्काः_गन्तव्यम्_समुच्चयः,
+                                 ध्रुव Event_द्वयङ्काः_t ux_द्वयङ्काः_गन्तव्यम्_Wait_For,
+                                 TickType_t x_Ticks_गन्तव्यम्_Wait ) FREERTOS_SYSTEM_CALL;
+#यदि ( configUSE_TRACE_FACILITY == 1 )
+    UBaseType_t MPU_ux_Event_गणः_Get_सङ्ख्या( शून्य * x_Event_गणः ) FREERTOS_SYSTEM_CALL;
+    शून्य MPU_v_Event_गणः_समुच्चयः_सङ्ख्या( शून्य * x_Event_गणः,
+                                   UBaseType_t ux_Event_गणः_सङ्ख्या ) FREERTOS_SYSTEM_CALL;
+#यदि_अन्तः /* ( configUSE_TRACE_FACILITY == 1 )*/
 
 /* Privileged only wrappers for Event Group APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
-EventGroupHandle_t MPU_xEventGroupCreate( void ) PRIVILEGED_FUNCTION;
-EventGroupHandle_t MPU_xEventGroupCreateStatic( StaticEventGroup_t * pxEventGroupBuffer ) PRIVILEGED_FUNCTION;
-void MPU_vEventGroupDelete( EventGroupHandle_t xEventGroup ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xEventGroupGetStaticBuffer( EventGroupHandle_t xEventGroup,
-                                           StaticEventGroup_t ** ppxEventGroupBuffer ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xEventGroupClearBitsFromISR( EventGroupHandle_t xEventGroup,
-                                            const EventBits_t uxBitsToClear ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xEventGroupSetBitsFromISR( EventGroupHandle_t xEventGroup,
-                                          const EventBits_t uxBitsToSet,
-                                          BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
-EventBits_t MPU_xEventGroupGetBitsFromISR( EventGroupHandle_t xEventGroup ) PRIVILEGED_FUNCTION;
+Event_गणः_Handle_t MPU_x_Event_गणः_Create( शून्य ) PRIVILEGED_FUNCTION;
+Event_गणः_Handle_t MPU_x_Event_गणः_Create_Static( Static_Event_गणः_t * px_Event_गणः_बफर ) PRIVILEGED_FUNCTION;
+शून्य MPU_v_Event_गणः_Delete( Event_गणः_Handle_t x_Event_गणः ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_x_Event_गणः_Get_Static_बफर( Event_गणः_Handle_t x_Event_गणः,
+                                           Static_Event_गणः_t ** ppx_Event_गणः_बफर ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_x_Event_गणः_Clear_द्वयङ्काः_From_ISR( Event_गणः_Handle_t x_Event_गणः,
+                                            ध्रुव Event_द्वयङ्काः_t ux_द्वयङ्काः_गन्तव्यम्_Clear ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_x_Event_गणः_समुच्चयः_द्वयङ्काः_From_ISR( Event_गणः_Handle_t x_Event_गणः,
+                                          ध्रुव Event_द्वयङ्काः_t ux_द्वयङ्काः_गन्तव्यम्_समुच्चयः,
+                                          आधारः_Type_t * px_Higher_प्राथमिकता_Task_Woken ) PRIVILEGED_FUNCTION;
+Event_द्वयङ्काः_t MPU_x_Event_गणः_Get_द्वयङ्काः_From_ISR( Event_गणः_Handle_t x_Event_गणः ) PRIVILEGED_FUNCTION;
 
 /* MPU versions of message/stream_buffer.h API functions. */
-size_t MPU_xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
-                              const void * pvTxData,
-                              size_t xDataLengthBytes,
-                              TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-size_t MPU_xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
-                                 void * pvRxData,
-                                 size_t xBufferLengthBytes,
-                                 TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xStreamBufferIsFull( StreamBufferHandle_t xStreamBuffer ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xStreamBufferIsEmpty( StreamBufferHandle_t xStreamBuffer ) FREERTOS_SYSTEM_CALL;
-size_t MPU_xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer ) FREERTOS_SYSTEM_CALL;
-size_t MPU_xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xStreamBufferSetTriggerLevel( StreamBufferHandle_t xStreamBuffer,
+size_t MPU_x_प्रवाहः_बफर_Send( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर,
+                              ध्रुव शून्य * pv_Tx_दत्त,
+                              size_t x_दत्त_दीर्घता_अष्टकानि,
+                              TickType_t x_Ticks_गन्तव्यम्_Wait ) FREERTOS_SYSTEM_CALL;
+size_t MPU_x_प्रवाहः_बफर_Receive( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर,
+                                 शून्य * pv_Rx_दत्त,
+                                 size_t x_बफर_दीर्घता_अष्टकानि,
+                                 TickType_t x_Ticks_गन्तव्यम्_Wait ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_x_प्रवाहः_बफर_Is_पूर्णम्( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_x_प्रवाहः_बफर_Is_रिक्तानि( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर ) FREERTOS_SYSTEM_CALL;
+size_t MPU_x_प्रवाहः_बफर_Spaces_उपलब्धम्( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर ) FREERTOS_SYSTEM_CALL;
+size_t MPU_x_प्रवाहः_बफर_अष्टकानि_उपलब्धम्( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर ) FREERTOS_SYSTEM_CALL;
+आधारः_Type_t MPU_x_प्रवाहः_बफर_समुच्चयः_Trigger_Level( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर,
                                              size_t xTriggerLevel ) FREERTOS_SYSTEM_CALL;
-size_t MPU_xStreamBufferNextMessageLengthBytes( StreamBufferHandle_t xStreamBuffer ) FREERTOS_SYSTEM_CALL;
+size_t MPU_x_प्रवाहः_बफर_अग्र_सन्देशः_दीर्घता_अष्टकानि( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर ) FREERTOS_SYSTEM_CALL;
 
 /* Privileged only wrappers for Stream Buffer APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
-StreamBufferHandle_t MPU_xStreamBufferGenericCreate( size_t xBufferSizeBytes,
-                                                     size_t xTriggerLevelBytes,
-                                                     BaseType_t xStreamBufferType,
-                                                     StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                                     StreamBufferCallbackFunction_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
-StreamBufferHandle_t MPU_xStreamBufferGenericCreateStatic( size_t xBufferSizeBytes,
-                                                           size_t xTriggerLevelBytes,
-                                                           BaseType_t xStreamBufferType,
-                                                           uint8_t * const pucStreamBufferStorageArea,
-                                                           StaticStreamBuffer_t * const pxStaticStreamBuffer,
-                                                           StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                                           StreamBufferCallbackFunction_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
-void MPU_vStreamBufferDelete( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xStreamBufferReset( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xStreamBufferGetStaticBuffers( StreamBufferHandle_t xStreamBuffers,
-                                              uint8_t * ppucStreamBufferStorageArea,
-                                              StaticStreamBuffer_t * ppxStaticStreamBuffer ) PRIVILEGED_FUNCTION;
-size_t MPU_xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
-                                     const void * pvTxData,
-                                     size_t xDataLengthBytes,
-                                     BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
-size_t MPU_xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
-                                        void * pvRxData,
-                                        size_t xBufferLengthBytes,
-                                        BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xStreamBufferSendCompletedFromISR( StreamBufferHandle_t xStreamBuffer,
-                                                  BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xStreamBufferReceiveCompletedFromISR( StreamBufferHandle_t xStreamBuffer,
-                                                     BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
-BaseType_t MPU_xStreamBufferResetFromISR( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+प्रवाहः_बफर_Handle_t MPU_x_प्रवाहः_बफर_Generic_Create( size_t x_बफर_आकार_अष्टकानि,
+                                                     size_t x_Trigger_Level_अष्टकानि,
+                                                     आधारः_Type_t x_प्रवाहः_बफर_Type,
+                                                     प्रवाहः_बफर_Callback_Function_t pxSendCompletedCallback,
+                                                     प्रवाहः_बफर_Callback_Function_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
+प्रवाहः_बफर_Handle_t MPU_x_प्रवाहः_बफर_Generic_Create_Static( size_t x_बफर_आकार_अष्टकानि,
+                                                           size_t x_Trigger_Level_अष्टकानि,
+                                                           आधारः_Type_t x_प्रवाहः_बफर_Type,
+                                                           uint8_t * ध्रुव puc_प्रवाहः_बफर_Storage_Area,
+                                                           Static_प्रवाहः_बफर_t * ध्रुव px_Static_प्रवाहः_बफर,
+                                                           प्रवाहः_बफर_Callback_Function_t pxSendCompletedCallback,
+                                                           प्रवाहः_बफर_Callback_Function_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
+शून्य MPU_v_प्रवाहः_बफर_Delete( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_x_प्रवाहः_बफर_Reset( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_x_प्रवाहः_बफर_Get_Static_Buffers( प्रवाहः_बफर_Handle_t x_प्रवाहः_Buffers,
+                                              uint8_t * ppuc_प्रवाहः_बफर_Storage_Area,
+                                              Static_प्रवाहः_बफर_t * ppx_Static_प्रवाहः_बफर ) PRIVILEGED_FUNCTION;
+size_t MPU_x_प्रवाहः_बफर_Send_From_ISR( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर,
+                                     ध्रुव शून्य * pv_Tx_दत्त,
+                                     size_t x_दत्त_दीर्घता_अष्टकानि,
+                                     आधारः_Type_t * ध्रुव px_Higher_प्राथमिकता_Task_Woken ) PRIVILEGED_FUNCTION;
+size_t MPU_x_प्रवाहः_बफर_Receive_From_ISR( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर,
+                                        शून्य * pv_Rx_दत्त,
+                                        size_t x_बफर_दीर्घता_अष्टकानि,
+                                        आधारः_Type_t * ध्रुव px_Higher_प्राथमिकता_Task_Woken ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_x_प्रवाहः_बफर_Send_Completed_From_ISR( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर,
+                                                  आधारः_Type_t * px_Higher_प्राथमिकता_Task_Woken ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_x_प्रवाहः_बफर_Receive_Completed_From_ISR( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर,
+                                                     आधारः_Type_t * px_Higher_प्राथमिकता_Task_Woken ) PRIVILEGED_FUNCTION;
+आधारः_Type_t MPU_x_प्रवाहः_बफर_Reset_From_ISR( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर ) PRIVILEGED_FUNCTION;
 
-#endif /* MPU_PROTOTYPES_H */
+#यदि_अन्तः /* MPU_PROTOTYPES_H */

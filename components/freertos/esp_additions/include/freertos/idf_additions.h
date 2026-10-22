@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#pragma once
+#निर्देशः once
 
 /*
  * This file contains the function prototypes of ESP-IDF specific API additions
@@ -15,26 +15,26 @@
  * call backs)
  */
 
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/queue.h"
-#include "freertos/semphr.h"
-#include "freertos/stream_buffer.h"
-#include "freertos/message_buffer.h"
-#include "freertos/event_groups.h"
-#include "esp_heap_caps.h"
+#अन्तर्भाव "sdkconfig.h"
+#अन्तर्भाव "freertos/FreeRTOS.h"
+#अन्तर्भाव "freertos/task.h"
+#अन्तर्भाव "freertos/queue.h"
+#अन्तर्भाव "freertos/semphr.h"
+#अन्तर्भाव "freertos/stream_buffer.h"
+#अन्तर्भाव "freertos/message_buffer.h"
+#अन्तर्भाव "freertos/event_groups.h"
+#अन्तर्भाव "esp_heap_caps.h"
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#यदि_परिभाषितम् __cplusplus
+    बाह्य "C" {
+#यदि_अन्तः
 /* *INDENT-ON* */
 
 
 /* -------------------------------------------------- Task Creation ------------------------------------------------- */
 
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 )
 
 /**
  * @brief Create a new task that is pinned to a particular core
@@ -60,17 +60,17 @@
  * @return pdPASS if the task was successfully created and added to a ready
  * list, otherwise an error code defined in the file projdefs.h
  */
-    BaseType_t xTaskCreatePinnedToCore( TaskFunction_t pxTaskCode,
-                                        const char * const pcName,
-                                        const uint32_t ulStackDepth,
-                                        void * const pvParameters,
-                                        UBaseType_t uxPriority,
-                                        TaskHandle_t * const pxCreatedTask,
-                                        const BaseType_t xCoreID );
+    आधारः_Type_t x_Task_Create_Pinned_गन्तव्यम्_Core( TaskFunction_t px_Task_संहिता,
+                                        ध्रुव वर्ण * ध्रुव pcName,
+                                        ध्रुव uint32_t ul_राशिः_गभीरता,
+                                        शून्य * ध्रुव pvParameters,
+                                        UBaseType_t ux_प्राथमिकता,
+                                        TaskHandle_t * ध्रुव pxCreatedTask,
+                                        ध्रुव आधारः_Type_t xCoreID );
 
-#endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+#यदि_अन्तः /* configSUPPORT_DYNAMIC_ALLOCATION */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Create a new static task that is pinned to a particular core
@@ -98,16 +98,16 @@
  * the task has no core affinity.
  * @return The task handle if the task was created, NULL otherwise.
  */
-    TaskHandle_t xTaskCreateStaticPinnedToCore( TaskFunction_t pxTaskCode,
-                                                const char * const pcName,
-                                                const uint32_t ulStackDepth,
-                                                void * const pvParameters,
-                                                UBaseType_t uxPriority,
-                                                StackType_t * const puxStackBuffer,
-                                                StaticTask_t * const pxTaskBuffer,
-                                                const BaseType_t xCoreID );
+    TaskHandle_t x_Task_Create_Static_Pinned_गन्तव्यम्_Core( TaskFunction_t px_Task_संहिता,
+                                                ध्रुव वर्ण * ध्रुव pcName,
+                                                ध्रुव uint32_t ul_राशिः_गभीरता,
+                                                शून्य * ध्रुव pvParameters,
+                                                UBaseType_t ux_प्राथमिकता,
+                                                राशिः_Type_t * ध्रुव pux_राशिः_बफर,
+                                                StaticTask_t * ध्रुव px_Task_बफर,
+                                                ध्रुव आधारः_Type_t xCoreID );
 
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION */
 
 /* ------------------------------------------------- Task Utilities ------------------------------------------------- */
 
@@ -129,9 +129,9 @@
  * @param xTask The task to query
  * @return The task's core ID or tskNO_AFFINITY
  */
-BaseType_t xTaskGetCoreID( TaskHandle_t xTask );
+आधारः_Type_t xTaskGetCoreID( TaskHandle_t xTask );
 
-#if CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
+#यदि CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
 
 /**
  * @brief Mark a task as forbidden from using the PIE coprocessor
@@ -149,8 +149,8 @@ BaseType_t xTaskGetCoreID( TaskHandle_t xTask );
  * @param xTask Task to update. NULL selects the calling task.
  * @param xBlacklisted pdTRUE to blacklist the task, pdFALSE to clear it.
  */
-void vTaskSetPieBlacklisted( TaskHandle_t xTask,
-                             BaseType_t xBlacklisted );
+शून्य v_Task_समुच्चयः_Pie_Blacklisted( TaskHandle_t xTask,
+                             आधारः_Type_t xBlacklisted );
 
 /**
  * @brief Query whether a task is forbidden from using the PIE coprocessor
@@ -158,11 +158,11 @@ void vTaskSetPieBlacklisted( TaskHandle_t xTask,
  * @param xTask Task to query. NULL selects the calling task.
  * @return pdTRUE if the task is blacklisted, pdFALSE otherwise.
  */
-BaseType_t xTaskGetPieBlacklisted( TaskHandle_t xTask );
+आधारः_Type_t xTaskGetPieBlacklisted( TaskHandle_t xTask );
 
-#endif /* CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST */
+#यदि_अन्तः /* CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST */
 
-#if ( ( !CONFIG_FREERTOS_SMP ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
+#यदि ( ( !CONFIG_FREERTOS_SMP ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
 
 /**
  * @brief Get the handle of idle task for the given core.
@@ -172,11 +172,11 @@ BaseType_t xTaskGetPieBlacklisted( TaskHandle_t xTask );
  * @param xCoreID The core to query
  * @return Handle of the idle task for the queried core
  */
-    TaskHandle_t xTaskGetIdleTaskHandleForCore( BaseType_t xCoreID );
+    TaskHandle_t xTaskGetIdleTaskHandleForCore( आधारः_Type_t xCoreID );
 
-#endif /* ( ( !CONFIG_FREERTOS_SMP ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) ) */
+#यदि_अन्तः /* ( ( !CONFIG_FREERTOS_SMP ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) ) */
 
-#if ( ( !CONFIG_FREERTOS_SMP ) && ( ( INCLUDE_xTaskGetCurrentTaskHandle == 1 ) || ( configUSE_MUTEXES == 1 ) ) )
+#यदि ( ( !CONFIG_FREERTOS_SMP ) && ( ( INCLUDE_xTaskGetCurrentTaskHandle == 1 ) || ( configUSE_MUTEXES == 1 ) ) )
 
 /**
  * @brief Get the handle of the task currently running on a certain core
@@ -190,11 +190,11 @@ BaseType_t xTaskGetPieBlacklisted( TaskHandle_t xTask );
  * @param xCoreID The core to query
  * @return Handle of the current task running on the queried core
  */
-    TaskHandle_t xTaskGetCurrentTaskHandleForCore( BaseType_t xCoreID );
+    TaskHandle_t xTaskGetCurrentTaskHandleForCore( आधारः_Type_t xCoreID );
 
-#endif /* ( ( !CONFIG_FREERTOS_SMP ) && ( ( INCLUDE_xTaskGetCurrentTaskHandle == 1 ) || ( configUSE_MUTEXES == 1 ) ) ) */
+#यदि_अन्तः /* ( ( !CONFIG_FREERTOS_SMP ) && ( ( INCLUDE_xTaskGetCurrentTaskHandle == 1 ) || ( configUSE_MUTEXES == 1 ) ) ) */
 
-#if ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
+#यदि ( !CONFIG_FREERTOS_SMP && ( config_GENERATE_सततम्_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
 
 /**
  * @brief Get the total execution of a particular core's idle task
@@ -205,7 +205,7 @@ BaseType_t xTaskGetPieBlacklisted( TaskHandle_t xTask );
  * @param xCoreID Core ID of the idle task to query
  * @return The total run time of the idle task
  */
-    configRUN_TIME_COUNTER_TYPE ulTaskGetIdleRunTimeCounterForCore( BaseType_t xCoreID );
+    config_सततम्_TIME_गणक_TYPE ul_Task_Get_Idle_सततम्_Time_गणक_For_Core( आधारः_Type_t xCoreID );
 
 /**
  * @brief Get the percentage run time of a particular core's idle task
@@ -216,9 +216,9 @@ BaseType_t xTaskGetPieBlacklisted( TaskHandle_t xTask );
  * @param xCoreID Core ID of the idle task to query
  * @return The percentage run time of the idle task
  */
-    configRUN_TIME_COUNTER_TYPE ulTaskGetIdleRunTimePercentForCore( BaseType_t xCoreID );
+    config_सततम्_TIME_गणक_TYPE ul_Task_Get_Idle_सततम्_Time_Percent_For_Core( आधारः_Type_t xCoreID );
 
-#endif /* ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) ) */
+#यदि_अन्तः /* ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) ) */
 
 /**
  * Returns the start of the stack associated with xTask.
@@ -231,20 +231,20 @@ BaseType_t xTaskGetPieBlacklisted( TaskHandle_t xTask );
  *
  * @return A pointer to the start of the stack.
  */
-StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
+राशिः_Type_t * x_Task_Get_राशिः_Start( TaskHandle_t xTask );
 
 /* --------------------------------------------- TLSP Deletion Callbacks -------------------------------------------- */
 
-#if CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
+#यदि CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
 
 /**
  * Prototype of local storage pointer deletion callback.
  */
-    typedef void (* TlsDeleteCallbackFunction_t)( int,
-                                                  void * );
-#endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+    प्रकारनिर्देश शून्य (* TlsDeleteCallbackFunction_t)( पूर्णाङ्क,
+                                                  शून्य * );
+#यदि_अन्तः /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 
-#if CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
+#यदि CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
 
 /**
  * Set local storage pointer and deletion callback.
@@ -268,12 +268,12 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
  * @param pvDelCallback  Function to call to dispose of the local storage
  * pointer when the task is deleted.
  */
-    void vTaskSetThreadLocalStoragePointerAndDelCallback( TaskHandle_t xTaskToSet,
-                                                          BaseType_t xIndex,
-                                                          void * pvValue,
+    शून्य v_Task_समुच्चयः_Thread_Local_Storage_Pointer_And_Del_Callback( TaskHandle_t x_Task_गन्तव्यम्_समुच्चयः,
+                                                          आधारः_Type_t x_सूचकांक,
+                                                          शून्य * pv_मानम्,
                                                           TlsDeleteCallbackFunction_t pvDelCallback );
 
-#endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+#यदि_अन्तः /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 
 /* -------------------------------------------- Creation With Memory Caps ----------------------------------------------
  * Helper functions to create various FreeRTOS objects (e.g., queues, semaphores) with specific memory capabilities
@@ -282,7 +282,7 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
 
 /* ---------------------------------- Tasks --------------------------------- */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Creates a pinned task where its stack has specific memory capabilities
@@ -310,18 +310,18 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
  * @return pdPASS if the task was successfully created and added to a ready
  * list, otherwise an error code defined in the file projdefs.h
  */
-    BaseType_t xTaskCreatePinnedToCoreWithCaps( TaskFunction_t pvTaskCode,
-                                                const char * const pcName,
-                                                const configSTACK_DEPTH_TYPE usStackDepth,
-                                                void * const pvParameters,
-                                                UBaseType_t uxPriority,
-                                                TaskHandle_t * const pvCreatedTask,
-                                                const BaseType_t xCoreID,
-                                                UBaseType_t uxMemoryCaps );
+    आधारः_Type_t x_Task_Create_Pinned_गन्तव्यम्_Core_With_Caps( TaskFunction_t pv_Task_संहिता,
+                                                ध्रुव वर्ण * ध्रुव pcName,
+                                                ध्रुव config_राशिः_गभीरता_TYPE us_राशिः_गभीरता,
+                                                शून्य * ध्रुव pvParameters,
+                                                UBaseType_t ux_प्राथमिकता,
+                                                TaskHandle_t * ध्रुव pvCreatedTask,
+                                                ध्रुव आधारः_Type_t xCoreID,
+                                                UBaseType_t ux_स्मृतिः_Caps );
 
-#endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Creates a task where its stack has specific memory capabilities
@@ -349,20 +349,20 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
  * @return pdPASS if the task was successfully created and added to a ready
  * list, otherwise an error code defined in the file projdefs.h
  */
-    static inline BaseType_t xTaskCreateWithCaps( TaskFunction_t pvTaskCode,
-                                                  const char * const pcName,
-                                                  configSTACK_DEPTH_TYPE usStackDepth,
-                                                  void * const pvParameters,
-                                                  UBaseType_t uxPriority,
+    स्थिर अन्तःस्थ आधारः_Type_t xTaskCreateWithCaps( TaskFunction_t pv_Task_संहिता,
+                                                  ध्रुव वर्ण * ध्रुव pcName,
+                                                  config_राशिः_गभीरता_TYPE us_राशिः_गभीरता,
+                                                  शून्य * ध्रुव pvParameters,
+                                                  UBaseType_t ux_प्राथमिकता,
                                                   TaskHandle_t * pvCreatedTask,
-                                                  UBaseType_t uxMemoryCaps )
+                                                  UBaseType_t ux_स्मृतिः_Caps )
     {
-        return xTaskCreatePinnedToCoreWithCaps( pvTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pvCreatedTask, tskNO_AFFINITY, uxMemoryCaps );
+        प्रत्यागम x_Task_Create_Pinned_गन्तव्यम्_Core_With_Caps( pv_Task_संहिता, pcName, us_राशिः_गभीरता, pvParameters, ux_प्राथमिकता, pvCreatedTask, tskNO_AFFINITY, ux_स्मृतिः_Caps );
     }
 
-#endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Deletes a task previously created using xTaskCreateWithCaps() or
@@ -375,13 +375,13 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
  *
  * @param xTaskToDelete A handle to the task to be deleted
  */
-    void vTaskDeleteWithCaps( TaskHandle_t xTaskToDelete );
+    शून्य vTaskDeleteWithCaps( TaskHandle_t x_Task_गन्तव्यम्_Delete );
 
-#endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
 /* ---------------------------------- Queue --------------------------------- */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Creates a queue with specific memory capabilities
@@ -398,33 +398,33 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
  * esp_heap_caps.h)
  * @return Handle to the created queue or NULL on failure.
  */
-    QueueHandle_t xQueueCreateWithCaps( UBaseType_t uxQueueLength,
-                                        UBaseType_t uxItemSize,
-                                        UBaseType_t uxMemoryCaps );
+    QueueHandle_t xQueueCreateWithCaps( UBaseType_t ux_Queue_दीर्घता,
+                                        UBaseType_t ux_Item_आकार,
+                                        UBaseType_t ux_स्मृतिः_Caps );
 
-#endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Deletes a queue previously created using xQueueCreateWithCaps()
  *
  * @param xQueue A handle to the queue to be deleted.
  */
-    void vQueueDeleteWithCaps( QueueHandle_t xQueue );
+    शून्य vQueueDeleteWithCaps( QueueHandle_t xQueue );
 
-#endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
 /* -------------------------------- Semaphore ------------------------------- */
 
 /** @cond */ /* Doxygen command to hide this from docs */
-SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
-                                                   UBaseType_t uxInitialCount,
-                                                   const uint8_t ucQueueType,
-                                                   UBaseType_t uxMemoryCaps );
+SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t ux_Max_गणनम्,
+                                                   UBaseType_t ux_Initial_गणनम्,
+                                                   ध्रुव uint8_t ucQueueType,
+                                                   UBaseType_t ux_स्मृतिः_Caps );
 /** @endcond */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Creates a binary semaphore with specific memory capabilities
@@ -439,14 +439,14 @@ SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
  * esp_heap_caps.h)
  * @return Handle to the created binary semaphore or NULL on failure.
  */
-    static inline SemaphoreHandle_t xSemaphoreCreateBinaryWithCaps( UBaseType_t uxMemoryCaps )
+    स्थिर अन्तःस्थ SemaphoreHandle_t x_Semaphore_Create_द्विमान_With_Caps( UBaseType_t ux_स्मृतिः_Caps )
     {
-        return xSemaphoreCreateGenericWithCaps( 0, 0, queueQUEUE_TYPE_BINARY_SEMAPHORE, uxMemoryCaps );
+        प्रत्यागम xSemaphoreCreateGenericWithCaps( 0, 0, queue_QUEUE_TYPE_द्विमान_SEMAPHORE, ux_स्मृतिः_Caps );
     }
 
-#endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Creates a counting semaphore with specific memory capabilities
@@ -464,16 +464,16 @@ SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
  * (see esp_heap_caps.h)
  * @return Handle to the created counting semaphore or NULL on failure.
  */
-    static inline SemaphoreHandle_t xSemaphoreCreateCountingWithCaps( UBaseType_t uxMaxCount,
-                                                                      UBaseType_t uxInitialCount,
-                                                                      UBaseType_t uxMemoryCaps )
+    स्थिर अन्तःस्थ SemaphoreHandle_t xSemaphoreCreateCountingWithCaps( UBaseType_t ux_Max_गणनम्,
+                                                                      UBaseType_t ux_Initial_गणनम्,
+                                                                      UBaseType_t ux_स्मृतिः_Caps )
     {
-        return xSemaphoreCreateGenericWithCaps( uxMaxCount, uxInitialCount, queueQUEUE_TYPE_COUNTING_SEMAPHORE, uxMemoryCaps );
+        प्रत्यागम xSemaphoreCreateGenericWithCaps( ux_Max_गणनम्, ux_Initial_गणनम्, queueQUEUE_TYPE_COUNTING_SEMAPHORE, ux_स्मृतिः_Caps );
     }
 
-#endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Creates a mutex semaphore with specific memory capabilities
@@ -488,14 +488,14 @@ SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
  * esp_heap_caps.h)
  * @return Handle to the created mutex semaphore or NULL on failure.
  */
-    static inline SemaphoreHandle_t xSemaphoreCreateMutexWithCaps( UBaseType_t uxMemoryCaps )
+    स्थिर अन्तःस्थ SemaphoreHandle_t xSemaphoreCreateMutexWithCaps( UBaseType_t ux_स्मृतिः_Caps )
     {
-        return xSemaphoreCreateGenericWithCaps( 0, 0, queueQUEUE_TYPE_MUTEX, uxMemoryCaps );
+        प्रत्यागम xSemaphoreCreateGenericWithCaps( 0, 0, queueQUEUE_TYPE_MUTEX, ux_स्मृतिः_Caps );
     }
 
-#endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Creates a recursive mutex with specific memory capabilities
@@ -510,14 +510,14 @@ SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
  * esp_heap_caps.h)
  * @return Handle to the created recursive mutex or NULL on failure.
  */
-    static inline SemaphoreHandle_t xSemaphoreCreateRecursiveMutexWithCaps( UBaseType_t uxMemoryCaps )
+    स्थिर अन्तःस्थ SemaphoreHandle_t xSemaphoreCreateRecursiveMutexWithCaps( UBaseType_t ux_स्मृतिः_Caps )
     {
-        return xSemaphoreCreateGenericWithCaps( 0, 0, queueQUEUE_TYPE_RECURSIVE_MUTEX, uxMemoryCaps );
+        प्रत्यागम xSemaphoreCreateGenericWithCaps( 0, 0, queueQUEUE_TYPE_RECURSIVE_MUTEX, ux_स्मृतिः_Caps );
     }
 
-#endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Deletes a semaphore previously created using one of the
@@ -525,23 +525,23 @@ SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
  *
  * @param xSemaphore A handle to the semaphore to be deleted.
  */
-    void vSemaphoreDeleteWithCaps( SemaphoreHandle_t xSemaphore );
+    शून्य vSemaphoreDeleteWithCaps( SemaphoreHandle_t xSemaphore );
 
-#endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
 /* ------------------------ Stream & Message Buffers ------------------------ */
 
 /** @cond */ /* Doxygen command to hide this from docs */
-StreamBufferHandle_t xStreamBufferGenericCreateWithCaps( size_t xBufferSizeBytes,
-                                                         size_t xTriggerLevelBytes,
-                                                         BaseType_t xIsMessageBuffer,
-                                                         UBaseType_t uxMemoryCaps );
+प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर_Generic_Create_With_Caps( size_t x_बफर_आकार_अष्टकानि,
+                                                         size_t x_Trigger_Level_अष्टकानि,
+                                                         आधारः_Type_t x_Is_सन्देशः_बफर,
+                                                         UBaseType_t ux_स्मृतिः_Caps );
 
-void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
-                                         BaseType_t xIsMessageBuffer );
+शून्य v_प्रवाहः_बफर_Generic_Delete_With_Caps( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर,
+                                         आधारः_Type_t x_Is_सन्देशः_बफर );
 /** @endcond */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Creates a stream buffer with specific memory capabilities
@@ -560,16 +560,16 @@ void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
  * esp_heap_caps.h)
  * @return Handle to the created stream buffer or NULL on failure.
  */
-    static inline StreamBufferHandle_t xStreamBufferCreateWithCaps( size_t xBufferSizeBytes,
-                                                                    size_t xTriggerLevelBytes,
-                                                                    UBaseType_t uxMemoryCaps )
+    स्थिर अन्तःस्थ प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर_Create_With_Caps( size_t x_बफर_आकार_अष्टकानि,
+                                                                    size_t x_Trigger_Level_अष्टकानि,
+                                                                    UBaseType_t ux_स्मृतिः_Caps )
     {
-        return xStreamBufferGenericCreateWithCaps( xBufferSizeBytes, xTriggerLevelBytes, pdFALSE, uxMemoryCaps );
+        प्रत्यागम x_प्रवाहः_बफर_Generic_Create_With_Caps( x_बफर_आकार_अष्टकानि, x_Trigger_Level_अष्टकानि, pdFALSE, ux_स्मृतिः_Caps );
     }
 
-#endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Deletes a stream buffer previously created using
@@ -577,14 +577,14 @@ void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
  *
  * @param xStreamBuffer A handle to the stream buffer to be deleted.
  */
-    static inline void vStreamBufferDeleteWithCaps( StreamBufferHandle_t xStreamBuffer )
+    स्थिर अन्तःस्थ शून्य v_प्रवाहः_बफर_Delete_With_Caps( प्रवाहः_बफर_Handle_t x_प्रवाहः_बफर )
     {
-        vStreamBufferGenericDeleteWithCaps( xStreamBuffer, pdFALSE );
+        v_प्रवाहः_बफर_Generic_Delete_With_Caps( x_प्रवाहः_बफर, pdFALSE );
     }
 
-#endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Creates a message buffer with specific memory capabilities
@@ -601,15 +601,15 @@ void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
  * esp_heap_caps.h)
  * @return Handle to the created message buffer or NULL on failure.
  */
-    static inline MessageBufferHandle_t xMessageBufferCreateWithCaps( size_t xBufferSizeBytes,
-                                                                      UBaseType_t uxMemoryCaps )
+    स्थिर अन्तःस्थ सन्देशः_बफर_Handle_t x_सन्देशः_बफर_Create_With_Caps( size_t x_बफर_आकार_अष्टकानि,
+                                                                      UBaseType_t ux_स्मृतिः_Caps )
     {
-        return ( MessageBufferHandle_t ) xStreamBufferGenericCreateWithCaps( xBufferSizeBytes, ( size_t ) 0, pdTRUE, uxMemoryCaps );
+        प्रत्यागम ( सन्देशः_बफर_Handle_t ) x_प्रवाहः_बफर_Generic_Create_With_Caps( x_बफर_आकार_अष्टकानि, ( size_t ) 0, pdTRUE, ux_स्मृतिः_Caps );
     }
 
-#endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Deletes a stream buffer previously created using
@@ -617,16 +617,16 @@ void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
  *
  * @param xMessageBuffer A handle to the message buffer to be deleted.
  */
-    static inline void vMessageBufferDeleteWithCaps( MessageBufferHandle_t xMessageBuffer )
+    स्थिर अन्तःस्थ शून्य v_सन्देशः_बफर_Delete_With_Caps( सन्देशः_बफर_Handle_t x_सन्देशः_बफर )
     {
-        vStreamBufferGenericDeleteWithCaps( ( StreamBufferHandle_t ) xMessageBuffer, pdTRUE );
+        v_प्रवाहः_बफर_Generic_Delete_With_Caps( ( प्रवाहः_बफर_Handle_t ) x_सन्देशः_बफर, pdTRUE );
     }
 
-#endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
 /* ------------------------------ Event Groups ------------------------------ */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Creates an event group with specific memory capabilities
@@ -641,11 +641,11 @@ void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
  * esp_heap_caps.h)
  * @return Handle to the created event group or NULL on failure.
  */
-    EventGroupHandle_t xEventGroupCreateWithCaps( UBaseType_t uxMemoryCaps );
+    Event_गणः_Handle_t x_Event_गणः_Create_With_Caps( UBaseType_t ux_स्मृतिः_Caps );
 
-#endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  * @brief Deletes an event group previously created using
@@ -653,9 +653,9 @@ void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
  *
  * @param xEventGroup A handle to the event group to be deleted.
  */
-    void vEventGroupDeleteWithCaps( EventGroupHandle_t xEventGroup );
+    शून्य v_Event_गणः_Delete_With_Caps( Event_गणः_Handle_t x_Event_गणः );
 
-#endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
 /* --------------------------------------------------- Deprecated ------------------------------------------------------
  * Deprecated IDF FreeRTOS API additions.
@@ -663,12 +663,12 @@ void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
  * ------------------------------------------------------------------------------------------------------------------ */
 /** @cond */
 
-uint8_t * pxTaskGetStackStart( TaskHandle_t xTask ) __attribute__((deprecated("Use xTaskGetStackStart() for improved type safety")));
+uint8_t * px_Task_Get_राशिः_Start( TaskHandle_t xTask ) __attribute__((deprecated("Use xTaskGetStackStart() for improved type safety")));
 
 /** @endcond */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#यदि_परिभाषितम् __cplusplus
     }
-#endif
+#यदि_अन्तः
 /* *INDENT-ON* */

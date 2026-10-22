@@ -31,22 +31,22 @@
  */
 
 
-#ifndef TIMERS_H
-#define TIMERS_H
+#यदि_अपरिभाषितम् TIMERS_H
+#परिभाषय TIMERS_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h must appear in source files before include timers.h"
-#endif
+#यदि_अपरिभाषितम् INC_FREERTOS_H
+    #दोषः "include FreeRTOS.h must appear in source files before include timers.h"
+#यदि_अन्तः
 
 /*lint -save -e537 This headers are only multiply included if the application code
  * happens to also be including task.h. */
-#include "task.h"
+#अन्तर्भाव "task.h"
 /*lint -restore */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#यदि_परिभाषितम् __cplusplus
+    बाह्य "C" {
+#यदि_अन्तः
 /* *INDENT-ON* */
 
 /*-----------------------------------------------------------
@@ -60,20 +60,20 @@
  * as defined below.  The commands that are sent from interrupts must use the
  * highest numbers as tmrFIRST_FROM_ISR_COMMAND is used to determine if the task
  * or interrupt version of the queue send function should be used. */
-#define tmrCOMMAND_EXECUTE_CALLBACK_FROM_ISR    ( ( BaseType_t ) -2 )
-#define tmrCOMMAND_EXECUTE_CALLBACK             ( ( BaseType_t ) -1 )
-#define tmrCOMMAND_START_DONT_TRACE             ( ( BaseType_t ) 0 )
-#define tmrCOMMAND_START                        ( ( BaseType_t ) 1 )
-#define tmrCOMMAND_RESET                        ( ( BaseType_t ) 2 )
-#define tmrCOMMAND_STOP                         ( ( BaseType_t ) 3 )
-#define tmrCOMMAND_CHANGE_PERIOD                ( ( BaseType_t ) 4 )
-#define tmrCOMMAND_DELETE                       ( ( BaseType_t ) 5 )
+#परिभाषय tmrCOMMAND_EXECUTE_CALLBACK_FROM_ISR    ( ( आधारः_Type_t ) -2 )
+#परिभाषय tmrCOMMAND_EXECUTE_CALLBACK             ( ( आधारः_Type_t ) -1 )
+#परिभाषय tmrCOMMAND_START_DONT_TRACE             ( ( आधारः_Type_t ) 0 )
+#परिभाषय tmrCOMMAND_START                        ( ( आधारः_Type_t ) 1 )
+#परिभाषय tmrCOMMAND_RESET                        ( ( आधारः_Type_t ) 2 )
+#परिभाषय tmrCOMMAND_STOP                         ( ( आधारः_Type_t ) 3 )
+#परिभाषय tmrCOMMAND_CHANGE_PERIOD                ( ( आधारः_Type_t ) 4 )
+#परिभाषय tmrCOMMAND_DELETE                       ( ( आधारः_Type_t ) 5 )
 
-#define tmrFIRST_FROM_ISR_COMMAND               ( ( BaseType_t ) 6 )
-#define tmrCOMMAND_START_FROM_ISR               ( ( BaseType_t ) 6 )
-#define tmrCOMMAND_RESET_FROM_ISR               ( ( BaseType_t ) 7 )
-#define tmrCOMMAND_STOP_FROM_ISR                ( ( BaseType_t ) 8 )
-#define tmrCOMMAND_CHANGE_PERIOD_FROM_ISR       ( ( BaseType_t ) 9 )
+#परिभाषय tmrFIRST_FROM_ISR_COMMAND               ( ( आधारः_Type_t ) 6 )
+#परिभाषय tmrCOMMAND_START_FROM_ISR               ( ( आधारः_Type_t ) 6 )
+#परिभाषय tmrCOMMAND_RESET_FROM_ISR               ( ( आधारः_Type_t ) 7 )
+#परिभाषय tmrCOMMAND_STOP_FROM_ISR                ( ( आधारः_Type_t ) 8 )
+#परिभाषय tmrCOMMAND_CHANGE_PERIOD_FROM_ISR       ( ( आधारः_Type_t ) 9 )
 
 /** @endcond */
 
@@ -83,19 +83,19 @@
  * reference the subject timer in calls to other software timer API functions
  * (for example, xTimerStart(), xTimerReset(), etc.).
  */
-struct tmrTimerControl; /* The old naming convention is used to prevent breaking kernel aware debuggers. */
-typedef struct tmrTimerControl * TimerHandle_t;
+संरचना tmrTimerControl; /* The old naming convention is used to prevent breaking kernel aware debuggers. */
+प्रकारनिर्देश संरचना tmrTimerControl * TimerHandle_t;
 
 /**
  * Defines the prototype to which timer callback functions must conform.
  */
-typedef void (* TimerCallbackFunction_t)( TimerHandle_t xTimer );
+प्रकारनिर्देश शून्य (* TimerCallbackFunction_t)( TimerHandle_t xTimer );
 
 /**
  * Defines the prototype to which functions used with the
  * xTimerPendFunctionCallFromISR() function must conform.
  */
-typedef void (* PendedFunction_t)( void *,
+प्रकारनिर्देश शून्य (* PendedFunction_t)( शून्य *,
                                    uint32_t );
 
 /**
@@ -230,13 +230,13 @@ typedef void (* PendedFunction_t)( void *,
  * }
  * @endverbatim
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    TimerHandle_t xTimerCreate( const char * const pcTimerName, /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-                                const TickType_t xTimerPeriodInTicks,
-                                const BaseType_t xAutoReload,
-                                void * const pvTimerID,
+#यदि ( config_SUPPORT_DYNAMIC_आवण्टनम् == 1 )
+    TimerHandle_t xTimerCreate( ध्रुव वर्ण * ध्रुव pcTimerName, /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+                                ध्रुव TickType_t x_Timer_Period_अन्तर्_Ticks,
+                                ध्रुव आधारः_Type_t xAutoReload,
+                                शून्य * ध्रुव pvTimerID,
                                 TimerCallbackFunction_t pxCallbackFunction ) PRIVILEGED_FUNCTION;
-#endif
+#यदि_अन्तः
 
 /**
  *
@@ -354,14 +354,14 @@ typedef void (* PendedFunction_t)( void *,
  * }
  * @endverbatim
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    TimerHandle_t xTimerCreateStatic( const char * const pcTimerName, /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-                                      const TickType_t xTimerPeriodInTicks,
-                                      const BaseType_t xAutoReload,
-                                      void * const pvTimerID,
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
+    TimerHandle_t xTimerCreateStatic( ध्रुव वर्ण * ध्रुव pcTimerName, /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+                                      ध्रुव TickType_t x_Timer_Period_अन्तर्_Ticks,
+                                      ध्रुव आधारः_Type_t xAutoReload,
+                                      शून्य * ध्रुव pvTimerID,
                                       TimerCallbackFunction_t pxCallbackFunction,
-                                      StaticTimer_t * pxTimerBuffer ) PRIVILEGED_FUNCTION;
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+                                      StaticTimer_t * px_Timer_बफर ) PRIVILEGED_FUNCTION;
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  *
@@ -382,7 +382,7 @@ typedef void (* PendedFunction_t)( void *,
  *
  * See the xTimerCreate() API function example usage scenario.
  */
-void * pvTimerGetTimerID( const TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
+शून्य * pvTimerGetTimerID( ध्रुव TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -402,8 +402,8 @@ void * pvTimerGetTimerID( const TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
  *
  * See the xTimerCreate() API function example usage scenario.
  */
-void vTimerSetTimerID( TimerHandle_t xTimer,
-                       void * pvNewID ) PRIVILEGED_FUNCTION;
+शून्य v_Timer_समुच्चयः_Timer_ID( TimerHandle_t xTimer,
+                       शून्य * pvNewID ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -439,14 +439,14 @@ void vTimerSetTimerID( TimerHandle_t xTimer,
  * }
  * @endverbatim
  */
-BaseType_t xTimerIsTimerActive( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
+आधारः_Type_t x_Timer_Is_Timer_सक्रिय( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
 
 /**
  *
  * Simply returns the handle of the timer service/daemon task.  It it not valid
  * to call xTimerGetTimerDaemonTaskHandle() before the scheduler has been started.
  */
-TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
+TaskHandle_t xTimerGetTimerDaemonTaskHandle( शून्य ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -497,8 +497,8 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * See the xTimerCreate() API function example usage scenario.
  *
  */
-#define xTimerStart( xTimer, xTicksToWait ) \
-    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_START, ( xTaskGetTickCount() ), NULL, ( xTicksToWait ) )
+#परिभाषय xTimerStart( xTimer, x_Ticks_गन्तव्यम्_Wait ) \
+    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_START, ( x_Task_Get_Tick_गणनम्() ), रिक्त, ( x_Ticks_गन्तव्यम्_Wait ) )
 
 /**
  *
@@ -539,8 +539,8 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * See the xTimerCreate() API function example usage scenario.
  *
  */
-#define xTimerStop( xTimer, xTicksToWait ) \
-    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_STOP, 0U, NULL, ( xTicksToWait ) )
+#परिभाषय xTimerStop( xTimer, x_Ticks_गन्तव्यम्_Wait ) \
+    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_STOP, 0U, रिक्त, ( x_Ticks_गन्तव्यम्_Wait ) )
 
 /**
  *
@@ -617,8 +617,8 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * }
  * @endverbatim
  */
-#define xTimerChangePeriod( xTimer, xNewPeriod, xTicksToWait ) \
-    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_CHANGE_PERIOD, ( xNewPeriod ), NULL, ( xTicksToWait ) )
+#परिभाषय xTimerChangePeriod( xTimer, xNewPeriod, x_Ticks_गन्तव्यम्_Wait ) \
+    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_CHANGE_PERIOD, ( xNewPeriod ), रिक्त, ( x_Ticks_गन्तव्यम्_Wait ) )
 
 /**
  *
@@ -655,8 +655,8 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  *
  * See the xTimerChangePeriod() API function example usage scenario.
  */
-#define xTimerDelete( xTimer, xTicksToWait ) \
-    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_DELETE, 0U, NULL, ( xTicksToWait ) )
+#परिभाषय xTimerDelete( xTimer, x_Ticks_गन्तव्यम्_Wait ) \
+    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_DELETE, 0U, रिक्त, ( x_Ticks_गन्तव्यम्_Wait ) )
 
 /**
  *
@@ -779,8 +779,8 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * }
  * @endverbatim
  */
-#define xTimerReset( xTimer, xTicksToWait ) \
-    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_RESET, ( xTaskGetTickCount() ), NULL, ( xTicksToWait ) )
+#परिभाषय xTimerReset( xTimer, x_Ticks_गन्तव्यम्_Wait ) \
+    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_RESET, ( x_Task_Get_Tick_गणनम्() ), रिक्त, ( x_Ticks_गन्तव्यम्_Wait ) )
 
 /**
  *
@@ -864,8 +864,8 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * }
  * @endverbatim
  */
-#define xTimerStartFromISR( xTimer, pxHigherPriorityTaskWoken ) \
-    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_START_FROM_ISR, ( xTaskGetTickCountFromISR() ), ( pxHigherPriorityTaskWoken ), 0U )
+#परिभाषय xTimerStartFromISR( xTimer, px_Higher_प्राथमिकता_Task_Woken ) \
+    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_START_FROM_ISR, ( x_Task_Get_Tick_गणनम्_From_ISR() ), ( px_Higher_प्राथमिकता_Task_Woken ), 0U )
 
 /**
  *
@@ -926,8 +926,8 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * }
  * @endverbatim
  */
-#define xTimerStopFromISR( xTimer, pxHigherPriorityTaskWoken ) \
-    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_STOP_FROM_ISR, 0, ( pxHigherPriorityTaskWoken ), 0U )
+#परिभाषय xTimerStopFromISR( xTimer, px_Higher_प्राथमिकता_Task_Woken ) \
+    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_STOP_FROM_ISR, 0, ( px_Higher_प्राथमिकता_Task_Woken ), 0U )
 
 /**
  *
@@ -997,8 +997,8 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * }
  * @endverbatim
  */
-#define xTimerChangePeriodFromISR( xTimer, xNewPeriod, pxHigherPriorityTaskWoken ) \
-    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_CHANGE_PERIOD_FROM_ISR, ( xNewPeriod ), ( pxHigherPriorityTaskWoken ), 0U )
+#परिभाषय xTimerChangePeriodFromISR( xTimer, xNewPeriod, px_Higher_प्राथमिकता_Task_Woken ) \
+    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_CHANGE_PERIOD_FROM_ISR, ( xNewPeriod ), ( px_Higher_प्राथमिकता_Task_Woken ), 0U )
 
 /**
  *
@@ -1082,8 +1082,8 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * }
  * @endverbatim
  */
-#define xTimerResetFromISR( xTimer, pxHigherPriorityTaskWoken ) \
-    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_RESET_FROM_ISR, ( xTaskGetTickCountFromISR() ), ( pxHigherPriorityTaskWoken ), 0U )
+#परिभाषय xTimerResetFromISR( xTimer, px_Higher_प्राथमिकता_Task_Woken ) \
+    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_RESET_FROM_ISR, ( x_Task_Get_Tick_गणनम्_From_ISR() ), ( px_Higher_प्राथमिकता_Task_Woken ), 0U )
 
 
 /**
@@ -1170,10 +1170,10 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  *  }
  * @endverbatim
  */
-BaseType_t xTimerPendFunctionCallFromISR( PendedFunction_t xFunctionToPend,
-                                          void * pvParameter1,
+आधारः_Type_t xTimerPendFunctionCallFromISR( PendedFunction_t x_Function_गन्तव्यम्_Pend,
+                                          शून्य * pvParameter1,
                                           uint32_t ulParameter2,
-                                          BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+                                          आधारः_Type_t * px_Higher_प्राथमिकता_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -1203,10 +1203,10 @@ BaseType_t xTimerPendFunctionCallFromISR( PendedFunction_t xFunctionToPend,
  * timer daemon task, otherwise pdFALSE is returned.
  *
  */
-BaseType_t xTimerPendFunctionCall( PendedFunction_t xFunctionToPend,
-                                   void * pvParameter1,
+आधारः_Type_t xTimerPendFunctionCall( PendedFunction_t x_Function_गन्तव्यम्_Pend,
+                                   शून्य * pvParameter1,
                                    uint32_t ulParameter2,
-                                   TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+                                   TickType_t x_Ticks_गन्तव्यम्_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -1216,7 +1216,7 @@ BaseType_t xTimerPendFunctionCall( PendedFunction_t xFunctionToPend,
  *
  * @return The name assigned to the timer specified by the xTimer parameter.
  */
-const char * pcTimerGetName( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+ध्रुव वर्ण * pcTimerGetName( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 
 /**
  *
@@ -1232,8 +1232,8 @@ const char * pcTimerGetName( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION; /*lint 
  * xAutoReload is set to pdFALSE then the timer will be a one-shot timer and
  * enter the dormant state after it expires.
  */
-void vTimerSetReloadMode( TimerHandle_t xTimer,
-                          const BaseType_t xAutoReload ) PRIVILEGED_FUNCTION;
+शून्य v_Timer_समुच्चयः_Reload_बहुलकम्( TimerHandle_t xTimer,
+                          ध्रुव आधारः_Type_t xAutoReload ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -1246,7 +1246,7 @@ void vTimerSetReloadMode( TimerHandle_t xTimer,
  * @return If the timer is an auto-reload timer then pdTRUE is returned, otherwise
  * pdFALSE is returned.
  */
-BaseType_t xTimerGetReloadMode( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
+आधारः_Type_t x_Timer_Get_Reload_बहुलकम्( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -1259,7 +1259,7 @@ BaseType_t xTimerGetReloadMode( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
  * @return If the timer is an auto-reload timer then pdTRUE is returned, otherwise
  * pdFALSE is returned.
  */
-UBaseType_t uxTimerGetReloadMode( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_Timer_Get_Reload_बहुलकम्( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -1298,10 +1298,10 @@ TickType_t xTimerGetExpiryTime( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
  *
  * @return pdTRUE if the buffer was retrieved, pdFALSE otherwise.
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    BaseType_t xTimerGetStaticBuffer( TimerHandle_t xTimer,
-                                      StaticTimer_t ** ppxTimerBuffer ) PRIVILEGED_FUNCTION;
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
+    आधारः_Type_t x_Timer_Get_Static_बफर( TimerHandle_t xTimer,
+                                      StaticTimer_t ** ppx_Timer_बफर ) PRIVILEGED_FUNCTION;
+#यदि_अन्तः /* configSUPPORT_STATIC_ALLOCATION */
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
 
@@ -1309,22 +1309,22 @@ TickType_t xTimerGetExpiryTime( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
  * Functions beyond this part are not part of the public API and are intended
  * for use by the kernel only.
  */
-BaseType_t xTimerCreateTimerTask( void ) PRIVILEGED_FUNCTION;
-BaseType_t xTimerGenericCommand( TimerHandle_t xTimer,
-                                 const BaseType_t xCommandID,
-                                 const TickType_t xOptionalValue,
-                                 BaseType_t * const pxHigherPriorityTaskWoken,
-                                 const TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+आधारः_Type_t xTimerCreateTimerTask( शून्य ) PRIVILEGED_FUNCTION;
+आधारः_Type_t xTimerGenericCommand( TimerHandle_t xTimer,
+                                 ध्रुव आधारः_Type_t xCommandID,
+                                 ध्रुव TickType_t x_Optional_मानम्,
+                                 आधारः_Type_t * ध्रुव px_Higher_प्राथमिकता_Task_Woken,
+                                 ध्रुव TickType_t x_Ticks_गन्तव्यम्_Wait ) PRIVILEGED_FUNCTION;
 
-#if ( configUSE_TRACE_FACILITY == 1 )
-    void vTimerSetTimerNumber( TimerHandle_t xTimer,
-                               UBaseType_t uxTimerNumber ) PRIVILEGED_FUNCTION;
-    UBaseType_t uxTimerGetTimerNumber( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
-#endif
+#यदि ( configUSE_TRACE_FACILITY == 1 )
+    शून्य v_Timer_समुच्चयः_Timer_सङ्ख्या( TimerHandle_t xTimer,
+                               UBaseType_t ux_Timer_सङ्ख्या ) PRIVILEGED_FUNCTION;
+    UBaseType_t ux_Timer_Get_Timer_सङ्ख्या( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
+#यदि_अन्तः
 
 /** @endcond */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( config_SUPPORT_STATIC_आवण्टनम् == 1 )
 
 /**
  *
@@ -1335,15 +1335,15 @@ BaseType_t xTimerGenericCommand( TimerHandle_t xTimer,
  * @param ppxTimerTaskStackBuffer A handle to a statically allocated Stack buffer for the idle task
  * @param pulTimerTaskStackSize   A pointer to the number of elements that will fit in the allocated stack buffer
  */
-    void vApplicationGetTimerTaskMemory( StaticTask_t ** ppxTimerTaskTCBBuffer,
-                                         StackType_t ** ppxTimerTaskStackBuffer,
-                                         uint32_t * pulTimerTaskStackSize );
+    शून्य v_Application_Get_Timer_Task_स्मृतिः( StaticTask_t ** ppxTimerTaskTCBBuffer,
+                                         राशिः_Type_t ** ppx_Timer_Task_राशिः_बफर,
+                                         uint32_t * pul_Timer_Task_राशिः_आकार );
 
-#endif
+#यदि_अन्तः
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#यदि_परिभाषितम् __cplusplus
     }
-#endif
+#यदि_अन्तः
 /* *INDENT-ON* */
-#endif /* TIMERS_H */
+#यदि_अन्तः /* TIMERS_H */

@@ -28,10 +28,10 @@
         .word ( ( regnum_\_rs1 << 15 ) | ( regnum_\_rs2 << 20) | 0b100<<12 | 0b1011011 )
     .endm
 
-    .global g_dsp_constant
+    .वैश्विक g_dsp_constant
 
     /**
-     * @brief Multiply the given ID by the global constant defined as g_dsp_constant.
+     * @brief Multiply the given ID by the वैश्विक constant defined as g_dsp_constant.
      * NOTE: The goal of the function is not to be fast and efficient, on the contrary, it needs to be
      * slow and long so that it will be preempted.
      *
@@ -56,7 +56,7 @@ dsp_id_mul:
     bnez a2, 1b
     // Get the lowest bits
     csrr a0, 0x806    // XACC_L
-    ret
+    प्रत्यागच्छ
 
 
 #endif // SOC_CPU_HAS_DSP

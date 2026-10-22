@@ -4,89 +4,89 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <stdbool.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "driver/gptimer.h"
-#include "esp_rom_sys.h"
-#include "unity.h"
-#include "test_utils.h"
+#अन्तर्भाव "sdkconfig.h"
+#अन्तर्भाव <stdbool.h>
+#अन्तर्भाव "freertos/FreeRTOS.h"
+#अन्तर्भाव "freertos/task.h"
+#अन्तर्भाव "freertos/semphr.h"
+#अन्तर्भाव "driver/gptimer.h"
+#अन्तर्भाव "esp_rom_sys.h"
+#अन्तर्भाव "unity.h"
+#अन्तर्भाव "test_utils.h"
 
 /*
 Scheduler suspension behavior differs significantly in SMP FreeRTOS, thus none of these tests apply to SMP FreeRTOS
 */
-#if !CONFIG_FREERTOS_SMP
+#यदि !CONFIG_FREERTOS_SMP
 
 /*
 GP timer is used to trigger an interrupt. Test cases will register an interrupt callback called from the timer's
 interrupt callback. The functions below simply the interrupt registration/trigger/deregistration process.
 */
 
-#if SOC_GPTIMER_SUPPORTED
+#यदि SOC_GPTIMER_SUPPORTED
 
-static gptimer_handle_t gptimer = NULL;
-static bool (*registered_intr_callback)(void *) = NULL;
+स्थिर gptimer_handle_t gptimer = रिक्त;
+स्थिर bool (*registered_intr_callback)(शून्य *) = रिक्त;
 
-static bool on_timer_alarm_cb(gptimer_handle_t timer, const gptimer_alarm_event_data_t *edata, void *user_ctx)
+स्थिर bool on_timer_alarm_cb(gptimer_handle_t timer, ध्रुव gptimer_alarm_event_दत्त_t *edata, शून्य *user_ctx)
 {
     bool yield;
-    if (registered_intr_callback) {
+    यदि (registered_intr_callback) {
         yield = registered_intr_callback(user_ctx);
-    } else {
+    } अन्यथा {
         yield = false;
     }
-    return yield;
+    प्रत्यागम yield;
 }
 
-static void register_intr_cb(bool (*callback)(void *), void *callback_arg)
+स्थिर शून्य पञ्जिकाकोशः_intr_cb(bool (*callback)(शून्य *), शून्य *callback_arg)
 {
-    gptimer_handle_t gptimer_temp;
+    gptimer_handle_t gptimer_अस्थायी;
 
     // Initialize a GP timer used to trigger an interrupt
     gptimer_config_t timer_config = {
         .clk_src = GPTIMER_CLK_SRC_DEFAULT,
-        .direction = GPTIMER_COUNT_UP,
+        .direction = GPTIMER_गणनम्_ऊर्ध्वम्,
         .resolution_hz = 1000000, // 1MHz, 1 tick=1us
     };
-    TEST_ESP_OK(gptimer_new_timer(&timer_config, &gptimer_temp));
+    TEST_ESP_OK(gptimer_new_timer(&timer_config, &gptimer_अस्थायी));
 
     // Configure an alarm (of 1ms) and callback for the timer
     gptimer_alarm_config_t alarm_config = {
-        .reload_count = 0,
-        .alarm_count = 1000, // alarm period 1ms
+        .reload_गणनम् = 0,
+        .alarm_गणनम् = 1000, // alarm period 1ms
         .flags.auto_reload_on_alarm = true,
     };
     gptimer_event_callbacks_t cbs = {
         .on_alarm = on_timer_alarm_cb,
     };
-    TEST_ESP_OK(gptimer_register_event_callbacks(gptimer_temp, &cbs, callback_arg));
-    TEST_ESP_OK(gptimer_enable(gptimer_temp));
-    TEST_ESP_OK(gptimer_set_alarm_action(gptimer_temp, &alarm_config));
+    TEST_ESP_OK(gptimer_पञ्जिकाकोशः_event_callbacks(gptimer_अस्थायी, &cbs, callback_arg));
+    TEST_ESP_OK(gptimer_enable(gptimer_अस्थायी));
+    TEST_ESP_OK(gptimer_समुच्चयः_alarm_action(gptimer_अस्थायी, &alarm_config));
 
-    gptimer = gptimer_temp;
+    gptimer = gptimer_अस्थायी;
     registered_intr_callback = callback;
 }
 
-static void trigger_intr_cb(void)
+स्थिर शून्य trigger_intr_cb(शून्य)
 {
     // Interrupt should be triggered in 1ms
     TEST_ESP_OK(gptimer_start(gptimer));
 }
 
-static void deregister_intr_cb(void)
+स्थिर शून्य deregister_intr_cb(शून्य)
 {
-    gptimer_handle_t gptimer_temp = gptimer;
-    gptimer = NULL;
-    registered_intr_callback = NULL;
+    gptimer_handle_t gptimer_अस्थायी = gptimer;
+    gptimer = रिक्त;
+    registered_intr_callback = रिक्त;
 
-    TEST_ESP_OK(gptimer_stop(gptimer_temp));
-    TEST_ESP_OK(gptimer_disable(gptimer_temp));
-    TEST_ESP_OK(gptimer_del_timer(gptimer_temp));
+    TEST_ESP_OK(gptimer_stop(gptimer_अस्थायी));
+    TEST_ESP_OK(gptimer_disable(gptimer_अस्थायी));
+    TEST_ESP_OK(gptimer_del_timer(gptimer_अस्थायी));
 }
 
-#endif //SOC_GPTIMER_SUPPORTED
+#यदि_अन्तः //SOC_GPTIMER_SUPPORTED
 
 /* ---------------------------------------------------------------------------------------------------------------------
 Test vTaskSuspendAll() and xTaskResumeAll() basic
@@ -135,21 +135,21 @@ Expected:
     - Scheduler on core B should remain enabled
 --------------------------------------------------------------------------------------------------------------------- */
 
-#if !CONFIG_FREERTOS_UNICORE
-#define TEST_BASIC_BUSY_DELAY_US    10000
+#यदि !CONFIG_FREERTOS_UNICORE
+#परिभाषय TEST_BASIC_BUSY_DELAY_US    10000
 
-static volatile int taskA_sync;
-static volatile int taskB_sync;
+स्थिर चञ्चल पूर्णाङ्क taskA_sync;
+स्थिर चञ्चल पूर्णाङ्क taskB_sync;
 
-static void test_multicore_taskA(void *arg)
+स्थिर शून्य test_multicore_taskA(शून्य *arg)
 {
     // Wait to be started
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, पत्तनम्_MAX_DELAY);
 
     // Check scheduler on core A is enabled
     TEST_ASSERT_EQUAL(taskSCHEDULER_RUNNING, xTaskGetSchedulerState());
     taskA_sync++;
-    while (taskB_sync != 1) {
+    यावत् (taskB_sync != 1) {
         ;   // Wait for task B to complete its check
     }
 
@@ -158,7 +158,7 @@ static void test_multicore_taskA(void *arg)
     // Check scheduler is suspended on core A
     TEST_ASSERT_EQUAL(taskSCHEDULER_SUSPENDED, xTaskGetSchedulerState());
     taskA_sync++;
-    while (taskB_sync != 2) {
+    यावत् (taskB_sync != 2) {
         ;   // Wait for task B to complete its check
     }
 
@@ -168,7 +168,7 @@ static void test_multicore_taskA(void *arg)
     // Check scheduler is still suspended on core A
     TEST_ASSERT_EQUAL(taskSCHEDULER_SUSPENDED, xTaskGetSchedulerState());
     taskA_sync++;
-    while (taskB_sync != 3) {
+    यावत् (taskB_sync != 3) {
         ;   // Wait for task B to complete its check
     }
 
@@ -177,24 +177,24 @@ static void test_multicore_taskA(void *arg)
     // Check that scheduler has resumed resumed on core A
     TEST_ASSERT_EQUAL(taskSCHEDULER_RUNNING, xTaskGetSchedulerState());
     taskA_sync++;
-    while (taskB_sync != 4) {
+    यावत् (taskB_sync != 4) {
         ;   // Wait for task B to complete its check
     }
 
     // Indicate done and wait to be deleted
-    SemaphoreHandle_t done_sem = (SemaphoreHandle_t)arg;
-    xSemaphoreGive(done_sem);
-    vTaskSuspend(NULL);
+    SemaphoreHandle_t समाप्तम्_sem = (SemaphoreHandle_t)arg;
+    xSemaphoreGive(समाप्तम्_sem);
+    vTaskSuspend(रिक्त);
 }
 
-static void test_multicore_taskB(void *arg)
+स्थिर शून्य test_multicore_taskB(शून्य *arg)
 {
     // Wait to be started
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, पत्तनम्_MAX_DELAY);
 
-    for (int i = 1; i <= 4; i++) {
+    प्रति (पूर्णाङ्क i = 1; i <= 4; i++) {
         // Wait for suspended trigger from task A
-        while (taskA_sync != i) {
+        यावत् (taskA_sync != i) {
             ;
         }
         // Check that scheduler is still running on core B
@@ -203,29 +203,29 @@ static void test_multicore_taskB(void *arg)
     }
 
     // Indicate done and wait to be deleted
-    SemaphoreHandle_t done_sem = (SemaphoreHandle_t)arg;
-    xSemaphoreGive(done_sem);
-    vTaskSuspend(NULL);
+    SemaphoreHandle_t समाप्तम्_sem = (SemaphoreHandle_t)arg;
+    xSemaphoreGive(समाप्तम्_sem);
+    vTaskSuspend(रिक्त);
 }
 
 TEST_CASE("Test vTaskSuspendAll() and xTaskResumeAll() multicore", "[freertos]")
 {
-    SemaphoreHandle_t done_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_NUMBER_OF_CORES, 0);
-    TEST_ASSERT_NOT_EQUAL(NULL, done_sem);
+    SemaphoreHandle_t समाप्तम्_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_सङ्ख्या_सम्बन्धि_CORES, 0);
+    TEST_ASSERT_NOT_EQUAL(रिक्त, समाप्तम्_sem);
 
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    प्रति (पूर्णाङ्क i = 0; i < CONFIG_FREERTOS_सङ्ख्या_सम्बन्धि_CORES; i++) {
         // Create tasks on core A and core B
         TaskHandle_t taskA_hdl;
         TaskHandle_t taskB_hdl;
-        TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_multicore_taskA, "taskA", 2048, (void *)done_sem, UNITY_FREERTOS_PRIORITY - 1, &taskA_hdl, i));
-        TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_multicore_taskB, "taskB", 2048, (void *)done_sem, UNITY_FREERTOS_PRIORITY - 1, &taskB_hdl, !i));
+        TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_गन्तव्यम्_Core(test_multicore_taskA, "taskA", 2048, (शून्य *)समाप्तम्_sem, UNITY_FREERTOS_प्राथमिकता - 1, &taskA_hdl, i));
+        TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_गन्तव्यम्_Core(test_multicore_taskB, "taskB", 2048, (शून्य *)समाप्तम्_sem, UNITY_FREERTOS_प्राथमिकता - 1, &taskB_hdl, !i));
         // Start the tasks and wait for their completion
         taskA_sync = 0;
         taskB_sync = 0;
         xTaskNotifyGive(taskA_hdl);
         xTaskNotifyGive(taskB_hdl);
-        for (int j = 0; j < 2; j++) {
-            xSemaphoreTake(done_sem, portMAX_DELAY);
+        प्रति (पूर्णाङ्क j = 0; j < 2; j++) {
+            xSemaphoreTake(समाप्तम्_sem, पत्तनम्_MAX_DELAY);
         }
 
         // Suspend the test tasks in case they haven't suspended themselves yet
@@ -238,11 +238,11 @@ TEST_CASE("Test vTaskSuspendAll() and xTaskResumeAll() multicore", "[freertos]")
         vTaskDelete(taskB_hdl);
     }
 
-    vSemaphoreDelete(done_sem);
+    vSemaphoreDelete(समाप्तम्_sem);
     // Add a short delay to allow the idle task to free any remaining task memory
     vTaskDelay(10);
 }
-#endif  // !CONFIG_FREERTOS_UNICORE
+#यदि_अन्तः  // !CONFIG_FREERTOS_UNICORE
 
 /* ---------------------------------------------------------------------------------------------------------------------
 Test vTaskSuspendAll allows scheduling on other cores
@@ -274,51 +274,51 @@ Expected:
         - A2 should be unblocked by core A ISR and run without issue
 --------------------------------------------------------------------------------------------------------------------- */
 
-#if !CONFIG_FREERTOS_UNICORE
+#यदि !CONFIG_FREERTOS_UNICORE
 
-#if SOC_GPTIMER_SUPPORTED
+#यदि SOC_GPTIMER_SUPPORTED
 
-static volatile int test_unblk_sync;
-static SemaphoreHandle_t test_unblk_done_sem;
+स्थिर चञ्चल पूर्णाङ्क test_unblk_sync;
+स्थिर SemaphoreHandle_t test_unblk_समाप्तम्_sem;
 
-static bool test_unblk_coreA_isr(void *arg)
+स्थिर bool test_unblk_coreA_isr(शून्य *arg)
 {
     TaskHandle_t a2_task_hdl = (TaskHandle_t)arg;
-    BaseType_t task_woken = pdFALSE;
+    आधारः_Type_t task_woken = pdFALSE;
     // Unblock task b2
     vTaskNotifyGiveFromISR(a2_task_hdl, &task_woken);
-    return (task_woken == pdTRUE);
+    प्रत्यागम (task_woken == pdTRUE);
 }
 
-static void test_unblk_a2_task(void *arg)
+स्थिर शून्य test_unblk_a2_task(शून्य *arg)
 {
-    volatile int *a2_task_run_count = (volatile int *)arg;
+    चञ्चल पूर्णाङ्क *a2_task_सततम्_गणनम् = (चञ्चल पूर्णाङ्क *)arg;
     // Wait to be unblocked by A1
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-    (*a2_task_run_count)++;
+    ulTaskNotifyTake(pdTRUE, पत्तनम्_MAX_DELAY);
+    (*a2_task_सततम्_गणनम्)++;
     // Wait to be unblocked by Core A ISR
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-    (*a2_task_run_count)++;
+    ulTaskNotifyTake(pdTRUE, पत्तनम्_MAX_DELAY);
+    (*a2_task_सततम्_गणनम्)++;
     // Wait to be deleted
-    vTaskSuspend(NULL);
+    vTaskSuspend(रिक्त);
 }
 
-static void test_unblk_a1_task(void *arg)
+स्थिर शून्य test_unblk_a1_task(शून्य *arg)
 {
-    volatile int a2_task_run_count = 0;
+    चञ्चल पूर्णाङ्क a2_task_सततम्_गणनम् = 0;
 
     // Create task A2 to block on this core (i.e., core A)
     TaskHandle_t a2_task_hdl;
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_unblk_a2_task, "A2", 8192, (void *)&a2_task_run_count, UNITY_FREERTOS_PRIORITY + 2, &a2_task_hdl, xPortGetCoreID()));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_गन्तव्यम्_Core(test_unblk_a2_task, "A2", 8192, (शून्य *)&a2_task_सततम्_गणनम्, UNITY_FREERTOS_प्राथमिकता + 2, &a2_task_hdl, x_पत्तनम्_Get_Core_ID()));
     // Install an interrupt on core A
-    register_intr_cb(test_unblk_coreA_isr, (void *)a2_task_hdl);
+    पञ्जिकाकोशः_intr_cb(test_unblk_coreA_isr, (शून्य *)a2_task_hdl);
 
     // Wait to be started by the main task
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, पत्तनम्_MAX_DELAY);
 
     // Start B1
     xTaskNotifyGive((TaskHandle_t)arg);
-    while (test_unblk_sync != 1) {
+    यावत् (test_unblk_sync != 1) {
         ; // Wait for confirmation from B1 that scheduler has been suspended on Core B
     }
     // Verify that the scheduler is still enabled on core A
@@ -327,17 +327,17 @@ static void test_unblk_a1_task(void *arg)
     // Unblock A2, it should preempt immediately due to its higher priority
     xTaskNotifyGive(a2_task_hdl);
     // Verify that task A2 has run
-    TEST_ASSERT_EQUAL(1, a2_task_run_count);
+    TEST_ASSERT_EQUAL(1, a2_task_सततम्_गणनम्);
 
     // Trigger an ISR on this core A to unblock task A2. A2 should preempt immediately due to its higher priority
     trigger_intr_cb();
     esp_rom_delay_us(2000); // Short busy delay to ensure interrupt has triggered
     // Verify that task A2 has run
-    TEST_ASSERT_EQUAL(2, a2_task_run_count);
+    TEST_ASSERT_EQUAL(2, a2_task_सततम्_गणनम्);
 
     // Trigger B1 to resume scheduling on core B
     test_unblk_sync = 2;
-    while (test_unblk_sync != 3) {
+    यावत् (test_unblk_sync != 3) {
         ; // Wait for confirmation from B1 that scheduler has been resumed
     }
     // Verify that the scheduler is still enabled on core A
@@ -350,14 +350,14 @@ static void test_unblk_a1_task(void *arg)
     vTaskDelete(a2_task_hdl);
 
     // Indicate done and wait to be deleted
-    xSemaphoreGive(test_unblk_done_sem);
-    vTaskSuspend(NULL);
+    xSemaphoreGive(test_unblk_समाप्तम्_sem);
+    vTaskSuspend(रिक्त);
 }
 
-static void test_unblk_b1_task(void *arg)
+स्थिर शून्य test_unblk_b1_task(शून्य *arg)
 {
     // Wait to be started by A1
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, पत्तनम्_MAX_DELAY);
 
     // Check scheduler is running on core B
     TEST_ASSERT_EQUAL(taskSCHEDULER_RUNNING, xTaskGetSchedulerState());
@@ -368,7 +368,7 @@ static void test_unblk_b1_task(void *arg)
     // Indicate to A1 that core B scheduler has been suspended
     test_unblk_sync = 1;
 
-    while (test_unblk_sync != 2) {
+    यावत् (test_unblk_sync != 2) {
         ;   // Wait for trigger from A1
     }
     // Resume the scheduler on core B
@@ -378,26 +378,26 @@ static void test_unblk_b1_task(void *arg)
     test_unblk_sync = 3;
 
     // Indicate done and wait to be deleted
-    xSemaphoreGive(test_unblk_done_sem);
-    vTaskSuspend(NULL);
+    xSemaphoreGive(test_unblk_समाप्तम्_sem);
+    vTaskSuspend(रिक्त);
 }
 
 TEST_CASE("Test vTaskSuspendAll allows scheduling on other cores", "[freertos]")
 {
-    test_unblk_done_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_NUMBER_OF_CORES, 0);
-    TEST_ASSERT_NOT_EQUAL(NULL, test_unblk_done_sem);
+    test_unblk_समाप्तम्_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_सङ्ख्या_सम्बन्धि_CORES, 0);
+    TEST_ASSERT_NOT_EQUAL(रिक्त, test_unblk_समाप्तम्_sem);
 
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    प्रति (पूर्णाङ्क i = 0; i < CONFIG_FREERTOS_सङ्ख्या_सम्बन्धि_CORES; i++) {
         test_unblk_sync = 0;
         // Create a tasks
         TaskHandle_t a1_task_hdl;
         TaskHandle_t b1_task_hdl;
-        TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_unblk_b1_task, "B1", 8192, NULL, UNITY_FREERTOS_PRIORITY + 1, &b1_task_hdl, !i));
-        TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_unblk_a1_task, "A1", 8192, (void *)b1_task_hdl, UNITY_FREERTOS_PRIORITY + 1, &a1_task_hdl, i));
+        TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_गन्तव्यम्_Core(test_unblk_b1_task, "B1", 8192, रिक्त, UNITY_FREERTOS_प्राथमिकता + 1, &b1_task_hdl, !i));
+        TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_गन्तव्यम्_Core(test_unblk_a1_task, "A1", 8192, (शून्य *)b1_task_hdl, UNITY_FREERTOS_प्राथमिकता + 1, &a1_task_hdl, i));
         // Start A1 to and wait for both tasks to complete
         xTaskNotifyGive(a1_task_hdl);
-        for (int j = 0; j < 2; j++) {
-            xSemaphoreTake(test_unblk_done_sem, portMAX_DELAY);
+        प्रति (पूर्णाङ्क j = 0; j < 2; j++) {
+            xSemaphoreTake(test_unblk_समाप्तम्_sem, पत्तनम्_MAX_DELAY);
         }
         // Suspend the test tasks in case they haven't suspended themselves yet
         vTaskSuspend(a1_task_hdl);
@@ -410,12 +410,12 @@ TEST_CASE("Test vTaskSuspendAll allows scheduling on other cores", "[freertos]")
         vTaskDelay(10);
     }
 
-    vSemaphoreDelete(test_unblk_done_sem);
+    vSemaphoreDelete(test_unblk_समाप्तम्_sem);
     // Add a short delay to allow the idle task to free any remaining task memory
     vTaskDelay(10);
 }
 
-#endif //SOC_GPTIMER_SUPPORTED
+#यदि_अन्तः //SOC_GPTIMER_SUPPORTED
 
 /* ---------------------------------------------------------------------------------------------------------------------
 Test vTaskSuspendAll doesn't block unpinned tasks from being scheduled on other cores
@@ -442,36 +442,36 @@ Expected:
     When the pinned task disables scheduling on core B...
         - The unpinned task, which was originally running on core B, moves to core A once it is unblocked
 --------------------------------------------------------------------------------------------------------------------- */
-static SemaphoreHandle_t test_unpinned_sem;
-volatile uint8_t unpinned_task_running = 0;
+स्थिर SemaphoreHandle_t test_unpinned_sem;
+चञ्चल uint8_t unpinned_task_running = 0;
 
-static void test_unpinned_task(void* arg)
+स्थिर शून्य test_unpinned_task(शून्य* arg)
 {
-    BaseType_t *core_A = (BaseType_t *)arg;
+    आधारः_Type_t *core_A = (आधारः_Type_t *)arg;
 
     // Verify that the task is running on core B
-    TEST_ASSERT_EQUAL(!(*core_A), xPortGetCoreID());
+    TEST_ASSERT_EQUAL(!(*core_A), x_पत्तनम्_Get_Core_ID());
 
     // Wait to be unblocked by the pinned task
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, पत्तनम्_MAX_DELAY);
 
     // Verify that the task is running on core A once it is unblocked
-    TEST_ASSERT_EQUAL((*core_A), xPortGetCoreID());
+    TEST_ASSERT_EQUAL((*core_A), x_पत्तनम्_Get_Core_ID());
     unpinned_task_running = 1;
 
     // Mark test completion
     xSemaphoreGive(test_unpinned_sem);
 
     // Cleanup
-    vTaskSuspend(NULL);
+    vTaskSuspend(रिक्त);
 }
 
-static void test_pinned_task(void* arg)
+स्थिर शून्य test_pinned_task(शून्य* arg)
 {
     TaskHandle_t unpinned_task_hdl = (TaskHandle_t)arg;
 
     // Wait to be notified by the main task
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, पत्तनम्_MAX_DELAY);
 
     // Check scheduler is running on core B
     TEST_ASSERT_EQUAL(taskSCHEDULER_RUNNING, xTaskGetSchedulerState());
@@ -485,11 +485,11 @@ static void test_pinned_task(void* arg)
     // Unblock the unpinned task
     // It should run on core A which is not in suspended state
     // We use the FromISR() call to create an ISR scenario and to force the unblocked task to be placed in the ready list
-    BaseType_t yield = 0;
+    आधारः_Type_t yield = 0;
     vTaskNotifyGiveFromISR(unpinned_task_hdl, &yield);
 
     // Busy wait to ensure that the unpinned task is scheduled
-    while (unpinned_task_running == 0)
+    यावत् (unpinned_task_running == 0)
         ;
 
     // Resume scheduler on core B
@@ -499,24 +499,24 @@ static void test_pinned_task(void* arg)
     xSemaphoreGive(test_unpinned_sem);
 
     // Cleanup
-    vTaskSuspend(NULL);
+    vTaskSuspend(रिक्त);
 }
 
 TEST_CASE("Test vTaskSuspendAll doesn't block unpinned tasks from being scheduled on other cores", "[freertos]")
 {
     TaskHandle_t pinned_task_hdl;
     TaskHandle_t unpinned_task_hdl;
-    BaseType_t core_A = xPortGetCoreID();
+    आधारः_Type_t core_A = x_पत्तनम्_Get_Core_ID();
     test_unpinned_sem = xSemaphoreCreateCounting(2, 0);
 
     // Suspend the scheduler on core A to avoid the unpinned task from being spawned on core A
     vTaskSuspendAll();
 
     // Create unpinned task. This should spin up on core B as we have suspended the scheduler on core A
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_unpinned_task, "unpinned_task", 8192, &core_A, UNITY_FREERTOS_PRIORITY + 1, &unpinned_task_hdl, tskNO_AFFINITY));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_गन्तव्यम्_Core(test_unpinned_task, "unpinned_task", 8192, &core_A, UNITY_FREERTOS_प्राथमिकता + 1, &unpinned_task_hdl, tskNO_AFFINITY));
 
     // Create task pinned to core B
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_pinned_task, "pinned_task", 8192, (void *)unpinned_task_hdl, UNITY_FREERTOS_PRIORITY + 1, &pinned_task_hdl, !core_A));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_गन्तव्यम्_Core(test_pinned_task, "pinned_task", 8192, (शून्य *)unpinned_task_hdl, UNITY_FREERTOS_प्राथमिकता + 1, &pinned_task_hdl, !core_A));
 
     // Resume the scheduler on core A
     xTaskResumeAll();
@@ -525,8 +525,8 @@ TEST_CASE("Test vTaskSuspendAll doesn't block unpinned tasks from being schedule
     xTaskNotifyGive(pinned_task_hdl);
 
     // Wait for test completion
-    for (int i = 0; i < 2; i++) {
-        xSemaphoreTake(test_unpinned_sem, portMAX_DELAY);
+    प्रति (पूर्णाङ्क i = 0; i < 2; i++) {
+        xSemaphoreTake(test_unpinned_sem, पत्तनम्_MAX_DELAY);
     }
     // Suspend the test tasks in case they haven't suspended themselves yet
     vTaskSuspend(pinned_task_hdl);
@@ -538,7 +538,7 @@ TEST_CASE("Test vTaskSuspendAll doesn't block unpinned tasks from being schedule
     vTaskDelete(unpinned_task_hdl);
     vSemaphoreDelete(test_unpinned_sem);
 }
-#endif  // !CONFIG_FREERTOS_UNICORE
+#यदि_अन्तः  // !CONFIG_FREERTOS_UNICORE
 
 /* ---------------------------------------------------------------------------------------------------------------------
 Test xTaskResumeAll() resumes pended tasks on the current core
@@ -564,53 +564,53 @@ Expected:
     - When the scheduler is resumed, the tasks should be scheduled and run without issue.
 --------------------------------------------------------------------------------------------------------------------- */
 
-#define TEST_PENDED_NUM_BLOCKED_TASKS   4
+#परिभाषय TEST_PENDED_अङ्कः_BLOCKED_TASKS   4
 
-#if SOC_GPTIMER_SUPPORTED
+#यदि SOC_GPTIMER_SUPPORTED
 
-static bool test_pended_isr(void *arg)
+स्थिर bool test_pended_isr(शून्य *arg)
 {
     TaskHandle_t *blkd_tsks = (TaskHandle_t *)arg;
-    BaseType_t task_woken = pdFALSE;
+    आधारः_Type_t task_woken = pdFALSE;
     // Unblock the blocked tasks
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+    प्रति (पूर्णाङ्क i = 0; i < TEST_PENDED_अङ्कः_BLOCKED_TASKS; i++) {
         vTaskNotifyGiveFromISR(blkd_tsks[i], &task_woken);
     }
 
-    return (task_woken == pdTRUE);
+    प्रत्यागम (task_woken == pdTRUE);
 }
 
-static void test_pended_blkd_task(void *arg)
+स्थिर शून्य test_pended_blkd_task(शून्य *arg)
 {
-    volatile bool *has_run = (bool *)arg;
+    चञ्चल bool *has_सततम् = (bool *)arg;
     // Wait to be unblocked
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, पत्तनम्_MAX_DELAY);
     // Indicate the task been unblocked and has run
-    *has_run = true;
+    *has_सततम् = true;
     // Wait to be deleted
-    vTaskSuspend(NULL);
+    vTaskSuspend(रिक्त);
 }
 
-static void test_pended_running_task(void *arg)
+स्थिर शून्य test_pended_running_task(शून्य *arg)
 {
     TaskHandle_t main_task_hdl = (TaskHandle_t)arg;
-    TaskHandle_t blkd_tsks[TEST_PENDED_NUM_BLOCKED_TASKS];
-    volatile bool has_run[TEST_PENDED_NUM_BLOCKED_TASKS];
+    TaskHandle_t blkd_tsks[TEST_PENDED_अङ्कः_BLOCKED_TASKS];
+    चञ्चल bool has_सततम्[TEST_PENDED_अङ्कः_BLOCKED_TASKS];
 
     // Created blocked tasks pinned to each core
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
-        has_run[i] = false;
-        TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_pended_blkd_task, "blkd", 4096, (void *)&has_run[i], UNITY_FREERTOS_PRIORITY + 2, &blkd_tsks[i], i % CONFIG_FREERTOS_NUMBER_OF_CORES));
+    प्रति (पूर्णाङ्क i = 0; i < TEST_PENDED_अङ्कः_BLOCKED_TASKS; i++) {
+        has_सततम्[i] = false;
+        TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_गन्तव्यम्_Core(test_pended_blkd_task, "blkd", 4096, (शून्य *)&has_सततम्[i], UNITY_FREERTOS_प्राथमिकता + 2, &blkd_tsks[i], i % CONFIG_FREERTOS_सङ्ख्या_सम्बन्धि_CORES));
     }
     vTaskDelay(10);
 
     // Install an interrupt on the current core core
-    register_intr_cb(test_pended_isr, (void *)blkd_tsks);
+    पञ्जिकाकोशः_intr_cb(test_pended_isr, (शून्य *)blkd_tsks);
 
     // Checked that all tasks are blocked and have no run yet
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+    प्रति (पूर्णाङ्क i = 0; i < TEST_PENDED_अङ्कः_BLOCKED_TASKS; i++) {
         TEST_ASSERT_EQUAL(eBlocked, eTaskGetState(blkd_tsks[i])); // Should be eSuspended due to portMAX_DELAY
-        TEST_ASSERT_EQUAL(false, has_run[i]);
+        TEST_ASSERT_EQUAL(false, has_सततम्[i]);
     }
 
     // Suspend the scheduler on the current core
@@ -622,12 +622,12 @@ static void test_pended_running_task(void *arg)
 
     // Check that tasks which have affinity to the current core are blocked and have not run as the scheduler is suspended.
     // While tasks which do not have affinity to the current core are unblocked.
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+    प्रति (पूर्णाङ्क i = 0; i < TEST_PENDED_अङ्कः_BLOCKED_TASKS; i++) {
         // Note: We use eBlocked instead of eReady due to a bug in eTaskGetState(). See (IDF-5543)
-        if (xTaskGetCoreID(blkd_tsks[i]) == xPortGetCoreID()) {
+        यदि (xTaskGetCoreID(blkd_tsks[i]) == x_पत्तनम्_Get_Core_ID()) {
             TEST_ASSERT_EQUAL(eBlocked, eTaskGetState(blkd_tsks[i]));
-            TEST_ASSERT_EQUAL(false, has_run[i]);
-        } else {
+            TEST_ASSERT_EQUAL(false, has_सततम्[i]);
+        } अन्यथा {
             TEST_ASSERT_NOT_EQUAL(eBlocked, eTaskGetState(blkd_tsks[i]));
         }
     }
@@ -637,29 +637,29 @@ static void test_pended_running_task(void *arg)
     esp_rom_delay_us(10000); // Busy delay to ensure each task has enough time to run
 
     // Check that all tasks have run
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
-        TEST_ASSERT_EQUAL(true, has_run[i]);
+    प्रति (पूर्णाङ्क i = 0; i < TEST_PENDED_अङ्कः_BLOCKED_TASKS; i++) {
+        TEST_ASSERT_EQUAL(true, has_सततम्[i]);
     }
 
     // Clean up the interrupt and tasks
     deregister_intr_cb();
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+    प्रति (पूर्णाङ्क i = 0; i < TEST_PENDED_अङ्कः_BLOCKED_TASKS; i++) {
         vTaskDelete(blkd_tsks[i]);
     }
 
     // Notify completion and wait for deletion
     xTaskNotifyGive(main_task_hdl);
-    vTaskSuspend(NULL);
+    vTaskSuspend(रिक्त);
 }
 
 TEST_CASE("Test xTaskResumeAll resumes pended tasks", "[freertos]")
 {
     // Run the test on each core
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    प्रति (पूर्णाङ्क i = 0; i < CONFIG_FREERTOS_सङ्ख्या_सम्बन्धि_CORES; i++) {
         TaskHandle_t susp_tsk_hdl;
-        TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_pended_running_task, "susp", 2048, (void *)xTaskGetCurrentTaskHandle(), UNITY_FREERTOS_PRIORITY + 1, &susp_tsk_hdl, i));
+        TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_गन्तव्यम्_Core(test_pended_running_task, "susp", 2048, (शून्य *)xTaskGetCurrentTaskHandle(), UNITY_FREERTOS_प्राथमिकता + 1, &susp_tsk_hdl, i));
         // Wait for to be notified to test completion
-        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        ulTaskNotifyTake(pdTRUE, पत्तनम्_MAX_DELAY);
         // Suspend the test task in case it hasn't suspended itself yet
         vTaskSuspend(susp_tsk_hdl);
         vTaskDelay(10);
@@ -669,7 +669,7 @@ TEST_CASE("Test xTaskResumeAll resumes pended tasks", "[freertos]")
     vTaskDelay(10);
 }
 
-#endif //SOC_GPTIMER_SUPPORTED
+#यदि_अन्तः //SOC_GPTIMER_SUPPORTED
 
 /* ---------------------------------------------------------------------------------------------------------------------
 Test xTaskSuspendAll on both cores pends all tasks and xTaskResumeAll on both cores resumes all tasks
@@ -695,28 +695,28 @@ Expected:
     - When the scheduler is resumed, the tasks should be scheduled and run without issue
 --------------------------------------------------------------------------------------------------------------------- */
 
-#if !CONFIG_FREERTOS_UNICORE
-TaskHandle_t blkd_tasks[TEST_PENDED_NUM_BLOCKED_TASKS];
-SemaphoreHandle_t done_sem;
+#यदि !CONFIG_FREERTOS_UNICORE
+TaskHandle_t blkd_tasks[TEST_PENDED_अङ्कः_BLOCKED_TASKS];
+SemaphoreHandle_t समाप्तम्_sem;
 
-static void test_susp_task(void *arg)
+स्थिर शून्य test_susp_task(शून्य *arg)
 {
-    bool *has_run = (bool *)arg;
+    bool *has_सततम् = (bool *)arg;
 
     // Suspend the scheduler on this core
     vTaskSuspendAll();
 
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
-        if ((i % CONFIG_FREERTOS_NUMBER_OF_CORES) == xPortGetCoreID()) {
+    प्रति (पूर्णाङ्क i = 0; i < TEST_PENDED_अङ्कः_BLOCKED_TASKS; i++) {
+        यदि ((i % CONFIG_FREERTOS_सङ्ख्या_सम्बन्धि_CORES) == x_पत्तनम्_Get_Core_ID()) {
             // Unblock the blocked tasks pinned to this core.
             // We use the FromISR() call to create an ISR scenario and to force the unblocked task to be placed
             // on the pending ready list
-            BaseType_t yield = pdFALSE;
+            आधारः_Type_t yield = pdFALSE;
             vTaskNotifyGiveFromISR(blkd_tasks[i], &yield);
 
             // The unblocked task must still be blocked and must not have run
             TEST_ASSERT_EQUAL(eBlocked, eTaskGetState(blkd_tasks[i]));
-            TEST_ASSERT_EQUAL(false, has_run[i]);
+            TEST_ASSERT_EQUAL(false, has_सततम्[i]);
         }
     }
 
@@ -724,43 +724,43 @@ static void test_susp_task(void *arg)
     xTaskResumeAll();
 
     // Signal test completion
-    xSemaphoreGive(done_sem);
+    xSemaphoreGive(समाप्तम्_sem);
 
     // Wait for cleanup
-    vTaskSuspend(NULL);
+    vTaskSuspend(रिक्त);
 }
 
-#if SOC_GPTIMER_SUPPORTED
+#यदि SOC_GPTIMER_SUPPORTED
 TEST_CASE("Test xTaskSuspendAll on all cores pends all tasks and xTaskResumeAll on all cores resumes all tasks", "[freertos]")
 {
-    volatile bool has_run[TEST_PENDED_NUM_BLOCKED_TASKS];
-    done_sem = xSemaphoreCreateBinary();
+    चञ्चल bool has_सततम्[TEST_PENDED_अङ्कः_BLOCKED_TASKS];
+    समाप्तम्_sem = x_Semaphore_Create_द्विमान();
 
     // Creat blocked tasks pinned to each core
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
-        has_run[i] = false;
-        TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_pended_blkd_task, "blkd", 4096, (void *)&has_run[i], UNITY_FREERTOS_PRIORITY + 2, &blkd_tasks[i], i % CONFIG_FREERTOS_NUMBER_OF_CORES));
+    प्रति (पूर्णाङ्क i = 0; i < TEST_PENDED_अङ्कः_BLOCKED_TASKS; i++) {
+        has_सततम्[i] = false;
+        TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_गन्तव्यम्_Core(test_pended_blkd_task, "blkd", 4096, (शून्य *)&has_सततम्[i], UNITY_FREERTOS_प्राथमिकता + 2, &blkd_tasks[i], i % CONFIG_FREERTOS_सङ्ख्या_सम्बन्धि_CORES));
     }
     vTaskDelay(10);
 
     // Create pinned task on the other core which will suspend its scheduler
     TaskHandle_t susp_task;
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_susp_task, "susp_task", 2048, (void *)has_run, UNITY_FREERTOS_PRIORITY, &susp_task, !xPortGetCoreID()));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_गन्तव्यम्_Core(test_susp_task, "susp_task", 2048, (शून्य *)has_सततम्, UNITY_FREERTOS_प्राथमिकता, &susp_task, !x_पत्तनम्_Get_Core_ID()));
 
     // Suspend the scheduler on this core
     vTaskSuspendAll();
 
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
-        if ((i % CONFIG_FREERTOS_NUMBER_OF_CORES) == xPortGetCoreID()) {
+    प्रति (पूर्णाङ्क i = 0; i < TEST_PENDED_अङ्कः_BLOCKED_TASKS; i++) {
+        यदि ((i % CONFIG_FREERTOS_सङ्ख्या_सम्बन्धि_CORES) == x_पत्तनम्_Get_Core_ID()) {
             // Unblock the blocked tasks pinned to this core.
             // We use the FromISR() call to create an ISR scenario and to force the unblocked task to be placed
             // on the pending ready list
-            BaseType_t yield = pdFALSE;
+            आधारः_Type_t yield = pdFALSE;
             vTaskNotifyGiveFromISR(blkd_tasks[i], &yield);
 
             // The unblocked task must still be blocked and must not have run
             TEST_ASSERT_EQUAL(eBlocked, eTaskGetState(blkd_tasks[i]));
-            TEST_ASSERT_EQUAL(false, has_run[i]);
+            TEST_ASSERT_EQUAL(false, has_सततम्[i]);
         }
     }
 
@@ -768,16 +768,16 @@ TEST_CASE("Test xTaskSuspendAll on all cores pends all tasks and xTaskResumeAll 
     xTaskResumeAll();
 
     // Wait for test completion
-    xSemaphoreTake(done_sem, portMAX_DELAY);
+    xSemaphoreTake(समाप्तम्_sem, पत्तनम्_MAX_DELAY);
 
     // Verify that all blocked tasks have resumed and run when the schdulers are resumed on both cores
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+    प्रति (पूर्णाङ्क i = 0; i < TEST_PENDED_अङ्कः_BLOCKED_TASKS; i++) {
         TEST_ASSERT_NOT_EQUAL(eBlocked, eTaskGetState(blkd_tasks[i]));
-        TEST_ASSERT_EQUAL(true, has_run[i]);
+        TEST_ASSERT_EQUAL(true, has_सततम्[i]);
     }
 
     // Cleanup
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+    प्रति (पूर्णाङ्क i = 0; i < TEST_PENDED_अङ्कः_BLOCKED_TASKS; i++) {
         vTaskSuspend(blkd_tasks[i]);
         vTaskDelay(10);
         vTaskDelete(blkd_tasks[i]);
@@ -785,10 +785,10 @@ TEST_CASE("Test xTaskSuspendAll on all cores pends all tasks and xTaskResumeAll 
     vTaskSuspend(susp_task);
     vTaskDelay(10);
     vTaskDelete(susp_task);
-    vSemaphoreDelete(done_sem);
+    vSemaphoreDelete(समाप्तम्_sem);
 }
-#endif //SOC_GPTIMER_SUPPORTED
-#endif  // !CONFIG_FREERTOS_UNICORE
+#यदि_अन्तः //SOC_GPTIMER_SUPPORTED
+#यदि_अन्तः  // !CONFIG_FREERTOS_UNICORE
 
 /* ---------------------------------------------------------------------------------------------------------------------
 Test vTaskSuspendAll pinned task scheduling
@@ -815,35 +815,35 @@ Expected:
         - When A1 resumes scheduling, A2 should be scheduled
 --------------------------------------------------------------------------------------------------------------------- */
 
-#define TEST_BLOCKED_TASK_DELAY_MS   100
+#परिभाषय TEST_BLOCKED_TASK_DELAY_MS   100
 
-volatile static bool has_run = false;
-SemaphoreHandle_t done_sem1;
+चञ्चल स्थिर bool has_सततम् = false;
+SemaphoreHandle_t समाप्तम्_sem1;
 
-void test_blocked_task(void *arg)
+शून्य test_blocked_task(शून्य *arg)
 {
     // Wait to be started
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, पत्तनम्_MAX_DELAY);
 
     // Mark has_run as false to begin the test
-    has_run = false;
+    has_सततम् = false;
 
     // Got to blocked state
-    vTaskDelay(TEST_BLOCKED_TASK_DELAY_MS / portTICK_PERIOD_MS);
+    vTaskDelay(TEST_BLOCKED_TASK_DELAY_MS / पत्तनम्_TICK_PERIOD_MS);
 
     // Mark when this task runs
-    has_run = true;
+    has_सततम् = true;
 
     // Cleanup
-    vTaskDelete(NULL);
+    vTaskDelete(रिक्त);
 }
 
-void test_suspend_task(void *arg)
+शून्य test_suspend_task(शून्य *arg)
 {
     TaskHandle_t blkd_task = (TaskHandle_t)arg;
 
     // Wait to be started
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, पत्तनम्_MAX_DELAY);
 
     // Start the task which would block
     xTaskNotifyGive(blkd_task);
@@ -858,7 +858,7 @@ void test_suspend_task(void *arg)
     esp_rom_delay_us(TEST_BLOCKED_TASK_DELAY_MS * 1000 * 2);
 
     // Verify that the blocked task has not been scheduled
-    TEST_ASSERT_EQUAL(false, has_run);
+    TEST_ASSERT_EQUAL(false, has_सततम्);
 
     // Resume the scheduler
     xTaskResumeAll();
@@ -870,42 +870,42 @@ void test_suspend_task(void *arg)
     TEST_ASSERT_NOT_EQUAL(eBlocked, eTaskGetState(blkd_task));
 
     // Verify that the blocked task has run after scheduler is resumed
-    TEST_ASSERT_EQUAL(true, has_run);
+    TEST_ASSERT_EQUAL(true, has_सततम्);
 
     // Signal test completion
-    xSemaphoreGive(done_sem1);
+    xSemaphoreGive(समाप्तम्_sem1);
 
     // Cleanup
-    vTaskDelete(NULL);
+    vTaskDelete(रिक्त);
 }
 
 TEST_CASE("Test vTaskSuspendAll pinned task scheduling", "[freertos]")
 {
-    for (int x = 0; x < portNUM_PROCESSORS; x++) {
+    प्रति (पूर्णाङ्क x = 0; x < पत्तनम्_अङ्कः_PROCESSORS; x++) {
         TaskHandle_t susp_task;
         TaskHandle_t blkd_task;
-        done_sem1 = xSemaphoreCreateBinary();
-        TEST_ASSERT_NOT_EQUAL(NULL, done_sem1);
+        समाप्तम्_sem1 = x_Semaphore_Create_द्विमान();
+        TEST_ASSERT_NOT_EQUAL(रिक्त, समाप्तम्_sem1);
 
         // Create pinned task on core x which will block
         // Ensure that this has a higher priority than the suspension task so that it immediately runs when the scheduler resumes
-        TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_blocked_task, "blkd", 4096, NULL, UNITY_FREERTOS_PRIORITY + 1, &blkd_task, x));
+        TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_गन्तव्यम्_Core(test_blocked_task, "blkd", 4096, रिक्त, UNITY_FREERTOS_प्राथमिकता + 1, &blkd_task, x));
 
         // Create pinned task on core x which will suspend its scheduler
-        TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_suspend_task, "susp", 4096, (void *)blkd_task, UNITY_FREERTOS_PRIORITY, &susp_task, x));
+        TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_गन्तव्यम्_Core(test_suspend_task, "susp", 4096, (शून्य *)blkd_task, UNITY_FREERTOS_प्राथमिकता, &susp_task, x));
 
         // Start the scheduler suspension task
         xTaskNotifyGive(susp_task);
 
         // Wait for test completion
-        xSemaphoreTake(done_sem1, portMAX_DELAY);
+        xSemaphoreTake(समाप्तम्_sem1, पत्तनम्_MAX_DELAY);
 
         // Cleanup
-        vSemaphoreDelete(done_sem1);
+        vSemaphoreDelete(समाप्तम्_sem1);
 
         // Add a short delay to allow the idle task to free any remaining task memory
         vTaskDelay(10);
     }
 }
 
-#endif // !CONFIG_FREERTOS_SMP
+#यदि_अन्तः // !CONFIG_FREERTOS_SMP

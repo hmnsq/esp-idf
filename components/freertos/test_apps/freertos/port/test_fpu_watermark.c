@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <string.h>
-#include "soc/soc_caps.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "unity.h"
+#अन्तर्भाव "sdkconfig.h"
+#अन्तर्भाव <string.h>
+#अन्तर्भाव "soc/soc_caps.h"
+#अन्तर्भाव "freertos/FreeRTOS.h"
+#अन्तर्भाव "freertos/task.h"
+#अन्तर्भाव "unity.h"
 
-#define TASKS_STATUS_ARRAY_LEN  16
+#परिभाषय TASKS_स्थितिः_ARRAY_LEN  16
 
 /**
  * On RISC-V targets that have coprocessors, the contexts are saved at the lowest address of the stack,
@@ -19,26 +19,26 @@
  * As such, the port layer of FreeRTOS will adjust the lowest address of the stack when a coprocessor
  * context is saved.
  */
-#if CONFIG_IDF_TARGET_ARCH_RISCV && SOC_CPU_COPROC_NUM > 0
+#यदि CONFIG_IDF_TARGET_ARCH_RISCV && SOC_CPU_COPROC_अङ्कः > 0
 
-volatile float s_float = 0.1999f;
+चञ्चल भिन्न s_float = 0.1999f;
 
-static float add_floats(float f1, float f2)
+स्थिर भिन्न सङ्कलय_floats(भिन्न f1, भिन्न f2)
 {
-    return f1 + f2;
+    प्रत्यागम f1 + f2;
 }
 
-static void other_task(void* arg)
+स्थिर शून्य other_task(शून्य* arg)
 {
-    const TaskHandle_t main_task = (TaskHandle_t) arg;
+    ध्रुव TaskHandle_t main_task = (TaskHandle_t) arg;
 
     /* The second task shall also use the FPU to force a context flush on the main task */
-    add_floats(s_float, s_float);
+    सङ्कलय_floats(s_float, s_float);
 
     xTaskNotifyGive(main_task);
 
     /* The FPU context should be flushed on the main task, notify it and return */
-    vTaskDelete(NULL);
+    vTaskDelete(रिक्त);
 }
 
 TEST_CASE("FPU: Context save does not affect stack watermark", "[freertos]")
@@ -46,29 +46,29 @@ TEST_CASE("FPU: Context save does not affect stack watermark", "[freertos]")
     TaskHandle_t pvCreatedTask;
     /* Force the FreeRTOS port layer to store an FPU context in the current task.
      * So let's use the FPU and make sure another task, on the SAME CORE, also uses it */
-    const int core_id = xPortGetCoreID();
-    const TaskHandle_t current_handle = xTaskGetCurrentTaskHandle();
+    ध्रुव पूर्णाङ्क core_id = x_पत्तनम्_Get_Core_ID();
+    ध्रुव TaskHandle_t current_handle = xTaskGetCurrentTaskHandle();
 
     /* Get the current stack watermark */
-    const UBaseType_t before_watermark = uxTaskGetStackHighWaterMark(current_handle);
+    ध्रुव UBaseType_t before_watermark = ux_Task_Get_राशिः_उच्चः_Water_Mark(current_handle);
 
     /* Use the FPU unit, the context will NOT be flushed until another task starts using it */
-    add_floats(s_float, s_float);
+    सङ्कलय_floats(s_float, s_float);
 
-    xTaskCreatePinnedToCore(other_task,
+    x_Task_Create_Pinned_गन्तव्यम्_Core(other_task,
                             "OtherTask",
                             2048,
-                            (void*) current_handle,
-                            CONFIG_UNITY_FREERTOS_PRIORITY - 1,
+                            (शून्य*) current_handle,
+                            CONFIG_UNITY_FREERTOS_प्राथमिकता - 1,
                             &pvCreatedTask,
                             core_id);
 
     vTaskDelay(10);
 
     /* Wait for other task to complete */
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, पत्तनम्_MAX_DELAY);
 
-    const UBaseType_t after_watermark = uxTaskGetStackHighWaterMark(current_handle);
+    ध्रुव UBaseType_t after_watermark = ux_Task_Get_राशिः_उच्चः_Water_Mark(current_handle);
 
     /* The current task has seen a general-purpose registers context save as well as an FPU context save
      * so we have at least 32*2 registers saved on the stack, which represents 256 bytes.
@@ -78,4 +78,4 @@ TEST_CASE("FPU: Context save does not affect stack watermark", "[freertos]")
     TEST_ASSERT_TRUE(after_watermark > before_watermark / 2);
 }
 
-#endif // CONFIG_IDF_TARGET_ARCH_RISCV && SOC_CPU_COPROC_NUM > 0
+#यदि_अन्तः // CONFIG_IDF_TARGET_ARCH_RISCV && SOC_CPU_COPROC_NUM > 0

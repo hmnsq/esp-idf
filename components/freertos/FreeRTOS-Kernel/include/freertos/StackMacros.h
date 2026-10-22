@@ -31,8 +31,8 @@
  */
 
 
-#ifndef _MSC_VER /* Visual Studio doesn't support #warning. */
-    #warning The name of this file has changed to stack_macros.h.  Please update your code accordingly.  This source file (which has the original name) will be removed in a future release.
-#endif
+#यदि_अपरिभाषितम् _MSC_VER /* Visual Studio doesn't support #warning. */
+    #warning The name सम्बन्धि this file has परिवर्तितम् गन्तव्यम् राशिः_macros.h.  Please update your संहिता accordingly.  This source file (which has the original name) will be removed अन्तर् a future release.
+#यदि_अन्तः
 
-#include "stack_macros.h"
+#अन्तर्भाव "stack_macros.h"
