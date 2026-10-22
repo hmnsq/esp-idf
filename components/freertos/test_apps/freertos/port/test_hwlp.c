@@ -4,18 +4,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <string.h>
-#include "soc/soc_caps.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "unity.h"
-#if SOC_CPU_HAS_HWLOOP
-#include "esp_intr_alloc.h"
-#include "esp_cpu.h"
-#include "soc/system_intr.h"
-#include "soc/system_reg.h"
+#অন্তর্ভাব "sdkconfig.h"
+#অন্তর্ভাব <string.h>
+#অন্তর্ভাব "soc/soc_caps.h"
+#অন্তর্ভাব "freertos/FreeRTOS.h"
+#অন্তর্ভাব "freertos/task.h"
+#অন্তর্ভাব "freertos/semphr.h"
+#অন্তর্ভাব "unity.h"
+#যদি SOC_CPU_HAS_HWLOOP
+#অন্তর্ভাব "esp_intr_alloc.h"
+#অন্তর্ভাব "esp_cpu.h"
+#অন্তর্ভাব "soc/system_intr.h"
+#অন্তর্ভাব "soc/system_reg.h"
 #endif
 
 /**
@@ -24,18 +24,18 @@
  * As such, the port layer of FreeRTOS will adjust the lowest address of the stack when a coprocessor
  * context is saved.
  */
-#if SOC_CPU_HAS_HWLOOP
+#যদি SOC_CPU_HAS_HWLOOP
 
-uint32_t use_hwlp(uint32_t count);
+uint32_t use_hwlp(uint32_t গুনতি);
 
 TEST_CASE("HWLP: Context save does not affect stack watermark", "[freertos]")
 {
     /* Force the FreeRTOS port layer to store a HWLP context in the current task.
      * So let's use the it and make sure another task, on the SAME CORE, also uses it */
-    const TaskHandle_t current_handle = xTaskGetCurrentTaskHandle();
+    ধ্রুব TaskHandle_t current_handle = xTaskGetCurrentTaskHandle();
 
     /* Get the current stack watermark */
-    const UBaseType_t before_watermark = uxTaskGetStackHighWaterMark(current_handle);
+    ধ্রুব UBaseType_t before_watermark = ux_Task_Get_স্তূপ_উপরের_Water_Mark(current_handle);
 
     /* Use the HWLP unit, the context will NOT be flushed until a context switch is done */
     use_hwlp(20);
@@ -44,39 +44,39 @@ TEST_CASE("HWLP: Context save does not affect stack watermark", "[freertos]")
      * the HWLP current context */
     vTaskDelay(10);
 
-    const UBaseType_t after_watermark = uxTaskGetStackHighWaterMark(current_handle);
+    ধ্রুব UBaseType_t after_watermark = ux_Task_Get_স্তূপ_উপরের_Water_Mark(current_handle);
 
     TEST_ASSERT_TRUE(after_watermark > before_watermark / 2);
 }
 
-#if CONFIG_FREERTOS_NUMBER_OF_CORES > 1
+#যদি CONFIG_FREERTOS_সংখ্যা_OF_CORES > 1
 
-typedef struct {
-    uint32_t count;
+প্রকারনির্দেশ সংরচনা {
+    uint32_t গুনতি;
     TaskHandle_t main;
 } hwlp_params_t;
 
-static void calculation(void* arg)
+স্থির শূন্য calculation(শূন্য* arg)
 {
     hwlp_params_t* p = (hwlp_params_t*) arg;
-    const uint32_t count = p->count;
+    ধ্রুব uint32_t গুনতি = p->গুনতি;
     uint32_t result = 0;
-    int i = 0;
+    পূর্ণাঙ্ক i = 0;
 
-    for (i = 0; i < 50000; i++) {
-        uint32_t current = use_hwlp(count);
+    প্রতি (i = 0; i < 50000; i++) {
+        uint32_t current = use_hwlp(গুনতি);
         result += current;
 
         /* Using TEST_ASSERT_TRUE triggers a stack overflow, make sure the count is still correct.
          * The function `use_hwlp` should return (count * 16)  */
-        assert(count * 16 == current);
+        প্রতিজ্ঞা(গুনতি * 16 == current);
     }
 
     /* Make sure the result is correct */
-    assert(count * 16 * i == result);
+    প্রতিজ্ঞা(গুনতি * 16 * i == result);
 
     xTaskNotifyGive(p->main);
-    vTaskDelete(NULL);
+    vTaskDelete(রিক্ত);
 }
 
 TEST_CASE("HWLP: Unsolicited context switch between tasks using HWLP", "[freertos]")
@@ -85,8 +85,8 @@ TEST_CASE("HWLP: Unsolicited context switch between tasks using HWLP", "[freerto
     TaskHandle_t unity_task_handle = xTaskGetCurrentTaskHandle();
     TaskHandle_t tasks[2];
     hwlp_params_t params[2] = {
-        { .count = 1024, .main = unity_task_handle },
-        { .count = 2048, .main = unity_task_handle },
+        { .গুনতি = 1024, .main = unity_task_handle },
+        { .গুনতি = 2048, .main = unity_task_handle },
     };
 
     xTaskCreatePinnedToCore(calculation, "Task1", 2048, params + 0, CONFIG_UNITY_FREERTOS_PRIORITY + 1, &tasks[0], 1);
@@ -114,30 +114,30 @@ TEST_CASE("HWLP: Unsolicited context switch between tasks using HWLP", "[freerto
  * state erratum), the victim's result will be wrong (or the loop will never
  * terminate).
  */
-uint32_t use_hwlp_irq(uint32_t count, volatile uint32_t *trig_reg, uint32_t trig_val);
+uint32_t use_hwlp_irq(uint32_t গুনতি, চঞ্চল uint32_t *trig_reg, uint32_t trig_val);
 
-static SemaphoreHandle_t s_go;
-static volatile uint32_t s_contender_runs;
+স্থির SemaphoreHandle_t s_go;
+স্থির চঞ্চল uint32_t s_contender_runs;
 
-static void from_cpu_isr(void *arg)
+স্থির শূন্য from_cpu_isr(শূন্য *arg)
 {
-    (void) arg;
+    (শূন্য) arg;
     /* Clear the from-CPU interrupt pending bit */
     REG_WRITE(SYSTEM_CPU_INTR_FROM_CPU_2_REG, 0);
     BaseType_t yield = pdFALSE;
     xSemaphoreGiveFromISR(s_go, &yield);
-    if (yield) {
+    যদি (yield) {
         portYIELD_FROM_ISR();
     }
 }
 
-static void hwlp_contender_task(void *arg)
+স্থির শূন্য hwlp_contender_task(শূন্য *arg)
 {
-    (void) arg;
-    for (;;) {
-        if (xSemaphoreTake(s_go, portMAX_DELAY) == pdTRUE) {
+    (শূন্য) arg;
+    প্রতি (;;) {
+        যদি (xSemaphoreTake(s_go, portMAX_DELAY) == pdTRUE) {
             /* Use a different loop context to clobber the victim's live registers */
-            (void) use_hwlp(333);
+            (শূন্য) use_hwlp(333);
             s_contender_runs++;
         }
     }
@@ -145,29 +145,29 @@ static void hwlp_contender_task(void *arg)
 
 TEST_CASE("HWLP: Deterministic preemption inside a live hardware loop", "[freertos]")
 {
-    s_go = xSemaphoreCreateBinary();
+    s_go = x_Semaphore_Create_দ্বিমিক();
     TEST_ASSERT_NOT_NULL(s_go);
     s_contender_runs = 0;
 
     intr_handle_t ih;
-    TEST_ESP_OK(esp_intr_alloc(SYS_CPU_INTR_FROM_CPU_2_SOURCE, ESP_INTR_FLAG_LEVEL1, from_cpu_isr, NULL, &ih));
+    TEST_ESP_OK(esp_intr_alloc(SYS_CPU_INTR_FROM_CPU_2_SOURCE, ESP_INTR_FLAG_LEVEL1, from_cpu_isr, রিক্ত, &ih));
 
-    const BaseType_t core = xPortGetCoreID();
-    TaskHandle_t contender = NULL;
-    xTaskCreatePinnedToCore(hwlp_contender_task, "hwlpC", 2048, NULL, CONFIG_UNITY_FREERTOS_PRIORITY + 2, &contender, core);
+    ধ্রুব BaseType_t core = xPortGetCoreID();
+    TaskHandle_t contender = রিক্ত;
+    xTaskCreatePinnedToCore(hwlp_contender_task, "hwlpC", 2048, রিক্ত, CONFIG_UNITY_FREERTOS_PRIORITY + 2, &contender, core);
 
-    const uint32_t count = 64;
+    ধ্রুব uint32_t গুনতি = 64;
     bool corrupted = false;
     uint32_t first_bad = 0;
 
-    for (int i = 0; i < 2000 && !corrupted; i++) {
-        uint32_t r = use_hwlp_irq(count, (volatile uint32_t *)SYSTEM_CPU_INTR_FROM_CPU_2_REG, SYSTEM_CPU_INTR_FROM_CPU_2);
-        if (r != count * 16) {
+    প্রতি (পূর্ণাঙ্ক i = 0; i < 2000 && !corrupted; i++) {
+        uint32_t r = use_hwlp_irq(গুনতি, (চঞ্চল uint32_t *)SYSTEM_CPU_INTR_FROM_CPU_2_REG, SYSTEM_CPU_INTR_FROM_CPU_2);
+        যদি (r != গুনতি * 16) {
             corrupted = true;
             first_bad = r;
         }
         /* Give the contender a chance to drain if it is still pending */
-        if ((i & 0x3f) == 0) {
+        যদি ((i & 0x3f) == 0) {
             taskYIELD();
         }
     }
@@ -189,30 +189,30 @@ TEST_CASE("HWLP: Deterministic preemption inside a live hardware loop", "[freert
  * preempted at its boundaries. Body size and instruction types are kept valid.
  * Marked [ignore] because it will fault/hang.
  */
-uint32_t use_hwlp_broken(uint32_t count, volatile uint32_t *trig_reg, uint32_t trig_val);
+uint32_t use_hwlp_broken(uint32_t গুনতি, চঞ্চল uint32_t *trig_reg, uint32_t trig_val);
 
 TEST_CASE("HWLP: Violate loop alignment/size constraints", "[freertos][ignore]")
 {
-    s_go = xSemaphoreCreateBinary();
+    s_go = x_Semaphore_Create_দ্বিমিক();
     TEST_ASSERT_NOT_NULL(s_go);
     s_contender_runs = 0;
 
     intr_handle_t ih;
-    TEST_ESP_OK(esp_intr_alloc(SYS_CPU_INTR_FROM_CPU_2_SOURCE, ESP_INTR_FLAG_LEVEL1, from_cpu_isr, NULL, &ih));
+    TEST_ESP_OK(esp_intr_alloc(SYS_CPU_INTR_FROM_CPU_2_SOURCE, ESP_INTR_FLAG_LEVEL1, from_cpu_isr, রিক্ত, &ih));
 
-    const BaseType_t core = xPortGetCoreID();
-    TaskHandle_t contender = NULL;
-    xTaskCreatePinnedToCore(hwlp_contender_task, "hwlpC", 2048, NULL, CONFIG_UNITY_FREERTOS_PRIORITY + 2, &contender, core);
+    ধ্রুব BaseType_t core = xPortGetCoreID();
+    TaskHandle_t contender = রিক্ত;
+    xTaskCreatePinnedToCore(hwlp_contender_task, "hwlpC", 2048, রিক্ত, CONFIG_UNITY_FREERTOS_PRIORITY + 2, &contender, core);
 
     bool bad = false;
     uint32_t first_bad = 0;
-    for (int i = 0; i < 100000 && !bad; i++) {
-        uint32_t r = use_hwlp_broken(64, (volatile uint32_t *)SYSTEM_CPU_INTR_FROM_CPU_2_REG, SYSTEM_CPU_INTR_FROM_CPU_2);
-        if (r != 64 * 9) {
+    প্রতি (পূর্ণাঙ্ক i = 0; i < 100000 && !bad; i++) {
+        uint32_t r = use_hwlp_broken(64, (চঞ্চল uint32_t *)SYSTEM_CPU_INTR_FROM_CPU_2_REG, SYSTEM_CPU_INTR_FROM_CPU_2);
+        যদি (r != 64 * 9) {
             bad = true;
             first_bad = r;
         }
-        if ((i & 0x3f) == 0) {
+        যদি ((i & 0x3f) == 0) {
             taskYIELD();
         }
     }

@@ -8,38 +8,38 @@
  Test for multicore FreeRTOS. This test spins up threads, fiddles with queues etc.
 */
 
-#include <esp_types.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "unity.h"
-#include "test_utils.h"
+#অন্তর্ভাব <esp_types.h>
+#অন্তর্ভাব <stdio.h>
+#অন্তর্ভাব <stdlib.h>
+#অন্তর্ভাব "sdkconfig.h"
+#অন্তর্ভাব "freertos/FreeRTOS.h"
+#অন্তর্ভাব "freertos/task.h"
+#অন্তর্ভাব "freertos/semphr.h"
+#অন্তর্ভাব "freertos/queue.h"
+#অন্তর্ভাব "unity.h"
+#অন্তর্ভাব "test_utils.h"
 
-volatile static int done;
-volatile static int error;
+চঞ্চল স্থির পূর্ণাঙ্ক done;
+চঞ্চল স্থির পূর্ণাঙ্ক error;
 
-static void tskTestRand(void *pvParameters)
+স্থির শূন্য tskTestRand(শূন্য *pvParameters)
 {
-    int l;
+    পূর্ণাঙ্ক l;
     srand(0x1234);
-    vTaskDelay((int)pvParameters / portTICK_PERIOD_MS);
+    vTaskDelay((পূর্ণাঙ্ক)pvParameters / portTICK_PERIOD_MS);
     l = rand();
     printf("Rand1: %d\n", l);
-    if (l != 869320854) {
+    যদি (l != 869320854) {
         error++;
     }
-    vTaskDelay((int)pvParameters / portTICK_PERIOD_MS);
+    vTaskDelay((পূর্ণাঙ্ক)pvParameters / portTICK_PERIOD_MS);
     l = rand();
     printf("Rand2: %d\n", l);
-    if (l != 1148737841) {
+    যদি (l != 1148737841) {
         error++;
     }
     done++;
-    vTaskDelete(NULL);
+    vTaskDelete(রিক্ত);
 }
 
 // TODO: split this thing into separate orthogonal tests
@@ -47,12 +47,12 @@ TEST_CASE("Test for per-task non-reentrant tasks", "[freertos]")
 {
     done = 0;
     error = 0;
-    const uint32_t stack_size = 3072;
-    xTaskCreatePinnedToCore(tskTestRand, "tsk1", stack_size, (void *)100, 3, NULL, 0);
-    xTaskCreatePinnedToCore(tskTestRand, "tsk2", stack_size, (void *)200, 3, NULL, 0);
-    xTaskCreatePinnedToCore(tskTestRand, "tsk3", stack_size, (void *)300, 3, NULL, CONFIG_FREERTOS_NUMBER_OF_CORES - 1);
-    xTaskCreatePinnedToCore(tskTestRand, "tsk4", stack_size, (void *)400, 3, NULL, 0);
-    while (done != 4) {
+    ধ্রুব uint32_t স্তূপ_size = 3072;
+    xTaskCreatePinnedToCore(tskTestRand, "tsk1", স্তূপ_size, (শূন্য *)100, 3, রিক্ত, 0);
+    xTaskCreatePinnedToCore(tskTestRand, "tsk2", স্তূপ_size, (শূন্য *)200, 3, রিক্ত, 0);
+    xTaskCreatePinnedToCore(tskTestRand, "tsk3", স্তূপ_size, (শূন্য *)300, 3, রিক্ত, CONFIG_FREERTOS_সংখ্যা_OF_CORES - 1);
+    xTaskCreatePinnedToCore(tskTestRand, "tsk4", স্তূপ_size, (শূন্য *)400, 3, রিক্ত, 0);
+    যাবত্ (done != 4) {
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
     TEST_ASSERT(error == 0);

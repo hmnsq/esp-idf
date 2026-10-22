@@ -28,10 +28,10 @@
         .word ( ( regnum_\_rs1 << 15 ) | ( regnum_\_rs2 << 20) | 0b100<<12 | 0b1011011 )
     .endm
 
-    .global g_dsp_constant
+    .বৈশ্বিক g_dsp_constant
 
     /**
-     * @brief Multiply the given ID by the global constant defined as g_dsp_constant.
+     * @brief Multiply the given ID by the বৈশ্বিক constant defined as g_dsp_constant.
      * NOTE: The goal of the function is not to be fast and efficient, on the contrary, it needs to be
      * slow and long so that it will be preempted.
      *

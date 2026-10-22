@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "unity.h"
-#include "portTestMacro.h"
+#অন্তর্ভাব "sdkconfig.h"
+#অন্তর্ভাব "FreeRTOS.h"
+#অন্তর্ভাব "task.h"
+#অন্তর্ভাব "unity.h"
+#অন্তর্ভাব "portTestMacro.h"
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 
@@ -29,27 +29,27 @@ Expected:
     - task_B should never have run
 */
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES == 1 )
+#যদি ( CONFIG_FREERTOS_সংখ্যা_OF_CORES == 1 )
 
 #define UNITY_TASK_DELAY_TICKS      10
 
-static BaseType_t task_A_ran;
-static BaseType_t task_B_ran;
+স্থির BaseType_t task_A_ran;
+স্থির BaseType_t task_B_ran;
 
-static void task_A(void *arg)
+স্থির শূন্য task_A(শূন্য *arg)
 {
     task_A_ran = pdTRUE;
     /* Keeping spinning to prevent the lower priority task_B from running */
-    while (1) {
+    যাবত্ (1) {
         ;
     }
 }
 
-static void task_B(void *arg)
+স্থির শূন্য task_B(শূন্য *arg)
 {
     /* The following should never run due to task_B having a lower priority */
     task_B_ran = pdTRUE;
-    while (1) {
+    যাবত্ (1) {
         ;
     }
 }
@@ -62,10 +62,10 @@ TEST_CASE("Tasks: Test priority scheduling", "[freertos]")
     task_B_ran = pdFALSE;
 
     /* Raise the priority of the unityTask */
-    vTaskPrioritySet(NULL, configMAX_PRIORITIES - 1);
+    vTaskPrioritySet(রিক্ত, configMAX_PRIORITIES - 1);
     /* Create task_A and task_B */
-    xTaskCreate(task_A, "task_A", configTEST_DEFAULT_STACK_SIZE, (void *)xTaskGetCurrentTaskHandle(), configMAX_PRIORITIES - 2, &task_A_handle);
-    xTaskCreate(task_B, "task_B", configTEST_DEFAULT_STACK_SIZE, (void *)xTaskGetCurrentTaskHandle(), configMAX_PRIORITIES - 3, &task_B_handle);
+    xTaskCreate(task_A, "task_A", config_TEST_DEFAULT_স্তূপ_SIZE, (শূন্য *)xTaskGetCurrentTaskHandle(), configMAX_PRIORITIES - 2, &task_A_handle);
+    xTaskCreate(task_B, "task_B", config_TEST_DEFAULT_স্তূপ_SIZE, (শূন্য *)xTaskGetCurrentTaskHandle(), configMAX_PRIORITIES - 3, &task_B_handle);
 
     /* Block to allow task_A to be scheduled */
     vTaskDelay(UNITY_TASK_DELAY_TICKS);
@@ -77,7 +77,7 @@ TEST_CASE("Tasks: Test priority scheduling", "[freertos]")
     vTaskDelete(task_A_handle);
     vTaskDelete(task_B_handle);
     /* Restore the priority of the unityTask */
-    vTaskPrioritySet(NULL, configTEST_UNITY_TASK_PRIORITY);
+    vTaskPrioritySet(রিক্ত, configTEST_UNITY_TASK_PRIORITY);
 }
 
 #endif /* CONFIG_FREERTOS_NUMBER_OF_CORES == 1 */

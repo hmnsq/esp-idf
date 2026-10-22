@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
+#অন্তর্ভাব "sdkconfig.h"
 
 /* This file implements the heap related functions that are called by FreeRTOS.
  * ESP-IDF provides its own heap containing memory with different capabilities
@@ -25,28 +25,28 @@
  * task.h is included from an application file. */
 #define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#include "FreeRTOS.h"
+#অন্তর্ভাব "FreeRTOS.h"
 
 #undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 0 )
-#error This file must not be used if configSUPPORT_DYNAMIC_ALLOCATION is 0
+#যদি ( configSUPPORT_DYNAMIC_ALLOCATION == 0 )
+#error This file must not be used যদি configSUPPORT_DYNAMIC_ALLOCATION is 0
 #endif
 
-#include "esp_heap_caps.h"
+#অন্তর্ভাব "esp_heap_caps.h"
 
-#if !CONFIG_IDF_TARGET_LINUX
+#যদি !CONFIG_IDF_TARGET_LINUX
 /* Memory util functions are not implemented in the Linux simulator */
-#include "esp_memory_utils.h"
+#অন্তর্ভাব "esp_memory_utils.h"
 #endif /* CONFIG_IDF_TARGET_LINUX */
 
 #define portFREERTOS_HEAP_CAPS    ( MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT )
 
 /*-----------------------------------------------------------*/
 
-void * pvPortMalloc(size_t xWantedSize)
+শূন্য * pvPortMalloc(size_t xWantedSize)
 {
-    void * pvReturn = NULL;
+    শূন্য * pvReturn = রিক্ত;
 
     /* All dynamic allocation done by FreeRTOS goes through this function. If
      * users need to allocate FreeRTOS objects into external RAM, they should
@@ -54,67 +54,67 @@ void * pvPortMalloc(size_t xWantedSize)
      * (e.g., queues). */
     pvReturn = heap_caps_malloc(xWantedSize, portFREERTOS_HEAP_CAPS);
 
-    return pvReturn;
+    প্রত্যাগম pvReturn;
 }
 /*-----------------------------------------------------------*/
 
-void vPortFree(void * pv)
+শূন্য vPortFree(শূন্য * pv)
 {
     heap_caps_free(pv);
 }
 /*-----------------------------------------------------------*/
 
-size_t xPortGetFreeHeapSize(void)
+size_t xPortGetFreeHeapSize(শূন্য)
 {
-    return heap_caps_get_free_size(portFREERTOS_HEAP_CAPS);
+    প্রত্যাগম heap_caps_get_free_size(portFREERTOS_HEAP_CAPS);
 }
 /*-----------------------------------------------------------*/
 
-size_t xPortGetMinimumEverFreeHeapSize(void)
+size_t xPortGetMinimumEverFreeHeapSize(শূন্য)
 {
-    return heap_caps_get_minimum_free_size(portFREERTOS_HEAP_CAPS);
+    প্রত্যাগম heap_caps_get_minimum_free_size(portFREERTOS_HEAP_CAPS);
 }
 /*-----------------------------------------------------------*/
 
-bool xPortCheckValidListMem(const void * ptr)
+bool xPortCheckValidListMem(ধ্রুব শূন্য * ptr)
 {
-#if CONFIG_IDF_TARGET_LINUX
-    return true;
-#else /* CONFIG_IDF_TARGET_LINUX */
-    return esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
+#যদি CONFIG_IDF_TARGET_LINUX
+    প্রত্যাগম true;
+#অন্যথা /* CONFIG_IDF_TARGET_LINUX */
+    প্রত্যাগম esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
 #endif /* CONFIG_IDF_TARGET_LINUX */
 }
 
-bool xPortCheckValidTCBMem(const void * ptr)
+bool xPortCheckValidTCBMem(ধ্রুব শূন্য * ptr)
 {
-#if CONFIG_IDF_TARGET_LINUX
-    return true;
-#else /* CONFIG_IDF_TARGET_LINUX */
-    return esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
+#যদি CONFIG_IDF_TARGET_LINUX
+    প্রত্যাগম true;
+#অন্যথা /* CONFIG_IDF_TARGET_LINUX */
+    প্রত্যাগম esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
 #endif /* CONFIG_IDF_TARGET_LINUX */
 }
 
-#if CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM
-void * pvPortMallocStack(size_t xWantedSize)
+#যদি CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM
+শূন্য * pv_Port_Malloc_স্তূপ(size_t xWantedSize)
 {
-    return heap_caps_malloc_prefer(xWantedSize, 2, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
+    প্রত্যাগম heap_caps_malloc_prefer(xWantedSize, 2, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
 }
 
-void vPortFreeStack(void * pv)
+শূন্য v_Port_Free_স্তূপ(শূন্য * pv)
 {
     heap_caps_free(pv);
 }
 #endif /* CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM */
 
-bool xPortcheckValidStackMem(const void * ptr)
+bool x_Portcheck_Valid_স্তূপ_Mem(ধ্রুব শূন্য * ptr)
 {
-#if CONFIG_IDF_TARGET_LINUX
-    return true;
-#else /* CONFIG_IDF_TARGET_LINUX */
+#যদি CONFIG_IDF_TARGET_LINUX
+    প্রত্যাগম true;
+#অন্যথা /* CONFIG_IDF_TARGET_LINUX */
 #ifdef CONFIG_FREERTOS_TASK_CREATE_ALLOW_EXT_MEM
-    return esp_ptr_byte_accessible(ptr);
-#else
-    return esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
+    প্রত্যাগম esp_ptr_byte_accessible(ptr);
+#অন্যথা
+    প্রত্যাগম esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
 #endif
 #endif /* CONFIG_IDF_TARGET_LINUX */
 }
