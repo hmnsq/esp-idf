@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <string.h>
-#include "FreeRTOS.h"
-#include "task.h"
-#include "esp_system.h"
-#include "esp_memory_utils.h"
-#include "sdkconfig.h"
+#অন্তর্ভাৱ <string.h>
+#অন্তর্ভাৱ "FreeRTOS.h"
+#অন্তর্ভাৱ "task.h"
+#অন্তর্ভাৱ "esp_system.h"
+#অন্তর্ভাৱ "esp_memory_utils.h"
+#অন্তর্ভাৱ "sdkconfig.h"
 
 /* ----------------------------------------- Port Implementations (Common)  --------------------------------------------
  * - Common FreeRTOS port function implementations
@@ -24,81 +24,81 @@ enabled and is used by FreeRTOS to obtain memory for its IDLE/Timer tasks.
 
 We simply allocate the IDLE/Timer tasks memory from the FreeRTOS heap.
 */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
-                                   StackType_t **ppxIdleTaskStackBuffer,
-                                   uint32_t *pulIdleTaskStackSize)
+#যদি ( configSUPPORT_STATIC_ALLOCATION == 1 )
+শূন্য vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
+                                   স্তূপ_Type_t **ppx_Idle_Task_স্তূপ_Buffer,
+                                   uint32_t *pul_Idle_Task_স্তূপ_Size)
 {
     StaticTask_t *pxTCBBufferTemp;
-    StackType_t *pxStackBufferTemp;
+    স্তূপ_Type_t *px_স্তূপ_Buffer_Temp;
 
     /* Allocate TCB and stack buffer from the FreeRTOS heap
      *
      * If the stack grows down then allocate the stack then the TCB so the stack
      * does not grow into the TCB.  Likewise if the stack grows up then allocate
      * the TCB then the stack. */
-#if (portSTACK_GROWTH > 0)
+#যদি (port_স্তূপ_GROWTH > 0)
     {
-        pxTCBBufferTemp = pvPortMalloc(sizeof(StaticTask_t));
-        pxStackBufferTemp = pvPortMalloc(configMINIMAL_STACK_SIZE);
+        pxTCBBufferTemp = pvPortMalloc(পরিমাণ(StaticTask_t));
+        px_স্তূপ_Buffer_Temp = pvPortMalloc(config_MINIMAL_স্তূপ_SIZE);
     }
-#else /* portSTACK_GROWTH */
+#অন্যথা /* portSTACK_GROWTH */
     {
-        pxStackBufferTemp = pvPortMalloc(configMINIMAL_STACK_SIZE);
-        pxTCBBufferTemp = pvPortMalloc(sizeof(StaticTask_t));
+        px_স্তূপ_Buffer_Temp = pvPortMalloc(config_MINIMAL_স্তূপ_SIZE);
+        pxTCBBufferTemp = pvPortMalloc(পরিমাণ(StaticTask_t));
     }
 #endif /* portSTACK_GROWTH */
 
-    assert(pxTCBBufferTemp != NULL);
-    assert(pxStackBufferTemp != NULL);
+    প্রতিজ্ঞা(pxTCBBufferTemp != রিক্ত);
+    প্রতিজ্ঞা(px_স্তূপ_Buffer_Temp != রিক্ত);
     //Write back pointers
     *ppxIdleTaskTCBBuffer = pxTCBBufferTemp;
-    *ppxIdleTaskStackBuffer = pxStackBufferTemp;
-    *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+    *ppx_Idle_Task_স্তূপ_Buffer = px_স্তূপ_Buffer_Temp;
+    *pul_Idle_Task_স্তূপ_Size = config_MINIMAL_স্তূপ_SIZE;
 }
 
-#if ( ( CONFIG_FREERTOS_SMP ) && ( configNUMBER_OF_CORES > 1 ) )
-void vApplicationGetPassiveIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer,
-                                          StackType_t ** ppxIdleTaskStackBuffer,
-                                          uint32_t * pulIdleTaskStackSize,
+#যদি ( ( CONFIG_FREERTOS_SMP ) && ( config_সংখ্যা_OF_CORES > 1 ) )
+শূন্য vApplicationGetPassiveIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer,
+                                          স্তূপ_Type_t ** ppx_Idle_Task_স্তূপ_Buffer,
+                                          uint32_t * pul_Idle_Task_স্তূপ_Size,
                                           BaseType_t xPassiveIdleTaskIndex)
 {
-    vApplicationGetIdleTaskMemory(ppxIdleTaskTCBBuffer, ppxIdleTaskStackBuffer, pulIdleTaskStackSize);
+    vApplicationGetIdleTaskMemory(ppxIdleTaskTCBBuffer, ppx_Idle_Task_স্তূপ_Buffer, pul_Idle_Task_স্তূপ_Size);
 }
 #endif /* ( ( CONFIG_FREERTOS_SMP ) && ( configNUMBER_OF_CORES > 1 ) ) */
 
-#if configUSE_TIMERS
+#যদি configUSE_TIMERS
 
-void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
-                                    StackType_t **ppxTimerTaskStackBuffer,
-                                    uint32_t *pulTimerTaskStackSize)
+শূন্য vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
+                                    স্তূপ_Type_t **ppx_Timer_Task_স্তূপ_Buffer,
+                                    uint32_t *pul_Timer_Task_স্তূপ_Size)
 {
     StaticTask_t *pxTCBBufferTemp;
-    StackType_t *pxStackBufferTemp;
+    স্তূপ_Type_t *px_স্তূপ_Buffer_Temp;
 
     /* Allocate TCB and stack buffer from the FreeRTOS heap
      *
      * If the stack grows down then allocate the stack then the TCB so the stack
      * does not grow into the TCB.  Likewise if the stack grows up then allocate
      * the TCB then the stack. */
-#if (portSTACK_GROWTH > 0)
+#যদি (port_স্তূপ_GROWTH > 0)
     {
-        pxTCBBufferTemp = pvPortMalloc(sizeof(StaticTask_t));
-        pxStackBufferTemp = pvPortMalloc(configTIMER_TASK_STACK_DEPTH);
+        pxTCBBufferTemp = pvPortMalloc(পরিমাণ(StaticTask_t));
+        px_স্তূপ_Buffer_Temp = pvPortMalloc(config_TIMER_TASK_স্তূপ_DEPTH);
     }
-#else /* portSTACK_GROWTH */
+#অন্যথা /* portSTACK_GROWTH */
     {
-        pxStackBufferTemp = pvPortMalloc(configTIMER_TASK_STACK_DEPTH);
-        pxTCBBufferTemp = pvPortMalloc(sizeof(StaticTask_t));
+        px_স্তূপ_Buffer_Temp = pvPortMalloc(config_TIMER_TASK_স্তূপ_DEPTH);
+        pxTCBBufferTemp = pvPortMalloc(পরিমাণ(StaticTask_t));
     }
 #endif /* portSTACK_GROWTH */
 
-    assert(pxTCBBufferTemp != NULL);
-    assert(pxStackBufferTemp != NULL);
+    প্রতিজ্ঞা(pxTCBBufferTemp != রিক্ত);
+    প্রতিজ্ঞা(px_স্তূপ_Buffer_Temp != রিক্ত);
     //Write back pointers
     *ppxTimerTaskTCBBuffer = pxTCBBufferTemp;
-    *ppxTimerTaskStackBuffer = pxStackBufferTemp;
-    *pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
+    *ppx_Timer_Task_স্তূপ_Buffer = px_স্তূপ_Buffer_Temp;
+    *pul_Timer_Task_স্তূপ_Size = config_TIMER_TASK_স্তূপ_DEPTH;
 }
 #endif //configUSE_TIMERS
 

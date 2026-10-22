@@ -4,16 +4,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <math.h>
-#include "soc/soc_caps.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "unity.h"
-#include "test_utils.h"
+#অন্তর্ভাৱ "sdkconfig.h"
+#অন্তর্ভাৱ <math.h>
+#অন্তর্ভাৱ "soc/soc_caps.h"
+#অন্তর্ভাৱ "freertos/FreeRTOS.h"
+#অন্তর্ভাৱ "freertos/task.h"
+#অন্তর্ভাৱ "freertos/semphr.h"
+#অন্তর্ভাৱ "unity.h"
+#অন্তর্ভাৱ "test_utils.h"
 
-#if SOC_CPU_HAS_FPU
+#যদি SOC_CPU_HAS_FPU
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 
@@ -36,10 +36,10 @@ Expected:
     - Each task cleans up its FPU context on deletion
 */
 
-#define TEST_PINNED_NUM_TASKS       3
-#define TEST_PINNED_NUM_ITERS       5
+#define TEST_PINNED_অঙ্ক_TASKS       3
+#define TEST_PINNED_অঙ্ক_ITERS       5
 
-static void pinned_task(void *arg)
+স্থির শূন্য pinned_task(শূন্য *arg)
 {
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
@@ -49,8 +49,8 @@ static void pinned_task(void *arg)
     - cosf(0.0f) should return 1.0f, thus we are simply doubling test_float every iteration.
     - Therefore, we should end up with (0.01) * (2^8) = 2.56 at the end of the loop
     */
-    volatile float test_float = 0.01f;
-    for (int i = 0; i < 8; i++) {
+    চঞ্চল ভিন্ন test_float = 0.01f;
+    বাবে (পূর্ণাঙ্ক i = 0; i < 8; i++) {
         test_float = test_float * 2.0f * cosf(0.0f);
         vTaskDelay(1);  // Block to cause a context switch, forcing the FPU context to be saved
     }
@@ -59,39 +59,39 @@ static void pinned_task(void *arg)
 
     // Indicate done wand wait to be deleted
     xSemaphoreGive((SemaphoreHandle_t)arg);
-    vTaskSuspend(NULL);
+    vTaskSuspend(রিক্ত);
 }
 
 TEST_CASE("FPU: Usage in task", "[freertos]")
 {
-    SemaphoreHandle_t done_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_NUMBER_OF_CORES * TEST_PINNED_NUM_TASKS, 0);
-    TEST_ASSERT_NOT_EQUAL(NULL, done_sem);
+    SemaphoreHandle_t done_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_সংখ্যা_OF_CORES * TEST_PINNED_অঙ্ক_TASKS, 0);
+    TEST_ASSERT_NOT_EQUAL(রিক্ত, done_sem);
 
-    for (int iter = 0; iter < TEST_PINNED_NUM_ITERS; iter++) {
-        TaskHandle_t task_handles[CONFIG_FREERTOS_NUMBER_OF_CORES][TEST_PINNED_NUM_TASKS];
+    বাবে (পূর্ণাঙ্ক iter = 0; iter < TEST_PINNED_অঙ্ক_ITERS; iter++) {
+        TaskHandle_t task_handles[CONFIG_FREERTOS_সংখ্যা_OF_CORES][TEST_PINNED_অঙ্ক_TASKS];
 
         // Create test tasks for each core
-        for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-            for (int j = 0; j < TEST_PINNED_NUM_TASKS; j++) {
-                TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(pinned_task, "task", 4096, (void *)done_sem, UNITY_FREERTOS_PRIORITY + 1, &task_handles[i][j], i));
+        বাবে (পূর্ণাঙ্ক i = 0; i < CONFIG_FREERTOS_সংখ্যা_OF_CORES; i++) {
+            বাবে (পূর্ণাঙ্ক j = 0; j < TEST_PINNED_অঙ্ক_TASKS; j++) {
+                TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(pinned_task, "task", 4096, (শূন্য *)done_sem, UNITY_FREERTOS_PRIORITY + 1, &task_handles[i][j], i));
             }
         }
 
         // Start the created tasks simultaneously
-        for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-            for (int j = 0; j < TEST_PINNED_NUM_TASKS; j++) {
+        বাবে (পূর্ণাঙ্ক i = 0; i < CONFIG_FREERTOS_সংখ্যা_OF_CORES; i++) {
+            বাবে (পূর্ণাঙ্ক j = 0; j < TEST_PINNED_অঙ্ক_TASKS; j++) {
                 xTaskNotifyGive(task_handles[i][j]);
             }
         }
 
         // Wait for the tasks to complete
-        for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES * TEST_PINNED_NUM_TASKS; i++) {
+        বাবে (পূর্ণাঙ্ক i = 0; i < CONFIG_FREERTOS_সংখ্যা_OF_CORES * TEST_PINNED_অঙ্ক_TASKS; i++) {
             xSemaphoreTake(done_sem, portMAX_DELAY);
         }
 
         // Delete the tasks
-        for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-            for (int j = 0; j < TEST_PINNED_NUM_TASKS; j++) {
+        বাবে (পূর্ণাঙ্ক i = 0; i < CONFIG_FREERTOS_সংখ্যা_OF_CORES; i++) {
+            বাবে (পূর্ণাঙ্ক j = 0; j < TEST_PINNED_অঙ্ক_TASKS; j++) {
                 vTaskDelete(task_handles[i][j]);
             }
         }
@@ -123,25 +123,25 @@ Expected:
     - Each task cleans up its FPU context on deletion
 */
 
-#if CONFIG_FREERTOS_NUMBER_OF_CORES > 1
+#যদি CONFIG_FREERTOS_সংখ্যা_OF_CORES > 1
 
-#define TEST_UNPINNED_NUM_ITERS     5
+#define TEST_UNPINNED_অঙ্ক_ITERS     5
 
-static void unpinned_task(void *arg)
+স্থির শূন্য unpinned_task(শূন্য *arg)
 {
     // Disable scheduling/preemption to make sure current core ID doesn't change
-#if ( ( CONFIG_FREERTOS_SMP ) && ( !CONFIG_FREERTOS_UNICORE ) )
-    vTaskPreemptionDisable(NULL);
-#else
+#যদি ( ( CONFIG_FREERTOS_SMP ) && ( !CONFIG_FREERTOS_UNICORE ) )
+    vTaskPreemptionDisable(রিক্ত);
+#অন্যথা
     vTaskSuspendAll();
 #endif
-    BaseType_t cur_core_num = xPortGetCoreID();
+    BaseType_t cur_core_অঙ্ক = xPortGetCoreID();
     // Check that the task is unpinned
-#if !CONFIG_FREERTOS_UNICORE
-#if CONFIG_FREERTOS_SMP
-    TEST_ASSERT_EQUAL(tskNO_AFFINITY, vTaskCoreAffinityGet(NULL));
-#else
-    TEST_ASSERT_EQUAL(tskNO_AFFINITY, xTaskGetCoreID(NULL));
+#যদি !CONFIG_FREERTOS_UNICORE
+#যদি CONFIG_FREERTOS_SMP
+    TEST_ASSERT_EQUAL(tskNO_AFFINITY, vTaskCoreAffinityGet(রিক্ত));
+#অন্যথা
+    TEST_ASSERT_EQUAL(tskNO_AFFINITY, xTaskGetCoreID(রিক্ত));
 #endif
 #endif // !CONFIG_FREERTOS_UNICORE
 
@@ -151,45 +151,45 @@ static void unpinned_task(void *arg)
     - cosf(0.0f) should return 1.0f, thus we are simply doubling test_float every iteration.
     - Therefore, we should end up with (0.01) * (2^8) = 2.56 at the end of the loop
     */
-    volatile float test_float = 0.01f;
-    for (int i = 0; i < 8; i++) {
+    চঞ্চল ভিন্ন test_float = 0.01f;
+    বাবে (পূর্ণাঙ্ক i = 0; i < 8; i++) {
         test_float = test_float * 2.0f * cosf(0.0f);
     }
     // We allow a 0.1% delta on the final result in case of any loss of precision from floating point calculations
     TEST_ASSERT_FLOAT_WITHIN(0.00256f, 2.56f, test_float);
 
-#if !CONFIG_FREERTOS_UNICORE
-#if CONFIG_FREERTOS_SMP
-    TEST_ASSERT_EQUAL(1 << cur_core_num, vTaskCoreAffinityGet(NULL));
-#else
-    TEST_ASSERT_EQUAL(cur_core_num, xTaskGetCoreID(NULL));
+#যদি !CONFIG_FREERTOS_UNICORE
+#যদি CONFIG_FREERTOS_SMP
+    TEST_ASSERT_EQUAL(1 << cur_core_অঙ্ক, vTaskCoreAffinityGet(রিক্ত));
+#অন্যথা
+    TEST_ASSERT_EQUAL(cur_core_অঙ্ক, xTaskGetCoreID(রিক্ত));
 #endif
 #endif // !CONFIG_FREERTOS_UNICORE
     // Re-enable scheduling/preemption
-#if ( ( CONFIG_FREERTOS_SMP ) && ( !CONFIG_FREERTOS_UNICORE ) )
-    vTaskPreemptionEnable(NULL);
-#else
+#যদি ( ( CONFIG_FREERTOS_SMP ) && ( !CONFIG_FREERTOS_UNICORE ) )
+    vTaskPreemptionEnable(রিক্ত);
+#অন্যথা
     xTaskResumeAll();
 #endif
 
     // Indicate done and self delete
     xTaskNotifyGive((TaskHandle_t)arg);
-    vTaskDelete(NULL);
+    vTaskDelete(রিক্ত);
 }
 
 TEST_CASE("FPU: Usage in unpinned task", "[freertos]")
 {
     TaskHandle_t unity_task_handle = xTaskGetCurrentTaskHandle();
-    for (int iter = 0; iter < TEST_UNPINNED_NUM_ITERS; iter++) {
+    বাবে (পূর্ণাঙ্ক iter = 0; iter < TEST_UNPINNED_অঙ্ক_ITERS; iter++) {
         // Create unpinned task
-        xTaskCreate(unpinned_task, "unpin", 4096, (void *)unity_task_handle, UNITY_FREERTOS_PRIORITY + 1, NULL);
+        xTaskCreate(unpinned_task, "unpin", 4096, (শূন্য *)unity_task_handle, UNITY_FREERTOS_PRIORITY + 1, রিক্ত);
         // Wait for task to complete
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
         vTaskDelay(10); // Short delay to allow task memory to be freed
     }
 }
 
-typedef struct {
+প্রকারনির্দেশ সংরচনা {
     bool negative;
     TaskHandle_t main;
 } fpu_params_t;
@@ -198,17 +198,17 @@ typedef struct {
  * @brief Function performing some simple calculation using several FPU registers.
  *        The goal is to be preempted by a task that also uses the FPU on the same core.
  */
-void fpu_calculation(void* arg)
+শূন্য fpu_calculation(শূন্য* arg)
 {
     fpu_params_t* p = (fpu_params_t*) arg;
-    const bool negative = p->negative;
-    const float init = negative ? -1.f : 1.f;
-    float f = init;
+    ধ্রুৱ bool negative = p->negative;
+    ধ্রুৱ ভিন্ন init = negative ? -1.f : 1.f;
+    ভিন্ন f = init;
 
-    for (int i = 0; i < 10; i++) {
+    বাবে (পূর্ণাঙ্ক i = 0; i < 10; i++) {
         /* The following calculation doesn't really have any meaning, we try to use several FPU registers and operations */
-        float delta = negative ? -1.1f : 1.1f;
-        for (int i = 0; i < 1000; i++) {
+        ভিন্ন delta = negative ? -1.1f : 1.1f;
+        বাবে (পূর্ণাঙ্ক i = 0; i < 1000; i++) {
             f += delta;
             delta += negative ? -0.1f : 0.1f;
         }
@@ -220,7 +220,7 @@ void fpu_calculation(void* arg)
          * It'll have the sign of the other tasks' `f` value.
          * Use assert to make sure the sign is correct. Using TEST_ASSERT_TRUE triggers a stack overflow.
          */
-        assert((negative && f < 0.0f) || (!negative && f > 0.0f));
+        প্রতিজ্ঞা((negative && f < 0.0f) || (!negative && f > 0.0f));
         f = init;
 
         /* Give the hand back to FreeRTOS to avoid any watchdog */
@@ -228,7 +228,7 @@ void fpu_calculation(void* arg)
     }
 
     xTaskNotifyGive(p->main);
-    vTaskDelete(NULL);
+    vTaskDelete(রিক্ত);
 }
 
 TEST_CASE("FPU: Unsolicited context switch between tasks using FPU", "[freertos]")

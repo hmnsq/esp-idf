@@ -8,54 +8,54 @@
  Combined unit tests & benchmarking for spinlock "portMUX" functionality
 */
 
-#include <esp_types.h>
-#include <stdio.h>
-#include <inttypes.h>
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "unity.h"
-#include "esp_cpu.h"
+#অন্তর্ভাৱ <esp_types.h>
+#অন্তর্ভাৱ <stdio.h>
+#অন্তর্ভাৱ <inttypes.h>
+#অন্তর্ভাৱ "sdkconfig.h"
+#অন্তর্ভাৱ "freertos/FreeRTOS.h"
+#অন্তর্ভাৱ "freertos/task.h"
+#অন্তর্ভাৱ "freertos/semphr.h"
+#অন্তর্ভাৱ "freertos/queue.h"
+#অন্তর্ভাৱ "unity.h"
+#অন্তর্ভাৱ "esp_cpu.h"
 
-#include "test_utils.h"
-#include "freertos_performance.h"
+#অন্তর্ভাৱ "test_utils.h"
+#অন্তর্ভাৱ "freertos_performance.h"
 
-#if !CONFIG_FREERTOS_SMP    // Known issue in Amazon SMP FreeRTOS port IDF-6204
+#যদি !CONFIG_FREERTOS_SMP    // Known issue in Amazon SMP FreeRTOS port IDF-6204
 
 #define REPEAT_OPS 10000
 
-static uint32_t start, end;
+স্থির uint32_t start, end;
 
-#define BENCHMARK_START() do {                  \
-        start = esp_cpu_get_cycle_count();                     \
-    } while(0)
+#define BENCHMARK_START() কৰা {                  \
+        start = esp_cpu_get_cycle_গুনতি();                     \
+    } যেতিয়ালৈ(0)
 
-#define BENCHMARK_END(OPERATION) do {                       \
-        end = esp_cpu_get_cycle_count();                                          \
+#define BENCHMARK_END(OPERATION) কৰা {                       \
+        end = esp_cpu_get_cycle_গুনতি();                                          \
         printf("%s took %"PRIu32" cycles/op (%"PRIu32" cycles for %d ops)\n",     \
                OPERATION, (end - start)/REPEAT_OPS,                 \
                (end - start), REPEAT_OPS);                          \
-    } while(0)
+    } যেতিয়ালৈ(0)
 
 TEST_CASE("portMUX spinlocks (no contention)", "[freertos]")
 {
     portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
     BENCHMARK_START();
 
-    for (int i = 0; i < REPEAT_OPS; i++) {
+    বাবে (পূর্ণাঙ্ক i = 0; i < REPEAT_OPS; i++) {
         portENTER_CRITICAL_ISR(&mux);
         portEXIT_CRITICAL_ISR(&mux);
     }
     BENCHMARK_END("no contention lock");
 
-#if CONFIG_FREERTOS_UNICORE
+#যদি CONFIG_FREERTOS_UNICORE
     TEST_PERFORMANCE_LESS_THAN(FREERTOS_SPINLOCK_CYCLES_PER_OP_UNICORE, "%"PRIu32" cycles/op", ((end - start) / REPEAT_OPS));
-#else
-#if CONFIG_SPIRAM
+#অন্যথা
+#যদি CONFIG_SPIRAM
     TEST_PERFORMANCE_LESS_THAN(FREERTOS_SPINLOCK_CYCLES_PER_OP_PSRAM, "%"PRIu32" cycles/op", ((end - start) / REPEAT_OPS));
-#else
+#অন্যথা
     TEST_PERFORMANCE_LESS_THAN(FREERTOS_SPINLOCK_CYCLES_PER_OP, "%"PRIu32" cycles/op", ((end - start) / REPEAT_OPS));
 #endif
 #endif
@@ -66,112 +66,112 @@ TEST_CASE("portMUX recursive locks (no contention)", "[freertos]")
     portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
     BENCHMARK_START();
 
-    const int RECURSE_COUNT = 25;
+    ধ্রুৱ পূর্ণাঙ্ক RECURSE_গুনতি = 25;
 
-    for (int i = 0; i < REPEAT_OPS / RECURSE_COUNT; i++) {
-        for (int j = 0; j < RECURSE_COUNT; j++) {
+    বাবে (পূর্ণাঙ্ক i = 0; i < REPEAT_OPS / RECURSE_গুনতি; i++) {
+        বাবে (পূর্ণাঙ্ক j = 0; j < RECURSE_গুনতি; j++) {
             portENTER_CRITICAL(&mux);
         }
-        for (int j = 0; j < RECURSE_COUNT; j++) {
+        বাবে (পূর্ণাঙ্ক j = 0; j < RECURSE_গুনতি; j++) {
             portEXIT_CRITICAL(&mux);
         }
     }
     BENCHMARK_END("no contention recursive");
 
-#if CONFIG_FREERTOS_UNICORE
+#যদি CONFIG_FREERTOS_UNICORE
     TEST_PERFORMANCE_LESS_THAN(FREERTOS_SPINLOCK_CYCLES_PER_OP_UNICORE, "%"PRIu32" cycles/op", ((end - start) / REPEAT_OPS));
-#else
-#if CONFIG_SPIRAM
+#অন্যথা
+#যদি CONFIG_SPIRAM
     TEST_PERFORMANCE_LESS_THAN(FREERTOS_SPINLOCK_CYCLES_PER_OP_PSRAM, "%"PRIu32" cycles/op", ((end - start) / REPEAT_OPS));
-#else
+#অন্যথা
     TEST_PERFORMANCE_LESS_THAN(FREERTOS_SPINLOCK_CYCLES_PER_OP, "%"PRIu32" cycles/op", ((end - start) / REPEAT_OPS));
 #endif
 #endif
 }
 
-#if CONFIG_FREERTOS_NUMBER_OF_CORES == 2
+#যদি CONFIG_FREERTOS_সংখ্যা_OF_CORES == 2
 
-static volatile int shared_value;
-static portMUX_TYPE *shared_mux;
-static SemaphoreHandle_t done_sem;
+স্থির চঞ্চল পূর্ণাঙ্ক shared_মান;
+স্থির portMUX_TYPE *shared_mux;
+স্থির SemaphoreHandle_t done_sem;
 
-static void task_shared_value_increment(void *ignore)
+স্থির শূন্য task_shared_মান_increment(শূন্য *ignore)
 {
-    for (int i = 0; i < REPEAT_OPS; i++) {
+    বাবে (পূর্ণাঙ্ক i = 0; i < REPEAT_OPS; i++) {
         portENTER_CRITICAL(shared_mux);
-        shared_value++;
+        shared_মান++;
         portEXIT_CRITICAL(shared_mux);
     }
     xSemaphoreGive(done_sem);
-    vTaskDelete(NULL);
+    vTaskDelete(রিক্ত);
 }
 
 TEST_CASE("portMUX cross-core locking", "[freertos]")
 {
-    shared_mux = heap_caps_malloc(sizeof(portMUX_TYPE), MALLOC_CAP_8BIT | MALLOC_CAP_INTERNAL);
+    shared_mux = heap_caps_malloc(পরিমাণ(portMUX_TYPE), MALLOC_CAP_8BIT | MALLOC_CAP_INTERNAL);
     done_sem = xSemaphoreCreateCounting(2, 0);
     portMUX_INITIALIZE(shared_mux);
-    shared_value = 0;
+    shared_মান = 0;
 
     BENCHMARK_START();
 
-    xTaskCreatePinnedToCore(task_shared_value_increment, "INC0", 2048, NULL, UNITY_FREERTOS_PRIORITY + 1, NULL, UNITY_FREERTOS_CPU ? 0 : 1);
-    xTaskCreatePinnedToCore(task_shared_value_increment, "INC1", 2048, NULL, UNITY_FREERTOS_PRIORITY + 1, NULL, UNITY_FREERTOS_CPU);
+    xTaskCreatePinnedToCore(task_shared_মান_increment, "INC0", 2048, রিক্ত, UNITY_FREERTOS_PRIORITY + 1, রিক্ত, UNITY_FREERTOS_CPU ? 0 : 1);
+    xTaskCreatePinnedToCore(task_shared_মান_increment, "INC1", 2048, রিক্ত, UNITY_FREERTOS_PRIORITY + 1, রিক্ত, UNITY_FREERTOS_CPU);
 
-    for (int i = 0; i < 2; i++) {
-        if (!xSemaphoreTake(done_sem, 10000 / portTICK_PERIOD_MS)) {
+    বাবে (পূর্ণাঙ্ক i = 0; i < 2; i++) {
+        যদি (!xSemaphoreTake(done_sem, 10000 / portTICK_PERIOD_MS)) {
             TEST_FAIL_MESSAGE("done_sem not released by test task");
         }
     }
 
     BENCHMARK_END("cross-core incrementing");
     vSemaphoreDelete(done_sem);
-    free(shared_mux);
+    মুক্ত(shared_mux);
 
-    TEST_ASSERT_EQUAL_INT(REPEAT_OPS * 2, shared_value);
+    TEST_ASSERT_EQUAL_INT(REPEAT_OPS * 2, shared_মান);
 }
 
-void portmux_high_contention_test(uint32_t lock_malloc_caps)
+শূন্য portmux_উপৰেৰ_contention_test(uint32_t lock_malloc_caps)
 {
-    const int TOTAL_TASKS = 8; /* half on each core */
-    shared_mux = heap_caps_malloc(sizeof(portMUX_TYPE), lock_malloc_caps);
+    ধ্রুৱ পূর্ণাঙ্ক TOTAL_TASKS = 8; /* half on each core */
+    shared_mux = heap_caps_malloc(পরিমাণ(portMUX_TYPE), lock_malloc_caps);
     done_sem = xSemaphoreCreateCounting(TOTAL_TASKS, 0);
     portMUX_INITIALIZE(shared_mux);
-    shared_value = 0;
+    shared_মান = 0;
 
     BENCHMARK_START();
 
-    for (int i = 0; i < TOTAL_TASKS / 2; i++) {
+    বাবে (পূর্ণাঙ্ক i = 0; i < TOTAL_TASKS / 2; i++) {
         /* as each task has a higher priority than previous, expect
            them to preempt the earlier created task, at least on the
            other core (this core has the unity task, until that
            blocks)... */
-        xTaskCreatePinnedToCore(task_shared_value_increment, "INC0", 2048, NULL, tskIDLE_PRIORITY + 1 + i, NULL, UNITY_FREERTOS_CPU ? 0 : 1);
-        xTaskCreatePinnedToCore(task_shared_value_increment, "INC1", 2048, NULL, tskIDLE_PRIORITY + 1 + i, NULL, UNITY_FREERTOS_CPU);
+        xTaskCreatePinnedToCore(task_shared_মান_increment, "INC0", 2048, রিক্ত, tskIDLE_PRIORITY + 1 + i, রিক্ত, UNITY_FREERTOS_CPU ? 0 : 1);
+        xTaskCreatePinnedToCore(task_shared_মান_increment, "INC1", 2048, রিক্ত, tskIDLE_PRIORITY + 1 + i, রিক্ত, UNITY_FREERTOS_CPU);
     }
 
-    for (int i = 0; i < TOTAL_TASKS; i++) {
-        if (!xSemaphoreTake(done_sem, 10000 / portTICK_PERIOD_MS)) {
+    বাবে (পূর্ণাঙ্ক i = 0; i < TOTAL_TASKS; i++) {
+        যদি (!xSemaphoreTake(done_sem, 10000 / portTICK_PERIOD_MS)) {
             TEST_FAIL_MESSAGE("done_sem not released by test task");
         }
     }
 
     BENCHMARK_END("cross-core high contention");
     vSemaphoreDelete(done_sem);
-    free(shared_mux);
+    মুক্ত(shared_mux);
 
-    TEST_ASSERT_EQUAL_INT(REPEAT_OPS * TOTAL_TASKS, shared_value);
+    TEST_ASSERT_EQUAL_INT(REPEAT_OPS * TOTAL_TASKS, shared_মান);
 }
 
 TEST_CASE("portMUX high contention", "[freertos]")
 {
-    portmux_high_contention_test(MALLOC_CAP_8BIT | MALLOC_CAP_INTERNAL);
+    portmux_উপৰেৰ_contention_test(MALLOC_CAP_8BIT | MALLOC_CAP_INTERNAL);
 }
 
-#if CONFIG_SPIRAM_USE_MALLOC || CONFIG_SPIRAM_USE_CAPS_ALLOC
+#যদি CONFIG_SPIRAM_USE_MALLOC || CONFIG_SPIRAM_USE_CAPS_ALLOC
 TEST_CASE("portMUX high contention, PSRAM", "[freertos]")
 {
-    portmux_high_contention_test(MALLOC_CAP_8BIT | MALLOC_CAP_SPIRAM);
+    portmux_উপৰেৰ_contention_test(MALLOC_CAP_8BIT | MALLOC_CAP_SPIRAM);
 }
 #endif// CONFIG_SPIRAM_USE_MALLOC || CONFIG_SPIRAM_USE_CAPS_ALLOC
 

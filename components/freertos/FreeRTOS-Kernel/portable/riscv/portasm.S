@@ -21,18 +21,18 @@
 #include "esp_private/hw_stack_guard.h"
 #endif
 
-    .global port_uxInterruptNesting
-    .global port_xSchedulerRunning
-    .global xIsrStackTop
-    .global pxCurrentTCBs
-    .global vTaskSwitchContext
-    .global xPortSwitchFlag
-    .global port_uxCoreStartupDone
+    .ৱৈশ্ৱিক port_uxInterruptNesting
+    .ৱৈশ্ৱিক port_xSchedulerRunning
+    .ৱৈশ্ৱিক xIsrStackTop
+    .ৱৈশ্ৱিক pxCurrentTCBs
+    .ৱৈশ্ৱিক vTaskSwitchContext
+    .ৱৈশ্ৱিক xPortSwitchFlag
+    .ৱৈশ্ৱিক port_uxCoreStartupDone
 #if CONFIG_ESP_SYSTEM_HW_STACK_GUARD
-    .global xIsrStackBottom
-    .global esp_hw_stack_guard_monitor_stop
-    .global esp_hw_stack_guard_monitor_start
-    .global esp_hw_stack_guard_set_bounds
+    .ৱৈশ্ৱিক xIsrStackBottom
+    .ৱৈশ্ৱিক esp_hw_stack_guard_monitor_stop
+    .ৱৈশ্ৱিক esp_hw_stack_guard_monitor_start
+    .ৱৈশ্ৱিক esp_hw_stack_guard_set_bounds
 #endif /* CONFIG_ESP_SYSTEM_HW_STACK_GUARD */
 
     .section .text
@@ -56,7 +56,7 @@
  */
 .macro generate_coprocessor_routine name, coproc_idx, enable_coproc, save_coproc_regs, restore_coproc_regs
 
-    .global rtos_save_\name\()_coproc
+    .ৱৈশ্ৱিক rtos_save_\name\()_coproc
     .type rtos_save_\name\()_coproc, @function
 rtos_save_\name\()_coproc:
     /* If we are in an interrupt context, we have to abort. We don't allow using the coprocessors from ISR */
@@ -75,7 +75,7 @@ rtos_save_\name\()_coproc:
     /* Enable the coprocessor needed by the current task */
     \enable_coproc a1
     mv    s0, ra
-    call  rtos_current_tcb
+    আহ্ৱান  rtos_current_tcb
     /* If the current TCB is NULL, the coprocessor is used during initialization, even before
      * the scheduler started. Consider this a valid usage, it will be disabled as soon as the
      * scheduler is started anyway */
@@ -85,15 +85,15 @@ rtos_save_\name\()_coproc:
     /* Abort before pinning or saving context if this task is blacklisted from PIE use */
     .if \coproc_idx == PIE_COPROC_IDX
     mv    a1, sp
-    call  vPortAbortIfTaskPieBlacklisted
+    আহ্ৱান  vPortAbortIfTaskPieBlacklisted
     .endif
 #endif /* CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST */
     /* Prepare parameters of pxPortUpdateCoprocOwner. Source the TCB from s1, which
-     * is preserved across any call made above. */
+     * is preserved across any আহ্ৱান made above. */
     mv    a2, s1
     li    a1, \coproc_idx
     csrr  a0, mhartid
-    call  pxPortUpdateCoprocOwner
+    আহ্ৱান  pxPortUpdateCoprocOwner
     /* If the save area is NULL, no need to save context */
     beqz  a0, rtos_save_\name\()_coproc_nosave
     /* If the former owner is the current task (new owner), the return value is -1, we can skip restoring the
@@ -108,7 +108,7 @@ rtos_save_\name\()_coproc_nosave:
     /* Pin current task to current core, s1 has pxCurrentTCBs */
     mv    a0, s1
     csrr  a1, mhartid
-    call  vPortTaskPinToCore
+    আহ্ৱান  vPortTaskPinToCore
 #endif /* configNUM_CORES > 1 */
     /* Check if we have to restore a previous context from the current TCB */
     mv    a0, s1
@@ -118,7 +118,7 @@ rtos_save_\name\()_coproc_nosave:
      * from the panic handler.  */
     li    a1, 0
     li    a2, \coproc_idx
-    call  pxPortGetCoprocArea
+    আহ্ৱান  pxPortGetCoprocArea
     /* Get the enable flags from the coprocessor save area */
     lw    a1, RV_COPROC_ENABLE(a0)
     /* To avoid having branches below, set the coprocessor enable flag now */
@@ -216,7 +216,7 @@ hwlp_restore_if_used:
      */
     li    a1, 0
     li    a2, HWLP_COPROC_IDX
-    call  pxPortGetCoprocArea
+    আহ্ৱান  pxPortGetCoprocArea
     /* Get the enable flags from the coprocessor save area */
     lw    a2, RV_COPROC_ENABLE(a0)
     andi  a1, a2, 1 << HWLP_COPROC_IDX
@@ -562,14 +562,14 @@ generate_coprocessor_routine fpu, FPU_COPROC_IDX, fpu_enable, fpu_save_regs, fpu
     /* On the ESP32-S31, the PIE is only available on core 1, so whenever the core 0 uses a PIE instruction, we need to migrate the task to core 1.
      * If the task ever used the FPU (and is currently the owner), we need to flush the context to the Task's coproc save area. */
     .extern vPortTaskUsedPIEOnCPU0
-    .global rtos_pie_used_cpu0
+    .ৱৈশ্ৱিক rtos_pie_used_cpu0
     .type rtos_pie_used_cpu0, @function
 rtos_pie_used_cpu0:
     /* Task context on core 0 */
     mv    s0, ra
     lw    a0, pxCurrentTCBs   // a0 = task
     mv    a1, sp              // a1 = frame
-    call  vPortTaskUsedPIEOnCPU0
+    আহ্ৱান  vPortTaskUsedPIEOnCPU0
     /* Returns the context to save the current FPU context, or NULL if the task is not the owner of the FPU on the current core */
     beqz  a0, rtos_pie_used_cpu0_end
     /* As a precaution, enable the FPU. It will be restored to the initialize state when exiting
@@ -611,7 +611,7 @@ rtos_current_tcb:
  * this value is a bitmap where bit i is 1 if coprocessor i is enable, 0 if it is disabled.
  * This routine can use the s registers too since they are not used by the caller (yet)
  */
-    .global rtos_int_enter
+    .ৱৈশ্ৱিক rtos_int_enter
     .type rtos_int_enter, @function
 rtos_int_enter:
 #if SOC_CPU_COPROC_NUM > 0
@@ -675,7 +675,7 @@ rtos_int_enter:
     add     a0, a0, s0                      /* a0 = &pxCurrentTCBs[coreID] // s0 already contains coreID * 4 */
     lw      a0, (a0)                        /* a0 = pxCurrentTCBs[coreID] */
     sw      sp, 0(a0)                       /* pxCurrentTCBs[coreID] = sp */
-    /* We may need a0 below to call pxPortGetCoprocArea */
+    /* We may need a0 below to আহ্ৱান pxPortGetCoprocArea */
     la      a1, xIsrStackTop                /* a1 = &xIsrStackTop */
     add     a1, a1, s0                      /* a1 = &xIsrStackTop[coreID] // s0 already contains coreID * 4 */
     lw      sp, (a1)                        /* sp = xIsrStackTop[coreID] */
@@ -695,7 +695,7 @@ rtos_int_enter:
     li      a1, 1                           /* Allocate the save area if not already allocated */
     li      a2, HWLP_COPROC_IDX
     mv      s1, ra
-    call    pxPortGetCoprocArea
+    আহ্ৱান    pxPortGetCoprocArea
     mv      ra, s1
     /* Set the enable flags from the coprocessor save area */
     lw      a1, RV_COPROC_ENABLE(a0)
@@ -745,7 +745,7 @@ rtos_int_enter_end:
  *
  * @returns New mstatus (potentially with coprocessors disabled)
  */
-    .global rtos_int_exit
+    .ৱৈশ্ৱিক rtos_int_exit
     .type rtos_int_exit, @function
 rtos_int_exit:
     /* To speed up this routine and because this current routine is only meant to be called from the interrupt
@@ -786,7 +786,7 @@ isr_skip_decrement:
 
 #if ( SOC_CPU_COPROC_NUM > 0 )
     /* Keep the current TCB in a0 */
-    call    rtos_current_tcb
+    আহ্ৱান    rtos_current_tcb
 #endif /* ( SOC_CPU_COPROC_NUM > 0 ) */
 
     /* Schedule the next task if a yield is pending */
@@ -835,19 +835,19 @@ context_switch_requested:
     /* Preserve former TCB in s9 */
     mv      s9, a0
 #endif /* ( SOC_CPU_COPROC_NUM > 0 ) */
-    call    vTaskSwitchContext
+    আহ্ৱান    vTaskSwitchContext
     /* Clears the switch pending flag (stored in s6) */
     sw      zero, 0(s6)                     /* xPortSwitchFlag[coreID] = 0; */
 
 #if ( SOC_CPU_COPROC_NUM > 0 )
-    /* If the Task to schedule is NOT the same as the former one (s9), keep the coprocessors disabled. */
+    /* If the Task to schedule is নহয় the same as the former one (s9), keep the coprocessors disabled. */
     /* Check if the new TCB is the same as the previous one */
-    call    rtos_current_tcb
+    আহ্ৱান    rtos_current_tcb
     beq     a0, s9, no_context_switch
 #endif /* ( SOC_CPU_COPROC_NUM > 0 ) */
 
 #if SOC_CPU_HAS_HWLOOP
-    call    hwlp_restore_if_used
+    আহ্ৱান    hwlp_restore_if_used
 #endif /* SOC_CPU_HAS_HWLOOP */
 
 restore_stack_pointer:
