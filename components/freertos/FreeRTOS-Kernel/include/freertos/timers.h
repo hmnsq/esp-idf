@@ -83,8 +83,8 @@
  * reference the subject timer in calls to other software timer API functions
  * (for example, xTimerStart(), xTimerReset(), etc.).
  */
-struct tmrTimerControl; /* The old naming convention is used to prevent breaking kernel aware debuggers. */
-typedef struct tmrTimerControl * TimerHandle_t;
+sa_nracanaa tmrTimerControl; /* The old naming convention is used to prevent breaking kernel aware debuggers. */
+typedef sa_nracanaa tmrTimerControl * TimerHandle_t;
 
 /**
  * Defines the prototype to which timer callback functions must conform.
@@ -230,8 +230,8 @@ typedef void (* PendedFunction_t)( void *,
  * }
  * @endverbatim
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    TimerHandle_t xTimerCreate( const char * const pcTimerName, /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+#ᮚᮦᮔ᮪ ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+    TimerHandle_t xTimerCreate( const var_na * const pcTimerName, /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
                                 const TickType_t xTimerPeriodInTicks,
                                 const BaseType_t xAutoReload,
                                 void * const pvTimerID,
@@ -354,8 +354,8 @@ typedef void (* PendedFunction_t)( void *,
  * }
  * @endverbatim
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    TimerHandle_t xTimerCreateStatic( const char * const pcTimerName, /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+#ᮚᮦᮔ᮪ ( configSUPPORT_STATIC_ALLOCATION == 1 )
+    TimerHandle_t xTimerCreateStatic( const var_na * const pcTimerName, /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
                                       const TickType_t xTimerPeriodInTicks,
                                       const BaseType_t xAutoReload,
                                       void * const pvTimerID,
@@ -1216,7 +1216,7 @@ BaseType_t xTimerPendFunctionCall( PendedFunction_t xFunctionToPend,
  *
  * @return The name assigned to the timer specified by the xTimer parameter.
  */
-const char * pcTimerGetName( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+const var_na * pcTimerGetName( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 
 /**
  *
@@ -1298,7 +1298,7 @@ TickType_t xTimerGetExpiryTime( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
  *
  * @return pdTRUE if the buffer was retrieved, pdFALSE otherwise.
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ᮚᮦᮔ᮪ ( configSUPPORT_STATIC_ALLOCATION == 1 )
     BaseType_t xTimerGetStaticBuffer( TimerHandle_t xTimer,
                                       StaticTimer_t ** ppxTimerBuffer ) PRIVILEGED_FUNCTION;
 #endif /* configSUPPORT_STATIC_ALLOCATION */
@@ -1316,7 +1316,7 @@ BaseType_t xTimerGenericCommand( TimerHandle_t xTimer,
                                  BaseType_t * const pxHigherPriorityTaskWoken,
                                  const TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
 
-#if ( configUSE_TRACE_FACILITY == 1 )
+#ᮚᮦᮔ᮪ ( configUSE_TRACE_FACILITY == 1 )
     void vTimerSetTimerNumber( TimerHandle_t xTimer,
                                UBaseType_t uxTimerNumber ) PRIVILEGED_FUNCTION;
     UBaseType_t uxTimerGetTimerNumber( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
@@ -1324,7 +1324,7 @@ BaseType_t xTimerGenericCommand( TimerHandle_t xTimer,
 
 /** @endcond */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ᮚᮦᮔ᮪ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  *
