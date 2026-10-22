@@ -4,214 +4,214 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <assert.h>
-#include <unistd.h>
-#include <execinfo.h>
-#include <signal.h>
-#include <pthread.h>
+#ضمن <string.h>
+#ضمن <stdlib.h>
+#ضمن <stdio.h>
+#ضمن <assert.h>
+#ضمن <unistd.h>
+#ضمن <execinfo.h>
+#ضمن <signal.h>
+#ضمن <pthread.h>
 
-#include "FreeRTOS.h"
-#include "task.h"
-#include "esp_log.h"
-#include "utils/linux_port_utils.h"
+#ضمن "FreeRTOS.h"
+#ضمن "task.h"
+#ضمن "esp_log.h"
+#ضمن "utils/linux_port_utils.h"
 
-#define BACKTRACE_PC_ARRAY_SIZE 20
-#define FREERTOS_SIM_BACKTRACE_SIZE 16
-#define ON_SEGFAULT_MESSAGE "ERROR: Segmentation Fault, here's your backtrace:\n"
-#define ON_ABORT_MESSAGE "ERROR: Aborted\n"
+#تعریف_کن BACKTRACE_PC_ARRAY_اندازه 20
+#تعریف_کن FREERTOS_SIM_BACKTRACE_اندازه 16
+#تعریف_کن ON_SEGFAULT_پیام "ERROR: Segmentation Fault, here's your backtrace:\n"
+#تعریف_کن ON_ABORT_پیام "ERROR: Aborted\n"
 
-static void linux_port_backtrace_handler(int sig)
+ساكن فراغ linux_پورت_backtrace_handler(صحيح sig)
 {
     /* All calls here must be async-signal-safe (no stdio, no malloc).
      * write() and backtrace_symbols_fd() write directly to the fd. */
-    void *buffer[FREERTOS_SIM_BACKTRACE_SIZE];
-    int nptrs = backtrace(buffer, FREERTOS_SIM_BACKTRACE_SIZE);
+    فراغ *میانگیر[FREERTOS_SIM_BACKTRACE_اندازه];
+    صحيح nptrs = backtrace(میانگیر, FREERTOS_SIM_BACKTRACE_اندازه);
 
-    const char *name = pcTaskGetName(NULL); /* simple pointer dereference, no lock */
-    ssize_t ignore __attribute__((unused));
-    ignore = write(STDERR_FILENO, "=== Backtrace for task: ", 24);
-    if (name) {
+    ثابت حرف *name = pcTaskGetName(عدم); /* simple pointer dereference, no lock */
+    ssize_t ignore __attribute__((استفادهنشده));
+    ignore = اكتب(STDERR_FILENO, "=== Backtrace for task: ", 24);
+    إذا (name) {
         size_t len = 0;
-        while (name[len] != '\0') {
+        طالما (name[len] != '\0') {
             len++;
         }
-        ignore = write(STDERR_FILENO, name, len);
+        ignore = اكتب(STDERR_FILENO, name, len);
     }
-    ignore = write(STDERR_FILENO, " ===\n", 5);
-    backtrace_symbols_fd(buffer, nptrs, STDERR_FILENO);
+    ignore = اكتب(STDERR_FILENO, " ===\n", 5);
+    backtrace_symbols_fd(میانگیر, nptrs, STDERR_FILENO);
 }
 
-void linux_port_setup_backtrace_signal(void)
+فراغ linux_پورت_راهاندازی_backtrace_signal(فراغ)
 {
-    struct sigaction sa;
-    sa.sa_handler = linux_port_backtrace_handler;
+    بنية sigaction sa;
+    sa.sa_handler = linux_پورت_backtrace_handler;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_RESTART;
-    sigaction(SIGUSR1, &sa, NULL);
+    sigaction(SIGUSR1, &sa, عدم);
 }
 
-void linux_port_print_backtrace(void)
+فراغ linux_پورت_print_backtrace(فراغ)
 {
-    pthread_kill(linux_port_get_scheduled_task_pthread(), SIGUSR1);
+    pthread_kill(linux_پورت_get_scheduled_task_pthread(), SIGUSR1);
 }
 
-ESP_LOG_ATTR_TAG(LINUX_TAG, "port_idf_linux");
-ESP_LOG_ATTR_TAG(MAIN_TAG, "main_task");
+ESP_LOG_ATTR_برچسب(LINUX_برچسب, "port_idf_linux");
+ESP_LOG_ATTR_برچسب(MAIN_برچسب, "main_task");
 
-#if (defined(__APPLE__) && defined(__MACH__))
-typedef sig_t sighandler_t;
-#endif
+#إذا (defined(__APPLE__) && defined(__MACH__))
+تعريفنوع sig_t sighandler_t;
+#پایان_اگر
 
-static volatile UBaseType_t uxInterruptNesting = 0;
-BaseType_t xPortCheckIfInISR(void)
+ساكن متطاير UBaseType_t ux_وقفه_Nesting = 0;
+پایه_Type_t x_پورت_Check_If_درون_ISR(فراغ)
 {
-    return uxInterruptNesting;
+    أرجع ux_وقفه_Nesting;
 }
 
-#if CONFIG_COMPILER_OPTIMIZATION_DEBUG
-#define BACKTRACE_PC_ARRAY_SIZE_DUMMY 1
-static void load_libgcc(void)
+#إذا CONFIG_COMPILER_OPTIMIZATION_DEBUG
+#تعریف_کن BACKTRACE_PC_ARRAY_اندازه_DUMMY 1
+ساكن فراغ بارگیری_libgcc(فراغ)
 {
-    void *array[BACKTRACE_PC_ARRAY_SIZE_DUMMY];
-    size_t size = backtrace(array, BACKTRACE_PC_ARRAY_SIZE_DUMMY);
-    assert(size == 1);
+    فراغ *array[BACKTRACE_PC_ARRAY_اندازه_DUMMY];
+    size_t اندازه = backtrace(array, BACKTRACE_PC_ARRAY_اندازه_DUMMY);
+    أكد(اندازه == 1);
 }
 
-static void segfault_handler(int sig)
+ساكن فراغ segfault_handler(صحيح sig)
 {
-    void *array[BACKTRACE_PC_ARRAY_SIZE];
-    size_t size = backtrace(array, BACKTRACE_PC_ARRAY_SIZE);
-    ssize_t ignore __attribute__((unused));
-    ignore = write(STDERR_FILENO, ON_SEGFAULT_MESSAGE, sizeof(ON_SEGFAULT_MESSAGE));
-    backtrace_symbols_fd(array, size, STDERR_FILENO);
+    فراغ *array[BACKTRACE_PC_ARRAY_اندازه];
+    size_t اندازه = backtrace(array, BACKTRACE_PC_ARRAY_اندازه);
+    ssize_t ignore __attribute__((استفادهنشده));
+    ignore = اكتب(STDERR_FILENO, ON_SEGFAULT_پیام, حجم(ON_SEGFAULT_پیام));
+    backtrace_symbols_fd(array, اندازه, STDERR_FILENO);
     _exit(1);
 }
 
-static void abort_handler(int sig)
+ساكن فراغ abort_handler(صحيح sig)
 {
     // we need a raw file write here because other functions are not async-signal-safe
-    ssize_t ignore __attribute__((unused));
-    ignore = write(STDERR_FILENO, ON_ABORT_MESSAGE, sizeof(ON_ABORT_MESSAGE));
+    ssize_t ignore __attribute__((استفادهنشده));
+    ignore = اكتب(STDERR_FILENO, ON_ABORT_پیام, حجم(ON_ABORT_پیام));
     _exit(1);
 }
-#endif // CONFIG_COMPILER_OPTIMIZATION_DEBUG
+#پایان_اگر // CONFIG_COMPILER_OPTIMIZATION_DEBUG
 
 /*-----------------------------------------------------------
 * Main FreeRTOS task
 *-----------------------------------------------------------*/
-extern void app_main(void);
-static void main_task(void *args)
+خارجي فراغ app_main(فراغ);
+ساكن فراغ main_task(فراغ *آرگومانها)
 {
-    (void)args;
-    ESP_LOGI(MAIN_TAG, "Started on CPU%d", (int)xPortGetCoreID());
+    (فراغ)آرگومانها;
+    ESP_LOGI(MAIN_برچسب, "Started on CPU%d", (صحيح)x_پورت_Get_Core_ID());
 
-    ESP_LOGI(MAIN_TAG, "Calling app_main()");
+    ESP_LOGI(MAIN_برچسب, "Calling app_main()");
 
     app_main();
 
-    ESP_LOGI(MAIN_TAG, "Returned from app_main()");
-    vTaskDelete(NULL);
+    ESP_LOGI(MAIN_برچسب, "Returned from app_main()");
+    vTaskDelete(عدم);
 }
 
-void esp_startup_start_app(void)
+فراغ esp_startup_شروع_app(فراغ)
 {
-    setvbuf(stdout, NULL, _IONBF, 0);
+    setvbuf(stdout, عدم, _IONBF, 0);
 
-#if CONFIG_COMPILER_OPTIMIZATION_DEBUG
-    load_libgcc();
+#إذا CONFIG_COMPILER_OPTIMIZATION_DEBUG
+    بارگیری_libgcc();
     sighandler_t sig_res;
 
-    sig_res = signal(SIGSEGV, segfault_handler);
-    if (sig_res == SIG_ERR) {
+    sig_res = إشارة(SIGSEGV, segfault_handler);
+    إذا (sig_res == SIG_ERR) {
         abort();
     }
 
-    sig_res = signal(SIGABRT, abort_handler);
-    if (sig_res == SIG_ERR) {
+    sig_res = إشارة(SIGABRT, abort_handler);
+    إذا (sig_res == SIG_ERR) {
         abort();
     }
-#endif
+#پایان_اگر
 
     // Create main_task using FreeRTOS API
-    ESP_LOGI(LINUX_TAG, "Starting main task.");
-    assert(xTaskCreate(&main_task, "main", ESP_TASK_MAIN_STACK, NULL, ESP_TASK_MAIN_PRIO, NULL) == pdTRUE);
+    ESP_LOGI(LINUX_برچسب, "Starting main task.");
+    أكد(xTaskCreate(&main_task, "main", ESP_TASK_MAIN_پشته, عدم, ESP_TASK_MAIN_PRIO, عدم) == pdTRUE);
 
-    ESP_LOGI(LINUX_TAG, "Starting scheduler task.");
-    vTaskStartScheduler();
+    ESP_LOGI(LINUX_برچسب, "Starting scheduler task.");
+    v_Task_شروع_Scheduler();
 
     // Should never reach here
-    assert(false);
+    أكد(false);
 }
 
 /*-----------------------------------------------------------
  * idle and tick hooks
  *-----------------------------------------------------------*/
-#if (configUSE_IDLE_HOOK > 0)
-void vApplicationIdleHook(void)
+#إذا (configUSE_IDLE_HOOK > 0)
+فراغ vApplicationIdleHook(فراغ)
 {
 }
-#endif
+#پایان_اگر
 
-#if (configUSE_TICK_HOOK > 0)
-void vApplicationTickHook(void)
+#إذا (configUSE_TICK_HOOK > 0)
+فراغ vApplicationTickHook(فراغ)
 {
-    extern void esp_vApplicationTickHook(void);
+    خارجي فراغ esp_vApplicationTickHook(فراغ);
     esp_vApplicationTickHook();
 }
-#else
-#endif
+#وإلا
+#پایان_اگر
 
 /*-----------------------------------------------------------
  * Static allocation support
  *-----------------------------------------------------------*/
-#if (configSUPPORT_STATIC_ALLOCATION == 1)
+#إذا (config_SUPPORT_STATIC_تخصیص == 1)
 
-void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
-                                   StackType_t **ppxIdleTaskStackBuffer,
-                                   uint32_t *pulIdleTaskStackSize)
+فراغ v_Application_Get_Idle_Task_حافظه(StaticTask_t **ppxIdleTaskTCBBuffer,
+                                   پشته_Type_t **ppx_Idle_Task_پشته_میانگیر,
+                                   uint32_t *pul_Idle_Task_پشته_اندازه)
 {
-    static StaticTask_t xIdleTaskTCB;
-    static StackType_t uxIdleTaskStack[configMINIMAL_STACK_SIZE];
+    ساكن StaticTask_t xIdleTaskTCB;
+    ساكن پشته_Type_t ux_Idle_Task_پشته[config_کمینه_پشته_اندازه];
 
     *ppxIdleTaskTCBBuffer = &xIdleTaskTCB;
-    *ppxIdleTaskStackBuffer = uxIdleTaskStack;
-    *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+    *ppx_Idle_Task_پشته_میانگیر = ux_Idle_Task_پشته;
+    *pul_Idle_Task_پشته_اندازه = config_کمینه_پشته_اندازه;
 }
 
-#if (configUSE_TIMERS == 1)
-StackType_t uxTimerTaskStack[configTIMER_TASK_STACK_DEPTH];
+#إذا (configUSE_TIMERS == 1)
+پشته_Type_t ux_Timer_Task_پشته[config_TIMER_TASK_پشته_عمق];
 
-void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
-                                    StackType_t **ppxTimerTaskStackBuffer,
-                                    uint32_t *pulTimerTaskStackSize)
+فراغ v_Application_Get_Timer_Task_حافظه(StaticTask_t **ppxTimerTaskTCBBuffer,
+                                    پشته_Type_t **ppx_Timer_Task_پشته_میانگیر,
+                                    uint32_t *pul_Timer_Task_پشته_اندازه)
 {
-    static StaticTask_t xTimerTaskTCB;
+    ساكن StaticTask_t xTimerTaskTCB;
     *ppxTimerTaskTCBBuffer = &xTimerTaskTCB;
-    *ppxTimerTaskStackBuffer = uxTimerTaskStack;
-    *pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
+    *ppx_Timer_Task_پشته_میانگیر = ux_Timer_Task_پشته;
+    *pul_Timer_Task_پشته_اندازه = config_TIMER_TASK_پشته_عمق;
 }
-#endif
+#پایان_اگر
 
-#endif // configSUPPORT_STATIC_ALLOCATION
+#پایان_اگر // configSUPPORT_STATIC_ALLOCATION
 
 /*-----------------------------------------------------------
  * Stack overflow hook
  *-----------------------------------------------------------*/
-void __attribute__((weak)) vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
+فراغ __attribute__((weak)) v_Application_پشته_سرریز_Hook(TaskHandle_t xTask, حرف *pcTaskName)
 {
-#define ERR_STR1 "***ERROR*** A stack overflow in task "
-#define ERR_STR2 " has been detected."
-    const char *str[] = {ERR_STR1, pcTaskName, ERR_STR2};
+#تعریف_کن ERR_STR1 "***ERROR*** A stack overflow in task "
+#تعریف_کن ERR_STR2 " has been detected."
+    ثابت حرف *str[] = {ERR_STR1, pcTaskName, ERR_STR2};
 
-    char buf[sizeof(ERR_STR1) + CONFIG_FREERTOS_MAX_TASK_NAME_LEN + sizeof(ERR_STR2) + 1 /* null char */] = {0};
+    حرف buf[حجم(ERR_STR1) + CONFIG_FREERTOS_MAX_TASK_NAME_LEN + حجم(ERR_STR2) + 1 /* null char */] = {0};
 
-    char *dest = buf;
-    for (int i = 0; i < sizeof(str) / sizeof(str[0]); i++) {
+    حرف *dest = buf;
+    لكل (صحيح i = 0; i < حجم(str) / حجم(str[0]); i++) {
         dest = strcat(dest, str[i]);
     }
-	printf("%s\n", buf);
+	چاپ_کن("%s\n", buf);
     abort();
 }

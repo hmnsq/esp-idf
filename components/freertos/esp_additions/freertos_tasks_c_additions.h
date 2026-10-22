@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include "esp_assert.h"
-#include "esp_heap_caps.h"
-#include "esp_compiler.h"
-#include "freertos/idf_additions.h"
-#include "freertos/freertos_debug.h"
-#include "esp_private/freertos_idf_additions_priv.h"
+#ضمن "sdkconfig.h"
+#ضمن "esp_assert.h"
+#ضمن "esp_heap_caps.h"
+#ضمن "esp_compiler.h"
+#ضمن "freertos/idf_additions.h"
+#ضمن "freertos/freertos_debug.h"
+#ضمن "esp_private/freertos_idf_additions_priv.h"
 
 /**
  * This file will be included in `tasks.c` file, thus, it is treated as a source
@@ -26,356 +26,356 @@
  * Both StaticTask_t and TCB_t structures are provided by FreeRTOS sources.
  * This is just an additional check of the consistency of these structures.
  */
-_Static_assert( offsetof( StaticTask_t, pxDummy6 ) == offsetof( TCB_t, pxStack ) );
-_Static_assert( offsetof( StaticTask_t, pxDummy8 ) == offsetof( TCB_t, pxEndOfStack ) );
-#if !CONFIG_IDF_TARGET_LINUX    // Disabled for linux builds due to differences in types
-_Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "CONFIG_FREERTOS_NO_AFFINITY must be the same as tskNO_AFFINITY" );
-#endif
+_Static_assert( offsetof( StaticTask_t, pxDummy6 ) == offsetof( TCB_t, px_پشته ) );
+_Static_assert( offsetof( StaticTask_t, pxDummy8 ) == offsetof( TCB_t, px_انتها_از_پشته ) );
+#إذا !CONFIG_IDF_هدف_LINUX    // Disabled for linux builds due to differences in types
+_Static_assert( tskNO_AFFINITY == ( پایه_Type_t ) CONFIG_FREERTOS_NO_AFFINITY, "CONFIG_FREERTOS_NO_AFFINITY must be the same as tskNO_AFFINITY" );
+#پایان_اگر
 
 /* ------------------------------------------------- Kernel Control ------------------------------------------------- */
 
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#إذا ( !CONFIG_FREERTOS_SMP && ( config_رقم_CORES > 1 ) )
 
 /*
  * Wrapper function to take "xKerneLock"
  */
-    void prvTakeKernelLock( void )
+    فراغ prv_Take_Kernel_قفل( فراغ )
     {
         /* We call the tasks.c critical section macro to take xKernelLock */
-        taskENTER_CRITICAL( &xKernelLock );
+        taskENTER_CRITICAL( &x_Kernel_قفل );
     }
 
-#endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
+#پایان_اگر /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 /*----------------------------------------------------------*/
 
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#إذا ( !CONFIG_FREERTOS_SMP && ( config_رقم_CORES > 1 ) )
 
 /*
  * Wrapper function to release "xKerneLock"
  */
-    void prvReleaseKernelLock( void )
+    فراغ prv_Release_Kernel_قفل( فراغ )
     {
         /* We call the tasks.c critical section macro to release xKernelLock */
-        taskEXIT_CRITICAL( &xKernelLock );
+        taskEXIT_CRITICAL( &x_Kernel_قفل );
     }
 
-#endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
+#پایان_اگر /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 /*----------------------------------------------------------*/
 
-#if ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#إذا ( CONFIG_FREERTOS_SMP && ( config_رقم_CORES > 1 ) )
 
 /*
  * Workaround for non-thread safe multi-core OS startup (see IDF-4524)
  */
-    void prvStartSchedulerOtherCores( void )
+    فراغ prv_شروع_Scheduler_Other_Cores( فراغ )
     {
         /* This function is always called with interrupts disabled*/
         xSchedulerRunning = pdTRUE;
     }
 
-#endif /* ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
+#پایان_اگر /* ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 /*----------------------------------------------------------*/
 
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#إذا ( !CONFIG_FREERTOS_SMP && ( config_رقم_CORES > 1 ) )
 
-    BaseType_t xTaskIncrementTickOtherCores( void )
+    پایه_Type_t xTaskIncrementTickOtherCores( فراغ )
     {
         /* Minor optimization. This function can never switch cores mid
          * execution */
-        BaseType_t xCoreID = portGET_CORE_ID();
-        BaseType_t xSwitchRequired = pdFALSE;
+        پایه_Type_t xCoreID = پورت_GET_CORE_ID();
+        پایه_Type_t xSwitchRequired = pdFALSE;
 
         /* This function should never be called by Core 0. */
         configASSERT( xCoreID != 0 );
 
         /* Called by the portable layer each time a tick interrupt occurs
          * on a core other than core 0. */
-        traceTASK_INCREMENT_TICK( xTickCount );
+        traceTASK_INCREMENT_TICK( x_Tick_شمار );
 
-        if( uxSchedulerSuspended[ xCoreID ] == ( UBaseType_t ) 0U )
+        إذا( uxSchedulerSuspended[ xCoreID ] == ( UBaseType_t ) 0U )
         {
             /* We need take the kernel lock here as we are about to access
              * kernel data structures. */
-            taskENTER_CRITICAL_ISR( &xKernelLock );
+            taskENTER_CRITICAL_ISR( &x_Kernel_قفل );
 
             /* Tasks of equal priority to the currently running task will share
              * processing time (time slice) if preemption is on, and the application
              * writer has not explicitly turned time slicing off. */
-            #if ( ( configUSE_PREEMPTION == 1 ) && ( configUSE_TIME_SLICING == 1 ) )
+            #إذا ( ( configUSE_PREEMPTION == 1 ) && ( config_USE_زمان_SLICING == 1 ) )
             {
-                if( listCURRENT_LIST_LENGTH( &( pxReadyTasksLists[ pxCurrentTCBs[ xCoreID ]->uxPriority ] ) ) > ( UBaseType_t ) 1 )
+                إذا( list_CURRENT_LIST_درازی( &( pxReadyTasksLists[ pxCurrentTCBs[ xCoreID ]->ux_اولویت ] ) ) > ( UBaseType_t ) 1 )
                 {
                     xSwitchRequired = pdTRUE;
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            #endif /* ( ( configUSE_PREEMPTION == 1 ) && ( configUSE_TIME_SLICING == 1 ) ) */
+            #پایان_اگر /* ( ( configUSE_PREEMPTION == 1 ) && ( configUSE_TIME_SLICING == 1 ) ) */
 
             /* Release the previously taken kernel lock as we have finished
              * accessing the kernel data structures. */
-            taskEXIT_CRITICAL_ISR( &xKernelLock );
+            taskEXIT_CRITICAL_ISR( &x_Kernel_قفل );
 
-            #if ( configUSE_PREEMPTION == 1 )
+            #إذا ( configUSE_PREEMPTION == 1 )
             {
-                if( xYieldPending[ xCoreID ] != pdFALSE )
+                إذا( xYieldPending[ xCoreID ] != pdFALSE )
                 {
                     xSwitchRequired = pdTRUE;
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            #endif /* configUSE_PREEMPTION */
+            #پایان_اگر /* configUSE_PREEMPTION */
         }
 
-        #if ( configUSE_TICK_HOOK == 1 )
+        #إذا ( configUSE_TICK_HOOK == 1 )
         {
             vApplicationTickHook();
         }
-        #endif
+        #پایان_اگر
 
-        return xSwitchRequired;
+        أرجع xSwitchRequired;
     }
 
-#endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
+#پایان_اگر /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 /*----------------------------------------------------------*/
 
 /* -------------------------------------------------- Task Creation ------------------------------------------------- */
 
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+#إذا ( config_SUPPORT_DYNAMIC_تخصیص == 1 )
 
-    BaseType_t xTaskCreatePinnedToCore( TaskFunction_t pxTaskCode,
-                                        const char * const pcName,
-                                        const uint32_t usStackDepth,
-                                        void * const pvParameters,
-                                        UBaseType_t uxPriority,
-                                        TaskHandle_t * const pxCreatedTask,
-                                        const BaseType_t xCoreID )
+    پایه_Type_t x_Task_Create_Pinned_مقصد_Core( TaskFunction_t px_Task_کد,
+                                        ثابت حرف * ثابت pcName,
+                                        ثابت uint32_t us_پشته_عمق,
+                                        فراغ * ثابت pvParameters,
+                                        UBaseType_t ux_اولویت,
+                                        TaskHandle_t * ثابت pxCreatedTask,
+                                        ثابت پایه_Type_t xCoreID )
     {
-        BaseType_t xReturn;
+        پایه_Type_t xReturn;
 
         configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE || xCoreID == tskNO_AFFINITY );
 
-        #if CONFIG_FREERTOS_SMP
+        #إذا CONFIG_FREERTOS_SMP
         {
             /* If using Amazon SMP FreeRTOS. This function is just a wrapper around
              * xTaskCreate() or xTaskCreateAffinitySet(). */
-            #if ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+            #إذا ( ( config_رقم_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
             {
                 /* Convert xCoreID into an affinity mask */
-                UBaseType_t uxCoreAffinityMask;
+                UBaseType_t ux_Core_Affinity_ماسک;
 
                 /* Bit shifting << xCoreID is only valid if we have less than
                  * 32 cores. */
-                ESP_STATIC_ASSERT( configNUM_CORES < 32 );
+                ESP_STATIC_ASSERT( config_رقم_CORES < 32 );
 
-                if( xCoreID == tskNO_AFFINITY )
+                إذا( xCoreID == tskNO_AFFINITY )
                 {
-                    uxCoreAffinityMask = tskNO_AFFINITY;
+                    ux_Core_Affinity_ماسک = tskNO_AFFINITY;
                 }
-                else
+                وإلا
                 {
-                    uxCoreAffinityMask = ( 1 << xCoreID );
+                    ux_Core_Affinity_ماسک = ( 1 << xCoreID );
                 }
 
-                xReturn = xTaskCreateAffinitySet( pxTaskCode, pcName, usStackDepth, pvParameters, uxPriority, uxCoreAffinityMask, pxCreatedTask );
+                xReturn = x_Task_Create_Affinity_مجموعه( px_Task_کد, pcName, us_پشته_عمق, pvParameters, ux_اولویت, ux_Core_Affinity_ماسک, pxCreatedTask );
             }
-            #else /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
+            #وإلا /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
             {
-                xReturn = xTaskCreate( pxTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pxCreatedTask );
+                xReturn = xTaskCreate( px_Task_کد, pcName, us_پشته_عمق, pvParameters, ux_اولویت, pxCreatedTask );
             }
-            #endif /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
+            #پایان_اگر /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
         }
-        #else /* CONFIG_FREERTOS_SMP */
+        #وإلا /* CONFIG_FREERTOS_SMP */
         {
             TCB_t * pxNewTCB;
 
             /* If the stack grows down then allocate the stack then the TCB so the
              * stack does not grow into the TCB.  Likewise if the stack grows up
              * then allocate the TCB then the stack. */
-            #if ( portSTACK_GROWTH > 0 )
+            #إذا ( پورت_پشته_GROWTH > 0 )
             {
                 /* Allocate space for the TCB.  Where the memory comes from depends on
                  * the implementation of the port malloc function and whether or not static
                  * allocation is being used. */
-                pxNewTCB = ( TCB_t * ) pvPortMalloc( sizeof( TCB_t ) );
+                pxNewTCB = ( TCB_t * ) pv_پورت_Malloc( حجم( TCB_t ) );
 
-                if( pxNewTCB != NULL )
+                إذا( pxNewTCB != عدم )
                 {
-                    memset( ( void * ) pxNewTCB, 0x00, sizeof( TCB_t ) );
+                    memset( ( فراغ * ) pxNewTCB, 0x00, حجم( TCB_t ) );
 
                     /* Allocate space for the stack used by the task being created.
                      * The base of the stack memory stored in the TCB so the task can
                      * be deleted later if required. */
-                    pxNewTCB->pxStack = ( StackType_t * ) pvPortMallocStack( ( ( ( size_t ) usStackDepth ) * sizeof( StackType_t ) ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
+                    pxNewTCB->px_پشته = ( پشته_Type_t * ) pv_پورت_Malloc_پشته( ( ( ( size_t ) us_پشته_عمق ) * حجم( پشته_Type_t ) ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
 
-                    if( pxNewTCB->pxStack == NULL )
+                    إذا( pxNewTCB->px_پشته == عدم )
                     {
                         /* Could not allocate the stack.  Delete the allocated TCB. */
-                        vPortFree( pxNewTCB );
-                        pxNewTCB = NULL;
+                        v_پورت_Free( pxNewTCB );
+                        pxNewTCB = عدم;
                     }
                 }
             }
-            #else /* portSTACK_GROWTH */
+            #وإلا /* portSTACK_GROWTH */
             {
-                StackType_t * pxStack;
+                پشته_Type_t * px_پشته;
 
                 /* Allocate space for the stack used by the task being created. */
-                pxStack = pvPortMallocStack( ( ( ( size_t ) usStackDepth ) * sizeof( StackType_t ) ) ); /*lint !e9079 All values returned by pvPortMalloc() have at least the alignment required by the MCU's stack and this allocation is the stack. */
+                px_پشته = pv_پورت_Malloc_پشته( ( ( ( size_t ) us_پشته_عمق ) * حجم( پشته_Type_t ) ) ); /*lint !e9079 All values returned by pvPortMalloc() have at least the alignment required by the MCU's stack and this allocation is the stack. */
 
-                if( pxStack != NULL )
+                إذا( px_پشته != عدم )
                 {
                     /* Allocate space for the TCB. */
-                    pxNewTCB = ( TCB_t * ) pvPortMalloc( sizeof( TCB_t ) ); /*lint !e9087 !e9079 All values returned by pvPortMalloc() have at least the alignment required by the MCU's stack, and the first member of TCB_t is always a pointer to the task's stack. */
+                    pxNewTCB = ( TCB_t * ) pv_پورت_Malloc( حجم( TCB_t ) ); /*lint !e9087 !e9079 All values returned by pvPortMalloc() have at least the alignment required by the MCU's stack, and the first member of TCB_t is always a pointer to the task's stack. */
 
-                    if( pxNewTCB != NULL )
+                    إذا( pxNewTCB != عدم )
                     {
-                        memset( ( void * ) pxNewTCB, 0x00, sizeof( TCB_t ) );
+                        memset( ( فراغ * ) pxNewTCB, 0x00, حجم( TCB_t ) );
 
                         /* Store the stack location in the TCB. */
-                        pxNewTCB->pxStack = pxStack;
+                        pxNewTCB->px_پشته = px_پشته;
                     }
-                    else
+                    وإلا
                     {
                         /* The stack cannot be used as the TCB was not created.  Free
                          * it again. */
-                        vPortFreeStack( pxStack );
+                        v_پورت_Free_پشته( px_پشته );
                     }
                 }
-                else
+                وإلا
                 {
-                    pxNewTCB = NULL;
+                    pxNewTCB = عدم;
                 }
             }
-            #endif /* portSTACK_GROWTH */
+            #پایان_اگر /* portSTACK_GROWTH */
 
-            if( pxNewTCB != NULL )
+            إذا( pxNewTCB != عدم )
             {
-                #if ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 ) /*lint !e9029 !e731 Macro has been consolidated for readability reasons. */
+                #إذا ( tsk_STATIC_AND_DYNAMIC_تخصیص_POSSIBLE != 0 ) /*lint !e9029 !e731 Macro has been consolidated for readability reasons. */
                 {
                     /* Tasks can be created statically or dynamically, so note this
                      * task was created dynamically in case it is later deleted. */
-                    pxNewTCB->ucStaticallyAllocated = tskDYNAMICALLY_ALLOCATED_STACK_AND_TCB;
+                    pxNewTCB->ucStaticallyAllocated = tsk_DYNAMICALLY_ALLOCATED_پشته_AND_TCB;
                 }
-                #endif /* tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE */
+                #پایان_اگر /* tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE */
 
-                prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) usStackDepth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL, xCoreID );
-                prvAddNewTaskToReadyList( pxNewTCB );
+                prvInitialiseNewTask( px_Task_کد, pcName, ( uint32_t ) us_پشته_عمق, pvParameters, ux_اولویت, pxCreatedTask, pxNewTCB, عدم, xCoreID );
+                prv_جمع_کن_New_Task_مقصد_Ready_List( pxNewTCB );
                 xReturn = pdPASS;
             }
-            else
+            وإلا
             {
-                xReturn = errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY;
+                xReturn = err_COULD_NOT_ALLOCATE_REQUIRED_حافظه;
             }
         }
-        #endif /* CONFIG_FREERTOS_SMP */
+        #پایان_اگر /* CONFIG_FREERTOS_SMP */
 
-        return xReturn;
+        أرجع xReturn;
     }
 
-#endif /* ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) */
+#پایان_اگر /* ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#إذا ( config_SUPPORT_STATIC_تخصیص == 1 )
 
-    TaskHandle_t xTaskCreateStaticPinnedToCore( TaskFunction_t pxTaskCode,
-                                                const char * const pcName,
-                                                const uint32_t ulStackDepth,
-                                                void * const pvParameters,
-                                                UBaseType_t uxPriority,
-                                                StackType_t * const puxStackBuffer,
-                                                StaticTask_t * const pxTaskBuffer,
-                                                const BaseType_t xCoreID )
+    TaskHandle_t x_Task_Create_Static_Pinned_مقصد_Core( TaskFunction_t px_Task_کد,
+                                                ثابت حرف * ثابت pcName,
+                                                ثابت uint32_t ul_پشته_عمق,
+                                                فراغ * ثابت pvParameters,
+                                                UBaseType_t ux_اولویت,
+                                                پشته_Type_t * ثابت pux_پشته_میانگیر,
+                                                StaticTask_t * ثابت px_Task_میانگیر,
+                                                ثابت پایه_Type_t xCoreID )
     {
         TaskHandle_t xReturn;
 
-        configASSERT( portVALID_STACK_MEM( puxStackBuffer ) );
-        configASSERT( portVALID_TCB_MEM( pxTaskBuffer ) );
+        configASSERT( پورت_VALID_پشته_MEM( pux_پشته_میانگیر ) );
+        configASSERT( پورت_VALID_TCB_MEM( px_Task_میانگیر ) );
         configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE || xCoreID == tskNO_AFFINITY );
 
-        #if CONFIG_FREERTOS_SMP
+        #إذا CONFIG_FREERTOS_SMP
         {
             /* If using Amazon SMP FreeRTOS. This function is just a wrapper around
              * xTaskCreateStatic() or xTaskCreateStaticAffinitySet(). */
-            #if ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+            #إذا ( ( config_رقم_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
             {
                 /* Convert xCoreID into an affinity mask */
-                UBaseType_t uxCoreAffinityMask;
+                UBaseType_t ux_Core_Affinity_ماسک;
 
                 /* Bit shifting << xCoreID is only valid if we have less than
                  * 32 cores. */
-                ESP_STATIC_ASSERT( configNUM_CORES < 32 );
+                ESP_STATIC_ASSERT( config_رقم_CORES < 32 );
 
-                if( xCoreID == tskNO_AFFINITY )
+                إذا( xCoreID == tskNO_AFFINITY )
                 {
-                    uxCoreAffinityMask = tskNO_AFFINITY;
+                    ux_Core_Affinity_ماسک = tskNO_AFFINITY;
                 }
-                else
+                وإلا
                 {
-                    uxCoreAffinityMask = ( 1 << xCoreID );
+                    ux_Core_Affinity_ماسک = ( 1 << xCoreID );
                 }
 
-                xReturn = xTaskCreateStaticAffinitySet( pxTaskCode, pcName, ulStackDepth, pvParameters, uxPriority, puxStackBuffer, pxTaskBuffer, uxCoreAffinityMask );
+                xReturn = x_Task_Create_Static_Affinity_مجموعه( px_Task_کد, pcName, ul_پشته_عمق, pvParameters, ux_اولویت, pux_پشته_میانگیر, px_Task_میانگیر, ux_Core_Affinity_ماسک );
             }
-            #else /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
+            #وإلا /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
             {
-                xReturn = xTaskCreateStatic( pxTaskCode, pcName, ulStackDepth, pvParameters, uxPriority, puxStackBuffer, pxTaskBuffer );
+                xReturn = xTaskCreateStatic( px_Task_کد, pcName, ul_پشته_عمق, pvParameters, ux_اولویت, pux_پشته_میانگیر, px_Task_میانگیر );
             }
-            #endif /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
+            #پایان_اگر /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
         }
-        #else /* CONFIG_FREERTOS_SMP */
+        #وإلا /* CONFIG_FREERTOS_SMP */
         {
             TCB_t * pxNewTCB;
 
-            #if ( configASSERT_DEFINED == 1 )
+            #إذا ( configASSERT_DEFINED == 1 )
             {
                 /* Sanity check that the size of the structure used to declare a
                  * variable of type StaticTask_t equals the size of the real task
                  * structure. */
-                volatile size_t xSize = sizeof( StaticTask_t );
-                configASSERT( xSize == sizeof( TCB_t ) );
-                ( void ) xSize; /* Prevent lint warning when configASSERT() is not used. */
+                متطاير size_t x_اندازه = حجم( StaticTask_t );
+                configASSERT( x_اندازه == حجم( TCB_t ) );
+                ( فراغ ) x_اندازه; /* Prevent lint warning when configASSERT() is not used. */
             }
-            #endif /* configASSERT_DEFINED */
+            #پایان_اگر /* configASSERT_DEFINED */
 
-            if( ( pxTaskBuffer != NULL ) && ( puxStackBuffer != NULL ) )
+            إذا( ( px_Task_میانگیر != عدم ) && ( pux_پشته_میانگیر != عدم ) )
             {
                 /* The memory used for the task's TCB and stack are passed into this
                  * function - use them. */
-                pxNewTCB = ( TCB_t * ) pxTaskBuffer; /*lint !e740 !e9087 Unusual cast is ok as the structures are designed to have the same alignment, and the size is checked by an assert. */
-                memset( ( void * ) pxNewTCB, 0x00, sizeof( TCB_t ) );
-                pxNewTCB->pxStack = ( StackType_t * ) puxStackBuffer;
+                pxNewTCB = ( TCB_t * ) px_Task_میانگیر; /*lint !e740 !e9087 Unusual cast is ok as the structures are designed to have the same alignment, and the size is checked by an assert. */
+                memset( ( فراغ * ) pxNewTCB, 0x00, حجم( TCB_t ) );
+                pxNewTCB->px_پشته = ( پشته_Type_t * ) pux_پشته_میانگیر;
 
-                #if ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 ) /*lint !e731 !e9029 Macro has been consolidated for readability reasons. */
+                #إذا ( tsk_STATIC_AND_DYNAMIC_تخصیص_POSSIBLE != 0 ) /*lint !e731 !e9029 Macro has been consolidated for readability reasons. */
                 {
                     /* Tasks can be created statically or dynamically, so note this
                      * task was created statically in case the task is later deleted. */
-                    pxNewTCB->ucStaticallyAllocated = tskSTATICALLY_ALLOCATED_STACK_AND_TCB;
+                    pxNewTCB->ucStaticallyAllocated = tsk_STATICALLY_ALLOCATED_پشته_AND_TCB;
                 }
-                #endif /* tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE */
+                #پایان_اگر /* tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE */
 
-                prvInitialiseNewTask( pxTaskCode, pcName, ulStackDepth, pvParameters, uxPriority, &xReturn, pxNewTCB, NULL, xCoreID );
-                prvAddNewTaskToReadyList( pxNewTCB );
+                prvInitialiseNewTask( px_Task_کد, pcName, ul_پشته_عمق, pvParameters, ux_اولویت, &xReturn, pxNewTCB, عدم, xCoreID );
+                prv_جمع_کن_New_Task_مقصد_Ready_List( pxNewTCB );
             }
-            else
+            وإلا
             {
-                xReturn = NULL;
+                xReturn = عدم;
             }
         }
-        #endif /* CONFIG_FREERTOS_SMP */
+        #پایان_اگر /* CONFIG_FREERTOS_SMP */
 
-        return xReturn;
+        أرجع xReturn;
     }
 
-#endif /* ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#پایان_اگر /* ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configUSE_TIMERS == 1 )
+#إذا ( configUSE_TIMERS == 1 )
 
 /*
  * In ESP-IDF, configUSE_TIMERS is always defined as 1 (i.e., not user configurable).
@@ -388,332 +388,332 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
  * Thus we can save some text/RAM as timers.c will not be linked and the timer
  * task never created.
  */
-    BaseType_t __attribute__( ( weak ) ) xTimerCreateTimerTask( void )
+    پایه_Type_t __attribute__( ( weak ) ) xTimerCreateTimerTask( فراغ )
     {
-        return pdPASS;
+        أرجع pdPASS;
     }
 
-#endif /* configUSE_TIMERS */
+#پایان_اگر /* configUSE_TIMERS */
 /*----------------------------------------------------------*/
 
 /* ------------------------------------------------- Task Utilities ------------------------------------------------- */
 
-BaseType_t xTaskGetCoreID( TaskHandle_t xTask )
+پایه_Type_t xTaskGetCoreID( TaskHandle_t xTask )
 {
-    BaseType_t xReturn;
+    پایه_Type_t xReturn;
 
-    #if ( configNUM_CORES > 1 )
+    #إذا ( config_رقم_CORES > 1 )
     {
-        #if CONFIG_FREERTOS_SMP
-            UBaseType_t uxCoreAffinityMask;
+        #إذا CONFIG_FREERTOS_SMP
+            UBaseType_t ux_Core_Affinity_ماسک;
 
             /* Get the core affinity mask and convert it to an ID */
-            uxCoreAffinityMask = vTaskCoreAffinityGet( xTask );
+            ux_Core_Affinity_ماسک = vTaskCoreAffinityGet( xTask );
 
             /* If the task is not pinned to a particular core, treat it as tskNO_AFFINITY */
-            if( uxCoreAffinityMask & ( uxCoreAffinityMask - 1 ) ) /* If more than one bit set */
+            إذا( ux_Core_Affinity_ماسک & ( ux_Core_Affinity_ماسک - 1 ) ) /* If more than one bit set */
             {
                 xReturn = tskNO_AFFINITY;
             }
-            else
+            وإلا
             {
-                int iIndexPlusOne = __builtin_ffs( uxCoreAffinityMask );
-                assert( iIndexPlusOne >= 1 );
-                xReturn = iIndexPlusOne - 1;
+                صحيح i_شاخص_Plus_One = __builtin_ffs( ux_Core_Affinity_ماسک );
+                أكد( i_شاخص_Plus_One >= 1 );
+                xReturn = i_شاخص_Plus_One - 1;
             }
-        #else /* CONFIG_FREERTOS_SMP */
+        #وإلا /* CONFIG_FREERTOS_SMP */
             TCB_t * pxTCB;
 
             pxTCB = prvGetTCBFromHandle( xTask );
 
             xReturn = pxTCB->xCoreID;
-        #endif /* CONFIG_FREERTOS_SMP */
+        #پایان_اگر /* CONFIG_FREERTOS_SMP */
     }
-    #else /* configNUM_CORES > 1 */
+    #وإلا /* configNUM_CORES > 1 */
     {
         /* Single-core. Just return a core ID of 0 */
         xReturn = 0;
     }
-    #endif /* configNUM_CORES > 1 */
+    #پایان_اگر /* configNUM_CORES > 1 */
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*----------------------------------------------------------*/
 
-#if ( ( !CONFIG_FREERTOS_SMP ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
+#إذا ( ( !CONFIG_FREERTOS_SMP ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
 
-    TaskHandle_t xTaskGetIdleTaskHandleForCore( BaseType_t xCoreID )
+    TaskHandle_t xTaskGetIdleTaskHandleForCore( پایه_Type_t xCoreID )
     {
         /* If xTaskGetIdleTaskHandle() is called before the scheduler has been
          * started, then xIdleTaskHandle will be NULL. */
         configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE );
-        configASSERT( ( xIdleTaskHandle[ xCoreID ] != NULL ) );
-        return xIdleTaskHandle[ xCoreID ];
+        configASSERT( ( xIdleTaskHandle[ xCoreID ] != عدم ) );
+        أرجع xIdleTaskHandle[ xCoreID ];
     }
 
-#endif /* ( ( !CONFIG_FREERTOS_SMP ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) ) */
+#پایان_اگر /* ( ( !CONFIG_FREERTOS_SMP ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) ) */
 /*----------------------------------------------------------*/
 
-#if ( ( !CONFIG_FREERTOS_SMP ) && ( ( INCLUDE_xTaskGetCurrentTaskHandle == 1 ) || ( configUSE_MUTEXES == 1 ) ) )
+#إذا ( ( !CONFIG_FREERTOS_SMP ) && ( ( INCLUDE_xTaskGetCurrentTaskHandle == 1 ) || ( configUSE_MUTEXES == 1 ) ) )
 
-    TaskHandle_t xTaskGetCurrentTaskHandleForCore( BaseType_t xCoreID )
+    TaskHandle_t xTaskGetCurrentTaskHandleForCore( پایه_Type_t xCoreID )
     {
         TaskHandle_t xReturn;
 
         configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE );
 
-        #if ( CONFIG_FREERTOS_SMP )
+        #إذا ( CONFIG_FREERTOS_SMP )
         {
             xReturn = xTaskGetCurrentTaskHandleCPU( ( UBaseType_t ) xCoreID );
         }
-        #else /* CONFIG_FREERTOS_SMP */
+        #وإلا /* CONFIG_FREERTOS_SMP */
         {
             /* A critical section is not required as this function does not
              * guarantee that the TCB will still be valid when this function
              * returns. */
             xReturn = pxCurrentTCBs[ xCoreID ];
         }
-        #endif /* CONFIG_FREERTOS_SMP */
+        #پایان_اگر /* CONFIG_FREERTOS_SMP */
 
-        return xReturn;
+        أرجع xReturn;
     }
 
-#endif /* ( ( !CONFIG_FREERTOS_SMP ) && ( ( INCLUDE_xTaskGetCurrentTaskHandle == 1 ) || ( configUSE_MUTEXES == 1 ) ) ) */
+#پایان_اگر /* ( ( !CONFIG_FREERTOS_SMP ) && ( ( INCLUDE_xTaskGetCurrentTaskHandle == 1 ) || ( configUSE_MUTEXES == 1 ) ) ) */
 /*----------------------------------------------------------*/
 
-#if ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
+#إذا ( !CONFIG_FREERTOS_SMP && ( config_GENERATE_پیاپی_زمان_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
 
-    configRUN_TIME_COUNTER_TYPE ulTaskGetIdleRunTimeCounterForCore( BaseType_t xCoreID )
+    config_پیاپی_زمان_COUNTER_TYPE ul_Task_Get_Idle_پیاپی_زمان_Counter_For_Core( پایه_Type_t xCoreID )
     {
-        configRUN_TIME_COUNTER_TYPE ulRunTimeCounter;
+        config_پیاپی_زمان_COUNTER_TYPE ul_پیاپی_زمان_Counter;
 
         configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE );
 
         /* For SMP, we need to take the kernel lock here as we are about to
          * access kernel data structures. */
-        prvENTER_CRITICAL_SMP_ONLY( &xKernelLock );
+        prvENTER_CRITICAL_SMP_ONLY( &x_Kernel_قفل );
         {
-            ulRunTimeCounter = xIdleTaskHandle[ xCoreID ]->ulRunTimeCounter;
+            ul_پیاپی_زمان_Counter = xIdleTaskHandle[ xCoreID ]->ul_پیاپی_زمان_Counter;
         }
         /* Release the previously taken kernel lock. */
-        prvEXIT_CRITICAL_SMP_ONLY( &xKernelLock );
+        prvEXIT_CRITICAL_SMP_ONLY( &x_Kernel_قفل );
 
-        return ulRunTimeCounter;
+        أرجع ul_پیاپی_زمان_Counter;
     }
 
-#endif /* ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) ) */
+#پایان_اگر /* ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) ) */
 /*----------------------------------------------------------*/
 
-#if ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
+#إذا ( !CONFIG_FREERTOS_SMP && ( config_GENERATE_پیاپی_زمان_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
 
-    configRUN_TIME_COUNTER_TYPE ulTaskGetIdleRunTimePercentForCore( BaseType_t xCoreID )
+    config_پیاپی_زمان_COUNTER_TYPE ul_Task_Get_Idle_پیاپی_زمان_Percent_For_Core( پایه_Type_t xCoreID )
     {
-        configRUN_TIME_COUNTER_TYPE ulTotalTime, ulReturn;
+        config_پیاپی_زمان_COUNTER_TYPE ul_مجموع_زمان, ulReturn;
 
         configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE );
 
-        #ifdef portALT_GET_RUN_TIME_COUNTER_VALUE
-            portALT_GET_RUN_TIME_COUNTER_VALUE( ulTotalTime );
-        #else
-            ulTotalTime = portGET_RUN_TIME_COUNTER_VALUE();
-        #endif
+        #اگر_تعریف_شده پورت_ALT_GET_پیاپی_زمان_COUNTER_مقدار
+            پورت_ALT_GET_پیاپی_زمان_COUNTER_مقدار( ul_مجموع_زمان );
+        #وإلا
+            ul_مجموع_زمان = پورت_GET_پیاپی_زمان_COUNTER_مقدار();
+        #پایان_اگر
 
         /* For percentage calculations. */
-        ulTotalTime /= ( configRUN_TIME_COUNTER_TYPE ) 100;
+        ul_مجموع_زمان /= ( config_پیاپی_زمان_COUNTER_TYPE ) 100;
 
         /* Avoid divide by zero errors. */
-        if( ulTotalTime > ( configRUN_TIME_COUNTER_TYPE ) 0 )
+        إذا( ul_مجموع_زمان > ( config_پیاپی_زمان_COUNTER_TYPE ) 0 )
         {
             /* For SMP, we need to take the kernel lock here as we are about
              * to access kernel data structures. */
-            prvENTER_CRITICAL_SMP_ONLY( &xKernelLock );
+            prvENTER_CRITICAL_SMP_ONLY( &x_Kernel_قفل );
             {
-                ulReturn = xIdleTaskHandle[ xCoreID ]->ulRunTimeCounter / ulTotalTime;
+                ulReturn = xIdleTaskHandle[ xCoreID ]->ul_پیاپی_زمان_Counter / ul_مجموع_زمان;
             }
             /* Release the previously taken kernel lock. */
-            prvEXIT_CRITICAL_SMP_ONLY( &xKernelLock );
+            prvEXIT_CRITICAL_SMP_ONLY( &x_Kernel_قفل );
         }
-        else
+        وإلا
         {
             ulReturn = 0;
         }
 
-        return ulReturn;
+        أرجع ulReturn;
     }
 
-#endif /* ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) ) */
+#پایان_اگر /* ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-StackType_t * xTaskGetStackStart( TaskHandle_t xTask )
+پشته_Type_t * x_Task_Get_پشته_شروع( TaskHandle_t xTask )
 {
     TCB_t * pxTCB;
 
     pxTCB = prvGetTCBFromHandle( xTask );
-    return pxTCB->pxStack;
+    أرجع pxTCB->px_پشته;
 }
 /*----------------------------------------------------------*/
 
-uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
+uint8_t * px_Task_Get_پشته_شروع( TaskHandle_t xTask )
 {
-    return (uint8_t *)xTaskGetStackStart( xTask );
+    أرجع (uint8_t *)x_Task_Get_پشته_شروع( xTask );
 }
 /*----------------------------------------------------------*/
 
-#if ( INCLUDE_vTaskPrioritySet == 1 )
+#إذا ( INCLUDE_v_Task_اولویت_مجموعه == 1 )
 
-    void prvTaskPriorityRaise( prvTaskSavedPriority_t * pxSavedPriority,
-                               UBaseType_t uxNewPriority )
+    فراغ prv_Task_اولویت_Raise( prv_Task_Saved_اولویت_t * px_Saved_اولویت,
+                               UBaseType_t ux_New_اولویت )
     {
         TCB_t * pxTCB;
-        UBaseType_t uxPriorityUsedOnEntry;
+        UBaseType_t ux_اولویت_استفاده_شده_On_مدخل;
 
-        configASSERT( ( uxNewPriority < configMAX_PRIORITIES ) );
+        configASSERT( ( ux_New_اولویت < configMAX_PRIORITIES ) );
 
         /* Ensure the new priority is valid. */
-        if( uxNewPriority >= ( UBaseType_t ) configMAX_PRIORITIES )
+        إذا( ux_New_اولویت >= ( UBaseType_t ) configMAX_PRIORITIES )
         {
-            uxNewPriority = ( UBaseType_t ) configMAX_PRIORITIES - ( UBaseType_t ) 1U;
+            ux_New_اولویت = ( UBaseType_t ) configMAX_PRIORITIES - ( UBaseType_t ) 1U;
         }
 
-        #if CONFIG_FREERTOS_SMP
+        #إذا CONFIG_FREERTOS_SMP
             taskENTER_CRITICAL();
-        #else
-            taskENTER_CRITICAL( &xKernelLock );
-        #endif
+        #وإلا
+            taskENTER_CRITICAL( &x_Kernel_قفل );
+        #پایان_اگر
         {
-            pxTCB = prvGetTCBFromHandle( NULL );
+            pxTCB = prvGetTCBFromHandle( عدم );
 
-            #if ( configUSE_MUTEXES == 1 )
+            #إذا ( configUSE_MUTEXES == 1 )
             {
-                pxSavedPriority->uxPriority = pxTCB->uxPriority;
-                pxSavedPriority->uxBasePriority = pxTCB->uxBasePriority;
+                px_Saved_اولویت->ux_اولویت = pxTCB->ux_اولویت;
+                px_Saved_اولویت->ux_پایه_اولویت = pxTCB->ux_پایه_اولویت;
 
                 /* If uxNewPriority < uxBasePriority, then there is nothing else to
                  * do, as uxBasePriority is always <= uxPriority. */
-                if( uxNewPriority > pxTCB->uxBasePriority )
+                إذا( ux_New_اولویت > pxTCB->ux_پایه_اولویت )
                 {
-                    pxTCB->uxBasePriority = uxNewPriority;
+                    pxTCB->ux_پایه_اولویت = ux_New_اولویت;
 
                     /* Remember the task's current priority before attempting to
                      * change it. If the task's current priority is changed, it must
                      * be done so before moving the task between task lists) in order
                      * for the taskRESET_READY_PRIORITY() macro to function correctly. */
-                    uxPriorityUsedOnEntry = pxTCB->uxPriority;
+                    ux_اولویت_استفاده_شده_On_مدخل = pxTCB->ux_اولویت;
 
-                    if( uxNewPriority > pxTCB->uxPriority )
+                    إذا( ux_New_اولویت > pxTCB->ux_اولویت )
                     {
-                        pxTCB->uxPriority = uxNewPriority;
+                        pxTCB->ux_اولویت = ux_New_اولویت;
 
                         /* Only reset the event list item value if the value is not
                          * being used for anything else. */
-                        if( ( listGET_LIST_ITEM_VALUE( &( pxTCB->xEventListItem ) ) & taskEVENT_LIST_ITEM_VALUE_IN_USE ) == 0UL )
+                        إذا( ( list_GET_LIST_قلم_مقدار( &( pxTCB->x_Event_List_قلم ) ) & task_EVENT_LIST_قلم_مقدار_درون_USE ) == 0UL )
                         {
-                            listSET_LIST_ITEM_VALUE( &( pxTCB->xEventListItem ), ( ( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) uxNewPriority ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
+                            list_مجموعه_LIST_قلم_مقدار( &( pxTCB->x_Event_List_قلم ), ( ( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) ux_New_اولویت ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
                         }
 
                         /* If the task is in the blocked or suspended list we need do
                          * nothing more than change its priority variable. However, if
                          * the task is in a ready list it needs to be removed and placed
                          * in the list appropriate to its new priority. */
-                        if( listIS_CONTAINED_WITHIN( &( pxReadyTasksLists[ uxPriorityUsedOnEntry ] ), &( pxTCB->xStateListItem ) ) != pdFALSE )
+                        إذا( listIS_CONTAINED_WITHIN( &( pxReadyTasksLists[ ux_اولویت_استفاده_شده_On_مدخل ] ), &( pxTCB->x_State_List_قلم ) ) != pdFALSE )
                         {
                             /* The task is currently in its ready list - remove before
                              * adding it to its new ready list.  As we are in a critical
                              * section we can do this even if the scheduler is suspended. */
-                            if( uxListRemove( &( pxTCB->xStateListItem ) ) == ( UBaseType_t ) 0 )
+                            إذا( uxListRemove( &( pxTCB->x_State_List_قلم ) ) == ( UBaseType_t ) 0 )
                             {
                                 /* It is known that the task is in its ready list so
                                  * there is no need to check again and the port level
                                  * reset macro can be called directly. */
-                                portRESET_READY_PRIORITY( uxPriorityUsedOnEntry, uxTopReadyPriority );
+                                پورت_RESET_READY_اولویت( ux_اولویت_استفاده_شده_On_مدخل, ux_بالاترین_Ready_اولویت );
                             }
 
-                            prvAddTaskToReadyList( pxTCB );
+                            prv_جمع_کن_Task_مقصد_Ready_List( pxTCB );
                         }
                     }
                 }
             }
-            #else /* if ( configUSE_MUTEXES == 1 ) */
+            #وإلا /* if ( configUSE_MUTEXES == 1 ) */
             {
-                pxSavedPriority->uxPriority = pxTCB->uxPriority;
+                px_Saved_اولویت->ux_اولویت = pxTCB->ux_اولویت;
 
-                if( uxNewPriority > pxTCB->uxPriority )
+                إذا( ux_New_اولویت > pxTCB->ux_اولویت )
                 {
-                    vTaskPrioritySet( NULL, uxNewPriority );
+                    v_Task_اولویت_مجموعه( عدم, ux_New_اولویت );
                 }
             }
-            #endif /* if ( configUSE_MUTEXES == 1 ) */
+            #پایان_اگر /* if ( configUSE_MUTEXES == 1 ) */
         }
-        #if CONFIG_FREERTOS_SMP
+        #إذا CONFIG_FREERTOS_SMP
             taskEXIT_CRITICAL();
-        #else
-            taskEXIT_CRITICAL( &xKernelLock );
-        #endif
+        #وإلا
+            taskEXIT_CRITICAL( &x_Kernel_قفل );
+        #پایان_اگر
     }
 
-#endif /* INCLUDE_vTaskPrioritySet == 1 */
+#پایان_اگر /* INCLUDE_vTaskPrioritySet == 1 */
 /*----------------------------------------------------------*/
 
-#if ( INCLUDE_vTaskPrioritySet == 1 )
+#إذا ( INCLUDE_v_Task_اولویت_مجموعه == 1 )
 
-    void prvTaskPriorityRestore( prvTaskSavedPriority_t * pxSavedPriority )
+    فراغ prv_Task_اولویت_Restore( prv_Task_Saved_اولویت_t * px_Saved_اولویت )
     {
         TCB_t * pxTCB;
-        UBaseType_t uxNewPriority;
-        UBaseType_t uxPriorityUsedOnEntry;
-        UBaseType_t uxBasePriorityUsedOnEntry;
-        BaseType_t xYieldRequired = pdFALSE;
+        UBaseType_t ux_New_اولویت;
+        UBaseType_t ux_اولویت_استفاده_شده_On_مدخل;
+        UBaseType_t ux_پایه_اولویت_استفاده_شده_On_مدخل;
+        پایه_Type_t xYieldRequired = pdFALSE;
 
-        #if CONFIG_FREERTOS_SMP
+        #إذا CONFIG_FREERTOS_SMP
             taskENTER_CRITICAL();
-        #else
-            taskENTER_CRITICAL( &xKernelLock );
-        #endif
+        #وإلا
+            taskENTER_CRITICAL( &x_Kernel_قفل );
+        #پایان_اگر
         {
-            pxTCB = prvGetTCBFromHandle( NULL );
+            pxTCB = prvGetTCBFromHandle( عدم );
 
-            #if ( configUSE_MUTEXES == 1 )
+            #إذا ( configUSE_MUTEXES == 1 )
             {
                 /* If the saved uxBasePriority == the task's uxBasePriority, it means
                  * that prvTaskPriorityRaise() never raised the task's uxBasePriority.
                  * In that case, there is nothing else to do. */
-                if( pxSavedPriority->uxBasePriority != pxTCB->uxBasePriority )
+                إذا( px_Saved_اولویت->ux_پایه_اولویت != pxTCB->ux_پایه_اولویت )
                 {
-                    uxBasePriorityUsedOnEntry = pxTCB->uxBasePriority;
-                    pxTCB->uxBasePriority = pxSavedPriority->uxBasePriority;
+                    ux_پایه_اولویت_استفاده_شده_On_مدخل = pxTCB->ux_پایه_اولویت;
+                    pxTCB->ux_پایه_اولویت = px_Saved_اولویت->ux_پایه_اولویت;
 
                     /* Remember the task's current priority before attempting to
                      * change it. If the task's current priority is changed, it must
                      * be done so before moving the task between task lists in order
                      * for the taskRESET_READY_PRIORITY() macro to function correctly. */
-                    uxPriorityUsedOnEntry = pxTCB->uxPriority;
+                    ux_اولویت_استفاده_شده_On_مدخل = pxTCB->ux_اولویت;
 
                     /* Check if the task inherited a priority after prvTaskPriorityRaise().
                      * If this is the case, there is nothing else to do. The priority
                      * will be restored when the task disinherits its priority. */
-                    if( pxTCB->uxPriority == uxBasePriorityUsedOnEntry )
+                    إذا( pxTCB->ux_اولویت == ux_پایه_اولویت_استفاده_شده_On_مدخل )
                     {
-                        if( pxTCB->uxMutexesHeld == 0 )
+                        إذا( pxTCB->uxMutexesHeld == 0 )
                         {
                             /* The task may have inherited a priority before prvTaskPriorityRaise()
                              * then disinherited a priority after prvTaskPriorityRaise().
                              * Thus we need set the uxPriority to the saved base priority
                              * so that the task's priority gets restored to the priority
                              * before any inheritance or raising. */
-                            pxTCB->uxPriority = pxSavedPriority->uxBasePriority;
+                            pxTCB->ux_اولویت = px_Saved_اولویت->ux_پایه_اولویت;
                         }
-                        else
+                        وإلا
                         {
                             /* The task may have inherited a priority before prvTaskPriorityRaise()
                              * was called. Thus, we need to restore uxPriority to the
                              * "saved uxPriority" so that the task still retains that
                              * inherited priority. */
-                            pxTCB->uxPriority = pxSavedPriority->uxPriority;
+                            pxTCB->ux_اولویت = px_Saved_اولویت->ux_اولویت;
                         }
 
-                        uxNewPriority = pxTCB->uxPriority;
+                        ux_New_اولویت = pxTCB->ux_اولویت;
 
-                        if( uxNewPriority < uxPriorityUsedOnEntry )
+                        إذا( ux_New_اولویت < ux_اولویت_استفاده_شده_On_مدخل )
                         {
                             /* Setting the priority of the running task down means
                              * there may now be another task of higher priority that
@@ -723,120 +723,120 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
 
                         /* Only reset the event list item value if the value is not
                          * being used for anything else. */
-                        if( ( listGET_LIST_ITEM_VALUE( &( pxTCB->xEventListItem ) ) & taskEVENT_LIST_ITEM_VALUE_IN_USE ) == 0UL )
+                        إذا( ( list_GET_LIST_قلم_مقدار( &( pxTCB->x_Event_List_قلم ) ) & task_EVENT_LIST_قلم_مقدار_درون_USE ) == 0UL )
                         {
-                            listSET_LIST_ITEM_VALUE( &( pxTCB->xEventListItem ), ( ( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) uxNewPriority ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
+                            list_مجموعه_LIST_قلم_مقدار( &( pxTCB->x_Event_List_قلم ), ( ( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) ux_New_اولویت ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
                         }
 
                         /* If the task is in the blocked or suspended list we need do
                          * nothing more than change its priority variable. However, if
                          * the task is in a ready list it needs to be removed and placed
                          * in the list appropriate to its new priority. */
-                        if( listIS_CONTAINED_WITHIN( &( pxReadyTasksLists[ uxPriorityUsedOnEntry ] ), &( pxTCB->xStateListItem ) ) != pdFALSE )
+                        إذا( listIS_CONTAINED_WITHIN( &( pxReadyTasksLists[ ux_اولویت_استفاده_شده_On_مدخل ] ), &( pxTCB->x_State_List_قلم ) ) != pdFALSE )
                         {
                             /* The task is currently in its ready list - remove before
                              * adding it to its new ready list.  As we are in a critical
                              * section we can do this even if the scheduler is suspended. */
-                            if( uxListRemove( &( pxTCB->xStateListItem ) ) == ( UBaseType_t ) 0 )
+                            إذا( uxListRemove( &( pxTCB->x_State_List_قلم ) ) == ( UBaseType_t ) 0 )
                             {
                                 /* It is known that the task is in its ready list so
                                  * there is no need to check again and the port level
                                  * reset macro can be called directly. */
-                                portRESET_READY_PRIORITY( uxPriorityUsedOnEntry, uxTopReadyPriority );
+                                پورت_RESET_READY_اولویت( ux_اولویت_استفاده_شده_On_مدخل, ux_بالاترین_Ready_اولویت );
                             }
 
-                            prvAddTaskToReadyList( pxTCB );
+                            prv_جمع_کن_Task_مقصد_Ready_List( pxTCB );
                         }
 
-                        if( xYieldRequired != pdFALSE )
+                        إذا( xYieldRequired != pdFALSE )
                         {
-                            #if CONFIG_FREERTOS_SMP
+                            #إذا CONFIG_FREERTOS_SMP
                                 taskYIELD_TASK_CORE_IF_USING_PREEMPTION( pxTCB );
-                            #else
+                            #وإلا
                                 taskYIELD_IF_USING_PREEMPTION();
-                            #endif
+                            #پایان_اگر
                         }
                     }
                 }
             }
-            #else /* if ( configUSE_MUTEXES == 1 ) */
+            #وإلا /* if ( configUSE_MUTEXES == 1 ) */
             {
-                vTaskPrioritySet( NULL, pxSavedPriority->uxPriority );
+                v_Task_اولویت_مجموعه( عدم, px_Saved_اولویت->ux_اولویت );
             }
-            #endif /* if ( configUSE_MUTEXES == 1 ) */
+            #پایان_اگر /* if ( configUSE_MUTEXES == 1 ) */
         }
-        #if CONFIG_FREERTOS_SMP
+        #إذا CONFIG_FREERTOS_SMP
             taskEXIT_CRITICAL();
-        #else
-            taskEXIT_CRITICAL( &xKernelLock );
-        #endif
+        #وإلا
+            taskEXIT_CRITICAL( &x_Kernel_قفل );
+        #پایان_اگر
     }
 
-#endif /* ( INCLUDE_vTaskPrioritySet == 1 ) */
+#پایان_اگر /* ( INCLUDE_vTaskPrioritySet == 1 ) */
 /*----------------------------------------------------------*/
 
 /* --------------------------------------------- TLSP Deletion Callbacks -------------------------------------------- */
 
-#if CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
+#إذا CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
 
-    void vTaskSetThreadLocalStoragePointerAndDelCallback( TaskHandle_t xTaskToSet,
-                                                          BaseType_t xIndex,
-                                                          void * pvValue,
+    فراغ v_Task_مجموعه_Thread_Local_Storage_اشاره_گر_And_Del_Callback( TaskHandle_t x_Task_مقصد_مجموعه,
+                                                          پایه_Type_t x_شاخص,
+                                                          فراغ * pv_مقدار,
                                                           TlsDeleteCallbackFunction_t pvDelCallback )
     {
         /* If TLSP deletion callbacks are enabled, then configNUM_THREAD_LOCAL_STORAGE_POINTERS
          * is doubled in size so that the latter half of the pvThreadLocalStoragePointers
          * stores the deletion callbacks. */
-        if( xIndex < ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ) )
+        إذا( x_شاخص < ( config_رقم_THREAD_LOCAL_STORAGE_اشارهگرها / 2 ) )
         {
             TCB_t * pxTCB;
 
-            #if ( configNUM_CORES > 1 )
+            #إذا ( config_رقم_CORES > 1 )
             {
                 /* For SMP, we need a critical section as another core could also
                  * update this task's TLSP at the same time. */
-                #if CONFIG_FREERTOS_SMP
+                #إذا CONFIG_FREERTOS_SMP
                 {
                     taskENTER_CRITICAL();
                 }
-                #else /* CONFIG_FREERTOS_SMP */
+                #وإلا /* CONFIG_FREERTOS_SMP */
                 {
-                    taskENTER_CRITICAL( &xKernelLock );
+                    taskENTER_CRITICAL( &x_Kernel_قفل );
                 }
-                #endif /* CONFIG_FREERTOS_SMP */
+                #پایان_اگر /* CONFIG_FREERTOS_SMP */
             }
-            #endif /* configNUM_CORES > 1 */
+            #پایان_اگر /* configNUM_CORES > 1 */
 
-            pxTCB = prvGetTCBFromHandle( xTaskToSet );
+            pxTCB = prvGetTCBFromHandle( x_Task_مقصد_مجموعه );
             /* Store the TLSP by indexing the first half of the array */
-            pxTCB->pvThreadLocalStoragePointers[ xIndex ] = pvValue;
+            pxTCB->pv_Thread_Local_Storage_اشارهگرها[ x_شاخص ] = pv_مقدار;
 
             /* Store the TLSP deletion callback by indexing the second half
              * of the array. */
-            pxTCB->pvThreadLocalStoragePointers[ ( xIndex + ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ) ) ] = ( void * ) pvDelCallback;
+            pxTCB->pv_Thread_Local_Storage_اشارهگرها[ ( x_شاخص + ( config_رقم_THREAD_LOCAL_STORAGE_اشارهگرها / 2 ) ) ] = ( فراغ * ) pvDelCallback;
 
-            #if ( configNUM_CORES > 1 )
+            #إذا ( config_رقم_CORES > 1 )
             {
-                #if CONFIG_FREERTOS_SMP
+                #إذا CONFIG_FREERTOS_SMP
                 {
                     taskEXIT_CRITICAL();
                 }
-                #else /* CONFIG_FREERTOS_SMP */
+                #وإلا /* CONFIG_FREERTOS_SMP */
                 {
-                    taskEXIT_CRITICAL( &xKernelLock );
+                    taskEXIT_CRITICAL( &x_Kernel_قفل );
                 }
-                #endif /* CONFIG_FREERTOS_SMP */
+                #پایان_اگر /* CONFIG_FREERTOS_SMP */
             }
-            #endif /* configNUM_CORES > 1 */
+            #پایان_اگر /* configNUM_CORES > 1 */
         }
     }
 
-#endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+#پایان_اگر /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 /*----------------------------------------------------------*/
 
 /* ----------------------------------------------------- Newlib ----------------------------------------------------- */
 
-#if ( configUSE_NEWLIB_REENTRANT == 1 )
+#إذا ( configUSE_NEWLIB_REENTRANT == 1 )
 
 /**
  * @brief Get reentrancy structure of the current task
@@ -847,27 +847,27 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
  *
  * @return Pointer to a the (current taks's)/(global) reent struct
  */
-    struct _reent * __getreent( void )
+    بنية _reent * __getreent( فراغ )
     {
         /* No lock needed because if this changes, we won't be running anymore. */
         TCB_t * pxCurTask = ( TCB_t * ) xTaskGetCurrentTaskHandle();
-        struct _reent * ret;
+        بنية _reent * ret;
 
-        if( pxCurTask == NULL )
+        إذا( pxCurTask == عدم )
         {
             /* No task running. Return global struct. */
             ret = _GLOBAL_REENT;
         }
-        else
+        وإلا
         {
             /* We have a currently executing task. Return its reentrant struct. */
             ret = &pxCurTask->xTLSBlock;
         }
 
-        return ret;
+        أرجع ret;
     }
 
-#endif /* configUSE_NEWLIB_REENTRANT == 1 */
+#پایان_اگر /* configUSE_NEWLIB_REENTRANT == 1 */
 
 /* -------------------------------------------------- Task Snapshot ------------------------------------------------- */
 
@@ -876,24 +876,24 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
  *
  * @note There are currently differing number of task list between SMP FreeRTOS and ESP-IDF FreeRTOS
  */
-static List_t * non_ready_task_lists[] =
+ساكن List_t * non_ready_task_lists[] =
 {
-    #ifdef CONFIG_FREERTOS_SMP
+    #اگر_تعریف_شده CONFIG_FREERTOS_SMP
         &xPendingReadyList,
-    #else /* CONFIG_FREERTOS_SMP */
+    #وإلا /* CONFIG_FREERTOS_SMP */
         &xPendingReadyList[ 0 ],
-        #ifndef CONFIG_FREERTOS_UNICORE
+        #اگر_تعریف_نشده CONFIG_FREERTOS_UNICORE
             &xPendingReadyList[ 1 ],
-        #endif /* CONFIG_FREERTOS_UNICORE */
-    #endif /* CONFIG_FREERTOS_SMP */
+        #پایان_اگر /* CONFIG_FREERTOS_UNICORE */
+    #پایان_اگر /* CONFIG_FREERTOS_SMP */
     &xDelayedTaskList1,
     &xDelayedTaskList2,
-    #if ( INCLUDE_vTaskDelete == 1 )
-        &xTasksWaitingTermination,
-    #endif
-    #if ( INCLUDE_vTaskSuspend == 1 )
+    #إذا ( INCLUDE_vTaskDelete == 1 )
+        &x_Tasks_انتظار_Termination,
+    #پایان_اگر
+    #إذا ( INCLUDE_vTaskSuspend == 1 )
         &xSuspendedTaskList,
-    #endif
+    #پایان_اگر
 };
 /*----------------------------------------------------------*/
 
@@ -913,34 +913,34 @@ static List_t * non_ready_task_lists[] =
  * @return A pointer to the task list at the specified index.
  *         Returns NULL if the index is out of bounds or list is corrupted.
  */
-static List_t * pxGetTaskListByIndex( UBaseType_t uxListIndex )
+ساكن List_t * px_Get_Task_List_By_شاخص( UBaseType_t ux_List_شاخص )
 {
     List_t * pxTaskList;
-    const size_t xNonReadyTaskListsCnt = ( sizeof( non_ready_task_lists ) / sizeof( List_t * ) );
+    ثابت size_t xNonReadyTaskListsCnt = ( حجم( non_ready_task_lists ) / حجم( List_t * ) );
 
-    if( uxListIndex < configMAX_PRIORITIES )
+    إذا( ux_List_شاخص < configMAX_PRIORITIES )
     {
-        pxTaskList = &pxReadyTasksLists[ configMAX_PRIORITIES - 1 - uxListIndex ];
+        pxTaskList = &pxReadyTasksLists[ configMAX_PRIORITIES - 1 - ux_List_شاخص ];
     }
-    else if( uxListIndex < configMAX_PRIORITIES + xNonReadyTaskListsCnt )
+    وإلا إذا( ux_List_شاخص < configMAX_PRIORITIES + xNonReadyTaskListsCnt )
     {
-        pxTaskList = non_ready_task_lists[ uxListIndex - configMAX_PRIORITIES ];
+        pxTaskList = non_ready_task_lists[ ux_List_شاخص - configMAX_PRIORITIES ];
     }
-    else
+    وإلا
     {
-        pxTaskList = NULL;
+        pxTaskList = عدم;
     }
 
     /* sanity check */
-    if( pxTaskList )
+    إذا( pxTaskList )
     {
-        if( !portVALID_LIST_MEM( pxTaskList ) )
+        إذا( !پورت_VALID_LIST_MEM( pxTaskList ) )
         {
-            pxTaskList = NULL;
+            pxTaskList = عدم;
         }
     }
 
-    return pxTaskList;
+    أرجع pxTaskList;
 }
 /*----------------------------------------------------------*/
 
@@ -952,9 +952,9 @@ static List_t * pxGetTaskListByIndex( UBaseType_t uxListIndex )
  * @return The total count of task lists.
  *
  */
-static inline UBaseType_t pxGetTaskListCount( void )
+ساكن مضمن UBaseType_t px_Get_Task_List_شمار( فراغ )
 {
-    return configMAX_PRIORITIES + ( sizeof( non_ready_task_lists ) / sizeof( List_t * ) );
+    أرجع configMAX_PRIORITIES + ( حجم( non_ready_task_lists ) / حجم( List_t * ) );
 }
 /*----------------------------------------------------------*/
 
@@ -972,285 +972,285 @@ static inline UBaseType_t pxGetTaskListCount( void )
  *       When all tasks have been traversed, this function returns -1.
  *       If a broken or corrupted task is encountered, the task handle is set to NULL.
  */
-int xTaskGetNext( TaskIterator_t * xIterator )
+صحيح x_Task_Get_بعدی( TaskIterator_t * xIterator )
 {
-    if( !xIterator )
+    إذا( !xIterator )
     {
-        return -1;
+        أرجع -1;
     }
 
-    ListItem_t * pxNextListItem = xIterator->pxNextListItem;
-    UBaseType_t uxCurListIdx = xIterator->uxCurrentListIndex;
-    UBaseType_t uxMaxListIdx = pxGetTaskListCount();
+    List_قلم_t * px_بعدی_List_قلم = xIterator->px_بعدی_List_قلم;
+    UBaseType_t uxCurListIdx = xIterator->ux_Current_List_شاخص;
+    UBaseType_t uxMaxListIdx = px_Get_Task_List_شمار();
 
-    for( ; uxCurListIdx < uxMaxListIdx; ++uxCurListIdx )
+    لكل( ; uxCurListIdx < uxMaxListIdx; ++uxCurListIdx )
     {
-        List_t * pxCurrentTaskList = pxGetTaskListByIndex( uxCurListIdx );
+        List_t * pxCurrentTaskList = px_Get_Task_List_By_شاخص( uxCurListIdx );
 
-        if( !pxCurrentTaskList || ( listCURRENT_LIST_LENGTH( pxCurrentTaskList ) == 0 ) )
+        إذا( !pxCurrentTaskList || ( list_CURRENT_LIST_درازی( pxCurrentTaskList ) == 0 ) )
         {
-            continue;
+            استمر;
         }
 
-        const ListItem_t * pxCurrListItem = listGET_END_MARKER( pxCurrentTaskList );
+        ثابت List_قلم_t * px_Curr_List_قلم = list_GET_انتها_MARKER( pxCurrentTaskList );
 
-        if( !pxNextListItem )
+        إذا( !px_بعدی_List_قلم )
         {
             /* We are here if the traversal starts from the beginning or when we finish traversing
              * for one of the state lists
              */
-            pxNextListItem = listGET_NEXT( pxCurrListItem );
+            px_بعدی_List_قلم = list_GET_بعدی( px_Curr_List_قلم );
         }
 
-        if( !portVALID_LIST_MEM( pxNextListItem ) )
+        إذا( !پورت_VALID_LIST_MEM( px_بعدی_List_قلم ) )
         {
             /* Nothing to do with the corrupted list item. We will skip to the next task state list.
              * pxNextListItem should be NULL at the beginning of each task list.
              */
-            pxNextListItem = NULL;
-            continue;
+            px_بعدی_List_قلم = عدم;
+            استمر;
         }
 
-        TCB_t * pxTCB = ( TCB_t * ) listGET_LIST_ITEM_OWNER( pxNextListItem );
+        TCB_t * pxTCB = ( TCB_t * ) list_GET_LIST_قلم_OWNER( px_بعدی_List_قلم );
 
-        if( !portVALID_TCB_MEM( pxTCB ) )
+        إذا( !پورت_VALID_TCB_MEM( pxTCB ) )
         {
-            pxTCB = NULL;
+            pxTCB = عدم;
         }
 
         xIterator->pxTaskHandle = pxTCB;
-        xIterator->uxCurrentListIndex = uxCurListIdx;
+        xIterator->ux_Current_List_شاخص = uxCurListIdx;
 
-        if( pxCurrListItem->pxPrevious == pxNextListItem )
+        إذا( px_Curr_List_قلم->px_قبلی == px_بعدی_List_قلم )
         {
             /* If this is the last item of the current state list */
-            xIterator->uxCurrentListIndex++;
-            xIterator->pxNextListItem = NULL;
+            xIterator->ux_Current_List_شاخص++;
+            xIterator->px_بعدی_List_قلم = عدم;
         }
-        else
+        وإلا
         {
-            xIterator->pxNextListItem = listGET_NEXT( pxNextListItem );
+            xIterator->px_بعدی_List_قلم = list_GET_بعدی( px_بعدی_List_قلم );
         }
 
-        return uxCurListIdx;
+        أرجع uxCurListIdx;
     }
 
-    return -1; /* end of the task list */
+    أرجع -1; /* end of the task list */
 }
 /*----------------------------------------------------------*/
 
-BaseType_t vTaskGetSnapshot( TaskHandle_t pxTask,
+پایه_Type_t vTaskGetSnapshot( TaskHandle_t pxTask,
                              TaskSnapshot_t * pxTaskSnapshot )
 {
     ESP_STATIC_ANALYZER_CHECK(!pxTask, pdFALSE);
 
-    if( ( portVALID_TCB_MEM( pxTask ) == false ) || ( pxTaskSnapshot == NULL ) )
+    إذا( ( پورت_VALID_TCB_MEM( pxTask ) == false ) || ( pxTaskSnapshot == عدم ) )
     {
-        return pdFALSE;
+        أرجع pdFALSE;
     }
 
     TCB_t * pxTCB = ( TCB_t * ) pxTask;
     pxTaskSnapshot->pxTCB = pxTCB;
-    pxTaskSnapshot->pxTopOfStack = ( StackType_t * ) pxTCB->pxTopOfStack;
-    pxTaskSnapshot->pxEndOfStack = ( StackType_t * ) pxTCB->pxEndOfStack;
-    return pdTRUE;
+    pxTaskSnapshot->px_بالاترین_از_پشته = ( پشته_Type_t * ) pxTCB->px_بالاترین_از_پشته;
+    pxTaskSnapshot->px_انتها_از_پشته = ( پشته_Type_t * ) pxTCB->px_انتها_از_پشته;
+    أرجع pdTRUE;
 }
 /*----------------------------------------------------------*/
 
-UBaseType_t uxTaskGetSnapshotAll( TaskSnapshot_t * const pxTaskSnapshotArray,
-                                  const UBaseType_t uxArrayLength,
-                                  UBaseType_t * const pxTCBSize )
+UBaseType_t uxTaskGetSnapshotAll( TaskSnapshot_t * ثابت pxTaskSnapshotArray,
+                                  ثابت UBaseType_t ux_Array_درازی,
+                                  UBaseType_t * ثابت pxTCBSize )
 {
-    UBaseType_t uxArrayNumFilled = 0;
+    UBaseType_t ux_Array_رقم_Filled = 0;
 
     /* Traverse all of the tasks lists */
     TaskIterator_t xTaskIter = { 0 }; /* Point to the first task list */
 
-    while( xTaskGetNext( &xTaskIter ) != -1 && uxArrayNumFilled < uxArrayLength )
+    طالما( x_Task_Get_بعدی( &xTaskIter ) != -1 && ux_Array_رقم_Filled < ux_Array_درازی )
     {
-        vTaskGetSnapshot( xTaskIter.pxTaskHandle, &pxTaskSnapshotArray[ uxArrayNumFilled ] );
-        uxArrayNumFilled++;
+        vTaskGetSnapshot( xTaskIter.pxTaskHandle, &pxTaskSnapshotArray[ ux_Array_رقم_Filled ] );
+        ux_Array_رقم_Filled++;
     }
 
-    if( pxTCBSize != NULL )
+    إذا( pxTCBSize != عدم )
     {
-        *pxTCBSize = sizeof( TCB_t );
+        *pxTCBSize = حجم( TCB_t );
     }
 
-    return uxArrayNumFilled;
+    أرجع ux_Array_رقم_Filled;
 }
 /*----------------------------------------------------------*/
 
 /* ----------------------------------------------------- Misc ----------------------------------------------------- */
 
-void * pvTaskGetCurrentTCBForCore( BaseType_t xCoreID )
+فراغ * pvTaskGetCurrentTCBForCore( پایه_Type_t xCoreID )
 {
-    void * pvRet;
+    فراغ * pvRet;
 
     configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE );
 
-    #if CONFIG_FREERTOS_SMP
+    #إذا CONFIG_FREERTOS_SMP
         /* SMP FreeRTOS defines pxCurrentTCB as a macro function call */
-        pvRet = ( void * ) pxCurrentTCB;
-    #else /* CONFIG_FREERTOS_SMP */
-        pvRet = ( void * ) pxCurrentTCBs[ xCoreID ];
-    #endif /* CONFIG_FREERTOS_SMP */
-    return pvRet;
+        pvRet = ( فراغ * ) pxCurrentTCB;
+    #وإلا /* CONFIG_FREERTOS_SMP */
+        pvRet = ( فراغ * ) pxCurrentTCBs[ xCoreID ];
+    #پایان_اگر /* CONFIG_FREERTOS_SMP */
+    أرجع pvRet;
 }
 
 /* ----------------------------------------------------- OpenOCD ---------------------------------------------------- */
 
-#if CONFIG_FREERTOS_DEBUG_OCDAWARE
+#إذا CONFIG_FREERTOS_DEBUG_OCDAWARE
 
 /**
  * Debug param indexes. DO NOT change the order. OpenOCD uses the same indexes
  * Entries in FreeRTOS_openocd_params must match the order of these indexes
  */
-    enum
+    تعداد
     {
-        ESP_FREERTOS_DEBUG_TABLE_SIZE = 0,
-        ESP_FREERTOS_DEBUG_TABLE_VERSION,
+        ESP_FREERTOS_DEBUG_جدول_اندازه = 0,
+        ESP_FREERTOS_DEBUG_جدول_نسخه,
         ESP_FREERTOS_DEBUG_KERNEL_VER_MAJOR,
         ESP_FREERTOS_DEBUG_KERNEL_VER_MINOR,
         ESP_FREERTOS_DEBUG_KERNEL_VER_BUILD,
-        ESP_FREERTOS_DEBUG_UX_TOP_USED_PIORITY,
-        ESP_FREERTOS_DEBUG_PX_TOP_OF_STACK,
+        ESP_FREERTOS_DEBUG_UX_بالاترین_استفاده_شده_PIORITY,
+        ESP_FREERTOS_DEBUG_PX_بالاترین_از_پشته,
         ESP_FREERTOS_DEBUG_PC_TASK_NAME,
-        ESP_FREERTOS_DEBUG_LIST_SIZE,
-        ESP_FREERTOS_DEBUG_LIST_NUM_ITEMS,
-        ESP_FREERTOS_DEBUG_LIST_END,
-        ESP_FREERTOS_DEBUG_LIST_END_PREV,
-        ESP_FREERTOS_DEBUG_LIST_ITEM_PREV,
-        ESP_FREERTOS_DEBUG_LIST_ITEM_OWNER,
-        ESP_FREERTOS_DEBUG_TASK_COUNT_WIDTH,
-        ESP_FREERTOS_DEBUG_PTR_WIDTH,
+        ESP_FREERTOS_DEBUG_LIST_اندازه,
+        ESP_FREERTOS_DEBUG_LIST_رقم_اقلام,
+        ESP_FREERTOS_DEBUG_LIST_انتها,
+        ESP_FREERTOS_DEBUG_LIST_انتها_PREV,
+        ESP_FREERTOS_DEBUG_LIST_قلم_PREV,
+        ESP_FREERTOS_DEBUG_LIST_قلم_OWNER,
+        ESP_FREERTOS_DEBUG_TASK_شمار_عرض,
+        ESP_FREERTOS_DEBUG_PTR_عرض,
         /* New entries must be inserted here */
-        ESP_FREERTOS_DEBUG_TABLE_END,
+        ESP_FREERTOS_DEBUG_جدول_انتها,
     };
 
-    const DRAM_ATTR uint8_t FreeRTOS_openocd_params[ ESP_FREERTOS_DEBUG_TABLE_END ] =
+    ثابت DRAM_ATTR uint8_t FreeRTOS_openocd_params[ ESP_FREERTOS_DEBUG_جدول_انتها ] =
     {
-        ESP_FREERTOS_DEBUG_TABLE_END, /* table size */
+        ESP_FREERTOS_DEBUG_جدول_انتها, /* table size */
         1,                            /* table version */
-        tskKERNEL_VERSION_MAJOR,
-        tskKERNEL_VERSION_MINOR,
-        tskKERNEL_VERSION_BUILD,
+        tsk_KERNEL_نسخه_MAJOR,
+        tsk_KERNEL_نسخه_MINOR,
+        tsk_KERNEL_نسخه_BUILD,
         configMAX_PRIORITIES - 1,                   /* uxTopUsedPriority */
-        offsetof( TCB_t, pxTopOfStack ),            /* thread_stack_offset; */
+        offsetof( TCB_t, px_بالاترین_از_پشته ),            /* thread_stack_offset; */
         offsetof( TCB_t, pcTaskName ),              /* thread_name_offset; */
-        sizeof( List_t ),                           /* list_width */
-        offsetof( List_t, uxNumberOfItems ),        /* list_item_num */
-        offsetof( List_t, xListEnd ),               /* list_end_offset */
-        offsetof( List_t, xListEnd.pxPrevious ),    /* list_next_offset */
-        offsetof( ListItem_t, pxPrevious ),         /* list_elem_next_offset */
-        offsetof( ListItem_t, pvOwner ),            /* list_elem_content_offset */
-        sizeof( UBaseType_t ),                      /* task_count_width */
-        sizeof( void * )                            /* ptr_width */
+        حجم( List_t ),                           /* list_width */
+        offsetof( List_t, ux_عدد_از_اقلام ),        /* list_item_num */
+        offsetof( List_t, x_List_انتها ),               /* list_end_offset */
+        offsetof( List_t, x_List_انتها.px_قبلی ),    /* list_next_offset */
+        offsetof( List_قلم_t, px_قبلی ),         /* list_elem_next_offset */
+        offsetof( List_قلم_t, pvOwner ),            /* list_elem_content_offset */
+        حجم( UBaseType_t ),                      /* task_count_width */
+        حجم( فراغ * )                            /* ptr_width */
     };
 
-#endif /* CONFIG_FREERTOS_DEBUG_OCDAWARE */
+#پایان_اگر /* CONFIG_FREERTOS_DEBUG_OCDAWARE */
 /*----------------------------------------------------------*/
 
 /* ----------------------------------------------------- PSRAM ---------------------------------------------------- */
 
-#if CONFIG_SPIRAM
+#إذا CONFIG_SPIRAM
 
-    #if CONFIG_FREERTOS_SMP
-        BaseType_t prvTaskCreateDynamicAffinitySetWithCaps( TaskFunction_t pxTaskCode,
-                                                            const char * const pcName,
-                                                            const configSTACK_DEPTH_TYPE usStackDepth,
-                                                            void * const pvParameters,
-                                                            UBaseType_t uxPriority,
-                                                            UBaseType_t uxCoreAffinityMask,
-                                                            UBaseType_t uxStackMemoryCaps,
-                                                            TaskHandle_t * const pxCreatedTask )
-    #else /* CONFIG_FREERTOS_SMP */
-        BaseType_t prvTaskCreateDynamicPinnedToCoreWithCaps( TaskFunction_t pxTaskCode,
-                                                             const char * const pcName,
-                                                             const configSTACK_DEPTH_TYPE usStackDepth,
-                                                             void * const pvParameters,
-                                                             UBaseType_t uxPriority,
-                                                             const BaseType_t xCoreID,
-                                                             UBaseType_t uxStackMemoryCaps,
-                                                             TaskHandle_t * const pxCreatedTask )
-    #endif /* CONFIG_FREERTOS_SMP */
+    #إذا CONFIG_FREERTOS_SMP
+        پایه_Type_t prv_Task_Create_Dynamic_Affinity_مجموعه_With_Caps( TaskFunction_t px_Task_کد,
+                                                            ثابت حرف * ثابت pcName,
+                                                            ثابت config_پشته_عمق_TYPE us_پشته_عمق,
+                                                            فراغ * ثابت pvParameters,
+                                                            UBaseType_t ux_اولویت,
+                                                            UBaseType_t ux_Core_Affinity_ماسک,
+                                                            UBaseType_t ux_پشته_حافظه_Caps,
+                                                            TaskHandle_t * ثابت pxCreatedTask )
+    #وإلا /* CONFIG_FREERTOS_SMP */
+        پایه_Type_t prv_Task_Create_Dynamic_Pinned_مقصد_Core_With_Caps( TaskFunction_t px_Task_کد,
+                                                             ثابت حرف * ثابت pcName,
+                                                             ثابت config_پشته_عمق_TYPE us_پشته_عمق,
+                                                             فراغ * ثابت pvParameters,
+                                                             UBaseType_t ux_اولویت,
+                                                             ثابت پایه_Type_t xCoreID,
+                                                             UBaseType_t ux_پشته_حافظه_Caps,
+                                                             TaskHandle_t * ثابت pxCreatedTask )
+    #پایان_اگر /* CONFIG_FREERTOS_SMP */
     {
         TCB_t * pxNewTCB;
-        BaseType_t xReturn;
+        پایه_Type_t xReturn;
 
-        StackType_t * pxStack;
+        پشته_Type_t * px_پشته;
 
-        configASSERT( uxStackMemoryCaps & ( MALLOC_CAP_8BIT ) );
-        configASSERT( ( uxStackMemoryCaps & MALLOC_CAP_SPIRAM ) ||
-                      ( uxStackMemoryCaps & MALLOC_CAP_INTERNAL ) );
-        #if ( !CONFIG_FREERTOS_SMP )
+        configASSERT( ux_پشته_حافظه_Caps & ( MALLOC_CAP_8_بیت ) );
+        configASSERT( ( ux_پشته_حافظه_Caps & MALLOC_CAP_SPIRAM ) ||
+                      ( ux_پشته_حافظه_Caps & MALLOC_CAP_داخلی ) );
+        #إذا ( !CONFIG_FREERTOS_SMP )
         {
             configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE || xCoreID == tskNO_AFFINITY );
         }
-        #endif /* !CONFIG_FREERTOS_SMP */
+        #پایان_اگر /* !CONFIG_FREERTOS_SMP */
 
         /* Allocate space for the stack used by the task being created. */
-        pxStack = heap_caps_malloc( ( ( ( size_t ) usStackDepth ) * sizeof( StackType_t ) ), uxStackMemoryCaps );
+        px_پشته = انباشته_caps_malloc( ( ( ( size_t ) us_پشته_عمق ) * حجم( پشته_Type_t ) ), ux_پشته_حافظه_Caps );
 
-        if( pxStack != NULL )
+        إذا( px_پشته != عدم )
         {
             /* Allocate space for the TCB. */
-            pxNewTCB = ( TCB_t * ) pvPortMalloc( sizeof( TCB_t ) );
+            pxNewTCB = ( TCB_t * ) pv_پورت_Malloc( حجم( TCB_t ) );
 
-            if( pxNewTCB != NULL )
+            إذا( pxNewTCB != عدم )
             {
-                memset( ( void * ) pxNewTCB, 0x00, sizeof( TCB_t ) );
+                memset( ( فراغ * ) pxNewTCB, 0x00, حجم( TCB_t ) );
 
                 /* Store the stack location in the TCB. */
-                pxNewTCB->pxStack = pxStack;
+                pxNewTCB->px_پشته = px_پشته;
             }
-            else
+            وإلا
             {
                 /* The stack cannot be used as the TCB has not been created. Free it. */
-                heap_caps_free( pxStack );
+                انباشته_caps_free( px_پشته );
             }
         }
-        else
+        وإلا
         {
-            pxNewTCB = NULL;
+            pxNewTCB = عدم;
         }
 
-        if( pxNewTCB != NULL )
+        إذا( pxNewTCB != عدم )
         {
-            #if ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )
+            #إذا ( tsk_STATIC_AND_DYNAMIC_تخصیص_POSSIBLE != 0 )
             {
                 /* Tasks can be created statically or dynamically, so note this
                  * task was created dynamically in case it is later deleted. */
-                pxNewTCB->ucStaticallyAllocated = tskDYNAMICALLY_ALLOCATED_STACK_AND_TCB;
+                pxNewTCB->ucStaticallyAllocated = tsk_DYNAMICALLY_ALLOCATED_پشته_AND_TCB;
             }
-            #endif /* tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE */
+            #پایان_اگر /* tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE */
 
-            #if CONFIG_FREERTOS_SMP
+            #إذا CONFIG_FREERTOS_SMP
             {
-                prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) usStackDepth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL );
-                #if ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+                prvInitialiseNewTask( px_Task_کد, pcName, ( uint32_t ) us_پشته_عمق, pvParameters, ux_اولویت, pxCreatedTask, pxNewTCB, عدم );
+                #إذا ( ( config_رقم_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
                 {
                     /* Set the task's affinity before scheduling it */
-                    pxNewTCB->uxCoreAffinityMask = uxCoreAffinityMask;
+                    pxNewTCB->ux_Core_Affinity_ماسک = ux_Core_Affinity_ماسک;
                 }
-                #endif /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
+                #پایان_اگر /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
             }
-            #else /* CONFIG_FREERTOS_SMP */
+            #وإلا /* CONFIG_FREERTOS_SMP */
             {
-                prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) usStackDepth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL, xCoreID );
+                prvInitialiseNewTask( px_Task_کد, pcName, ( uint32_t ) us_پشته_عمق, pvParameters, ux_اولویت, pxCreatedTask, pxNewTCB, عدم, xCoreID );
             }
-            #endif /* CONFIG_FREERTOS_SMP */
+            #پایان_اگر /* CONFIG_FREERTOS_SMP */
 
-            prvAddNewTaskToReadyList( pxNewTCB );
+            prv_جمع_کن_New_Task_مقصد_Ready_List( pxNewTCB );
             xReturn = pdPASS;
         }
-        else
+        وإلا
         {
-            xReturn = errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY;
+            xReturn = err_COULD_NOT_ALLOCATE_REQUIRED_حافظه;
         }
 
-        return xReturn;
+        أرجع xReturn;
     }
 
-#endif /* CONFIG_SPIRAM */
+#پایان_اگر /* CONFIG_SPIRAM */
 /*----------------------------------------------------------*/

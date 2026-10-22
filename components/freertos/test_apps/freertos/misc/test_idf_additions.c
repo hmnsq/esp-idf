@@ -4,23 +4,23 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/queue.h"
-#include "freertos/semphr.h"
-#include "freertos/stream_buffer.h"
-#include "freertos/message_buffer.h"
-#include "freertos/event_groups.h"
-#include "freertos/idf_additions.h"
-#include "freertos/freertos_debug.h"
-#include "esp_memory_utils.h"
-#include "esp_heap_caps.h"
-#include "unity.h"
-#include "test_utils.h"
-#include <stdio.h>
-#include <string.h>
-#include <inttypes.h>
+#ضمن "sdkconfig.h"
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
+#ضمن "freertos/queue.h"
+#ضمن "freertos/semphr.h"
+#ضمن "freertos/stream_buffer.h"
+#ضمن "freertos/message_buffer.h"
+#ضمن "freertos/event_groups.h"
+#ضمن "freertos/idf_additions.h"
+#ضمن "freertos/freertos_debug.h"
+#ضمن "esp_memory_utils.h"
+#ضمن "esp_heap_caps.h"
+#ضمن "unity.h"
+#ضمن "test_utils.h"
+#ضمن <stdio.h>
+#ضمن <string.h>
+#ضمن <inttypes.h>
 
 /*
 Test ESP-IDF FreeRTOS API additions from idf_additions.h:
@@ -31,82 +31,82 @@ Test ESP-IDF FreeRTOS API additions from idf_additions.h:
 Run only these cases from the Unity menu with the [idf_additions] tag filter.
  */
 
-#define OBJECT_MEMORY_CAPS      (MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT)
-#define SPIRAM_OBJECT_MEMORY_CAPS (MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT)
+#تعریف_کن OBJECT_حافظه_CAPS      (MALLOC_CAP_داخلی|MALLOC_CAP_8_بیت)
+#تعریف_کن SPIRAM_OBJECT_حافظه_CAPS (MALLOC_CAP_SPIRAM|MALLOC_CAP_8_بیت)
 
-static void task_with_caps(void *arg)
+ساكن فراغ task_with_caps(فراغ *arg)
 {
     xTaskNotifyGive((TaskHandle_t)arg);
-    vTaskSuspend(NULL);
+    vTaskSuspend(عدم);
 }
 
-static void task_with_caps_self_delete(void *arg)
+ساكن فراغ task_with_caps_self_delete(فراغ *arg)
 {
     /* Wait for the unity task to indicate that this task should delete itself */
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, پورت_MAX_DELAY);
 
     /* Although it is not recommended to self-delete a task with memory caps but this
      * is done intentionally to test for memory leaks */
-    vTaskDeleteWithCaps(NULL);
+    vTaskDeleteWithCaps(عدم);
 }
 
 TEST_CASE("IDF additions: Task creation with memory caps and deletion from another task", "[freertos][idf_additions]")
 {
-    TaskHandle_t task_handle = NULL;
-    StackType_t *puxStackBuffer;
-    StaticTask_t *pxTaskBuffer;
+    TaskHandle_t task_handle = عدم;
+    پشته_Type_t *pux_پشته_میانگیر;
+    StaticTask_t *px_Task_میانگیر;
 
     // Create a task with caps
-    TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCoreWithCaps(task_with_caps, "task", 4096, (void *)xTaskGetCurrentTaskHandle(), UNITY_FREERTOS_PRIORITY + 1, &task_handle, UNITY_FREERTOS_CPU, OBJECT_MEMORY_CAPS));
-    TEST_ASSERT_NOT_EQUAL(NULL, task_handle);
+    TEST_ASSERT_EQUAL(pdPASS, x_Task_Create_Pinned_مقصد_Core_With_Caps(task_with_caps, "task", 4096, (فراغ *)xTaskGetCurrentTaskHandle(), UNITY_FREERTOS_اولویت + 1, &task_handle, UNITY_FREERTOS_CPU, OBJECT_حافظه_CAPS));
+    TEST_ASSERT_NOT_EQUAL(عدم, task_handle);
     // Get the task's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(task_handle, &puxStackBuffer, &pxTaskBuffer));
-    TEST_ASSERT(esp_ptr_in_dram(puxStackBuffer));
-    TEST_ASSERT(esp_ptr_in_dram(pxTaskBuffer));
+    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(task_handle, &pux_پشته_میانگیر, &px_Task_میانگیر));
+    TEST_ASSERT(esp_ptr_درون_dram(pux_پشته_میانگیر));
+    TEST_ASSERT(esp_ptr_درون_dram(px_Task_میانگیر));
     // Wait for the created task to block
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, پورت_MAX_DELAY);
     // Delete the task
     vTaskDeleteWithCaps(task_handle);
 }
 
 TEST_CASE("IDF additions: Task creation with memory caps and self deletion", "[freertos][idf_additions]")
 {
-    TaskHandle_t task_handle = NULL;
-    StackType_t *puxStackBuffer;
-    StaticTask_t *pxTaskBuffer;
+    TaskHandle_t task_handle = عدم;
+    پشته_Type_t *pux_پشته_میانگیر;
+    StaticTask_t *px_Task_میانگیر;
 
     // Create a task with caps
-    TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCoreWithCaps(task_with_caps_self_delete, "task", 4096, (void *)xTaskGetCurrentTaskHandle(), UNITY_FREERTOS_PRIORITY + 1, &task_handle, UNITY_FREERTOS_CPU, OBJECT_MEMORY_CAPS));
-    TEST_ASSERT_NOT_EQUAL(NULL, task_handle);
+    TEST_ASSERT_EQUAL(pdPASS, x_Task_Create_Pinned_مقصد_Core_With_Caps(task_with_caps_self_delete, "task", 4096, (فراغ *)xTaskGetCurrentTaskHandle(), UNITY_FREERTOS_اولویت + 1, &task_handle, UNITY_FREERTOS_CPU, OBJECT_حافظه_CAPS));
+    TEST_ASSERT_NOT_EQUAL(عدم, task_handle);
     // Get the task's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(task_handle, &puxStackBuffer, &pxTaskBuffer));
-    TEST_ASSERT(esp_ptr_in_dram(puxStackBuffer));
-    TEST_ASSERT(esp_ptr_in_dram(pxTaskBuffer));
+    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(task_handle, &pux_پشته_میانگیر, &px_Task_میانگیر));
+    TEST_ASSERT(esp_ptr_درون_dram(pux_پشته_میانگیر));
+    TEST_ASSERT(esp_ptr_درون_dram(px_Task_میانگیر));
     // Notify the task to delete itself
     xTaskNotifyGive(task_handle);
 }
 
-#if CONFIG_FREERTOS_TASK_CREATE_ALLOW_EXT_MEM
+#إذا CONFIG_FREERTOS_TASK_CREATE_ALLOW_EXT_MEM
 
 TEST_CASE("IDF additions: Task creation with SPIRAM memory caps and self deletion stress test", "[freertos][idf_additions]")
 {
-#define TEST_NUM_TASKS      5
-#define TEST_NUM_ITERATIONS 1000
-    TaskHandle_t task_handle[TEST_NUM_TASKS];
-    StackType_t *puxStackBuffer;
-    StaticTask_t *pxTaskBuffer;
+#تعریف_کن TEST_رقم_TASKS      5
+#تعریف_کن TEST_رقم_ITERATIONS 1000
+    TaskHandle_t task_handle[TEST_رقم_TASKS];
+    پشته_Type_t *pux_پشته_میانگیر;
+    StaticTask_t *px_Task_میانگیر;
 
-    for (int j = 0; j < TEST_NUM_ITERATIONS; j++) {
-        for (int i = 0; i < TEST_NUM_TASKS; i++) {
+    لكل (صحيح j = 0; j < TEST_رقم_ITERATIONS; j++) {
+        لكل (صحيح i = 0; i < TEST_رقم_TASKS; i++) {
             // Create a task with caps
-            TEST_ASSERT_EQUAL(pdPASS, xTaskCreateWithCaps(task_with_caps_self_delete, "task", 4096, NULL, UNITY_FREERTOS_PRIORITY, &task_handle[i], MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT));
+            TEST_ASSERT_EQUAL(pdPASS, xTaskCreateWithCaps(task_with_caps_self_delete, "task", 4096, عدم, UNITY_FREERTOS_اولویت, &task_handle[i], MALLOC_CAP_SPIRAM | MALLOC_CAP_8_بیت));
             // Get the task's memory
-            TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(task_handle[i], &puxStackBuffer, &pxTaskBuffer));
-            TEST_ASSERT(esp_ptr_external_ram(puxStackBuffer));
-            TEST_ASSERT(esp_ptr_in_dram(pxTaskBuffer));
+            TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(task_handle[i], &pux_پشته_میانگیر, &px_Task_میانگیر));
+            TEST_ASSERT(esp_ptr_external_ram(pux_پشته_میانگیر));
+            TEST_ASSERT(esp_ptr_درون_dram(px_Task_میانگیر));
         }
 
-        for (int i = 0; i < TEST_NUM_TASKS; i++) {
+        لكل (صحيح i = 0; i < TEST_رقم_TASKS; i++) {
             // Notify the task to delete itself
             xTaskNotifyGive(task_handle[i]);
         }
@@ -117,57 +117,57 @@ TEST_CASE("IDF additions: Task creation with SPIRAM memory caps and self deletio
     vTaskDelay(50);
 }
 
-#endif /* CONFIG_FREERTOS_TASK_CREATE_ALLOW_EXT_MEM */
+#پایان_اگر /* CONFIG_FREERTOS_TASK_CREATE_ALLOW_EXT_MEM */
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
+#إذا ( CONFIG_FREERTOS_عدد_از_CORES > 1 )
 
-static void task_with_caps_running_on_other_core(void *arg)
+ساكن فراغ task_with_caps_running_on_other_core(فراغ *arg)
 {
     /* Notify the unity task that this task is running on the other core */
     xTaskNotifyGive((TaskHandle_t)arg);
 
     /* We make sure that this task is running on the other core */
-    while (1) {
+    طالما (1) {
         ;
     }
 }
 
 TEST_CASE("IDF additions: Task creation with memory caps and deletion from another core", "[freertos][idf_additions]")
 {
-    TaskHandle_t task_handle = NULL;
-    StackType_t *puxStackBuffer;
-    StaticTask_t *pxTaskBuffer;
+    TaskHandle_t task_handle = عدم;
+    پشته_Type_t *pux_پشته_میانگیر;
+    StaticTask_t *px_Task_میانگیر;
 
     // Create a task with caps on the other core
-    TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCoreWithCaps(task_with_caps_running_on_other_core, "task", 4096, (void *)xTaskGetCurrentTaskHandle(), UNITY_FREERTOS_PRIORITY + 1, &task_handle, !UNITY_FREERTOS_CPU, OBJECT_MEMORY_CAPS));
-    TEST_ASSERT_NOT_EQUAL(NULL, task_handle);
+    TEST_ASSERT_EQUAL(pdPASS, x_Task_Create_Pinned_مقصد_Core_With_Caps(task_with_caps_running_on_other_core, "task", 4096, (فراغ *)xTaskGetCurrentTaskHandle(), UNITY_FREERTOS_اولویت + 1, &task_handle, !UNITY_FREERTOS_CPU, OBJECT_حافظه_CAPS));
+    TEST_ASSERT_NOT_EQUAL(عدم, task_handle);
     // Get the task's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(task_handle, &puxStackBuffer, &pxTaskBuffer));
-    TEST_ASSERT(esp_ptr_in_dram(puxStackBuffer));
-    TEST_ASSERT(esp_ptr_in_dram(pxTaskBuffer));
+    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(task_handle, &pux_پشته_میانگیر, &px_Task_میانگیر));
+    TEST_ASSERT(esp_ptr_درون_dram(pux_پشته_میانگیر));
+    TEST_ASSERT(esp_ptr_درون_dram(px_Task_میانگیر));
     // Wait for the created task to start running
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, پورت_MAX_DELAY);
     // Delete the task from another core
     vTaskDeleteWithCaps(task_handle);
 }
 
-#endif // CONFIG_FREERTOS_NUMBER_OF_CORES > 1
+#پایان_اگر // CONFIG_FREERTOS_NUMBER_OF_CORES > 1
 
 TEST_CASE("IDF additions: Queue creation with memory caps", "[freertos][idf_additions]")
 {
-    QueueHandle_t queue_handle;
-    uint8_t *queue_storage;
-    StaticQueue_t *queue_obj;
+    صف_Handle_t صف_handle;
+    uint8_t *صف_storage;
+    Static_صف_t *صف_obj;
 
     // Create queue with caps
-    queue_handle = xQueueCreateWithCaps(5, sizeof(uint32_t), OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_EQUAL(NULL, queue_handle);
+    صف_handle = x_صف_Create_With_Caps(5, حجم(uint32_t), OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_EQUAL(عدم, صف_handle);
     // Get the queue's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xQueueGetStaticBuffers(queue_handle, &queue_storage, &queue_obj));
-    TEST_ASSERT(esp_ptr_in_dram(queue_storage));
-    TEST_ASSERT(esp_ptr_in_dram(queue_obj));
+    TEST_ASSERT_EQUAL(pdTRUE, x_صف_Get_Static_Buffers(صف_handle, &صف_storage, &صف_obj));
+    TEST_ASSERT(esp_ptr_درون_dram(صف_storage));
+    TEST_ASSERT(esp_ptr_درون_dram(صف_obj));
     // Free the queue
-    vQueueDeleteWithCaps(queue_handle);
+    v_صف_Delete_With_Caps(صف_handle);
 }
 
 TEST_CASE("IDF additions: Semaphore creation with memory caps", "[freertos][idf_additions]")
@@ -176,515 +176,515 @@ TEST_CASE("IDF additions: Semaphore creation with memory caps", "[freertos][idf_
     StaticSemaphore_t *sem_obj;
 
     // Create binary semaphore with caps
-    sem_handle = xSemaphoreCreateBinaryWithCaps(OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_EQUAL(NULL, sem_handle);
+    sem_handle = x_Semaphore_Create_دودویی_With_Caps(OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_EQUAL(عدم, sem_handle);
     // Get the binary semaphore's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGetStaticBuffer(sem_handle, &sem_obj));
-    TEST_ASSERT(esp_ptr_in_dram(sem_obj));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Semaphore_Get_Static_میانگیر(sem_handle, &sem_obj));
+    TEST_ASSERT(esp_ptr_درون_dram(sem_obj));
     // Free the binary semaphore
     vSemaphoreDeleteWithCaps(sem_handle);
 
     // Create counting semaphore with caps
-    sem_handle = xSemaphoreCreateCountingWithCaps(4, 0, OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_EQUAL(NULL, sem_handle);
+    sem_handle = xSemaphoreCreateCountingWithCaps(4, 0, OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_EQUAL(عدم, sem_handle);
     // Get the counting semaphore's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGetStaticBuffer(sem_handle, &sem_obj));
-    TEST_ASSERT(esp_ptr_in_dram(sem_obj));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Semaphore_Get_Static_میانگیر(sem_handle, &sem_obj));
+    TEST_ASSERT(esp_ptr_درون_dram(sem_obj));
     // Free the counting semaphore
     vSemaphoreDeleteWithCaps(sem_handle);
 
     // Create mutex semaphore with caps
-    sem_handle = xSemaphoreCreateMutexWithCaps(OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_EQUAL(NULL, sem_handle);
+    sem_handle = xSemaphoreCreateMutexWithCaps(OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_EQUAL(عدم, sem_handle);
     // Get the mutex semaphore's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGetStaticBuffer(sem_handle, &sem_obj));
-    TEST_ASSERT(esp_ptr_in_dram(sem_obj));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Semaphore_Get_Static_میانگیر(sem_handle, &sem_obj));
+    TEST_ASSERT(esp_ptr_درون_dram(sem_obj));
     // Free the mutex semaphore
     vSemaphoreDeleteWithCaps(sem_handle);
 
     // Create recursive mutex with caps
-    sem_handle = xSemaphoreCreateRecursiveMutexWithCaps(OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_EQUAL(NULL, sem_handle);
+    sem_handle = xSemaphoreCreateRecursiveMutexWithCaps(OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_EQUAL(عدم, sem_handle);
     // Get the recursive mutex's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGetStaticBuffer(sem_handle, &sem_obj));
-    TEST_ASSERT(esp_ptr_in_dram(sem_obj));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Semaphore_Get_Static_میانگیر(sem_handle, &sem_obj));
+    TEST_ASSERT(esp_ptr_درون_dram(sem_obj));
     // Free the recursive mutex
     vSemaphoreDeleteWithCaps(sem_handle);
 }
 
 TEST_CASE("IDF additions: Stream & message buffer creation with memory caps", "[freertos][idf_additions]")
 {
-    StreamBufferHandle_t stream_buffer_handle;
-    uint8_t *stream_buffer_storage;
-    StaticStreamBuffer_t *stream_buffer_obj;
+    جریان_میانگیر_Handle_t جریان_میانگیر_handle;
+    uint8_t *جریان_میانگیر_storage;
+    Static_جریان_میانگیر_t *جریان_میانگیر_obj;
 
     // Create stream buffer with caps
-    stream_buffer_handle = xStreamBufferCreateWithCaps(16, 0, OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_EQUAL(NULL, stream_buffer_handle);
+    جریان_میانگیر_handle = x_جریان_میانگیر_Create_With_Caps(16, 0, OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_EQUAL(عدم, جریان_میانگیر_handle);
     // Get the stream buffer's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xStreamBufferGetStaticBuffers(stream_buffer_handle, &stream_buffer_storage, &stream_buffer_obj));
-    TEST_ASSERT(esp_ptr_in_dram(stream_buffer_storage));
-    TEST_ASSERT(esp_ptr_in_dram(stream_buffer_obj));
+    TEST_ASSERT_EQUAL(pdTRUE, x_جریان_میانگیر_Get_Static_Buffers(جریان_میانگیر_handle, &جریان_میانگیر_storage, &جریان_میانگیر_obj));
+    TEST_ASSERT(esp_ptr_درون_dram(جریان_میانگیر_storage));
+    TEST_ASSERT(esp_ptr_درون_dram(جریان_میانگیر_obj));
     // Free the stream buffer
-    vStreamBufferDeleteWithCaps(stream_buffer_handle);
+    v_جریان_میانگیر_Delete_With_Caps(جریان_میانگیر_handle);
 
-    MessageBufferHandle_t msg_buffer_handle;
-    uint8_t *msg_buffer_storage;
-    StaticMessageBuffer_t *msg_buffer_obj;
+    پیام_میانگیر_Handle_t پیام_میانگیر_handle;
+    uint8_t *پیام_میانگیر_storage;
+    Static_پیام_میانگیر_t *پیام_میانگیر_obj;
 
     // Create message buffer with caps
-    msg_buffer_handle = xMessageBufferCreateWithCaps(16, OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_EQUAL(NULL, msg_buffer_handle);
+    پیام_میانگیر_handle = x_پیام_میانگیر_Create_With_Caps(16, OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_EQUAL(عدم, پیام_میانگیر_handle);
     // Get the message buffer's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xMessageBufferGetStaticBuffers(msg_buffer_handle, &msg_buffer_storage, &msg_buffer_obj));
-    TEST_ASSERT(esp_ptr_in_dram(msg_buffer_storage));
-    TEST_ASSERT(esp_ptr_in_dram(msg_buffer_obj));
+    TEST_ASSERT_EQUAL(pdTRUE, x_پیام_میانگیر_Get_Static_Buffers(پیام_میانگیر_handle, &پیام_میانگیر_storage, &پیام_میانگیر_obj));
+    TEST_ASSERT(esp_ptr_درون_dram(پیام_میانگیر_storage));
+    TEST_ASSERT(esp_ptr_درون_dram(پیام_میانگیر_obj));
     // Free the message buffer
-    vMessageBufferDeleteWithCaps(msg_buffer_handle);
+    v_پیام_میانگیر_Delete_With_Caps(پیام_میانگیر_handle);
 }
 
 TEST_CASE("IDF additions: Event group creation with memory caps", "[freertos][idf_additions]")
 {
-    EventGroupHandle_t evt_group_handle;
-    StaticEventGroup_t *evt_group_obj;
+    Event_گروه_Handle_t evt_گروه_handle;
+    Static_Event_گروه_t *evt_گروه_obj;
 
     // Create event group with caps
-    evt_group_handle = xEventGroupCreateWithCaps(OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_EQUAL(NULL, evt_group_handle);
+    evt_گروه_handle = x_Event_گروه_Create_With_Caps(OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_EQUAL(عدم, evt_گروه_handle);
     // Get the event group's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xEventGroupGetStaticBuffer(evt_group_handle, &evt_group_obj));
-    TEST_ASSERT(esp_ptr_in_dram(evt_group_obj));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Event_گروه_Get_Static_میانگیر(evt_گروه_handle, &evt_گروه_obj));
+    TEST_ASSERT(esp_ptr_درون_dram(evt_گروه_obj));
     // Free the event group
-    vEventGroupDeleteWithCaps(evt_group_handle);
+    v_Event_گروه_Delete_With_Caps(evt_گروه_handle);
 }
 
 TEST_CASE("IDF additions: WithCaps objects functional smoke test", "[freertos][idf_additions]")
 {
-    QueueHandle_t queue_handle;
+    صف_Handle_t صف_handle;
     uint32_t send_val = 0xA5A5A5A5;
     uint32_t recv_val = 0;
 
-    queue_handle = xQueueCreateWithCaps(4, sizeof(uint32_t), OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_NULL(queue_handle);
-    TEST_ASSERT_EQUAL(pdTRUE, xQueueSend(queue_handle, &send_val, 0));
-    TEST_ASSERT_EQUAL(pdTRUE, xQueueReceive(queue_handle, &recv_val, 0));
+    صف_handle = x_صف_Create_With_Caps(4, حجم(uint32_t), OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_NULL(صف_handle);
+    TEST_ASSERT_EQUAL(pdTRUE, x_صف_Send(صف_handle, &send_val, 0));
+    TEST_ASSERT_EQUAL(pdTRUE, x_صف_Receive(صف_handle, &recv_val, 0));
     TEST_ASSERT_EQUAL(send_val, recv_val);
-    vQueueDeleteWithCaps(queue_handle);
+    v_صف_Delete_With_Caps(صف_handle);
 
-    SemaphoreHandle_t sem_handle = xSemaphoreCreateBinaryWithCaps(OBJECT_MEMORY_CAPS);
+    SemaphoreHandle_t sem_handle = x_Semaphore_Create_دودویی_With_Caps(OBJECT_حافظه_CAPS);
     TEST_ASSERT_NOT_NULL(sem_handle);
     TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGive(sem_handle));
     TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTake(sem_handle, 0));
     vSemaphoreDeleteWithCaps(sem_handle);
 
-    StreamBufferHandle_t stream_buffer_handle;
-    uint8_t stream_tx[] = {0x01, 0x02, 0x03};
-    uint8_t stream_rx[sizeof(stream_tx)] = {0};
+    جریان_میانگیر_Handle_t جریان_میانگیر_handle;
+    uint8_t جریان_tx[] = {0x01, 0x02, 0x03};
+    uint8_t جریان_rx[حجم(جریان_tx)] = {0};
 
-    stream_buffer_handle = xStreamBufferCreateWithCaps(32, 1, OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_NULL(stream_buffer_handle);
-    TEST_ASSERT_EQUAL(sizeof(stream_tx), xStreamBufferSend(stream_buffer_handle, stream_tx, sizeof(stream_tx), 0));
-    TEST_ASSERT_EQUAL(sizeof(stream_rx), xStreamBufferReceive(stream_buffer_handle, stream_rx, sizeof(stream_rx), 0));
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(stream_tx, stream_rx, sizeof(stream_tx));
-    vStreamBufferDeleteWithCaps(stream_buffer_handle);
+    جریان_میانگیر_handle = x_جریان_میانگیر_Create_With_Caps(32, 1, OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_NULL(جریان_میانگیر_handle);
+    TEST_ASSERT_EQUAL(حجم(جریان_tx), x_جریان_میانگیر_Send(جریان_میانگیر_handle, جریان_tx, حجم(جریان_tx), 0));
+    TEST_ASSERT_EQUAL(حجم(جریان_rx), x_جریان_میانگیر_Receive(جریان_میانگیر_handle, جریان_rx, حجم(جریان_rx), 0));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(جریان_tx, جریان_rx, حجم(جریان_tx));
+    v_جریان_میانگیر_Delete_With_Caps(جریان_میانگیر_handle);
 
-    MessageBufferHandle_t msg_buffer_handle;
+    پیام_میانگیر_Handle_t پیام_میانگیر_handle;
 
-    msg_buffer_handle = xMessageBufferCreateWithCaps(32, OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_NULL(msg_buffer_handle);
-    TEST_ASSERT_EQUAL(sizeof(stream_tx), xMessageBufferSend(msg_buffer_handle, stream_tx, sizeof(stream_tx), 0));
-    TEST_ASSERT_EQUAL(sizeof(stream_rx), xMessageBufferReceive(msg_buffer_handle, stream_rx, sizeof(stream_rx), 0));
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(stream_tx, stream_rx, sizeof(stream_tx));
-    vMessageBufferDeleteWithCaps(msg_buffer_handle);
+    پیام_میانگیر_handle = x_پیام_میانگیر_Create_With_Caps(32, OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_NULL(پیام_میانگیر_handle);
+    TEST_ASSERT_EQUAL(حجم(جریان_tx), x_پیام_میانگیر_Send(پیام_میانگیر_handle, جریان_tx, حجم(جریان_tx), 0));
+    TEST_ASSERT_EQUAL(حجم(جریان_rx), x_پیام_میانگیر_Receive(پیام_میانگیر_handle, جریان_rx, حجم(جریان_rx), 0));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(جریان_tx, جریان_rx, حجم(جریان_tx));
+    v_پیام_میانگیر_Delete_With_Caps(پیام_میانگیر_handle);
 
-    EventGroupHandle_t evt_group_handle = xEventGroupCreateWithCaps(OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_NULL(evt_group_handle);
-    TEST_ASSERT_BITS(BIT0, BIT0, xEventGroupSetBits(evt_group_handle, BIT0));
-    TEST_ASSERT_BITS(BIT0, BIT0, xEventGroupWaitBits(evt_group_handle, BIT0, pdTRUE, pdFALSE, 0));
-    vEventGroupDeleteWithCaps(evt_group_handle);
+    Event_گروه_Handle_t evt_گروه_handle = x_Event_گروه_Create_With_Caps(OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_NULL(evt_گروه_handle);
+    TEST_ASSERT_بیتها(BIT0, BIT0, x_Event_گروه_مجموعه_بیتها(evt_گروه_handle, BIT0));
+    TEST_ASSERT_بیتها(BIT0, BIT0, x_Event_گروه_Wait_بیتها(evt_گروه_handle, BIT0, pdTRUE, pdFALSE, 0));
+    v_Event_گروه_Delete_With_Caps(evt_گروه_handle);
 }
 
 TEST_CASE("IDF additions: WithCaps creation fails on out of memory", "[freertos][idf_additions]")
 {
     /* Size just past the total heap for these caps so allocation must fail on every target,
      * without fixed constants that can overflow size_t (e.g. stack_words * sizeof(StackType_t)). */
-    const size_t total_caps = heap_caps_get_total_size(OBJECT_MEMORY_CAPS);
-    const size_t oom_bytes = total_caps + 1024;
-    const UBaseType_t oom_queue_len = (UBaseType_t)((oom_bytes / sizeof(uint32_t)) + 1);
-    const configSTACK_DEPTH_TYPE oom_stack_words =
-        (configSTACK_DEPTH_TYPE)((oom_bytes / sizeof(StackType_t)) + 1);
-    TaskHandle_t task_handle = NULL;
+    ثابت size_t مجموع_caps = انباشته_caps_get_مجموع_اندازه(OBJECT_حافظه_CAPS);
+    ثابت size_t oom_بایتها = مجموع_caps + 1024;
+    ثابت UBaseType_t oom_صف_len = (UBaseType_t)((oom_بایتها / حجم(uint32_t)) + 1);
+    ثابت config_پشته_عمق_TYPE oom_پشته_واژگان =
+        (config_پشته_عمق_TYPE)((oom_بایتها / حجم(پشته_Type_t)) + 1);
+    TaskHandle_t task_handle = عدم;
 
-    TEST_ASSERT_NULL(xQueueCreateWithCaps(oom_queue_len, sizeof(uint32_t), OBJECT_MEMORY_CAPS));
-    TEST_ASSERT_NULL(xStreamBufferCreateWithCaps(oom_bytes, 1, OBJECT_MEMORY_CAPS));
-    TEST_ASSERT_NULL(xMessageBufferCreateWithCaps(oom_bytes, OBJECT_MEMORY_CAPS));
-    TEST_ASSERT_EQUAL(pdFAIL, xTaskCreatePinnedToCoreWithCaps(task_with_caps,
+    TEST_ASSERT_NULL(x_صف_Create_With_Caps(oom_صف_len, حجم(uint32_t), OBJECT_حافظه_CAPS));
+    TEST_ASSERT_NULL(x_جریان_میانگیر_Create_With_Caps(oom_بایتها, 1, OBJECT_حافظه_CAPS));
+    TEST_ASSERT_NULL(x_پیام_میانگیر_Create_With_Caps(oom_بایتها, OBJECT_حافظه_CAPS));
+    TEST_ASSERT_EQUAL(pdFAIL, x_Task_Create_Pinned_مقصد_Core_With_Caps(task_with_caps,
                                                               "oom_task",
-                                                              oom_stack_words,
-                                                              NULL,
-                                                              UNITY_FREERTOS_PRIORITY,
+                                                              oom_پشته_واژگان,
+                                                              عدم,
+                                                              UNITY_FREERTOS_اولویت,
                                                               &task_handle,
                                                               UNITY_FREERTOS_CPU,
-                                                              OBJECT_MEMORY_CAPS));
+                                                              OBJECT_حافظه_CAPS));
     TEST_ASSERT_NULL(task_handle);
 }
 
 /* Create/delete coverage for remaining WithCaps types; Unity setUp/tearDown leak check verifies heap restore. */
 TEST_CASE("IDF additions: WithCaps create delete restores heap", "[freertos][idf_additions]")
 {
-    QueueHandle_t queue_handle = xQueueCreateWithCaps(4, sizeof(uint32_t), OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_NULL(queue_handle);
-    vQueueDeleteWithCaps(queue_handle);
+    صف_Handle_t صف_handle = x_صف_Create_With_Caps(4, حجم(uint32_t), OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_NULL(صف_handle);
+    v_صف_Delete_With_Caps(صف_handle);
 
-    SemaphoreHandle_t sem_handle = xSemaphoreCreateMutexWithCaps(OBJECT_MEMORY_CAPS);
+    SemaphoreHandle_t sem_handle = xSemaphoreCreateMutexWithCaps(OBJECT_حافظه_CAPS);
     TEST_ASSERT_NOT_NULL(sem_handle);
     vSemaphoreDeleteWithCaps(sem_handle);
 
-    StreamBufferHandle_t stream_buffer_handle = xStreamBufferCreateWithCaps(16, 1, OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_NULL(stream_buffer_handle);
-    vStreamBufferDeleteWithCaps(stream_buffer_handle);
+    جریان_میانگیر_Handle_t جریان_میانگیر_handle = x_جریان_میانگیر_Create_With_Caps(16, 1, OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_NULL(جریان_میانگیر_handle);
+    v_جریان_میانگیر_Delete_With_Caps(جریان_میانگیر_handle);
 
-    MessageBufferHandle_t msg_buffer_handle = xMessageBufferCreateWithCaps(16, OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_NULL(msg_buffer_handle);
-    vMessageBufferDeleteWithCaps(msg_buffer_handle);
+    پیام_میانگیر_Handle_t پیام_میانگیر_handle = x_پیام_میانگیر_Create_With_Caps(16, OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_NULL(پیام_میانگیر_handle);
+    v_پیام_میانگیر_Delete_With_Caps(پیام_میانگیر_handle);
 
-    EventGroupHandle_t evt_group_handle = xEventGroupCreateWithCaps(OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_NULL(evt_group_handle);
-    vEventGroupDeleteWithCaps(evt_group_handle);
+    Event_گروه_Handle_t evt_گروه_handle = x_Event_گروه_Create_With_Caps(OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_NULL(evt_گروه_handle);
+    v_Event_گروه_Delete_With_Caps(evt_گروه_handle);
 }
 
-#if CONFIG_SPIRAM
+#إذا CONFIG_SPIRAM
 
 TEST_CASE("IDF additions: WithCaps objects allocate in SPIRAM when requested", "[freertos][idf_additions]")
 {
     /* Queue/stream Static* objects honor SPIRAM caps; task TCBs remain internal via pvPortMalloc. */
-    QueueHandle_t queue_handle;
-    uint8_t *queue_storage;
-    StaticQueue_t *queue_obj;
+    صف_Handle_t صف_handle;
+    uint8_t *صف_storage;
+    Static_صف_t *صف_obj;
 
-    queue_handle = xQueueCreateWithCaps(4, sizeof(uint32_t), SPIRAM_OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_NULL(queue_handle);
-    TEST_ASSERT_EQUAL(pdTRUE, xQueueGetStaticBuffers(queue_handle, &queue_storage, &queue_obj));
-    TEST_ASSERT(esp_ptr_external_ram(queue_storage));
-    TEST_ASSERT(esp_ptr_external_ram(queue_obj));
-    vQueueDeleteWithCaps(queue_handle);
+    صف_handle = x_صف_Create_With_Caps(4, حجم(uint32_t), SPIRAM_OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_NULL(صف_handle);
+    TEST_ASSERT_EQUAL(pdTRUE, x_صف_Get_Static_Buffers(صف_handle, &صف_storage, &صف_obj));
+    TEST_ASSERT(esp_ptr_external_ram(صف_storage));
+    TEST_ASSERT(esp_ptr_external_ram(صف_obj));
+    v_صف_Delete_With_Caps(صف_handle);
 
-    StreamBufferHandle_t stream_buffer_handle;
-    uint8_t *stream_buffer_storage;
-    StaticStreamBuffer_t *stream_buffer_obj;
+    جریان_میانگیر_Handle_t جریان_میانگیر_handle;
+    uint8_t *جریان_میانگیر_storage;
+    Static_جریان_میانگیر_t *جریان_میانگیر_obj;
 
-    stream_buffer_handle = xStreamBufferCreateWithCaps(16, 1, SPIRAM_OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_NULL(stream_buffer_handle);
-    TEST_ASSERT_EQUAL(pdTRUE, xStreamBufferGetStaticBuffers(stream_buffer_handle, &stream_buffer_storage, &stream_buffer_obj));
-    TEST_ASSERT(esp_ptr_external_ram(stream_buffer_storage));
-    TEST_ASSERT(esp_ptr_external_ram(stream_buffer_obj));
-    vStreamBufferDeleteWithCaps(stream_buffer_handle);
+    جریان_میانگیر_handle = x_جریان_میانگیر_Create_With_Caps(16, 1, SPIRAM_OBJECT_حافظه_CAPS);
+    TEST_ASSERT_NOT_NULL(جریان_میانگیر_handle);
+    TEST_ASSERT_EQUAL(pdTRUE, x_جریان_میانگیر_Get_Static_Buffers(جریان_میانگیر_handle, &جریان_میانگیر_storage, &جریان_میانگیر_obj));
+    TEST_ASSERT(esp_ptr_external_ram(جریان_میانگیر_storage));
+    TEST_ASSERT(esp_ptr_external_ram(جریان_میانگیر_obj));
+    v_جریان_میانگیر_Delete_With_Caps(جریان_میانگیر_handle);
 }
 
-#endif /* CONFIG_SPIRAM */
+#پایان_اگر /* CONFIG_SPIRAM */
 
 /* ---------------------------------------------------------------------------------------------------------------------
  * Task utility API tests (xTaskGetCoreID, xTaskGetStackStart, per-core handle helpers, etc.)
  * --------------------------------------------------------------------------------------------------------------------- */
 
-static void stack_test_task(void *arg)
+ساكن فراغ پشته_test_task(فراغ *arg)
 {
-    (void)arg;
-    vTaskSuspend(NULL);
+    (فراغ)arg;
+    vTaskSuspend(عدم);
 }
 
-typedef struct {
-    TaskHandle_t parent;
-    BaseType_t expected_core;
-    BaseType_t observed_core;
+تعريفنوع بنية {
+    TaskHandle_t والد;
+    پایه_Type_t expected_core;
+    پایه_Type_t observed_core;
     TaskHandle_t self_handle;
 } core_id_query_ctx_t;
 
-static void pinned_core_id_task(void *arg)
+ساكن فراغ pinned_core_id_task(فراغ *arg)
 {
     core_id_query_ctx_t *ctx = (core_id_query_ctx_t *)arg;
 
     ctx->self_handle = xTaskGetCurrentTaskHandle();
-    ctx->observed_core = xPortGetCoreID();
+    ctx->observed_core = x_پورت_Get_Core_ID();
     TEST_ASSERT_EQUAL(ctx->expected_core, ctx->observed_core);
-    TEST_ASSERT_EQUAL(ctx->expected_core, xTaskGetCoreID(NULL));
+    TEST_ASSERT_EQUAL(ctx->expected_core, xTaskGetCoreID(عدم));
     TEST_ASSERT_EQUAL(ctx->expected_core, xTaskGetCoreID(ctx->self_handle));
 
-    xTaskNotifyGive(ctx->parent);
-    vTaskSuspend(NULL);
+    xTaskNotifyGive(ctx->والد);
+    vTaskSuspend(عدم);
 }
 
 TEST_CASE("IDF additions: xTaskGetCoreID for pinned tasks", "[freertos][idf_additions]")
 {
-    const TaskHandle_t parent = xTaskGetCurrentTaskHandle();
-    core_id_query_ctx_t ctx[CONFIG_FREERTOS_NUMBER_OF_CORES];
+    ثابت TaskHandle_t والد = xTaskGetCurrentTaskHandle();
+    core_id_query_ctx_t ctx[CONFIG_FREERTOS_عدد_از_CORES];
 
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
-        ctx[core].parent = parent;
+    لكل (صحيح core = 0; core < CONFIG_FREERTOS_عدد_از_CORES; core++) {
+        ctx[core].والد = والد;
         ctx[core].expected_core = core;
         ctx[core].observed_core = -1;
-        ctx[core].self_handle = NULL;
+        ctx[core].self_handle = عدم;
 
-        TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCore(pinned_core_id_task,
+        TEST_ASSERT_EQUAL(pdPASS, x_Task_Create_Pinned_مقصد_Core(pinned_core_id_task,
                                                           "core_id",
                                                           2048,
                                                           &ctx[core],
-                                                          UNITY_FREERTOS_PRIORITY + 1,
-                                                          NULL,
+                                                          UNITY_FREERTOS_اولویت + 1,
+                                                          عدم,
                                                           core));
     }
 
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
-        TEST_ASSERT_NOT_EQUAL(0, ulTaskNotifyTake(pdFALSE, pdMS_TO_TICKS(1000)));
+    لكل (صحيح core = 0; core < CONFIG_FREERTOS_عدد_از_CORES; core++) {
+        TEST_ASSERT_NOT_EQUAL(0, ulTaskNotifyTake(pdFALSE, pd_MS_مقصد_TICKS(1000)));
         TEST_ASSERT_EQUAL(core, ctx[core].observed_core);
         TEST_ASSERT_EQUAL(core, xTaskGetCoreID(ctx[core].self_handle));
     }
 
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    لكل (صحيح core = 0; core < CONFIG_FREERTOS_عدد_از_CORES; core++) {
         vTaskDelete(ctx[core].self_handle);
     }
     vTaskDelay(1);
 }
 
-#if (CONFIG_FREERTOS_NUMBER_OF_CORES > 1) && !CONFIG_FREERTOS_SMP
+#إذا (CONFIG_FREERTOS_عدد_از_CORES > 1) && !CONFIG_FREERTOS_SMP
 
-static SemaphoreHandle_t s_unpinned_done_sem;
-static TaskHandle_t s_unpinned_task_handle;
+ساكن SemaphoreHandle_t s_unpinned_انجامشده_sem;
+ساكن TaskHandle_t s_unpinned_task_handle;
 
-static void unpinned_core_id_task(void *arg)
+ساكن فراغ unpinned_core_id_task(فراغ *arg)
 {
-    (void)arg;
+    (فراغ)arg;
     s_unpinned_task_handle = xTaskGetCurrentTaskHandle();
-    xSemaphoreGive(s_unpinned_done_sem);
-    vTaskSuspend(NULL);
+    xSemaphoreGive(s_unpinned_انجامشده_sem);
+    vTaskSuspend(عدم);
 }
 
 TEST_CASE("IDF additions: xTaskGetCoreID returns tskNO_AFFINITY for unpinned task", "[freertos][idf_additions]")
 {
-    s_unpinned_done_sem = xSemaphoreCreateBinary();
-    TEST_ASSERT_NOT_NULL(s_unpinned_done_sem);
-    s_unpinned_task_handle = NULL;
+    s_unpinned_انجامشده_sem = x_Semaphore_Create_دودویی();
+    TEST_ASSERT_NOT_NULL(s_unpinned_انجامشده_sem);
+    s_unpinned_task_handle = عدم;
 
-    TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCore(unpinned_core_id_task,
+    TEST_ASSERT_EQUAL(pdPASS, x_Task_Create_Pinned_مقصد_Core(unpinned_core_id_task,
                                                       "unpinned",
                                                       2048,
-                                                      NULL,
-                                                      UNITY_FREERTOS_PRIORITY - 1,
-                                                      NULL,
+                                                      عدم,
+                                                      UNITY_FREERTOS_اولویت - 1,
+                                                      عدم,
                                                       tskNO_AFFINITY));
-    TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTake(s_unpinned_done_sem, pdMS_TO_TICKS(1000)));
+    TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTake(s_unpinned_انجامشده_sem, pd_MS_مقصد_TICKS(1000)));
     TEST_ASSERT_NOT_NULL(s_unpinned_task_handle);
     TEST_ASSERT_EQUAL(tskNO_AFFINITY, xTaskGetCoreID(s_unpinned_task_handle));
 
     vTaskDelete(s_unpinned_task_handle);
-    vSemaphoreDelete(s_unpinned_done_sem);
+    vSemaphoreDelete(s_unpinned_انجامشده_sem);
     vTaskDelay(1);
 }
 
-#endif /* CONFIG_FREERTOS_NUMBER_OF_CORES > 1 && !CONFIG_FREERTOS_SMP */
+#پایان_اگر /* CONFIG_FREERTOS_NUMBER_OF_CORES > 1 && !CONFIG_FREERTOS_SMP */
 
-#if CONFIG_FREERTOS_UNICORE
+#إذا CONFIG_FREERTOS_UNICORE
 
 TEST_CASE("IDF additions: xTaskGetCoreID returns 0 on unicore", "[freertos][idf_additions]")
 {
-    TEST_ASSERT_EQUAL(0, xTaskGetCoreID(NULL));
+    TEST_ASSERT_EQUAL(0, xTaskGetCoreID(عدم));
     TEST_ASSERT_EQUAL(0, xTaskGetCoreID(xTaskGetCurrentTaskHandle()));
 }
 
-#endif /* CONFIG_FREERTOS_UNICORE */
+#پایان_اگر /* CONFIG_FREERTOS_UNICORE */
 
 TEST_CASE("IDF additions: xTaskGetStackStart", "[freertos][idf_additions]")
 {
-    StackType_t *current_stack_via_null = xTaskGetStackStart(NULL);
-    StackType_t *current_stack_via_handle = xTaskGetStackStart(xTaskGetCurrentTaskHandle());
+    پشته_Type_t *current_پشته_از_طریق_null = x_Task_Get_پشته_شروع(عدم);
+    پشته_Type_t *current_پشته_از_طریق_handle = x_Task_Get_پشته_شروع(xTaskGetCurrentTaskHandle());
 
-    TEST_ASSERT_NOT_NULL(current_stack_via_null);
-    TEST_ASSERT_EQUAL_PTR(current_stack_via_null, current_stack_via_handle);
+    TEST_ASSERT_NOT_NULL(current_پشته_از_طریق_null);
+    TEST_ASSERT_EQUAL_PTR(current_پشته_از_طریق_null, current_پشته_از_طریق_handle);
 
-    TaskHandle_t caps_task = NULL;
-    StackType_t *caps_stack_buffer = NULL;
-    StaticTask_t *caps_task_buffer = NULL;
+    TaskHandle_t caps_task = عدم;
+    پشته_Type_t *caps_پشته_میانگیر = عدم;
+    StaticTask_t *caps_task_میانگیر = عدم;
 
-    TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCoreWithCaps(stack_test_task,
+    TEST_ASSERT_EQUAL(pdPASS, x_Task_Create_Pinned_مقصد_Core_With_Caps(پشته_test_task,
                                                               "stack_caps",
                                                               4096,
-                                                              NULL,
-                                                              UNITY_FREERTOS_PRIORITY + 1,
+                                                              عدم,
+                                                              UNITY_FREERTOS_اولویت + 1,
                                                               &caps_task,
                                                               UNITY_FREERTOS_CPU,
-                                                              OBJECT_MEMORY_CAPS));
+                                                              OBJECT_حافظه_CAPS));
     TEST_ASSERT_NOT_NULL(caps_task);
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(caps_task, &caps_stack_buffer, &caps_task_buffer));
-    TEST_ASSERT_EQUAL_PTR(caps_stack_buffer, xTaskGetStackStart(caps_task));
+    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(caps_task, &caps_پشته_میانگیر, &caps_task_میانگیر));
+    TEST_ASSERT_EQUAL_PTR(caps_پشته_میانگیر, x_Task_Get_پشته_شروع(caps_task));
 
     vTaskDeleteWithCaps(caps_task);
     vTaskDelay(10);
 
-#define STATIC_STACK_BYTES 4096
-    static StackType_t static_stack[STATIC_STACK_BYTES / sizeof(StackType_t)];
-    static StaticTask_t static_task_buffer;
+#تعریف_کن STATIC_پشته_بایتها 4096
+    ساكن پشته_Type_t static_پشته[STATIC_پشته_بایتها / حجم(پشته_Type_t)];
+    ساكن StaticTask_t static_task_میانگیر;
 
-    memset(&static_task_buffer, 0, sizeof(static_task_buffer));
+    memset(&static_task_میانگیر, 0, حجم(static_task_میانگیر));
 
-    TaskHandle_t static_task = xTaskCreateStaticPinnedToCore(stack_test_task,
+    TaskHandle_t static_task = x_Task_Create_Static_Pinned_مقصد_Core(پشته_test_task,
                                                              "stack_static",
-                                                             STATIC_STACK_BYTES,
-                                                             NULL,
-                                                             UNITY_FREERTOS_PRIORITY + 1,
-                                                             static_stack,
-                                                             &static_task_buffer,
+                                                             STATIC_پشته_بایتها,
+                                                             عدم,
+                                                             UNITY_FREERTOS_اولویت + 1,
+                                                             static_پشته,
+                                                             &static_task_میانگیر,
                                                              UNITY_FREERTOS_CPU);
     TEST_ASSERT_NOT_NULL(static_task);
-    TEST_ASSERT_EQUAL_PTR(static_stack, xTaskGetStackStart(static_task));
+    TEST_ASSERT_EQUAL_PTR(static_پشته, x_Task_Get_پشته_شروع(static_task));
 
     vTaskDelete(static_task);
     vTaskDelay(1);
 }
 
-#if !CONFIG_FREERTOS_SMP
+#إذا !CONFIG_FREERTOS_SMP
 
 TEST_CASE("IDF additions: xTaskGetIdleTaskHandleForCore", "[freertos][idf_additions]")
 {
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    لكل (صحيح core = 0; core < CONFIG_FREERTOS_عدد_از_CORES; core++) {
         TaskHandle_t idle_for_core = xTaskGetIdleTaskHandleForCore(core);
-        char expected_name[configMAX_TASK_NAME_LEN];
+        حرف expected_name[configMAX_TASK_NAME_LEN];
 
         TEST_ASSERT_NOT_NULL(idle_for_core);
-#if CONFIG_FREERTOS_NUMBER_OF_CORES > 1
-        snprintf(expected_name, sizeof(expected_name), "IDLE%d", core);
-#else
-        snprintf(expected_name, sizeof(expected_name), "IDLE");
-#endif
+#إذا CONFIG_FREERTOS_عدد_از_CORES > 1
+        snprintf(expected_name, حجم(expected_name), "IDLE%d", core);
+#وإلا
+        snprintf(expected_name, حجم(expected_name), "IDLE");
+#پایان_اگر
         TEST_ASSERT_EQUAL_STRING(expected_name, pcTaskGetName(idle_for_core));
     }
 
-#if CONFIG_FREERTOS_UNICORE
+#إذا CONFIG_FREERTOS_UNICORE
     TEST_ASSERT_EQUAL(xTaskGetIdleTaskHandle(), xTaskGetIdleTaskHandleForCore(0));
-#endif
+#پایان_اگر
 }
 
-typedef struct {
-    TaskHandle_t parent;
-    BaseType_t core;
+تعريفنوع بنية {
+    TaskHandle_t والد;
+    پایه_Type_t core;
     TaskHandle_t self_handle;
     TaskHandle_t queried_handle;
-    void * queried_tcb;
-} per_core_handle_ctx_t;
+    فراغ * queried_tcb;
+} در_هر_core_handle_ctx_t;
 
-static void running_on_core_task(void *arg)
+ساكن فراغ running_on_core_task(فراغ *arg)
 {
-    per_core_handle_ctx_t *ctx = (per_core_handle_ctx_t *)arg;
+    در_هر_core_handle_ctx_t *ctx = (در_هر_core_handle_ctx_t *)arg;
 
     ctx->self_handle = xTaskGetCurrentTaskHandle();
     ctx->queried_handle = xTaskGetCurrentTaskHandleForCore(ctx->core);
     ctx->queried_tcb = pvTaskGetCurrentTCBForCore(ctx->core);
 
-    xTaskNotifyGive(ctx->parent);
-    vTaskSuspend(NULL);
+    xTaskNotifyGive(ctx->والد);
+    vTaskSuspend(عدم);
 }
 
 TEST_CASE("IDF additions: xTaskGetCurrentTaskHandleForCore and pvTaskGetCurrentTCBForCore", "[freertos][idf_additions]")
 {
-    const TaskHandle_t parent = xTaskGetCurrentTaskHandle();
+    ثابت TaskHandle_t والد = xTaskGetCurrentTaskHandle();
 
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
-        per_core_handle_ctx_t ctx = {
-            .parent = parent,
+    لكل (صحيح core = 0; core < CONFIG_FREERTOS_عدد_از_CORES; core++) {
+        در_هر_core_handle_ctx_t ctx = {
+            .والد = والد,
             .core = core,
-            .self_handle = NULL,
-            .queried_handle = NULL,
-            .queried_tcb = NULL,
+            .self_handle = عدم,
+            .queried_handle = عدم,
+            .queried_tcb = عدم,
         };
 
-        while (ulTaskNotifyTake(pdFALSE, 0) != 0) {
+        طالما (ulTaskNotifyTake(pdFALSE, 0) != 0) {
             ;
         }
 
-        TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCore(running_on_core_task,
+        TEST_ASSERT_EQUAL(pdPASS, x_Task_Create_Pinned_مقصد_Core(running_on_core_task,
                                                           "on_core",
                                                           2048,
                                                           &ctx,
-                                                          UNITY_FREERTOS_PRIORITY + 1,
-                                                          NULL,
+                                                          UNITY_FREERTOS_اولویت + 1,
+                                                          عدم,
                                                           core));
 
-        TEST_ASSERT_NOT_EQUAL(0, ulTaskNotifyTake(pdFALSE, pdMS_TO_TICKS(1000)));
+        TEST_ASSERT_NOT_EQUAL(0, ulTaskNotifyTake(pdFALSE, pd_MS_مقصد_TICKS(1000)));
 
         TEST_ASSERT_EQUAL_PTR(ctx.self_handle, ctx.queried_handle);
-        TEST_ASSERT_EQUAL_PTR((void *)ctx.self_handle, ctx.queried_tcb);
+        TEST_ASSERT_EQUAL_PTR((فراغ *)ctx.self_handle, ctx.queried_tcb);
 
         vTaskDelete(ctx.self_handle);
         vTaskDelay(1);
     }
 }
 
-#endif /* !CONFIG_FREERTOS_SMP */
+#پایان_اگر /* !CONFIG_FREERTOS_SMP */
 
-#if CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS && !CONFIG_FREERTOS_SMP
+#إذا CONFIG_FREERTOS_GENERATE_پیاپی_زمان_STATS && !CONFIG_FREERTOS_SMP
 
 TEST_CASE("IDF additions: ulTaskGetIdleRunTimeCounterForCore", "[freertos][idf_additions]")
 {
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
-        configRUN_TIME_COUNTER_TYPE idle_counter = ulTaskGetIdleRunTimeCounterForCore(core);
-        configRUN_TIME_COUNTER_TYPE idle_percent = ulTaskGetIdleRunTimePercentForCore(core);
+    لكل (صحيح core = 0; core < CONFIG_FREERTOS_عدد_از_CORES; core++) {
+        config_پیاپی_زمان_COUNTER_TYPE idle_counter = ul_Task_Get_Idle_پیاپی_زمان_Counter_For_Core(core);
+        config_پیاپی_زمان_COUNTER_TYPE idle_percent = ul_Task_Get_Idle_پیاپی_زمان_Percent_For_Core(core);
 
         TEST_ASSERT_GREATER_OR_EQUAL(0, idle_counter);
         TEST_ASSERT_LESS_OR_EQUAL(100, idle_percent);
     }
 }
 
-#endif /* CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS && !CONFIG_FREERTOS_SMP */
+#پایان_اگر /* CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS && !CONFIG_FREERTOS_SMP */
 
 /* ---------------------------------------------------------------------------------------------------------------------
  * xTaskCreatePinnedToCore / xTaskCreateStaticPinnedToCore pinning semantics
  * --------------------------------------------------------------------------------------------------------------------- */
 
-#define PIN_SEMANTICS_SAMPLES     5
-#define PIN_SEMANTICS_STACK_BYTES 4096
+#تعریف_کن PIN_SEMANTICS_SAMPLES     5
+#تعریف_کن PIN_SEMANTICS_پشته_بایتها 4096
 
-typedef struct {
-    TaskHandle_t parent;
-    BaseType_t requested_core;
-    BaseType_t samples[PIN_SEMANTICS_SAMPLES];
+تعريفنوع بنية {
+    TaskHandle_t والد;
+    پایه_Type_t requested_core;
+    پایه_Type_t samples[PIN_SEMANTICS_SAMPLES];
     TaskHandle_t self_handle;
 } pin_semantics_ctx_t;
 
-static void drain_task_notifications(void)
+ساكن فراغ drain_task_notifications(فراغ)
 {
-    while (ulTaskNotifyTake(pdFALSE, 0) != 0) {
+    طالما (ulTaskNotifyTake(pdFALSE, 0) != 0) {
         ;
     }
 }
 
-static void pin_semantics_task(void *arg)
+ساكن فراغ pin_semantics_task(فراغ *arg)
 {
     pin_semantics_ctx_t *ctx = (pin_semantics_ctx_t *)arg;
 
     ctx->self_handle = xTaskGetCurrentTaskHandle();
-    for (int i = 0; i < PIN_SEMANTICS_SAMPLES; i++) {
-        ctx->samples[i] = xPortGetCoreID();
-        if (ctx->requested_core != tskNO_AFFINITY) {
+    لكل (صحيح i = 0; i < PIN_SEMANTICS_SAMPLES; i++) {
+        ctx->samples[i] = x_پورت_Get_Core_ID();
+        إذا (ctx->requested_core != tskNO_AFFINITY) {
             TEST_ASSERT_EQUAL(ctx->requested_core, ctx->samples[i]);
-        } else {
+        } وإلا {
             TEST_ASSERT_GREATER_OR_EQUAL(0, ctx->samples[i]);
-            TEST_ASSERT_LESS_THAN(CONFIG_FREERTOS_NUMBER_OF_CORES, ctx->samples[i]);
+            TEST_ASSERT_LESS_THAN(CONFIG_FREERTOS_عدد_از_CORES, ctx->samples[i]);
         }
         /* Yield and sleep so a wrongly pinned task would have a chance to migrate. */
         taskYIELD();
         vTaskDelay(1);
     }
 
-    xTaskNotifyGive(ctx->parent);
-    vTaskSuspend(NULL);
+    xTaskNotifyGive(ctx->والد);
+    vTaskSuspend(عدم);
 }
 
-static void verify_pin_samples(const pin_semantics_ctx_t *ctx)
+ساكن فراغ verify_pin_samples(ثابت pin_semantics_ctx_t *ctx)
 {
-    for (int i = 0; i < PIN_SEMANTICS_SAMPLES; i++) {
-        if (ctx->requested_core == tskNO_AFFINITY) {
+    لكل (صحيح i = 0; i < PIN_SEMANTICS_SAMPLES; i++) {
+        إذا (ctx->requested_core == tskNO_AFFINITY) {
             TEST_ASSERT_GREATER_OR_EQUAL(0, ctx->samples[i]);
-            TEST_ASSERT_LESS_THAN(CONFIG_FREERTOS_NUMBER_OF_CORES, ctx->samples[i]);
-        } else {
+            TEST_ASSERT_LESS_THAN(CONFIG_FREERTOS_عدد_از_CORES, ctx->samples[i]);
+        } وإلا {
             TEST_ASSERT_EQUAL(ctx->requested_core, ctx->samples[i]);
         }
     }
@@ -692,27 +692,27 @@ static void verify_pin_samples(const pin_semantics_ctx_t *ctx)
 
 TEST_CASE("IDF additions: xTaskCreatePinnedToCore pinning semantics", "[freertos][idf_additions]")
 {
-    const TaskHandle_t parent = xTaskGetCurrentTaskHandle();
+    ثابت TaskHandle_t والد = xTaskGetCurrentTaskHandle();
 
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    لكل (صحيح core = 0; core < CONFIG_FREERTOS_عدد_از_CORES; core++) {
         pin_semantics_ctx_t ctx = {
-            .parent = parent,
+            .والد = والد,
             .requested_core = core,
-            .self_handle = NULL,
+            .self_handle = عدم,
         };
-        TaskHandle_t created = NULL;
+        TaskHandle_t created = عدم;
 
         drain_task_notifications();
 
-        TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCore(pin_semantics_task,
+        TEST_ASSERT_EQUAL(pdPASS, x_Task_Create_Pinned_مقصد_Core(pin_semantics_task,
                                                           "pin_dyn",
-                                                          PIN_SEMANTICS_STACK_BYTES,
+                                                          PIN_SEMANTICS_پشته_بایتها,
                                                           &ctx,
-                                                          UNITY_FREERTOS_PRIORITY + 1,
+                                                          UNITY_FREERTOS_اولویت + 1,
                                                           &created,
                                                           core));
         TEST_ASSERT_NOT_NULL(created);
-        TEST_ASSERT_NOT_EQUAL(0, ulTaskNotifyTake(pdFALSE, pdMS_TO_TICKS(1000)));
+        TEST_ASSERT_NOT_EQUAL(0, ulTaskNotifyTake(pdFALSE, pd_MS_مقصد_TICKS(1000)));
         TEST_ASSERT_EQUAL_PTR(created, ctx.self_handle);
         TEST_ASSERT_EQUAL(core, xTaskGetCoreID(created));
         verify_pin_samples(&ctx);
@@ -724,30 +724,30 @@ TEST_CASE("IDF additions: xTaskCreatePinnedToCore pinning semantics", "[freertos
 
 TEST_CASE("IDF additions: xTaskCreateStaticPinnedToCore pinning semantics", "[freertos][idf_additions]")
 {
-    static StackType_t pin_static_stack[PIN_SEMANTICS_STACK_BYTES / sizeof(StackType_t)];
-    static StaticTask_t pin_static_tcb;
-    const TaskHandle_t parent = xTaskGetCurrentTaskHandle();
+    ساكن پشته_Type_t pin_static_پشته[PIN_SEMANTICS_پشته_بایتها / حجم(پشته_Type_t)];
+    ساكن StaticTask_t pin_static_tcb;
+    ثابت TaskHandle_t والد = xTaskGetCurrentTaskHandle();
 
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    لكل (صحيح core = 0; core < CONFIG_FREERTOS_عدد_از_CORES; core++) {
         pin_semantics_ctx_t ctx = {
-            .parent = parent,
+            .والد = والد,
             .requested_core = core,
-            .self_handle = NULL,
+            .self_handle = عدم,
         };
 
-        memset(&pin_static_tcb, 0, sizeof(pin_static_tcb));
+        memset(&pin_static_tcb, 0, حجم(pin_static_tcb));
         drain_task_notifications();
 
-        TaskHandle_t created = xTaskCreateStaticPinnedToCore(pin_semantics_task,
+        TaskHandle_t created = x_Task_Create_Static_Pinned_مقصد_Core(pin_semantics_task,
                                                              "pin_static",
-                                                             PIN_SEMANTICS_STACK_BYTES,
+                                                             PIN_SEMANTICS_پشته_بایتها,
                                                              &ctx,
-                                                             UNITY_FREERTOS_PRIORITY + 1,
-                                                             pin_static_stack,
+                                                             UNITY_FREERTOS_اولویت + 1,
+                                                             pin_static_پشته,
                                                              &pin_static_tcb,
                                                              core);
         TEST_ASSERT_NOT_NULL(created);
-        TEST_ASSERT_NOT_EQUAL(0, ulTaskNotifyTake(pdFALSE, pdMS_TO_TICKS(1000)));
+        TEST_ASSERT_NOT_EQUAL(0, ulTaskNotifyTake(pdFALSE, pd_MS_مقصد_TICKS(1000)));
         TEST_ASSERT_EQUAL_PTR(created, ctx.self_handle);
         TEST_ASSERT_EQUAL(core, xTaskGetCoreID(created));
         verify_pin_samples(&ctx);
@@ -762,33 +762,33 @@ TEST_CASE("IDF additions: xTaskCreateStaticPinnedToCore pinning semantics", "[fr
 TEST_CASE("IDF additions: xTaskCreatePinnedToCore tskNO_AFFINITY", "[freertos][idf_additions]")
 {
     pin_semantics_ctx_t ctx = {
-        .parent = xTaskGetCurrentTaskHandle(),
+        .والد = xTaskGetCurrentTaskHandle(),
         .requested_core = tskNO_AFFINITY,
-        .self_handle = NULL,
+        .self_handle = عدم,
     };
-    TaskHandle_t created = NULL;
+    TaskHandle_t created = عدم;
 
     drain_task_notifications();
 
-    TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCore(pin_semantics_task,
+    TEST_ASSERT_EQUAL(pdPASS, x_Task_Create_Pinned_مقصد_Core(pin_semantics_task,
                                                       "pin_any",
-                                                      PIN_SEMANTICS_STACK_BYTES,
+                                                      PIN_SEMANTICS_پشته_بایتها,
                                                       &ctx,
-                                                      UNITY_FREERTOS_PRIORITY + 1,
+                                                      UNITY_FREERTOS_اولویت + 1,
                                                       &created,
                                                       tskNO_AFFINITY));
     TEST_ASSERT_NOT_NULL(created);
-    TEST_ASSERT_NOT_EQUAL(0, ulTaskNotifyTake(pdFALSE, pdMS_TO_TICKS(1000)));
+    TEST_ASSERT_NOT_EQUAL(0, ulTaskNotifyTake(pdFALSE, pd_MS_مقصد_TICKS(1000)));
     TEST_ASSERT_EQUAL_PTR(created, ctx.self_handle);
     verify_pin_samples(&ctx);
 
-#if CONFIG_FREERTOS_NUMBER_OF_CORES > 1
+#إذا CONFIG_FREERTOS_عدد_از_CORES > 1
     TEST_ASSERT_EQUAL(tskNO_AFFINITY, xTaskGetCoreID(created));
-#else
+#وإلا
     /* Unicore treats tskNO_AFFINITY as core 0. */
     TEST_ASSERT_EQUAL(0, xTaskGetCoreID(created));
     TEST_ASSERT_EQUAL(0, ctx.samples[0]);
-#endif
+#پایان_اگر
 
     vTaskDelete(created);
     vTaskDelay(1);

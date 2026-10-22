@@ -31,115 +31,115 @@
  */
 
 
-#include <stdlib.h>
+#ضمن <stdlib.h>
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
  * task.h is included from an application file. */
-#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#تعریف_کن MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#include "FreeRTOS.h"
-#include "list.h"
+#ضمن "FreeRTOS.h"
+#ضمن "list.h"
 
 /* Lint e9021, e961 and e750 are suppressed as a MISRA exception justified
  * because the MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be
  * defined for the header files above, but not in this file, in order to
  * generate the correct privileged Vs unprivileged linkage and placement. */
-#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE /*lint !e961 !e750 !e9021. */
+#لغو_تعریف MPU_WRAPPERS_INCLUDED_FROM_API_FILE /*lint !e961 !e750 !e9021. */
 
 /*-----------------------------------------------------------
 * PUBLIC LIST API documented in list.h
 *----------------------------------------------------------*/
 
-void vListInitialise( List_t * const pxList )
+فراغ vListInitialise( List_t * ثابت pxList )
 {
     /* The list structure contains a list item which is used to mark the
      * end of the list.  To initialise the list the list end is inserted
      * as the only list entry. */
-    pxList->pxIndex = ( ListItem_t * ) &( pxList->xListEnd ); /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
+    pxList->px_شاخص = ( List_قلم_t * ) &( pxList->x_List_انتها ); /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
 
-    listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( &( pxList->xListEnd ) );
+    list_مجموعه_اولی_LIST_قلم_INTEGRITY_CHECK_مقدار( &( pxList->x_List_انتها ) );
 
     /* The list end value is the highest possible value in the list to
      * ensure it remains at the end of the list. */
-    pxList->xListEnd.xItemValue = portMAX_DELAY;
+    pxList->x_List_انتها.x_قلم_مقدار = پورت_MAX_DELAY;
 
     /* The list end next and previous pointers point to itself so we know
      * when the list is empty. */
-    pxList->xListEnd.pxNext = ( ListItem_t * ) &( pxList->xListEnd );     /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
-    pxList->xListEnd.pxPrevious = ( ListItem_t * ) &( pxList->xListEnd ); /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
+    pxList->x_List_انتها.px_بعدی = ( List_قلم_t * ) &( pxList->x_List_انتها );     /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
+    pxList->x_List_انتها.px_قبلی = ( List_قلم_t * ) &( pxList->x_List_انتها ); /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
 
     /* Initialize the remaining fields of xListEnd when it is a proper ListItem_t */
-    #if ( configUSE_MINI_LIST_ITEM == 0 )
+    #إذا ( config_USE_MINI_LIST_قلم == 0 )
     {
-        pxList->xListEnd.pvOwner = NULL;
-        pxList->xListEnd.pxContainer = NULL;
-        listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( &( pxList->xListEnd ) );
+        pxList->x_List_انتها.pvOwner = عدم;
+        pxList->x_List_انتها.pxContainer = عدم;
+        list_مجموعه_دومی_LIST_قلم_INTEGRITY_CHECK_مقدار( &( pxList->x_List_انتها ) );
     }
-    #endif
+    #پایان_اگر
 
-    pxList->uxNumberOfItems = ( UBaseType_t ) 0U;
+    pxList->ux_عدد_از_اقلام = ( UBaseType_t ) 0U;
 
     /* Write known values into the list if
      * configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    listSET_LIST_INTEGRITY_CHECK_1_VALUE( pxList );
-    listSET_LIST_INTEGRITY_CHECK_2_VALUE( pxList );
+    list_مجموعه_LIST_INTEGRITY_CHECK_1_مقدار( pxList );
+    list_مجموعه_LIST_INTEGRITY_CHECK_2_مقدار( pxList );
 }
 /*-----------------------------------------------------------*/
 
-void vListInitialiseItem( ListItem_t * const pxItem )
+فراغ v_List_Initialise_قلم( List_قلم_t * ثابت px_قلم )
 {
     /* Make sure the list item is not recorded as being on a list. */
-    pxItem->pxContainer = NULL;
+    px_قلم->pxContainer = عدم;
 
     /* Write known values into the list item if
      * configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem );
-    listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem );
+    list_مجموعه_اولی_LIST_قلم_INTEGRITY_CHECK_مقدار( px_قلم );
+    list_مجموعه_دومی_LIST_قلم_INTEGRITY_CHECK_مقدار( px_قلم );
 }
 /*-----------------------------------------------------------*/
 
-void vListInsertEnd( List_t * const pxList,
-                     ListItem_t * const pxNewListItem )
+فراغ v_List_درج_انتها( List_t * ثابت pxList,
+                     List_قلم_t * ثابت px_New_List_قلم )
 {
-    ListItem_t * const pxIndex = pxList->pxIndex;
+    List_قلم_t * ثابت px_شاخص = pxList->px_شاخص;
 
     /* Only effective when configASSERT() is also defined, these tests may catch
      * the list data structures being overwritten in memory.  They will not catch
      * data errors caused by incorrect configuration or use of FreeRTOS. */
     listTEST_LIST_INTEGRITY( pxList );
-    listTEST_LIST_ITEM_INTEGRITY( pxNewListItem );
+    list_TEST_LIST_قلم_INTEGRITY( px_New_List_قلم );
 
     /* Insert a new list item into pxList, but rather than sort the list,
      * makes the new list item the last item to be removed by a call to
      * listGET_OWNER_OF_NEXT_ENTRY(). */
-    pxNewListItem->pxNext = pxIndex;
-    pxNewListItem->pxPrevious = pxIndex->pxPrevious;
+    px_New_List_قلم->px_بعدی = px_شاخص;
+    px_New_List_قلم->px_قبلی = px_شاخص->px_قبلی;
 
     /* Only used during decision coverage testing. */
     mtCOVERAGE_TEST_DELAY();
 
-    pxIndex->pxPrevious->pxNext = pxNewListItem;
-    pxIndex->pxPrevious = pxNewListItem;
+    px_شاخص->px_قبلی->px_بعدی = px_New_List_قلم;
+    px_شاخص->px_قبلی = px_New_List_قلم;
 
     /* Remember which list the item is in. */
-    pxNewListItem->pxContainer = pxList;
+    px_New_List_قلم->pxContainer = pxList;
 
-    ( pxList->uxNumberOfItems )++;
+    ( pxList->ux_عدد_از_اقلام )++;
 }
 /*-----------------------------------------------------------*/
 
-void vListInsert( List_t * const pxList,
-                  ListItem_t * const pxNewListItem )
+فراغ v_List_درج( List_t * ثابت pxList,
+                  List_قلم_t * ثابت px_New_List_قلم )
 {
-    ListItem_t * pxIterator;
-    const TickType_t xValueOfInsertion = pxNewListItem->xItemValue;
+    List_قلم_t * pxIterator;
+    ثابت TickType_t x_مقدار_از_Insertion = px_New_List_قلم->x_قلم_مقدار;
 
     /* Only effective when configASSERT() is also defined, these tests may catch
      * the list data structures being overwritten in memory.  They will not catch
      * data errors caused by incorrect configuration or use of FreeRTOS. */
     listTEST_LIST_INTEGRITY( pxList );
-    listTEST_LIST_ITEM_INTEGRITY( pxNewListItem );
+    list_TEST_LIST_قلم_INTEGRITY( px_New_List_قلم );
 
     /* Insert the new list item into the list, sorted in xItemValue order.
      *
@@ -149,11 +149,11 @@ void vListInsert( List_t * const pxList,
      * share of the CPU.  However, if the xItemValue is the same as the back marker
      * the iteration loop below will not end.  Therefore the value is checked
      * first, and the algorithm slightly modified if necessary. */
-    if( xValueOfInsertion == portMAX_DELAY )
+    إذا( x_مقدار_از_Insertion == پورت_MAX_DELAY )
     {
-        pxIterator = pxList->xListEnd.pxPrevious;
+        pxIterator = pxList->x_List_انتها.px_قبلی;
     }
-    else
+    وإلا
     {
         /* *** NOTE ***********************************************************
         *  If you find your application is crashing here then likely causes are
@@ -180,51 +180,51 @@ void vListInsert( List_t * const pxList,
         *      configMAX_SYSCALL_INTERRUPT_PRIORITY.
         **********************************************************************/
 
-        for( pxIterator = ( ListItem_t * ) &( pxList->xListEnd ); pxIterator->pxNext->xItemValue <= xValueOfInsertion; pxIterator = pxIterator->pxNext ) /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. *//*lint !e440 The iterator moves to a different value, not xValueOfInsertion. */
+        لكل( pxIterator = ( List_قلم_t * ) &( pxList->x_List_انتها ); pxIterator->px_بعدی->x_قلم_مقدار <= x_مقدار_از_Insertion; pxIterator = pxIterator->px_بعدی ) /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. *//*lint !e440 The iterator moves to a different value, not xValueOfInsertion. */
         {
             /* There is nothing to do here, just iterating to the wanted
              * insertion position. */
         }
     }
 
-    pxNewListItem->pxNext = pxIterator->pxNext;
-    pxNewListItem->pxNext->pxPrevious = pxNewListItem;
-    pxNewListItem->pxPrevious = pxIterator;
-    pxIterator->pxNext = pxNewListItem;
+    px_New_List_قلم->px_بعدی = pxIterator->px_بعدی;
+    px_New_List_قلم->px_بعدی->px_قبلی = px_New_List_قلم;
+    px_New_List_قلم->px_قبلی = pxIterator;
+    pxIterator->px_بعدی = px_New_List_قلم;
 
     /* Remember which list the item is in.  This allows fast removal of the
      * item later. */
-    pxNewListItem->pxContainer = pxList;
+    px_New_List_قلم->pxContainer = pxList;
 
-    ( pxList->uxNumberOfItems )++;
+    ( pxList->ux_عدد_از_اقلام )++;
 }
 /*-----------------------------------------------------------*/
 
-UBaseType_t uxListRemove( ListItem_t * const pxItemToRemove )
+UBaseType_t uxListRemove( List_قلم_t * ثابت px_قلم_مقصد_Remove )
 {
 /* The list item knows which list it is in.  Obtain the list from the list
  * item. */
-    List_t * const pxList = pxItemToRemove->pxContainer;
+    List_t * ثابت pxList = px_قلم_مقصد_Remove->pxContainer;
 
-    pxItemToRemove->pxNext->pxPrevious = pxItemToRemove->pxPrevious;
-    pxItemToRemove->pxPrevious->pxNext = pxItemToRemove->pxNext;
+    px_قلم_مقصد_Remove->px_بعدی->px_قبلی = px_قلم_مقصد_Remove->px_قبلی;
+    px_قلم_مقصد_Remove->px_قبلی->px_بعدی = px_قلم_مقصد_Remove->px_بعدی;
 
     /* Only used during decision coverage testing. */
     mtCOVERAGE_TEST_DELAY();
 
     /* Make sure the index is left pointing to a valid item. */
-    if( pxList->pxIndex == pxItemToRemove )
+    إذا( pxList->px_شاخص == px_قلم_مقصد_Remove )
     {
-        pxList->pxIndex = pxItemToRemove->pxPrevious;
+        pxList->px_شاخص = px_قلم_مقصد_Remove->px_قبلی;
     }
-    else
+    وإلا
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    pxItemToRemove->pxContainer = NULL;
-    ( pxList->uxNumberOfItems )--;
+    px_قلم_مقصد_Remove->pxContainer = عدم;
+    ( pxList->ux_عدد_از_اقلام )--;
 
-    return pxList->uxNumberOfItems;
+    أرجع pxList->ux_عدد_از_اقلام;
 }
 /*-----------------------------------------------------------*/

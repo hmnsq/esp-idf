@@ -46,71 +46,71 @@
  * Should be included by all Xtensa generic and RTOS port-specific sources.
  */
 
-#ifndef XTENSA_RTOS_H
-#define XTENSA_RTOS_H
+#اگر_تعریف_نشده XTENSA_RTOS_H
+#تعریف_کن XTENSA_RTOS_H
 
-#ifdef __ASSEMBLER__
-#include    <xtensa/coreasm.h>
-#else
-#include    <xtensa/config/core.h>
-#endif
+#اگر_تعریف_شده __ASSEMBLER__
+#ضمن    <xtensa/coreasm.h>
+#وإلا
+#ضمن    <xtensa/config/core.h>
+#پایان_اگر
 
-#include    <xtensa/corebits.h>
-#include    <xtensa/config/system.h>
-#include    "sdkconfig.h"
+#ضمن    <xtensa/corebits.h>
+#ضمن    <xtensa/config/system.h>
+#ضمن    "sdkconfig.h"
 
 /*
 Include any RTOS specific definitions that are needed by this header.
 */
-#include    "freertos/FreeRTOSConfig.h"
+#ضمن    "freertos/FreeRTOSConfig.h"
 
 /*
 Convert FreeRTOSConfig definitions to XTENSA definitions.
 However these can still be overridden from the command line.
 */
 
-#ifndef XT_SIMULATOR
-  #if configXT_SIMULATOR
-    #define XT_SIMULATOR             1  /* Simulator mode */
-  #endif
-#endif
+#اگر_تعریف_نشده XT_SIMULATOR
+  #إذا configXT_SIMULATOR
+    #تعریف_کن XT_SIMULATOR             1  /* Simulator mode */
+  #پایان_اگر
+#پایان_اگر
 
-#ifndef XT_BOARD
-  #if configXT_BOARD
-    #define XT_BOARD                 1  /* Board mode */
-  #endif
-#endif
+#اگر_تعریف_نشده XT_BOARD
+  #إذا configXT_BOARD
+    #تعریف_کن XT_BOARD                 1  /* Board mode */
+  #پایان_اگر
+#پایان_اگر
 
-#ifndef XT_TIMER_INDEX
-  #if defined configXT_TIMER_INDEX
-    #define XT_TIMER_INDEX           configXT_TIMER_INDEX  /* Index of hardware timer to be used */
-  #endif
-#endif
+#اگر_تعریف_نشده XT_TIMER_شاخص
+  #إذا defined config_XT_TIMER_شاخص
+    #تعریف_کن XT_TIMER_شاخص           config_XT_TIMER_شاخص  /* Index of hardware timer to be used */
+  #پایان_اگر
+#پایان_اگر
 
-#ifndef XT_INTEXC_HOOKS
-  #if configXT_INTEXC_HOOKS
-    #define XT_INTEXC_HOOKS          1  /* Enables exception hooks */
-  #endif
-#endif
+#اگر_تعریف_نشده XT_INTEXC_HOOKS
+  #إذا configXT_INTEXC_HOOKS
+    #تعریف_کن XT_INTEXC_HOOKS          1  /* Enables exception hooks */
+  #پایان_اگر
+#پایان_اگر
 
-#if (!XT_SIMULATOR) && (!XT_BOARD)
-  #error Either XT_SIMULATOR or XT_BOARD must be defined.
-#endif
+#إذا (!XT_SIMULATOR) && (!XT_BOARD)
+  #خطا Either XT_SIMULATOR or XT_BOARD must be defined.
+#پایان_اگر
 
 
 /*
 Name of RTOS (for messages).
 */
-#define XT_RTOS_NAME    FreeRTOS
+#تعریف_کن XT_RTOS_NAME    FreeRTOS
 
 /*
 Check some Xtensa configuration requirements and report error if not met.
 Error messages can be customize to the RTOS port.
 */
 
-#if !XCHAL_HAVE_XEA2
-#error "FreeRTOS/Xtensa requires XEA2 (exception architecture 2)."
-#endif
+#إذا !XCHAL_HAVE_XEA2
+#خطا "FreeRTOS/Xtensa requires XEA2 (exception architecture 2)."
+#پایان_اگر
 
 
 /*******************************************************************************
@@ -131,7 +131,7 @@ RTOS port can call0 _xt_context_save to save the rest of the context.
 May only be called from assembly code by the 'call0' instruction.
 */
 // void XT_RTOS_INT_ENTER(void)
-#define XT_RTOS_INT_ENTER   _frxt_int_enter
+#تعریف_کن XT_RTOS_INT_ENTER   _frxt_int_enter
 
 /*
 Inform RTOS of completion of an interrupt handler, and give control to
@@ -144,7 +144,7 @@ dispatcher. This function does not return to the place it was called from.
 May only be called from assembly code by the 'call0' instruction.
 */
 // void XT_RTOS_INT_EXIT(void)
-#define XT_RTOS_INT_EXIT    _frxt_int_exit
+#تعریف_کن XT_RTOS_INT_EXIT    _frxt_int_exit
 
 /*
 Inform RTOS of the occurrence of a tick timer interrupt.
@@ -153,10 +153,10 @@ May be coded in or called from C or assembly, per ABI conventions.
 RTOS may optionally define XT_TICK_PER_SEC in its own way (eg. macro).
 */
 // void XT_RTOS_TIMER_INT(void)
-#ifdef CONFIG_FREERTOS_SYSTICK_USES_CCOUNT
-#define XT_RTOS_TIMER_INT   _frxt_timer_int
-#endif
-#define XT_TICK_PER_SEC     configTICK_RATE_HZ
+#اگر_تعریف_شده CONFIG_FREERTOS_SYSTICK_استفاده_میکند_CCOUNT
+#تعریف_کن XT_RTOS_TIMER_INT   _frxt_timer_int
+#پایان_اگر
+#تعریف_کن XT_TICK_در_هر_SEC     config_TICK_نرخ_HZ
 
 /*
 Return in a15 the base address of the co-processor state save area for the
@@ -168,7 +168,7 @@ and by the 'call0' instruction. A result of 0 indicates an unrecoverable error.
 The implementation may use only a2-4, a15 (all other regs must be preserved).
 */
 // void* XT_RTOS_CP_STATE(void)
-#define XT_RTOS_CP_STATE    _frxt_task_coproc_state
+#تعریف_کن XT_RTOS_CP_STATE    _frxt_task_coproc_state
 
 /*
 RTOS provided hook function that is called on every coprocessor exception. May
@@ -176,9 +176,9 @@ only be called from assembly code and by the 'call0' instruction.
 The implementation may use only a2-4, a15 (all other regs must be preserved).
 */
 // void XT_RTOS_CP_EXC_HOOK(void)
-#if XCHAL_CP_NUM > 0
-#define XT_RTOS_CP_EXC_HOOK   _frxt_coproc_exc_hook
-#endif
+#إذا XCHAL_CP_رقم > 0
+#تعریف_کن XT_RTOS_CP_EXC_HOOK   _frxt_coproc_exc_hook
+#پایان_اگر
 
 /*******************************************************************************
 
@@ -214,12 +214,12 @@ To enable interrupt/exception hooks, compile the RTOS with '-DXT_INTEXC_HOOKS'.
 
 *******************************************************************************/
 
-#define XT_INTEXC_HOOK_NUM  (1 + XCHAL_NUM_INTLEVELS + XCHAL_HAVE_NMI)
+#تعریف_کن XT_INTEXC_HOOK_رقم  (1 + XCHAL_رقم_INTLEVELS + XCHAL_HAVE_NMI)
 
-#ifndef __ASSEMBLER__
-typedef unsigned (*XT_INTEXC_HOOK)(unsigned cause);
-extern  volatile XT_INTEXC_HOOK _xt_intexc_hooks[XT_INTEXC_HOOK_NUM];
-#endif
+#اگر_تعریف_نشده __ASSEMBLER__
+تعريفنوع بیعلامت (*XT_INTEXC_HOOK)(بیعلامت cause);
+خارجي  متطاير XT_INTEXC_HOOK _xt_intexc_hooks[XT_INTEXC_HOOK_رقم];
+#پایان_اگر
 
 
 /*******************************************************************************
@@ -231,11 +231,11 @@ These headers are included last so they can use the RTOS definitions above.
 
 *******************************************************************************/
 
-#include    "xtensa_context.h"
+#ضمن    "xtensa_context.h"
 
-#ifdef XT_RTOS_TIMER_INT
-#include    "xtensa_timer.h"
-#endif
+#اگر_تعریف_شده XT_RTOS_TIMER_INT
+#ضمن    "xtensa_timer.h"
+#پایان_اگر
 
 
 /*******************************************************************************
@@ -244,7 +244,7 @@ Xtensa Port Version.
 
 *******************************************************************************/
 
-#define XTENSA_PORT_VERSION             1.7
-#define XTENSA_PORT_VERSION_STRING      "1.7"
+#تعریف_کن XTENSA_پورت_نسخه             1.7
+#تعریف_کن XTENSA_پورت_نسخه_STRING      "1.7"
 
-#endif /* XTENSA_RTOS_H */
+#پایان_اگر /* XTENSA_RTOS_H */

@@ -32,32 +32,32 @@
  *
  */
 
-#include "sdkconfig.h"
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-#include <xtensa/config/core.h>
-#include <xtensa_context.h>
-#include "soc/soc_caps.h"
-#include "esp_attr.h"
-#include "esp_compiler.h"
-#include "esp_private/crosscore_int.h"
-#include "esp_private/esp_int_wdt.h"
-#include "esp_system.h"
-#include "esp_log.h"
-#include "FreeRTOS.h"        /* This pulls in portmacro.h */
-#include "task.h"            /* Required for TaskHandle_t, tskNO_AFFINITY, and vTaskStartScheduler */
-#include "port_systick.h"
-#include "esp_cpu.h"
-#include <xtensa/hal.h>             /* required for xthal_get_ccount() */
-#if CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
-#include "esp_timer.h"
-#endif
-#include "esp_memory_utils.h"
-#include "esp_macros.h"
+#ضمن "sdkconfig.h"
+#ضمن <stdbool.h>
+#ضمن <stdint.h>
+#ضمن <stdlib.h>
+#ضمن <string.h>
+#ضمن <xtensa/config/core.h>
+#ضمن <xtensa_context.h>
+#ضمن "soc/soc_caps.h"
+#ضمن "esp_attr.h"
+#ضمن "esp_compiler.h"
+#ضمن "esp_private/crosscore_int.h"
+#ضمن "esp_private/esp_int_wdt.h"
+#ضمن "esp_system.h"
+#ضمن "esp_log.h"
+#ضمن "FreeRTOS.h"        /* This pulls in portmacro.h */
+#ضمن "task.h"            /* Required for TaskHandle_t, tskNO_AFFINITY, and vTaskStartScheduler */
+#ضمن "port_systick.h"
+#ضمن "esp_cpu.h"
+#ضمن <xtensa/hal.h>             /* required for xthal_get_ccount() */
+#إذا CONFIG_FREERTOS_پیاپی_زمان_STATS_USING_ESP_TIMER
+#ضمن "esp_timer.h"
+#پایان_اگر
+#ضمن "esp_memory_utils.h"
+#ضمن "esp_macros.h"
 
-_Static_assert(portBYTE_ALIGNMENT == 16, "portBYTE_ALIGNMENT must be set to 16");
+_Static_assert(پورت_BYTE_ALIGNMENT == 16, "portBYTE_ALIGNMENT must be set to 16");
 
 /* ---------------------------------------------------- Variables ------------------------------------------------------
  * - Various variables used to maintain the FreeRTOS port's state. Used from both port.c and various .S files
@@ -65,24 +65,24 @@ _Static_assert(portBYTE_ALIGNMENT == 16, "portBYTE_ALIGNMENT must be set to 16")
  *   C constants instead of preprocessor macros due to assembly lacking "offsetof()".
  * ------------------------------------------------------------------------------------------------------------------ */
 
-#if XCHAL_CP_NUM > 0
+#إذا XCHAL_CP_رقم > 0
 /* Offsets used to navigate to a task's CPSA on the stack */
-const DRAM_ATTR uint32_t offset_pxEndOfStack = offsetof(StaticTask_t, pxDummy8);
-const DRAM_ATTR uint32_t offset_cpsa = XT_CP_SIZE;  /* Offset to start of the CPSA area on the stack. See uxInitialiseStackCPSA(). */
-#if configNUM_CORES > 1
+ثابت DRAM_ATTR uint32_t جابه_جایی_px_انتها_از_پشته = offsetof(StaticTask_t, pxDummy8);
+ثابت DRAM_ATTR uint32_t جابه_جایی_cpsa = XT_CP_اندازه;  /* Offset to start of the CPSA area on the stack. See uxInitialiseStackCPSA(). */
+#إذا config_رقم_CORES > 1
 /* Offset to TCB_t.xCoreID member. Used to pin unpinned tasks that use the FPU. */
-const DRAM_ATTR uint32_t offset_xCoreID = offsetof(StaticTask_t, xDummyCoreID);
-#endif /* configNUM_CORES > 1 */
-#endif /* XCHAL_CP_NUM > 0 */
+ثابت DRAM_ATTR uint32_t جابه_جایی_x_Core_ID = offsetof(StaticTask_t, xDummyCoreID);
+#پایان_اگر /* configNUM_CORES > 1 */
+#پایان_اگر /* XCHAL_CP_NUM > 0 */
 
-volatile unsigned port_xSchedulerRunning[portNUM_PROCESSORS] = {0}; // Indicates whether scheduler is running on a per-core basis
-unsigned port_interruptNesting[portNUM_PROCESSORS] = {0};  // Interrupt nesting level. Increased/decreased in portasm.c, _frxt_int_enter/_frxt_int_exit
-BaseType_t port_uxCriticalNesting[portNUM_PROCESSORS] = {0};
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-volatile bool port_xThreadSafeClaimed = false;
-#endif
-BaseType_t port_uxOldInterruptState[portNUM_PROCESSORS] = {0};
-volatile unsigned port_uxCoreStartupDone[portNUM_PROCESSORS] = {0};  // Indicates whether the core has completed its startup sequence
+متطاير بیعلامت پورت_x_Scheduler_Running[پورت_رقم_PROCESSORS] = {0}; // Indicates whether scheduler is running on a per-core basis
+بیعلامت پورت_وقفه_Nesting[پورت_رقم_PROCESSORS] = {0};  // Interrupt nesting level. Increased/decreased in portasm.c, _frxt_int_enter/_frxt_int_exit
+پایه_Type_t پورت_ux_Critical_Nesting[پورت_رقم_PROCESSORS] = {0};
+#إذا CONFIG_FREERTOS_پورت_THREAD_امن_CLAIM
+متطاير bool پورت_x_Thread_امن_Claimed = false;
+#پایان_اگر
+پایه_Type_t پورت_ux_Old_وقفه_State[پورت_رقم_PROCESSORS] = {0};
+متطاير بیعلامت پورت_ux_Core_Startup_انجامشده[پورت_رقم_PROCESSORS] = {0};  // Indicates whether the core has completed its startup sequence
 
 /*
 *******************************************************************************
@@ -90,9 +90,9 @@ volatile unsigned port_uxCoreStartupDone[portNUM_PROCESSORS] = {0};  // Indicate
 * parameter "configISR_STACK_SIZE" in FreeRTOSConfig.h
 *******************************************************************************
 */
-volatile StackType_t DRAM_ATTR __attribute__((aligned(16))) port_IntStack[portNUM_PROCESSORS][configISR_STACK_SIZE];
+متطاير پشته_Type_t DRAM_ATTR __attribute__((aligned(16))) پورت_Int_پشته[پورت_رقم_PROCESSORS][config_ISR_پشته_اندازه];
 /* One flag for each individual CPU. */
-volatile uint32_t port_switch_flag[portNUM_PROCESSORS];
+متطاير uint32_t پورت_switch_flag[پورت_رقم_PROCESSORS];
 
 /* ------------------------------------------------ FreeRTOS Portable --------------------------------------------------
  * - Provides implementation for functions required by FreeRTOS
@@ -102,39 +102,39 @@ volatile uint32_t port_switch_flag[portNUM_PROCESSORS];
 // ----------------- Scheduler Start/End -------------------
 
 /* Defined in xtensa_context.S */
-extern void _xt_coproc_init(void);
+خارجي فراغ _xt_coproc_init(فراغ);
 
-BaseType_t xPortStartScheduler( void )
+پایه_Type_t x_پورت_شروع_Scheduler( فراغ )
 {
-    portDISABLE_INTERRUPTS();
+    پورت_DISABLE_INTERRUPTS();
     // Interrupts are disabled at this point and stack contains PS with enabled interrupts when task context is restored
 
-#if XCHAL_CP_NUM > 0
+#إذا XCHAL_CP_رقم > 0
     /* Initialize co-processor management for tasks. Leave CPENABLE alone. */
     _xt_coproc_init();
-#endif
+#پایان_اگر
 
     /* Setup the hardware to generate the tick. */
-    vPortSetupTimer();
+    v_پورت_راهاندازی_Timer();
 
     /* Initialize all kernel state tracking variables */
-    BaseType_t coreID = xPortGetCoreID();
-    port_xSchedulerRunning[coreID] = 1;
-    port_uxCoreStartupDone[coreID] = 0;
+    پایه_Type_t coreID = x_پورت_Get_Core_ID();
+    پورت_x_Scheduler_Running[coreID] = 1;
+    پورت_ux_Core_Startup_انجامشده[coreID] = 0;
 
     // Windows contain references to the startup stack which will be reclaimed by the main task
     // Spill the windows to create a clean environment to ensure we do not carry over any such references
     // to invalid SPs which will cause problems if main_task does a windowoverflow to them
-    xthal_window_spill();
+    xthal_پنجره_spill();
 
     // Cannot be directly called from C; never returns
-    __asm__ volatile ("call0    _frxt_dispatch\n");
+    __asm__ متطاير ("call0    _frxt_dispatch\n");
 
     /* Should not get here. */
-    return pdTRUE;
+    أرجع pdTRUE;
 }
 
-void vPortEndScheduler( void )
+فراغ v_پورت_انتها_Scheduler( فراغ )
 {
     /* It is unlikely that the Xtensa port will get stopped.  If required simply
     disable the tick interrupt here. */
@@ -144,23 +144,23 @@ void vPortEndScheduler( void )
 // ------------------------ Stack --------------------------
 
 // User exception dispatcher when exiting
-void _xt_user_exit(void);
+فراغ _xt_user_exit(فراغ);
 
-#if CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
+#إذا CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
 // Wrapper to allow task functions to return (increases stack overhead by 16 bytes)
-static void vPortTaskWrapper(TaskFunction_t pxCode, void *pvParameters)
+ساكن فراغ v_پورت_Task_Wrapper(TaskFunction_t px_کد, فراغ *pvParameters)
 {
-    pxCode(pvParameters);
+    px_کد(pvParameters);
     //FreeRTOS tasks should not return. Log the task name and abort.
-    char *pcTaskName = pcTaskGetName(NULL);
+    حرف *pcTaskName = pcTaskGetName(عدم);
     ESP_LOGE("FreeRTOS", "FreeRTOS Task \"%s\" should not return, Aborting now!", pcTaskName);
     abort();
 }
-#endif
+#پایان_اگر
 
 
 
-#if XCHAL_CP_NUM > 0
+#إذا XCHAL_CP_رقم > 0
 /**
  * @brief Allocate and initialize coprocessor save area on the stack
  *
@@ -174,7 +174,7 @@ static void vPortTaskWrapper(TaskFunction_t pxCode, void *pvParameters)
  * @param[in] uxStackPointer Current stack pointer address
  * @return Stack pointer that points to allocated and initialized the coprocessor save area
  */
-FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackCPSA(UBaseType_t uxStackPointer)
+FORCE_INLINE_ATTR UBaseType_t ux_Initialise_پشته_CPSA(UBaseType_t ux_پشته_اشاره_گر)
 {
     /*
     HIGH ADDRESS
@@ -193,16 +193,16 @@ FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackCPSA(UBaseType_t uxStackPointer)
     */
 
     // Allocate overall coprocessor save area, aligned down to 16 byte boundary
-    uxStackPointer = ESP_ALIGN_DOWN(uxStackPointer - XT_CP_SIZE, 16);
+    ux_پشته_اشاره_گر = ESP_ALIGN_پایین(ux_پشته_اشاره_گر - XT_CP_اندازه, 16);
     // Initialize the coprocessor context switching flags.
-    uint32_t *p = (uint32_t *)uxStackPointer;
+    uint32_t *p = (uint32_t *)ux_پشته_اشاره_گر;
     p[0] = 0;   // Clear XT_CPENABLE and XT_CPSTORED
     p[1] = 0;   // Clear XT_CP_CS_ST
     // XT_CP_ASA points to the aligned start of the individual CP save areas (i.e., start of CP0 SA)
-    p[2] = (uint32_t)ESP_ALIGN_UP((uint32_t)uxStackPointer + 12, XCHAL_TOTAL_SA_ALIGN);
-    return uxStackPointer;
+    p[2] = (uint32_t)ESP_ALIGN_به_بالا((uint32_t)ux_پشته_اشاره_گر + 12, XCHAL_مجموع_SA_ALIGN);
+    أرجع ux_پشته_اشاره_گر;
 }
-#endif /* XCHAL_CP_NUM > 0 */
+#پایان_اگر /* XCHAL_CP_NUM > 0 */
 
 /**
  * @brief Allocate and initialize GCC TLS area
@@ -220,7 +220,7 @@ FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackCPSA(UBaseType_t uxStackPointer)
  * @param[out] ret_threadptr_reg_init Calculated THREADPTR register initialization value
  * @return Stack pointer that points to the TLS area
  */
-FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackTLS(UBaseType_t uxStackPointer, uint32_t *ret_threadptr_reg_init)
+FORCE_INLINE_ATTR UBaseType_t ux_Initialise_پشته_TLS(UBaseType_t ux_پشته_اشاره_گر, uint32_t *ret_threadptr_reg_init)
 {
     /*
     TLS layout at link-time, where 0xNNN is the offset that the linker calculates to a particular TLS variable.
@@ -244,20 +244,20 @@ FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackTLS(UBaseType_t uxStackPointer, u
     HIGH ADDRESS
     */
     // Calculate the TLS area's size (rounded up to multiple of 16 bytes).
-    extern int _tls_section_alignment;
-    extern char _thread_local_data_start, _thread_local_data_end;
-    extern char _thread_local_bss_start, _thread_local_bss_end;
-    const uint32_t tls_data_size = (uint32_t)&_thread_local_data_end - (uint32_t)&_thread_local_data_start;
-    const uint32_t tls_bss_size = (uint32_t)&_thread_local_bss_end - (uint32_t)&_thread_local_bss_start;
-    const uint32_t tls_area_size = ESP_ALIGN_UP(tls_data_size + tls_bss_size, 16);
+    خارجي صحيح _tls_section_alignment;
+    خارجي حرف thread_local_داده_شروع, thread_local_داده_انتها;
+    خارجي حرف thread_local_bss_شروع, thread_local_bss_انتها;
+    ثابت uint32_t tls_داده_اندازه = (uint32_t)&thread_local_داده_انتها - (uint32_t)&thread_local_داده_شروع;
+    ثابت uint32_t tls_bss_اندازه = (uint32_t)&thread_local_bss_انتها - (uint32_t)&thread_local_bss_شروع;
+    ثابت uint32_t tls_area_اندازه = ESP_ALIGN_به_بالا(tls_داده_اندازه + tls_bss_اندازه, 16);
     // TODO: check that TLS area fits the stack
 
     // Allocate space for the TLS area on the stack. The area must be allocated at a 16-byte aligned address
-    uxStackPointer = ESP_ALIGN_DOWN(uxStackPointer - (UBaseType_t)tls_area_size, 16);
+    ux_پشته_اشاره_گر = ESP_ALIGN_پایین(ux_پشته_اشاره_گر - (UBaseType_t)tls_area_اندازه, 16);
     // Initialize the TLS data with the initialization values of each TLS variable
-    memcpy((void *)uxStackPointer, &_thread_local_data_start, tls_data_size);
+    کپی_حافظه((فراغ *)ux_پشته_اشاره_گر, &thread_local_داده_شروع, tls_داده_اندازه);
     // Initialize the TLS bss with zeroes
-    memset((void *)(uxStackPointer + tls_data_size), 0, tls_bss_size);
+    memset((فراغ *)(ux_پشته_اشاره_گر + tls_داده_اندازه), 0, tls_bss_اندازه);
 
     /*
     Calculate the THREADPTR register's initialization value based on the link-time offset and the TLS area allocated on
@@ -284,12 +284,12 @@ FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackTLS(UBaseType_t uxStackPointer, u
         - "offset = address - tls_section_vma + align_up(TCB_SIZE, tls_section_alignment)"
         - TCB_SIZE is hardcoded to 8
     */
-    const uint32_t tls_section_align = (uint32_t)&_tls_section_alignment;  // ALIGN value of .flash.tdata section
-    #define TCB_SIZE 8
-    const uint32_t base = ESP_ALIGN_UP(TCB_SIZE, tls_section_align);
-    *ret_threadptr_reg_init = (uint32_t)uxStackPointer - base;
+    ثابت uint32_t tls_section_align = (uint32_t)&_tls_section_alignment;  // ALIGN value of .flash.tdata section
+    #تعریف_کن TCB_اندازه 8
+    ثابت uint32_t پایه = ESP_ALIGN_به_بالا(TCB_اندازه, tls_section_align);
+    *ret_threadptr_reg_init = (uint32_t)ux_پشته_اشاره_گر - پایه;
 
-    return uxStackPointer;
+    أرجع ux_پشته_اشاره_گر;
 }
 
 /**
@@ -308,7 +308,7 @@ FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackTLS(UBaseType_t uxStackPointer, u
  * @param[in] threadptr_reg_init THREADPTR register initialization value
  * @return Stack pointer that points to the stack frame
  */
-FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackFrame(UBaseType_t uxStackPointer, TaskFunction_t pxCode, void *pvParameters, uint32_t threadptr_reg_init)
+FORCE_INLINE_ATTR UBaseType_t ux_Initialise_پشته_قاب(UBaseType_t ux_پشته_اشاره_گر, TaskFunction_t px_کد, فراغ *pvParameters, uint32_t threadptr_reg_init)
 {
     /*
     HIGH ADDRESS
@@ -332,82 +332,82 @@ FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackFrame(UBaseType_t uxStackPointer,
         - includes the size for a base save area before the stack frame
         - rounds up the total size to a multiple of 16
     */
-    UBaseType_t uxStackPointerPrevious = uxStackPointer;
-    uxStackPointer = ESP_ALIGN_DOWN(uxStackPointer - XT_STK_FRMSZ, 16);
+    UBaseType_t ux_پشته_اشاره_گر_قبلی = ux_پشته_اشاره_گر;
+    ux_پشته_اشاره_گر = ESP_ALIGN_پایین(ux_پشته_اشاره_گر - XT_STK_FRMSZ, 16);
 
     // Clear the entire interrupt stack frame
-    memset((void *)uxStackPointer, 0, (size_t)(uxStackPointerPrevious - uxStackPointer));
+    memset((فراغ *)ux_پشته_اشاره_گر, 0, (size_t)(ux_پشته_اشاره_گر_قبلی - ux_پشته_اشاره_گر));
 
-    XtExcFrame *frame = (XtExcFrame *)uxStackPointer;
+    Xt_Exc_قاب *قاب = (Xt_Exc_قاب *)ux_پشته_اشاره_گر;
 
     /*
     Initialize common registers
     */
-    frame->a0 = 0;                                          // Set the return address to 0 terminate GDB backtrace
-    frame->a1 = uxStackPointer + XT_STK_FRMSZ;              // Saved stack pointer should point to physical top of stack frame
-    frame->exit = (UBaseType_t) _xt_user_exit;              // User exception exit dispatcher
+    قاب->a0 = 0;                                          // Set the return address to 0 terminate GDB backtrace
+    قاب->a1 = ux_پشته_اشاره_گر + XT_STK_FRMSZ;              // Saved stack pointer should point to physical top of stack frame
+    قاب->خروج = (UBaseType_t) _xt_user_exit;              // User exception exit dispatcher
 
     /*
     Initialize the task's entry point. This will differ depending on
     - Whether the task's entry point is the wrapper function or pxCode
     - Whether Windowed ABI is used (for windowed, we mimic the task entry point being call4'd )
     */
-    #if CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
-        frame->pc = (UBaseType_t) vPortTaskWrapper;         // Task entry point is the wrapper function
-        #ifdef __XTENSA_CALL0_ABI__
-            frame->a2 = (UBaseType_t) pxCode;               // Wrapper function's argument 0 (which is the task function)
-            frame->a3 = (UBaseType_t) pvParameters;         // Wrapper function's argument 1 (which is the task function's argument)
-        #else // __XTENSA_CALL0_ABI__
-            frame->a6 = (UBaseType_t) pxCode;               // Wrapper function's argument 0 (which is the task function), passed as if we call4'd
-            frame->a7 = (UBaseType_t) pvParameters;         // Wrapper function's argument 1 (which is the task function's argument), passed as if we call4'd
-        #endif // __XTENSA_CALL0_ABI__
-    #else
-        frame->pc = (UBaseType_t) pxCode;                   // Task entry point is the provided task function
-        #ifdef __XTENSA_CALL0_ABI__
-            frame->a2 = (UBaseType_t) pvParameters;         // Task function's argument
-        #else // __XTENSA_CALL0_ABI__
-            frame->a6 = (UBaseType_t) pvParameters;         // Task function's argument, passed as if we call4'd
-        #endif // __XTENSA_CALL0_ABI__
-    #endif
+    #إذا CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
+        قاب->pc = (UBaseType_t) v_پورت_Task_Wrapper;         // Task entry point is the wrapper function
+        #اگر_تعریف_شده __XTENSA_CALL0_ABI__
+            قاب->a2 = (UBaseType_t) px_کد;               // Wrapper function's argument 0 (which is the task function)
+            قاب->a3 = (UBaseType_t) pvParameters;         // Wrapper function's argument 1 (which is the task function's argument)
+        #وإلا // __XTENSA_CALL0_ABI__
+            قاب->a6 = (UBaseType_t) px_کد;               // Wrapper function's argument 0 (which is the task function), passed as if we call4'd
+            قاب->a7 = (UBaseType_t) pvParameters;         // Wrapper function's argument 1 (which is the task function's argument), passed as if we call4'd
+        #پایان_اگر // __XTENSA_CALL0_ABI__
+    #وإلا
+        قاب->pc = (UBaseType_t) px_کد;                   // Task entry point is the provided task function
+        #اگر_تعریف_شده __XTENSA_CALL0_ABI__
+            قاب->a2 = (UBaseType_t) pvParameters;         // Task function's argument
+        #وإلا // __XTENSA_CALL0_ABI__
+            قاب->a6 = (UBaseType_t) pvParameters;         // Task function's argument, passed as if we call4'd
+        #پایان_اگر // __XTENSA_CALL0_ABI__
+    #پایان_اگر
 
     /*
     Set initial PS to int level 0, EXCM disabled ('rfe' will enable), user mode.
     For windowed ABI also set WOE and CALLINC (pretend task was 'call4'd)
     */
-    #ifdef __XTENSA_CALL0_ABI__
-        frame->ps = PS_UM | PS_EXCM;
-    #else // __XTENSA_CALL0_ABI__
-        frame->ps = PS_UM | PS_EXCM | PS_WOE | PS_CALLINC(1);
-    #endif // __XTENSA_CALL0_ABI__
+    #اگر_تعریف_شده __XTENSA_CALL0_ABI__
+        قاب->ps = PS_UM | PS_EXCM;
+    #وإلا // __XTENSA_CALL0_ABI__
+        قاب->ps = PS_UM | PS_EXCM | PS_WOE | PS_CALLINC(1);
+    #پایان_اگر // __XTENSA_CALL0_ABI__
 
-    #ifdef XT_USE_SWPRI
+    #اگر_تعریف_شده XT_USE_SWPRI
         // Set the initial virtual priority mask value to all 1's.
-        frame->vpri = 0xFFFFFFFF;
-    #endif
+        قاب->vpri = 0xFFFFFFFF;
+    #پایان_اگر
 
     // Initialize the threadptr register in the extra save area of the stack frame
-    uint32_t *threadptr_reg = (uint32_t *)(uxStackPointer + XT_STK_EXTRA);
+    uint32_t *threadptr_reg = (uint32_t *)(ux_پشته_اشاره_گر + XT_STK_EXTRA);
     *threadptr_reg = threadptr_reg_init;
 
-    return uxStackPointer;
+    أرجع ux_پشته_اشاره_گر;
 }
 
-#if ( portHAS_STACK_OVERFLOW_CHECKING == 1 )
-StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
-                                     StackType_t * pxEndOfStack,
-                                     TaskFunction_t pxCode,
-                                     void * pvParameters )
-#else
-StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
-                                     TaskFunction_t pxCode,
-                                     void * pvParameters )
-#endif
+#إذا ( پورت_HAS_پشته_سرریز_CHECKING == 1 )
+پشته_Type_t * px_پورت_Initialise_پشته( پشته_Type_t * px_بالاترین_از_پشته,
+                                     پشته_Type_t * px_انتها_از_پشته,
+                                     TaskFunction_t px_کد,
+                                     فراغ * pvParameters )
+#وإلا
+پشته_Type_t * px_پورت_Initialise_پشته( پشته_Type_t * px_بالاترین_از_پشته,
+                                     TaskFunction_t px_کد,
+                                     فراغ * pvParameters )
+#پایان_اگر
 {
-#ifdef __clang_analyzer__
+#اگر_تعریف_شده __clang_analyzer__
     // Teach clang-tidy that pxTopOfStack cannot be a pointer to const
-    volatile StackType_t * pxTemp = pxTopOfStack;
-    pxTopOfStack = pxTemp;
-#endif /*__clang_analyzer__ */
+    متطاير پشته_Type_t * px_موقت = px_بالاترین_از_پشته;
+    px_بالاترین_از_پشته = px_موقت;
+#پایان_اگر /*__clang_analyzer__ */
     /*
     HIGH ADDRESS
     |---------------------------| <- pxTopOfStack on entry
@@ -426,26 +426,26 @@ StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
     - All stack areas are aligned to 16 byte boundary
     - We use UBaseType_t for all of stack area initialization functions for more convenient pointer arithmetic
     */
-    UBaseType_t uxStackPointer = (UBaseType_t)pxTopOfStack;
+    UBaseType_t ux_پشته_اشاره_گر = (UBaseType_t)px_بالاترین_از_پشته;
     // Make sure the incoming stack pointer is aligned on 16
-    configASSERT((uxStackPointer & portBYTE_ALIGNMENT_MASK) == 0);
-#if XCHAL_CP_NUM > 0
+    configASSERT((ux_پشته_اشاره_گر & پورت_BYTE_ALIGNMENT_ماسک) == 0);
+#إذا XCHAL_CP_رقم > 0
     // Initialize the coprocessor save area. THIS MUST BE THE FIRST AREA due to access from _frxt_task_coproc_state()
-    uxStackPointer = uxInitialiseStackCPSA(uxStackPointer);
+    ux_پشته_اشاره_گر = ux_Initialise_پشته_CPSA(ux_پشته_اشاره_گر);
     // Each allocated section on the stack must have a size aligned on 16
-    configASSERT((uxStackPointer & portBYTE_ALIGNMENT_MASK) == 0);
-#endif /* XCHAL_CP_NUM > 0 */
+    configASSERT((ux_پشته_اشاره_گر & پورت_BYTE_ALIGNMENT_ماسک) == 0);
+#پایان_اگر /* XCHAL_CP_NUM > 0 */
 
     // Initialize the GCC TLS area
     uint32_t threadptr_reg_init;
-    uxStackPointer = uxInitialiseStackTLS(uxStackPointer, &threadptr_reg_init);
-    configASSERT((uxStackPointer & portBYTE_ALIGNMENT_MASK) == 0);
+    ux_پشته_اشاره_گر = ux_Initialise_پشته_TLS(ux_پشته_اشاره_گر, &threadptr_reg_init);
+    configASSERT((ux_پشته_اشاره_گر & پورت_BYTE_ALIGNMENT_ماسک) == 0);
 
     // Initialize the starting interrupt stack frame
-    uxStackPointer = uxInitialiseStackFrame(uxStackPointer, pxCode, pvParameters, threadptr_reg_init);
-    configASSERT((uxStackPointer & portBYTE_ALIGNMENT_MASK) == 0);
+    ux_پشته_اشاره_گر = ux_Initialise_پشته_قاب(ux_پشته_اشاره_گر, px_کد, pvParameters, threadptr_reg_init);
+    configASSERT((ux_پشته_اشاره_گر & پورت_BYTE_ALIGNMENT_ماسک) == 0);
     // Return the task's current stack pointer address which should point to the starting interrupt stack frame
-    return (StackType_t *)uxStackPointer;
+    أرجع (پشته_Type_t *)ux_پشته_اشاره_گر;
 }
 
 
@@ -456,52 +456,52 @@ StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
 
 // --------------------- Interrupts ------------------------
 
-BaseType_t xPortInIsrContext(void)
+پایه_Type_t x_پورت_درون_Isr_Context(فراغ)
 {
-    unsigned int irqStatus;
-    BaseType_t ret;
-    irqStatus = portSET_INTERRUPT_MASK_FROM_ISR();
-    ret = (port_interruptNesting[xPortGetCoreID()] != 0);
-    portCLEAR_INTERRUPT_MASK_FROM_ISR(irqStatus);
-    return ret;
+    بیعلامت صحيح irq_وضعیت;
+    پایه_Type_t ret;
+    irq_وضعیت = پورت_مجموعه_وقفه_ماسک_FROM_ISR();
+    ret = (پورت_وقفه_Nesting[x_پورت_Get_Core_ID()] != 0);
+    پورت_CLEAR_وقفه_ماسک_FROM_ISR(irq_وضعیت);
+    أرجع ret;
 }
 
-void vPortAssertIfInISR(void)
+فراغ v_پورت_Assert_If_درون_ISR(فراغ)
 {
     /* Assert if the interrupt nesting count is > 0 */
-    configASSERT(xPortInIsrContext() == 0);
+    configASSERT(x_پورت_درون_Isr_Context() == 0);
 }
 
-BaseType_t xPortInterruptedFromISRContext(void)
+پایه_Type_t x_پورت_Interrupted_From_ISRContext(فراغ)
 {
-    return (port_interruptNesting[xPortGetCoreID()] != 0);
+    أرجع (پورت_وقفه_Nesting[x_پورت_Get_Core_ID()] != 0);
 }
 
 // ------------------ Critical Sections --------------------
 
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-void xPortThreadSafeClaim(void)
+#إذا CONFIG_FREERTOS_پورت_THREAD_امن_CLAIM
+فراغ x_پورت_Thread_امن_Claim(فراغ)
 {
-    configASSERT(!xPortCanYield());
-    configASSERT(!port_xThreadSafeClaimed);
-    port_xThreadSafeClaimed = true;
+    configASSERT(!x_پورت_Can_Yield());
+    configASSERT(!پورت_x_Thread_امن_Claimed);
+    پورت_x_Thread_امن_Claimed = true;
 }
 
-void xPortThreadSafeDisclaim(void)
+فراغ x_پورت_Thread_امن_Disclaim(فراغ)
 {
-    configASSERT(!xPortCanYield());
-    configASSERT(port_xThreadSafeClaimed);
-    port_xThreadSafeClaimed = false;
+    configASSERT(!x_پورت_Can_Yield());
+    configASSERT(پورت_x_Thread_امن_Claimed);
+    پورت_x_Thread_امن_Claimed = false;
 }
-#endif /* CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM */
+#پایان_اگر /* CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM */
 
-BaseType_t __attribute__((optimize("-O3"))) xPortEnterCriticalTimeout(portMUX_TYPE *mux, BaseType_t timeout)
+پایه_Type_t __attribute__((optimize("-O3"))) x_پورت_Enter_Critical_Timeout(پورت_MUX_TYPE *mux, پایه_Type_t timeout)
 {
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-    if (unlikely(port_xThreadSafeClaimed)) {
-        return pdPASS;
+#إذا CONFIG_FREERTOS_پورت_THREAD_امن_CLAIM
+    إذا (unlikely(پورت_x_Thread_امن_Claimed)) {
+        أرجع pdPASS;
     }
-#endif
+#پایان_اگر
     /* Interrupts may already be disabled (if this function is called in nested
      * manner). However, there's no atomic operation that will allow us to check,
      * thus we have to disable interrupts again anyways.
@@ -510,34 +510,34 @@ BaseType_t __attribute__((optimize("-O3"))) xPortEnterCriticalTimeout(portMUX_TY
      * critical section), we will save the previous interrupt level so that the
      * saved level can be restored on the last call to exit the critical.
      */
-    BaseType_t xOldInterruptLevel = portSET_INTERRUPT_MASK_FROM_ISR();
+    پایه_Type_t x_Old_وقفه_Level = پورت_مجموعه_وقفه_ماسک_FROM_ISR();
     /* Interrupts are masked, so the core id is stable. Read the core id register once
      * (its value is already the spinlock owner id on Xtensa) and reuse it, so
      * spinlock_acquire does not read the core id register a second time. */
     uint32_t coreOwnerId = spinlock_owner_id();
-    BaseType_t coreID = spinlock_core_id_from_owner_id(coreOwnerId);
-    if (!spinlock_acquire_impl(mux, timeout, coreOwnerId)) {
+    پایه_Type_t coreID = spinlock_core_id_from_owner_id(coreOwnerId);
+    إذا (!spinlock_acquire_impl(mux, timeout, coreOwnerId)) {
         //Timed out attempting to get spinlock. Restore previous interrupt level and return
-        portCLEAR_INTERRUPT_MASK_FROM_ISR(xOldInterruptLevel);
-        return pdFAIL;
+        پورت_CLEAR_وقفه_ماسک_FROM_ISR(x_Old_وقفه_Level);
+        أرجع pdFAIL;
     }
     //Spinlock acquired. Increment the critical nesting count.
-    BaseType_t newNesting = port_uxCriticalNesting[coreID] + 1;
-    port_uxCriticalNesting[coreID] = newNesting;
+    پایه_Type_t newNesting = پورت_ux_Critical_Nesting[coreID] + 1;
+    پورت_ux_Critical_Nesting[coreID] = newNesting;
     //If this is the first entry to a critical section. Save the old interrupt level.
-    if ( newNesting == 1 ) {
-        port_uxOldInterruptState[coreID] = xOldInterruptLevel;
+    إذا ( newNesting == 1 ) {
+        پورت_ux_Old_وقفه_State[coreID] = x_Old_وقفه_Level;
     }
-    return pdPASS;
+    أرجع pdPASS;
 }
 
-void __attribute__((optimize("-O3"))) vPortExitCritical(portMUX_TYPE *mux)
+فراغ __attribute__((optimize("-O3"))) v_پورت_Exit_Critical(پورت_MUX_TYPE *mux)
 {
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-    if (unlikely(port_xThreadSafeClaimed)) {
-        return;
+#إذا CONFIG_FREERTOS_پورت_THREAD_امن_CLAIM
+    إذا (unlikely(پورت_x_Thread_امن_Claimed)) {
+        أرجع;
     }
-#endif
+#پایان_اگر
     /* This function may be called in a nested manner. Therefore, we only need
      * to re-enable interrupts if this is the last call to exit the critical. We
      * can use the nesting count to determine whether this is the last exit call.
@@ -546,42 +546,42 @@ void __attribute__((optimize("-O3"))) vPortExitCritical(portMUX_TYPE *mux)
      * stable and the spinlock does not need to mask them again. Read the core id
      * register once (its value is the spinlock owner id on Xtensa) and reuse it. */
     uint32_t coreOwnerId = spinlock_owner_id();
-    BaseType_t coreID = spinlock_core_id_from_owner_id(coreOwnerId);
+    پایه_Type_t coreID = spinlock_core_id_from_owner_id(coreOwnerId);
     spinlock_release_impl(mux, coreOwnerId);
-    BaseType_t nesting = port_uxCriticalNesting[coreID];
+    پایه_Type_t nesting = پورت_ux_Critical_Nesting[coreID];
 
     /* Critical section nesting count must never be negative */
     configASSERT( nesting > 0 );
 
-    if (nesting > 0) {
+    إذا (nesting > 0) {
         nesting--;
-        port_uxCriticalNesting[coreID] = nesting;
+        پورت_ux_Critical_Nesting[coreID] = nesting;
 
         //This is the last exit call, restore the saved interrupt level
-        if ( nesting == 0 ) {
-            portCLEAR_INTERRUPT_MASK_FROM_ISR(port_uxOldInterruptState[coreID]);
+        إذا ( nesting == 0 ) {
+            پورت_CLEAR_وقفه_ماسک_FROM_ISR(پورت_ux_Old_وقفه_State[coreID]);
         }
     }
 }
 
-BaseType_t xPortEnterCriticalTimeoutCompliance(portMUX_TYPE *mux, BaseType_t timeout)
+پایه_Type_t x_پورت_Enter_Critical_Timeout_Compliance(پورت_MUX_TYPE *mux, پایه_Type_t timeout)
 {
-    BaseType_t ret;
-    if (!xPortInIsrContext()) {
-        ret = xPortEnterCriticalTimeout(mux, timeout);
-    } else {
+    پایه_Type_t ret;
+    إذا (!x_پورت_درون_Isr_Context()) {
+        ret = x_پورت_Enter_Critical_Timeout(mux, timeout);
+    } وإلا {
         esp_rom_printf("port*_CRITICAL called from ISR context. Aborting!\n");
         abort();
         ret = pdFAIL;
     }
-    return ret;
+    أرجع ret;
 }
 
-void vPortExitCriticalCompliance(portMUX_TYPE *mux)
+فراغ v_پورت_Exit_Critical_Compliance(پورت_MUX_TYPE *mux)
 {
-    if (!xPortInIsrContext()) {
-        vPortExitCritical(mux);
-    } else {
+    إذا (!x_پورت_درون_Isr_Context()) {
+        v_پورت_Exit_Critical(mux);
+    } وإلا {
         esp_rom_printf("port*_CRITICAL called from ISR context. Aborting!\n");
         abort();
     }
@@ -589,23 +589,23 @@ void vPortExitCriticalCompliance(portMUX_TYPE *mux)
 
 // ---------------------- Yielding -------------------------
 
-void vPortYieldOtherCore( BaseType_t coreid )
+فراغ v_پورت_Yield_Other_Core( پایه_Type_t coreid )
 {
     esp_crosscore_int_send_yield( coreid );
 }
 
 // ------------------- Hook Functions ----------------------
 
-void  __attribute__((weak)) vApplicationStackOverflowHook( TaskHandle_t xTask, char *pcTaskName )
+فراغ  __attribute__((weak)) v_Application_پشته_سرریز_Hook( TaskHandle_t xTask, حرف *pcTaskName )
 {
-#define ERR_STR1 "***ERROR*** A stack overflow in task "
-#define ERR_STR2 " has been detected."
-    const char *str[] = {ERR_STR1, pcTaskName, ERR_STR2};
+#تعریف_کن ERR_STR1 "***ERROR*** A stack overflow in task "
+#تعریف_کن ERR_STR2 " has been detected."
+    ثابت حرف *str[] = {ERR_STR1, pcTaskName, ERR_STR2};
 
-    char buf[sizeof(ERR_STR1) + CONFIG_FREERTOS_MAX_TASK_NAME_LEN + sizeof(ERR_STR2) + 1 /* null char */] = { 0 };
+    حرف buf[حجم(ERR_STR1) + CONFIG_FREERTOS_MAX_TASK_NAME_LEN + حجم(ERR_STR2) + 1 /* null char */] = { 0 };
 
-    char *dest = buf;
-    for (size_t i = 0 ; i < sizeof(str) / sizeof(str[0]); i++) {
+    حرف *dest = buf;
+    لكل (size_t i = 0 ; i < حجم(str) / حجم(str[0]); i++) {
         dest = strcat(dest, str[i]);
     }
     esp_system_abort(buf);
@@ -613,16 +613,16 @@ void  __attribute__((weak)) vApplicationStackOverflowHook( TaskHandle_t xTask, c
 
 // ----------------------- System --------------------------
 
-uint32_t xPortGetTickRateHz(void)
+uint32_t x_پورت_Get_Tick_نرخ_Hz(فراغ)
 {
-    return (uint32_t)configTICK_RATE_HZ;
+    أرجع (uint32_t)config_TICK_نرخ_HZ;
 }
 
 
-#define STACK_WATCH_AREA_SIZE 32
-#define STACK_WATCH_POINT_NUMBER (SOC_CPU_WATCHPOINTS_NUM - 1)
+#تعریف_کن پشته_WATCH_AREA_اندازه 32
+#تعریف_کن پشته_WATCH_نقطه_عدد (SOC_CPU_WATCHPOINTS_رقم - 1)
 
-void vPortSetStackWatchpoint( void *pxStackStart )
+فراغ v_پورت_مجموعه_پشته_Watchpoint( فراغ *px_پشته_شروع )
 {
     //Set watchpoint 1 to watch the last 32 bytes of the stack.
     //Unfortunately, the Xtensa watchpoints can't set a watchpoint on a random [base - base+n] region because
@@ -630,15 +630,15 @@ void vPortSetStackWatchpoint( void *pxStackStart )
     //bytes of the stack we can actually watch. In general, this can cause the watchpoint to be triggered at most
     //28 bytes early. The value 32 is chosen because it's larger than the stack canary, which in FreeRTOS is 20 bytes.
     //This way, we make sure we trigger before/when the stack canary is corrupted, not after.
-    int addr = (int)pxStackStart;
+    صحيح addr = (صحيح)px_پشته_شروع;
     addr = (addr + 31) & (~31);
-    esp_cpu_set_watchpoint(STACK_WATCH_POINT_NUMBER, (char *)addr, 32, ESP_CPU_WATCHPOINT_STORE);
+    esp_cpu_مجموعه_watchpoint(پشته_WATCH_نقطه_عدد, (حرف *)addr, 32, ESP_CPU_WATCHPOINT_STORE);
 }
 
 // --------------------- TCB Cleanup -----------------------
 
-#if ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
-static void vPortTLSPointersDelCb( void *pxTCB )
+#إذا ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
+ساكن فراغ v_پورت_TLSPointers_Del_Cb( فراغ *pxTCB )
 {
     /* Typecast pxTCB to StaticTask_t type to access TCB struct members.
      * pvDummy15 corresponds to pvThreadLocalStoragePointers member of the TCB.
@@ -646,79 +646,79 @@ static void vPortTLSPointersDelCb( void *pxTCB )
     StaticTask_t *tcb = ( StaticTask_t * )pxTCB;
 
     /* The TLSP deletion callbacks are stored at an offset of (configNUM_THREAD_LOCAL_STORAGE_POINTERS/2) */
-    TlsDeleteCallbackFunction_t *pvThreadLocalStoragePointersDelCallback = ( TlsDeleteCallbackFunction_t * )( &( tcb->pvDummy15[ ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ) ] ) );
+    TlsDeleteCallbackFunction_t *pv_Thread_Local_Storage_اشارهگرها_Del_Callback = ( TlsDeleteCallbackFunction_t * )( &( tcb->pvDummy15[ ( config_رقم_THREAD_LOCAL_STORAGE_اشارهگرها / 2 ) ] ) );
 
     /* We need to iterate over half the depth of the pvThreadLocalStoragePointers area
      * to access all TLS pointers and their respective TLS deletion callbacks.
      */
-    for ( int x = 0; x < ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ); x++ ) {
-        if ( pvThreadLocalStoragePointersDelCallback[ x ] != NULL ) {  //If del cb is set
+    لكل ( صحيح x = 0; x < ( config_رقم_THREAD_LOCAL_STORAGE_اشارهگرها / 2 ); x++ ) {
+        إذا ( pv_Thread_Local_Storage_اشارهگرها_Del_Callback[ x ] != عدم ) {  //If del cb is set
             /* In case the TLSP deletion callback has been overwritten by a TLS pointer, gracefully abort. */
-            if ( !esp_ptr_executable( pvThreadLocalStoragePointersDelCallback[ x ] ) ) {
+            إذا ( !esp_ptr_executable( pv_Thread_Local_Storage_اشارهگرها_Del_Callback[ x ] ) ) {
                 // We call EARLY log here as currently portCLEAN_UP_TCB() is called in a critical section
-                ESP_EARLY_LOGE("FreeRTOS", "Fatal error: TLSP deletion callback at index %d overwritten with non-excutable pointer %p", x, pvThreadLocalStoragePointersDelCallback[ x ]);
+                ESP_EARLY_LOGE("FreeRTOS", "Fatal error: TLSP deletion callback at index %d overwritten with non-excutable pointer %p", x, pv_Thread_Local_Storage_اشارهگرها_Del_Callback[ x ]);
                 abort();
             }
 
-            pvThreadLocalStoragePointersDelCallback[ x ]( x, tcb->pvDummy15[ x ] );   //Call del cb
+            pv_Thread_Local_Storage_اشارهگرها_Del_Callback[ x ]( x, tcb->pvDummy15[ x ] );   //Call del cb
         }
     }
 }
-#endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+#پایان_اگر /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 
-#if ( XCHAL_CP_NUM > 0 )
-static void vPortCleanUpCoprocArea(void *pvTCB)
+#إذا ( XCHAL_CP_رقم > 0 )
+ساكن فراغ v_پورت_Clean_به_بالا_Coproc_Area(فراغ *pvTCB)
 {
     UBaseType_t uxCoprocArea;
-    BaseType_t xTargetCoreID;
+    پایه_Type_t x_هدف_Core_ID;
 
     /* Get a pointer to the task's coprocessor save area */
     uxCoprocArea = ( UBaseType_t ) ( ( ( StaticTask_t * ) pvTCB )->pxDummy8 );  /* Get TCB_t.pxEndOfStack */
-    uxCoprocArea = ESP_ALIGN_DOWN(uxCoprocArea - XT_CP_SIZE, 16);
+    uxCoprocArea = ESP_ALIGN_پایین(uxCoprocArea - XT_CP_اندازه, 16);
 
-    #if ( configNUMBER_OF_CORES > 1 )
+    #إذا ( config_عدد_از_CORES > 1 )
         /* Get xTargetCoreID from the TCB.xCoreID */
-        xTargetCoreID = ( ( StaticTask_t * ) pvTCB )->xDummyCoreID;
-    #else /* configNUMBER_OF_CORES > 1 */
-        xTargetCoreID = 0;
-    #endif /* configNUMBER_OF_CORES > 1 */
+        x_هدف_Core_ID = ( ( StaticTask_t * ) pvTCB )->xDummyCoreID;
+    #وإلا /* configNUMBER_OF_CORES > 1 */
+        x_هدف_Core_ID = 0;
+    #پایان_اگر /* configNUMBER_OF_CORES > 1 */
 
     /* If task has live floating point registers somewhere, release them */
-    void _xt_coproc_release(volatile void *coproc_sa_base, BaseType_t xTargetCoreID);
-    _xt_coproc_release( (void *)uxCoprocArea, xTargetCoreID );
+    فراغ _xt_coproc_release(متطاير فراغ *coproc_sa_پایه, پایه_Type_t x_هدف_Core_ID);
+    _xt_coproc_release( (فراغ *)uxCoprocArea, x_هدف_Core_ID );
 }
-#endif /* XCHAL_CP_NUM > 0 */
+#پایان_اگر /* XCHAL_CP_NUM > 0 */
 
-void vPortTCBPreDeleteHook( void *pxTCB )
+فراغ v_پورت_TCBPre_Delete_Hook( فراغ *pxTCB )
 {
-    #if ( CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK )
+    #إذا ( CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK )
         /* Call the user defined task pre-deletion hook */
-        extern void vTaskPreDeletionHook( void * pxTCB );
+        خارجي فراغ vTaskPreDeletionHook( فراغ * pxTCB );
         vTaskPreDeletionHook( pxTCB );
-    #endif /* CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK */
+    #پایان_اگر /* CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK */
 
-    #if ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
+    #إذا ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
         /* Call TLS pointers deletion callbacks */
-        vPortTLSPointersDelCb( pxTCB );
-    #endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+        v_پورت_TLSPointers_Del_Cb( pxTCB );
+    #پایان_اگر /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 
-    #if ( XCHAL_CP_NUM > 0 )
+    #إذا ( XCHAL_CP_رقم > 0 )
         /* Cleanup coproc save area */
-        vPortCleanUpCoprocArea( pxTCB );
-    #endif /* XCHAL_CP_NUM > 0 */
+        v_پورت_Clean_به_بالا_Coproc_Area( pxTCB );
+    #پایان_اگر /* XCHAL_CP_NUM > 0 */
 }
 
 /* ------------------------------------------------ Run Time Stats ------------------------------------------------- */
 
-#if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
+#إذا ( CONFIG_FREERTOS_GENERATE_پیاپی_زمان_STATS )
 
-configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void )
+config_پیاپی_زمان_COUNTER_TYPE x_پورت_Get_پیاپی_زمان_Counter_مقدار( فراغ )
 {
-#ifdef CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
-    return (configRUN_TIME_COUNTER_TYPE) esp_timer_get_time();
-#else // Uses CCOUNT
-    return (configRUN_TIME_COUNTER_TYPE) xthal_get_ccount();
-#endif // CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
+#اگر_تعریف_شده CONFIG_FREERTOS_پیاپی_زمان_STATS_USING_ESP_TIMER
+    أرجع (config_پیاپی_زمان_COUNTER_TYPE) esp_timer_get_زمان();
+#وإلا // Uses CCOUNT
+    أرجع (config_پیاپی_زمان_COUNTER_TYPE) xthal_get_ccount();
+#پایان_اگر // CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
 }
 
-#endif /* CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS */
+#پایان_اگر /* CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS */

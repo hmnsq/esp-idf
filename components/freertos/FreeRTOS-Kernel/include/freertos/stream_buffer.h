@@ -53,17 +53,17 @@
  *
  */
 
-#ifndef STREAM_BUFFER_H
-#define STREAM_BUFFER_H
+#اگر_تعریف_نشده جریان_میانگیر_H
+#تعریف_کن جریان_میانگیر_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h must appear in source files before include stream_buffer.h"
-#endif
+#اگر_تعریف_نشده INC_FREERTOS_H
+    #خطا "include FreeRTOS.h must appear in source files before include stream_buffer.h"
+#پایان_اگر
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
-    extern "C" {
-#endif
+#إذا defined( __cplusplus )
+    خارجي "C" {
+#پایان_اگر
 /* *INDENT-ON* */
 
 /**
@@ -72,15 +72,15 @@
  * then be used as a parameter to xStreamBufferSend(), xStreamBufferReceive(),
  * etc.
  */
-struct StreamBufferDef_t;
-typedef struct StreamBufferDef_t * StreamBufferHandle_t;
+بنية جریان_میانگیر_Def_t;
+تعريفنوع بنية جریان_میانگیر_Def_t * جریان_میانگیر_Handle_t;
 
 /**
  *  Type used as a stream buffer's optional callback.
  */
-typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuffer,
-                                                 BaseType_t xIsInsideISR,
-                                                 BaseType_t * const pxHigherPriorityTaskWoken );
+تعريفنوع فراغ (* جریان_میانگیر_Callback_Function_t)( جریان_میانگیر_Handle_t x_جریان_میانگیر,
+                                                 پایه_Type_t xIsInsideISR,
+                                                 پایه_Type_t * ثابت px_Higher_اولویت_Task_Woken );
 
 /**
  *
@@ -153,14 +153,14 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  */
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
-#define xStreamBufferCreate( xBufferSizeBytes, xTriggerLevelBytes ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), pdFALSE, NULL, NULL )
+#تعریف_کن x_جریان_میانگیر_Create( x_میانگیر_اندازه_بایتها, x_Trigger_Level_بایتها ) \
+    x_جریان_میانگیر_Generic_Create( ( x_میانگیر_اندازه_بایتها ), ( x_Trigger_Level_بایتها ), pdFALSE, عدم, عدم )
 /** @endcond */
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-    #define xStreamBufferCreateWithCallback( xBufferSizeBytes, xTriggerLevelBytes, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), pdFALSE, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
-#endif
+#إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #تعریف_کن x_جریان_میانگیر_Create_With_Callback( x_میانگیر_اندازه_بایتها, x_Trigger_Level_بایتها, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
+    x_جریان_میانگیر_Generic_Create( ( x_میانگیر_اندازه_بایتها ), ( x_Trigger_Level_بایتها ), pdFALSE, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
+#پایان_اگر
 
 /**
  * Creates a new stream buffer using statically allocated memory.  See
@@ -244,14 +244,14 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  */
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
-#define xStreamBufferCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), pdFALSE, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), NULL, NULL )
+#تعریف_کن x_جریان_میانگیر_Create_Static( x_میانگیر_اندازه_بایتها, x_Trigger_Level_بایتها, puc_جریان_میانگیر_Storage_Area, px_Static_جریان_میانگیر ) \
+    x_جریان_میانگیر_Generic_Create_Static( ( x_میانگیر_اندازه_بایتها ), ( x_Trigger_Level_بایتها ), pdFALSE, ( puc_جریان_میانگیر_Storage_Area ), ( px_Static_جریان_میانگیر ), عدم, عدم )
 /** @endcond */
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-    #define xStreamBufferCreateStaticWithCallback( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), pdFALSE, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
-#endif
+#إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #تعریف_کن x_جریان_میانگیر_Create_Static_With_Callback( x_میانگیر_اندازه_بایتها, x_Trigger_Level_بایتها, puc_جریان_میانگیر_Storage_Area, px_Static_جریان_میانگیر, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
+    x_جریان_میانگیر_Generic_Create_Static( ( x_میانگیر_اندازه_بایتها ), ( x_Trigger_Level_بایتها ), pdFALSE, ( puc_جریان_میانگیر_Storage_Area ), ( px_Static_جریان_میانگیر ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
+#پایان_اگر
 
 /**
  *
@@ -271,11 +271,11 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  *
  * \ingroup StreamBufferManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    BaseType_t xStreamBufferGetStaticBuffers( StreamBufferHandle_t xStreamBuffer,
-                                              uint8_t ** ppucStreamBufferStorageArea,
-                                              StaticStreamBuffer_t ** ppxStaticStreamBuffer ) PRIVILEGED_FUNCTION;
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#إذا ( config_SUPPORT_STATIC_تخصیص == 1 )
+    پایه_Type_t x_جریان_میانگیر_Get_Static_Buffers( جریان_میانگیر_Handle_t x_جریان_میانگیر,
+                                              uint8_t ** ppuc_جریان_میانگیر_Storage_Area,
+                                              Static_جریان_میانگیر_t ** ppx_Static_جریان_میانگیر ) PRIVILEGED_FUNCTION;
+#پایان_اگر /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  *
@@ -360,10 +360,10 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  * @endcode
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
-                          const void * pvTxData,
-                          size_t xDataLengthBytes,
-                          TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+size_t x_جریان_میانگیر_Send( جریان_میانگیر_Handle_t x_جریان_میانگیر,
+                          ثابت فراغ * pv_Tx_داده,
+                          size_t x_داده_درازی_بایتها,
+                          TickType_t x_Ticks_مقصد_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -452,10 +452,10 @@ size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
  * @endcode
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
-                                 const void * pvTxData,
-                                 size_t xDataLengthBytes,
-                                 BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+size_t x_جریان_میانگیر_Send_From_ISR( جریان_میانگیر_Handle_t x_جریان_میانگیر,
+                                 ثابت فراغ * pv_Tx_داده,
+                                 size_t x_داده_درازی_بایتها,
+                                 پایه_Type_t * ثابت px_Higher_اولویت_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -532,10 +532,10 @@ size_t xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
  * @endcode
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
-                             void * pvRxData,
-                             size_t xBufferLengthBytes,
-                             TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+size_t x_جریان_میانگیر_Receive( جریان_میانگیر_Handle_t x_جریان_میانگیر,
+                             فراغ * pv_Rx_داده,
+                             size_t x_میانگیر_درازی_بایتها,
+                             TickType_t x_Ticks_مقصد_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -609,10 +609,10 @@ size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
  * @endcode
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
-                                    void * pvRxData,
-                                    size_t xBufferLengthBytes,
-                                    BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+size_t x_جریان_میانگیر_Receive_From_ISR( جریان_میانگیر_Handle_t x_جریان_میانگیر,
+                                    فراغ * pv_Rx_داده,
+                                    size_t x_میانگیر_درازی_بایتها,
+                                    پایه_Type_t * ثابت px_Higher_اولویت_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -628,7 +628,7 @@ size_t xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
  *
  * \ingroup StreamBufferManagement
  */
-void vStreamBufferDelete( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+فراغ v_جریان_میانگیر_Delete( جریان_میانگیر_Handle_t x_جریان_میانگیر ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -642,7 +642,7 @@ void vStreamBufferDelete( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTI
  *
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferIsFull( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+پایه_Type_t x_جریان_میانگیر_Is_پر( جریان_میانگیر_Handle_t x_جریان_میانگیر ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -656,7 +656,7 @@ BaseType_t xStreamBufferIsFull( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_
  *
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferIsEmpty( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+پایه_Type_t x_جریان_میانگیر_Is_خالی( جریان_میانگیر_Handle_t x_جریان_میانگیر ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -673,7 +673,7 @@ BaseType_t xStreamBufferIsEmpty( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED
  *
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferReset( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+پایه_Type_t x_جریان_میانگیر_Reset( جریان_میانگیر_Handle_t x_جریان_میانگیر ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -688,7 +688,7 @@ BaseType_t xStreamBufferReset( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_F
  *
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+size_t x_جریان_میانگیر_Spaces_موجود( جریان_میانگیر_Handle_t x_جریان_میانگیر ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -703,7 +703,7 @@ size_t xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVIL
  *
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+size_t x_جریان_میانگیر_بایتها_موجود( جریان_میانگیر_Handle_t x_جریان_میانگیر ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -734,7 +734,7 @@ size_t xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVILE
  *
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferSetTriggerLevel( StreamBufferHandle_t xStreamBuffer,
+پایه_Type_t x_جریان_میانگیر_مجموعه_Trigger_Level( جریان_میانگیر_Handle_t x_جریان_میانگیر,
                                          size_t xTriggerLevel ) PRIVILEGED_FUNCTION;
 
 /**
@@ -768,8 +768,8 @@ BaseType_t xStreamBufferSetTriggerLevel( StreamBufferHandle_t xStreamBuffer,
  *
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferSendCompletedFromISR( StreamBufferHandle_t xStreamBuffer,
-                                              BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+پایه_Type_t x_جریان_میانگیر_Send_Completed_From_ISR( جریان_میانگیر_Handle_t x_جریان_میانگیر,
+                                              پایه_Type_t * px_Higher_اولویت_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -803,42 +803,42 @@ BaseType_t xStreamBufferSendCompletedFromISR( StreamBufferHandle_t xStreamBuffer
  *
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferReceiveCompletedFromISR( StreamBufferHandle_t xStreamBuffer,
-                                                 BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+پایه_Type_t x_جریان_میانگیر_Receive_Completed_From_ISR( جریان_میانگیر_Handle_t x_جریان_میانگیر,
+                                                 پایه_Type_t * px_Higher_اولویت_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
 
 /* Functions below here are not part of the public API. */
-StreamBufferHandle_t xStreamBufferGenericCreate( size_t xBufferSizeBytes,
-                                                 size_t xTriggerLevelBytes,
-                                                 BaseType_t xIsMessageBuffer,
-                                                 StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                                 StreamBufferCallbackFunction_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
+جریان_میانگیر_Handle_t x_جریان_میانگیر_Generic_Create( size_t x_میانگیر_اندازه_بایتها,
+                                                 size_t x_Trigger_Level_بایتها,
+                                                 پایه_Type_t x_Is_پیام_میانگیر,
+                                                 جریان_میانگیر_Callback_Function_t pxSendCompletedCallback,
+                                                 جریان_میانگیر_Callback_Function_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
 
 
-StreamBufferHandle_t xStreamBufferGenericCreateStatic( size_t xBufferSizeBytes,
-                                                       size_t xTriggerLevelBytes,
-                                                       BaseType_t xIsMessageBuffer,
-                                                       uint8_t * const pucStreamBufferStorageArea,
-                                                       StaticStreamBuffer_t * const pxStaticStreamBuffer,
-                                                       StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                                       StreamBufferCallbackFunction_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
+جریان_میانگیر_Handle_t x_جریان_میانگیر_Generic_Create_Static( size_t x_میانگیر_اندازه_بایتها,
+                                                       size_t x_Trigger_Level_بایتها,
+                                                       پایه_Type_t x_Is_پیام_میانگیر,
+                                                       uint8_t * ثابت puc_جریان_میانگیر_Storage_Area,
+                                                       Static_جریان_میانگیر_t * ثابت px_Static_جریان_میانگیر,
+                                                       جریان_میانگیر_Callback_Function_t pxSendCompletedCallback,
+                                                       جریان_میانگیر_Callback_Function_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
 
-size_t xStreamBufferNextMessageLengthBytes( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+size_t x_جریان_میانگیر_بعدی_پیام_درازی_بایتها( جریان_میانگیر_Handle_t x_جریان_میانگیر ) PRIVILEGED_FUNCTION;
 
-#if ( configUSE_TRACE_FACILITY == 1 )
-    void vStreamBufferSetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer,
-                                             UBaseType_t uxStreamBufferNumber ) PRIVILEGED_FUNCTION;
-    UBaseType_t uxStreamBufferGetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
-    uint8_t ucStreamBufferGetStreamBufferType( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( configUSE_TRACE_FACILITY == 1 )
+    فراغ v_جریان_میانگیر_مجموعه_جریان_میانگیر_عدد( جریان_میانگیر_Handle_t x_جریان_میانگیر,
+                                             UBaseType_t ux_جریان_میانگیر_عدد ) PRIVILEGED_FUNCTION;
+    UBaseType_t ux_جریان_میانگیر_Get_جریان_میانگیر_عدد( جریان_میانگیر_Handle_t x_جریان_میانگیر ) PRIVILEGED_FUNCTION;
+    uint8_t uc_جریان_میانگیر_Get_جریان_میانگیر_Type( جریان_میانگیر_Handle_t x_جریان_میانگیر ) PRIVILEGED_FUNCTION;
+#پایان_اگر
 
 /** @endcond */
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
+#إذا defined( __cplusplus )
     }
-#endif
+#پایان_اگر
 /* *INDENT-ON* */
 
-#endif /* !defined( STREAM_BUFFER_H ) */
+#پایان_اگر /* !defined( STREAM_BUFFER_H ) */

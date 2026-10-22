@@ -30,80 +30,80 @@
  *
  */
 
-#ifndef MPU_SYSCALL_NUMBERS_H
-#define MPU_SYSCALL_NUMBERS_H
+#اگر_تعریف_نشده MPU_SYSCALL_NUMBERS_H
+#تعریف_کن MPU_SYSCALL_NUMBERS_H
 
 /* Numbers assigned to various system calls. */
-#define SYSTEM_CALL_xTaskGenericNotify                     0
-#define SYSTEM_CALL_xTaskGenericNotifyWait                 1
-#define SYSTEM_CALL_xTimerGenericCommandFromTask           2
-#define SYSTEM_CALL_xEventGroupWaitBits                    3
-#define SYSTEM_CALL_xTaskDelayUntil                        4
-#define SYSTEM_CALL_xTaskAbortDelay                        5
-#define SYSTEM_CALL_vTaskDelay                             6
-#define SYSTEM_CALL_uxTaskPriorityGet                      7
-#define SYSTEM_CALL_eTaskGetState                          8
-#define SYSTEM_CALL_vTaskGetInfo                           9
-#define SYSTEM_CALL_xTaskGetIdleTaskHandle                 10
-#define SYSTEM_CALL_vTaskSuspend                           11
-#define SYSTEM_CALL_vTaskResume                            12
-#define SYSTEM_CALL_xTaskGetTickCount                      13
-#define SYSTEM_CALL_uxTaskGetNumberOfTasks                 14
-#define SYSTEM_CALL_ulTaskGetRunTimeCounter                15
-#define SYSTEM_CALL_ulTaskGetRunTimePercent                16
-#define SYSTEM_CALL_ulTaskGetIdleRunTimePercent            17
-#define SYSTEM_CALL_ulTaskGetIdleRunTimeCounter            18
-#define SYSTEM_CALL_vTaskSetApplicationTaskTag             19
-#define SYSTEM_CALL_xTaskGetApplicationTaskTag             20
-#define SYSTEM_CALL_vTaskSetThreadLocalStoragePointer      21
-#define SYSTEM_CALL_pvTaskGetThreadLocalStoragePointer     22
-#define SYSTEM_CALL_uxTaskGetSystemState                   23
-#define SYSTEM_CALL_uxTaskGetStackHighWaterMark            24
-#define SYSTEM_CALL_uxTaskGetStackHighWaterMark2           25
-#define SYSTEM_CALL_xTaskGetCurrentTaskHandle              26
-#define SYSTEM_CALL_xTaskGetSchedulerState                 27
-#define SYSTEM_CALL_vTaskSetTimeOutState                   28
-#define SYSTEM_CALL_xTaskCheckForTimeOut                   29
-#define SYSTEM_CALL_ulTaskGenericNotifyTake                30
-#define SYSTEM_CALL_xTaskGenericNotifyStateClear           31
-#define SYSTEM_CALL_ulTaskGenericNotifyValueClear          32
-#define SYSTEM_CALL_xQueueGenericSend                      33
-#define SYSTEM_CALL_uxQueueMessagesWaiting                 34
-#define SYSTEM_CALL_uxQueueSpacesAvailable                 35
-#define SYSTEM_CALL_xQueueReceive                          36
-#define SYSTEM_CALL_xQueuePeek                             37
-#define SYSTEM_CALL_xQueueSemaphoreTake                    38
-#define SYSTEM_CALL_xQueueGetMutexHolder                   39
-#define SYSTEM_CALL_xQueueTakeMutexRecursive               40
-#define SYSTEM_CALL_xQueueGiveMutexRecursive               41
-#define SYSTEM_CALL_xQueueSelectFromSet                    42
-#define SYSTEM_CALL_xQueueAddToSet                         43
-#define SYSTEM_CALL_vQueueAddToRegistry                    44
-#define SYSTEM_CALL_vQueueUnregisterQueue                  45
-#define SYSTEM_CALL_pcQueueGetName                         46
-#define SYSTEM_CALL_pvTimerGetTimerID                      47
-#define SYSTEM_CALL_vTimerSetTimerID                       48
-#define SYSTEM_CALL_xTimerIsTimerActive                    49
-#define SYSTEM_CALL_xTimerGetTimerDaemonTaskHandle         50
-#define SYSTEM_CALL_pcTimerGetName                         51
-#define SYSTEM_CALL_vTimerSetReloadMode                    52
-#define SYSTEM_CALL_xTimerGetReloadMode                    53
-#define SYSTEM_CALL_uxTimerGetReloadMode                   54
-#define SYSTEM_CALL_xTimerGetPeriod                        55
-#define SYSTEM_CALL_xTimerGetExpiryTime                    56
-#define SYSTEM_CALL_xEventGroupClearBits                   57
-#define SYSTEM_CALL_xEventGroupSetBits                     58
-#define SYSTEM_CALL_xEventGroupSync                        59
-#define SYSTEM_CALL_uxEventGroupGetNumber                  60
-#define SYSTEM_CALL_vEventGroupSetNumber                   61
-#define SYSTEM_CALL_xStreamBufferSend                      62
-#define SYSTEM_CALL_xStreamBufferReceive                   63
-#define SYSTEM_CALL_xStreamBufferIsFull                    64
-#define SYSTEM_CALL_xStreamBufferIsEmpty                   65
-#define SYSTEM_CALL_xStreamBufferSpacesAvailable           66
-#define SYSTEM_CALL_xStreamBufferBytesAvailable            67
-#define SYSTEM_CALL_xStreamBufferSetTriggerLevel           68
-#define SYSTEM_CALL_xStreamBufferNextMessageLengthBytes    69
-#define NUM_SYSTEM_CALLS                                   70  /* Total number of system calls. */
+#تعریف_کن SYSTEM_CALL_xTaskGenericNotify                     0
+#تعریف_کن SYSTEM_CALL_xTaskGenericNotifyWait                 1
+#تعریف_کن SYSTEM_CALL_xTimerGenericCommandFromTask           2
+#تعریف_کن SYSTEM_CALL_x_Event_گروه_Wait_بیتها                    3
+#تعریف_کن SYSTEM_CALL_xTaskDelayUntil                        4
+#تعریف_کن SYSTEM_CALL_xTaskAbortDelay                        5
+#تعریف_کن SYSTEM_CALL_vTaskDelay                             6
+#تعریف_کن SYSTEM_CALL_ux_Task_اولویت_Get                      7
+#تعریف_کن SYSTEM_CALL_eTaskGetState                          8
+#تعریف_کن SYSTEM_CALL_vTaskGetInfo                           9
+#تعریف_کن SYSTEM_CALL_xTaskGetIdleTaskHandle                 10
+#تعریف_کن SYSTEM_CALL_vTaskSuspend                           11
+#تعریف_کن SYSTEM_CALL_vTaskResume                            12
+#تعریف_کن SYSTEM_CALL_x_Task_Get_Tick_شمار                      13
+#تعریف_کن SYSTEM_CALL_ux_Task_Get_عدد_از_Tasks                 14
+#تعریف_کن SYSTEM_CALL_ul_Task_Get_پیاپی_زمان_Counter                15
+#تعریف_کن SYSTEM_CALL_ul_Task_Get_پیاپی_زمان_Percent                16
+#تعریف_کن SYSTEM_CALL_ul_Task_Get_Idle_پیاپی_زمان_Percent            17
+#تعریف_کن SYSTEM_CALL_ul_Task_Get_Idle_پیاپی_زمان_Counter            18
+#تعریف_کن SYSTEM_CALL_v_Task_مجموعه_Application_Task_برچسب             19
+#تعریف_کن SYSTEM_CALL_x_Task_Get_Application_Task_برچسب             20
+#تعریف_کن SYSTEM_CALL_v_Task_مجموعه_Thread_Local_Storage_اشاره_گر      21
+#تعریف_کن SYSTEM_CALL_pv_Task_Get_Thread_Local_Storage_اشاره_گر     22
+#تعریف_کن SYSTEM_CALL_uxTaskGetSystemState                   23
+#تعریف_کن SYSTEM_CALL_ux_Task_Get_پشته_بالا_Water_Mark            24
+#تعریف_کن SYSTEM_CALL_ux_Task_Get_پشته_بالا_Water_Mark2           25
+#تعریف_کن SYSTEM_CALL_xTaskGetCurrentTaskHandle              26
+#تعریف_کن SYSTEM_CALL_xTaskGetSchedulerState                 27
+#تعریف_کن SYSTEM_CALL_v_Task_مجموعه_زمان_بیرون_State                   28
+#تعریف_کن SYSTEM_CALL_x_Task_Check_For_زمان_بیرون                   29
+#تعریف_کن SYSTEM_CALL_ulTaskGenericNotifyTake                30
+#تعریف_کن SYSTEM_CALL_xTaskGenericNotifyStateClear           31
+#تعریف_کن SYSTEM_CALL_ul_Task_Generic_Notify_مقدار_Clear          32
+#تعریف_کن SYSTEM_CALL_x_صف_Generic_Send                      33
+#تعریف_کن SYSTEM_CALL_ux_صف_Messages_انتظار                 34
+#تعریف_کن SYSTEM_CALL_ux_صف_Spaces_موجود                 35
+#تعریف_کن SYSTEM_CALL_x_صف_Receive                          36
+#تعریف_کن SYSTEM_CALL_x_صف_Peek                             37
+#تعریف_کن SYSTEM_CALL_x_صف_Semaphore_Take                    38
+#تعریف_کن SYSTEM_CALL_x_صف_Get_Mutex_Holder                   39
+#تعریف_کن SYSTEM_CALL_x_صف_Take_Mutex_Recursive               40
+#تعریف_کن SYSTEM_CALL_x_صف_Give_Mutex_Recursive               41
+#تعریف_کن SYSTEM_CALL_x_صف_Select_From_مجموعه                    42
+#تعریف_کن SYSTEM_CALL_x_صف_جمع_کن_مقصد_مجموعه                         43
+#تعریف_کن SYSTEM_CALL_v_صف_جمع_کن_مقصد_Registry                    44
+#تعریف_کن SYSTEM_CALL_v_صف_Unregister_صف                  45
+#تعریف_کن SYSTEM_CALL_pc_صف_Get_Name                         46
+#تعریف_کن SYSTEM_CALL_pvTimerGetTimerID                      47
+#تعریف_کن SYSTEM_CALL_v_Timer_مجموعه_Timer_ID                       48
+#تعریف_کن SYSTEM_CALL_x_Timer_Is_Timer_فعال                    49
+#تعریف_کن SYSTEM_CALL_xTimerGetTimerDaemonTaskHandle         50
+#تعریف_کن SYSTEM_CALL_pcTimerGetName                         51
+#تعریف_کن SYSTEM_CALL_v_Timer_مجموعه_Reload_نما                    52
+#تعریف_کن SYSTEM_CALL_x_Timer_Get_Reload_نما                    53
+#تعریف_کن SYSTEM_CALL_ux_Timer_Get_Reload_نما                   54
+#تعریف_کن SYSTEM_CALL_xTimerGetPeriod                        55
+#تعریف_کن SYSTEM_CALL_x_Timer_Get_Expiry_زمان                    56
+#تعریف_کن SYSTEM_CALL_x_Event_گروه_Clear_بیتها                   57
+#تعریف_کن SYSTEM_CALL_x_Event_گروه_مجموعه_بیتها                     58
+#تعریف_کن SYSTEM_CALL_x_Event_گروه_Sync                        59
+#تعریف_کن SYSTEM_CALL_ux_Event_گروه_Get_عدد                  60
+#تعریف_کن SYSTEM_CALL_v_Event_گروه_مجموعه_عدد                   61
+#تعریف_کن SYSTEM_CALL_x_جریان_میانگیر_Send                      62
+#تعریف_کن SYSTEM_CALL_x_جریان_میانگیر_Receive                   63
+#تعریف_کن SYSTEM_CALL_x_جریان_میانگیر_Is_پر                    64
+#تعریف_کن SYSTEM_CALL_x_جریان_میانگیر_Is_خالی                   65
+#تعریف_کن SYSTEM_CALL_x_جریان_میانگیر_Spaces_موجود           66
+#تعریف_کن SYSTEM_CALL_x_جریان_میانگیر_بایتها_موجود            67
+#تعریف_کن SYSTEM_CALL_x_جریان_میانگیر_مجموعه_Trigger_Level           68
+#تعریف_کن SYSTEM_CALL_x_جریان_میانگیر_بعدی_پیام_درازی_بایتها    69
+#تعریف_کن رقم_SYSTEM_CALLS                                   70  /* Total number of system calls. */
 
-#endif /* MPU_SYSCALL_NUMBERS_H */
+#پایان_اگر /* MPU_SYSCALL_NUMBERS_H */

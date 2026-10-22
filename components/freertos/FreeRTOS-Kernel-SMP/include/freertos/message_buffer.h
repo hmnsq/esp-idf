@@ -64,20 +64,20 @@
  * of the message).
  */
 
-#ifndef FREERTOS_MESSAGE_BUFFER_H
-#define FREERTOS_MESSAGE_BUFFER_H
+#اگر_تعریف_نشده FREERTOS_پیام_میانگیر_H
+#تعریف_کن FREERTOS_پیام_میانگیر_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h must appear in source files before include message_buffer.h"
-#endif
+#اگر_تعریف_نشده INC_FREERTOS_H
+    #خطا "include FreeRTOS.h must appear in source files before include message_buffer.h"
+#پایان_اگر
 
 /* Message buffers are built onto of stream buffers. */
-#include "stream_buffer.h"
+#ضمن "stream_buffer.h"
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
-    extern "C" {
-#endif
+#إذا defined( __cplusplus )
+    خارجي "C" {
+#پایان_اگر
 /* *INDENT-ON* */
 
 /**
@@ -87,7 +87,7 @@
  * etc. Message buffer is essentially built as a stream buffer hence its handle
  * is also set to same type as a stream buffer handle.
  */
-typedef StreamBufferHandle_t MessageBufferHandle_t;
+تعريفنوع جریان_میانگیر_Handle_t پیام_میانگیر_Handle_t;
 
 /*-----------------------------------------------------------*/
 
@@ -161,13 +161,13 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferCreate xMessageBufferCreate
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferCreate( xBufferSizeBytes ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( size_t ) 0, sbTYPE_MESSAGE_BUFFER, NULL, NULL )
+#تعریف_کن x_پیام_میانگیر_Create( x_میانگیر_اندازه_بایتها ) \
+    x_جریان_میانگیر_Generic_Create( ( x_میانگیر_اندازه_بایتها ), ( size_t ) 0, sb_TYPE_پیام_میانگیر, عدم, عدم )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-    #define xMessageBufferCreateWithCallback( xBufferSizeBytes, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( size_t ) 0, sbTYPE_MESSAGE_BUFFER, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
-#endif
+#إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #تعریف_کن x_پیام_میانگیر_Create_With_Callback( x_میانگیر_اندازه_بایتها, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
+    x_جریان_میانگیر_Generic_Create( ( x_میانگیر_اندازه_بایتها ), ( size_t ) 0, sb_TYPE_پیام_میانگیر, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
+#پایان_اگر
 
 /**
  * message_buffer.h
@@ -246,13 +246,13 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferCreateStatic xMessageBufferCreateStatic
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferCreateStatic( xBufferSizeBytes, pucMessageBufferStorageArea, pxStaticMessageBuffer ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), 0, sbTYPE_MESSAGE_BUFFER, ( pucMessageBufferStorageArea ), ( pxStaticMessageBuffer ), NULL, NULL )
+#تعریف_کن x_پیام_میانگیر_Create_Static( x_میانگیر_اندازه_بایتها, puc_پیام_میانگیر_Storage_Area, px_Static_پیام_میانگیر ) \
+    x_جریان_میانگیر_Generic_Create_Static( ( x_میانگیر_اندازه_بایتها ), 0, sb_TYPE_پیام_میانگیر, ( puc_پیام_میانگیر_Storage_Area ), ( px_Static_پیام_میانگیر ), عدم, عدم )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-    #define xMessageBufferCreateStaticWithCallback( xBufferSizeBytes, pucMessageBufferStorageArea, pxStaticMessageBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), 0, sbTYPE_MESSAGE_BUFFER, ( pucMessageBufferStorageArea ), ( pxStaticMessageBuffer ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
-#endif
+#إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #تعریف_کن x_پیام_میانگیر_Create_Static_With_Callback( x_میانگیر_اندازه_بایتها, puc_پیام_میانگیر_Storage_Area, px_Static_پیام_میانگیر, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
+    x_جریان_میانگیر_Generic_Create_Static( ( x_میانگیر_اندازه_بایتها ), 0, sb_TYPE_پیام_میانگیر, ( puc_پیام_میانگیر_Storage_Area ), ( px_Static_پیام_میانگیر ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
+#پایان_اگر
 
 /**
  * message_buffer.h
@@ -283,10 +283,10 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferGetStaticBuffers xMessageBufferGetStaticBuffers
  * \ingroup MessageBufferManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xMessageBufferGetStaticBuffers( xMessageBuffer, ppucMessageBufferStorageArea, ppxStaticMessageBuffer ) \
-    xStreamBufferGetStaticBuffers( ( xMessageBuffer ), ( ppucMessageBufferStorageArea ), ( ppxStaticMessageBuffer ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#إذا ( config_SUPPORT_STATIC_تخصیص == 1 )
+    #تعریف_کن x_پیام_میانگیر_Get_Static_Buffers( x_پیام_میانگیر, ppuc_پیام_میانگیر_Storage_Area, ppx_Static_پیام_میانگیر ) \
+    x_جریان_میانگیر_Get_Static_Buffers( ( x_پیام_میانگیر ), ( ppuc_پیام_میانگیر_Storage_Area ), ( ppx_Static_پیام_میانگیر ) )
+#پایان_اگر /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  * message_buffer.h
@@ -388,8 +388,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferSend xMessageBufferSend
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferSend( xMessageBuffer, pvTxData, xDataLengthBytes, xTicksToWait ) \
-    xStreamBufferSend( ( xMessageBuffer ), ( pvTxData ), ( xDataLengthBytes ), ( xTicksToWait ) )
+#تعریف_کن x_پیام_میانگیر_Send( x_پیام_میانگیر, pv_Tx_داده, x_داده_درازی_بایتها, x_Ticks_مقصد_Wait ) \
+    x_جریان_میانگیر_Send( ( x_پیام_میانگیر ), ( pv_Tx_داده ), ( x_داده_درازی_بایتها ), ( x_Ticks_مقصد_Wait ) )
 
 /**
  * message_buffer.h
@@ -496,8 +496,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferSendFromISR xMessageBufferSendFromISR
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferSendFromISR( xMessageBuffer, pvTxData, xDataLengthBytes, pxHigherPriorityTaskWoken ) \
-    xStreamBufferSendFromISR( ( xMessageBuffer ), ( pvTxData ), ( xDataLengthBytes ), ( pxHigherPriorityTaskWoken ) )
+#تعریف_کن x_پیام_میانگیر_Send_From_ISR( x_پیام_میانگیر, pv_Tx_داده, x_داده_درازی_بایتها, px_Higher_اولویت_Task_Woken ) \
+    x_جریان_میانگیر_Send_From_ISR( ( x_پیام_میانگیر ), ( pv_Tx_داده ), ( x_داده_درازی_بایتها ), ( px_Higher_اولویت_Task_Woken ) )
 
 /**
  * message_buffer.h
@@ -588,8 +588,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferReceive xMessageBufferReceive
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferReceive( xMessageBuffer, pvRxData, xBufferLengthBytes, xTicksToWait ) \
-    xStreamBufferReceive( ( xMessageBuffer ), ( pvRxData ), ( xBufferLengthBytes ), ( xTicksToWait ) )
+#تعریف_کن x_پیام_میانگیر_Receive( x_پیام_میانگیر, pv_Rx_داده, x_میانگیر_درازی_بایتها, x_Ticks_مقصد_Wait ) \
+    x_جریان_میانگیر_Receive( ( x_پیام_میانگیر ), ( pv_Rx_داده ), ( x_میانگیر_درازی_بایتها ), ( x_Ticks_مقصد_Wait ) )
 
 
 /**
@@ -693,8 +693,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferReceiveFromISR xMessageBufferReceiveFromISR
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferReceiveFromISR( xMessageBuffer, pvRxData, xBufferLengthBytes, pxHigherPriorityTaskWoken ) \
-    xStreamBufferReceiveFromISR( ( xMessageBuffer ), ( pvRxData ), ( xBufferLengthBytes ), ( pxHigherPriorityTaskWoken ) )
+#تعریف_کن x_پیام_میانگیر_Receive_From_ISR( x_پیام_میانگیر, pv_Rx_داده, x_میانگیر_درازی_بایتها, px_Higher_اولویت_Task_Woken ) \
+    x_جریان_میانگیر_Receive_From_ISR( ( x_پیام_میانگیر ), ( pv_Rx_داده ), ( x_میانگیر_درازی_بایتها ), ( px_Higher_اولویت_Task_Woken ) )
 
 /**
  * message_buffer.h
@@ -717,8 +717,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * @param xMessageBuffer The handle of the message buffer to be deleted.
  *
  */
-#define vMessageBufferDelete( xMessageBuffer ) \
-    vStreamBufferDelete( xMessageBuffer )
+#تعریف_کن v_پیام_میانگیر_Delete( x_پیام_میانگیر ) \
+    v_جریان_میانگیر_Delete( x_پیام_میانگیر )
 
 /**
  * message_buffer.h
@@ -738,8 +738,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * @return If the message buffer referenced by xMessageBuffer is full then
  * pdTRUE is returned.  Otherwise pdFALSE is returned.
  */
-#define xMessageBufferIsFull( xMessageBuffer ) \
-    xStreamBufferIsFull( xMessageBuffer )
+#تعریف_کن x_پیام_میانگیر_Is_پر( x_پیام_میانگیر ) \
+    x_جریان_میانگیر_Is_پر( x_پیام_میانگیر )
 
 /**
  * message_buffer.h
@@ -758,8 +758,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * pdTRUE is returned.  Otherwise pdFALSE is returned.
  *
  */
-#define xMessageBufferIsEmpty( xMessageBuffer ) \
-    xStreamBufferIsEmpty( xMessageBuffer )
+#تعریف_کن x_پیام_میانگیر_Is_خالی( x_پیام_میانگیر ) \
+    x_جریان_میانگیر_Is_خالی( x_پیام_میانگیر )
 
 /**
  * message_buffer.h
@@ -789,8 +789,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferReset xMessageBufferReset
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferReset( xMessageBuffer ) \
-    xStreamBufferReset( xMessageBuffer )
+#تعریف_کن x_پیام_میانگیر_Reset( x_پیام_میانگیر ) \
+    x_جریان_میانگیر_Reset( x_پیام_میانگیر )
 
 
 /**
@@ -822,8 +822,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferResetFromISR xMessageBufferResetFromISR
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferResetFromISR( xMessageBuffer ) \
-    xStreamBufferResetFromISR( xMessageBuffer )
+#تعریف_کن x_پیام_میانگیر_Reset_From_ISR( x_پیام_میانگیر ) \
+    x_جریان_میانگیر_Reset_From_ISR( x_پیام_میانگیر )
 
 /**
  * message_buffer.h
@@ -847,10 +847,10 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferSpaceAvailable xMessageBufferSpaceAvailable
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferSpaceAvailable( xMessageBuffer ) \
-    xStreamBufferSpacesAvailable( xMessageBuffer )
-#define xMessageBufferSpacesAvailable( xMessageBuffer ) \
-    xStreamBufferSpacesAvailable( xMessageBuffer ) /* Corrects typo in original macro name. */
+#تعریف_کن x_پیام_میانگیر_Space_موجود( x_پیام_میانگیر ) \
+    x_جریان_میانگیر_Spaces_موجود( x_پیام_میانگیر )
+#تعریف_کن x_پیام_میانگیر_Spaces_موجود( x_پیام_میانگیر ) \
+    x_جریان_میانگیر_Spaces_موجود( x_پیام_میانگیر ) /* Corrects typo in original macro name. */
 
 /**
  * message_buffer.h
@@ -872,8 +872,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferNextLengthBytes xMessageBufferNextLengthBytes
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferNextLengthBytes( xMessageBuffer ) \
-    xStreamBufferNextMessageLengthBytes( xMessageBuffer )
+#تعریف_کن x_پیام_میانگیر_بعدی_درازی_بایتها( x_پیام_میانگیر ) \
+    x_جریان_میانگیر_بعدی_پیام_درازی_بایتها( x_پیام_میانگیر )
 
 /**
  * message_buffer.h
@@ -915,8 +915,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferSendCompletedFromISR xMessageBufferSendCompletedFromISR
  * \ingroup StreamBufferManagement
  */
-#define xMessageBufferSendCompletedFromISR( xMessageBuffer, pxHigherPriorityTaskWoken ) \
-    xStreamBufferSendCompletedFromISR( ( xMessageBuffer ), ( pxHigherPriorityTaskWoken ) )
+#تعریف_کن x_پیام_میانگیر_Send_Completed_From_ISR( x_پیام_میانگیر, px_Higher_اولویت_Task_Woken ) \
+    x_جریان_میانگیر_Send_Completed_From_ISR( ( x_پیام_میانگیر ), ( px_Higher_اولویت_Task_Woken ) )
 
 /**
  * message_buffer.h
@@ -959,13 +959,13 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferReceiveCompletedFromISR xMessageBufferReceiveCompletedFromISR
  * \ingroup StreamBufferManagement
  */
-#define xMessageBufferReceiveCompletedFromISR( xMessageBuffer, pxHigherPriorityTaskWoken ) \
-    xStreamBufferReceiveCompletedFromISR( ( xMessageBuffer ), ( pxHigherPriorityTaskWoken ) )
+#تعریف_کن x_پیام_میانگیر_Receive_Completed_From_ISR( x_پیام_میانگیر, px_Higher_اولویت_Task_Woken ) \
+    x_جریان_میانگیر_Receive_Completed_From_ISR( ( x_پیام_میانگیر ), ( px_Higher_اولویت_Task_Woken ) )
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
+#إذا defined( __cplusplus )
     } /* extern "C" */
-#endif
+#پایان_اگر
 /* *INDENT-ON* */
 
-#endif /* !defined( FREERTOS_MESSAGE_BUFFER_H ) */
+#پایان_اگر /* !defined( FREERTOS_MESSAGE_BUFFER_H ) */

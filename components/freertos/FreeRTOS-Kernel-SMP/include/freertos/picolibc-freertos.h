@@ -30,8 +30,8 @@
  *
  */
 
-#ifndef INC_PICOLIBC_FREERTOS_H
-#define INC_PICOLIBC_FREERTOS_H
+#اگر_تعریف_نشده INC_PICOLIBC_FREERTOS_H
+#تعریف_کن INC_PICOLIBC_FREERTOS_H
 
 /* Use picolibc TLS support to allocate space for __thread variables,
  * initialize them at thread creation and set the TLS context at
@@ -41,55 +41,55 @@
  * https://github.com/picolibc/picolibc/blob/main/doc/tls.md
  * for additional information. */
 
-#include <picotls.h>
+#ضمن <picotls.h>
 
-#define configUSE_C_RUNTIME_TLS_SUPPORT    1
+#تعریف_کن configUSE_C_RUNTIME_TLS_SUPPORT    1
 
-#define configTLS_BLOCK_TYPE               void *
+#تعریف_کن config_TLS_بلوک_TYPE               فراغ *
 
-#define picolibcTLS_SIZE                   ( ( portPOINTER_SIZE_TYPE ) _tls_size() )
-#define picolibcSTACK_ALIGNMENT_MASK       ( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK )
+#تعریف_کن picolibc_TLS_اندازه                   ( ( پورت_اشاره_گر_اندازه_TYPE ) tls_اندازه() )
+#تعریف_کن picolibc_پشته_ALIGNMENT_ماسک       ( ( پورت_اشاره_گر_اندازه_TYPE ) پورت_BYTE_ALIGNMENT_ماسک )
 
-#if __PICOLIBC_MAJOR__ > 1 || __PICOLIBC_MINOR__ >= 8
+#إذا __PICOLIBC_MAJOR__ > 1 || __PICOLIBC_MINOR__ >= 8
 
 /* Picolibc 1.8 and newer have explicit alignment values provided
  * by the _tls_align() inline */
-    #define picolibcTLS_ALIGNMENT_MASK    ( ( portPOINTER_SIZE_TYPE ) ( _tls_align() - 1 ) )
-#else
+    #تعریف_کن picolibc_TLS_ALIGNMENT_ماسک    ( ( پورت_اشاره_گر_اندازه_TYPE ) ( _tls_align() - 1 ) )
+#وإلا
 
 /* For older Picolibc versions, use the general port alignment value */
-    #define picolibcTLS_ALIGNMENT_MASK    ( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK )
-#endif
+    #تعریف_کن picolibc_TLS_ALIGNMENT_ماسک    ( ( پورت_اشاره_گر_اندازه_TYPE ) پورت_BYTE_ALIGNMENT_ماسک )
+#پایان_اگر
 
 /* Allocate thread local storage block off the end of the
  * stack. The picolibcTLS_SIZE macro returns the size (in
  * bytes) of the total TLS area used by the application.
  * Calculate the top of stack address. */
-#if ( portSTACK_GROWTH < 0 )
+#إذا ( پورت_پشته_GROWTH < 0 )
 
-    #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )                                  \
-    do {                                                                                     \
-        xTLSBlock = ( void * ) ( ( ( ( portPOINTER_SIZE_TYPE ) pxTopOfStack ) -              \
-                                   picolibcTLS_SIZE ) &                                      \
-                                 ~picolibcTLS_ALIGNMENT_MASK );                              \
-        pxTopOfStack = ( StackType_t * ) ( ( ( ( portPOINTER_SIZE_TYPE ) xTLSBlock ) - 1 ) & \
-                                           ~picolibcSTACK_ALIGNMENT_MASK );                  \
+    #تعریف_کن config_INIT_TLS_بلوک( xTLSBlock, px_بالاترین_از_پشته )                                  \
+    افعل {                                                                                     \
+        xTLSBlock = ( فراغ * ) ( ( ( ( پورت_اشاره_گر_اندازه_TYPE ) px_بالاترین_از_پشته ) -              \
+                                   picolibc_TLS_اندازه ) &                                      \
+                                 ~picolibc_TLS_ALIGNMENT_ماسک );                              \
+        px_بالاترین_از_پشته = ( پشته_Type_t * ) ( ( ( ( پورت_اشاره_گر_اندازه_TYPE ) xTLSBlock ) - 1 ) & \
+                                           ~picolibc_پشته_ALIGNMENT_ماسک );                  \
         _init_tls( xTLSBlock );                                                              \
-    } while( 0 )
-#else /* portSTACK_GROWTH */
-    #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )                                          \
-    do {                                                                                             \
-        xTLSBlock = ( void * ) ( ( ( portPOINTER_SIZE_TYPE ) pxTopOfStack +                          \
-                                   picolibcTLS_ALIGNMENT_MASK ) & ~picolibcTLS_ALIGNMENT_MASK );     \
-        pxTopOfStack = ( StackType_t * ) ( ( ( ( ( portPOINTER_SIZE_TYPE ) xTLSBlock ) +             \
-                                               picolibcTLS_SIZE ) + picolibcSTACK_ALIGNMENT_MASK ) & \
-                                           ~picolibcSTACK_ALIGNMENT_MASK );                          \
+    } طالما( 0 )
+#وإلا /* portSTACK_GROWTH */
+    #تعریف_کن config_INIT_TLS_بلوک( xTLSBlock, px_بالاترین_از_پشته )                                          \
+    افعل {                                                                                             \
+        xTLSBlock = ( فراغ * ) ( ( ( پورت_اشاره_گر_اندازه_TYPE ) px_بالاترین_از_پشته +                          \
+                                   picolibc_TLS_ALIGNMENT_ماسک ) & ~picolibc_TLS_ALIGNMENT_ماسک );     \
+        px_بالاترین_از_پشته = ( پشته_Type_t * ) ( ( ( ( ( پورت_اشاره_گر_اندازه_TYPE ) xTLSBlock ) +             \
+                                               picolibc_TLS_اندازه ) + picolibc_پشته_ALIGNMENT_ماسک ) & \
+                                           ~picolibc_پشته_ALIGNMENT_ماسک );                          \
         _init_tls( xTLSBlock );                                                                      \
-    } while( 0 )
-#endif /* portSTACK_GROWTH */
+    } طالما( 0 )
+#پایان_اگر /* portSTACK_GROWTH */
 
-#define configSET_TLS_BLOCK( xTLSBlock )    _set_tls( xTLSBlock )
+#تعریف_کن config_مجموعه_TLS_بلوک( xTLSBlock )    مجموعه_tls( xTLSBlock )
 
-#define configDEINIT_TLS_BLOCK( xTLSBlock )
+#تعریف_کن config_DEINIT_TLS_بلوک( xTLSBlock )
 
-#endif /* INC_PICOLIBC_FREERTOS_H */
+#پایان_اگر /* INC_PICOLIBC_FREERTOS_H */

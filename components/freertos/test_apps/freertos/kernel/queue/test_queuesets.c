@@ -4,40 +4,40 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/queue.h"
-#include "freertos/semphr.h"
-#include "freertos/idf_additions.h"
-#include "unity.h"
-#include "test_utils.h"
+#ضمن "sdkconfig.h"
+#ضمن <stdio.h>
+#ضمن <stdlib.h>
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
+#ضمن "freertos/queue.h"
+#ضمن "freertos/semphr.h"
+#ضمن "freertos/idf_additions.h"
+#ضمن "unity.h"
+#ضمن "test_utils.h"
 
-#define QUEUE_LEN       4
+#تعریف_کن صف_LEN       4
 
-static void allocate_resources(int num_queues, int queue_len, QueueHandle_t *queue_list_ret, QueueSetHandle_t *queue_set_ret)
+ساكن فراغ allocate_resources(صحيح رقم_queues, صحيح صف_len, صف_Handle_t *صف_list_ret, صف_مجموعه_Handle_t *صف_مجموعه_ret)
 {
     // Create queue set
-    *queue_set_ret = xQueueCreateSet(num_queues * queue_len);
-    TEST_ASSERT_NOT_EQUAL(NULL, *queue_set_ret);
+    *صف_مجموعه_ret = x_صف_Create_مجموعه(رقم_queues * صف_len);
+    TEST_ASSERT_NOT_EQUAL(عدم, *صف_مجموعه_ret);
     // Create queues and add them to the queue set
-    for (int i = 0; i < num_queues; i++) {
-        queue_list_ret[i] = xQueueCreate(queue_len, sizeof(BaseType_t));
-        TEST_ASSERT_NOT_EQUAL(NULL, queue_list_ret[i]);
-        TEST_ASSERT_EQUAL(pdPASS, xQueueAddToSet(queue_list_ret[i], *queue_set_ret));
+    لكل (صحيح i = 0; i < رقم_queues; i++) {
+        صف_list_ret[i] = x_صف_Create(صف_len, حجم(پایه_Type_t));
+        TEST_ASSERT_NOT_EQUAL(عدم, صف_list_ret[i]);
+        TEST_ASSERT_EQUAL(pdPASS, x_صف_جمع_کن_مقصد_مجموعه(صف_list_ret[i], *صف_مجموعه_ret));
     }
 }
 
-static void free_resources(int num_queues, QueueHandle_t *queue_list, QueueSetHandle_t queue_set)
+ساكن فراغ free_resources(صحيح رقم_queues, صف_Handle_t *صف_list, صف_مجموعه_Handle_t صف_مجموعه)
 {
     // Remove queues form queue set and delete the queues
-    for (int i = 0; i < num_queues; i++) {
-        TEST_ASSERT_EQUAL(pdPASS, xQueueRemoveFromSet(queue_list[i], queue_set));
-        vQueueDelete(queue_list[i]);
+    لكل (صحيح i = 0; i < رقم_queues; i++) {
+        TEST_ASSERT_EQUAL(pdPASS, x_صف_Remove_From_مجموعه(صف_list[i], صف_مجموعه));
+        v_صف_Delete(صف_list[i]);
     }
-    vQueueDelete(queue_set);
+    v_صف_Delete(صف_مجموعه);
 }
 
 /*
@@ -56,42 +56,42 @@ Expected:
     - The item sent by the xQueueSend() is correct when read
 */
 
-#define NUM_QUEUES      5
+#تعریف_کن رقم_QUEUES      5
 
 TEST_CASE("Test Queue sets", "[freertos]")
 {
     // Create queues and queue set
-    QueueHandle_t queues[NUM_QUEUES];
-    QueueSetHandle_t queue_set;
-    allocate_resources(NUM_QUEUES, QUEUE_LEN, queues, &queue_set);
+    صف_Handle_t queues[رقم_QUEUES];
+    صف_مجموعه_Handle_t صف_مجموعه;
+    allocate_resources(رقم_QUEUES, صف_LEN, queues, &صف_مجموعه);
 
     // Fill each queue sequentially with QUEUE_LEN items
-    for (int i = 0; i < NUM_QUEUES; i++) {
-        for (int j = 0; j < QUEUE_LEN; j++) {
-            BaseType_t item = j;
-            TEST_ASSERT_EQUAL(pdTRUE, xQueueSend(queues[i], &item, 0));
+    لكل (صحيح i = 0; i < رقم_QUEUES; i++) {
+        لكل (صحيح j = 0; j < صف_LEN; j++) {
+            پایه_Type_t قلم = j;
+            TEST_ASSERT_EQUAL(pdTRUE, x_صف_Send(queues[i], &قلم, 0));
         }
     }
 
-    for (int i = 0; i < NUM_QUEUES; i++) {
-        for (int j = 0; j < QUEUE_LEN; j++) {
+    لكل (صحيح i = 0; i < رقم_QUEUES; i++) {
+        لكل (صحيح j = 0; j < صف_LEN; j++) {
             // Check the queue set member
-            QueueSetMemberHandle_t member = xQueueSelectFromSet(queue_set, 0);
+            صف_مجموعه_Member_Handle_t member = x_صف_Select_From_مجموعه(صف_مجموعه, 0);
             TEST_ASSERT_EQUAL(queues[i], member);
             // Check the queue's items
-            BaseType_t item;
-            TEST_ASSERT_EQUAL(pdTRUE, xQueueReceive(member, &item, 0));
-            TEST_ASSERT_EQUAL(j, item);
+            پایه_Type_t قلم;
+            TEST_ASSERT_EQUAL(pdTRUE, x_صف_Receive(member, &قلم, 0));
+            TEST_ASSERT_EQUAL(j, قلم);
         }
     }
     // Check that there are no more members
-    TEST_ASSERT_EQUAL(NULL, xQueueSelectFromSet(queue_set, 0));
+    TEST_ASSERT_EQUAL(عدم, x_صف_Select_From_مجموعه(صف_مجموعه, 0));
 
     // Cleanup queues and queue set
-    free_resources(NUM_QUEUES, queues, queue_set);
+    free_resources(رقم_QUEUES, queues, صف_مجموعه);
 }
 
-#ifndef CONFIG_FREERTOS_UNICORE
+#اگر_تعریف_نشده CONFIG_FREERTOS_UNICORE
 /*
 Test queue set SMP thread safety
 
@@ -108,81 +108,81 @@ Expected:
     - The item sent by the xQueueSend() is correct when read
 */
 
-static volatile bool start_other_cores;
-static SemaphoreHandle_t done_sem = NULL;
+ساكن متطاير bool شروع_other_cores;
+ساكن SemaphoreHandle_t انجامشده_sem = عدم;
 
-static void send_func(void *arg)
+ساكن فراغ send_func(فراغ *arg)
 {
-    QueueHandle_t queue = (QueueHandle_t)arg;
-    BaseType_t core_id = xPortGetCoreID();
-    if (core_id == 0) {
+    صف_Handle_t صف = (صف_Handle_t)arg;
+    پایه_Type_t core_id = x_پورت_Get_Core_ID();
+    إذا (core_id == 0) {
         // We are core 0. Trigger the other cores to start
-        start_other_cores = true;
-    } else {
+        شروع_other_cores = true;
+    } وإلا {
         // Wait to be started by main core
-        while (!start_other_cores) {
+        طالما (!شروع_other_cores) {
             ;
         }
     }
 
     // Fill the queue assigned to the current core
-    for (int i = 0; i < QUEUE_LEN; i++) {
-        TEST_ASSERT_EQUAL(pdTRUE, xQueueSend(queue, &core_id, 0));
+    لكل (صحيح i = 0; i < صف_LEN; i++) {
+        TEST_ASSERT_EQUAL(pdTRUE, x_صف_Send(صف, &core_id, 0));
     }
 
-    if (core_id != 0) {
+    إذا (core_id != 0) {
         // Indicate completion to core 0 and self delete
-        xSemaphoreGive(done_sem);
-        vTaskDelete(NULL);
+        xSemaphoreGive(انجامشده_sem);
+        vTaskDelete(عدم);
     }
 }
 
 TEST_CASE("Test queue sets multi-core", "[freertos]")
 {
     // Create done semaphore
-    done_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_NUMBER_OF_CORES - 1, 0);
-    TEST_ASSERT_NOT_EQUAL(NULL, done_sem);
+    انجامشده_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_عدد_از_CORES - 1, 0);
+    TEST_ASSERT_NOT_EQUAL(عدم, انجامشده_sem);
 
     // Create queues and queue set
-    QueueHandle_t queues[CONFIG_FREERTOS_NUMBER_OF_CORES];
-    QueueSetHandle_t queue_set;
-    allocate_resources(CONFIG_FREERTOS_NUMBER_OF_CORES, QUEUE_LEN, queues, &queue_set);
+    صف_Handle_t queues[CONFIG_FREERTOS_عدد_از_CORES];
+    صف_مجموعه_Handle_t صف_مجموعه;
+    allocate_resources(CONFIG_FREERTOS_عدد_از_CORES, صف_LEN, queues, &صف_مجموعه);
 
     // Create tasks of the same priority for all cores except for core 0
-    for (int i = 1; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(send_func, "send", 2048, (void *)queues[i], UNITY_FREERTOS_PRIORITY, NULL, i));
+    لكل (صحيح i = 1; i < CONFIG_FREERTOS_عدد_از_CORES; i++) {
+        TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_مقصد_Core(send_func, "send", 2048, (فراغ *)queues[i], UNITY_FREERTOS_اولویت, عدم, i));
     }
 
     // Core 0 calls send_func as well triggering the simultaneous sends from all cores
-    send_func((void *)queues[0]);
+    send_func((فراغ *)queues[0]);
 
     // Wait for all other cores to be done
-    for (int i = 1; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        xSemaphoreTake(done_sem, portMAX_DELAY);
+    لكل (صحيح i = 1; i < CONFIG_FREERTOS_عدد_از_CORES; i++) {
+        xSemaphoreTake(انجامشده_sem, پورت_MAX_DELAY);
     }
 
     // Read queues from the queue set, then read an item from the queue
-    uint32_t queues_check_count[CONFIG_FREERTOS_NUMBER_OF_CORES] = {0};
-    QueueSetMemberHandle_t member = xQueueSelectFromSet(queue_set, 0);
-    while (member != NULL) {
+    uint32_t queues_check_شمار[CONFIG_FREERTOS_عدد_از_CORES] = {0};
+    صف_مجموعه_Member_Handle_t member = x_صف_Select_From_مجموعه(صف_مجموعه, 0);
+    طالما (member != عدم) {
         // Read the core ID from the queue, check that core ID is sane
-        BaseType_t core_id;
-        TEST_ASSERT_EQUAL(pdTRUE, xQueueReceive(member, &core_id, 0));
-        TEST_ASSERT_LESS_THAN(CONFIG_FREERTOS_NUMBER_OF_CORES, core_id);
-        queues_check_count[core_id]++;
+        پایه_Type_t core_id;
+        TEST_ASSERT_EQUAL(pdTRUE, x_صف_Receive(member, &core_id, 0));
+        TEST_ASSERT_LESS_THAN(CONFIG_FREERTOS_عدد_از_CORES, core_id);
+        queues_check_شمار[core_id]++;
 
         // Get next member
-        member = xQueueSelectFromSet(queue_set, 0);
+        member = x_صف_Select_From_مجموعه(صف_مجموعه, 0);
     }
     // Check that all items from all queues have been read
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        TEST_ASSERT_EQUAL(QUEUE_LEN, queues_check_count[i]);
+    لكل (صحيح i = 0; i < CONFIG_FREERTOS_عدد_از_CORES; i++) {
+        TEST_ASSERT_EQUAL(صف_LEN, queues_check_شمار[i]);
     }
 
     // Cleanup queues and queue set
-    free_resources(CONFIG_FREERTOS_NUMBER_OF_CORES, queues, queue_set);
+    free_resources(CONFIG_FREERTOS_عدد_از_CORES, queues, صف_مجموعه);
     // Cleanup done sem
-    vSemaphoreDelete(done_sem);
-    done_sem = NULL;
+    vSemaphoreDelete(انجامشده_sem);
+    انجامشده_sem = عدم;
 }
-#endif // CONFIG_FREERTOS_UNICORE
+#پایان_اگر // CONFIG_FREERTOS_UNICORE

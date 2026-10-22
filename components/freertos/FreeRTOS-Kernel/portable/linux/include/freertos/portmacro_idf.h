@@ -10,32 +10,32 @@
  * FreeRTOS POSIX port code from the additional IDF POSIX port code.
  */
 
-#pragma once
+#رهنمود once
 
-#include <stdint.h>
-#include <stdlib.h> // This is for malloc(), used by portmacro.h
-#include "sdkconfig.h"
-#include "esp_attr.h"
-#include "esp_task.h"
-#include "spinlock.h"
+#ضمن <stdint.h>
+#ضمن <stdlib.h> // This is for malloc(), used by portmacro.h
+#ضمن "sdkconfig.h"
+#ضمن "esp_attr.h"
+#ضمن "esp_task.h"
+#ضمن "spinlock.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#اگر_تعریف_شده __cplusplus
+خارجي "C" {
+#پایان_اگر
 
-typedef spinlock_t portMUX_TYPE;
+تعريفنوع spinlock_t پورت_MUX_TYPE;
 
 /**< Spinlock initializer */
-#define portMUX_INITIALIZER_UNLOCKED {                      \
-            .owner = portMUX_FREE_VAL,                      \
-            .count = 0,                                     \
+#تعریف_کن پورت_MUX_INITIALIZER_UNLOCKED {                      \
+            .owner = پورت_MUX_FREE_VAL,                      \
+            .شمار = 0,                                     \
         }
-#define portMUX_FREE_VAL                    SPINLOCK_FREE           /**< Spinlock is free. [refactor-todo] check if this is still required */
+#تعریف_کن پورت_MUX_FREE_VAL                    SPINLOCK_FREE           /**< Spinlock is free. [refactor-todo] check if this is still required */
 
-void vPortYieldFromISR(void);
-void vPortYieldOtherCore(BaseType_t coreid);
+فراغ v_پورت_Yield_From_ISR(فراغ);
+فراغ v_پورت_Yield_Other_Core(پایه_Type_t coreid);
 
-#define portMUX_INITIALIZE(mux)             spinlock_initialize(mux)    /*< Initialize a spinlock to its unlocked state */
+#تعریف_کن پورت_MUX_INITIALIZE(mux)             spinlock_initialize(mux)    /*< Initialize a spinlock to its unlocked state */
 
 /**
  * @brief Get the current core's ID
@@ -43,9 +43,9 @@ void vPortYieldOtherCore(BaseType_t coreid);
  * @note dummy function for freertos simulator, always returns 0.
  @ return BaseType_t 0
  */
-static inline BaseType_t xPortGetCoreID(void)
+ساكن مضمن پایه_Type_t x_پورت_Get_Core_ID(فراغ)
 {
-    return (BaseType_t) 0;
+    أرجع (پایه_Type_t) 0;
 }
 
 /**
@@ -57,7 +57,7 @@ static inline BaseType_t xPortGetCoreID(void)
  * @return true Memory can be used to store a List
  * @return false Otherwise
  */
-bool xPortCheckValidListMem(const void *ptr);
+bool x_پورت_Check_Valid_List_Mem(ثابت فراغ *ptr);
 
 /**
  * @brief Checks if a given piece of memory can be used to store a task's TCB
@@ -68,7 +68,7 @@ bool xPortCheckValidListMem(const void *ptr);
  * @return true Memory can be used to store a TCB
  * @return false Otherwise
  */
-bool xPortCheckValidTCBMem(const void *ptr);
+bool x_پورت_Check_Valid_TCBMem(ثابت فراغ *ptr);
 
 /**
  * @brief Checks if a given piece of memory can be used to store a task's stack
@@ -79,13 +79,13 @@ bool xPortCheckValidTCBMem(const void *ptr);
  * @return true Memory can be used to store a task stack
  * @return false Otherwise
  */
-bool xPortcheckValidStackMem(const void *ptr);
+bool x_Portcheck_Valid_پشته_Mem(ثابت فراغ *ptr);
 
-#define portVALID_LIST_MEM(ptr)     xPortCheckValidListMem(ptr)
-#define portVALID_TCB_MEM(ptr)      xPortCheckValidTCBMem(ptr)
-#define portVALID_STACK_MEM(ptr)    xPortcheckValidStackMem(ptr)
+#تعریف_کن پورت_VALID_LIST_MEM(ptr)     x_پورت_Check_Valid_List_Mem(ptr)
+#تعریف_کن پورت_VALID_TCB_MEM(ptr)      x_پورت_Check_Valid_TCBMem(ptr)
+#تعریف_کن پورت_VALID_پشته_MEM(ptr)    x_Portcheck_Valid_پشته_Mem(ptr)
 
-BaseType_t xPortCheckIfInISR(void);
+پایه_Type_t x_پورت_Check_If_درون_ISR(فراغ);
 
 /**
  * @brief Checks if the current core is in an ISR context
@@ -98,23 +98,23 @@ BaseType_t xPortCheckIfInISR(void);
  *  - pdTRUE if in ISR
  *  - pdFALSE otherwise
  */
-static inline BaseType_t xPortInIsrContext(void)
+ساكن مضمن پایه_Type_t x_پورت_درون_Isr_Context(فراغ)
 {
     //Just call the FreeRTOS port interface version
-    return xPortCheckIfInISR();
+    أرجع x_پورت_Check_If_درون_ISR();
 }
 
-static inline void vPortAssertIfInISR(void)
+ساكن مضمن فراغ v_پورت_Assert_If_درون_ISR(فراغ)
 {
     /* Assert if the interrupt nesting count is > 0 */
-    configASSERT(xPortInIsrContext() == 0);
+    configASSERT(x_پورت_درون_Isr_Context() == 0);
 }
 
 /**
  * @brief Assert if in ISR context
  */
-#define portASSERT_IF_IN_ISR() vPortAssertIfInISR()
+#تعریف_کن پورت_ASSERT_IF_درون_ISR() v_پورت_Assert_If_درون_ISR()
 
-#ifdef __cplusplus
+#اگر_تعریف_شده __cplusplus
 }
-#endif
+#پایان_اگر

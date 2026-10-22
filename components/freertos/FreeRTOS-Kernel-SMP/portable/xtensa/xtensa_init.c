@@ -36,27 +36,27 @@
  */
 
 
-#ifdef XT_BOARD
-#include "xtensa/xtbsp.h"
-#endif
+#اگر_تعریف_شده XT_BOARD
+#ضمن "xtensa/xtbsp.h"
+#پایان_اگر
 
-#include "xtensa_rtos.h"
-#include "sdkconfig.h"
-#include "esp_private/esp_clk.h"
+#ضمن "xtensa_rtos.h"
+#ضمن "sdkconfig.h"
+#ضمن "esp_private/esp_clk.h"
 
-#ifdef XT_RTOS_TIMER_INT
+#اگر_تعریف_شده XT_RTOS_TIMER_INT
 
-unsigned _xt_tick_divisor = 0;  /* cached number of cycles per tick */
+بیعلامت xt_tick_مقسوم_علیه = 0;  /* cached number of cycles per tick */
 
-void _xt_tick_divisor_init(void)
+فراغ xt_tick_مقسوم_علیه_init(فراغ)
 {
-    _xt_tick_divisor = esp_clk_cpu_freq() / XT_TICK_PER_SEC;
+    xt_tick_مقسوم_علیه = esp_clk_cpu_freq() / XT_TICK_در_هر_SEC;
 }
 
 /* Deprecated, to be removed */
-int xt_clock_freq(void)
+صحيح xt_clock_freq(فراغ)
 {
-    return esp_clk_cpu_freq();
+    أرجع esp_clk_cpu_freq();
 }
 
-#endif /* XT_RTOS_TIMER_INT */
+#پایان_اگر /* XT_RTOS_TIMER_INT */

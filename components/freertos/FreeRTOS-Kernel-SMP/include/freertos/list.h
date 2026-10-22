@@ -59,12 +59,12 @@
  */
 
 
-#ifndef LIST_H
-#define LIST_H
+#اگر_تعریف_نشده LIST_H
+#تعریف_کن LIST_H
 
-#ifndef INC_FREERTOS_H
-    #error "FreeRTOS.h must be included before list.h"
-#endif
+#اگر_تعریف_نشده INC_FREERTOS_H
+    #خطا "FreeRTOS.h must be included before list.h"
+#پایان_اگر
 
 /*
  * The list structure members are modified from within interrupts, and therefore
@@ -94,14 +94,14 @@
  * FreeRTOSConfig.h (without the quotes):
  * "#define configLIST_VOLATILE volatile"
  */
-#ifndef configLIST_VOLATILE
-    #define configLIST_VOLATILE
-#endif /* configSUPPORT_CROSS_MODULE_OPTIMISATION */
+#اگر_تعریف_نشده configLIST_VOLATILE
+    #تعریف_کن configLIST_VOLATILE
+#پایان_اگر /* configSUPPORT_CROSS_MODULE_OPTIMISATION */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#اگر_تعریف_شده __cplusplus
+    خارجي "C" {
+#پایان_اگر
 /* *INDENT-ON* */
 
 /* Macros that can be used to place known values within the list structures,
@@ -109,77 +109,77 @@
  * the application.   These may catch the list data structures being overwritten in
  * memory.  They will not catch data errors caused by incorrect configuration or
  * use of FreeRTOS.*/
-#if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 )
+#إذا ( config_USE_LIST_داده_INTEGRITY_CHECK_بایتها == 0 )
     /* Define the macros to do nothing. */
-    #define listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE
-    #define listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE
-    #define listFIRST_LIST_INTEGRITY_CHECK_VALUE
-    #define listSECOND_LIST_INTEGRITY_CHECK_VALUE
-    #define listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem )
-    #define listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem )
-    #define listSET_LIST_INTEGRITY_CHECK_1_VALUE( pxList )
-    #define listSET_LIST_INTEGRITY_CHECK_2_VALUE( pxList )
-    #define listTEST_LIST_ITEM_INTEGRITY( pxItem )
-    #define listTEST_LIST_INTEGRITY( pxList )
-#else /* if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 ) */
+    #تعریف_کن list_اولی_LIST_قلم_INTEGRITY_CHECK_مقدار
+    #تعریف_کن list_دومی_LIST_قلم_INTEGRITY_CHECK_مقدار
+    #تعریف_کن list_اولی_LIST_INTEGRITY_CHECK_مقدار
+    #تعریف_کن list_دومی_LIST_INTEGRITY_CHECK_مقدار
+    #تعریف_کن list_مجموعه_اولی_LIST_قلم_INTEGRITY_CHECK_مقدار( px_قلم )
+    #تعریف_کن list_مجموعه_دومی_LIST_قلم_INTEGRITY_CHECK_مقدار( px_قلم )
+    #تعریف_کن list_مجموعه_LIST_INTEGRITY_CHECK_1_مقدار( pxList )
+    #تعریف_کن list_مجموعه_LIST_INTEGRITY_CHECK_2_مقدار( pxList )
+    #تعریف_کن list_TEST_LIST_قلم_INTEGRITY( px_قلم )
+    #تعریف_کن listTEST_LIST_INTEGRITY( pxList )
+#وإلا /* if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 ) */
     /* Define macros that add new members into the list structures. */
-    #define listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE     TickType_t xListItemIntegrityValue1;
-    #define listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE    TickType_t xListItemIntegrityValue2;
-    #define listFIRST_LIST_INTEGRITY_CHECK_VALUE          TickType_t xListIntegrityValue1;
-    #define listSECOND_LIST_INTEGRITY_CHECK_VALUE         TickType_t xListIntegrityValue2;
+    #تعریف_کن list_اولی_LIST_قلم_INTEGRITY_CHECK_مقدار     TickType_t x_List_قلم_Integrity_Value1;
+    #تعریف_کن list_دومی_LIST_قلم_INTEGRITY_CHECK_مقدار    TickType_t x_List_قلم_Integrity_Value2;
+    #تعریف_کن list_اولی_LIST_INTEGRITY_CHECK_مقدار          TickType_t xListIntegrityValue1;
+    #تعریف_کن list_دومی_LIST_INTEGRITY_CHECK_مقدار         TickType_t xListIntegrityValue2;
 
 /* Define macros that set the new structure members to known values. */
-    #define listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem )     ( pxItem )->xListItemIntegrityValue1 = pdINTEGRITY_CHECK_VALUE
-    #define listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem )    ( pxItem )->xListItemIntegrityValue2 = pdINTEGRITY_CHECK_VALUE
-    #define listSET_LIST_INTEGRITY_CHECK_1_VALUE( pxList )              ( pxList )->xListIntegrityValue1 = pdINTEGRITY_CHECK_VALUE
-    #define listSET_LIST_INTEGRITY_CHECK_2_VALUE( pxList )              ( pxList )->xListIntegrityValue2 = pdINTEGRITY_CHECK_VALUE
+    #تعریف_کن list_مجموعه_اولی_LIST_قلم_INTEGRITY_CHECK_مقدار( px_قلم )     ( px_قلم )->x_List_قلم_Integrity_Value1 = pd_INTEGRITY_CHECK_مقدار
+    #تعریف_کن list_مجموعه_دومی_LIST_قلم_INTEGRITY_CHECK_مقدار( px_قلم )    ( px_قلم )->x_List_قلم_Integrity_Value2 = pd_INTEGRITY_CHECK_مقدار
+    #تعریف_کن list_مجموعه_LIST_INTEGRITY_CHECK_1_مقدار( pxList )              ( pxList )->xListIntegrityValue1 = pd_INTEGRITY_CHECK_مقدار
+    #تعریف_کن list_مجموعه_LIST_INTEGRITY_CHECK_2_مقدار( pxList )              ( pxList )->xListIntegrityValue2 = pd_INTEGRITY_CHECK_مقدار
 
 /* Define macros that will assert if one of the structure members does not
  * contain its expected value. */
-    #define listTEST_LIST_ITEM_INTEGRITY( pxItem )                      configASSERT( ( ( pxItem )->xListItemIntegrityValue1 == pdINTEGRITY_CHECK_VALUE ) && ( ( pxItem )->xListItemIntegrityValue2 == pdINTEGRITY_CHECK_VALUE ) )
-    #define listTEST_LIST_INTEGRITY( pxList )                           configASSERT( ( ( pxList )->xListIntegrityValue1 == pdINTEGRITY_CHECK_VALUE ) && ( ( pxList )->xListIntegrityValue2 == pdINTEGRITY_CHECK_VALUE ) )
-#endif /* configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES */
+    #تعریف_کن list_TEST_LIST_قلم_INTEGRITY( px_قلم )                      configASSERT( ( ( px_قلم )->x_List_قلم_Integrity_Value1 == pd_INTEGRITY_CHECK_مقدار ) && ( ( px_قلم )->x_List_قلم_Integrity_Value2 == pd_INTEGRITY_CHECK_مقدار ) )
+    #تعریف_کن listTEST_LIST_INTEGRITY( pxList )                           configASSERT( ( ( pxList )->xListIntegrityValue1 == pd_INTEGRITY_CHECK_مقدار ) && ( ( pxList )->xListIntegrityValue2 == pd_INTEGRITY_CHECK_مقدار ) )
+#پایان_اگر /* configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES */
 
 
 /*
  * Definition of the only type of object that a list can contain.
  */
-struct xLIST;
-struct xLIST_ITEM
+بنية xLIST;
+بنية x_LIST_قلم
 {
-    listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE           /**< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    configLIST_VOLATILE TickType_t xItemValue;          /**< The value being listed.  In most cases this is used to sort the list in ascending order. */
-    struct xLIST_ITEM * configLIST_VOLATILE pxNext;     /**< Pointer to the next ListItem_t in the list. */
-    struct xLIST_ITEM * configLIST_VOLATILE pxPrevious; /**< Pointer to the previous ListItem_t in the list. */
-    void * pvOwner;                                     /**< Pointer to the object (normally a TCB) that contains the list item.  There is therefore a two way link between the object containing the list item and the list item itself. */
-    struct xLIST * configLIST_VOLATILE pxContainer;     /**< Pointer to the list in which this list item is placed (if any). */
-    listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE          /**< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
+    list_اولی_LIST_قلم_INTEGRITY_CHECK_مقدار           /**< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
+    configLIST_VOLATILE TickType_t x_قلم_مقدار;          /**< The value being listed.  In most cases this is used to sort the list in ascending order. */
+    بنية x_LIST_قلم * configLIST_VOLATILE px_بعدی;     /**< Pointer to the next ListItem_t in the list. */
+    بنية x_LIST_قلم * configLIST_VOLATILE px_قبلی; /**< Pointer to the previous ListItem_t in the list. */
+    فراغ * pvOwner;                                     /**< Pointer to the object (normally a TCB) that contains the list item.  There is therefore a two way link between the object containing the list item and the list item itself. */
+    بنية xLIST * configLIST_VOLATILE pxContainer;     /**< Pointer to the list in which this list item is placed (if any). */
+    list_دومی_LIST_قلم_INTEGRITY_CHECK_مقدار          /**< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
 };
-typedef struct xLIST_ITEM ListItem_t;
+تعريفنوع بنية x_LIST_قلم List_قلم_t;
 
-#if ( configUSE_MINI_LIST_ITEM == 1 )
-    struct xMINI_LIST_ITEM
+#إذا ( config_USE_MINI_LIST_قلم == 1 )
+    بنية x_MINI_LIST_قلم
     {
-        listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE /**< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-        configLIST_VOLATILE TickType_t xItemValue;
-        struct xLIST_ITEM * configLIST_VOLATILE pxNext;
-        struct xLIST_ITEM * configLIST_VOLATILE pxPrevious;
+        list_اولی_LIST_قلم_INTEGRITY_CHECK_مقدار /**< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
+        configLIST_VOLATILE TickType_t x_قلم_مقدار;
+        بنية x_LIST_قلم * configLIST_VOLATILE px_بعدی;
+        بنية x_LIST_قلم * configLIST_VOLATILE px_قبلی;
     };
-    typedef struct xMINI_LIST_ITEM MiniListItem_t;
-#else
-    typedef struct xLIST_ITEM      MiniListItem_t;
-#endif
+    تعريفنوع بنية x_MINI_LIST_قلم Mini_List_قلم_t;
+#وإلا
+    تعريفنوع بنية x_LIST_قلم      Mini_List_قلم_t;
+#پایان_اگر
 
 /*
  * Definition of the type of queue used by the scheduler.
  */
-typedef struct xLIST
+تعريفنوع بنية xLIST
 {
-    listFIRST_LIST_INTEGRITY_CHECK_VALUE      /**< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    configLIST_VOLATILE UBaseType_t uxNumberOfItems;
-    ListItem_t * configLIST_VOLATILE pxIndex; /**< Used to walk through the list.  Points to the last item returned by a call to listGET_OWNER_OF_NEXT_ENTRY (). */
-    MiniListItem_t xListEnd;                  /**< List item that contains the maximum possible item value meaning it is always at the end of the list and is therefore used as a marker. */
-    listSECOND_LIST_INTEGRITY_CHECK_VALUE     /**< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
+    list_اولی_LIST_INTEGRITY_CHECK_مقدار      /**< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
+    configLIST_VOLATILE UBaseType_t ux_عدد_از_اقلام;
+    List_قلم_t * configLIST_VOLATILE px_شاخص; /**< Used to walk through the list.  Points to the last item returned by a call to listGET_OWNER_OF_NEXT_ENTRY (). */
+    Mini_List_قلم_t x_List_انتها;                  /**< List item that contains the maximum possible item value meaning it is always at the end of the list and is therefore used as a marker. */
+    list_دومی_LIST_INTEGRITY_CHECK_مقدار     /**< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
 } List_t;
 
 /*
@@ -189,7 +189,7 @@ typedef struct xLIST
  * \page listSET_LIST_ITEM_OWNER listSET_LIST_ITEM_OWNER
  * \ingroup LinkedList
  */
-#define listSET_LIST_ITEM_OWNER( pxListItem, pxOwner )    ( ( pxListItem )->pvOwner = ( void * ) ( pxOwner ) )
+#تعریف_کن list_مجموعه_LIST_قلم_OWNER( px_List_قلم, pxOwner )    ( ( px_List_قلم )->pvOwner = ( فراغ * ) ( pxOwner ) )
 
 /*
  * Access macro to get the owner of a list item.  The owner of a list item
@@ -198,7 +198,7 @@ typedef struct xLIST
  * \page listGET_LIST_ITEM_OWNER listSET_LIST_ITEM_OWNER
  * \ingroup LinkedList
  */
-#define listGET_LIST_ITEM_OWNER( pxListItem )             ( ( pxListItem )->pvOwner )
+#تعریف_کن list_GET_LIST_قلم_OWNER( px_List_قلم )             ( ( px_List_قلم )->pvOwner )
 
 /*
  * Access macro to set the value of the list item.  In most cases the value is
@@ -207,7 +207,7 @@ typedef struct xLIST
  * \page listSET_LIST_ITEM_VALUE listSET_LIST_ITEM_VALUE
  * \ingroup LinkedList
  */
-#define listSET_LIST_ITEM_VALUE( pxListItem, xValue )     ( ( pxListItem )->xItemValue = ( xValue ) )
+#تعریف_کن list_مجموعه_LIST_قلم_مقدار( px_List_قلم, x_مقدار )     ( ( px_List_قلم )->x_قلم_مقدار = ( x_مقدار ) )
 
 /*
  * Access macro to retrieve the value of the list item.  The value can
@@ -217,7 +217,7 @@ typedef struct xLIST
  * \page listGET_LIST_ITEM_VALUE listGET_LIST_ITEM_VALUE
  * \ingroup LinkedList
  */
-#define listGET_LIST_ITEM_VALUE( pxListItem )             ( ( pxListItem )->xItemValue )
+#تعریف_کن list_GET_LIST_قلم_مقدار( px_List_قلم )             ( ( px_List_قلم )->x_قلم_مقدار )
 
 /*
  * Access macro to retrieve the value of the list item at the head of a given
@@ -226,7 +226,7 @@ typedef struct xLIST
  * \page listGET_LIST_ITEM_VALUE listGET_LIST_ITEM_VALUE
  * \ingroup LinkedList
  */
-#define listGET_ITEM_VALUE_OF_HEAD_ENTRY( pxList )        ( ( ( pxList )->xListEnd ).pxNext->xItemValue )
+#تعریف_کن list_GET_قلم_مقدار_از_سر_مدخل( pxList )        ( ( ( pxList )->x_List_انتها ).px_بعدی->x_قلم_مقدار )
 
 /*
  * Return the list item at the head of the list.
@@ -234,7 +234,7 @@ typedef struct xLIST
  * \page listGET_HEAD_ENTRY listGET_HEAD_ENTRY
  * \ingroup LinkedList
  */
-#define listGET_HEAD_ENTRY( pxList )                      ( ( ( pxList )->xListEnd ).pxNext )
+#تعریف_کن list_GET_سر_مدخل( pxList )                      ( ( ( pxList )->x_List_انتها ).px_بعدی )
 
 /*
  * Return the next list item.
@@ -242,7 +242,7 @@ typedef struct xLIST
  * \page listGET_NEXT listGET_NEXT
  * \ingroup LinkedList
  */
-#define listGET_NEXT( pxListItem )                        ( ( pxListItem )->pxNext )
+#تعریف_کن list_GET_بعدی( px_List_قلم )                        ( ( px_List_قلم )->px_بعدی )
 
 /*
  * Return the list item that marks the end of the list
@@ -250,7 +250,7 @@ typedef struct xLIST
  * \page listGET_END_MARKER listGET_END_MARKER
  * \ingroup LinkedList
  */
-#define listGET_END_MARKER( pxList )                      ( ( ListItem_t const * ) ( &( ( pxList )->xListEnd ) ) )
+#تعریف_کن list_GET_انتها_MARKER( pxList )                      ( ( List_قلم_t ثابت * ) ( &( ( pxList )->x_List_انتها ) ) )
 
 /*
  * Access macro to determine if a list contains any items.  The macro will
@@ -259,12 +259,12 @@ typedef struct xLIST
  * \page listLIST_IS_EMPTY listLIST_IS_EMPTY
  * \ingroup LinkedList
  */
-#define listLIST_IS_EMPTY( pxList )                       ( ( ( pxList )->uxNumberOfItems == ( UBaseType_t ) 0 ) ? pdTRUE : pdFALSE )
+#تعریف_کن list_LIST_IS_خالی( pxList )                       ( ( ( pxList )->ux_عدد_از_اقلام == ( UBaseType_t ) 0 ) ? pdTRUE : pdFALSE )
 
 /*
  * Access macro to return the number of items in the list.
  */
-#define listCURRENT_LIST_LENGTH( pxList )                 ( ( pxList )->uxNumberOfItems )
+#تعریف_کن list_CURRENT_LIST_درازی( pxList )                 ( ( pxList )->ux_عدد_از_اقلام )
 
 /*
  * Access function to obtain the owner of the next entry in a list.
@@ -286,26 +286,26 @@ typedef struct xLIST
  * \page listGET_OWNER_OF_NEXT_ENTRY listGET_OWNER_OF_NEXT_ENTRY
  * \ingroup LinkedList
  */
-#if ( configNUMBER_OF_CORES == 1 )
-    #define listGET_OWNER_OF_NEXT_ENTRY( pxTCB, pxList )                                       \
-    do {                                                                                       \
-        List_t * const pxConstList = ( pxList );                                               \
+#إذا ( config_عدد_از_CORES == 1 )
+    #تعریف_کن list_GET_OWNER_از_بعدی_مدخل( pxTCB, pxList )                                       \
+    افعل {                                                                                       \
+        List_t * ثابت pxConstList = ( pxList );                                               \
         /* Increment the index to the next item and return the item, ensuring */               \
         /* we don't return the marker used at the end of the list.  */                         \
-        ( pxConstList )->pxIndex = ( pxConstList )->pxIndex->pxNext;                           \
-        if( ( void * ) ( pxConstList )->pxIndex == ( void * ) &( ( pxConstList )->xListEnd ) ) \
+        ( pxConstList )->px_شاخص = ( pxConstList )->px_شاخص->px_بعدی;                           \
+        إذا( ( فراغ * ) ( pxConstList )->px_شاخص == ( فراغ * ) &( ( pxConstList )->x_List_انتها ) ) \
         {                                                                                      \
-            ( pxConstList )->pxIndex = ( pxConstList )->xListEnd.pxNext;                       \
+            ( pxConstList )->px_شاخص = ( pxConstList )->x_List_انتها.px_بعدی;                       \
         }                                                                                      \
-        ( pxTCB ) = ( pxConstList )->pxIndex->pvOwner;                                         \
-    } while( 0 )
-#else /* #if ( configNUMBER_OF_CORES == 1 ) */
+        ( pxTCB ) = ( pxConstList )->px_شاخص->pvOwner;                                         \
+    } طالما( 0 )
+#وإلا /* #if ( configNUMBER_OF_CORES == 1 ) */
 
 /* This function is not required in SMP. FreeRTOS SMP scheduler doesn't use
  * pxIndex and it should always point to the xListEnd. Not defining this macro
  * here to prevent updating pxIndex.
  */
-#endif /* #if ( configNUMBER_OF_CORES == 1 ) */
+#پایان_اگر /* #if ( configNUMBER_OF_CORES == 1 ) */
 
 /*
  * Version of uxListRemove() that does not return a value.  Provided as a slight
@@ -323,23 +323,23 @@ typedef struct xLIST
  * \page listREMOVE_ITEM listREMOVE_ITEM
  * \ingroup LinkedList
  */
-#define listREMOVE_ITEM( pxItemToRemove ) \
-    do {                                  \
+#تعریف_کن list_REMOVE_قلم( px_قلم_مقصد_Remove ) \
+    افعل {                                  \
         /* The list item knows which list it is in.  Obtain the list from the list \
          * item. */                                                                                 \
-        List_t * const pxList = ( pxItemToRemove )->pxContainer;                                    \
+        List_t * ثابت pxList = ( px_قلم_مقصد_Remove )->pxContainer;                                    \
                                                                                                     \
-        ( pxItemToRemove )->pxNext->pxPrevious = ( pxItemToRemove )->pxPrevious;                    \
-        ( pxItemToRemove )->pxPrevious->pxNext = ( pxItemToRemove )->pxNext;                        \
+        ( px_قلم_مقصد_Remove )->px_بعدی->px_قبلی = ( px_قلم_مقصد_Remove )->px_قبلی;                    \
+        ( px_قلم_مقصد_Remove )->px_قبلی->px_بعدی = ( px_قلم_مقصد_Remove )->px_بعدی;                        \
         /* Make sure the index is left pointing to a valid item. */                                 \
-        if( pxList->pxIndex == ( pxItemToRemove ) )                                                 \
+        إذا( pxList->px_شاخص == ( px_قلم_مقصد_Remove ) )                                                 \
         {                                                                                           \
-            pxList->pxIndex = ( pxItemToRemove )->pxPrevious;                                       \
+            pxList->px_شاخص = ( px_قلم_مقصد_Remove )->px_قبلی;                                       \
         }                                                                                           \
                                                                                                     \
-        ( pxItemToRemove )->pxContainer = NULL;                                                     \
-        ( ( pxList )->uxNumberOfItems ) = ( UBaseType_t ) ( ( ( pxList )->uxNumberOfItems ) - 1U ); \
-    } while( 0 )
+        ( px_قلم_مقصد_Remove )->pxContainer = عدم;                                                     \
+        ( ( pxList )->ux_عدد_از_اقلام ) = ( UBaseType_t ) ( ( ( pxList )->ux_عدد_از_اقلام ) - 1U ); \
+    } طالما( 0 )
 
 /*
  * Inline version of vListInsertEnd() to provide slight optimisation for
@@ -363,30 +363,30 @@ typedef struct xLIST
  * \page listINSERT_END listINSERT_END
  * \ingroup LinkedList
  */
-#define listINSERT_END( pxList, pxNewListItem )           \
-    do {                                                  \
-        ListItem_t * const pxIndex = ( pxList )->pxIndex; \
+#تعریف_کن list_درج_انتها( pxList, px_New_List_قلم )           \
+    افعل {                                                  \
+        List_قلم_t * ثابت px_شاخص = ( pxList )->px_شاخص; \
                                                           \
         /* Only effective when configASSERT() is also defined, these tests may catch \
          * the list data structures being overwritten in memory.  They will not catch \
          * data errors caused by incorrect configuration or use of FreeRTOS. */ \
         listTEST_LIST_INTEGRITY( ( pxList ) );                                  \
-        listTEST_LIST_ITEM_INTEGRITY( ( pxNewListItem ) );                      \
+        list_TEST_LIST_قلم_INTEGRITY( ( px_New_List_قلم ) );                      \
                                                                                 \
         /* Insert a new list item into ( pxList ), but rather than sort the list, \
          * makes the new list item the last item to be removed by a call to \
          * listGET_OWNER_OF_NEXT_ENTRY(). */                                                        \
-        ( pxNewListItem )->pxNext = pxIndex;                                                        \
-        ( pxNewListItem )->pxPrevious = pxIndex->pxPrevious;                                        \
+        ( px_New_List_قلم )->px_بعدی = px_شاخص;                                                        \
+        ( px_New_List_قلم )->px_قبلی = px_شاخص->px_قبلی;                                        \
                                                                                                     \
-        pxIndex->pxPrevious->pxNext = ( pxNewListItem );                                            \
-        pxIndex->pxPrevious = ( pxNewListItem );                                                    \
+        px_شاخص->px_قبلی->px_بعدی = ( px_New_List_قلم );                                            \
+        px_شاخص->px_قبلی = ( px_New_List_قلم );                                                    \
                                                                                                     \
         /* Remember which list the item is in. */                                                   \
-        ( pxNewListItem )->pxContainer = ( pxList );                                                \
+        ( px_New_List_قلم )->pxContainer = ( pxList );                                                \
                                                                                                     \
-        ( ( pxList )->uxNumberOfItems ) = ( UBaseType_t ) ( ( ( pxList )->uxNumberOfItems ) + 1U ); \
-    } while( 0 )
+        ( ( pxList )->ux_عدد_از_اقلام ) = ( UBaseType_t ) ( ( ( pxList )->ux_عدد_از_اقلام ) + 1U ); \
+    } طالما( 0 )
 
 /*
  * Access function to obtain the owner of the first entry in a list.  Lists
@@ -404,7 +404,7 @@ typedef struct xLIST
  * \page listGET_OWNER_OF_HEAD_ENTRY listGET_OWNER_OF_HEAD_ENTRY
  * \ingroup LinkedList
  */
-#define listGET_OWNER_OF_HEAD_ENTRY( pxList )            ( ( &( ( pxList )->xListEnd ) )->pxNext->pvOwner )
+#تعریف_کن list_GET_OWNER_از_سر_مدخل( pxList )            ( ( &( ( pxList )->x_List_انتها ) )->px_بعدی->pvOwner )
 
 /*
  * Check to see if a list item is within a list.  The list item maintains a
@@ -415,7 +415,7 @@ typedef struct xLIST
  * @param pxListItem The list item we want to know if is in the list.
  * @return pdTRUE if the list item is in the list, otherwise pdFALSE.
  */
-#define listIS_CONTAINED_WITHIN( pxList, pxListItem )    ( ( ( pxListItem )->pxContainer == ( pxList ) ) ? ( pdTRUE ) : ( pdFALSE ) )
+#تعریف_کن listIS_CONTAINED_WITHIN( pxList, px_List_قلم )    ( ( ( px_List_قلم )->pxContainer == ( pxList ) ) ? ( pdTRUE ) : ( pdFALSE ) )
 
 /*
  * Return the list a list item is contained within (referenced from).
@@ -423,14 +423,14 @@ typedef struct xLIST
  * @param pxListItem The list item being queried.
  * @return A pointer to the List_t object that references the pxListItem
  */
-#define listLIST_ITEM_CONTAINER( pxListItem )            ( ( pxListItem )->pxContainer )
+#تعریف_کن list_LIST_قلم_CONTAINER( px_List_قلم )            ( ( px_List_قلم )->pxContainer )
 
 /*
  * This provides a crude means of knowing if a list has been initialised, as
  * pxList->xListEnd.xItemValue is set to portMAX_DELAY by the vListInitialise()
  * function.
  */
-#define listLIST_IS_INITIALISED( pxList )                ( ( pxList )->xListEnd.xItemValue == portMAX_DELAY )
+#تعریف_کن listLIST_IS_INITIALISED( pxList )                ( ( pxList )->x_List_انتها.x_قلم_مقدار == پورت_MAX_DELAY )
 
 /*
  * Must be called before a list is used!  This initialises all the members
@@ -442,7 +442,7 @@ typedef struct xLIST
  * \page vListInitialise vListInitialise
  * \ingroup LinkedList
  */
-void vListInitialise( List_t * const pxList ) PRIVILEGED_FUNCTION;
+فراغ vListInitialise( List_t * ثابت pxList ) PRIVILEGED_FUNCTION;
 
 /*
  * Must be called before a list item is used.  This sets the list container to
@@ -453,7 +453,7 @@ void vListInitialise( List_t * const pxList ) PRIVILEGED_FUNCTION;
  * \page vListInitialiseItem vListInitialiseItem
  * \ingroup LinkedList
  */
-void vListInitialiseItem( ListItem_t * const pxItem ) PRIVILEGED_FUNCTION;
+فراغ v_List_Initialise_قلم( List_قلم_t * ثابت px_قلم ) PRIVILEGED_FUNCTION;
 
 /*
  * Insert a list item into a list.  The item will be inserted into the list in
@@ -466,8 +466,8 @@ void vListInitialiseItem( ListItem_t * const pxItem ) PRIVILEGED_FUNCTION;
  * \page vListInsert vListInsert
  * \ingroup LinkedList
  */
-void vListInsert( List_t * const pxList,
-                  ListItem_t * const pxNewListItem ) PRIVILEGED_FUNCTION;
+فراغ v_List_درج( List_t * ثابت pxList,
+                  List_قلم_t * ثابت px_New_List_قلم ) PRIVILEGED_FUNCTION;
 
 /*
  * Insert a list item into a list.  The item will be inserted in a position
@@ -488,8 +488,8 @@ void vListInsert( List_t * const pxList,
  * \page vListInsertEnd vListInsertEnd
  * \ingroup LinkedList
  */
-void vListInsertEnd( List_t * const pxList,
-                     ListItem_t * const pxNewListItem ) PRIVILEGED_FUNCTION;
+فراغ v_List_درج_انتها( List_t * ثابت pxList,
+                     List_قلم_t * ثابت px_New_List_قلم ) PRIVILEGED_FUNCTION;
 
 /*
  * Remove an item from a list.  The list item has a pointer to the list that
@@ -504,12 +504,12 @@ void vListInsertEnd( List_t * const pxList,
  * \page uxListRemove uxListRemove
  * \ingroup LinkedList
  */
-UBaseType_t uxListRemove( ListItem_t * const pxItemToRemove ) PRIVILEGED_FUNCTION;
+UBaseType_t uxListRemove( List_قلم_t * ثابت px_قلم_مقصد_Remove ) PRIVILEGED_FUNCTION;
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#اگر_تعریف_شده __cplusplus
     }
-#endif
+#پایان_اگر
 /* *INDENT-ON* */
 
-#endif /* ifndef LIST_H */
+#پایان_اگر /* ifndef LIST_H */

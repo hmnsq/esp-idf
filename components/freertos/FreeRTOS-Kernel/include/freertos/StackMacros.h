@@ -31,8 +31,8 @@
  */
 
 
-#ifndef _MSC_VER /* Visual Studio doesn't support #warning. */
-    #warning The name of this file has changed to stack_macros.h.  Please update your code accordingly.  This source file (which has the original name) will be removed in a future release.
-#endif
+#اگر_تعریف_نشده _MSC_VER /* Visual Studio doesn't support #warning. */
+    #warning The name از this file has تغییریافته مقصد پشته_macros.h.  Please update your کد accordingly.  This منبع file (which has the original name) will be removed درون a future release.
+#پایان_اگر
 
-#include "stack_macros.h"
+#ضمن "stack_macros.h"

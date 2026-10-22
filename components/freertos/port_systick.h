@@ -4,17 +4,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#pragma once
+#رهنمود once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#اگر_تعریف_شده __cplusplus
+خارجي "C" {
+#پایان_اگر
 
 /**
  * @brief Set up the SysTick interrupt
  */
-void vPortSetupTimer(void);
+فراغ v_پورت_راهاندازی_Timer(فراغ);
 
-#ifdef __cplusplus
+#اگر_تعریف_شده __cplusplus
 }
-#endif
+#پایان_اگر

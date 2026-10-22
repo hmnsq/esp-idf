@@ -31,43 +31,43 @@
  */
 
 /* Standard includes. */
-#include <stdlib.h>
+#ضمن <stdlib.h>
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers. That should only be done when
  * task.h is included from an application file. */
-#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#تعریف_کن MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /* FreeRTOS includes. */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "timers.h"
-#include "event_groups.h"
+#ضمن "FreeRTOS.h"
+#ضمن "task.h"
+#ضمن "timers.h"
+#ضمن "event_groups.h"
 
 /* The MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined
  * for the header files above, but not in this file, in order to generate the
  * correct privileged Vs unprivileged linkage and placement. */
-#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#لغو_تعریف MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /* This entire source file will be skipped if the application is not configured
  * to include event groups functionality. This #if is closed at the very bottom
  * of this file. If you want to include event groups then ensure
  * configUSE_EVENT_GROUPS is set to 1 in FreeRTOSConfig.h. */
-#if ( configUSE_EVENT_GROUPS == 1 )
+#إذا ( configUSE_EVENT_GROUPS == 1 )
 
-    typedef struct EventGroupDef_t
+    تعريفنوع بنية Event_گروه_Def_t
     {
-        EventBits_t uxEventBits;
-        List_t xTasksWaitingForBits; /**< List of tasks waiting for a bit to be set. */
+        Event_بیتها_t ux_Event_بیتها;
+        List_t x_Tasks_انتظار_For_بیتها; /**< List of tasks waiting for a bit to be set. */
 
-        #if ( configUSE_TRACE_FACILITY == 1 )
-            UBaseType_t uxEventGroupNumber;
-        #endif
+        #إذا ( configUSE_TRACE_FACILITY == 1 )
+            UBaseType_t ux_Event_گروه_عدد;
+        #پایان_اگر
 
-        #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+        #إذا ( ( config_SUPPORT_STATIC_تخصیص == 1 ) && ( config_SUPPORT_DYNAMIC_تخصیص == 1 ) )
             uint8_t ucStaticallyAllocated; /**< Set to pdTRUE if the event group is statically allocated to ensure no attempt is made to free the memory. */
-        #endif
-    } EventGroup_t;
+        #پایان_اگر
+    } Event_گروه_t;
 
 /*-----------------------------------------------------------*/
 
@@ -79,160 +79,160 @@
  * wait condition is met if any of the bits set in uxBitsToWait for are also set
  * in uxCurrentEventBits.
  */
-    static BaseType_t prvTestWaitCondition( const EventBits_t uxCurrentEventBits,
-                                            const EventBits_t uxBitsToWaitFor,
-                                            const BaseType_t xWaitForAllBits ) PRIVILEGED_FUNCTION;
+    ساكن پایه_Type_t prvTestWaitCondition( ثابت Event_بیتها_t ux_Current_Event_بیتها,
+                                            ثابت Event_بیتها_t ux_بیتها_مقصد_Wait_For,
+                                            ثابت پایه_Type_t x_Wait_For_All_بیتها ) PRIVILEGED_FUNCTION;
 
 /*-----------------------------------------------------------*/
 
-    #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+    #إذا ( config_SUPPORT_STATIC_تخصیص == 1 )
 
-        EventGroupHandle_t xEventGroupCreateStatic( StaticEventGroup_t * pxEventGroupBuffer )
+        Event_گروه_Handle_t x_Event_گروه_Create_Static( Static_Event_گروه_t * px_Event_گروه_میانگیر )
         {
-            EventGroup_t * pxEventBits;
+            Event_گروه_t * px_Event_بیتها;
 
-            traceENTER_xEventGroupCreateStatic( pxEventGroupBuffer );
+            trace_ENTER_x_Event_گروه_Create_Static( px_Event_گروه_میانگیر );
 
             /* A StaticEventGroup_t object must be provided. */
-            configASSERT( pxEventGroupBuffer );
+            configASSERT( px_Event_گروه_میانگیر );
 
-            #if ( configASSERT_DEFINED == 1 )
+            #إذا ( configASSERT_DEFINED == 1 )
             {
                 /* Sanity check that the size of the structure used to declare a
                  * variable of type StaticEventGroup_t equals the size of the real
                  * event group structure. */
-                volatile size_t xSize = sizeof( StaticEventGroup_t );
-                configASSERT( xSize == sizeof( EventGroup_t ) );
+                متطاير size_t x_اندازه = حجم( Static_Event_گروه_t );
+                configASSERT( x_اندازه == حجم( Event_گروه_t ) );
             }
-            #endif /* configASSERT_DEFINED */
+            #پایان_اگر /* configASSERT_DEFINED */
 
             /* The user has provided a statically allocated event group - use it. */
             /* MISRA Ref 11.3.1 [Misaligned access] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-113 */
             /* coverity[misra_c_2012_rule_11_3_violation] */
-            pxEventBits = ( EventGroup_t * ) pxEventGroupBuffer;
+            px_Event_بیتها = ( Event_گروه_t * ) px_Event_گروه_میانگیر;
 
-            if( pxEventBits != NULL )
+            إذا( px_Event_بیتها != عدم )
             {
-                pxEventBits->uxEventBits = 0;
-                vListInitialise( &( pxEventBits->xTasksWaitingForBits ) );
+                px_Event_بیتها->ux_Event_بیتها = 0;
+                vListInitialise( &( px_Event_بیتها->x_Tasks_انتظار_For_بیتها ) );
 
-                #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+                #إذا ( config_SUPPORT_DYNAMIC_تخصیص == 1 )
                 {
                     /* Both static and dynamic allocation can be used, so note that
                      * this event group was created statically in case the event group
                      * is later deleted. */
-                    pxEventBits->ucStaticallyAllocated = pdTRUE;
+                    px_Event_بیتها->ucStaticallyAllocated = pdTRUE;
                 }
-                #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+                #پایان_اگر /* configSUPPORT_DYNAMIC_ALLOCATION */
 
-                traceEVENT_GROUP_CREATE( pxEventBits );
+                trace_EVENT_گروه_CREATE( px_Event_بیتها );
             }
-            else
+            وإلا
             {
                 /* xEventGroupCreateStatic should only ever be called with
                  * pxEventGroupBuffer pointing to a pre-allocated (compile time
                  * allocated) StaticEventGroup_t variable. */
-                traceEVENT_GROUP_CREATE_FAILED();
+                trace_EVENT_گروه_CREATE_FAILED();
             }
 
-            traceRETURN_xEventGroupCreateStatic( pxEventBits );
+            trace_RETURN_x_Event_گروه_Create_Static( px_Event_بیتها );
 
-            return pxEventBits;
+            أرجع px_Event_بیتها;
         }
 
-    #endif /* configSUPPORT_STATIC_ALLOCATION */
+    #پایان_اگر /* configSUPPORT_STATIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-    #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+    #إذا ( config_SUPPORT_DYNAMIC_تخصیص == 1 )
 
-        EventGroupHandle_t xEventGroupCreate( void )
+        Event_گروه_Handle_t x_Event_گروه_Create( فراغ )
         {
-            EventGroup_t * pxEventBits;
+            Event_گروه_t * px_Event_بیتها;
 
-            traceENTER_xEventGroupCreate();
+            trace_ENTER_x_Event_گروه_Create();
 
             /* MISRA Ref 11.5.1 [Malloc memory assignment] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
             /* coverity[misra_c_2012_rule_11_5_violation] */
-            pxEventBits = ( EventGroup_t * ) pvPortMalloc( sizeof( EventGroup_t ) );
+            px_Event_بیتها = ( Event_گروه_t * ) pv_پورت_Malloc( حجم( Event_گروه_t ) );
 
-            if( pxEventBits != NULL )
+            إذا( px_Event_بیتها != عدم )
             {
-                pxEventBits->uxEventBits = 0;
-                vListInitialise( &( pxEventBits->xTasksWaitingForBits ) );
+                px_Event_بیتها->ux_Event_بیتها = 0;
+                vListInitialise( &( px_Event_بیتها->x_Tasks_انتظار_For_بیتها ) );
 
-                #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+                #إذا ( config_SUPPORT_STATIC_تخصیص == 1 )
                 {
                     /* Both static and dynamic allocation can be used, so note this
                      * event group was allocated statically in case the event group is
                      * later deleted. */
-                    pxEventBits->ucStaticallyAllocated = pdFALSE;
+                    px_Event_بیتها->ucStaticallyAllocated = pdFALSE;
                 }
-                #endif /* configSUPPORT_STATIC_ALLOCATION */
+                #پایان_اگر /* configSUPPORT_STATIC_ALLOCATION */
 
-                traceEVENT_GROUP_CREATE( pxEventBits );
+                trace_EVENT_گروه_CREATE( px_Event_بیتها );
             }
-            else
+            وإلا
             {
-                traceEVENT_GROUP_CREATE_FAILED();
+                trace_EVENT_گروه_CREATE_FAILED();
             }
 
-            traceRETURN_xEventGroupCreate( pxEventBits );
+            trace_RETURN_x_Event_گروه_Create( px_Event_بیتها );
 
-            return pxEventBits;
+            أرجع px_Event_بیتها;
         }
 
-    #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+    #پایان_اگر /* configSUPPORT_DYNAMIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-    EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
-                                 const EventBits_t uxBitsToSet,
-                                 const EventBits_t uxBitsToWaitFor,
-                                 TickType_t xTicksToWait )
+    Event_بیتها_t x_Event_گروه_Sync( Event_گروه_Handle_t x_Event_گروه,
+                                 ثابت Event_بیتها_t ux_بیتها_مقصد_مجموعه,
+                                 ثابت Event_بیتها_t ux_بیتها_مقصد_Wait_For,
+                                 TickType_t x_Ticks_مقصد_Wait )
     {
-        EventBits_t uxOriginalBitValue, uxReturn;
-        EventGroup_t * pxEventBits = xEventGroup;
-        BaseType_t xAlreadyYielded;
-        BaseType_t xTimeoutOccurred = pdFALSE;
+        Event_بیتها_t ux_Original_بیت_مقدار, uxReturn;
+        Event_گروه_t * px_Event_بیتها = x_Event_گروه;
+        پایه_Type_t xAlreadyYielded;
+        پایه_Type_t xTimeoutOccurred = pdFALSE;
 
-        traceENTER_xEventGroupSync( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTicksToWait );
+        trace_ENTER_x_Event_گروه_Sync( x_Event_گروه, ux_بیتها_مقصد_مجموعه, ux_بیتها_مقصد_Wait_For, x_Ticks_مقصد_Wait );
 
-        configASSERT( ( uxBitsToWaitFor & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
-        configASSERT( uxBitsToWaitFor != 0 );
-        #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+        configASSERT( ( ux_بیتها_مقصد_Wait_For & event_EVENT_بیتها_CONTROL_بایتها ) == 0 );
+        configASSERT( ux_بیتها_مقصد_Wait_For != 0 );
+        #إذا ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
         {
-            configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+            configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( x_Ticks_مقصد_Wait != 0 ) ) );
         }
-        #endif
+        #پایان_اگر
 
         vTaskSuspendAll();
         {
-            uxOriginalBitValue = pxEventBits->uxEventBits;
+            ux_Original_بیت_مقدار = px_Event_بیتها->ux_Event_بیتها;
 
-            ( void ) xEventGroupSetBits( xEventGroup, uxBitsToSet );
+            ( فراغ ) x_Event_گروه_مجموعه_بیتها( x_Event_گروه, ux_بیتها_مقصد_مجموعه );
 
-            if( ( ( uxOriginalBitValue | uxBitsToSet ) & uxBitsToWaitFor ) == uxBitsToWaitFor )
+            إذا( ( ( ux_Original_بیت_مقدار | ux_بیتها_مقصد_مجموعه ) & ux_بیتها_مقصد_Wait_For ) == ux_بیتها_مقصد_Wait_For )
             {
                 /* All the rendezvous bits are now set - no need to block. */
-                uxReturn = ( uxOriginalBitValue | uxBitsToSet );
+                uxReturn = ( ux_Original_بیت_مقدار | ux_بیتها_مقصد_مجموعه );
 
                 /* Rendezvous always clear the bits.  They will have been cleared
                  * already unless this is the only task in the rendezvous. */
-                pxEventBits->uxEventBits &= ~uxBitsToWaitFor;
+                px_Event_بیتها->ux_Event_بیتها &= ~ux_بیتها_مقصد_Wait_For;
 
-                xTicksToWait = 0;
+                x_Ticks_مقصد_Wait = 0;
             }
-            else
+            وإلا
             {
-                if( xTicksToWait != ( TickType_t ) 0 )
+                إذا( x_Ticks_مقصد_Wait != ( TickType_t ) 0 )
                 {
-                    traceEVENT_GROUP_SYNC_BLOCK( xEventGroup, uxBitsToSet, uxBitsToWaitFor );
+                    trace_EVENT_گروه_SYNC_بلوک( x_Event_گروه, ux_بیتها_مقصد_مجموعه, ux_بیتها_مقصد_Wait_For );
 
                     /* Store the bits that the calling task is waiting for in the
                      * task's event list item so the kernel knows when a match is
                      * found.  Then enter the blocked state. */
-                    vTaskPlaceOnUnorderedEventList( &( pxEventBits->xTasksWaitingForBits ), ( uxBitsToWaitFor | eventCLEAR_EVENTS_ON_EXIT_BIT | eventWAIT_FOR_ALL_BITS ), xTicksToWait );
+                    v_Task_قراربده_On_Unordered_Event_List( &( px_Event_بیتها->x_Tasks_انتظار_For_بیتها ), ( ux_بیتها_مقصد_Wait_For | event_CLEAR_EVENTS_ON_EXIT_بیت | event_WAIT_FOR_ALL_بیتها ), x_Ticks_مقصد_Wait );
 
                     /* This assignment is obsolete as uxReturn will get set after
                      * the task unblocks, but some compilers mistakenly generate a
@@ -240,24 +240,24 @@
                      * assignment is omitted. */
                     uxReturn = 0;
                 }
-                else
+                وإلا
                 {
                     /* The rendezvous bits were not set, but no block time was
                      * specified - just return the current event bit value. */
-                    uxReturn = pxEventBits->uxEventBits;
+                    uxReturn = px_Event_بیتها->ux_Event_بیتها;
                     xTimeoutOccurred = pdTRUE;
                 }
             }
         }
         xAlreadyYielded = xTaskResumeAll();
 
-        if( xTicksToWait != ( TickType_t ) 0 )
+        إذا( x_Ticks_مقصد_Wait != ( TickType_t ) 0 )
         {
-            if( xAlreadyYielded == pdFALSE )
+            إذا( xAlreadyYielded == pdFALSE )
             {
                 taskYIELD_WITHIN_API();
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
@@ -266,24 +266,24 @@
              * point either the required bits were set or the block time expired.  If
              * the required bits were set they will have been stored in the task's
              * event list item, and they should now be retrieved then cleared. */
-            uxReturn = uxTaskResetEventItemValue();
+            uxReturn = ux_Task_Reset_Event_قلم_مقدار();
 
-            if( ( uxReturn & eventUNBLOCKED_DUE_TO_BIT_SET ) == ( EventBits_t ) 0 )
+            إذا( ( uxReturn & event_UNBLOCKED_DUE_مقصد_بیت_مجموعه ) == ( Event_بیتها_t ) 0 )
             {
                 /* The task timed out, just return the current event bit value. */
                 taskENTER_CRITICAL();
                 {
-                    uxReturn = pxEventBits->uxEventBits;
+                    uxReturn = px_Event_بیتها->ux_Event_بیتها;
 
                     /* Although the task got here because it timed out before the
                      * bits it was waiting for were set, it is possible that since it
                      * unblocked another task has set the bits.  If this is the case
                      * then it needs to clear the bits before exiting. */
-                    if( ( uxReturn & uxBitsToWaitFor ) == uxBitsToWaitFor )
+                    إذا( ( uxReturn & ux_بیتها_مقصد_Wait_For ) == ux_بیتها_مقصد_Wait_For )
                     {
-                        pxEventBits->uxEventBits &= ~uxBitsToWaitFor;
+                        px_Event_بیتها->ux_Event_بیتها &= ~ux_بیتها_مقصد_Wait_For;
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
@@ -292,102 +292,102 @@
 
                 xTimeoutOccurred = pdTRUE;
             }
-            else
+            وإلا
             {
                 /* The task unblocked because the bits were set. */
             }
 
             /* Control bits might be set as the task had blocked should not be
              * returned. */
-            uxReturn &= ~eventEVENT_BITS_CONTROL_BYTES;
+            uxReturn &= ~event_EVENT_بیتها_CONTROL_بایتها;
         }
 
-        traceEVENT_GROUP_SYNC_END( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTimeoutOccurred );
+        trace_EVENT_گروه_SYNC_انتها( x_Event_گروه, ux_بیتها_مقصد_مجموعه, ux_بیتها_مقصد_Wait_For, xTimeoutOccurred );
 
         /* Prevent compiler warnings when trace macros are not used. */
-        ( void ) xTimeoutOccurred;
+        ( فراغ ) xTimeoutOccurred;
 
-        traceRETURN_xEventGroupSync( uxReturn );
+        trace_RETURN_x_Event_گروه_Sync( uxReturn );
 
-        return uxReturn;
+        أرجع uxReturn;
     }
 /*-----------------------------------------------------------*/
 
-    EventBits_t xEventGroupWaitBits( EventGroupHandle_t xEventGroup,
-                                     const EventBits_t uxBitsToWaitFor,
-                                     const BaseType_t xClearOnExit,
-                                     const BaseType_t xWaitForAllBits,
-                                     TickType_t xTicksToWait )
+    Event_بیتها_t x_Event_گروه_Wait_بیتها( Event_گروه_Handle_t x_Event_گروه,
+                                     ثابت Event_بیتها_t ux_بیتها_مقصد_Wait_For,
+                                     ثابت پایه_Type_t xClearOnExit,
+                                     ثابت پایه_Type_t x_Wait_For_All_بیتها,
+                                     TickType_t x_Ticks_مقصد_Wait )
     {
-        EventGroup_t * pxEventBits = xEventGroup;
-        EventBits_t uxReturn, uxControlBits = 0;
-        BaseType_t xWaitConditionMet, xAlreadyYielded;
-        BaseType_t xTimeoutOccurred = pdFALSE;
+        Event_گروه_t * px_Event_بیتها = x_Event_گروه;
+        Event_بیتها_t uxReturn, ux_Control_بیتها = 0;
+        پایه_Type_t xWaitConditionMet, xAlreadyYielded;
+        پایه_Type_t xTimeoutOccurred = pdFALSE;
 
-        traceENTER_xEventGroupWaitBits( xEventGroup, uxBitsToWaitFor, xClearOnExit, xWaitForAllBits, xTicksToWait );
+        trace_ENTER_x_Event_گروه_Wait_بیتها( x_Event_گروه, ux_بیتها_مقصد_Wait_For, xClearOnExit, x_Wait_For_All_بیتها, x_Ticks_مقصد_Wait );
 
         /* Check the user is not attempting to wait on the bits used by the kernel
          * itself, and that at least one bit is being requested. */
-        configASSERT( xEventGroup );
-        configASSERT( ( uxBitsToWaitFor & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
-        configASSERT( uxBitsToWaitFor != 0 );
-        #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+        configASSERT( x_Event_گروه );
+        configASSERT( ( ux_بیتها_مقصد_Wait_For & event_EVENT_بیتها_CONTROL_بایتها ) == 0 );
+        configASSERT( ux_بیتها_مقصد_Wait_For != 0 );
+        #إذا ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
         {
-            configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+            configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( x_Ticks_مقصد_Wait != 0 ) ) );
         }
-        #endif
+        #پایان_اگر
 
         vTaskSuspendAll();
         {
-            const EventBits_t uxCurrentEventBits = pxEventBits->uxEventBits;
+            ثابت Event_بیتها_t ux_Current_Event_بیتها = px_Event_بیتها->ux_Event_بیتها;
 
             /* Check to see if the wait condition is already met or not. */
-            xWaitConditionMet = prvTestWaitCondition( uxCurrentEventBits, uxBitsToWaitFor, xWaitForAllBits );
+            xWaitConditionMet = prvTestWaitCondition( ux_Current_Event_بیتها, ux_بیتها_مقصد_Wait_For, x_Wait_For_All_بیتها );
 
-            if( xWaitConditionMet != pdFALSE )
+            إذا( xWaitConditionMet != pdFALSE )
             {
                 /* The wait condition has already been met so there is no need to
                  * block. */
-                uxReturn = uxCurrentEventBits;
-                xTicksToWait = ( TickType_t ) 0;
+                uxReturn = ux_Current_Event_بیتها;
+                x_Ticks_مقصد_Wait = ( TickType_t ) 0;
 
                 /* Clear the wait bits if requested to do so. */
-                if( xClearOnExit != pdFALSE )
+                إذا( xClearOnExit != pdFALSE )
                 {
-                    pxEventBits->uxEventBits &= ~uxBitsToWaitFor;
+                    px_Event_بیتها->ux_Event_بیتها &= ~ux_بیتها_مقصد_Wait_For;
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else if( xTicksToWait == ( TickType_t ) 0 )
+            وإلا إذا( x_Ticks_مقصد_Wait == ( TickType_t ) 0 )
             {
                 /* The wait condition has not been met, but no block time was
                  * specified, so just return the current value. */
-                uxReturn = uxCurrentEventBits;
+                uxReturn = ux_Current_Event_بیتها;
                 xTimeoutOccurred = pdTRUE;
             }
-            else
+            وإلا
             {
                 /* The task is going to block to wait for its required bits to be
                  * set.  uxControlBits are used to remember the specified behaviour of
                  * this call to xEventGroupWaitBits() - for use when the event bits
                  * unblock the task. */
-                if( xClearOnExit != pdFALSE )
+                إذا( xClearOnExit != pdFALSE )
                 {
-                    uxControlBits |= eventCLEAR_EVENTS_ON_EXIT_BIT;
+                    ux_Control_بیتها |= event_CLEAR_EVENTS_ON_EXIT_بیت;
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
 
-                if( xWaitForAllBits != pdFALSE )
+                إذا( x_Wait_For_All_بیتها != pdFALSE )
                 {
-                    uxControlBits |= eventWAIT_FOR_ALL_BITS;
+                    ux_Control_بیتها |= event_WAIT_FOR_ALL_بیتها;
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
@@ -395,25 +395,25 @@
                 /* Store the bits that the calling task is waiting for in the
                  * task's event list item so the kernel knows when a match is
                  * found.  Then enter the blocked state. */
-                vTaskPlaceOnUnorderedEventList( &( pxEventBits->xTasksWaitingForBits ), ( uxBitsToWaitFor | uxControlBits ), xTicksToWait );
+                v_Task_قراربده_On_Unordered_Event_List( &( px_Event_بیتها->x_Tasks_انتظار_For_بیتها ), ( ux_بیتها_مقصد_Wait_For | ux_Control_بیتها ), x_Ticks_مقصد_Wait );
 
                 /* This is obsolete as it will get set after the task unblocks, but
                  * some compilers mistakenly generate a warning about the variable
                  * being returned without being set if it is not done. */
                 uxReturn = 0;
 
-                traceEVENT_GROUP_WAIT_BITS_BLOCK( xEventGroup, uxBitsToWaitFor );
+                trace_EVENT_گروه_WAIT_بیتها_بلوک( x_Event_گروه, ux_بیتها_مقصد_Wait_For );
             }
         }
         xAlreadyYielded = xTaskResumeAll();
 
-        if( xTicksToWait != ( TickType_t ) 0 )
+        إذا( x_Ticks_مقصد_Wait != ( TickType_t ) 0 )
         {
-            if( xAlreadyYielded == pdFALSE )
+            إذا( xAlreadyYielded == pdFALSE )
             {
                 taskYIELD_WITHIN_API();
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
@@ -422,29 +422,29 @@
              * point either the required bits were set or the block time expired.  If
              * the required bits were set they will have been stored in the task's
              * event list item, and they should now be retrieved then cleared. */
-            uxReturn = uxTaskResetEventItemValue();
+            uxReturn = ux_Task_Reset_Event_قلم_مقدار();
 
-            if( ( uxReturn & eventUNBLOCKED_DUE_TO_BIT_SET ) == ( EventBits_t ) 0 )
+            إذا( ( uxReturn & event_UNBLOCKED_DUE_مقصد_بیت_مجموعه ) == ( Event_بیتها_t ) 0 )
             {
                 taskENTER_CRITICAL();
                 {
                     /* The task timed out, just return the current event bit value. */
-                    uxReturn = pxEventBits->uxEventBits;
+                    uxReturn = px_Event_بیتها->ux_Event_بیتها;
 
                     /* It is possible that the event bits were updated between this
                      * task leaving the Blocked state and running again. */
-                    if( prvTestWaitCondition( uxReturn, uxBitsToWaitFor, xWaitForAllBits ) != pdFALSE )
+                    إذا( prvTestWaitCondition( uxReturn, ux_بیتها_مقصد_Wait_For, x_Wait_For_All_بیتها ) != pdFALSE )
                     {
-                        if( xClearOnExit != pdFALSE )
+                        إذا( xClearOnExit != pdFALSE )
                         {
-                            pxEventBits->uxEventBits &= ~uxBitsToWaitFor;
+                            px_Event_بیتها->ux_Event_بیتها &= ~ux_بیتها_مقصد_Wait_For;
                         }
-                        else
+                        وإلا
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
@@ -453,171 +453,171 @@
                 }
                 taskEXIT_CRITICAL();
             }
-            else
+            وإلا
             {
                 /* The task unblocked because the bits were set. */
             }
 
             /* The task blocked so control bits may have been set. */
-            uxReturn &= ~eventEVENT_BITS_CONTROL_BYTES;
+            uxReturn &= ~event_EVENT_بیتها_CONTROL_بایتها;
         }
 
-        traceEVENT_GROUP_WAIT_BITS_END( xEventGroup, uxBitsToWaitFor, xTimeoutOccurred );
+        trace_EVENT_گروه_WAIT_بیتها_انتها( x_Event_گروه, ux_بیتها_مقصد_Wait_For, xTimeoutOccurred );
 
         /* Prevent compiler warnings when trace macros are not used. */
-        ( void ) xTimeoutOccurred;
+        ( فراغ ) xTimeoutOccurred;
 
-        traceRETURN_xEventGroupWaitBits( uxReturn );
+        trace_RETURN_x_Event_گروه_Wait_بیتها( uxReturn );
 
-        return uxReturn;
+        أرجع uxReturn;
     }
 /*-----------------------------------------------------------*/
 
-    EventBits_t xEventGroupClearBits( EventGroupHandle_t xEventGroup,
-                                      const EventBits_t uxBitsToClear )
+    Event_بیتها_t x_Event_گروه_Clear_بیتها( Event_گروه_Handle_t x_Event_گروه,
+                                      ثابت Event_بیتها_t ux_بیتها_مقصد_Clear )
     {
-        EventGroup_t * pxEventBits = xEventGroup;
-        EventBits_t uxReturn;
+        Event_گروه_t * px_Event_بیتها = x_Event_گروه;
+        Event_بیتها_t uxReturn;
 
-        traceENTER_xEventGroupClearBits( xEventGroup, uxBitsToClear );
+        trace_ENTER_x_Event_گروه_Clear_بیتها( x_Event_گروه, ux_بیتها_مقصد_Clear );
 
         /* Check the user is not attempting to clear the bits used by the kernel
          * itself. */
-        configASSERT( xEventGroup );
-        configASSERT( ( uxBitsToClear & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
+        configASSERT( x_Event_گروه );
+        configASSERT( ( ux_بیتها_مقصد_Clear & event_EVENT_بیتها_CONTROL_بایتها ) == 0 );
 
         taskENTER_CRITICAL();
         {
-            traceEVENT_GROUP_CLEAR_BITS( xEventGroup, uxBitsToClear );
+            trace_EVENT_گروه_CLEAR_بیتها( x_Event_گروه, ux_بیتها_مقصد_Clear );
 
             /* The value returned is the event group value prior to the bits being
              * cleared. */
-            uxReturn = pxEventBits->uxEventBits;
+            uxReturn = px_Event_بیتها->ux_Event_بیتها;
 
             /* Clear the bits. */
-            pxEventBits->uxEventBits &= ~uxBitsToClear;
+            px_Event_بیتها->ux_Event_بیتها &= ~ux_بیتها_مقصد_Clear;
         }
         taskEXIT_CRITICAL();
 
-        traceRETURN_xEventGroupClearBits( uxReturn );
+        trace_RETURN_x_Event_گروه_Clear_بیتها( uxReturn );
 
-        return uxReturn;
+        أرجع uxReturn;
     }
 /*-----------------------------------------------------------*/
 
-    #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) )
+    #إذا ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) )
 
-        BaseType_t xEventGroupClearBitsFromISR( EventGroupHandle_t xEventGroup,
-                                                const EventBits_t uxBitsToClear )
+        پایه_Type_t x_Event_گروه_Clear_بیتها_From_ISR( Event_گروه_Handle_t x_Event_گروه,
+                                                ثابت Event_بیتها_t ux_بیتها_مقصد_Clear )
         {
-            BaseType_t xReturn;
+            پایه_Type_t xReturn;
 
-            traceENTER_xEventGroupClearBitsFromISR( xEventGroup, uxBitsToClear );
+            trace_ENTER_x_Event_گروه_Clear_بیتها_From_ISR( x_Event_گروه, ux_بیتها_مقصد_Clear );
 
-            traceEVENT_GROUP_CLEAR_BITS_FROM_ISR( xEventGroup, uxBitsToClear );
-            xReturn = xTimerPendFunctionCallFromISR( vEventGroupClearBitsCallback, ( void * ) xEventGroup, ( uint32_t ) uxBitsToClear, NULL );
+            trace_EVENT_گروه_CLEAR_بیتها_FROM_ISR( x_Event_گروه, ux_بیتها_مقصد_Clear );
+            xReturn = xTimerPendFunctionCallFromISR( v_Event_گروه_Clear_بیتها_Callback, ( فراغ * ) x_Event_گروه, ( uint32_t ) ux_بیتها_مقصد_Clear, عدم );
 
-            traceRETURN_xEventGroupClearBitsFromISR( xReturn );
+            trace_RETURN_x_Event_گروه_Clear_بیتها_From_ISR( xReturn );
 
-            return xReturn;
+            أرجع xReturn;
         }
 
-    #endif /* if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) ) */
+    #پایان_اگر /* if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-    EventBits_t xEventGroupGetBitsFromISR( EventGroupHandle_t xEventGroup )
+    Event_بیتها_t x_Event_گروه_Get_بیتها_From_ISR( Event_گروه_Handle_t x_Event_گروه )
     {
-        UBaseType_t uxSavedInterruptStatus;
-        EventGroup_t const * const pxEventBits = xEventGroup;
-        EventBits_t uxReturn;
+        UBaseType_t ux_Saved_وقفه_وضعیت;
+        Event_گروه_t ثابت * ثابت px_Event_بیتها = x_Event_گروه;
+        Event_بیتها_t uxReturn;
 
-        traceENTER_xEventGroupGetBitsFromISR( xEventGroup );
+        trace_ENTER_x_Event_گروه_Get_بیتها_From_ISR( x_Event_گروه );
 
         /* MISRA Ref 4.7.1 [Return value shall be checked] */
         /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
         /* coverity[misra_c_2012_directive_4_7_violation] */
-        uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();
+        ux_Saved_وقفه_وضعیت = taskENTER_CRITICAL_FROM_ISR();
         {
-            uxReturn = pxEventBits->uxEventBits;
+            uxReturn = px_Event_بیتها->ux_Event_بیتها;
         }
-        taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );
+        taskEXIT_CRITICAL_FROM_ISR( ux_Saved_وقفه_وضعیت );
 
-        traceRETURN_xEventGroupGetBitsFromISR( uxReturn );
+        trace_RETURN_x_Event_گروه_Get_بیتها_From_ISR( uxReturn );
 
-        return uxReturn;
+        أرجع uxReturn;
     }
 /*-----------------------------------------------------------*/
 
-    EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
-                                    const EventBits_t uxBitsToSet )
+    Event_بیتها_t x_Event_گروه_مجموعه_بیتها( Event_گروه_Handle_t x_Event_گروه,
+                                    ثابت Event_بیتها_t ux_بیتها_مقصد_مجموعه )
     {
-        ListItem_t * pxListItem;
-        ListItem_t * pxNext;
-        ListItem_t const * pxListEnd;
-        List_t const * pxList;
-        EventBits_t uxBitsToClear = 0, uxBitsWaitedFor, uxControlBits;
-        EventGroup_t * pxEventBits = xEventGroup;
-        BaseType_t xMatchFound = pdFALSE;
+        List_قلم_t * px_List_قلم;
+        List_قلم_t * px_بعدی;
+        List_قلم_t ثابت * px_List_انتها;
+        List_t ثابت * pxList;
+        Event_بیتها_t ux_بیتها_مقصد_Clear = 0, ux_بیتها_Waited_For, ux_Control_بیتها;
+        Event_گروه_t * px_Event_بیتها = x_Event_گروه;
+        پایه_Type_t x_تطابق_یافت = pdFALSE;
 
-        traceENTER_xEventGroupSetBits( xEventGroup, uxBitsToSet );
+        trace_ENTER_x_Event_گروه_مجموعه_بیتها( x_Event_گروه, ux_بیتها_مقصد_مجموعه );
 
         /* Check the user is not attempting to set the bits used by the kernel
          * itself. */
-        configASSERT( xEventGroup );
-        configASSERT( ( uxBitsToSet & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
+        configASSERT( x_Event_گروه );
+        configASSERT( ( ux_بیتها_مقصد_مجموعه & event_EVENT_بیتها_CONTROL_بایتها ) == 0 );
 
-        pxList = &( pxEventBits->xTasksWaitingForBits );
-        pxListEnd = listGET_END_MARKER( pxList );
+        pxList = &( px_Event_بیتها->x_Tasks_انتظار_For_بیتها );
+        px_List_انتها = list_GET_انتها_MARKER( pxList );
         vTaskSuspendAll();
         {
-            traceEVENT_GROUP_SET_BITS( xEventGroup, uxBitsToSet );
+            trace_EVENT_گروه_مجموعه_بیتها( x_Event_گروه, ux_بیتها_مقصد_مجموعه );
 
-            pxListItem = listGET_HEAD_ENTRY( pxList );
+            px_List_قلم = list_GET_سر_مدخل( pxList );
 
             /* Set the bits. */
-            pxEventBits->uxEventBits |= uxBitsToSet;
+            px_Event_بیتها->ux_Event_بیتها |= ux_بیتها_مقصد_مجموعه;
 
             /* See if the new bit value should unblock any tasks. */
-            while( pxListItem != pxListEnd )
+            طالما( px_List_قلم != px_List_انتها )
             {
-                pxNext = listGET_NEXT( pxListItem );
-                uxBitsWaitedFor = listGET_LIST_ITEM_VALUE( pxListItem );
-                xMatchFound = pdFALSE;
+                px_بعدی = list_GET_بعدی( px_List_قلم );
+                ux_بیتها_Waited_For = list_GET_LIST_قلم_مقدار( px_List_قلم );
+                x_تطابق_یافت = pdFALSE;
 
                 /* Split the bits waited for from the control bits. */
-                uxControlBits = uxBitsWaitedFor & eventEVENT_BITS_CONTROL_BYTES;
-                uxBitsWaitedFor &= ~eventEVENT_BITS_CONTROL_BYTES;
+                ux_Control_بیتها = ux_بیتها_Waited_For & event_EVENT_بیتها_CONTROL_بایتها;
+                ux_بیتها_Waited_For &= ~event_EVENT_بیتها_CONTROL_بایتها;
 
-                if( ( uxControlBits & eventWAIT_FOR_ALL_BITS ) == ( EventBits_t ) 0 )
+                إذا( ( ux_Control_بیتها & event_WAIT_FOR_ALL_بیتها ) == ( Event_بیتها_t ) 0 )
                 {
                     /* Just looking for single bit being set. */
-                    if( ( uxBitsWaitedFor & pxEventBits->uxEventBits ) != ( EventBits_t ) 0 )
+                    إذا( ( ux_بیتها_Waited_For & px_Event_بیتها->ux_Event_بیتها ) != ( Event_بیتها_t ) 0 )
                     {
-                        xMatchFound = pdTRUE;
+                        x_تطابق_یافت = pdTRUE;
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else if( ( uxBitsWaitedFor & pxEventBits->uxEventBits ) == uxBitsWaitedFor )
+                وإلا إذا( ( ux_بیتها_Waited_For & px_Event_بیتها->ux_Event_بیتها ) == ux_بیتها_Waited_For )
                 {
                     /* All bits are set. */
-                    xMatchFound = pdTRUE;
+                    x_تطابق_یافت = pdTRUE;
                 }
-                else
+                وإلا
                 {
                     /* Need all bits to be set, but not all the bits were set. */
                 }
 
-                if( xMatchFound != pdFALSE )
+                إذا( x_تطابق_یافت != pdFALSE )
                 {
                     /* The bits match.  Should the bits be cleared on exit? */
-                    if( ( uxControlBits & eventCLEAR_EVENTS_ON_EXIT_BIT ) != ( EventBits_t ) 0 )
+                    إذا( ( ux_Control_بیتها & event_CLEAR_EVENTS_ON_EXIT_بیت ) != ( Event_بیتها_t ) 0 )
                     {
-                        uxBitsToClear |= uxBitsWaitedFor;
+                        ux_بیتها_مقصد_Clear |= ux_بیتها_Waited_For;
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
@@ -627,262 +627,262 @@
                      * eventUNBLOCKED_DUE_TO_BIT_SET bit is set so the task knows
                      * that is was unblocked due to its required bits matching, rather
                      * than because it timed out. */
-                    vTaskRemoveFromUnorderedEventList( pxListItem, pxEventBits->uxEventBits | eventUNBLOCKED_DUE_TO_BIT_SET );
+                    vTaskRemoveFromUnorderedEventList( px_List_قلم, px_Event_بیتها->ux_Event_بیتها | event_UNBLOCKED_DUE_مقصد_بیت_مجموعه );
                 }
 
                 /* Move onto the next list item.  Note pxListItem->pxNext is not
                  * used here as the list item may have been removed from the event list
                  * and inserted into the ready/pending reading list. */
-                pxListItem = pxNext;
+                px_List_قلم = px_بعدی;
             }
 
             /* Clear any bits that matched when the eventCLEAR_EVENTS_ON_EXIT_BIT
              * bit was set in the control word. */
-            pxEventBits->uxEventBits &= ~uxBitsToClear;
+            px_Event_بیتها->ux_Event_بیتها &= ~ux_بیتها_مقصد_Clear;
         }
-        ( void ) xTaskResumeAll();
+        ( فراغ ) xTaskResumeAll();
 
-        traceRETURN_xEventGroupSetBits( pxEventBits->uxEventBits );
+        trace_RETURN_x_Event_گروه_مجموعه_بیتها( px_Event_بیتها->ux_Event_بیتها );
 
-        return pxEventBits->uxEventBits;
+        أرجع px_Event_بیتها->ux_Event_بیتها;
     }
 /*-----------------------------------------------------------*/
 
-    void vEventGroupDelete( EventGroupHandle_t xEventGroup )
+    فراغ v_Event_گروه_Delete( Event_گروه_Handle_t x_Event_گروه )
     {
-        EventGroup_t * pxEventBits = xEventGroup;
-        const List_t * pxTasksWaitingForBits;
+        Event_گروه_t * px_Event_بیتها = x_Event_گروه;
+        ثابت List_t * px_Tasks_انتظار_For_بیتها;
 
-        traceENTER_vEventGroupDelete( xEventGroup );
+        trace_ENTER_v_Event_گروه_Delete( x_Event_گروه );
 
-        configASSERT( pxEventBits );
+        configASSERT( px_Event_بیتها );
 
-        pxTasksWaitingForBits = &( pxEventBits->xTasksWaitingForBits );
+        px_Tasks_انتظار_For_بیتها = &( px_Event_بیتها->x_Tasks_انتظار_For_بیتها );
 
         vTaskSuspendAll();
         {
-            traceEVENT_GROUP_DELETE( xEventGroup );
+            trace_EVENT_گروه_DELETE( x_Event_گروه );
 
-            while( listCURRENT_LIST_LENGTH( pxTasksWaitingForBits ) > ( UBaseType_t ) 0 )
+            طالما( list_CURRENT_LIST_درازی( px_Tasks_انتظار_For_بیتها ) > ( UBaseType_t ) 0 )
             {
                 /* Unblock the task, returning 0 as the event list is being deleted
                  * and cannot therefore have any bits set. */
-                configASSERT( pxTasksWaitingForBits->xListEnd.pxNext != ( const ListItem_t * ) &( pxTasksWaitingForBits->xListEnd ) );
-                vTaskRemoveFromUnorderedEventList( pxTasksWaitingForBits->xListEnd.pxNext, eventUNBLOCKED_DUE_TO_BIT_SET );
+                configASSERT( px_Tasks_انتظار_For_بیتها->x_List_انتها.px_بعدی != ( ثابت List_قلم_t * ) &( px_Tasks_انتظار_For_بیتها->x_List_انتها ) );
+                vTaskRemoveFromUnorderedEventList( px_Tasks_انتظار_For_بیتها->x_List_انتها.px_بعدی, event_UNBLOCKED_DUE_مقصد_بیت_مجموعه );
             }
         }
-        ( void ) xTaskResumeAll();
+        ( فراغ ) xTaskResumeAll();
 
-        #if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 0 ) )
+        #إذا ( ( config_SUPPORT_DYNAMIC_تخصیص == 1 ) && ( config_SUPPORT_STATIC_تخصیص == 0 ) )
         {
             /* The event group can only have been allocated dynamically - free
              * it again. */
-            vPortFree( pxEventBits );
+            v_پورت_Free( px_Event_بیتها );
         }
-        #elif ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
+        #وإلاإذا ( ( config_SUPPORT_DYNAMIC_تخصیص == 1 ) && ( config_SUPPORT_STATIC_تخصیص == 1 ) )
         {
             /* The event group could have been allocated statically or
              * dynamically, so check before attempting to free the memory. */
-            if( pxEventBits->ucStaticallyAllocated == ( uint8_t ) pdFALSE )
+            إذا( px_Event_بیتها->ucStaticallyAllocated == ( uint8_t ) pdFALSE )
             {
-                vPortFree( pxEventBits );
+                v_پورت_Free( px_Event_بیتها );
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
-        #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+        #پایان_اگر /* configSUPPORT_DYNAMIC_ALLOCATION */
 
-        traceRETURN_vEventGroupDelete();
+        trace_RETURN_v_Event_گروه_Delete();
     }
 /*-----------------------------------------------------------*/
 
-    #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-        BaseType_t xEventGroupGetStaticBuffer( EventGroupHandle_t xEventGroup,
-                                               StaticEventGroup_t ** ppxEventGroupBuffer )
+    #إذا ( config_SUPPORT_STATIC_تخصیص == 1 )
+        پایه_Type_t x_Event_گروه_Get_Static_میانگیر( Event_گروه_Handle_t x_Event_گروه,
+                                               Static_Event_گروه_t ** ppx_Event_گروه_میانگیر )
         {
-            BaseType_t xReturn;
-            EventGroup_t * pxEventBits = xEventGroup;
+            پایه_Type_t xReturn;
+            Event_گروه_t * px_Event_بیتها = x_Event_گروه;
 
-            traceENTER_xEventGroupGetStaticBuffer( xEventGroup, ppxEventGroupBuffer );
+            trace_ENTER_x_Event_گروه_Get_Static_میانگیر( x_Event_گروه, ppx_Event_گروه_میانگیر );
 
-            configASSERT( pxEventBits );
-            configASSERT( ppxEventGroupBuffer );
+            configASSERT( px_Event_بیتها );
+            configASSERT( ppx_Event_گروه_میانگیر );
 
-            #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+            #إذا ( config_SUPPORT_DYNAMIC_تخصیص == 1 )
             {
                 /* Check if the event group was statically allocated. */
-                if( pxEventBits->ucStaticallyAllocated == ( uint8_t ) pdTRUE )
+                إذا( px_Event_بیتها->ucStaticallyAllocated == ( uint8_t ) pdTRUE )
                 {
                     /* MISRA Ref 11.3.1 [Misaligned access] */
                     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-113 */
                     /* coverity[misra_c_2012_rule_11_3_violation] */
-                    *ppxEventGroupBuffer = ( StaticEventGroup_t * ) pxEventBits;
+                    *ppx_Event_گروه_میانگیر = ( Static_Event_گروه_t * ) px_Event_بیتها;
                     xReturn = pdTRUE;
                 }
-                else
+                وإلا
                 {
                     xReturn = pdFALSE;
                 }
             }
-            #else /* configSUPPORT_DYNAMIC_ALLOCATION */
+            #وإلا /* configSUPPORT_DYNAMIC_ALLOCATION */
             {
                 /* Event group must have been statically allocated. */
                 /* MISRA Ref 11.3.1 [Misaligned access] */
                 /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-113 */
                 /* coverity[misra_c_2012_rule_11_3_violation] */
-                *ppxEventGroupBuffer = ( StaticEventGroup_t * ) pxEventBits;
+                *ppx_Event_گروه_میانگیر = ( Static_Event_گروه_t * ) px_Event_بیتها;
                 xReturn = pdTRUE;
             }
-            #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+            #پایان_اگر /* configSUPPORT_DYNAMIC_ALLOCATION */
 
-            traceRETURN_xEventGroupGetStaticBuffer( xReturn );
+            trace_RETURN_x_Event_گروه_Get_Static_میانگیر( xReturn );
 
-            return xReturn;
+            أرجع xReturn;
         }
-    #endif /* configSUPPORT_STATIC_ALLOCATION */
+    #پایان_اگر /* configSUPPORT_STATIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
 /* For internal use only - execute a 'set bits' command that was pended from
  * an interrupt. */
-    void vEventGroupSetBitsCallback( void * pvEventGroup,
-                                     uint32_t ulBitsToSet )
+    فراغ v_Event_گروه_مجموعه_بیتها_Callback( فراغ * pv_Event_گروه,
+                                     uint32_t ul_بیتها_مقصد_مجموعه )
     {
-        traceENTER_vEventGroupSetBitsCallback( pvEventGroup, ulBitsToSet );
+        trace_ENTER_v_Event_گروه_مجموعه_بیتها_Callback( pv_Event_گروه, ul_بیتها_مقصد_مجموعه );
 
         /* MISRA Ref 11.5.4 [Callback function parameter] */
         /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
         /* coverity[misra_c_2012_rule_11_5_violation] */
-        ( void ) xEventGroupSetBits( pvEventGroup, ( EventBits_t ) ulBitsToSet );
+        ( فراغ ) x_Event_گروه_مجموعه_بیتها( pv_Event_گروه, ( Event_بیتها_t ) ul_بیتها_مقصد_مجموعه );
 
-        traceRETURN_vEventGroupSetBitsCallback();
+        trace_RETURN_v_Event_گروه_مجموعه_بیتها_Callback();
     }
 /*-----------------------------------------------------------*/
 
 /* For internal use only - execute a 'clear bits' command that was pended from
  * an interrupt. */
-    void vEventGroupClearBitsCallback( void * pvEventGroup,
-                                       uint32_t ulBitsToClear )
+    فراغ v_Event_گروه_Clear_بیتها_Callback( فراغ * pv_Event_گروه,
+                                       uint32_t ul_بیتها_مقصد_Clear )
     {
-        traceENTER_vEventGroupClearBitsCallback( pvEventGroup, ulBitsToClear );
+        trace_ENTER_v_Event_گروه_Clear_بیتها_Callback( pv_Event_گروه, ul_بیتها_مقصد_Clear );
 
         /* MISRA Ref 11.5.4 [Callback function parameter] */
         /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
         /* coverity[misra_c_2012_rule_11_5_violation] */
-        ( void ) xEventGroupClearBits( pvEventGroup, ( EventBits_t ) ulBitsToClear );
+        ( فراغ ) x_Event_گروه_Clear_بیتها( pv_Event_گروه, ( Event_بیتها_t ) ul_بیتها_مقصد_Clear );
 
-        traceRETURN_vEventGroupClearBitsCallback();
+        trace_RETURN_v_Event_گروه_Clear_بیتها_Callback();
     }
 /*-----------------------------------------------------------*/
 
-    static BaseType_t prvTestWaitCondition( const EventBits_t uxCurrentEventBits,
-                                            const EventBits_t uxBitsToWaitFor,
-                                            const BaseType_t xWaitForAllBits )
+    ساكن پایه_Type_t prvTestWaitCondition( ثابت Event_بیتها_t ux_Current_Event_بیتها,
+                                            ثابت Event_بیتها_t ux_بیتها_مقصد_Wait_For,
+                                            ثابت پایه_Type_t x_Wait_For_All_بیتها )
     {
-        BaseType_t xWaitConditionMet = pdFALSE;
+        پایه_Type_t xWaitConditionMet = pdFALSE;
 
-        if( xWaitForAllBits == pdFALSE )
+        إذا( x_Wait_For_All_بیتها == pdFALSE )
         {
             /* Task only has to wait for one bit within uxBitsToWaitFor to be
              * set.  Is one already set? */
-            if( ( uxCurrentEventBits & uxBitsToWaitFor ) != ( EventBits_t ) 0 )
+            إذا( ( ux_Current_Event_بیتها & ux_بیتها_مقصد_Wait_For ) != ( Event_بیتها_t ) 0 )
             {
                 xWaitConditionMet = pdTRUE;
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
-        else
+        وإلا
         {
             /* Task has to wait for all the bits in uxBitsToWaitFor to be set.
              * Are they set already? */
-            if( ( uxCurrentEventBits & uxBitsToWaitFor ) == uxBitsToWaitFor )
+            إذا( ( ux_Current_Event_بیتها & ux_بیتها_مقصد_Wait_For ) == ux_بیتها_مقصد_Wait_For )
             {
                 xWaitConditionMet = pdTRUE;
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
 
-        return xWaitConditionMet;
+        أرجع xWaitConditionMet;
     }
 /*-----------------------------------------------------------*/
 
-    #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) )
+    #إذا ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) )
 
-        BaseType_t xEventGroupSetBitsFromISR( EventGroupHandle_t xEventGroup,
-                                              const EventBits_t uxBitsToSet,
-                                              BaseType_t * pxHigherPriorityTaskWoken )
+        پایه_Type_t x_Event_گروه_مجموعه_بیتها_From_ISR( Event_گروه_Handle_t x_Event_گروه,
+                                              ثابت Event_بیتها_t ux_بیتها_مقصد_مجموعه,
+                                              پایه_Type_t * px_Higher_اولویت_Task_Woken )
         {
-            BaseType_t xReturn;
+            پایه_Type_t xReturn;
 
-            traceENTER_xEventGroupSetBitsFromISR( xEventGroup, uxBitsToSet, pxHigherPriorityTaskWoken );
+            trace_ENTER_x_Event_گروه_مجموعه_بیتها_From_ISR( x_Event_گروه, ux_بیتها_مقصد_مجموعه, px_Higher_اولویت_Task_Woken );
 
-            traceEVENT_GROUP_SET_BITS_FROM_ISR( xEventGroup, uxBitsToSet );
-            xReturn = xTimerPendFunctionCallFromISR( vEventGroupSetBitsCallback, ( void * ) xEventGroup, ( uint32_t ) uxBitsToSet, pxHigherPriorityTaskWoken );
+            trace_EVENT_گروه_مجموعه_بیتها_FROM_ISR( x_Event_گروه, ux_بیتها_مقصد_مجموعه );
+            xReturn = xTimerPendFunctionCallFromISR( v_Event_گروه_مجموعه_بیتها_Callback, ( فراغ * ) x_Event_گروه, ( uint32_t ) ux_بیتها_مقصد_مجموعه, px_Higher_اولویت_Task_Woken );
 
-            traceRETURN_xEventGroupSetBitsFromISR( xReturn );
+            trace_RETURN_x_Event_گروه_مجموعه_بیتها_From_ISR( xReturn );
 
-            return xReturn;
+            أرجع xReturn;
         }
 
-    #endif /* if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) ) */
+    #پایان_اگر /* if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
 
-        UBaseType_t uxEventGroupGetNumber( void * xEventGroup )
+        UBaseType_t ux_Event_گروه_Get_عدد( فراغ * x_Event_گروه )
         {
             UBaseType_t xReturn;
 
             /* MISRA Ref 11.5.2 [Opaque pointer] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
             /* coverity[misra_c_2012_rule_11_5_violation] */
-            EventGroup_t const * pxEventBits = ( EventGroup_t * ) xEventGroup;
+            Event_گروه_t ثابت * px_Event_بیتها = ( Event_گروه_t * ) x_Event_گروه;
 
-            traceENTER_uxEventGroupGetNumber( xEventGroup );
+            trace_ENTER_ux_Event_گروه_Get_عدد( x_Event_گروه );
 
-            if( xEventGroup == NULL )
+            إذا( x_Event_گروه == عدم )
             {
                 xReturn = 0;
             }
-            else
+            وإلا
             {
-                xReturn = pxEventBits->uxEventGroupNumber;
+                xReturn = px_Event_بیتها->ux_Event_گروه_عدد;
             }
 
-            traceRETURN_uxEventGroupGetNumber( xReturn );
+            trace_RETURN_ux_Event_گروه_Get_عدد( xReturn );
 
-            return xReturn;
+            أرجع xReturn;
         }
 
-    #endif /* configUSE_TRACE_FACILITY */
+    #پایان_اگر /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
 
-        void vEventGroupSetNumber( void * xEventGroup,
-                                   UBaseType_t uxEventGroupNumber )
+        فراغ v_Event_گروه_مجموعه_عدد( فراغ * x_Event_گروه,
+                                   UBaseType_t ux_Event_گروه_عدد )
         {
-            traceENTER_vEventGroupSetNumber( xEventGroup, uxEventGroupNumber );
+            trace_ENTER_v_Event_گروه_مجموعه_عدد( x_Event_گروه, ux_Event_گروه_عدد );
 
             /* MISRA Ref 11.5.2 [Opaque pointer] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
             /* coverity[misra_c_2012_rule_11_5_violation] */
-            ( ( EventGroup_t * ) xEventGroup )->uxEventGroupNumber = uxEventGroupNumber;
+            ( ( Event_گروه_t * ) x_Event_گروه )->ux_Event_گروه_عدد = ux_Event_گروه_عدد;
 
-            traceRETURN_vEventGroupSetNumber();
+            trace_RETURN_v_Event_گروه_مجموعه_عدد();
         }
 
-    #endif /* configUSE_TRACE_FACILITY */
+    #پایان_اگر /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
 /* This entire source file will be skipped if the application is not configured
  * to include event groups functionality. If you want to include event groups
  * then ensure configUSE_EVENT_GROUPS is set to 1 in FreeRTOSConfig.h. */
-#endif /* configUSE_EVENT_GROUPS == 1 */
+#پایان_اگر /* configUSE_EVENT_GROUPS == 1 */

@@ -9,88 +9,88 @@
  * idf_additions.h
  */
 
-#include "sdkconfig.h"
-#include <stdint.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/queue.h"
-#include "freertos/semphr.h"
-#include "freertos/stream_buffer.h"
-#include "freertos/message_buffer.h"
-#include "freertos/idf_additions.h"
-#include "esp_heap_caps.h"
-#include "esp_log.h"
-#include "freertos/portmacro.h"
+#ضمن "sdkconfig.h"
+#ضمن <stdint.h>
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
+#ضمن "freertos/queue.h"
+#ضمن "freertos/semphr.h"
+#ضمن "freertos/stream_buffer.h"
+#ضمن "freertos/message_buffer.h"
+#ضمن "freertos/idf_additions.h"
+#ضمن "esp_heap_caps.h"
+#ضمن "esp_log.h"
+#ضمن "freertos/portmacro.h"
 
 /* -------------------------------------------- Creation With Memory Caps ------------------------------------------- */
 
 /* ---------------------------------- Tasks --------------------------------- */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#إذا ( config_SUPPORT_STATIC_تخصیص == 1 )
 
-    BaseType_t xTaskCreatePinnedToCoreWithCaps( TaskFunction_t pvTaskCode,
-                                                const char * const pcName,
-                                                const configSTACK_DEPTH_TYPE usStackDepth,
-                                                void * const pvParameters,
-                                                UBaseType_t uxPriority,
-                                                TaskHandle_t * const pvCreatedTask,
-                                                const BaseType_t xCoreID,
-                                                UBaseType_t uxMemoryCaps )
+    پایه_Type_t x_Task_Create_Pinned_مقصد_Core_With_Caps( TaskFunction_t pv_Task_کد,
+                                                ثابت حرف * ثابت pcName,
+                                                ثابت config_پشته_عمق_TYPE us_پشته_عمق,
+                                                فراغ * ثابت pvParameters,
+                                                UBaseType_t ux_اولویت,
+                                                TaskHandle_t * ثابت pvCreatedTask,
+                                                ثابت پایه_Type_t xCoreID,
+                                                UBaseType_t ux_حافظه_Caps )
     {
         TaskHandle_t xHandle;
-        StaticTask_t * pxTaskBuffer;
-        StackType_t * pxStack;
+        StaticTask_t * px_Task_میانگیر;
+        پشته_Type_t * px_پشته;
 
         /* Allocate memory for the task's TCB. We use pvPortMalloc() here as the
          * TCB must be in internal memory. */
-        pxTaskBuffer = pvPortMalloc( sizeof( StaticTask_t ) );
+        px_Task_میانگیر = pv_پورت_Malloc( حجم( StaticTask_t ) );
 
         /* Allocate memory for the task's stack using the provided memory caps
          * */
-        pxStack = heap_caps_malloc( ( ( size_t ) usStackDepth ) * sizeof( StackType_t ), ( uint32_t ) uxMemoryCaps );
+        px_پشته = انباشته_caps_malloc( ( ( size_t ) us_پشته_عمق ) * حجم( پشته_Type_t ), ( uint32_t ) ux_حافظه_Caps );
 
-        if( ( pxTaskBuffer == NULL ) || ( pxStack == NULL ) )
+        إذا( ( px_Task_میانگیر == عدم ) || ( px_پشته == عدم ) )
         {
-            goto err;
+            اذهب err;
         }
 
         /* Create the task using static creation API*/
-        xHandle = xTaskCreateStaticPinnedToCore( pvTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pxStack, pxTaskBuffer, xCoreID );
+        xHandle = x_Task_Create_Static_Pinned_مقصد_Core( pv_Task_کد, pcName, us_پشته_عمق, pvParameters, ux_اولویت, px_پشته, px_Task_میانگیر, xCoreID );
 
-        if( xHandle == NULL )
+        إذا( xHandle == عدم )
         {
             /* Failed to create task */
-            goto err;
+            اذهب err;
         }
-        else if( pvCreatedTask != NULL )
+        وإلا إذا( pvCreatedTask != عدم )
         {
             /* Task created successfully. Return the task handle */
             *pvCreatedTask = xHandle;
         }
 
-        return pdPASS;
+        أرجع pdPASS;
 
 err:
-        heap_caps_free( pxStack );
-        vPortFree( pxTaskBuffer );
-        return pdFAIL;
+        انباشته_caps_free( px_پشته );
+        v_پورت_Free( px_Task_میانگیر );
+        أرجع pdFAIL;
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#پایان_اگر /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#إذا ( config_SUPPORT_STATIC_تخصیص == 1 )
 
-    static void prvTaskDeleteWithCaps( TaskHandle_t xTaskToDelete )
+    ساكن فراغ prvTaskDeleteWithCaps( TaskHandle_t x_Task_مقصد_Delete )
     {
         /* Return value unused if asserts are disabled */
-        BaseType_t __attribute__( ( unused ) ) xResult;
-        StaticTask_t * pxTaskBuffer;
-        StackType_t * puxStackBuffer;
+        پایه_Type_t __attribute__( ( استفادهنشده ) ) x_نتیجه;
+        StaticTask_t * px_Task_میانگیر;
+        پشته_Type_t * pux_پشته_میانگیر;
 
         /* The task to be deleted must not be running.
          * So we suspend the task before deleting it. */
-        vTaskSuspend( xTaskToDelete );
+        vTaskSuspend( x_Task_مقصد_Delete );
 
         /* Wait until the task is no longer the current task on any core.
          *
@@ -101,22 +101,22 @@ err:
          * prvDeleteTCB() runs synchronously before vTaskDelete() returns, so
          * the heap_caps_free() / vPortFree() that follow cannot race with the
          * IDLE task. */
-        for( ;; )
+        لكل( ;; )
         {
-            BaseType_t xStillOnCore = pdFALSE;
+            پایه_Type_t xStillOnCore = pdFALSE;
 
-            for( BaseType_t xCoreID = 0; xCoreID < configNUMBER_OF_CORES; xCoreID++ )
+            لكل( پایه_Type_t xCoreID = 0; xCoreID < config_عدد_از_CORES; xCoreID++ )
             {
-                if( xTaskGetCurrentTaskHandleForCore( xCoreID ) == xTaskToDelete )
+                إذا( xTaskGetCurrentTaskHandleForCore( xCoreID ) == x_Task_مقصد_Delete )
                 {
                     xStillOnCore = pdTRUE;
-                    break;
+                    اكسر;
                 }
             }
 
-            if( xStillOnCore == pdFALSE )
+            إذا( xStillOnCore == pdFALSE )
             {
-                break;
+                اكسر;
             }
 
             taskYIELD();
@@ -126,39 +126,39 @@ err:
          * First, we must call `vTaskDelete` so that the port task delete callback is called.
          * On targets that have coprocessors, it may be possible that the stack pointer is modified (restored)
          * during this phase, hence, it must be done before getting the statuc buffers out of the task. */
-        vTaskDelete( xTaskToDelete );
+        vTaskDelete( x_Task_مقصد_Delete );
 
         /* Free the memory buffers */
-        xResult = xTaskGetStaticBuffers( xTaskToDelete, &puxStackBuffer, &pxTaskBuffer );
-        configASSERT( xResult == pdTRUE );
-        configASSERT( puxStackBuffer != NULL );
-        configASSERT( pxTaskBuffer != NULL );
+        x_نتیجه = xTaskGetStaticBuffers( x_Task_مقصد_Delete, &pux_پشته_میانگیر, &px_Task_میانگیر );
+        configASSERT( x_نتیجه == pdTRUE );
+        configASSERT( pux_پشته_میانگیر != عدم );
+        configASSERT( px_Task_میانگیر != عدم );
 
-        heap_caps_free( puxStackBuffer );
-        vPortFree( pxTaskBuffer );
+        انباشته_caps_free( pux_پشته_میانگیر );
+        v_پورت_Free( px_Task_میانگیر );
     }
 
-    static void prvTaskDeleteWithCapsTask( void * pvParameters )
+    ساكن فراغ prvTaskDeleteWithCapsTask( فراغ * pvParameters )
     {
-        TaskHandle_t xTaskToDelete = ( TaskHandle_t ) pvParameters;
+        TaskHandle_t x_Task_مقصد_Delete = ( TaskHandle_t ) pvParameters;
 
         /* Delete the WithCaps task */
-        prvTaskDeleteWithCaps( xTaskToDelete );
+        prvTaskDeleteWithCaps( x_Task_مقصد_Delete );
 
         /* Delete the temporary clean up task */
-        vTaskDelete( NULL );
+        vTaskDelete( عدم );
     }
 
-    void vTaskDeleteWithCaps( TaskHandle_t xTaskToDelete )
+    فراغ vTaskDeleteWithCaps( TaskHandle_t x_Task_مقصد_Delete )
     {
         /* THIS FUNCTION SHOULD NOT BE CALLED FROM AN INTERRUPT CONTEXT. */
         /* TODO: Update it to use portASSERT_IF_IN_ISR() instead. (IDF-10540) */
-        vPortAssertIfInISR();
+        v_پورت_Assert_If_درون_ISR();
 
         TaskHandle_t xCurrentTaskHandle = xTaskGetCurrentTaskHandle();
-        configASSERT( xCurrentTaskHandle != NULL );
+        configASSERT( xCurrentTaskHandle != عدم );
 
-        if( ( xTaskToDelete == NULL ) || ( xTaskToDelete == xCurrentTaskHandle ) )
+        إذا( ( x_Task_مقصد_Delete == عدم ) || ( x_Task_مقصد_Delete == xCurrentTaskHandle ) )
         {
             /* The WithCaps task is deleting itself. While, the task can put itself on the
              * xTasksWaitingTermination list via the vTaskDelete() call, the idle
@@ -187,17 +187,17 @@ err:
              *
              * 2. Have a post deletion hook/callback from the IDLE task to notify higher layers when it is safe to
              *    perform activities such as clearing up the TCB and stack memories. (IDF-10522) */
-            if( xTaskCreatePinnedToCore( ( TaskFunction_t ) prvTaskDeleteWithCapsTask, "prvTaskDeleteWithCapsTask", configMINIMAL_STACK_SIZE, xCurrentTaskHandle, uxTaskPriorityGet( xTaskToDelete ), NULL, xPortGetCoreID() ) != pdFAIL )
+            إذا( x_Task_Create_Pinned_مقصد_Core( ( TaskFunction_t ) prvTaskDeleteWithCapsTask, "prvTaskDeleteWithCapsTask", config_کمینه_پشته_اندازه, xCurrentTaskHandle, ux_Task_اولویت_Get( x_Task_مقصد_Delete ), عدم, x_پورت_Get_Core_ID() ) != pdFAIL )
             {
                 /* Although the current task should get preemted immediately when prvTaskDeleteWithCapsTask is created,
                  * for safety, we suspend the current task and wait for prvTaskDeleteWithCapsTask to delete it. */
-                vTaskSuspend( xTaskToDelete );
+                vTaskSuspend( x_Task_مقصد_Delete );
 
                 /* Should never reach here */
                 ESP_LOGE( "freertos_additions", "%s: Failed to suspend the task to be deleted", __func__ );
                 abort();
             }
-            else
+            وإلا
             {
                 /* Failed to create the task to delete the current task. */
                 ESP_LOGE( "freertos_additions", "%s: Failed to create the task to delete the current task", __func__ );
@@ -206,242 +206,242 @@ err:
         }
 
         /* Delete the WithCaps task */
-        prvTaskDeleteWithCaps( xTaskToDelete );
+        prvTaskDeleteWithCaps( x_Task_مقصد_Delete );
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#پایان_اگر /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
 /* ---------------------------------- Queue --------------------------------- */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#إذا ( config_SUPPORT_STATIC_تخصیص == 1 )
 
-    QueueHandle_t xQueueCreateWithCaps( UBaseType_t uxQueueLength,
-                                        UBaseType_t uxItemSize,
-                                        UBaseType_t uxMemoryCaps )
+    صف_Handle_t x_صف_Create_With_Caps( UBaseType_t ux_صف_درازی,
+                                        UBaseType_t ux_قلم_اندازه,
+                                        UBaseType_t ux_حافظه_Caps )
     {
-        QueueHandle_t xQueue;
-        StaticQueue_t * pxQueueBuffer;
-        uint8_t * pucQueueStorageBuffer;
+        صف_Handle_t x_صف;
+        Static_صف_t * px_صف_میانگیر;
+        uint8_t * puc_صف_Storage_میانگیر;
 
         /* Allocate memory for the queue using the provided memory caps */
-        pxQueueBuffer = heap_caps_malloc( sizeof( StaticQueue_t ), ( uint32_t ) uxMemoryCaps );
+        px_صف_میانگیر = انباشته_caps_malloc( حجم( Static_صف_t ), ( uint32_t ) ux_حافظه_Caps );
 
-        if( uxItemSize == 0 )
+        إذا( ux_قلم_اندازه == 0 )
         {
-            pucQueueStorageBuffer = NULL;
+            puc_صف_Storage_میانگیر = عدم;
         }
-        else
+        وإلا
         {
-            pucQueueStorageBuffer = heap_caps_malloc( uxQueueLength * uxItemSize, ( uint32_t ) uxMemoryCaps );
+            puc_صف_Storage_میانگیر = انباشته_caps_malloc( ux_صف_درازی * ux_قلم_اندازه, ( uint32_t ) ux_حافظه_Caps );
         }
 
-        if( ( pxQueueBuffer == NULL ) || ( ( uxItemSize > 0 ) && ( pucQueueStorageBuffer == NULL ) ) )
+        إذا( ( px_صف_میانگیر == عدم ) || ( ( ux_قلم_اندازه > 0 ) && ( puc_صف_Storage_میانگیر == عدم ) ) )
         {
-            goto err;
+            اذهب err;
         }
 
         /* Create the queue using static creation API */
-        xQueue = xQueueCreateStatic( uxQueueLength, uxItemSize, pucQueueStorageBuffer, pxQueueBuffer );
+        x_صف = x_صف_Create_Static( ux_صف_درازی, ux_قلم_اندازه, puc_صف_Storage_میانگیر, px_صف_میانگیر );
 
-        if( xQueue == NULL )
+        إذا( x_صف == عدم )
         {
-            goto err;
+            اذهب err;
         }
 
-        return xQueue;
+        أرجع x_صف;
 
 err:
-        heap_caps_free( pucQueueStorageBuffer );
-        heap_caps_free( pxQueueBuffer );
-        return NULL;
+        انباشته_caps_free( puc_صف_Storage_میانگیر );
+        انباشته_caps_free( px_صف_میانگیر );
+        أرجع عدم;
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#پایان_اگر /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#إذا ( config_SUPPORT_STATIC_تخصیص == 1 )
 
-    void vQueueDeleteWithCaps( QueueHandle_t xQueue )
+    فراغ v_صف_Delete_With_Caps( صف_Handle_t x_صف )
     {
         /* Return value unused if asserts are disabled */
-        BaseType_t __attribute__( ( unused ) ) xResult;
-        StaticQueue_t * pxQueueBuffer;
-        uint8_t * pucQueueStorageBuffer;
+        پایه_Type_t __attribute__( ( استفادهنشده ) ) x_نتیجه;
+        Static_صف_t * px_صف_میانگیر;
+        uint8_t * puc_صف_Storage_میانگیر;
 
         /* Retrieve the buffers used to create the queue before deleting it */
-        xResult = xQueueGetStaticBuffers( xQueue, &pucQueueStorageBuffer, &pxQueueBuffer );
-        configASSERT( xResult == pdTRUE );
+        x_نتیجه = x_صف_Get_Static_Buffers( x_صف, &puc_صف_Storage_میانگیر, &px_صف_میانگیر );
+        configASSERT( x_نتیجه == pdTRUE );
 
         /* Delete the queue */
-        vQueueDelete( xQueue );
+        v_صف_Delete( x_صف );
 
         /* Free the memory buffers */
-        heap_caps_free( pxQueueBuffer );
-        heap_caps_free( pucQueueStorageBuffer );
+        انباشته_caps_free( px_صف_میانگیر );
+        انباشته_caps_free( puc_صف_Storage_میانگیر );
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#پایان_اگر /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
 /* -------------------------------- Semaphore ------------------------------- */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#إذا ( config_SUPPORT_STATIC_تخصیص == 1 )
 
-    SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
-                                                       UBaseType_t uxInitialCount,
-                                                       const uint8_t ucQueueType,
-                                                       UBaseType_t uxMemoryCaps )
+    SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t ux_Max_شمار,
+                                                       UBaseType_t ux_Initial_شمار,
+                                                       ثابت uint8_t uc_صف_Type,
+                                                       UBaseType_t ux_حافظه_Caps )
     {
         SemaphoreHandle_t xSemaphore;
-        StaticSemaphore_t * pxSemaphoreBuffer;
+        StaticSemaphore_t * px_Semaphore_میانگیر;
 
         /* Allocate memory for the semaphore using the provided memory caps */
-        pxSemaphoreBuffer = heap_caps_malloc( sizeof( StaticSemaphore_t ), ( uint32_t ) uxMemoryCaps );
+        px_Semaphore_میانگیر = انباشته_caps_malloc( حجم( StaticSemaphore_t ), ( uint32_t ) ux_حافظه_Caps );
 
-        if( pxSemaphoreBuffer == NULL )
+        إذا( px_Semaphore_میانگیر == عدم )
         {
-            return NULL;
+            أرجع عدم;
         }
 
         /* Create the semaphore using static creation API */
-        if( ucQueueType == queueQUEUE_TYPE_MUTEX )
+        إذا( uc_صف_Type == صف_صف_TYPE_MUTEX )
         {
-            xSemaphore = xSemaphoreCreateMutexStatic( pxSemaphoreBuffer );
+            xSemaphore = xSemaphoreCreateMutexStatic( px_Semaphore_میانگیر );
         }
-        else if( ucQueueType == queueQUEUE_TYPE_COUNTING_SEMAPHORE )
+        وإلا إذا( uc_صف_Type == صف_صف_TYPE_COUNTING_SEMAPHORE )
         {
-            xSemaphore = xSemaphoreCreateCountingStatic( uxMaxCount, uxInitialCount, pxSemaphoreBuffer );
+            xSemaphore = xSemaphoreCreateCountingStatic( ux_Max_شمار, ux_Initial_شمار, px_Semaphore_میانگیر );
         }
-        else if( ucQueueType == queueQUEUE_TYPE_BINARY_SEMAPHORE )
+        وإلا إذا( uc_صف_Type == صف_صف_TYPE_دودویی_SEMAPHORE )
         {
-            xSemaphore = xSemaphoreCreateBinaryStatic( pxSemaphoreBuffer );
+            xSemaphore = x_Semaphore_Create_دودویی_Static( px_Semaphore_میانگیر );
         }
-        else /* ucQueueType == queueQUEUE_TYPE_RECURSIVE_MUTEX */
+        وإلا /* ucQueueType == queueQUEUE_TYPE_RECURSIVE_MUTEX */
         {
-            xSemaphore = xSemaphoreCreateRecursiveMutexStatic( pxSemaphoreBuffer );
-        }
-
-        if( xSemaphore == NULL )
-        {
-            heap_caps_free( pxSemaphoreBuffer );
+            xSemaphore = xSemaphoreCreateRecursiveMutexStatic( px_Semaphore_میانگیر );
         }
 
-        return xSemaphore;
+        إذا( xSemaphore == عدم )
+        {
+            انباشته_caps_free( px_Semaphore_میانگیر );
+        }
+
+        أرجع xSemaphore;
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#پایان_اگر /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#إذا ( config_SUPPORT_STATIC_تخصیص == 1 )
 
-    void vSemaphoreDeleteWithCaps( SemaphoreHandle_t xSemaphore )
+    فراغ vSemaphoreDeleteWithCaps( SemaphoreHandle_t xSemaphore )
     {
         /* Return value unused if asserts are disabled */
-        BaseType_t __attribute__( ( unused ) ) xResult;
-        StaticSemaphore_t * pxSemaphoreBuffer;
+        پایه_Type_t __attribute__( ( استفادهنشده ) ) x_نتیجه;
+        StaticSemaphore_t * px_Semaphore_میانگیر;
 
         /* Retrieve the buffer used to create the semaphore before deleting it
          * */
-        xResult = xSemaphoreGetStaticBuffer( xSemaphore, &pxSemaphoreBuffer );
-        configASSERT( xResult == pdTRUE );
+        x_نتیجه = x_Semaphore_Get_Static_میانگیر( xSemaphore, &px_Semaphore_میانگیر );
+        configASSERT( x_نتیجه == pdTRUE );
 
         /* Delete the semaphore */
         vSemaphoreDelete( xSemaphore );
 
         /* Free the memory buffer */
-        heap_caps_free( pxSemaphoreBuffer );
+        انباشته_caps_free( px_Semaphore_میانگیر );
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#پایان_اگر /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
 /* ------------------------- Stream & Message Buffers ----------------------- */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#إذا ( config_SUPPORT_STATIC_تخصیص == 1 )
 
-    StreamBufferHandle_t xStreamBufferGenericCreateWithCaps( size_t xBufferSizeBytes,
-                                                             size_t xTriggerLevelBytes,
-                                                             BaseType_t xIsMessageBuffer,
-                                                             UBaseType_t uxMemoryCaps )
+    جریان_میانگیر_Handle_t x_جریان_میانگیر_Generic_Create_With_Caps( size_t x_میانگیر_اندازه_بایتها,
+                                                             size_t x_Trigger_Level_بایتها,
+                                                             پایه_Type_t x_Is_پیام_میانگیر,
+                                                             UBaseType_t ux_حافظه_Caps )
     {
-        StreamBufferHandle_t xStreamBuffer;
-        StaticStreamBuffer_t * pxStaticStreamBuffer;
-        uint8_t * pucStreamBufferStorageArea;
+        جریان_میانگیر_Handle_t x_جریان_میانگیر;
+        Static_جریان_میانگیر_t * px_Static_جریان_میانگیر;
+        uint8_t * puc_جریان_میانگیر_Storage_Area;
 
         /* Allocate memory for the stream or message buffer using the provided
          * memory caps */
-        pxStaticStreamBuffer = heap_caps_malloc( sizeof( StaticStreamBuffer_t ), ( uint32_t ) uxMemoryCaps );
-        pucStreamBufferStorageArea = heap_caps_malloc( xBufferSizeBytes, ( uint32_t ) uxMemoryCaps );
+        px_Static_جریان_میانگیر = انباشته_caps_malloc( حجم( Static_جریان_میانگیر_t ), ( uint32_t ) ux_حافظه_Caps );
+        puc_جریان_میانگیر_Storage_Area = انباشته_caps_malloc( x_میانگیر_اندازه_بایتها, ( uint32_t ) ux_حافظه_Caps );
 
-        if( ( pxStaticStreamBuffer == NULL ) || ( pucStreamBufferStorageArea == NULL ) )
+        إذا( ( px_Static_جریان_میانگیر == عدم ) || ( puc_جریان_میانگیر_Storage_Area == عدم ) )
         {
-            goto err;
+            اذهب err;
         }
 
         /* Create the stream or message buffer using static creation API */
-        if( xIsMessageBuffer == pdTRUE )
+        إذا( x_Is_پیام_میانگیر == pdTRUE )
         {
-            xStreamBuffer = ( StreamBufferHandle_t ) xMessageBufferCreateStatic( xBufferSizeBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer );
+            x_جریان_میانگیر = ( جریان_میانگیر_Handle_t ) x_پیام_میانگیر_Create_Static( x_میانگیر_اندازه_بایتها, puc_جریان_میانگیر_Storage_Area, px_Static_جریان_میانگیر );
         }
-        else
+        وإلا
         {
-            xStreamBuffer = xStreamBufferCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer );
-        }
-
-        if( xStreamBuffer == NULL )
-        {
-            goto err;
+            x_جریان_میانگیر = x_جریان_میانگیر_Create_Static( x_میانگیر_اندازه_بایتها, x_Trigger_Level_بایتها, puc_جریان_میانگیر_Storage_Area, px_Static_جریان_میانگیر );
         }
 
-        return xStreamBuffer;
+        إذا( x_جریان_میانگیر == عدم )
+        {
+            اذهب err;
+        }
+
+        أرجع x_جریان_میانگیر;
 
 err:
-        heap_caps_free( pucStreamBufferStorageArea );
-        heap_caps_free( pxStaticStreamBuffer );
-        return NULL;
+        انباشته_caps_free( puc_جریان_میانگیر_Storage_Area );
+        انباشته_caps_free( px_Static_جریان_میانگیر );
+        أرجع عدم;
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#پایان_اگر /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#إذا ( config_SUPPORT_STATIC_تخصیص == 1 )
 
-    void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
-                                             BaseType_t xIsMessageBuffer )
+    فراغ v_جریان_میانگیر_Generic_Delete_With_Caps( جریان_میانگیر_Handle_t x_جریان_میانگیر,
+                                             پایه_Type_t x_Is_پیام_میانگیر )
     {
         /* Return value unused if asserts are disabled */
-        BaseType_t __attribute__( ( unused ) ) xResult;
-        StaticStreamBuffer_t * pxStaticStreamBuffer;
-        uint8_t * pucStreamBufferStorageArea;
+        پایه_Type_t __attribute__( ( استفادهنشده ) ) x_نتیجه;
+        Static_جریان_میانگیر_t * px_Static_جریان_میانگیر;
+        uint8_t * puc_جریان_میانگیر_Storage_Area;
 
         /* Retrieve the buffers used to create the stream or message buffer
          * before deleting it */
-        if( xIsMessageBuffer == pdTRUE )
+        إذا( x_Is_پیام_میانگیر == pdTRUE )
         {
-            xResult = xMessageBufferGetStaticBuffers( xStreamBuffer, &pucStreamBufferStorageArea, &pxStaticStreamBuffer );
+            x_نتیجه = x_پیام_میانگیر_Get_Static_Buffers( x_جریان_میانگیر, &puc_جریان_میانگیر_Storage_Area, &px_Static_جریان_میانگیر );
         }
-        else
+        وإلا
         {
-            xResult = xStreamBufferGetStaticBuffers( xStreamBuffer, &pucStreamBufferStorageArea, &pxStaticStreamBuffer );
+            x_نتیجه = x_جریان_میانگیر_Get_Static_Buffers( x_جریان_میانگیر, &puc_جریان_میانگیر_Storage_Area, &px_Static_جریان_میانگیر );
         }
 
-        configASSERT( xResult == pdTRUE );
+        configASSERT( x_نتیجه == pdTRUE );
 
         /* Delete the stream or message buffer */
-        if( xIsMessageBuffer == pdTRUE )
+        إذا( x_Is_پیام_میانگیر == pdTRUE )
         {
-            vMessageBufferDelete( xStreamBuffer );
+            v_پیام_میانگیر_Delete( x_جریان_میانگیر );
         }
-        else
+        وإلا
         {
-            vStreamBufferDelete( xStreamBuffer );
+            v_جریان_میانگیر_Delete( x_جریان_میانگیر );
         }
 
         /* Free the memory buffers */
-        heap_caps_free( pxStaticStreamBuffer );
-        heap_caps_free( pucStreamBufferStorageArea );
+        انباشته_caps_free( px_Static_جریان_میانگیر );
+        انباشته_caps_free( puc_جریان_میانگیر_Storage_Area );
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#پایان_اگر /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/

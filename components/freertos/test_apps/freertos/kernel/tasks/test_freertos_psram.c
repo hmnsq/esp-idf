@@ -4,112 +4,112 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/idf_additions.h"
-#include "esp_private/freertos_idf_additions_priv.h"
-#include "unity.h"
-#include "esp_heap_caps.h"
-#include "unity_test_runner.h"
-#include "memory_checks.h"
+#ضمن <stdio.h>
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
+#ضمن "freertos/idf_additions.h"
+#ضمن "esp_private/freertos_idf_additions_priv.h"
+#ضمن "unity.h"
+#ضمن "esp_heap_caps.h"
+#ضمن "unity_test_runner.h"
+#ضمن "memory_checks.h"
 
-#define UNITY_FREERTOS_PRIORITY 5
+#تعریف_کن UNITY_FREERTOS_اولویت 5
 
-#if CONFIG_SPIRAM
+#إذا CONFIG_SPIRAM
 
-static void task_delete_itself(void *arg)
+ساكن فراغ task_delete_itself(فراغ *arg)
 {
-    printf("starting task\n");
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    چاپ_کن("starting task\n");
+    ulTaskNotifyTake(pdTRUE, پورت_MAX_DELAY);
     xTaskNotifyGive((TaskHandle_t)arg);
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
-static void task_should_never_run(void *arg)
+ساكن فراغ task_should_never_پیاپی(فراغ *arg)
 {
-    printf("ERROR: this task should not run, aborting\n");
+    چاپ_کن("ERROR: this task should not run, aborting\n");
     abort();
 }
 
-static BaseType_t create_task(TaskFunction_t function,
-                              size_t stack_size,
-                              void *task_arg,
-                              int core_num,
-                              UBaseType_t heap_caps,
+ساكن پایه_Type_t create_task(TaskFunction_t function,
+                              size_t پشته_اندازه_2,
+                              فراغ *task_arg,
+                              صحيح core_رقم,
+                              UBaseType_t انباشته_caps,
                               TaskHandle_t *task_handle)
 {
-#if CONFIG_FREERTOS_SMP
-    UBaseType_t core_affinity_mask = (core_num == -1) ? tskNO_AFFINITY : 1 << core_num;
-    return prvTaskCreateDynamicAffinitySetWithCaps(function,
+#إذا CONFIG_FREERTOS_SMP
+    UBaseType_t core_affinity_ماسک = (core_رقم == -1) ? tskNO_AFFINITY : 1 << core_رقم;
+    أرجع prv_Task_Create_Dynamic_Affinity_مجموعه_With_Caps(function,
                                                    "self_delete",
-                                                   stack_size,
+                                                   پشته_اندازه_2,
                                                    task_arg,
-                                                   UNITY_FREERTOS_PRIORITY + 1,
-                                                   core_affinity_mask,
-                                                   heap_caps,
+                                                   UNITY_FREERTOS_اولویت + 1,
+                                                   core_affinity_ماسک,
+                                                   انباشته_caps,
                                                    task_handle);
-#else
-    const BaseType_t task_core_num = (core_num == -1) ? tskNO_AFFINITY : core_num;
-    return prvTaskCreateDynamicPinnedToCoreWithCaps(function,
+#وإلا
+    ثابت پایه_Type_t task_core_رقم = (core_رقم == -1) ? tskNO_AFFINITY : core_رقم;
+    أرجع prv_Task_Create_Dynamic_Pinned_مقصد_Core_With_Caps(function,
                                                     "self_delete",
-                                                    stack_size,
+                                                    پشته_اندازه_2,
                                                     task_arg,
-                                                    UNITY_FREERTOS_PRIORITY + 1,
-                                                    task_core_num,
-                                                    heap_caps,
+                                                    UNITY_FREERTOS_اولویت + 1,
+                                                    task_core_رقم,
+                                                    انباشته_caps,
                                                     task_handle);
-#endif
+#پایان_اگر
 }
 
 TEST_CASE("Out of memory failure", "[freertos][psram]")
 {
-    TaskHandle_t task_handle = NULL;
-    const size_t STACK_SIZE = 0x80000000; // far larger than the virtual address space on ESP32
-    UBaseType_t HEAP_CAPS = (MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+    TaskHandle_t task_handle = عدم;
+    ثابت size_t پشته_اندازه = 0x80000000; // far larger than the virtual address space on ESP32
+    UBaseType_t انباشته_CAPS = (MALLOC_CAP_SPIRAM | MALLOC_CAP_8_بیت);
 
-    BaseType_t result = create_task(task_should_never_run,
-                                    STACK_SIZE,
-                                    (void *)xTaskGetCurrentTaskHandle(),
+    پایه_Type_t نتیجه = create_task(task_should_never_پیاپی,
+                                    پشته_اندازه,
+                                    (فراغ *)xTaskGetCurrentTaskHandle(),
                                     -1,
-                                    HEAP_CAPS,
+                                    انباشته_CAPS,
                                     &task_handle);
-    TEST_ASSERT_EQUAL(errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY, result);
-    (void)task_handle;
+    TEST_ASSERT_EQUAL(err_COULD_NOT_ALLOCATE_REQUIRED_حافظه, نتیجه);
+    (فراغ)task_handle;
 }
 
 TEST_CASE("Task with stack memory in PSRAM", "[freertos][psram]")
 {
-    TaskHandle_t task_handle = NULL;
-    const size_t STACK_SIZE = 0x80000; // value is too large for any internal RAM on current chips
-    UBaseType_t HEAP_CAPS = (MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+    TaskHandle_t task_handle = عدم;
+    ثابت size_t پشته_اندازه = 0x80000; // value is too large for any internal RAM on current chips
+    UBaseType_t انباشته_CAPS = (MALLOC_CAP_SPIRAM | MALLOC_CAP_8_بیت);
 
-    BaseType_t result = create_task(task_delete_itself,
-                                    STACK_SIZE,
-                                    (void *)xTaskGetCurrentTaskHandle(),
+    پایه_Type_t نتیجه = create_task(task_delete_itself,
+                                    پشته_اندازه,
+                                    (فراغ *)xTaskGetCurrentTaskHandle(),
                                     -1,
-                                    HEAP_CAPS,
+                                    انباشته_CAPS,
                                     &task_handle);
-    TEST_ASSERT_EQUAL(pdPASS, result);
+    TEST_ASSERT_EQUAL(pdPASS, نتیجه);
 
     // synchronize with the task to make sure we don't return too early, thus giving it enough time
     // to delete itself and giving the idle task time to clean up memory (see delay in tearDown()).
     xTaskNotifyGive(task_handle);
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, پورت_MAX_DELAY);
 }
 
-#if !CONFIG_FREERTOS_UNICORE
-typedef struct {
-    size_t recorded_core_num;
-    TaskHandle_t parent_handle;
+#إذا !CONFIG_FREERTOS_UNICORE
+تعريفنوع بنية {
+    size_t recorded_core_رقم;
+    TaskHandle_t والد_handle;
 } report_corenum_info_t;
 
-static void task_report_corenum(void *arg)
+ساكن فراغ task_report_corenum(فراغ *arg)
 {
     report_corenum_info_t *info = (report_corenum_info_t*) arg;
-    info->recorded_core_num = xTaskGetCoreID(NULL);
-    xTaskNotifyGive(info->parent_handle);
-    vTaskSuspend(NULL);
+    info->recorded_core_رقم = xTaskGetCoreID(عدم);
+    xTaskNotifyGive(info->والد_handle);
+    vTaskSuspend(عدم);
 }
 
 /**
@@ -117,27 +117,27 @@ static void task_report_corenum(void *arg)
  */
 TEST_CASE("Task on specific core works", "[freertos][psram]")
 {
-    const size_t STACK_SIZE = 0x1000;
+    ثابت size_t پشته_اندازه = 0x1000;
     report_corenum_info_t corenum_info;
     TaskHandle_t task_handle;
 
-    for (int corenum = 0; corenum < CONFIG_SOC_CPU_CORES_NUM; corenum++) {
-        corenum_info.recorded_core_num = 0xFFFFFFFF;
-        corenum_info.parent_handle = xTaskGetCurrentTaskHandle();
-        UBaseType_t HEAP_CAPS = (MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
-        BaseType_t result = create_task(task_report_corenum,
-                                        STACK_SIZE,
-                                        (void *) & (corenum_info),
+    لكل (صحيح corenum = 0; corenum < CONFIG_SOC_CPU_CORES_رقم; corenum++) {
+        corenum_info.recorded_core_رقم = 0xFFFFFFFF;
+        corenum_info.والد_handle = xTaskGetCurrentTaskHandle();
+        UBaseType_t انباشته_CAPS = (MALLOC_CAP_SPIRAM | MALLOC_CAP_8_بیت);
+        پایه_Type_t نتیجه = create_task(task_report_corenum,
+                                        پشته_اندازه,
+                                        (فراغ *) & (corenum_info),
                                         corenum,
-                                        HEAP_CAPS,
+                                        انباشته_CAPS,
                                         &task_handle);
 
-        TEST_ASSERT_EQUAL(pdPASS, result);
+        TEST_ASSERT_EQUAL(pdPASS, نتیجه);
 
         // Wait for the created task to finish its job
-        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        ulTaskNotifyTake(pdTRUE, پورت_MAX_DELAY);
 
-        TEST_ASSERT_EQUAL((size_t) corenum, corenum_info.recorded_core_num);
+        TEST_ASSERT_EQUAL((size_t) corenum, corenum_info.recorded_core_رقم);
 
         vTaskDelete(task_handle);
 
@@ -145,6 +145,6 @@ TEST_CASE("Task on specific core works", "[freertos][psram]")
         vTaskDelay(10);
     }
 }
-#endif // !CONFIG_FREERTOS_UNICORE
+#پایان_اگر // !CONFIG_FREERTOS_UNICORE
 
-#endif // SPIRAM
+#پایان_اگر // SPIRAM

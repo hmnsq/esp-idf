@@ -4,35 +4,35 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <math.h>
-#include "soc/soc_caps.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "unity.h"
-#include "test_utils.h"
+#ضمن "sdkconfig.h"
+#ضمن <math.h>
+#ضمن "soc/soc_caps.h"
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
+#ضمن "freertos/semphr.h"
+#ضمن "unity.h"
+#ضمن "test_utils.h"
 
-#if SOC_CPU_HAS_FPU && CONFIG_FREERTOS_FPU_IN_ISR
+#إذا SOC_CPU_HAS_FPU && CONFIG_FREERTOS_FPU_درون_ISR
 
 // We can use xtensa API here as currently, non of the RISC-V targets have an FPU
-#include "xtensa_api.h"     // Replace with interrupt allocator API (IDF-3891)
-#include "esp_intr_alloc.h"
+#ضمن "xtensa_api.h"     // Replace with interrupt allocator API (IDF-3891)
+#ضمن "esp_intr_alloc.h"
 
-#define SW_ISR_LEVEL_1      7
+#تعریف_کن SW_ISR_LEVEL_1      7
 
-static void fpu_isr(void *arg)
+ساكن فراغ fpu_isr(فراغ *arg)
 {
     // Clear the interrupt
-    xt_set_intclear(1 << SW_ISR_LEVEL_1);
+    xt_مجموعه_intclear(1 << SW_ISR_LEVEL_1);
     /*
     Use the FPU
     - We test using a calculation that will cause a change in mantissa and exponent for extra thoroughness
     - cosf(0.0f) should return 1.0f, thus we are simply doubling test_float every iteration.
     - Therefore, we should end up with (0.01) * (2^8) = 2.56 at the end of the loop
     */
-    volatile float test_float = 0.01f;
-    for (int i = 0; i < 8; i++) {
+    متطاير عائم test_float = 0.01f;
+    لكل (صحيح i = 0; i < 8; i++) {
         test_float = test_float * 2.0f * cosf(0.0f);
     }
     // We allow a 0.1% delta on the final result in case of any loss of precision from floating point calculations
@@ -60,26 +60,26 @@ Expected:
 TEST_CASE("FPU: Usage in level 1 ISR", "[freertos]")
 {
     intr_handle_t isr_handle;
-    TEST_ESP_OK(esp_intr_alloc(ETS_INTERNAL_SW0_INTR_SOURCE, ESP_INTR_FLAG_LEVEL1, &fpu_isr, NULL, &isr_handle));
+    TEST_ESP_OK(esp_intr_alloc(ETS_داخلی_SW0_INTR_منبع, ESP_INTR_FLAG_LEVEL1, &fpu_isr, عدم, &isr_handle));
     /*
     Use the FPU (calculate a different value than in the ISR)
     - We test using a calculation that will cause a change in mantissa and exponent for extra thoroughness
     - cosf(0.0f) should return 1.0f, thus we are simply dividing test_float every iteration.
     */
     // We should end up with (2.56) / (2^4) = 0.16 at the end of the first loop
-    volatile float test_float = 2.56f;
-    for (int i = 0; i < 4; i++) {
+    متطاير عائم test_float = 2.56f;
+    لكل (صحيح i = 0; i < 4; i++) {
         test_float = test_float / (2.0f * cosf(0.0f));
     }
     // We allow a 0.1% delta on the final result in case of any loss of precision from floating point calculations
     TEST_ASSERT_FLOAT_WITHIN(0.00016f, 0.16f, test_float);
 
     // Trigger the ISR
-    xt_set_intset(1 << SW_ISR_LEVEL_1);
+    xt_مجموعه_intset(1 << SW_ISR_LEVEL_1);
 
     // Continue using the FPU from a task context after the interrupt returns
     // We should end up with (0.16) / (2^4) = 0.01 at the end of the first loop
-    for (int i = 0; i < 4; i++) {
+    لكل (صحيح i = 0; i < 4; i++) {
         test_float = test_float / (2.0f * cosf(0.0f));
     }
     // We allow a 0.1% delta on the final result in case of any loss of precision from floating point calculations
@@ -107,59 +107,59 @@ Expected:
     - The ISR using the FPU will not affect the unpinned task's affinity
 */
 
-static void unpinned_task(void *arg)
+ساكن فراغ unpinned_task(فراغ *arg)
 {
     // Disable scheduling/preemption to make sure the current task doesn't switch cores
-#if ( ( CONFIG_FREERTOS_SMP ) && ( !CONFIG_FREERTOS_UNICORE ) )
-    vTaskPreemptionDisable(NULL);
-#else
+#إذا ( ( CONFIG_FREERTOS_SMP ) && ( !CONFIG_FREERTOS_UNICORE ) )
+    vTaskPreemptionDisable(عدم);
+#وإلا
     vTaskSuspendAll();
-#endif
+#پایان_اگر
     // Check that the task is unpinned
-#if !CONFIG_FREERTOS_UNICORE
-#if CONFIG_FREERTOS_SMP
-    TEST_ASSERT_EQUAL(tskNO_AFFINITY, vTaskCoreAffinityGet(NULL));
-#else
-    TEST_ASSERT_EQUAL(tskNO_AFFINITY, xTaskGetCoreID(NULL));
-#endif
-#endif // !CONFIG_FREERTOS_UNICORE
+#إذا !CONFIG_FREERTOS_UNICORE
+#إذا CONFIG_FREERTOS_SMP
+    TEST_ASSERT_EQUAL(tskNO_AFFINITY, vTaskCoreAffinityGet(عدم));
+#وإلا
+    TEST_ASSERT_EQUAL(tskNO_AFFINITY, xTaskGetCoreID(عدم));
+#پایان_اگر
+#پایان_اگر // !CONFIG_FREERTOS_UNICORE
 
     // Allocate an ISR to use the FPU
     intr_handle_t isr_handle;
-    TEST_ESP_OK(esp_intr_alloc(ETS_INTERNAL_SW0_INTR_SOURCE, ESP_INTR_FLAG_LEVEL1, &fpu_isr, NULL, &isr_handle));
+    TEST_ESP_OK(esp_intr_alloc(ETS_داخلی_SW0_INTR_منبع, ESP_INTR_FLAG_LEVEL1, &fpu_isr, عدم, &isr_handle));
     // Trigger the ISR
-    xt_set_intset(1 << SW_ISR_LEVEL_1);
+    xt_مجموعه_intset(1 << SW_ISR_LEVEL_1);
 
     // Task should remain unpinned after the ISR uses the FPU
-#if !CONFIG_FREERTOS_UNICORE
-#if CONFIG_FREERTOS_SMP
-    TEST_ASSERT_EQUAL(tskNO_AFFINITY, vTaskCoreAffinityGet(NULL));
-#else
-    TEST_ASSERT_EQUAL(tskNO_AFFINITY, xTaskGetCoreID(NULL));
-#endif
-#endif // !CONFIG_FREERTOS_UNICORE
+#إذا !CONFIG_FREERTOS_UNICORE
+#إذا CONFIG_FREERTOS_SMP
+    TEST_ASSERT_EQUAL(tskNO_AFFINITY, vTaskCoreAffinityGet(عدم));
+#وإلا
+    TEST_ASSERT_EQUAL(tskNO_AFFINITY, xTaskGetCoreID(عدم));
+#پایان_اگر
+#پایان_اگر // !CONFIG_FREERTOS_UNICORE
     // Re-enable scheduling/preemption
-#if ( ( CONFIG_FREERTOS_SMP ) && ( !CONFIG_FREERTOS_UNICORE ) )
-    vTaskPreemptionEnable(NULL);
-#else
+#إذا ( ( CONFIG_FREERTOS_SMP ) && ( !CONFIG_FREERTOS_UNICORE ) )
+    vTaskPreemptionEnable(عدم);
+#وإلا
     xTaskResumeAll();
-#endif
+#پایان_اگر
 
     // Free the ISR for ongoing tests
     TEST_ESP_OK(esp_intr_free(isr_handle));
 
     // Indicate done and self delete
     xTaskNotifyGive((TaskHandle_t)arg);
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
 TEST_CASE("FPU: Level 1 ISR does not affect unpinned task", "[freertos]")
 {
     TaskHandle_t unity_task_handle = xTaskGetCurrentTaskHandle();
-    xTaskCreate(unpinned_task, "unpin", 2048, (void *)unity_task_handle, UNITY_FREERTOS_PRIORITY + 1, NULL);
+    xTaskCreate(unpinned_task, "unpin", 2048, (فراغ *)unity_task_handle, UNITY_FREERTOS_اولویت + 1, عدم);
     // Wait for task to complete
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, پورت_MAX_DELAY);
     vTaskDelay(10); // Short delay to allow task memory to be freed
 }
 
-#endif // SOC_CPU_HAS_FPU && CONFIG_FREERTOS_FPU_IN_ISR
+#پایان_اگر // SOC_CPU_HAS_FPU && CONFIG_FREERTOS_FPU_IN_ISR
