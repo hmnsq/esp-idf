@@ -37,7 +37,7 @@
  * Defines the prototype to which task functions must conform.  Defined in this
  * file to ensure the type is known before portable.h is included.
  */
-typedef void (* TaskFunction_t)( void * arg );
+تعريفنوع فراغ (* TaskFunction_t)( فراغ * arg );
 
 /* Converts a time in milliseconds to a time in ticks.  This macro can be
  * overridden by a macro of the same name defined in FreeRTOSConfig.h in case the
@@ -75,13 +75,13 @@ typedef void (* TaskFunction_t)( void * arg );
     #define configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES    0
 #endif
 
-#if ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS )
-    #define pdINTEGRITY_CHECK_VALUE    0x5a5a
-#elif ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_32_BITS )
-    #define pdINTEGRITY_CHECK_VALUE    0x5a5a5a5aUL
-#elif ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_64_BITS )
-    #define pdINTEGRITY_CHECK_VALUE    0x5a5a5a5a5a5a5a5aULL
-#else
+#إذا ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS )
+    #define pd_INTEGRITY_CHECK_نيلاي    0x5a5a
+#وإلاإذا ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_32_BITS )
+    #define pd_INTEGRITY_CHECK_نيلاي    0x5a5a5a5aUL
+#وإلاإذا ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_64_BITS )
+    #define pd_INTEGRITY_CHECK_نيلاي    0x5a5a5a5a5a5a5a5aULL
+#وإلا
     #error configTICK_TYPE_WIDTH_IN_BITS set to unsupported tick type width.
 #endif
 

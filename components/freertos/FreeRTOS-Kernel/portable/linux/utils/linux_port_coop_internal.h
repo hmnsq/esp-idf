@@ -9,14 +9,14 @@
 
 #pragma once
 
-#include <errno.h>
-#include <time.h>
-#include <dlfcn.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#ضمن <errno.h>
+#ضمن <time.h>
+#ضمن <dlfcn.h>
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
 
 #ifdef __cplusplus
-extern "C" {
+خارجي "C" {
 #endif
 
 /**
@@ -39,14 +39,14 @@ extern "C" {
  *
  * @return true if called from a FreeRTOS task, false otherwise.
  */
-bool linux_port_in_freertos_task(void);
+bool linux_port_in_freertos_task(فراغ);
 
 /**
  * @brief Set a kernel file descriptor to O_NONBLOCK mode.
  *
  * @param fd File descriptor to make non-blocking.
  */
-void linux_coop_set_nonblocking(int fd);
+فراغ linux_coop_set_nonblocking(صحيح fd);
 
 /**
  * @brief Track a file descriptor in the cooperative mode table.
@@ -58,14 +58,14 @@ void linux_coop_set_nonblocking(int fd);
  * @param fd         File descriptor to track.
  * @param user_flags User-visible status flags (as passed to fcntl F_SETFL).
  */
-void linux_coop_track_fd(int fd, int user_flags);
+فراغ linux_coop_track_fd(صحيح fd, صحيح user_flags);
 
 /**
  * @brief Stop tracking a file descriptor in the cooperative mode table.
  *
  * @param fd File descriptor to untrack.
  */
-void linux_coop_untrack_fd(int fd);
+فراغ linux_coop_untrack_fd(صحيح fd);
 
 /**
  * @brief Update user-visible status flags for a tracked file descriptor.
@@ -73,7 +73,7 @@ void linux_coop_untrack_fd(int fd);
  * @param fd         File descriptor to update.
  * @param user_flags New user-visible status flags.
  */
-void linux_coop_set_user_flags(int fd, int user_flags);
+فراغ linux_coop_set_user_flags(صحيح fd, صحيح user_flags);
 
 /**
  * @brief Query whether user-visible mode is non-blocking for a file descriptor.
@@ -81,7 +81,7 @@ void linux_coop_set_user_flags(int fd, int user_flags);
  * @param fd File descriptor to query.
  * @return true if user-visible mode is non-blocking, false otherwise.
  */
-bool linux_coop_fd_user_nonblocking(int fd);
+bool linux_coop_fd_user_nonblocking(صحيح fd);
 
 /**
  * @brief Get tracked user-visible status flags for a file descriptor.
@@ -90,7 +90,7 @@ bool linux_coop_fd_user_nonblocking(int fd);
  * @param[out] flags Output for tracked user-visible flags.
  * @return true if the fd is tracked and flags were written, false otherwise.
  */
-bool linux_coop_get_user_flags(int fd, int *flags);
+bool linux_coop_get_user_flags(صحيح fd, صحيح *flags);
 
 /**
  * @brief Cooperatively yield for @p ms milliseconds.
@@ -99,16 +99,16 @@ bool linux_coop_get_user_flags(int fd, int *flags);
  *
  * @param ms Number of milliseconds to yield.
  */
-static inline __attribute__((always_inline))
-void linux_coop_yield(int ms)
+ساكن مضمن __attribute__((always_inline))
+فراغ linux_coop_yield(صحيح ms)
 {
-    if (linux_port_in_freertos_task()) {
+    إذا (linux_port_in_freertos_task()) {
         vTaskDelay(pdMS_TO_TICKS(ms));
-    } else {
-        struct timespec ts;
+    } وإلا {
+        بنية timespec ts;
         ts.tv_sec  = ms / 1000;
         ts.tv_nsec = (ms % 1000) * 1000000L;
-        while (nanosleep(&ts, &ts) == -1 && errno == EINTR) {
+        طالما (nanosleep(&ts, &ts) == -1 && errno == EINTR) {
             /* retry with remaining time */
         }
     }
@@ -123,21 +123,21 @@ void linux_coop_yield(int ms)
  * @param fd   File descriptor used to determine user-visible blocking mode.
  * @param expr Expression to evaluate in the retry loop (must yield ssize_t).
  */
-#define LINUX_COOP_IO_LOOP(fd, expr)                           \
-    while (1)                                                  \
+#define LINUX_COOP_IO_LOOP(fd, اوڠکاڤن)                           \
+    طالما (1)                                                  \
     {                                                          \
-        ssize_t _n = (expr);                                   \
-        if (_n >= 0) {                                         \
-            return _n;                                         \
+        ssize_t _n = (اوڠکاڤن);                                   \
+        إذا (_n >= 0) {                                         \
+            أرجع _n;                                         \
         }                                                      \
-        if (errno == EAGAIN || errno == EWOULDBLOCK) {         \
-            if (linux_coop_fd_user_nonblocking(fd)) {          \
-                return -1;                                     \
+        إذا (errno == EAGAIN || errno == EWOULDBLOCK) {         \
+            إذا (linux_coop_fd_user_nonblocking(fd)) {          \
+                أرجع -1;                                     \
             }                                                  \
             linux_coop_yield(LINUX_COOP_TICK_MS);              \
-            continue;                                          \
+            استمر;                                          \
         }                                                      \
-        return -1;                                             \
+        أرجع -1;                                             \
     }
 
 #ifdef __cplusplus
