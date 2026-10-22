@@ -53,17 +53,17 @@
  *
  */
 
-#ifndef STREAM_BUFFER_H
-#define STREAM_BUFFER_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ ಹರಿವು_ಬಫರ್_H
+#ವ್ಯಾಖ್ಯಾನಿಸು ಹರಿವು_ಬಫರ್_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h must appear in source files before include stream_buffer.h"
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ INC_FREERTOS_H
+    #ದೋಷ "include FreeRTOS.h must appear in source files before include stream_buffer.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
-    extern "C" {
-#endif
+#ಆದರೆ defined( __cplusplus )
+    ಬಾಹ್ಯ "C" {
+#ಆದರೆ_ಅಂತ್ಯ
 /* *INDENT-ON* */
 
 /**
@@ -72,15 +72,15 @@
  * then be used as a parameter to xStreamBufferSend(), xStreamBufferReceive(),
  * etc.
  */
-struct StreamBufferDef_t;
-typedef struct StreamBufferDef_t * StreamBufferHandle_t;
+ರಚನೆ ಹರಿವು_ಬಫರ್_Def_t;
+ಪ್ರಕಾರವ್ಯಾಖ್ಯೆ ರಚನೆ ಹರಿವು_ಬಫರ್_Def_t * ಹರಿವು_ಬಫರ್_Handle_t;
 
 /**
  *  Type used as a stream buffer's optional callback.
  */
-typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuffer,
-                                                 BaseType_t xIsInsideISR,
-                                                 BaseType_t * const pxHigherPriorityTaskWoken );
+ಪ್ರಕಾರವ್ಯಾಖ್ಯೆ ಶೂನ್ಯ (* ಹರಿವು_ಬಫರ್_Callback_Function_t)( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                                                 ತಳ_Type_t xIsInsideISR,
+                                                 ತಳ_Type_t * ಸ್ಥಿರಾಂಕ px_Higher_ಆದ್ಯತೆ_Task_Woken );
 
 /**
  *
@@ -153,14 +153,14 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  */
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
-#define xStreamBufferCreate( xBufferSizeBytes, xTriggerLevelBytes ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), pdFALSE, NULL, NULL )
+#ವ್ಯಾಖ್ಯಾನಿಸು x_ಹರಿವು_ಬಫರ್_Create( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು, x_Trigger_Level_ಬೈಟುಗಳು ) \
+    x_ಹರಿವು_ಬಫರ್_Generic_Create( ( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು ), ( x_Trigger_Level_ಬೈಟುಗಳು ), pdFALSE, ಖಾಲಿ, ಖಾಲಿ )
 /** @endcond */
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-    #define xStreamBufferCreateWithCallback( xBufferSizeBytes, xTriggerLevelBytes, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), pdFALSE, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
-#endif
+#ಆದರೆ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #ವ್ಯಾಖ್ಯಾನಿಸು x_ಹರಿವು_ಬಫರ್_Create_With_Callback( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು, x_Trigger_Level_ಬೈಟುಗಳು, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
+    x_ಹರಿವು_ಬಫರ್_Generic_Create( ( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು ), ( x_Trigger_Level_ಬೈಟುಗಳು ), pdFALSE, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
+#ಆದರೆ_ಅಂತ್ಯ
 
 /**
  * Creates a new stream buffer using statically allocated memory.  See
@@ -244,14 +244,14 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  */
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
-#define xStreamBufferCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), pdFALSE, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), NULL, NULL )
+#ವ್ಯಾಖ್ಯಾನಿಸು x_ಹರಿವು_ಬಫರ್_Create_Static( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು, x_Trigger_Level_ಬೈಟುಗಳು, puc_ಹರಿವು_ಬಫರ್_Storage_Area, px_Static_ಹರಿವು_ಬಫರ್ ) \
+    x_ಹರಿವು_ಬಫರ್_Generic_Create_Static( ( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು ), ( x_Trigger_Level_ಬೈಟುಗಳು ), pdFALSE, ( puc_ಹರಿವು_ಬಫರ್_Storage_Area ), ( px_Static_ಹರಿವು_ಬಫರ್ ), ಖಾಲಿ, ಖಾಲಿ )
 /** @endcond */
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-    #define xStreamBufferCreateStaticWithCallback( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), pdFALSE, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
-#endif
+#ಆದರೆ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #ವ್ಯಾಖ್ಯಾನಿಸು x_ಹರಿವು_ಬಫರ್_Create_Static_With_Callback( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು, x_Trigger_Level_ಬೈಟುಗಳು, puc_ಹರಿವು_ಬಫರ್_Storage_Area, px_Static_ಹರಿವು_ಬಫರ್, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
+    x_ಹರಿವು_ಬಫರ್_Generic_Create_Static( ( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು ), ( x_Trigger_Level_ಬೈಟುಗಳು ), pdFALSE, ( puc_ಹರಿವು_ಬಫರ್_Storage_Area ), ( px_Static_ಹರಿವು_ಬಫರ್ ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
+#ಆದರೆ_ಅಂತ್ಯ
 
 /**
  *
@@ -271,11 +271,11 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  *
  * \ingroup StreamBufferManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    BaseType_t xStreamBufferGetStaticBuffers( StreamBufferHandle_t xStreamBuffer,
-                                              uint8_t ** ppucStreamBufferStorageArea,
-                                              StaticStreamBuffer_t ** ppxStaticStreamBuffer ) PRIVILEGED_FUNCTION;
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#ಆದರೆ ( config_SUPPORT_STATIC_ಹಂಚಿಕೆ == 1 )
+    ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_Get_Static_Buffers( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                                              uint8_t ** ppuc_ಹರಿವು_ಬಫರ್_Storage_Area,
+                                              Static_ಹರಿವು_ಬಫರ್_t ** ppx_Static_ಹರಿವು_ಬಫರ್ ) PRIVILEGED_FUNCTION;
+#ಆದರೆ_ಅಂತ್ಯ /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  *
@@ -360,10 +360,10 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  * @endcode
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
-                          const void * pvTxData,
-                          size_t xDataLengthBytes,
-                          TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+size_t x_ಹರಿವು_ಬಫರ್_Send( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                          ಸ್ಥಿರಾಂಕ ಶೂನ್ಯ * pv_Tx_ದತ್ತಾಂಶ,
+                          size_t x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು,
+                          TickType_t x_Ticks_ಗಮ್ಯ_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -452,10 +452,10 @@ size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
  * @endcode
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
-                                 const void * pvTxData,
-                                 size_t xDataLengthBytes,
-                                 BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+size_t x_ಹರಿವು_ಬಫರ್_Send_From_ISR( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                                 ಸ್ಥಿರಾಂಕ ಶೂನ್ಯ * pv_Tx_ದತ್ತಾಂಶ,
+                                 size_t x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು,
+                                 ತಳ_Type_t * ಸ್ಥಿರಾಂಕ px_Higher_ಆದ್ಯತೆ_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -532,10 +532,10 @@ size_t xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
  * @endcode
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
-                             void * pvRxData,
-                             size_t xBufferLengthBytes,
-                             TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+size_t x_ಹರಿವು_ಬಫರ್_Receive( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                             ಶೂನ್ಯ * pv_Rx_ದತ್ತಾಂಶ,
+                             size_t x_ಬಫರ್_ಉದ್ದಳತೆ_ಬೈಟುಗಳು,
+                             TickType_t x_Ticks_ಗಮ್ಯ_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -609,10 +609,10 @@ size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
  * @endcode
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
-                                    void * pvRxData,
-                                    size_t xBufferLengthBytes,
-                                    BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+size_t x_ಹರಿವು_ಬಫರ್_Receive_From_ISR( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                                    ಶೂನ್ಯ * pv_Rx_ದತ್ತಾಂಶ,
+                                    size_t x_ಬಫರ್_ಉದ್ದಳತೆ_ಬೈಟುಗಳು,
+                                    ತಳ_Type_t * ಸ್ಥಿರಾಂಕ px_Higher_ಆದ್ಯತೆ_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -628,7 +628,7 @@ size_t xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
  *
  * \ingroup StreamBufferManagement
  */
-void vStreamBufferDelete( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+ಶೂನ್ಯ v_ಹರಿವು_ಬಫರ್_Delete( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -642,7 +642,7 @@ void vStreamBufferDelete( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTI
  *
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferIsFull( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_Is_ತುಂಬಿದ( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -656,7 +656,7 @@ BaseType_t xStreamBufferIsFull( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_
  *
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferIsEmpty( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_Is_ಖಾಲಿಗಳು( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -673,7 +673,7 @@ BaseType_t xStreamBufferIsEmpty( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED
  *
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferReset( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_Reset( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -688,7 +688,7 @@ BaseType_t xStreamBufferReset( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_F
  *
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+size_t x_ಹರಿವು_ಬಫರ್_Spaces_ಲಭ್ಯ( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -703,7 +703,7 @@ size_t xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVIL
  *
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+size_t x_ಹರಿವು_ಬಫರ್_ಬೈಟುಗಳು_ಲಭ್ಯ( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -734,7 +734,7 @@ size_t xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVILE
  *
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferSetTriggerLevel( StreamBufferHandle_t xStreamBuffer,
+ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_ಗಣ_Trigger_Level( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
                                          size_t xTriggerLevel ) PRIVILEGED_FUNCTION;
 
 /**
@@ -768,8 +768,8 @@ BaseType_t xStreamBufferSetTriggerLevel( StreamBufferHandle_t xStreamBuffer,
  *
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferSendCompletedFromISR( StreamBufferHandle_t xStreamBuffer,
-                                              BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_Send_Completed_From_ISR( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                                              ತಳ_Type_t * px_Higher_ಆದ್ಯತೆ_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -803,42 +803,42 @@ BaseType_t xStreamBufferSendCompletedFromISR( StreamBufferHandle_t xStreamBuffer
  *
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferReceiveCompletedFromISR( StreamBufferHandle_t xStreamBuffer,
-                                                 BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_Receive_Completed_From_ISR( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                                                 ತಳ_Type_t * px_Higher_ಆದ್ಯತೆ_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
 
 /* Functions below here are not part of the public API. */
-StreamBufferHandle_t xStreamBufferGenericCreate( size_t xBufferSizeBytes,
-                                                 size_t xTriggerLevelBytes,
-                                                 BaseType_t xIsMessageBuffer,
-                                                 StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                                 StreamBufferCallbackFunction_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
+ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್_Generic_Create( size_t x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು,
+                                                 size_t x_Trigger_Level_ಬೈಟುಗಳು,
+                                                 ತಳ_Type_t x_Is_ಸಂದೇಶ_ಬಫರ್,
+                                                 ಹರಿವು_ಬಫರ್_Callback_Function_t pxSendCompletedCallback,
+                                                 ಹರಿವು_ಬಫರ್_Callback_Function_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
 
 
-StreamBufferHandle_t xStreamBufferGenericCreateStatic( size_t xBufferSizeBytes,
-                                                       size_t xTriggerLevelBytes,
-                                                       BaseType_t xIsMessageBuffer,
-                                                       uint8_t * const pucStreamBufferStorageArea,
-                                                       StaticStreamBuffer_t * const pxStaticStreamBuffer,
-                                                       StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                                       StreamBufferCallbackFunction_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
+ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್_Generic_Create_Static( size_t x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು,
+                                                       size_t x_Trigger_Level_ಬೈಟುಗಳು,
+                                                       ತಳ_Type_t x_Is_ಸಂದೇಶ_ಬಫರ್,
+                                                       uint8_t * ಸ್ಥಿರಾಂಕ puc_ಹರಿವು_ಬಫರ್_Storage_Area,
+                                                       Static_ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_Static_ಹರಿವು_ಬಫರ್,
+                                                       ಹರಿವು_ಬಫರ್_Callback_Function_t pxSendCompletedCallback,
+                                                       ಹರಿವು_ಬಫರ್_Callback_Function_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
 
-size_t xStreamBufferNextMessageLengthBytes( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+size_t x_ಹರಿವು_ಬಫರ್_ಮುಂದಿನ_ಸಂದೇಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ ) PRIVILEGED_FUNCTION;
 
-#if ( configUSE_TRACE_FACILITY == 1 )
-    void vStreamBufferSetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer,
-                                             UBaseType_t uxStreamBufferNumber ) PRIVILEGED_FUNCTION;
-    UBaseType_t uxStreamBufferGetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
-    uint8_t ucStreamBufferGetStreamBufferType( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
-#endif
+#ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
+    ಶೂನ್ಯ v_ಹರಿವು_ಬಫರ್_ಗಣ_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                                             UBaseType_t ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ ) PRIVILEGED_FUNCTION;
+    UBaseType_t ux_ಹರಿವು_ಬಫರ್_Get_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ ) PRIVILEGED_FUNCTION;
+    uint8_t uc_ಹರಿವು_ಬಫರ್_Get_ಹರಿವು_ಬಫರ್_Type( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ ) PRIVILEGED_FUNCTION;
+#ಆದರೆ_ಅಂತ್ಯ
 
 /** @endcond */
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
+#ಆದರೆ defined( __cplusplus )
     }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 /* *INDENT-ON* */
 
-#endif /* !defined( STREAM_BUFFER_H ) */
+#ಆದರೆ_ಅಂತ್ಯ /* !defined( STREAM_BUFFER_H ) */

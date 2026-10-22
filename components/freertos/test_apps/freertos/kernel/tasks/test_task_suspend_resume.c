@@ -5,40 +5,40 @@
  */
 
 /* Tests for FreeRTOS task suspend & resume */
-#include <stdio.h>
-#include <string.h>
-#include <inttypes.h>
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/timers.h"
-#include "freertos/queue.h"
-#include "unity.h"
-#include "test_utils.h"
-#include "driver/gptimer.h"
-#include "esp_rom_sys.h"
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ <string.h>
+#ಅನ್ತರ್ಭಾವ <inttypes.h>
+#ಅನ್ತರ್ಭಾವ "sdkconfig.h"
+#ಅನ್ತರ್ಭಾವ "freertos/FreeRTOS.h"
+#ಅನ್ತರ್ಭಾವ "freertos/task.h"
+#ಅನ್ತರ್ಭಾವ "freertos/semphr.h"
+#ಅನ್ತರ್ಭಾವ "freertos/timers.h"
+#ಅನ್ತರ್ಭಾವ "freertos/queue.h"
+#ಅನ್ತರ್ಭಾವ "unity.h"
+#ಅನ್ತರ್ಭಾವ "test_utils.h"
+#ಅನ್ತರ್ಭಾವ "driver/gptimer.h"
+#ಅನ್ತರ್ಭಾವ "esp_rom_sys.h"
 
 /* Counter task counts a target variable forever */
-static void task_count(void *vp_counter)
+ಸ್ಥಿರ ಶೂನ್ಯ task_ಎಣಿಕೆ(ಶೂನ್ಯ *vp_counter)
 {
-    volatile unsigned *counter = (volatile unsigned *)vp_counter;
+    ಅಸ್ಥಿರ ಚಿಹ್ನೆರಹಿತ *counter = (ಅಸ್ಥಿರ ಚಿಹ್ನೆರಹಿತ *)vp_counter;
     *counter = 0;
 
-    while (1) {
+    ಆಗ (1) {
         (*counter)++;
         vTaskDelay(1);
     }
 }
 
-static void test_suspend_resume(int target_core)
+ಸ್ಥಿರ ಶೂನ್ಯ test_suspend_resume(ಪೂರ್ಣಾಂಕ ಗುರಿ_core)
 {
-    volatile unsigned counter = 0;
+    ಅಸ್ಥಿರ ಚಿಹ್ನೆರಹಿತ counter = 0;
     TaskHandle_t counter_task;
 
-    xTaskCreatePinnedToCore(task_count, "Count", 2048,
-                            (void *)&counter, UNITY_FREERTOS_PRIORITY + 1,
-                            &counter_task, target_core);
+    x_Task_Create_Pinned_ಗಮ್ಯ_Core(task_ಎಣಿಕೆ, "Count", 2048,
+                            (ಶೂನ್ಯ *)&counter, UNITY_FREERTOS_ಆದ್ಯತೆ + 1,
+                            &counter_task, ಗುರಿ_core);
 
     vTaskDelay(10);
     /* check some counting has happened */
@@ -46,24 +46,24 @@ static void test_suspend_resume(int target_core)
 
     // Do the next part a few times, just to be sure multiple suspends & resumes
     // work as expected...
-    const int TEST_ITERATIONS = 5;
-    for (int i = 0; i < TEST_ITERATIONS; i++) {
+    ಸ್ಥಿರಾಂಕ ಪೂರ್ಣಾಂಕ TEST_ITERATIONS = 5;
+    ಗಾಗಿ (ಪೂರ್ಣಾಂಕ i = 0; i < TEST_ITERATIONS; i++) {
         vTaskSuspend(counter_task);
-        unsigned suspend_count = counter;
-        printf("Suspending @ %d\n", suspend_count);
+        ಚಿಹ್ನೆರಹಿತ suspend_ಎಣಿಕೆ = counter;
+        ಬರೆ("Suspending @ %d\n", suspend_ಎಣಿಕೆ);
 
         vTaskDelay(2);
 
-        printf("Still suspended @ %d\n", counter);
+        ಬರೆ("Still suspended @ %d\n", counter);
 
         /* check the counter hasn't gone up while the task is suspended */
-        TEST_ASSERT_EQUAL(suspend_count, counter);
+        TEST_ASSERT_EQUAL(suspend_ಎಣಿಕೆ, counter);
         vTaskResume(counter_task);
         vTaskDelay(2);
 
-        printf("Resumed @ %d\n", counter);
+        ಬರೆ("Resumed @ %d\n", counter);
         /* check the counter is going up again now the task is resumed */
-        TEST_ASSERT_NOT_EQUAL(suspend_count, counter);
+        TEST_ASSERT_NOT_EQUAL(suspend_ಎಣಿಕೆ, counter);
     }
 
     vTaskDelete(counter_task);
@@ -74,7 +74,7 @@ TEST_CASE("Suspend/resume task on same core", "[freertos]")
     test_suspend_resume(UNITY_FREERTOS_CPU);
 }
 
-#ifndef CONFIG_FREERTOS_UNICORE
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CONFIG_FREERTOS_UNICORE
 /*
 Note: This test is ignore for now due to a known issue (xKernelLock contention + task state change will lead to a race
 condition). More specifically:
@@ -89,25 +89,25 @@ TEST_CASE("Suspend/resume task on other core", "[freertos][ignore]")
 {
     test_suspend_resume(!UNITY_FREERTOS_CPU);
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 /* Task suspends itself, then sets a flag and deletes itself */
-static void task_suspend_self(void *vp_resumed)
+ಸ್ಥಿರ ಶೂನ್ಯ task_suspend_self(ಶೂನ್ಯ *vp_resumed)
 {
-    volatile bool *resumed = (volatile bool *)vp_resumed;
+    ಅಸ್ಥಿರ bool *resumed = (ಅಸ್ಥಿರ bool *)vp_resumed;
     *resumed = false;
-    vTaskSuspend(NULL);
+    vTaskSuspend(ಖಾಲಿ);
     *resumed = true;
-    vTaskDelete(NULL);
+    vTaskDelete(ಖಾಲಿ);
 }
 
 TEST_CASE("Suspend the current running task", "[freertos]")
 {
-    volatile bool resumed = false;
+    ಅಸ್ಥಿರ bool resumed = false;
     TaskHandle_t suspend_task;
 
-    xTaskCreatePinnedToCore(task_suspend_self, "suspend_self", 2048,
-                            (void *)&resumed, UNITY_FREERTOS_PRIORITY + 1,
+    x_Task_Create_Pinned_ಗಮ್ಯ_Core(task_suspend_self, "suspend_self", 2048,
+                            (ಶೂನ್ಯ *)&resumed, UNITY_FREERTOS_ಆದ್ಯತೆ + 1,
                             &suspend_task, UNITY_FREERTOS_CPU);
 
     vTaskDelay(1);
@@ -118,44 +118,44 @@ TEST_CASE("Suspend the current running task", "[freertos]")
     TEST_ASSERT_TRUE(resumed);
 }
 
-#if SOC_GPTIMER_SUPPORTED
+#ಆದರೆ SOC_GPTIMER_SUPPORTED
 
-static volatile bool timer_isr_fired;
-static gptimer_handle_t gptimer = NULL;
+ಸ್ಥಿರ ಅಸ್ಥಿರ bool timer_isr_fired;
+ಸ್ಥಿರ gptimer_handle_t gptimer = ಖಾಲಿ;
 
 /* Timer ISR clears interrupt, sets flag, then resumes the task supplied in the
  * callback argument.
  */
-bool on_timer_alarm_cb(gptimer_handle_t timer, const gptimer_alarm_event_data_t *edata, void *user_ctx)
+bool on_timer_alarm_cb(gptimer_handle_t timer, ಸ್ಥಿರಾಂಕ gptimer_alarm_event_ದತ್ತಾಂಶ_t *edata, ಶೂನ್ಯ *user_ctx)
 {
     TaskHandle_t handle = user_ctx;
-    BaseType_t higherPriorityTaskWoken = pdFALSE;
+    ತಳ_Type_t higher_ಆದ್ಯತೆ_Task_Woken = pdFALSE;
     gptimer_stop(timer);
     timer_isr_fired = true;
-    higherPriorityTaskWoken = xTaskResumeFromISR(handle);
-    return higherPriorityTaskWoken == pdTRUE;
+    higher_ಆದ್ಯತೆ_Task_Woken = xTaskResumeFromISR(handle);
+    ಹಿಂತಿರುಗಿ higher_ಆದ್ಯತೆ_Task_Woken == pdTRUE;
 }
 
 /* Task suspends itself, then sets parameter value to the current timer group counter and deletes itself */
-static IRAM_ATTR void task_suspend_self_with_timer(void *vp_resumed)
+ಸ್ಥಿರ IRAM_ATTR ಶೂನ್ಯ task_suspend_self_with_timer(ಶೂನ್ಯ *vp_resumed)
 {
-    volatile uint64_t *resumed_counter = vp_resumed;
+    ಅಸ್ಥಿರ uint64_t *resumed_counter = vp_resumed;
     *resumed_counter = 0;
-    vTaskSuspend(NULL);
-    gptimer_get_raw_count(gptimer, (uint64_t *)resumed_counter);
-    vTaskDelete(NULL);
+    vTaskSuspend(ಖಾಲಿ);
+    gptimer_get_raw_ಎಣಿಕೆ(gptimer, (uint64_t *)resumed_counter);
+    vTaskDelete(ಖಾಲಿ);
 }
 
 /* Create a task which suspends itself, then resume it from a timer
  * interrupt. */
-static void test_resume_task_from_isr(int target_core)
+ಸ್ಥಿರ ಶೂನ್ಯ test_resume_task_from_isr(ಪೂರ್ಣಾಂಕ ಗುರಿ_core)
 {
-    volatile uint64_t resumed_counter = 99;
+    ಅಸ್ಥಿರ uint64_t resumed_counter = 99;
     TaskHandle_t suspend_task;
 
-    xTaskCreatePinnedToCore(task_suspend_self_with_timer, "suspend_self", 2048,
-                            (void *)&resumed_counter, UNITY_FREERTOS_PRIORITY + 1,
-                            &suspend_task, target_core);
+    x_Task_Create_Pinned_ಗಮ್ಯ_Core(task_suspend_self_with_timer, "suspend_self", 2048,
+                            (ಶೂನ್ಯ *)&resumed_counter, UNITY_FREERTOS_ಆದ್ಯತೆ + 1,
+                            &suspend_task, ಗುರಿ_core);
     // delay to make the task has resumed itself
     vTaskDelay(1);
     TEST_ASSERT_EQUAL(0, resumed_counter);
@@ -163,31 +163,31 @@ static void test_resume_task_from_isr(int target_core)
     /* Configure timer ISR */
     gptimer_config_t timer_config = {
         .clk_src = GPTIMER_CLK_SRC_DEFAULT,
-        .direction = GPTIMER_COUNT_UP,
+        .direction = GPTIMER_ಎಣಿಕೆ_ಮೇಲೆ,
         .resolution_hz = 1000000, // 1MHz, 1 tick = 1us
     };
     TEST_ESP_OK(gptimer_new_timer(&timer_config, &gptimer));
     timer_isr_fired = false;
     vTaskDelay(1); // Make sure we're at the start of a new tick
     gptimer_alarm_config_t alarm_config = {
-        .alarm_count = 1000000 / configTICK_RATE_HZ / 2,
-        .reload_count = 0,
+        .alarm_ಎಣಿಕೆ = 1000000 / config_TICK_ದರ_HZ / 2,
+        .reload_ಎಣಿಕೆ = 0,
     };
     gptimer_event_callbacks_t cbs = {
         .on_alarm = on_timer_alarm_cb,
     };
-    TEST_ESP_OK(gptimer_register_event_callbacks(gptimer, &cbs, suspend_task));
-    TEST_ESP_OK(gptimer_set_alarm_action(gptimer, &alarm_config));
+    TEST_ESP_OK(gptimer_ರಿಜಿಸ್ಟರ್_event_callbacks(gptimer, &cbs, suspend_task));
+    TEST_ESP_OK(gptimer_ಗಣ_alarm_action(gptimer, &alarm_config));
     TEST_ESP_OK(gptimer_enable(gptimer));
-    TEST_ESP_OK(gptimer_start(gptimer));
+    TEST_ESP_OK(gptimer_ಆರಂಭ(gptimer));
     // wait the timer interrupt fires up
     vTaskDelay(2);
     TEST_ASSERT_TRUE(timer_isr_fired);
     // check the task was resumed
     TEST_ASSERT_NOT_EQUAL(0, resumed_counter);
     // The task should have woken within 500us of the timer interrupt event (note: task may be a flash cache miss)
-    printf("alarm value %llu task resumed at %u\n", alarm_config.alarm_count, (unsigned)resumed_counter);
-    TEST_ASSERT_UINT32_WITHIN(100, alarm_config.alarm_count, (unsigned)resumed_counter);
+    ಬರೆ("alarm value %llu task resumed at %u\n", alarm_config.alarm_ಎಣಿಕೆ, (ಚಿಹ್ನೆರಹಿತ)resumed_counter);
+    TEST_ASSERT_UINT32_WITHIN(100, alarm_config.alarm_ಎಣಿಕೆ, (ಚಿಹ್ನೆರಹಿತ)resumed_counter);
 
     // clean up
     TEST_ESP_OK(gptimer_disable(gptimer));
@@ -199,11 +199,11 @@ TEST_CASE("Resume task from ISR (same core)", "[freertos]")
     test_resume_task_from_isr(UNITY_FREERTOS_CPU);
 }
 
-#ifndef CONFIG_FREERTOS_UNICORE
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CONFIG_FREERTOS_UNICORE
 TEST_CASE("Resume task from ISR (other core)", "[freertos]")
 {
     test_resume_task_from_isr(!UNITY_FREERTOS_CPU);
 }
-#endif // CONFIG_FREERTOS_UNICORE
+#ಆದರೆ_ಅಂತ್ಯ // CONFIG_FREERTOS_UNICORE
 
-#endif //SOC_GPTIMER_SUPPORTED
+#ಆದರೆ_ಅಂತ್ಯ //SOC_GPTIMER_SUPPORTED

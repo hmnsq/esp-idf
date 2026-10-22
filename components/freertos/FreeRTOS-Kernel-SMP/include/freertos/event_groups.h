@@ -30,40 +30,40 @@
  *
  */
 
-#ifndef EVENT_GROUPS_H
-#define EVENT_GROUPS_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ EVENT_GROUPS_H
+#ವ್ಯಾಖ್ಯಾನಿಸು EVENT_GROUPS_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h" must appear in source files before "include event_groups.h"
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ INC_FREERTOS_H
+    #ದೋಷ "include FreeRTOS.h" must appear ಒಳ ಮೂಲ files before "include event_groups.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
 /* FreeRTOS includes. */
-#include "timers.h"
+#ಅನ್ತರ್ಭಾವ "timers.h"
 
 /* The following bit fields convey control information in a task's event list
  * item value.  It is important they don't clash with the
  * taskEVENT_LIST_ITEM_VALUE_IN_USE definition. */
-#if ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS )
-    #define eventCLEAR_EVENTS_ON_EXIT_BIT    ( ( uint16_t ) 0x0100U )
-    #define eventUNBLOCKED_DUE_TO_BIT_SET    ( ( uint16_t ) 0x0200U )
-    #define eventWAIT_FOR_ALL_BITS           ( ( uint16_t ) 0x0400U )
-    #define eventEVENT_BITS_CONTROL_BYTES    ( ( uint16_t ) 0xff00U )
-#elif ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_32_BITS )
-    #define eventCLEAR_EVENTS_ON_EXIT_BIT    ( ( uint32_t ) 0x01000000U )
-    #define eventUNBLOCKED_DUE_TO_BIT_SET    ( ( uint32_t ) 0x02000000U )
-    #define eventWAIT_FOR_ALL_BITS           ( ( uint32_t ) 0x04000000U )
-    #define eventEVENT_BITS_CONTROL_BYTES    ( ( uint32_t ) 0xff000000U )
-#elif ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_64_BITS )
-    #define eventCLEAR_EVENTS_ON_EXIT_BIT    ( ( uint64_t ) 0x0100000000000000U )
-    #define eventUNBLOCKED_DUE_TO_BIT_SET    ( ( uint64_t ) 0x0200000000000000U )
-    #define eventWAIT_FOR_ALL_BITS           ( ( uint64_t ) 0x0400000000000000U )
-    #define eventEVENT_BITS_CONTROL_BYTES    ( ( uint64_t ) 0xff00000000000000U )
-#endif /* if ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS ) */
+#ಆದರೆ ( config_TICK_TYPE_ಅಗಲ_ಒಳ_ಬಿಟ್ಟುಗಳು == TICK_TYPE_ಅಗಲ_16_ಬಿಟ್ಟುಗಳು )
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_CLEAR_EVENTS_ON_EXIT_ಬಿಟ್    ( ( uint16_t ) 0x0100U )
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_UNBLOCKED_DUE_ಗಮ್ಯ_ಬಿಟ್_ಗಣ    ( ( uint16_t ) 0x0200U )
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_WAIT_FOR_ALL_ಬಿಟ್ಟುಗಳು           ( ( uint16_t ) 0x0400U )
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_EVENT_ಬಿಟ್ಟುಗಳು_CONTROL_ಬೈಟುಗಳು    ( ( uint16_t ) 0xff00U )
+#ಅಥವಾಆದರೆ ( config_TICK_TYPE_ಅಗಲ_ಒಳ_ಬಿಟ್ಟುಗಳು == TICK_TYPE_ಅಗಲ_32_ಬಿಟ್ಟುಗಳು )
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_CLEAR_EVENTS_ON_EXIT_ಬಿಟ್    ( ( uint32_t ) 0x01000000U )
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_UNBLOCKED_DUE_ಗಮ್ಯ_ಬಿಟ್_ಗಣ    ( ( uint32_t ) 0x02000000U )
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_WAIT_FOR_ALL_ಬಿಟ್ಟುಗಳು           ( ( uint32_t ) 0x04000000U )
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_EVENT_ಬಿಟ್ಟುಗಳು_CONTROL_ಬೈಟುಗಳು    ( ( uint32_t ) 0xff000000U )
+#ಅಥವಾಆದರೆ ( config_TICK_TYPE_ಅಗಲ_ಒಳ_ಬಿಟ್ಟುಗಳು == TICK_TYPE_ಅಗಲ_64_ಬಿಟ್ಟುಗಳು )
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_CLEAR_EVENTS_ON_EXIT_ಬಿಟ್    ( ( uint64_t ) 0x0100000000000000U )
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_UNBLOCKED_DUE_ಗಮ್ಯ_ಬಿಟ್_ಗಣ    ( ( uint64_t ) 0x0200000000000000U )
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_WAIT_FOR_ALL_ಬಿಟ್ಟುಗಳು           ( ( uint64_t ) 0x0400000000000000U )
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_EVENT_ಬಿಟ್ಟುಗಳು_CONTROL_ಬೈಟುಗಳು    ( ( uint64_t ) 0xff00000000000000U )
+#ಆದರೆ_ಅಂತ್ಯ /* if ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS ) */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ __cplusplus
+    ಬಾಹ್ಯ "C" {
+#ಆದರೆ_ಅಂತ್ಯ
 /* *INDENT-ON* */
 
 /**
@@ -103,8 +103,8 @@
  * \defgroup EventGroupHandle_t EventGroupHandle_t
  * \ingroup EventGroup
  */
-struct EventGroupDef_t;
-typedef struct EventGroupDef_t   * EventGroupHandle_t;
+ರಚನೆ Event_ಗುಂಪು_Def_t;
+ಪ್ರಕಾರವ್ಯಾಖ್ಯೆ ರಚನೆ Event_ಗುಂಪು_Def_t   * Event_ಗುಂಪು_Handle_t;
 
 /*
  * The type that holds event bits always matches TickType_t - therefore the
@@ -114,7 +114,7 @@ typedef struct EventGroupDef_t   * EventGroupHandle_t;
  * \defgroup EventBits_t EventBits_t
  * \ingroup EventGroup
  */
-typedef TickType_t               EventBits_t;
+ಪ್ರಕಾರವ್ಯಾಖ್ಯೆ TickType_t               Event_ಬಿಟ್ಟುಗಳು_t;
 
 /**
  * event_groups.h
@@ -172,9 +172,9 @@ typedef TickType_t               EventBits_t;
  * \defgroup xEventGroupCreate xEventGroupCreate
  * \ingroup EventGroup
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    EventGroupHandle_t xEventGroupCreate( void ) PRIVILEGED_FUNCTION;
-#endif
+#ಆದರೆ ( config_SUPPORT_DYNAMIC_ಹಂಚಿಕೆ == 1 )
+    Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು_Create( ಶೂನ್ಯ ) PRIVILEGED_FUNCTION;
+#ಆದರೆ_ಅಂತ್ಯ
 
 /**
  * event_groups.h
@@ -229,9 +229,9 @@ typedef TickType_t               EventBits_t;
  *  xEventGroup = xEventGroupCreateStatic( &xEventGroupBuffer );
  * @endcode
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    EventGroupHandle_t xEventGroupCreateStatic( StaticEventGroup_t * pxEventGroupBuffer ) PRIVILEGED_FUNCTION;
-#endif
+#ಆದರೆ ( config_SUPPORT_STATIC_ಹಂಚಿಕೆ == 1 )
+    Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು_Create_Static( Static_Event_ಗುಂಪು_t * px_Event_ಗುಂಪು_ಬಫರ್ ) PRIVILEGED_FUNCTION;
+#ಆದರೆ_ಅಂತ್ಯ
 
 /**
  * event_groups.h
@@ -329,11 +329,11 @@ typedef TickType_t               EventBits_t;
  * \defgroup xEventGroupWaitBits xEventGroupWaitBits
  * \ingroup EventGroup
  */
-EventBits_t xEventGroupWaitBits( EventGroupHandle_t xEventGroup,
-                                 const EventBits_t uxBitsToWaitFor,
-                                 const BaseType_t xClearOnExit,
-                                 const BaseType_t xWaitForAllBits,
-                                 TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+Event_ಬಿಟ್ಟುಗಳು_t x_Event_ಗುಂಪು_Wait_ಬಿಟ್ಟುಗಳು( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು,
+                                 ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For,
+                                 ಸ್ಥಿರಾಂಕ ತಳ_Type_t xClearOnExit,
+                                 ಸ್ಥಿರಾಂಕ ತಳ_Type_t x_Wait_For_All_ಬಿಟ್ಟುಗಳು,
+                                 TickType_t x_Ticks_ಗಮ್ಯ_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -393,8 +393,8 @@ EventBits_t xEventGroupWaitBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupClearBits xEventGroupClearBits
  * \ingroup EventGroup
  */
-EventBits_t xEventGroupClearBits( EventGroupHandle_t xEventGroup,
-                                  const EventBits_t uxBitsToClear ) PRIVILEGED_FUNCTION;
+Event_ಬಿಟ್ಟುಗಳು_t x_Event_ಗುಂಪು_Clear_ಬಿಟ್ಟುಗಳು( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು,
+                                  ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -456,13 +456,13 @@ EventBits_t xEventGroupClearBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupClearBitsFromISR xEventGroupClearBitsFromISR
  * \ingroup EventGroup
  */
-#if ( configUSE_TRACE_FACILITY == 1 )
-    BaseType_t xEventGroupClearBitsFromISR( EventGroupHandle_t xEventGroup,
-                                            const EventBits_t uxBitsToClear ) PRIVILEGED_FUNCTION;
-#else
-    #define xEventGroupClearBitsFromISR( xEventGroup, uxBitsToClear ) \
-    xTimerPendFunctionCallFromISR( vEventGroupClearBitsCallback, ( void * ) ( xEventGroup ), ( uint32_t ) ( uxBitsToClear ), NULL )
-#endif
+#ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
+    ತಳ_Type_t x_Event_ಗುಂಪು_Clear_ಬಿಟ್ಟುಗಳು_From_ISR( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು,
+                                            ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear ) PRIVILEGED_FUNCTION;
+#ಇಲ್ಲದಿದ್ದರೆ
+    #ವ್ಯಾಖ್ಯಾನಿಸು x_Event_ಗುಂಪು_Clear_ಬಿಟ್ಟುಗಳು_From_ISR( x_Event_ಗುಂಪು, ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear ) \
+    xTimerPendFunctionCallFromISR( v_Event_ಗುಂಪು_Clear_ಬಿಟ್ಟುಗಳು_Callback, ( ಶೂನ್ಯ * ) ( x_Event_ಗುಂಪು ), ( uint32_t ) ( ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear ), ಖಾಲಿ )
+#ಆದರೆ_ಅಂತ್ಯ
 
 /**
  * event_groups.h
@@ -539,8 +539,8 @@ EventBits_t xEventGroupClearBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupSetBits xEventGroupSetBits
  * \ingroup EventGroup
  */
-EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
-                                const EventBits_t uxBitsToSet ) PRIVILEGED_FUNCTION;
+Event_ಬಿಟ್ಟುಗಳು_t x_Event_ಗುಂಪು_ಗಣ_ಬಿಟ್ಟುಗಳು( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು,
+                                ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -614,14 +614,14 @@ EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupSetBitsFromISR xEventGroupSetBitsFromISR
  * \ingroup EventGroup
  */
-#if ( configUSE_TRACE_FACILITY == 1 )
-    BaseType_t xEventGroupSetBitsFromISR( EventGroupHandle_t xEventGroup,
-                                          const EventBits_t uxBitsToSet,
-                                          BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
-#else
-    #define xEventGroupSetBitsFromISR( xEventGroup, uxBitsToSet, pxHigherPriorityTaskWoken ) \
-    xTimerPendFunctionCallFromISR( vEventGroupSetBitsCallback, ( void * ) ( xEventGroup ), ( uint32_t ) ( uxBitsToSet ), ( pxHigherPriorityTaskWoken ) )
-#endif
+#ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
+    ತಳ_Type_t x_Event_ಗುಂಪು_ಗಣ_ಬಿಟ್ಟುಗಳು_From_ISR( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು,
+                                          ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ,
+                                          ತಳ_Type_t * px_Higher_ಆದ್ಯತೆ_Task_Woken ) PRIVILEGED_FUNCTION;
+#ಇಲ್ಲದಿದ್ದರೆ
+    #ವ್ಯಾಖ್ಯಾನಿಸು x_Event_ಗುಂಪು_ಗಣ_ಬಿಟ್ಟುಗಳು_From_ISR( x_Event_ಗುಂಪು, ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ, px_Higher_ಆದ್ಯತೆ_Task_Woken ) \
+    xTimerPendFunctionCallFromISR( v_Event_ಗುಂಪು_ಗಣ_ಬಿಟ್ಟುಗಳು_Callback, ( ಶೂನ್ಯ * ) ( x_Event_ಗುಂಪು ), ( uint32_t ) ( ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ ), ( px_Higher_ಆದ್ಯತೆ_Task_Woken ) )
+#ಆದರೆ_ಅಂತ್ಯ
 
 /**
  * event_groups.h
@@ -750,10 +750,10 @@ EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupSync xEventGroupSync
  * \ingroup EventGroup
  */
-EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
-                             const EventBits_t uxBitsToSet,
-                             const EventBits_t uxBitsToWaitFor,
-                             TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+Event_ಬಿಟ್ಟುಗಳು_t x_Event_ಗುಂಪು_Sync( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು,
+                             ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ,
+                             ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For,
+                             TickType_t x_Ticks_ಗಮ್ಯ_Wait ) PRIVILEGED_FUNCTION;
 
 
 /**
@@ -775,7 +775,7 @@ EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupGetBits xEventGroupGetBits
  * \ingroup EventGroup
  */
-#define xEventGroupGetBits( xEventGroup )    xEventGroupClearBits( ( xEventGroup ), 0 )
+#ವ್ಯಾಖ್ಯಾನಿಸು x_Event_ಗುಂಪು_Get_ಬಿಟ್ಟುಗಳು( x_Event_ಗುಂಪು )    x_Event_ಗುಂಪು_Clear_ಬಿಟ್ಟುಗಳು( ( x_Event_ಗುಂಪು ), 0 )
 
 /**
  * event_groups.h
@@ -795,7 +795,7 @@ EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupGetBitsFromISR xEventGroupGetBitsFromISR
  * \ingroup EventGroup
  */
-EventBits_t xEventGroupGetBitsFromISR( EventGroupHandle_t xEventGroup ) PRIVILEGED_FUNCTION;
+Event_ಬಿಟ್ಟುಗಳು_t x_Event_ಗುಂಪು_Get_ಬಿಟ್ಟುಗಳು_From_ISR( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -812,7 +812,7 @@ EventBits_t xEventGroupGetBitsFromISR( EventGroupHandle_t xEventGroup ) PRIVILEG
  *
  * @param xEventGroup The event group being deleted.
  */
-void vEventGroupDelete( EventGroupHandle_t xEventGroup ) PRIVILEGED_FUNCTION;
+ಶೂನ್ಯ v_Event_ಗುಂಪು_Delete( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -834,28 +834,28 @@ void vEventGroupDelete( EventGroupHandle_t xEventGroup ) PRIVILEGED_FUNCTION;
  *
  * @return pdTRUE if the buffer was retrieved, pdFALSE otherwise.
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    BaseType_t xEventGroupGetStaticBuffer( EventGroupHandle_t xEventGroup,
-                                           StaticEventGroup_t ** ppxEventGroupBuffer ) PRIVILEGED_FUNCTION;
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#ಆದರೆ ( config_SUPPORT_STATIC_ಹಂಚಿಕೆ == 1 )
+    ತಳ_Type_t x_Event_ಗುಂಪು_Get_Static_ಬಫರ್( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು,
+                                           Static_Event_ಗುಂಪು_t ** ppx_Event_ಗುಂಪು_ಬಫರ್ ) PRIVILEGED_FUNCTION;
+#ಆದರೆ_ಅಂತ್ಯ /* configSUPPORT_STATIC_ALLOCATION */
 
 /* For internal use only. */
-void vEventGroupSetBitsCallback( void * pvEventGroup,
-                                 uint32_t ulBitsToSet ) PRIVILEGED_FUNCTION;
-void vEventGroupClearBitsCallback( void * pvEventGroup,
-                                   uint32_t ulBitsToClear ) PRIVILEGED_FUNCTION;
+ಶೂನ್ಯ v_Event_ಗುಂಪು_ಗಣ_ಬಿಟ್ಟುಗಳು_Callback( ಶೂನ್ಯ * pv_Event_ಗುಂಪು,
+                                 uint32_t ul_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ ) PRIVILEGED_FUNCTION;
+ಶೂನ್ಯ v_Event_ಗುಂಪು_Clear_ಬಿಟ್ಟುಗಳು_Callback( ಶೂನ್ಯ * pv_Event_ಗುಂಪು,
+                                   uint32_t ul_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear ) PRIVILEGED_FUNCTION;
 
 
-#if ( configUSE_TRACE_FACILITY == 1 )
-    UBaseType_t uxEventGroupGetNumber( void * xEventGroup ) PRIVILEGED_FUNCTION;
-    void vEventGroupSetNumber( void * xEventGroup,
-                               UBaseType_t uxEventGroupNumber ) PRIVILEGED_FUNCTION;
-#endif
+#ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
+    UBaseType_t ux_Event_ಗುಂಪು_Get_ಸಂಖ್ಯೆ( ಶೂನ್ಯ * x_Event_ಗುಂಪು ) PRIVILEGED_FUNCTION;
+    ಶೂನ್ಯ v_Event_ಗುಂಪು_ಗಣ_ಸಂಖ್ಯೆ( ಶೂನ್ಯ * x_Event_ಗುಂಪು,
+                               UBaseType_t ux_Event_ಗುಂಪು_ಸಂಖ್ಯೆ ) PRIVILEGED_FUNCTION;
+#ಆದರೆ_ಅಂತ್ಯ
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ __cplusplus
     }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 /* *INDENT-ON* */
 
-#endif /* EVENT_GROUPS_H */
+#ಆದರೆ_ಅಂತ್ಯ /* EVENT_GROUPS_H */

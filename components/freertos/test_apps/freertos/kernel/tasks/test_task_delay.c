@@ -4,16 +4,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "semphr.h"
-#include "unity.h"
-#include "freertos_test_utils.h"
-#include "portTestMacro.h"
+#ಅನ್ತರ್ಭಾವ "sdkconfig.h"
+#ಅನ್ತರ್ಭಾವ "FreeRTOS.h"
+#ಅನ್ತರ್ಭಾವ "task.h"
+#ಅನ್ತರ್ಭಾವ "semphr.h"
+#ಅನ್ತರ್ಭಾವ "unity.h"
+#ಅನ್ತರ್ಭಾವ "freertos_test_utils.h"
+#ಅನ್ತರ್ಭಾವ "portTestMacro.h"
 
 /* ------------------------------------------------------------------------------------------------------------------ */
-#if SOC_GPTIMER_SUPPORTED
+#ಆದರೆ SOC_GPTIMER_SUPPORTED
 
 /*
 Test vTaskDelay
@@ -35,63 +35,63 @@ Expected:
       period of error allowed (in case ref clock functions last longer that a tick period).
 */
 
-#if ( INCLUDE_vTaskDelay == 1 )
+#ಆದರೆ ( INCLUDE_vTaskDelay == 1 )
 
-#define TEST_VTASKDELAY_TICKS           5   // Number of ticks to delay in test
-#define TEST_VTASKDELAY_ITERATIONS      5   // Number of iterations in test
-#if CONFIG_FREERTOS_SMP
-#define TEST_VTASKDELAY_DELTA_TICKS     1   // Number of ticks worth of delta allowed
-#else
-#define TEST_VTASKDELAY_DELTA_TICKS     2   // Number of ticks worth of delta allowed. We allow 2 ticks in IDF FreeRTOS as each core's tick interrupt could be out of phase
-#endif
+#ವ್ಯಾಖ್ಯಾನಿಸು TEST_VTASKDELAY_TICKS           5   // Number of ticks to delay in test
+#ವ್ಯಾಖ್ಯಾನಿಸು TEST_VTASKDELAY_ITERATIONS      5   // Number of iterations in test
+#ಆದರೆ CONFIG_FREERTOS_SMP
+#ವ್ಯಾಖ್ಯಾನಿಸು TEST_VTASKDELAY_DELTA_TICKS     1   // Number of ticks worth of delta allowed
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು TEST_VTASKDELAY_DELTA_TICKS     2   // Number of ticks worth of delta allowed. We allow 2 ticks in IDF FreeRTOS as each core's tick interrupt could be out of phase
+#ಆದರೆ_ಅಂತ್ಯ
 
-static void test_vTaskDelay(void *arg)
+ಸ್ಥಿರ ಶೂನ್ಯ test_vTaskDelay(ಶೂನ್ಯ *arg)
 {
-    for (int i = 0; i < TEST_VTASKDELAY_ITERATIONS; i++) {
-        TickType_t tick_start, tick_end;
-        portTEST_REF_CLOCK_TYPE ref_clock_start, ref_clock_end;
+    ಗಾಗಿ (ಪೂರ್ಣಾಂಕ i = 0; i < TEST_VTASKDELAY_ITERATIONS; i++) {
+        TickType_t tick_ಆರಂಭ, tick_ಕೊನೆ;
+        ಪೋರ್ಟ್_TEST_REF_CLOCK_TYPE ref_clock_ಆರಂಭ, ref_clock_ಕೊನೆ;
 
         /* Delay until the next tick boundary */
         vTaskDelay(1);
 
         /* Get the current tick count and ref clock time */
-        tick_start = xTaskGetTickCount();
-        ref_clock_start = portTEST_REF_CLOCK_GET_TIME();
+        tick_ಆರಂಭ = x_Task_Get_Tick_ಎಣಿಕೆ();
+        ref_clock_ಆರಂಭ = ಪೋರ್ಟ್_TEST_REF_CLOCK_GET_ಸಮಯ();
 
         vTaskDelay(TEST_VTASKDELAY_TICKS);
 
         /* Get the post delay tick count and ref clock time */
-        tick_end = xTaskGetTickCount();
-        ref_clock_end = portTEST_REF_CLOCK_GET_TIME();
+        tick_ಕೊನೆ = x_Task_Get_Tick_ಎಣಿಕೆ();
+        ref_clock_ಕೊನೆ = ಪೋರ್ಟ್_TEST_REF_CLOCK_GET_ಸಮಯ();
 
         /* Check that elapsed ticks and ref clock is accurate. We allow TEST_VTASKDELAY_DELTA_TICKS of error in case
          * vTaskDelay() or portTEST_REF_CLOCK_GET_TIME() last long enough to cross a tick boundary */
-#if ( configUSE_16_BIT_TICKS == 1 )
-        TEST_ASSERT_UINT16_WITHIN(TEST_VTASKDELAY_DELTA_TICKS, TEST_VTASKDELAY_TICKS, tick_end - tick_start);
-#else
-        TEST_ASSERT_UINT32_WITHIN(TEST_VTASKDELAY_DELTA_TICKS, TEST_VTASKDELAY_TICKS, tick_end - tick_start);
-#endif
-        TEST_ASSERT_UINT32_WITHIN(portTEST_TICKS_TO_REF_CLOCK(TEST_VTASKDELAY_DELTA_TICKS),
-                                  portTEST_TICKS_TO_REF_CLOCK(TEST_VTASKDELAY_TICKS),
-                                  ref_clock_end - ref_clock_start);
+#ಆದರೆ ( config_USE_16_ಬಿಟ್_TICKS == 1 )
+        TEST_ASSERT_UINT16_WITHIN(TEST_VTASKDELAY_DELTA_TICKS, TEST_VTASKDELAY_TICKS, tick_ಕೊನೆ - tick_ಆರಂಭ);
+#ಇಲ್ಲದಿದ್ದರೆ
+        TEST_ASSERT_UINT32_WITHIN(TEST_VTASKDELAY_DELTA_TICKS, TEST_VTASKDELAY_TICKS, tick_ಕೊನೆ - tick_ಆರಂಭ);
+#ಆದರೆ_ಅಂತ್ಯ
+        TEST_ASSERT_UINT32_WITHIN(ಪೋರ್ಟ್_TEST_TICKS_ಗಮ್ಯ_REF_CLOCK(TEST_VTASKDELAY_DELTA_TICKS),
+                                  ಪೋರ್ಟ್_TEST_TICKS_ಗಮ್ಯ_REF_CLOCK(TEST_VTASKDELAY_TICKS),
+                                  ref_clock_ಕೊನೆ - ref_clock_ಆರಂಭ);
     }
 }
 
 TEST_CASE("Tasks: Test vTaskDelay", "[freertos]")
 {
-    portTEST_REF_CLOCK_INIT();
+    ಪೋರ್ಟ್_TEST_REF_CLOCK_INIT();
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
-    vTestOnAllCores(test_vTaskDelay, NULL, configTEST_DEFAULT_STACK_SIZE, configTEST_UNITY_TASK_PRIORITY - 1);
-#else
+#ಆದರೆ ( CONFIG_FREERTOS_ಸಂಖ್ಯೆ_ದ_CORES > 1 )
+    vTestOnAllCores(test_vTaskDelay, ಖಾಲಿ, config_TEST_DEFAULT_ರಾಶಿ_ಗಾತ್ರ, config_TEST_UNITY_TASK_ಆದ್ಯತೆ - 1);
+#ಇಲ್ಲದಿದ್ದರೆ
     /* Test vTaskDelay directly on the current core */
-    test_vTaskDelay(NULL);
-#endif
+    test_vTaskDelay(ಖಾಲಿ);
+#ಆದರೆ_ಅಂತ್ಯ
 
-    portTEST_REF_CLOCK_DEINIT();
+    ಪೋರ್ಟ್_TEST_REF_CLOCK_DEINIT();
 }
 
-#endif /* ( INCLUDE_vTaskDelay == 1 ) */
+#ಆದರೆ_ಅಂತ್ಯ /* ( INCLUDE_vTaskDelay == 1 ) */
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 
@@ -116,67 +116,67 @@ Expected:
       period).
 */
 
-#if ( INCLUDE_xTaskDelayUntil == 1 )
+#ಆದರೆ ( INCLUDE_xTaskDelayUntil == 1 )
 
-#define TEST_VTASKDELAYUNTIL_TICKS              5   // Number of ticks to delay in test
-#define TEST_VTASKDELAYUNTIL_ITERATIONS         5   // Number of iterations in test
-#if CONFIG_FREERTOS_SMP
-#define TEST_VTASKDELAYUNTIL_DELTA_TICKS        1   // Number of ticks worth of delta allowed
-#else
-#define TEST_VTASKDELAYUNTIL_DELTA_TICKS        2   // Number of ticks worth of delta allowed. We allow 2 ticks in IDF FreeRTOS as each core's tick interrupt could be out of phase
-#endif
+#ವ್ಯಾಖ್ಯಾನಿಸು TEST_VTASKDELAYUNTIL_TICKS              5   // Number of ticks to delay in test
+#ವ್ಯಾಖ್ಯಾನಿಸು TEST_VTASKDELAYUNTIL_ITERATIONS         5   // Number of iterations in test
+#ಆದರೆ CONFIG_FREERTOS_SMP
+#ವ್ಯಾಖ್ಯಾನಿಸು TEST_VTASKDELAYUNTIL_DELTA_TICKS        1   // Number of ticks worth of delta allowed
+#ಇಲ್ಲದಿದ್ದರೆ
+#ವ್ಯಾಖ್ಯಾನಿಸು TEST_VTASKDELAYUNTIL_DELTA_TICKS        2   // Number of ticks worth of delta allowed. We allow 2 ticks in IDF FreeRTOS as each core's tick interrupt could be out of phase
+#ಆದರೆ_ಅಂತ್ಯ
 
-static void test_vTaskDelayUntil(void *arg)
+ಸ್ಥಿರ ಶೂನ್ಯ test_vTaskDelayUntil(ಶೂನ್ಯ *arg)
 {
-    for (int i = 0; i < TEST_VTASKDELAYUNTIL_ITERATIONS; i++) {
-        TickType_t tick_start, tick_end, last_wake_tick;
-        portTEST_REF_CLOCK_TYPE ref_clock_start, ref_clock_end;
+    ಗಾಗಿ (ಪೂರ್ಣಾಂಕ i = 0; i < TEST_VTASKDELAYUNTIL_ITERATIONS; i++) {
+        TickType_t tick_ಆರಂಭ, tick_ಕೊನೆ, ಕೊನೆಯ_wake_tick;
+        ಪೋರ್ಟ್_TEST_REF_CLOCK_TYPE ref_clock_ಆರಂಭ, ref_clock_ಕೊನೆ;
 
         /* Delay until the next tick boundary */
         vTaskDelay(1);
 
         /* Get the current tick count and ref clock time */
-        tick_start = xTaskGetTickCount();
-        last_wake_tick = tick_start;
-        ref_clock_start = portTEST_REF_CLOCK_GET_TIME();
+        tick_ಆರಂಭ = x_Task_Get_Tick_ಎಣಿಕೆ();
+        ಕೊನೆಯ_wake_tick = tick_ಆರಂಭ;
+        ref_clock_ಆರಂಭ = ಪೋರ್ಟ್_TEST_REF_CLOCK_GET_ಸಮಯ();
 
-        vTaskDelayUntil(&last_wake_tick, TEST_VTASKDELAYUNTIL_TICKS);
+        vTaskDelayUntil(&ಕೊನೆಯ_wake_tick, TEST_VTASKDELAYUNTIL_TICKS);
 
         /* Get the post delay tick count and ref clock time */
-        tick_end = xTaskGetTickCount();
-        ref_clock_end = portTEST_REF_CLOCK_GET_TIME();
+        tick_ಕೊನೆ = x_Task_Get_Tick_ಎಣಿಕೆ();
+        ref_clock_ಕೊನೆ = ಪೋರ್ಟ್_TEST_REF_CLOCK_GET_ಸಮಯ();
 
         /* Check that elapsed ticks and ref clock is accurate. We allow TEST_VTASKDELAYUNTIL_DELTA_TICKS of error in
          * case vTaskDelayUntil() or portTEST_REF_CLOCK_GET_TIME() last long enough to cross a tick boundary */
-#if ( configUSE_16_BIT_TICKS == 1 )
-        TEST_ASSERT_UINT16_WITHIN(TEST_VTASKDELAYUNTIL_DELTA_TICKS, TEST_VTASKDELAYUNTIL_TICKS, tick_end - tick_start);
-        TEST_ASSERT_UINT16_WITHIN(TEST_VTASKDELAYUNTIL_DELTA_TICKS, tick_end, last_wake_tick);
-#else
-        TEST_ASSERT_UINT32_WITHIN(TEST_VTASKDELAYUNTIL_DELTA_TICKS, TEST_VTASKDELAYUNTIL_TICKS, tick_end - tick_start);
-        TEST_ASSERT_UINT32_WITHIN(TEST_VTASKDELAYUNTIL_DELTA_TICKS, tick_end, last_wake_tick);
-#endif
+#ಆದರೆ ( config_USE_16_ಬಿಟ್_TICKS == 1 )
+        TEST_ASSERT_UINT16_WITHIN(TEST_VTASKDELAYUNTIL_DELTA_TICKS, TEST_VTASKDELAYUNTIL_TICKS, tick_ಕೊನೆ - tick_ಆರಂಭ);
+        TEST_ASSERT_UINT16_WITHIN(TEST_VTASKDELAYUNTIL_DELTA_TICKS, tick_ಕೊನೆ, ಕೊನೆಯ_wake_tick);
+#ಇಲ್ಲದಿದ್ದರೆ
+        TEST_ASSERT_UINT32_WITHIN(TEST_VTASKDELAYUNTIL_DELTA_TICKS, TEST_VTASKDELAYUNTIL_TICKS, tick_ಕೊನೆ - tick_ಆರಂಭ);
+        TEST_ASSERT_UINT32_WITHIN(TEST_VTASKDELAYUNTIL_DELTA_TICKS, tick_ಕೊನೆ, ಕೊನೆಯ_wake_tick);
+#ಆದರೆ_ಅಂತ್ಯ
 
         /* Check that the elapsed ref clock time is accurate. We allow TEST_VTASKDELAYUNTIL_DELTA_TICKS time worth of
          * error to account for the execution time of the ref clock functions. */
-        TEST_ASSERT_UINT32_WITHIN(portTEST_TICKS_TO_REF_CLOCK(TEST_VTASKDELAYUNTIL_DELTA_TICKS),
-                                  portTEST_TICKS_TO_REF_CLOCK(TEST_VTASKDELAYUNTIL_TICKS),
-                                  ref_clock_end - ref_clock_start);
+        TEST_ASSERT_UINT32_WITHIN(ಪೋರ್ಟ್_TEST_TICKS_ಗಮ್ಯ_REF_CLOCK(TEST_VTASKDELAYUNTIL_DELTA_TICKS),
+                                  ಪೋರ್ಟ್_TEST_TICKS_ಗಮ್ಯ_REF_CLOCK(TEST_VTASKDELAYUNTIL_TICKS),
+                                  ref_clock_ಕೊನೆ - ref_clock_ಆರಂಭ);
     }
 }
 
 TEST_CASE("Tasks: Test vTaskDelayUntil", "[freertos]")
 {
-    portTEST_REF_CLOCK_INIT();
+    ಪೋರ್ಟ್_TEST_REF_CLOCK_INIT();
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
-    vTestOnAllCores(test_vTaskDelayUntil, NULL, configTEST_DEFAULT_STACK_SIZE, configTEST_UNITY_TASK_PRIORITY - 1);
-#else
+#ಆದರೆ ( CONFIG_FREERTOS_ಸಂಖ್ಯೆ_ದ_CORES > 1 )
+    vTestOnAllCores(test_vTaskDelayUntil, ಖಾಲಿ, config_TEST_DEFAULT_ರಾಶಿ_ಗಾತ್ರ, config_TEST_UNITY_TASK_ಆದ್ಯತೆ - 1);
+#ಇಲ್ಲದಿದ್ದರೆ
     /* Test vTaskDelay directly on the current core */
-    test_vTaskDelayUntil(NULL);
-#endif
+    test_vTaskDelayUntil(ಖಾಲಿ);
+#ಆದರೆ_ಅಂತ್ಯ
 
-    portTEST_REF_CLOCK_DEINIT();
+    ಪೋರ್ಟ್_TEST_REF_CLOCK_DEINIT();
 }
 
-#endif /* ( INCLUDE_xTaskDelayUntil == 1 ) */
-#endif //SOC_GPTIMER_SUPPORTED
+#ಆದರೆ_ಅಂತ್ಯ /* ( INCLUDE_xTaskDelayUntil == 1 ) */
+#ಆದರೆ_ಅಂತ್ಯ //SOC_GPTIMER_SUPPORTED

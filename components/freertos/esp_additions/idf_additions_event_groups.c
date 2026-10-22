@@ -18,62 +18,62 @@
  * event group functions
  */
 
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/event_groups.h"
-#include "freertos/idf_additions.h"
-#include "esp_heap_caps.h"
+#ಅನ್ತರ್ಭಾವ "sdkconfig.h"
+#ಅನ್ತರ್ಭಾವ "freertos/FreeRTOS.h"
+#ಅನ್ತರ್ಭಾವ "freertos/event_groups.h"
+#ಅನ್ತರ್ಭಾವ "freertos/idf_additions.h"
+#ಅನ್ತರ್ಭಾವ "esp_heap_caps.h"
 
 /* ------------------------------ Event Groups ------------------------------ */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ಆದರೆ ( config_SUPPORT_STATIC_ಹಂಚಿಕೆ == 1 )
 
-    EventGroupHandle_t xEventGroupCreateWithCaps( UBaseType_t uxMemoryCaps )
+    Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು_Create_With_Caps( UBaseType_t ux_ಸ್ಮರಣೆ_Caps )
     {
-        EventGroupHandle_t xEventGroup;
-        StaticEventGroup_t * pxEventGroupBuffer;
+        Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು;
+        Static_Event_ಗುಂಪು_t * px_Event_ಗುಂಪು_ಬಫರ್;
 
         /* Allocate memory for the event group using the provided memory caps */
-        pxEventGroupBuffer = heap_caps_malloc( sizeof( StaticEventGroup_t ), uxMemoryCaps );
+        px_Event_ಗುಂಪು_ಬಫರ್ = ರಾಶಿ_caps_malloc( ಗಾತ್ರ( Static_Event_ಗುಂಪು_t ), ux_ಸ್ಮರಣೆ_Caps );
 
-        if( pxEventGroupBuffer == NULL )
+        ಆದರೆ( px_Event_ಗುಂಪು_ಬಫರ್ == ಖಾಲಿ )
         {
-            return NULL;
+            ಹಿಂತಿರುಗಿ ಖಾಲಿ;
         }
 
         /* Create the event group using static creation API */
-        xEventGroup = xEventGroupCreateStatic( pxEventGroupBuffer );
+        x_Event_ಗುಂಪು = x_Event_ಗುಂಪು_Create_Static( px_Event_ಗುಂಪು_ಬಫರ್ );
 
-        if( xEventGroup == NULL )
+        ಆದರೆ( x_Event_ಗುಂಪು == ಖಾಲಿ )
         {
-            heap_caps_free( pxEventGroupBuffer );
+            ರಾಶಿ_caps_free( px_Event_ಗುಂಪು_ಬಫರ್ );
         }
 
-        return xEventGroup;
+        ಹಿಂತಿರುಗಿ x_Event_ಗುಂಪು;
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#ಆದರೆ_ಅಂತ್ಯ /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ಆದರೆ ( config_SUPPORT_STATIC_ಹಂಚಿಕೆ == 1 )
 
-    void vEventGroupDeleteWithCaps( EventGroupHandle_t xEventGroup )
+    ಶೂನ್ಯ v_Event_ಗುಂಪು_Delete_With_Caps( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು )
     {
         // Return value unused if asserts are disabled
-        BaseType_t __attribute__((unused)) xResult;
-        StaticEventGroup_t * pxEventGroupBuffer;
+        ತಳ_Type_t __attribute__((ಬಳಸದ)) x_ಫಲಿತಾಂಶ;
+        Static_Event_ಗುಂಪು_t * px_Event_ಗುಂಪು_ಬಫರ್;
 
         /* Retrieve the buffer used to create the event group before deleting it
          * */
-        xResult = xEventGroupGetStaticBuffer( xEventGroup, &pxEventGroupBuffer );
-        configASSERT( xResult == pdTRUE );
+        x_ಫಲಿತಾಂಶ = x_Event_ಗುಂಪು_Get_Static_ಬಫರ್( x_Event_ಗುಂಪು, &px_Event_ಗುಂಪು_ಬಫರ್ );
+        configASSERT( x_ಫಲಿತಾಂಶ == pdTRUE );
 
         /* Delete the event group */
-        vEventGroupDelete( xEventGroup );
+        v_Event_ಗುಂಪು_Delete( x_Event_ಗುಂಪು );
 
         /* Free the memory buffer */
-        heap_caps_free( pxEventGroupBuffer );
+        ರಾಶಿ_caps_free( px_Event_ಗುಂಪು_ಬಫರ್ );
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#ಆದರೆ_ಅಂತ್ಯ /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/

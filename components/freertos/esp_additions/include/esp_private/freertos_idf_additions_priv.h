@@ -4,21 +4,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#pragma once
+#ಸೂಚನೆ once
 
 /*
  * This file is like "idf_additions.h" but for private API (i.e., only meant to
  * be called internally by other ESP-IDF components.
  */
 
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#ಅನ್ತರ್ಭಾವ "sdkconfig.h"
+#ಅನ್ತರ್ಭಾವ "freertos/FreeRTOS.h"
+#ಅನ್ತರ್ಭಾವ "freertos/task.h"
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ __cplusplus
+    ಬಾಹ್ಯ "C" {
+#ಆದರೆ_ಅಂತ್ಯ
 /* *INDENT-ON* */
 
 /*------------------------------------------------------------------------------
@@ -36,117 +36,117 @@
  *      - Critical sections or disabling interrupts for deterministic operations
  * - SMP will always use critical sections (determinism is not supported)
  */
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#ಆದರೆ ( !CONFIG_FREERTOS_SMP && ( config_ಅಂಕೆ_CORES > 1 ) )
 
 /* Macros that use a critical section when building for SMP */
-    #define prvENTER_CRITICAL_OR_SUSPEND_ALL( pxLock )    taskENTER_CRITICAL( ( pxLock ) )
-    #define prvEXIT_CRITICAL_OR_RESUME_ALL( pxLock )      ( { taskEXIT_CRITICAL( ( pxLock ) ); pdFALSE; } )
-    #define prvENTER_CRITICAL_OR_MASK_ISR( pxLock, uxStatus ) \
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvENTER_CRITICAL_OR_SUSPEND_ALL( px_ಬೀಗ )    taskENTER_CRITICAL( ( px_ಬೀಗ ) )
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvEXIT_CRITICAL_OR_RESUME_ALL( px_ಬೀಗ )      ( { taskEXIT_CRITICAL( ( px_ಬೀಗ ) ); pdFALSE; } )
+    #ವ್ಯಾಖ್ಯಾನಿಸು prv_ENTER_CRITICAL_OR_ಮುಖವಾಡ_ISR( px_ಬೀಗ, ux_ಸ್ಥಿತಿ ) \
     {                                                         \
-        taskENTER_CRITICAL_ISR( ( pxLock ) );                 \
-        ( void ) ( uxStatus );                                \
+        taskENTER_CRITICAL_ISR( ( px_ಬೀಗ ) );                 \
+        ( ಶೂನ್ಯ ) ( ux_ಸ್ಥಿತಿ );                                \
     }
-    #define prvEXIT_CRITICAL_OR_UNMASK_ISR( pxLock, uxStatus ) \
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvEXIT_CRITICAL_OR_UNMASK_ISR( px_ಬೀಗ, ux_ಸ್ಥಿತಿ ) \
     {                                                          \
-        taskEXIT_CRITICAL_ISR( ( pxLock ) );                   \
-        ( void ) ( uxStatus );                                 \
+        taskEXIT_CRITICAL_ISR( ( px_ಬೀಗ ) );                   \
+        ( ಶೂನ್ಯ ) ( ux_ಸ್ಥಿತಿ );                                 \
     }
 
 /* Macros that enter/exit a critical section only when building for SMP */
-    #define prvENTER_CRITICAL_SMP_ONLY( pxLock )         taskENTER_CRITICAL( pxLock )
-    #define prvEXIT_CRITICAL_SMP_ONLY( pxLock )          taskEXIT_CRITICAL( pxLock )
-    #define prvENTER_CRITICAL_ISR_SMP_ONLY( pxLock )     taskENTER_CRITICAL_ISR( pxLock )
-    #define prvEXIT_CRITICAL_ISR_SMP_ONLY( pxLock )      taskEXIT_CRITICAL_ISR( pxLock )
-    #define prvENTER_CRITICAL_SAFE_SMP_ONLY( pxLock )    prvTaskEnterCriticalSafeSMPOnly( pxLock )
-    #define prvEXIT_CRITICAL_SAFE_SMP_ONLY( pxLock )     prvTaskExitCriticalSafeSMPOnly( pxLock )
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvENTER_CRITICAL_SMP_ONLY( px_ಬೀಗ )         taskENTER_CRITICAL( px_ಬೀಗ )
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvEXIT_CRITICAL_SMP_ONLY( px_ಬೀಗ )          taskEXIT_CRITICAL( px_ಬೀಗ )
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvENTER_CRITICAL_ISR_SMP_ONLY( px_ಬೀಗ )     taskENTER_CRITICAL_ISR( px_ಬೀಗ )
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvEXIT_CRITICAL_ISR_SMP_ONLY( px_ಬೀಗ )      taskEXIT_CRITICAL_ISR( px_ಬೀಗ )
+    #ವ್ಯಾಖ್ಯಾನಿಸು prv_ENTER_CRITICAL_ಸುರಕ್ಷಿತ_SMP_ONLY( px_ಬೀಗ )    prv_Task_Enter_Critical_ಸುರಕ್ಷಿತ_SMPOnly( px_ಬೀಗ )
+    #ವ್ಯಾಖ್ಯಾನಿಸು prv_EXIT_CRITICAL_ಸುರಕ್ಷಿತ_SMP_ONLY( px_ಬೀಗ )     prv_Task_Exit_Critical_ಸುರಕ್ಷಿತ_SMPOnly( px_ಬೀಗ )
 
-    static inline __attribute__( ( always_inline ) )
-    void prvTaskEnterCriticalSafeSMPOnly( portMUX_TYPE * pxLock )
+    ಸ್ಥಿರ ಸಾಲೊಳಗೆ __attribute__( ( always_inline ) )
+    ಶೂನ್ಯ prv_Task_Enter_Critical_ಸುರಕ್ಷಿತ_SMPOnly( ಪೋರ್ಟ್_MUX_TYPE * px_ಬೀಗ )
     {
-        if( portCHECK_IF_IN_ISR() == pdFALSE )
+        ಆದರೆ( ಪೋರ್ಟ್_CHECK_IF_ಒಳ_ISR() == pdFALSE )
         {
-            taskENTER_CRITICAL( pxLock );
+            taskENTER_CRITICAL( px_ಬೀಗ );
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
-            #ifdef __clang_analyzer__
+            #ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ __clang_analyzer__
                 /* Teach clang-tidy that ISR version macro can be different */
                 configASSERT( 1 );
-            #endif
-            taskENTER_CRITICAL_ISR( pxLock );
+            #ಆದರೆ_ಅಂತ್ಯ
+            taskENTER_CRITICAL_ISR( px_ಬೀಗ );
         }
     }
 
-    static inline __attribute__( ( always_inline ) )
-    void prvTaskExitCriticalSafeSMPOnly( portMUX_TYPE * pxLock )
+    ಸ್ಥಿರ ಸಾಲೊಳಗೆ __attribute__( ( always_inline ) )
+    ಶೂನ್ಯ prv_Task_Exit_Critical_ಸುರಕ್ಷಿತ_SMPOnly( ಪೋರ್ಟ್_MUX_TYPE * px_ಬೀಗ )
     {
-        if( portCHECK_IF_IN_ISR() == pdFALSE )
+        ಆದರೆ( ಪೋರ್ಟ್_CHECK_IF_ಒಳ_ISR() == pdFALSE )
         {
-            taskEXIT_CRITICAL( pxLock );
+            taskEXIT_CRITICAL( px_ಬೀಗ );
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
-            #ifdef __clang_analyzer__
+            #ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ __clang_analyzer__
                 /* Teach clang-tidy that ISR version macro can be different */
                 configASSERT( 1 );
-            #endif
-            taskEXIT_CRITICAL_ISR( pxLock );
+            #ಆದರೆ_ಅಂತ್ಯ
+            taskEXIT_CRITICAL_ISR( px_ಬೀಗ );
         }
     }
 
 /* Macros that enter/exit a critical section only when building for single-core */
-    #define prvENTER_CRITICAL_SC_ONLY( pxLock )
-    #define prvEXIT_CRITICAL_SC_ONLY( pxLock )
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvENTER_CRITICAL_SC_ONLY( px_ಬೀಗ )
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvEXIT_CRITICAL_SC_ONLY( px_ಬೀಗ )
 
 /* Macros that enable/disable interrupts only when building for SMP */
-    #define prvDISABLE_INTERRUPTS_ISR_SMP_ONLY()             portSET_INTERRUPT_MASK_FROM_ISR()
-    #define prvENABLE_INTERRUPTS_ISR_SMP_ONLY( uxStatus )    portCLEAR_INTERRUPT_MASK_FROM_ISR( uxStatus )
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvDISABLE_INTERRUPTS_ISR_SMP_ONLY()             ಪೋರ್ಟ್_ಗಣ_ಅಡಚಣೆ_ಮುಖವಾಡ_FROM_ISR()
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvENABLE_INTERRUPTS_ISR_SMP_ONLY( ux_ಸ್ಥಿತಿ )    ಪೋರ್ಟ್_CLEAR_ಅಡಚಣೆ_ಮುಖವಾಡ_FROM_ISR( ux_ಸ್ಥಿತಿ )
 
-#elif ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES == 1 ) )
+#ಅಥವಾಆದರೆ ( !CONFIG_FREERTOS_SMP && ( config_ಅಂಕೆ_CORES == 1 ) )
 
 /* Macros that suspend the scheduler or disables interrupts when building for single-core */
-    #define prvENTER_CRITICAL_OR_SUSPEND_ALL( pxLock )    ( { vTaskSuspendAll(); ( void ) ( pxLock ); } )
-    #define prvEXIT_CRITICAL_OR_RESUME_ALL( pxLock )      xTaskResumeAll()
-    #define prvENTER_CRITICAL_OR_MASK_ISR( pxLock, uxStatus ) \
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvENTER_CRITICAL_OR_SUSPEND_ALL( px_ಬೀಗ )    ( { vTaskSuspendAll(); ( ಶೂನ್ಯ ) ( px_ಬೀಗ ); } )
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvEXIT_CRITICAL_OR_RESUME_ALL( px_ಬೀಗ )      xTaskResumeAll()
+    #ವ್ಯಾಖ್ಯಾನಿಸು prv_ENTER_CRITICAL_OR_ಮುಖವಾಡ_ISR( px_ಬೀಗ, ux_ಸ್ಥಿತಿ ) \
     {                                                         \
-        ( uxStatus ) = portSET_INTERRUPT_MASK_FROM_ISR();     \
-        ( void ) ( pxLock );                                  \
+        ( ux_ಸ್ಥಿತಿ ) = ಪೋರ್ಟ್_ಗಣ_ಅಡಚಣೆ_ಮುಖವಾಡ_FROM_ISR();     \
+        ( ಶೂನ್ಯ ) ( px_ಬೀಗ );                                  \
     }
-    #define prvEXIT_CRITICAL_OR_UNMASK_ISR( pxLock, uxStatus ) \
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvEXIT_CRITICAL_OR_UNMASK_ISR( px_ಬೀಗ, ux_ಸ್ಥಿತಿ ) \
     {                                                          \
-        portCLEAR_INTERRUPT_MASK_FROM_ISR( ( uxStatus ) );     \
-        ( void ) ( pxLock );                                   \
+        ಪೋರ್ಟ್_CLEAR_ಅಡಚಣೆ_ಮುಖವಾಡ_FROM_ISR( ( ux_ಸ್ಥಿತಿ ) );     \
+        ( ಶೂನ್ಯ ) ( px_ಬೀಗ );                                   \
     }
 
 /* Macros that enter/exit a critical section only when building for SMP */
-#if !defined prvENTER_CRITICAL_SMP_ONLY
-    #define prvENTER_CRITICAL_SMP_ONLY( pxLock )
-#endif
-#if !defined prvEXIT_CRITICAL_SMP_ONLY
-    #define prvEXIT_CRITICAL_SMP_ONLY( pxLock )
-#endif
-#if !defined prvENTER_CRITICAL_ISR_SMP_ONLY
-    #define prvENTER_CRITICAL_ISR_SMP_ONLY( pxLock )
-#endif
-#if !defined prvEXIT_CRITICAL_ISR_SMP_ONLY
-    #define prvEXIT_CRITICAL_ISR_SMP_ONLY( pxLock )
-#endif
-#if !defined prvENTER_CRITICAL_SAFE_SMP_ONLY
-    #define prvENTER_CRITICAL_SAFE_SMP_ONLY( pxLock )
-#endif
-#if !defined prvEXIT_CRITICAL_SAFE_SMP_ONLY
-    #define prvEXIT_CRITICAL_SAFE_SMP_ONLY( pxLock )
-#endif
+#ಆದರೆ !defined prvENTER_CRITICAL_SMP_ONLY
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvENTER_CRITICAL_SMP_ONLY( px_ಬೀಗ )
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ !defined prvEXIT_CRITICAL_SMP_ONLY
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvEXIT_CRITICAL_SMP_ONLY( px_ಬೀಗ )
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ !defined prvENTER_CRITICAL_ISR_SMP_ONLY
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvENTER_CRITICAL_ISR_SMP_ONLY( px_ಬೀಗ )
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ !defined prvEXIT_CRITICAL_ISR_SMP_ONLY
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvEXIT_CRITICAL_ISR_SMP_ONLY( px_ಬೀಗ )
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ !defined prv_ENTER_CRITICAL_ಸುರಕ್ಷಿತ_SMP_ONLY
+    #ವ್ಯಾಖ್ಯಾನಿಸು prv_ENTER_CRITICAL_ಸುರಕ್ಷಿತ_SMP_ONLY( px_ಬೀಗ )
+#ಆದರೆ_ಅಂತ್ಯ
+#ಆದರೆ !defined prv_EXIT_CRITICAL_ಸುರಕ್ಷಿತ_SMP_ONLY
+    #ವ್ಯಾಖ್ಯಾನಿಸು prv_EXIT_CRITICAL_ಸುರಕ್ಷಿತ_SMP_ONLY( px_ಬೀಗ )
+#ಆದರೆ_ಅಂತ್ಯ
 
 /* Macros that enter/exit a critical section only when building for single-core */
-    #define prvENTER_CRITICAL_SC_ONLY( pxLock )              taskENTER_CRITICAL( pxLock )
-    #define prvEXIT_CRITICAL_SC_ONLY( pxLock )               taskEXIT_CRITICAL( pxLock )
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvENTER_CRITICAL_SC_ONLY( px_ಬೀಗ )              taskENTER_CRITICAL( px_ಬೀಗ )
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvEXIT_CRITICAL_SC_ONLY( px_ಬೀಗ )               taskEXIT_CRITICAL( px_ಬೀಗ )
 
 /* Macros that enable/disable interrupts only when building for SMP */
-    #define prvDISABLE_INTERRUPTS_ISR_SMP_ONLY()             ( ( UBaseType_t ) 0 )
-    #define prvENABLE_INTERRUPTS_ISR_SMP_ONLY( uxStatus )    ( ( void ) uxStatus )
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvDISABLE_INTERRUPTS_ISR_SMP_ONLY()             ( ( UBaseType_t ) 0 )
+    #ವ್ಯಾಖ್ಯಾನಿಸು prvENABLE_INTERRUPTS_ISR_SMP_ONLY( ux_ಸ್ಥಿತಿ )    ( ( ಶೂನ್ಯ ) ux_ಸ್ಥಿತಿ )
 
-#endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES == 1 ) ) */
+#ಆದರೆ_ಅಂತ್ಯ /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES == 1 ) ) */
 
 /*
  * In ESP-IDF FreeRTOS under SMP builds, spinlocks are to protect different
@@ -166,14 +166,14 @@
  * (which are kernel data structures). Thus, a wrapper function must be provided
  * to take/release the "xKernelLock" from outside tasks.c.
  */
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#ಆದರೆ ( !CONFIG_FREERTOS_SMP && ( config_ಅಂಕೆ_CORES > 1 ) )
 
-    void prvTakeKernelLock( void );
-    void prvReleaseKernelLock( void );
+    ಶೂನ್ಯ prv_Take_Kernel_ಬೀಗ( ಶೂನ್ಯ );
+    ಶೂನ್ಯ prv_Release_Kernel_ಬೀಗ( ಶೂನ್ಯ );
 
-#endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
+#ಆದರೆ_ಅಂತ್ಯ /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 
-#if ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#ಆದರೆ ( CONFIG_FREERTOS_SMP && ( config_ಅಂಕೆ_CORES > 1 ) )
 
 /**
  * @brief Workaround for non-thread safe multi-core OS startup (see IDF-4524)
@@ -181,9 +181,9 @@
  * This function must be called with interrupts disabled on all cores other than
  * core 0 during startup.
  */
-    void prvStartSchedulerOtherCores( void );
+    ಶೂನ್ಯ prv_ಆರಂಭ_Scheduler_Other_Cores( ಶೂನ್ಯ );
 
-#endif /* ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
+#ಆದರೆ_ಅಂತ್ಯ /* ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 
 /*
  * In ESP-IDF FreeRTOS (i.e., multi-core SMP), core 0 manages the the FreeRTOS
@@ -195,13 +195,13 @@
  * This function will check if the current core requires time slicing, and also
  * call the application tick hook. However, the tick count will remain unchanged.
  */
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#ಆದರೆ ( !CONFIG_FREERTOS_SMP && ( config_ಅಂಕೆ_CORES > 1 ) )
 
-    BaseType_t xTaskIncrementTickOtherCores( void );
+    ತಳ_Type_t xTaskIncrementTickOtherCores( ಶೂನ್ಯ );
 
-#endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
+#ಆದರೆ_ಅಂತ್ಯ /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 
-#if CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER
+#ಆದರೆ CONFIG_FREERTOS_SYSTICK_ಬಳಸುತ್ತದೆ_SYSTIMER
 
 /*
  * Reconcile the given core's OS-tick accounting against the free-running counter while its
@@ -215,14 +215,14 @@
  *
  * @return Number of whole OS-tick periods that elapsed while masked.
  */
-    uint32_t xPortSysTickClaimElapsedTicks( int cpu_id );
+    uint32_t x_ಪೋರ್ಟ್_Sys_Tick_Claim_Elapsed_Ticks( ಪೂರ್ಣಾಂಕ cpu_id );
 
-#endif /* CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER */
+#ಆದರೆ_ಅಂತ್ಯ /* CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER */
 
 /*------------------------------------------------------------------------------
  * TASK UTILITIES (PRIVATE)
  *----------------------------------------------------------------------------*/
-#if ( INCLUDE_vTaskPrioritySet == 1 )
+#ಆದರೆ ( INCLUDE_v_Task_ಆದ್ಯತೆ_ಗಣ == 1 )
 
 /**
  * @brief Structure to save a task's previous priority
@@ -230,17 +230,17 @@
  * This structure is meant to be used with prvTaskPriorityRaise() and
  * prvTaskPriorityRestore().
  */
-    typedef struct
+    ಪ್ರಕಾರವ್ಯಾಖ್ಯೆ ರಚನೆ
     {
-        UBaseType_t uxPriority;
-        #if ( configUSE_MUTEXES == 1 )
-            UBaseType_t uxBasePriority;
-        #endif
-    } prvTaskSavedPriority_t;
+        UBaseType_t ux_ಆದ್ಯತೆ;
+        #ಆದರೆ ( configUSE_MUTEXES == 1 )
+            UBaseType_t ux_ತಳ_ಆದ್ಯತೆ;
+        #ಆದರೆ_ಅಂತ್ಯ
+    } prv_Task_Saved_ಆದ್ಯತೆ_t;
 
-#endif /* INCLUDE_vTaskPrioritySet == 1 */
+#ಆದರೆ_ಅಂತ್ಯ /* INCLUDE_vTaskPrioritySet == 1 */
 
-#if ( INCLUDE_vTaskPrioritySet == 1 )
+#ಆದರೆ ( INCLUDE_v_Task_ಆದ್ಯತೆ_ಗಣ == 1 )
 
 /**
  * INCLUDE_vTaskPrioritySet must be defined as 1 for this function to be
@@ -275,12 +275,12 @@
  * @param uxNewPriority The priority to which the task's priority will be
  * set.
  */
-    void prvTaskPriorityRaise( prvTaskSavedPriority_t * pxSavedPriority,
-                               UBaseType_t uxNewPriority );
+    ಶೂನ್ಯ prv_Task_ಆದ್ಯತೆ_Raise( prv_Task_Saved_ಆದ್ಯತೆ_t * px_Saved_ಆದ್ಯತೆ,
+                               UBaseType_t ux_New_ಆದ್ಯತೆ );
 
-#endif /* INCLUDE_vTaskPrioritySet == 1 */
+#ಆದರೆ_ಅಂತ್ಯ /* INCLUDE_vTaskPrioritySet == 1 */
 
-#if ( INCLUDE_vTaskPrioritySet == 1 )
+#ಆದರೆ ( INCLUDE_v_Task_ಆದ್ಯತೆ_ಗಣ == 1 )
 
 /**
  * INCLUDE_vTaskPrioritySet must be defined as 1 for this function to be
@@ -300,11 +300,11 @@
  * @param pxSavedPriority previously saved base and current priorities that need
  * to be restored
  */
-    void prvTaskPriorityRestore( prvTaskSavedPriority_t * pxSavedPriority );
+    ಶೂನ್ಯ prv_Task_ಆದ್ಯತೆ_Restore( prv_Task_Saved_ಆದ್ಯತೆ_t * px_Saved_ಆದ್ಯತೆ );
 
-#endif /* INCLUDE_vTaskPrioritySet == 1 */
+#ಆದರೆ_ಅಂತ್ಯ /* INCLUDE_vTaskPrioritySet == 1 */
 
-#if CONFIG_SPIRAM
+#ಆದರೆ CONFIG_SPIRAM
 
 /**
  * Create a new task with stack having the desired heap capabilities and add it to the
@@ -364,30 +364,30 @@
  * @return pdPASS if the task was successfully created and added to a ready
  * list, otherwise an error code defined in the file projdefs.h
  */
-    #if CONFIG_FREERTOS_SMP
-        BaseType_t prvTaskCreateDynamicAffinitySetWithCaps( TaskFunction_t pxTaskCode,
-                                                            const char * const pcName,
-                                                            const configSTACK_DEPTH_TYPE usStackDepth,
-                                                            void * const pvParameters,
-                                                            UBaseType_t uxPriority,
-                                                            UBaseType_t uxCoreAffinityMask,
-                                                            UBaseType_t uxStackMemoryCaps,
-                                                            TaskHandle_t * const pxCreatedTask );
-    #else
-        BaseType_t prvTaskCreateDynamicPinnedToCoreWithCaps( TaskFunction_t pxTaskCode,
-                                                             const char * const pcName,
-                                                             const configSTACK_DEPTH_TYPE usStackDepth,
-                                                             void * const pvParameters,
-                                                             UBaseType_t uxPriority,
-                                                             const BaseType_t xCoreID,
-                                                             UBaseType_t uxStackMemoryCaps,
-                                                             TaskHandle_t * const pxCreatedTask );
-    #endif // CONFIG_FREERTOS_SMP
+    #ಆದರೆ CONFIG_FREERTOS_SMP
+        ತಳ_Type_t prv_Task_Create_Dynamic_Affinity_ಗಣ_With_Caps( TaskFunction_t px_Task_ಸಂಕೇತ,
+                                                            ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ * ಸ್ಥಿರಾಂಕ pcName,
+                                                            ಸ್ಥಿರಾಂಕ config_ರಾಶಿ_ಆಳ_TYPE us_ರಾಶಿ_ಆಳ,
+                                                            ಶೂನ್ಯ * ಸ್ಥಿರಾಂಕ pvParameters,
+                                                            UBaseType_t ux_ಆದ್ಯತೆ,
+                                                            UBaseType_t ux_Core_Affinity_ಮುಖವಾಡ,
+                                                            UBaseType_t ux_ರಾಶಿ_ಸ್ಮರಣೆ_Caps,
+                                                            TaskHandle_t * ಸ್ಥಿರಾಂಕ pxCreatedTask );
+    #ಇಲ್ಲದಿದ್ದರೆ
+        ತಳ_Type_t prv_Task_Create_Dynamic_Pinned_ಗಮ್ಯ_Core_With_Caps( TaskFunction_t px_Task_ಸಂಕೇತ,
+                                                             ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ * ಸ್ಥಿರಾಂಕ pcName,
+                                                             ಸ್ಥಿರಾಂಕ config_ರಾಶಿ_ಆಳ_TYPE us_ರಾಶಿ_ಆಳ,
+                                                             ಶೂನ್ಯ * ಸ್ಥಿರಾಂಕ pvParameters,
+                                                             UBaseType_t ux_ಆದ್ಯತೆ,
+                                                             ಸ್ಥಿರಾಂಕ ತಳ_Type_t xCoreID,
+                                                             UBaseType_t ux_ರಾಶಿ_ಸ್ಮರಣೆ_Caps,
+                                                             TaskHandle_t * ಸ್ಥಿರಾಂಕ pxCreatedTask );
+    #ಆದರೆ_ಅಂತ್ಯ // CONFIG_FREERTOS_SMP
 
-#endif // CONFIG_SPIRAM
+#ಆದರೆ_ಅಂತ್ಯ // CONFIG_SPIRAM
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ __cplusplus
     }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 /* *INDENT-ON* */

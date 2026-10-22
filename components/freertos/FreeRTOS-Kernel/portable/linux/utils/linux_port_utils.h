@@ -3,20 +3,20 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#pragma once
+#ಸೂಚನೆ once
 
-#include <pthread.h>
+#ಅನ್ತರ್ಭಾವ <pthread.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ __cplusplus
+ಬಾಹ್ಯ "C" {
+#ಆದರೆ_ಅಂತ್ಯ
 
-typedef struct thread *thread_hdl;
+ಪ್ರಕಾರವ್ಯಾಖ್ಯೆ ರಚನೆ thread *thread_hdl;
 
-void linux_port_setup_backtrace_signal(void);
-void linux_port_print_backtrace(void);
-pthread_t linux_port_get_scheduled_task_pthread(void);
+ಶೂನ್ಯ linux_ಪೋರ್ಟ್_ಸಿದ್ಧತೆ_backtrace_signal(ಶೂನ್ಯ);
+ಶೂನ್ಯ linux_ಪೋರ್ಟ್_print_backtrace(ಶೂನ್ಯ);
+pthread_t linux_ಪೋರ್ಟ್_get_scheduled_task_pthread(ಶೂನ್ಯ);
 
-#ifdef __cplusplus
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ __cplusplus
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ

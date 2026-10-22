@@ -39,20 +39,20 @@
  * provided under each compiler directory.
  */
 
-#ifndef ATOMIC_H
-#define ATOMIC_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ ATOMIC_H
+#ವ್ಯಾಖ್ಯಾನಿಸು ATOMIC_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h must appear in source files before include atomic.h"
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ INC_FREERTOS_H
+    #ದೋಷ "include FreeRTOS.h must appear in source files before include atomic.h"
+#ಆದರೆ_ಅಂತ್ಯ
 
 /* Standard includes. */
-#include <stdint.h>
+#ಅನ್ತರ್ಭಾವ <stdint.h>
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ __cplusplus
+    ಬಾಹ್ಯ "C" {
+#ಆದರೆ_ಅಂತ್ಯ
 /* *INDENT-ON* */
 
 /*
@@ -63,22 +63,22 @@
  * ATOMIC_ENTER_CRITICAL().
  *
  */
-#if defined( portSET_INTERRUPT_MASK_FROM_ISR )
+#ಆದರೆ defined( ಪೋರ್ಟ್_ಗಣ_ಅಡಚಣೆ_ಮುಖವಾಡ_FROM_ISR )
 
 /* Nested interrupt scheme is supported in this port. */
-    #define ATOMIC_ENTER_CRITICAL() \
-    UBaseType_t uxCriticalSectionType = portSET_INTERRUPT_MASK_FROM_ISR()
+    #ವ್ಯಾಖ್ಯಾನಿಸು ATOMIC_ENTER_CRITICAL() \
+    UBaseType_t uxCriticalSectionType = ಪೋರ್ಟ್_ಗಣ_ಅಡಚಣೆ_ಮುಖವಾಡ_FROM_ISR()
 
-    #define ATOMIC_EXIT_CRITICAL() \
-    portCLEAR_INTERRUPT_MASK_FROM_ISR( uxCriticalSectionType )
+    #ವ್ಯಾಖ್ಯಾನಿಸು ATOMIC_EXIT_CRITICAL() \
+    ಪೋರ್ಟ್_CLEAR_ಅಡಚಣೆ_ಮುಖವಾಡ_FROM_ISR( uxCriticalSectionType )
 
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 
 /* Nested interrupt scheme is NOT supported in this port. */
-    #define ATOMIC_ENTER_CRITICAL()    portENTER_CRITICAL()
-    #define ATOMIC_EXIT_CRITICAL()     portEXIT_CRITICAL()
+    #ವ್ಯಾಖ್ಯಾನಿಸು ATOMIC_ENTER_CRITICAL()    ಪೋರ್ಟ್_ENTER_CRITICAL()
+    #ವ್ಯಾಖ್ಯಾನಿಸು ATOMIC_EXIT_CRITICAL()     ಪೋರ್ಟ್_EXIT_CRITICAL()
 
-#endif /* portSET_INTERRUPT_MASK_FROM_ISR() */
+#ಆದರೆ_ಅಂತ್ಯ /* portSET_INTERRUPT_MASK_FROM_ISR() */
 
 /*
  * Port specific definition -- "always inline".
@@ -87,12 +87,12 @@
  * for atomic.  Thus, if portFORCE_INLINE is not provided by portmacro.h,
  * instead of resulting error, simply define it away.
  */
-#ifndef portFORCE_INLINE
-    #define portFORCE_INLINE
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ ಪೋರ್ಟ್_FORCE_INLINE
+    #ವ್ಯಾಖ್ಯಾನಿಸು ಪೋರ್ಟ್_FORCE_INLINE
+#ಆದರೆ_ಅಂತ್ಯ
 
-#define ATOMIC_COMPARE_AND_SWAP_SUCCESS    0x1U     /**< Compare and swap succeeded, swapped. */
-#define ATOMIC_COMPARE_AND_SWAP_FAILURE    0x0U     /**< Compare and swap failed, did not swap. */
+#ವ್ಯಾಖ್ಯಾನಿಸು ATOMIC_COMPARE_AND_ಅದಲುಬದಲು_SUCCESS    0x1U     /**< Compare and swap succeeded, swapped. */
+#ವ್ಯಾಖ್ಯಾನಿಸು ATOMIC_COMPARE_AND_ಅದಲುಬದಲು_FAILURE    0x0U     /**< Compare and swap failed, did not swap. */
 
 /*----------------------------- Swap && CAS ------------------------------*/
 
@@ -111,27 +111,27 @@
  * @note This function only swaps *pulDestination with ulExchange, if previous
  *       *pulDestination value equals ulComparand.
  */
-static portFORCE_INLINE uint32_t Atomic_CompareAndSwap_u32( uint32_t volatile * pulDestination,
+ಸ್ಥಿರ ಪೋರ್ಟ್_FORCE_INLINE uint32_t Atomic_Compare_And_ಅದಲುಬದಲು_u32( uint32_t ಅಸ್ಥಿರ * pulDestination,
                                                             uint32_t ulExchange,
                                                             uint32_t ulComparand )
 {
-    uint32_t ulReturnValue;
+    uint32_t ul_Return_ಮೌಲ್ಯ;
 
     ATOMIC_ENTER_CRITICAL();
     {
-        if( *pulDestination == ulComparand )
+        ಆದರೆ( *pulDestination == ulComparand )
         {
             *pulDestination = ulExchange;
-            ulReturnValue = ATOMIC_COMPARE_AND_SWAP_SUCCESS;
+            ul_Return_ಮೌಲ್ಯ = ATOMIC_COMPARE_AND_ಅದಲುಬದಲು_SUCCESS;
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
-            ulReturnValue = ATOMIC_COMPARE_AND_SWAP_FAILURE;
+            ul_Return_ಮೌಲ್ಯ = ATOMIC_COMPARE_AND_ಅದಲುಬದಲು_FAILURE;
         }
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulReturnValue;
+    ಹಿಂತಿರುಗಿ ul_Return_ಮೌಲ್ಯ;
 }
 /*-----------------------------------------------------------*/
 
@@ -147,19 +147,19 @@ static portFORCE_INLINE uint32_t Atomic_CompareAndSwap_u32( uint32_t volatile * 
  *
  * @return The initial value of *ppvDestination.
  */
-static portFORCE_INLINE void * Atomic_SwapPointers_p32( void * volatile * ppvDestination,
-                                                        void * pvExchange )
+ಸ್ಥಿರ ಪೋರ್ಟ್_FORCE_INLINE ಶೂನ್ಯ * Atomic_ಅದಲುಬದಲು_ಸೂಚಕಗಳು_p32( ಶೂನ್ಯ * ಅಸ್ಥಿರ * ppvDestination,
+                                                        ಶೂನ್ಯ * pvExchange )
 {
-    void * pReturnValue;
+    ಶೂನ್ಯ * p_Return_ಮೌಲ್ಯ;
 
     ATOMIC_ENTER_CRITICAL();
     {
-        pReturnValue = *ppvDestination;
+        p_Return_ಮೌಲ್ಯ = *ppvDestination;
         *ppvDestination = pvExchange;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return pReturnValue;
+    ಹಿಂತಿರುಗಿ p_Return_ಮೌಲ್ಯ;
 }
 /*-----------------------------------------------------------*/
 
@@ -179,23 +179,23 @@ static portFORCE_INLINE void * Atomic_SwapPointers_p32( void * volatile * ppvDes
  * @note This function only swaps *ppvDestination with pvExchange, if previous
  *       *ppvDestination value equals pvComparand.
  */
-static portFORCE_INLINE uint32_t Atomic_CompareAndSwapPointers_p32( void * volatile * ppvDestination,
-                                                                    void * pvExchange,
-                                                                    void * pvComparand )
+ಸ್ಥಿರ ಪೋರ್ಟ್_FORCE_INLINE uint32_t Atomic_Compare_And_ಅದಲುಬದಲು_ಸೂಚಕಗಳು_p32( ಶೂನ್ಯ * ಅಸ್ಥಿರ * ppvDestination,
+                                                                    ಶೂನ್ಯ * pvExchange,
+                                                                    ಶೂನ್ಯ * pvComparand )
 {
-    uint32_t ulReturnValue = ATOMIC_COMPARE_AND_SWAP_FAILURE;
+    uint32_t ul_Return_ಮೌಲ್ಯ = ATOMIC_COMPARE_AND_ಅದಲುಬದಲು_FAILURE;
 
     ATOMIC_ENTER_CRITICAL();
     {
-        if( *ppvDestination == pvComparand )
+        ಆದರೆ( *ppvDestination == pvComparand )
         {
             *ppvDestination = pvExchange;
-            ulReturnValue = ATOMIC_COMPARE_AND_SWAP_SUCCESS;
+            ul_Return_ಮೌಲ್ಯ = ATOMIC_COMPARE_AND_ಅದಲುಬದಲು_SUCCESS;
         }
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulReturnValue;
+    ಹಿಂತಿರುಗಿ ul_Return_ಮೌಲ್ಯ;
 }
 
 
@@ -212,19 +212,19 @@ static portFORCE_INLINE uint32_t Atomic_CompareAndSwapPointers_p32( void * volat
  *
  * @return previous *pulAddend value.
  */
-static portFORCE_INLINE uint32_t Atomic_Add_u32( uint32_t volatile * pulAddend,
-                                                 uint32_t ulCount )
+ಸ್ಥಿರ ಪೋರ್ಟ್_FORCE_INLINE uint32_t Atomic_ಕೂಡಿಸು_u32( uint32_t ಅಸ್ಥಿರ * pulAddend,
+                                                 uint32_t ul_ಎಣಿಕೆ )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulAddend;
-        *pulAddend += ulCount;
+        *pulAddend += ul_ಎಣಿಕೆ;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    ಹಿಂತಿರುಗಿ ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -240,19 +240,19 @@ static portFORCE_INLINE uint32_t Atomic_Add_u32( uint32_t volatile * pulAddend,
  *
  * @return previous *pulAddend value.
  */
-static portFORCE_INLINE uint32_t Atomic_Subtract_u32( uint32_t volatile * pulAddend,
-                                                      uint32_t ulCount )
+ಸ್ಥಿರ ಪೋರ್ಟ್_FORCE_INLINE uint32_t Atomic_ಕಳೆ_u32( uint32_t ಅಸ್ಥಿರ * pulAddend,
+                                                      uint32_t ul_ಎಣಿಕೆ )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulAddend;
-        *pulAddend -= ulCount;
+        *pulAddend -= ul_ಎಣಿಕೆ;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    ಹಿಂತಿರುಗಿ ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -266,7 +266,7 @@ static portFORCE_INLINE uint32_t Atomic_Subtract_u32( uint32_t volatile * pulAdd
  *
  * @return *pulAddend value before increment.
  */
-static portFORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t volatile * pulAddend )
+ಸ್ಥಿರ ಪೋರ್ಟ್_FORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t ಅಸ್ಥಿರ * pulAddend )
 {
     uint32_t ulCurrent;
 
@@ -277,7 +277,7 @@ static portFORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t volatile * pulAd
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    ಹಿಂತಿರುಗಿ ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -291,7 +291,7 @@ static portFORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t volatile * pulAd
  *
  * @return *pulAddend value before decrement.
  */
-static portFORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t volatile * pulAddend )
+ಸ್ಥಿರ ಪೋರ್ಟ್_FORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t ಅಸ್ಥಿರ * pulAddend )
 {
     uint32_t ulCurrent;
 
@@ -302,7 +302,7 @@ static portFORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t volatile * pulAd
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    ಹಿಂತಿರುಗಿ ulCurrent;
 }
 
 /*----------------------------- Bitwise Logical ------------------------------*/
@@ -318,19 +318,19 @@ static portFORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t volatile * pulAd
  *
  * @return The original value of *pulDestination.
  */
-static portFORCE_INLINE uint32_t Atomic_OR_u32( uint32_t volatile * pulDestination,
-                                                uint32_t ulValue )
+ಸ್ಥಿರ ಪೋರ್ಟ್_FORCE_INLINE uint32_t Atomic_OR_u32( uint32_t ಅಸ್ಥಿರ * pulDestination,
+                                                uint32_t ul_ಮೌಲ್ಯ )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulDestination;
-        *pulDestination |= ulValue;
+        *pulDestination |= ul_ಮೌಲ್ಯ;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    ಹಿಂತಿರುಗಿ ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -345,19 +345,19 @@ static portFORCE_INLINE uint32_t Atomic_OR_u32( uint32_t volatile * pulDestinati
  *
  * @return The original value of *pulDestination.
  */
-static portFORCE_INLINE uint32_t Atomic_AND_u32( uint32_t volatile * pulDestination,
-                                                 uint32_t ulValue )
+ಸ್ಥಿರ ಪೋರ್ಟ್_FORCE_INLINE uint32_t Atomic_AND_u32( uint32_t ಅಸ್ಥಿರ * pulDestination,
+                                                 uint32_t ul_ಮೌಲ್ಯ )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulDestination;
-        *pulDestination &= ulValue;
+        *pulDestination &= ul_ಮೌಲ್ಯ;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    ಹಿಂತಿರುಗಿ ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -372,19 +372,19 @@ static portFORCE_INLINE uint32_t Atomic_AND_u32( uint32_t volatile * pulDestinat
  *
  * @return The original value of *pulDestination.
  */
-static portFORCE_INLINE uint32_t Atomic_NAND_u32( uint32_t volatile * pulDestination,
-                                                  uint32_t ulValue )
+ಸ್ಥಿರ ಪೋರ್ಟ್_FORCE_INLINE uint32_t Atomic_NAND_u32( uint32_t ಅಸ್ಥಿರ * pulDestination,
+                                                  uint32_t ul_ಮೌಲ್ಯ )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulDestination;
-        *pulDestination = ~( ulCurrent & ulValue );
+        *pulDestination = ~( ulCurrent & ul_ಮೌಲ್ಯ );
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    ಹಿಂತಿರುಗಿ ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -399,25 +399,25 @@ static portFORCE_INLINE uint32_t Atomic_NAND_u32( uint32_t volatile * pulDestina
  *
  * @return The original value of *pulDestination.
  */
-static portFORCE_INLINE uint32_t Atomic_XOR_u32( uint32_t volatile * pulDestination,
-                                                 uint32_t ulValue )
+ಸ್ಥಿರ ಪೋರ್ಟ್_FORCE_INLINE uint32_t Atomic_XOR_u32( uint32_t ಅಸ್ಥಿರ * pulDestination,
+                                                 uint32_t ul_ಮೌಲ್ಯ )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulDestination;
-        *pulDestination ^= ulValue;
+        *pulDestination ^= ul_ಮೌಲ್ಯ;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    ಹಿಂತಿರುಗಿ ulCurrent;
 }
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ __cplusplus
     }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 /* *INDENT-ON* */
 
-#endif /* ATOMIC_H */
+#ಆದರೆ_ಅಂತ್ಯ /* ATOMIC_H */

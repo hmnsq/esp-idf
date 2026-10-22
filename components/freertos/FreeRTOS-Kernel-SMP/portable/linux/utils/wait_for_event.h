@@ -31,21 +31,21 @@
  *
  */
 
-#ifndef _WAIT_FOR_EVENT_H_
-#define _WAIT_FOR_EVENT_H_
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ _WAIT_FOR_EVENT_H_
+#ವ್ಯಾಖ್ಯಾನಿಸು _WAIT_FOR_EVENT_H_
 
-#include <stdbool.h>
-#include <time.h>
+#ಅನ್ತರ್ಭಾವ <stdbool.h>
+#ಅನ್ತರ್ಭಾವ <time.h>
 
-struct event;
+ರಚನೆ event;
 
-struct event * event_create(void);
-void event_delete( struct event * );
-bool event_wait( struct event * ev );
-bool event_wait_timed( struct event * ev,
+ರಚನೆ event * event_create(ಶೂನ್ಯ);
+ಶೂನ್ಯ event_delete( ರಚನೆ event * );
+bool event_wait( ರಚನೆ event * ev );
+bool event_wait_timed( ರಚನೆ event * ev,
                        time_t ms );
-void event_signal( struct event * ev );
+ಶೂನ್ಯ event_signal( ರಚನೆ event * ev );
 
 
 
-#endif /* ifndef _WAIT_FOR_EVENT_H_ */
+#ಆದರೆ_ಅಂತ್ಯ /* ifndef _WAIT_FOR_EVENT_H_ */

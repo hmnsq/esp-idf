@@ -13,126 +13,126 @@
  *
  * Note: uxTaskGetSystemState() is tested in a separate unit test
  */
-#include "sdkconfig.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/event_groups.h"
-#include "unity.h"
-#include "test_utils.h"
+#ಅನ್ತರ್ಭಾವ "sdkconfig.h"
+#ಅನ್ತರ್ಭಾವ <stdio.h>
+#ಅನ್ತರ್ಭಾವ <stdlib.h>
+#ಅನ್ತರ್ಭಾವ <string.h>
+#ಅನ್ತರ್ಭಾವ "freertos/FreeRTOS.h"
+#ಅನ್ತರ್ಭಾವ "freertos/task.h"
+#ಅನ್ತರ್ಭಾವ "freertos/semphr.h"
+#ಅನ್ತರ್ಭಾವ "freertos/event_groups.h"
+#ಅನ್ತರ್ಭಾವ "unity.h"
+#ಅನ್ತರ್ಭಾವ "test_utils.h"
 
-#ifdef CONFIG_FREERTOS_USE_TRACE_FACILITY
-#define TSK_PRIORITY    (UNITY_FREERTOS_PRIORITY + 1)
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CONFIG_FREERTOS_USE_TRACE_FACILITY
+#ವ್ಯಾಖ್ಯಾನಿಸು TSK_ಆದ್ಯತೆ    (UNITY_FREERTOS_ಆದ್ಯತೆ + 1)
 
-#define NO_OF_CORES CONFIG_FREERTOS_NUMBER_OF_CORES
-#define BIN_SEM_QUEUE_TYPE queueQUEUE_TYPE_BINARY_SEMAPHORE     //Expected Queue Type
+#ವ್ಯಾಖ್ಯಾನಿಸು NO_ದ_CORES CONFIG_FREERTOS_ಸಂಖ್ಯೆ_ದ_CORES
+#ವ್ಯಾಖ್ಯಾನಿಸು BIN_SEM_ಸರತಿ_TYPE ಸರತಿ_ಸರತಿ_TYPE_ದ್ವಿಮಾನ_SEMAPHORE     //Expected Queue Type
 
-static QueueHandle_t test_queues[NO_OF_CORES];
-static TaskHandle_t task_handles[NO_OF_CORES];
+ಸ್ಥಿರ ಸರತಿ_Handle_t test_queues[NO_ದ_CORES];
+ಸ್ಥಿರ TaskHandle_t task_handles[NO_ದ_CORES];
 
-void task_test_trace_utilities(void *arg)
+ಶೂನ್ಯ task_test_trace_utilities(ಶೂನ್ಯ *arg)
 {
-    int core = xPortGetCoreID();
+    ಪೂರ್ಣಾಂಕ core = x_ಪೋರ್ಟ್_Get_Core_ID();
     TaskHandle_t handle = xTaskGetCurrentTaskHandle();
     uint32_t id = (uint32_t)arg;
 
-    vTaskSetTaskNumber(handle, (UBaseType_t)id);    //cast and store id as task number
-    vQueueSetQueueNumber(test_queues[core], id);    //store id as queue number
+    v_Task_ಗಣ_Task_ಸಂಖ್ಯೆ(handle, (UBaseType_t)id);    //cast and store id as task number
+    v_ಸರತಿ_ಗಣ_ಸರತಿ_ಸಂಖ್ಯೆ(test_queues[core], id);    //store id as queue number
 
     //Wait to start
-    xSemaphoreTake(test_queues[core], portMAX_DELAY);
+    xSemaphoreTake(test_queues[core], ಪೋರ್ಟ್_MAX_DELAY);
 
     //Tests on this core
-    TEST_ASSERT(uxTaskGetTaskNumber(task_handles[core]) == (0x0F << (core)));
-    TEST_ASSERT(uxQueueGetQueueNumber(test_queues[core]) == (0x0F << (core)));
-    TEST_ASSERT(ucQueueGetQueueType(test_queues[core]) == BIN_SEM_QUEUE_TYPE);
+    TEST_ASSERT(ux_Task_Get_Task_ಸಂಖ್ಯೆ(task_handles[core]) == (0x0F << (core)));
+    TEST_ASSERT(ux_ಸರತಿ_Get_ಸರತಿ_ಸಂಖ್ಯೆ(test_queues[core]) == (0x0F << (core)));
+    TEST_ASSERT(uc_ಸರತಿ_Get_ಸರತಿ_Type(test_queues[core]) == BIN_SEM_ಸರತಿ_TYPE);
 
     //Test on other core
-#ifndef CONFIG_FREERTOS_UNICORE
-    TEST_ASSERT(uxTaskGetTaskNumber(task_handles[!core]) == (0x0F << (!core)));
-    TEST_ASSERT(uxQueueGetQueueNumber(test_queues[!core]) == (0x0F << (!core)));
-    TEST_ASSERT(ucQueueGetQueueType(test_queues[!core]) == BIN_SEM_QUEUE_TYPE);
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CONFIG_FREERTOS_UNICORE
+    TEST_ASSERT(ux_Task_Get_Task_ಸಂಖ್ಯೆ(task_handles[!core]) == (0x0F << (!core)));
+    TEST_ASSERT(ux_ಸರತಿ_Get_ಸರತಿ_ಸಂಖ್ಯೆ(test_queues[!core]) == (0x0F << (!core)));
+    TEST_ASSERT(uc_ಸರತಿ_Get_ಸರತಿ_Type(test_queues[!core]) == BIN_SEM_ಸರತಿ_TYPE);
+#ಆದರೆ_ಅಂತ್ಯ
 
     xSemaphoreGive(test_queues[core]);      //Signal done
-    vTaskDelete(NULL);
+    vTaskDelete(ಖಾಲಿ);
 }
 
 TEST_CASE("Test freertos trace facility functions", "[freertos]")
 {
-    for (int i = 0; i < NO_OF_CORES; i++) {
-        test_queues[i] = xSemaphoreCreateBinary();   //Create a queue as binary semaphore for each core
-        xTaskCreatePinnedToCore(task_test_trace_utilities, "Test Task", 4096, (void *)(0x0F << i), TSK_PRIORITY, &task_handles[i], i);
+    ಗಾಗಿ (ಪೂರ್ಣಾಂಕ i = 0; i < NO_ದ_CORES; i++) {
+        test_queues[i] = x_Semaphore_Create_ದ್ವಿಮಾನ();   //Create a queue as binary semaphore for each core
+        x_Task_Create_Pinned_ಗಮ್ಯ_Core(task_test_trace_utilities, "Test Task", 4096, (ಶೂನ್ಯ *)(0x0F << i), TSK_ಆದ್ಯತೆ, &task_handles[i], i);
     }
 
     vTaskDelay(10);
 
     //Start the tasks
-    for (int i = NO_OF_CORES - 1; i >= 0; i--) {
+    ಗಾಗಿ (ಪೂರ್ಣಾಂಕ i = NO_ದ_CORES - 1; i >= 0; i--) {
         xSemaphoreGive(test_queues[i]);
     }
 
     vTaskDelay(10); //Small delay to ensure semaphores are taken
 
     //Wait for done
-    for (int i = 0; i < NO_OF_CORES; i++) {
-        xSemaphoreTake(test_queues[i], portMAX_DELAY);
+    ಗಾಗಿ (ಪೂರ್ಣಾಂಕ i = 0; i < NO_ದ_CORES; i++) {
+        xSemaphoreTake(test_queues[i], ಪೋರ್ಟ್_MAX_DELAY);
         vSemaphoreDelete(test_queues[i]);
     }
 
     vTaskDelay(10);     //Give time for idle task to clean up
 }
 
-#define MAX_TASKS           15
-#define TASKS_TO_CREATE     5
+#ವ್ಯಾಖ್ಯಾನಿಸು MAX_TASKS           15
+#ವ್ಯಾಖ್ಯಾನಿಸು TASKS_ಗಮ್ಯ_CREATE     5
 
-static TaskHandle_t created_handles[TASKS_TO_CREATE];
-static TaskStatus_t *tsk_status_array;
+ಸ್ಥಿರ TaskHandle_t created_handles[TASKS_ಗಮ್ಯ_CREATE];
+ಸ್ಥಿರ Task_ಸ್ಥಿತಿ_t *tsk_ಸ್ಥಿತಿ_array;
 
-void created_task(void* arg)
+ಶೂನ್ಯ created_task(ಶೂನ್ಯ* arg)
 {
-    while (1) {
+    ಆಗ (1) {
         vTaskDelay(100);
     }
 }
 
 TEST_CASE("Test freertos uxTaskGetSystemState", "[freertos]")
 {
-    tsk_status_array = calloc(MAX_TASKS, sizeof(TaskStatus_t));
-    for (int i = 0; i < TASKS_TO_CREATE; i++) {
-        xTaskCreatePinnedToCore(created_task, "Created Task", 1024, NULL, TSK_PRIORITY, &created_handles[i], 0);
+    tsk_ಸ್ಥಿತಿ_array = ಸೊನ್ನೆ_ಸ್ಮರಣೆ_ಕೊಡು(MAX_TASKS, ಗಾತ್ರ(Task_ಸ್ಥಿತಿ_t));
+    ಗಾಗಿ (ಪೂರ್ಣಾಂಕ i = 0; i < TASKS_ಗಮ್ಯ_CREATE; i++) {
+        x_Task_Create_Pinned_ಗಮ್ಯ_Core(created_task, "Created Task", 1024, ಖಾಲಿ, TSK_ಆದ್ಯತೆ, &created_handles[i], 0);
     }
 
     //Get System states
-    int no_of_tasks = uxTaskGetSystemState(tsk_status_array, MAX_TASKS, NULL);
-    TEST_ASSERT((no_of_tasks > 0) && (no_of_tasks <= MAX_TASKS));
+    ಪೂರ್ಣಾಂಕ no_ದ_tasks = uxTaskGetSystemState(tsk_ಸ್ಥಿತಿ_array, MAX_TASKS, ಖಾಲಿ);
+    TEST_ASSERT((no_ದ_tasks > 0) && (no_ದ_tasks <= MAX_TASKS));
 
     //Check if get system state has got all created tasks
-    bool not_found = false;
-    for (int i = 0; i < TASKS_TO_CREATE; i++) {
-        bool found = false;
-        for (int j = 0; j < MAX_TASKS; j++) {
-            if (tsk_status_array[j].xHandle == created_handles[i]) {
-                found = true;
-                break;
+    bool not_ಸಿಕ್ಕಿತು = false;
+    ಗಾಗಿ (ಪೂರ್ಣಾಂಕ i = 0; i < TASKS_ಗಮ್ಯ_CREATE; i++) {
+        bool ಸಿಕ್ಕಿತು = false;
+        ಗಾಗಿ (ಪೂರ್ಣಾಂಕ j = 0; j < MAX_TASKS; j++) {
+            ಆದರೆ (tsk_ಸ್ಥಿತಿ_array[j].xHandle == created_handles[i]) {
+                ಸಿಕ್ಕಿತು = true;
+                ನಿಲ್ಲಿಸು;
             }
         }
-        if (!found) {
-            not_found = true;
-            break;
+        ಆದರೆ (!ಸಿಕ್ಕಿತು) {
+            not_ಸಿಕ್ಕಿತು = true;
+            ನಿಲ್ಲಿಸು;
         }
     }
-    TEST_ASSERT(not_found == false);
+    TEST_ASSERT(not_ಸಿಕ್ಕಿತು == false);
 
     //Cleanup
-    for (int i = 0; i < TASKS_TO_CREATE; i++) {
+    ಗಾಗಿ (ಪೂರ್ಣಾಂಕ i = 0; i < TASKS_ಗಮ್ಯ_CREATE; i++) {
         vTaskDelete(created_handles[i]);
     }
-    free(tsk_status_array);
+    ಬಿಡುಗಡೆ(tsk_ಸ್ಥಿತಿ_array);
     vTaskDelay(10);
 }
 
-#endif //CONFIG_FREERTOS_USE_TRACE_FACILITY
+#ಆದರೆ_ಅಂತ್ಯ //CONFIG_FREERTOS_USE_TRACE_FACILITY

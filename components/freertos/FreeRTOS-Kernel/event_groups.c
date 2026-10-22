@@ -31,57 +31,57 @@
  */
 
 /* Standard includes. */
-#include <stdlib.h>
+#ಅನ್ತರ್ಭಾವ <stdlib.h>
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
  * task.h is included from an application file. */
-#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#ವ್ಯಾಖ್ಯಾನಿಸು MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /* FreeRTOS includes. */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "timers.h"
-#include "event_groups.h"
+#ಅನ್ತರ್ಭಾವ "FreeRTOS.h"
+#ಅನ್ತರ್ಭಾವ "task.h"
+#ಅನ್ತರ್ಭಾವ "timers.h"
+#ಅನ್ತರ್ಭಾವ "event_groups.h"
 /* Include private IDF API additions for critical thread safety macros */
-#include "esp_private/freertos_idf_additions_priv.h"
+#ಅನ್ತರ್ಭಾವ "esp_private/freertos_idf_additions_priv.h"
 
 /* Lint e961, e750 and e9021 are suppressed as a MISRA exception justified
  * because the MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined
  * for the header files above, but not in this file, in order to generate the
  * correct privileged Vs unprivileged linkage and placement. */
-#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE /*lint !e961 !e750 !e9021 See comment above. */
+#ವ್ಯಾಖ್ಯಾನ_ರದ್ದು MPU_WRAPPERS_INCLUDED_FROM_API_FILE /*lint !e961 !e750 !e9021 See comment above. */
 
 /* The following bit fields convey control information in a task's event list
  * item value.  It is important they don't clash with the
  * taskEVENT_LIST_ITEM_VALUE_IN_USE definition. */
-#if configUSE_16_BIT_TICKS == 1
-    #define eventCLEAR_EVENTS_ON_EXIT_BIT    0x0100U
-    #define eventUNBLOCKED_DUE_TO_BIT_SET    0x0200U
-    #define eventWAIT_FOR_ALL_BITS           0x0400U
-    #define eventEVENT_BITS_CONTROL_BYTES    0xff00U
-#else
-    #define eventCLEAR_EVENTS_ON_EXIT_BIT    0x01000000UL
-    #define eventUNBLOCKED_DUE_TO_BIT_SET    0x02000000UL
-    #define eventWAIT_FOR_ALL_BITS           0x04000000UL
-    #define eventEVENT_BITS_CONTROL_BYTES    0xff000000UL
-#endif
+#ಆದರೆ config_USE_16_ಬಿಟ್_TICKS == 1
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_CLEAR_EVENTS_ON_EXIT_ಬಿಟ್    0x0100U
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_UNBLOCKED_DUE_ಗಮ್ಯ_ಬಿಟ್_ಗಣ    0x0200U
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_WAIT_FOR_ALL_ಬಿಟ್ಟುಗಳು           0x0400U
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_EVENT_ಬಿಟ್ಟುಗಳು_CONTROL_ಬೈಟುಗಳು    0xff00U
+#ಇಲ್ಲದಿದ್ದರೆ
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_CLEAR_EVENTS_ON_EXIT_ಬಿಟ್    0x01000000UL
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_UNBLOCKED_DUE_ಗಮ್ಯ_ಬಿಟ್_ಗಣ    0x02000000UL
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_WAIT_FOR_ALL_ಬಿಟ್ಟುಗಳು           0x04000000UL
+    #ವ್ಯಾಖ್ಯಾನಿಸು event_EVENT_ಬಿಟ್ಟುಗಳು_CONTROL_ಬೈಟುಗಳು    0xff000000UL
+#ಆದರೆ_ಅಂತ್ಯ
 
-typedef struct EventGroupDef_t
+ಪ್ರಕಾರವ್ಯಾಖ್ಯೆ ರಚನೆ Event_ಗುಂಪು_Def_t
 {
-    EventBits_t uxEventBits;
-    List_t xTasksWaitingForBits; /*< List of tasks waiting for a bit to be set. */
+    Event_ಬಿಟ್ಟುಗಳು_t ux_Event_ಬಿಟ್ಟುಗಳು;
+    List_t x_Tasks_ಕಾಯುವಿಕೆ_For_ಬಿಟ್ಟುಗಳು; /*< List of tasks waiting for a bit to be set. */
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
-        UBaseType_t uxEventGroupNumber;
-    #endif
+    #ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
+        UBaseType_t ux_Event_ಗುಂಪು_ಸಂಖ್ಯೆ;
+    #ಆದರೆ_ಅಂತ್ಯ
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #ಆದರೆ ( ( config_SUPPORT_STATIC_ಹಂಚಿಕೆ == 1 ) && ( config_SUPPORT_DYNAMIC_ಹಂಚಿಕೆ == 1 ) )
         uint8_t ucStaticallyAllocated; /*< Set to pdTRUE if the event group is statically allocated to ensure no attempt is made to free the memory. */
-    #endif
+    #ಆದರೆ_ಅಂತ್ಯ
 
-    portMUX_TYPE xEventGroupLock; /* Spinlock required for SMP critical sections */
-} EventGroup_t;
+    ಪೋರ್ಟ್_MUX_TYPE x_Event_ಗುಂಪು_ಬೀಗ; /* Spinlock required for SMP critical sections */
+} Event_ಗುಂಪು_t;
 
 /*-----------------------------------------------------------*/
 
@@ -93,73 +93,73 @@ typedef struct EventGroupDef_t
  * wait condition is met if any of the bits set in uxBitsToWait for are also set
  * in uxCurrentEventBits.
  */
-static BaseType_t prvTestWaitCondition( const EventBits_t uxCurrentEventBits,
-                                        const EventBits_t uxBitsToWaitFor,
-                                        const BaseType_t xWaitForAllBits ) PRIVILEGED_FUNCTION;
+ಸ್ಥಿರ ತಳ_Type_t prvTestWaitCondition( ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_Current_Event_ಬಿಟ್ಟುಗಳು,
+                                        ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For,
+                                        ಸ್ಥಿರಾಂಕ ತಳ_Type_t x_Wait_For_All_ಬಿಟ್ಟುಗಳು ) PRIVILEGED_FUNCTION;
 
 /*-----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ಆದರೆ ( config_SUPPORT_STATIC_ಹಂಚಿಕೆ == 1 )
 
-    EventGroupHandle_t xEventGroupCreateStatic( StaticEventGroup_t * pxEventGroupBuffer )
+    Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು_Create_Static( Static_Event_ಗುಂಪು_t * px_Event_ಗುಂಪು_ಬಫರ್ )
     {
-        EventGroup_t * pxEventBits;
+        Event_ಗುಂಪು_t * px_Event_ಬಿಟ್ಟುಗಳು;
 
         /* A StaticEventGroup_t object must be provided. */
-        configASSERT( pxEventGroupBuffer );
+        configASSERT( px_Event_ಗುಂಪು_ಬಫರ್ );
 
-        #if ( configASSERT_DEFINED == 1 )
+        #ಆದರೆ ( configASSERT_DEFINED == 1 )
         {
             /* Sanity check that the size of the structure used to declare a
              * variable of type StaticEventGroup_t equals the size of the real
              * event group structure. */
-            volatile size_t xSize = sizeof( StaticEventGroup_t );
-            configASSERT( xSize == sizeof( EventGroup_t ) );
-            ( void ) xSize; /* Prevent unused variable warning when configASSERT() is not used. */
+            ಅಸ್ಥಿರ size_t x_ಗಾತ್ರ = ಗಾತ್ರ( Static_Event_ಗುಂಪು_t );
+            configASSERT( x_ಗಾತ್ರ == ಗಾತ್ರ( Event_ಗುಂಪು_t ) );
+            ( ಶೂನ್ಯ ) x_ಗಾತ್ರ; /* Prevent unused variable warning when configASSERT() is not used. */
         } /*lint !e529 xSize is referenced if configASSERT() is defined. */
-        #endif /* configASSERT_DEFINED */
+        #ಆದರೆ_ಅಂತ್ಯ /* configASSERT_DEFINED */
 
         /* The user has provided a statically allocated event group - use it. */
-        pxEventBits = ( EventGroup_t * ) pxEventGroupBuffer; /*lint !e740 !e9087 EventGroup_t and StaticEventGroup_t are deliberately aliased for data hiding purposes and guaranteed to have the same size and alignment requirement - checked by configASSERT(). */
+        px_Event_ಬಿಟ್ಟುಗಳು = ( Event_ಗುಂಪು_t * ) px_Event_ಗುಂಪು_ಬಫರ್; /*lint !e740 !e9087 EventGroup_t and StaticEventGroup_t are deliberately aliased for data hiding purposes and guaranteed to have the same size and alignment requirement - checked by configASSERT(). */
 
-        if( pxEventBits != NULL )
+        ಆದರೆ( px_Event_ಬಿಟ್ಟುಗಳು != ಖಾಲಿ )
         {
-            pxEventBits->uxEventBits = 0;
-            vListInitialise( &( pxEventBits->xTasksWaitingForBits ) );
+            px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು = 0;
+            vListInitialise( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Tasks_ಕಾಯುವಿಕೆ_For_ಬಿಟ್ಟುಗಳು ) );
 
-            #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+            #ಆದರೆ ( config_SUPPORT_DYNAMIC_ಹಂಚಿಕೆ == 1 )
             {
                 /* Both static and dynamic allocation can be used, so note that
                  * this event group was created statically in case the event group
                  * is later deleted. */
-                pxEventBits->ucStaticallyAllocated = pdTRUE;
+                px_Event_ಬಿಟ್ಟುಗಳು->ucStaticallyAllocated = pdTRUE;
             }
-            #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+            #ಆದರೆ_ಅಂತ್ಯ /* configSUPPORT_DYNAMIC_ALLOCATION */
 
             /* Initialize the event group's spinlock. */
-            portMUX_INITIALIZE( &pxEventBits->xEventGroupLock );
+            ಪೋರ್ಟ್_MUX_INITIALIZE( &px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ );
 
-            traceEVENT_GROUP_CREATE( pxEventBits );
+            trace_EVENT_ಗುಂಪು_CREATE( px_Event_ಬಿಟ್ಟುಗಳು );
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             /* xEventGroupCreateStatic should only ever be called with
              * pxEventGroupBuffer pointing to a pre-allocated (compile time
              * allocated) StaticEventGroup_t variable. */
-            traceEVENT_GROUP_CREATE_FAILED();
+            trace_EVENT_ಗುಂಪು_CREATE_FAILED();
         }
 
-        return pxEventBits;
+        ಹಿಂತಿರುಗಿ px_Event_ಬಿಟ್ಟುಗಳು;
     }
 
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#ಆದರೆ_ಅಂತ್ಯ /* configSUPPORT_STATIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+#ಆದರೆ ( config_SUPPORT_DYNAMIC_ಹಂಚಿಕೆ == 1 )
 
-    EventGroupHandle_t xEventGroupCreate( void )
+    Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು_Create( ಶೂನ್ಯ )
     {
-        EventGroup_t * pxEventBits;
+        Event_ಗುಂಪು_t * px_Event_ಬಿಟ್ಟುಗಳು;
 
         /* Allocate the event group.  Justification for MISRA deviation as
          * follows:  pvPortMalloc() always ensures returned memory blocks are
@@ -174,83 +174,83 @@ static BaseType_t prvTestWaitCondition( const EventBits_t uxCurrentEventBits,
          * sizeof( TickType_t ), the TickType_t variables will be accessed in two
          * or more reads operations, and the alignment requirements is only that
          * of each individual read. */
-        pxEventBits = ( EventGroup_t * ) pvPortMalloc( sizeof( EventGroup_t ) ); /*lint !e9087 !e9079 see comment above. */
+        px_Event_ಬಿಟ್ಟುಗಳು = ( Event_ಗುಂಪು_t * ) pv_ಪೋರ್ಟ್_Malloc( ಗಾತ್ರ( Event_ಗುಂಪು_t ) ); /*lint !e9087 !e9079 see comment above. */
 
-        if( pxEventBits != NULL )
+        ಆದರೆ( px_Event_ಬಿಟ್ಟುಗಳು != ಖಾಲಿ )
         {
-            pxEventBits->uxEventBits = 0;
-            vListInitialise( &( pxEventBits->xTasksWaitingForBits ) );
+            px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು = 0;
+            vListInitialise( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Tasks_ಕಾಯುವಿಕೆ_For_ಬಿಟ್ಟುಗಳು ) );
 
-            #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+            #ಆದರೆ ( config_SUPPORT_STATIC_ಹಂಚಿಕೆ == 1 )
             {
                 /* Both static and dynamic allocation can be used, so note this
                  * event group was allocated statically in case the event group is
                  * later deleted. */
-                pxEventBits->ucStaticallyAllocated = pdFALSE;
+                px_Event_ಬಿಟ್ಟುಗಳು->ucStaticallyAllocated = pdFALSE;
             }
-            #endif /* configSUPPORT_STATIC_ALLOCATION */
+            #ಆದರೆ_ಅಂತ್ಯ /* configSUPPORT_STATIC_ALLOCATION */
 
             /* Initialize the event group's spinlock. */
-            portMUX_INITIALIZE( &pxEventBits->xEventGroupLock );
+            ಪೋರ್ಟ್_MUX_INITIALIZE( &px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ );
 
-            traceEVENT_GROUP_CREATE( pxEventBits );
+            trace_EVENT_ಗುಂಪು_CREATE( px_Event_ಬಿಟ್ಟುಗಳು );
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
-            traceEVENT_GROUP_CREATE_FAILED(); /*lint !e9063 Else branch only exists to allow tracing and does not generate code if trace macros are not defined. */
+            trace_EVENT_ಗುಂಪು_CREATE_FAILED(); /*lint !e9063 Else branch only exists to allow tracing and does not generate code if trace macros are not defined. */
         }
 
-        return pxEventBits;
+        ಹಿಂತಿರುಗಿ px_Event_ಬಿಟ್ಟುಗಳು;
     }
 
-#endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+#ಆದರೆ_ಅಂತ್ಯ /* configSUPPORT_DYNAMIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
-                             const EventBits_t uxBitsToSet,
-                             const EventBits_t uxBitsToWaitFor,
-                             TickType_t xTicksToWait )
+Event_ಬಿಟ್ಟುಗಳು_t x_Event_ಗುಂಪು_Sync( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು,
+                             ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ,
+                             ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For,
+                             TickType_t x_Ticks_ಗಮ್ಯ_Wait )
 {
-    EventBits_t uxOriginalBitValue, uxReturn;
-    EventGroup_t * pxEventBits = xEventGroup;
-    BaseType_t xAlreadyYielded;
-    BaseType_t xTimeoutOccurred = pdFALSE;
+    Event_ಬಿಟ್ಟುಗಳು_t ux_Original_ಬಿಟ್_ಮೌಲ್ಯ, uxReturn;
+    Event_ಗುಂಪು_t * px_Event_ಬಿಟ್ಟುಗಳು = x_Event_ಗುಂಪು;
+    ತಳ_Type_t xAlreadyYielded;
+    ತಳ_Type_t xTimeoutOccurred = pdFALSE;
 
-    configASSERT( ( uxBitsToWaitFor & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
-    configASSERT( uxBitsToWaitFor != 0 );
-    #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+    configASSERT( ( ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For & event_EVENT_ಬಿಟ್ಟುಗಳು_CONTROL_ಬೈಟುಗಳು ) == 0 );
+    configASSERT( ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For != 0 );
+    #ಆದರೆ ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
     {
-        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( x_Ticks_ಗಮ್ಯ_Wait != 0 ) ) );
     }
-    #endif
+    #ಆದರೆ_ಅಂತ್ಯ
 
-    prvENTER_CRITICAL_OR_SUSPEND_ALL( &( pxEventBits->xEventGroupLock ) );
+    prvENTER_CRITICAL_OR_SUSPEND_ALL( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ ) );
     {
-        uxOriginalBitValue = pxEventBits->uxEventBits;
+        ux_Original_ಬಿಟ್_ಮೌಲ್ಯ = px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು;
 
-        ( void ) xEventGroupSetBits( xEventGroup, uxBitsToSet );
+        ( ಶೂನ್ಯ ) x_Event_ಗುಂಪು_ಗಣ_ಬಿಟ್ಟುಗಳು( x_Event_ಗುಂಪು, ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ );
 
-        if( ( ( uxOriginalBitValue | uxBitsToSet ) & uxBitsToWaitFor ) == uxBitsToWaitFor )
+        ಆದರೆ( ( ( ux_Original_ಬಿಟ್_ಮೌಲ್ಯ | ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ ) & ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For ) == ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For )
         {
             /* All the rendezvous bits are now set - no need to block. */
-            uxReturn = ( uxOriginalBitValue | uxBitsToSet );
+            uxReturn = ( ux_Original_ಬಿಟ್_ಮೌಲ್ಯ | ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ );
 
             /* Rendezvous always clear the bits.  They will have been cleared
              * already unless this is the only task in the rendezvous. */
-            pxEventBits->uxEventBits &= ~uxBitsToWaitFor;
+            px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು &= ~ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For;
 
-            xTicksToWait = 0;
+            x_Ticks_ಗಮ್ಯ_Wait = 0;
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
-            if( xTicksToWait != ( TickType_t ) 0 )
+            ಆದರೆ( x_Ticks_ಗಮ್ಯ_Wait != ( TickType_t ) 0 )
             {
-                traceEVENT_GROUP_SYNC_BLOCK( xEventGroup, uxBitsToSet, uxBitsToWaitFor );
+                trace_EVENT_ಗುಂಪು_SYNC_ಖಂಡ( x_Event_ಗುಂಪು, ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ, ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For );
 
                 /* Store the bits that the calling task is waiting for in the
                  * task's event list item so the kernel knows when a match is
                  * found.  Then enter the blocked state. */
-                vTaskPlaceOnUnorderedEventList( &( pxEventBits->xTasksWaitingForBits ), ( uxBitsToWaitFor | eventCLEAR_EVENTS_ON_EXIT_BIT | eventWAIT_FOR_ALL_BITS ), xTicksToWait );
+                v_Task_ಇರಿಸು_On_Unordered_Event_List( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Tasks_ಕಾಯುವಿಕೆ_For_ಬಿಟ್ಟುಗಳು ), ( ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For | event_CLEAR_EVENTS_ON_EXIT_ಬಿಟ್ | event_WAIT_FOR_ALL_ಬಿಟ್ಟುಗಳು ), x_Ticks_ಗಮ್ಯ_Wait );
 
                 /* This assignment is obsolete as uxReturn will get set after
                  * the task unblocks, but some compilers mistakenly generate a
@@ -258,24 +258,24 @@ EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
                  * assignment is omitted. */
                 uxReturn = 0;
             }
-            else
+            ಇಲ್ಲದಿದ್ದರೆ
             {
                 /* The rendezvous bits were not set, but no block time was
                  * specified - just return the current event bit value. */
-                uxReturn = pxEventBits->uxEventBits;
+                uxReturn = px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು;
                 xTimeoutOccurred = pdTRUE;
             }
         }
     }
-    xAlreadyYielded = prvEXIT_CRITICAL_OR_RESUME_ALL( &( pxEventBits->xEventGroupLock ) );
+    xAlreadyYielded = prvEXIT_CRITICAL_OR_RESUME_ALL( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ ) );
 
-    if( xTicksToWait != ( TickType_t ) 0 )
+    ಆದರೆ( x_Ticks_ಗಮ್ಯ_Wait != ( TickType_t ) 0 )
     {
-        if( xAlreadyYielded == pdFALSE )
+        ಆದರೆ( xAlreadyYielded == pdFALSE )
         {
-            portYIELD_WITHIN_API();
+            ಪೋರ್ಟ್_YIELD_WITHIN_API();
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             mtCOVERAGE_TEST_MARKER();
         }
@@ -284,124 +284,124 @@ EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
          * point either the required bits were set or the block time expired.  If
          * the required bits were set they will have been stored in the task's
          * event list item, and they should now be retrieved then cleared. */
-        uxReturn = uxTaskResetEventItemValue();
+        uxReturn = ux_Task_Reset_Event_ಅಂಶ_ಮೌಲ್ಯ();
 
-        if( ( uxReturn & eventUNBLOCKED_DUE_TO_BIT_SET ) == ( EventBits_t ) 0 )
+        ಆದರೆ( ( uxReturn & event_UNBLOCKED_DUE_ಗಮ್ಯ_ಬಿಟ್_ಗಣ ) == ( Event_ಬಿಟ್ಟುಗಳು_t ) 0 )
         {
             /* The task timed out, just return the current event bit value. */
-            taskENTER_CRITICAL( &( pxEventBits->xEventGroupLock ) );
+            taskENTER_CRITICAL( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ ) );
             {
-                uxReturn = pxEventBits->uxEventBits;
+                uxReturn = px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು;
 
                 /* Although the task got here because it timed out before the
                  * bits it was waiting for were set, it is possible that since it
                  * unblocked another task has set the bits.  If this is the case
                  * then it needs to clear the bits before exiting. */
-                if( ( uxReturn & uxBitsToWaitFor ) == uxBitsToWaitFor )
+                ಆದರೆ( ( uxReturn & ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For ) == ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For )
                 {
-                    pxEventBits->uxEventBits &= ~uxBitsToWaitFor;
+                    px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು &= ~ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For;
                 }
-                else
+                ಇಲ್ಲದಿದ್ದರೆ
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            taskEXIT_CRITICAL( &( pxEventBits->xEventGroupLock ) );
+            taskEXIT_CRITICAL( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ ) );
 
             xTimeoutOccurred = pdTRUE;
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             /* The task unblocked because the bits were set. */
         }
 
         /* Control bits might be set as the task had blocked should not be
          * returned. */
-        uxReturn &= ~eventEVENT_BITS_CONTROL_BYTES;
+        uxReturn &= ~event_EVENT_ಬಿಟ್ಟುಗಳು_CONTROL_ಬೈಟುಗಳು;
     }
 
-    traceEVENT_GROUP_SYNC_END( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTimeoutOccurred );
+    trace_EVENT_ಗುಂಪು_SYNC_ಕೊನೆ( x_Event_ಗುಂಪು, ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ, ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For, xTimeoutOccurred );
 
     /* Prevent compiler warnings when trace macros are not used. */
-    ( void ) xTimeoutOccurred;
+    ( ಶೂನ್ಯ ) xTimeoutOccurred;
 
-    return uxReturn;
+    ಹಿಂತಿರುಗಿ uxReturn;
 }
 /*-----------------------------------------------------------*/
 
-EventBits_t xEventGroupWaitBits( EventGroupHandle_t xEventGroup,
-                                 const EventBits_t uxBitsToWaitFor,
-                                 const BaseType_t xClearOnExit,
-                                 const BaseType_t xWaitForAllBits,
-                                 TickType_t xTicksToWait )
+Event_ಬಿಟ್ಟುಗಳು_t x_Event_ಗುಂಪು_Wait_ಬಿಟ್ಟುಗಳು( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು,
+                                 ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For,
+                                 ಸ್ಥಿರಾಂಕ ತಳ_Type_t xClearOnExit,
+                                 ಸ್ಥಿರಾಂಕ ತಳ_Type_t x_Wait_For_All_ಬಿಟ್ಟುಗಳು,
+                                 TickType_t x_Ticks_ಗಮ್ಯ_Wait )
 {
-    EventGroup_t * pxEventBits = xEventGroup;
-    EventBits_t uxReturn, uxControlBits = 0;
-    BaseType_t xWaitConditionMet, xAlreadyYielded;
-    BaseType_t xTimeoutOccurred = pdFALSE;
+    Event_ಗುಂಪು_t * px_Event_ಬಿಟ್ಟುಗಳು = x_Event_ಗುಂಪು;
+    Event_ಬಿಟ್ಟುಗಳು_t uxReturn, ux_Control_ಬಿಟ್ಟುಗಳು = 0;
+    ತಳ_Type_t xWaitConditionMet, xAlreadyYielded;
+    ತಳ_Type_t xTimeoutOccurred = pdFALSE;
 
     /* Check the user is not attempting to wait on the bits used by the kernel
      * itself, and that at least one bit is being requested. */
-    configASSERT( xEventGroup );
-    configASSERT( ( uxBitsToWaitFor & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
-    configASSERT( uxBitsToWaitFor != 0 );
-    #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+    configASSERT( x_Event_ಗುಂಪು );
+    configASSERT( ( ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For & event_EVENT_ಬಿಟ್ಟುಗಳು_CONTROL_ಬೈಟುಗಳು ) == 0 );
+    configASSERT( ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For != 0 );
+    #ಆದರೆ ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
     {
-        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( x_Ticks_ಗಮ್ಯ_Wait != 0 ) ) );
     }
-    #endif
+    #ಆದರೆ_ಅಂತ್ಯ
 
-    prvENTER_CRITICAL_OR_SUSPEND_ALL( &( pxEventBits->xEventGroupLock ) );
+    prvENTER_CRITICAL_OR_SUSPEND_ALL( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ ) );
     {
-        const EventBits_t uxCurrentEventBits = pxEventBits->uxEventBits;
+        ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_Current_Event_ಬಿಟ್ಟುಗಳು = px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು;
 
         /* Check to see if the wait condition is already met or not. */
-        xWaitConditionMet = prvTestWaitCondition( uxCurrentEventBits, uxBitsToWaitFor, xWaitForAllBits );
+        xWaitConditionMet = prvTestWaitCondition( ux_Current_Event_ಬಿಟ್ಟುಗಳು, ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For, x_Wait_For_All_ಬಿಟ್ಟುಗಳು );
 
-        if( xWaitConditionMet != pdFALSE )
+        ಆದರೆ( xWaitConditionMet != pdFALSE )
         {
             /* The wait condition has already been met so there is no need to
              * block. */
-            uxReturn = uxCurrentEventBits;
-            xTicksToWait = ( TickType_t ) 0;
+            uxReturn = ux_Current_Event_ಬಿಟ್ಟುಗಳು;
+            x_Ticks_ಗಮ್ಯ_Wait = ( TickType_t ) 0;
 
             /* Clear the wait bits if requested to do so. */
-            if( xClearOnExit != pdFALSE )
+            ಆದರೆ( xClearOnExit != pdFALSE )
             {
-                pxEventBits->uxEventBits &= ~uxBitsToWaitFor;
+                px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು &= ~ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For;
             }
-            else
+            ಇಲ್ಲದಿದ್ದರೆ
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
-        else if( xTicksToWait == ( TickType_t ) 0 )
+        ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ( x_Ticks_ಗಮ್ಯ_Wait == ( TickType_t ) 0 )
         {
             /* The wait condition has not been met, but no block time was
              * specified, so just return the current value. */
-            uxReturn = uxCurrentEventBits;
+            uxReturn = ux_Current_Event_ಬಿಟ್ಟುಗಳು;
             xTimeoutOccurred = pdTRUE;
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             /* The task is going to block to wait for its required bits to be
              * set.  uxControlBits are used to remember the specified behaviour of
              * this call to xEventGroupWaitBits() - for use when the event bits
              * unblock the task. */
-            if( xClearOnExit != pdFALSE )
+            ಆದರೆ( xClearOnExit != pdFALSE )
             {
-                uxControlBits |= eventCLEAR_EVENTS_ON_EXIT_BIT;
+                ux_Control_ಬಿಟ್ಟುಗಳು |= event_CLEAR_EVENTS_ON_EXIT_ಬಿಟ್;
             }
-            else
+            ಇಲ್ಲದಿದ್ದರೆ
             {
                 mtCOVERAGE_TEST_MARKER();
             }
 
-            if( xWaitForAllBits != pdFALSE )
+            ಆದರೆ( x_Wait_For_All_ಬಿಟ್ಟುಗಳು != pdFALSE )
             {
-                uxControlBits |= eventWAIT_FOR_ALL_BITS;
+                ux_Control_ಬಿಟ್ಟುಗಳು |= event_WAIT_FOR_ALL_ಬಿಟ್ಟುಗಳು;
             }
-            else
+            ಇಲ್ಲದಿದ್ದರೆ
             {
                 mtCOVERAGE_TEST_MARKER();
             }
@@ -409,25 +409,25 @@ EventBits_t xEventGroupWaitBits( EventGroupHandle_t xEventGroup,
             /* Store the bits that the calling task is waiting for in the
              * task's event list item so the kernel knows when a match is
              * found.  Then enter the blocked state. */
-            vTaskPlaceOnUnorderedEventList( &( pxEventBits->xTasksWaitingForBits ), ( uxBitsToWaitFor | uxControlBits ), xTicksToWait );
+            v_Task_ಇರಿಸು_On_Unordered_Event_List( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Tasks_ಕಾಯುವಿಕೆ_For_ಬಿಟ್ಟುಗಳು ), ( ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For | ux_Control_ಬಿಟ್ಟುಗಳು ), x_Ticks_ಗಮ್ಯ_Wait );
 
             /* This is obsolete as it will get set after the task unblocks, but
              * some compilers mistakenly generate a warning about the variable
              * being returned without being set if it is not done. */
             uxReturn = 0;
 
-            traceEVENT_GROUP_WAIT_BITS_BLOCK( xEventGroup, uxBitsToWaitFor );
+            trace_EVENT_ಗುಂಪು_WAIT_ಬಿಟ್ಟುಗಳು_ಖಂಡ( x_Event_ಗುಂಪು, ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For );
         }
     }
-    xAlreadyYielded = prvEXIT_CRITICAL_OR_RESUME_ALL( &( pxEventBits->xEventGroupLock ) );
+    xAlreadyYielded = prvEXIT_CRITICAL_OR_RESUME_ALL( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ ) );
 
-    if( xTicksToWait != ( TickType_t ) 0 )
+    ಆದರೆ( x_Ticks_ಗಮ್ಯ_Wait != ( TickType_t ) 0 )
     {
-        if( xAlreadyYielded == pdFALSE )
+        ಆದರೆ( xAlreadyYielded == pdFALSE )
         {
-            portYIELD_WITHIN_API();
+            ಪೋರ್ಟ್_YIELD_WITHIN_API();
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             mtCOVERAGE_TEST_MARKER();
         }
@@ -436,190 +436,190 @@ EventBits_t xEventGroupWaitBits( EventGroupHandle_t xEventGroup,
          * point either the required bits were set or the block time expired.  If
          * the required bits were set they will have been stored in the task's
          * event list item, and they should now be retrieved then cleared. */
-        uxReturn = uxTaskResetEventItemValue();
+        uxReturn = ux_Task_Reset_Event_ಅಂಶ_ಮೌಲ್ಯ();
 
-        if( ( uxReturn & eventUNBLOCKED_DUE_TO_BIT_SET ) == ( EventBits_t ) 0 )
+        ಆದರೆ( ( uxReturn & event_UNBLOCKED_DUE_ಗಮ್ಯ_ಬಿಟ್_ಗಣ ) == ( Event_ಬಿಟ್ಟುಗಳು_t ) 0 )
         {
-            taskENTER_CRITICAL( &( pxEventBits->xEventGroupLock ) );
+            taskENTER_CRITICAL( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ ) );
             {
                 /* The task timed out, just return the current event bit value. */
-                uxReturn = pxEventBits->uxEventBits;
+                uxReturn = px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು;
 
                 /* It is possible that the event bits were updated between this
                  * task leaving the Blocked state and running again. */
-                if( prvTestWaitCondition( uxReturn, uxBitsToWaitFor, xWaitForAllBits ) != pdFALSE )
+                ಆದರೆ( prvTestWaitCondition( uxReturn, ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For, x_Wait_For_All_ಬಿಟ್ಟುಗಳು ) != pdFALSE )
                 {
-                    if( xClearOnExit != pdFALSE )
+                    ಆದರೆ( xClearOnExit != pdFALSE )
                     {
-                        pxEventBits->uxEventBits &= ~uxBitsToWaitFor;
+                        px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು &= ~ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For;
                     }
-                    else
+                    ಇಲ್ಲದಿದ್ದರೆ
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                ಇಲ್ಲದಿದ್ದರೆ
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
 
                 xTimeoutOccurred = pdTRUE;
             }
-            taskEXIT_CRITICAL( &( pxEventBits->xEventGroupLock ) );
+            taskEXIT_CRITICAL( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ ) );
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             /* The task unblocked because the bits were set. */
         }
 
         /* The task blocked so control bits may have been set. */
-        uxReturn &= ~eventEVENT_BITS_CONTROL_BYTES;
+        uxReturn &= ~event_EVENT_ಬಿಟ್ಟುಗಳು_CONTROL_ಬೈಟುಗಳು;
     }
 
-    traceEVENT_GROUP_WAIT_BITS_END( xEventGroup, uxBitsToWaitFor, xTimeoutOccurred );
+    trace_EVENT_ಗುಂಪು_WAIT_ಬಿಟ್ಟುಗಳು_ಕೊನೆ( x_Event_ಗುಂಪು, ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For, xTimeoutOccurred );
 
     /* Prevent compiler warnings when trace macros are not used. */
-    ( void ) xTimeoutOccurred;
+    ( ಶೂನ್ಯ ) xTimeoutOccurred;
 
-    return uxReturn;
+    ಹಿಂತಿರುಗಿ uxReturn;
 }
 /*-----------------------------------------------------------*/
 
-EventBits_t xEventGroupClearBits( EventGroupHandle_t xEventGroup,
-                                  const EventBits_t uxBitsToClear )
+Event_ಬಿಟ್ಟುಗಳು_t x_Event_ಗುಂಪು_Clear_ಬಿಟ್ಟುಗಳು( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು,
+                                  ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear )
 {
-    EventGroup_t * pxEventBits = xEventGroup;
-    EventBits_t uxReturn;
+    Event_ಗುಂಪು_t * px_Event_ಬಿಟ್ಟುಗಳು = x_Event_ಗುಂಪು;
+    Event_ಬಿಟ್ಟುಗಳು_t uxReturn;
 
     /* Check the user is not attempting to clear the bits used by the kernel
      * itself. */
-    configASSERT( xEventGroup );
-    configASSERT( ( uxBitsToClear & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
+    configASSERT( x_Event_ಗುಂಪು );
+    configASSERT( ( ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear & event_EVENT_ಬಿಟ್ಟುಗಳು_CONTROL_ಬೈಟುಗಳು ) == 0 );
 
-    taskENTER_CRITICAL( &( pxEventBits->xEventGroupLock ) );
+    taskENTER_CRITICAL( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ ) );
     {
-        traceEVENT_GROUP_CLEAR_BITS( xEventGroup, uxBitsToClear );
+        trace_EVENT_ಗುಂಪು_CLEAR_ಬಿಟ್ಟುಗಳು( x_Event_ಗುಂಪು, ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear );
 
         /* The value returned is the event group value prior to the bits being
          * cleared. */
-        uxReturn = pxEventBits->uxEventBits;
+        uxReturn = px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು;
 
         /* Clear the bits. */
-        pxEventBits->uxEventBits &= ~uxBitsToClear;
+        px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು &= ~ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear;
     }
-    taskEXIT_CRITICAL( &( pxEventBits->xEventGroupLock ) );
+    taskEXIT_CRITICAL( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ ) );
 
-    return uxReturn;
+    ಹಿಂತಿರುಗಿ uxReturn;
 }
 /*-----------------------------------------------------------*/
 
-#if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) )
+#ಆದರೆ ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) )
 
-    BaseType_t xEventGroupClearBitsFromISR( EventGroupHandle_t xEventGroup,
-                                            const EventBits_t uxBitsToClear )
+    ತಳ_Type_t x_Event_ಗುಂಪು_Clear_ಬಿಟ್ಟುಗಳು_From_ISR( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು,
+                                            ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear )
     {
-        BaseType_t xReturn;
+        ತಳ_Type_t xReturn;
 
-        traceEVENT_GROUP_CLEAR_BITS_FROM_ISR( xEventGroup, uxBitsToClear );
-        xReturn = xTimerPendFunctionCallFromISR( vEventGroupClearBitsCallback, ( void * ) xEventGroup, ( uint32_t ) uxBitsToClear, NULL ); /*lint !e9087 Can't avoid cast to void* as a generic callback function not specific to this use case. Callback casts back to original type so safe. */
+        trace_EVENT_ಗುಂಪು_CLEAR_ಬಿಟ್ಟುಗಳು_FROM_ISR( x_Event_ಗುಂಪು, ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear );
+        xReturn = xTimerPendFunctionCallFromISR( v_Event_ಗುಂಪು_Clear_ಬಿಟ್ಟುಗಳು_Callback, ( ಶೂನ್ಯ * ) x_Event_ಗುಂಪು, ( uint32_t ) ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear, ಖಾಲಿ ); /*lint !e9087 Can't avoid cast to void* as a generic callback function not specific to this use case. Callback casts back to original type so safe. */
 
-        return xReturn;
+        ಹಿಂತಿರುಗಿ xReturn;
     }
 
-#endif /* if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) ) */
+#ಆದರೆ_ಅಂತ್ಯ /* if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-EventBits_t xEventGroupGetBitsFromISR( EventGroupHandle_t xEventGroup )
+Event_ಬಿಟ್ಟುಗಳು_t x_Event_ಗುಂಪು_Get_ಬಿಟ್ಟುಗಳು_From_ISR( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು )
 {
-    UBaseType_t uxSavedInterruptStatus;
-    EventGroup_t const * const pxEventBits = xEventGroup;
-    EventBits_t uxReturn;
+    UBaseType_t ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ;
+    Event_ಗುಂಪು_t ಸ್ಥಿರಾಂಕ * ಸ್ಥಿರಾಂಕ px_Event_ಬಿಟ್ಟುಗಳು = x_Event_ಗುಂಪು;
+    Event_ಬಿಟ್ಟುಗಳು_t uxReturn;
 
-    prvENTER_CRITICAL_OR_MASK_ISR( ( portMUX_TYPE * ) &( pxEventBits->xEventGroupLock ), uxSavedInterruptStatus );
+    prv_ENTER_CRITICAL_OR_ಮುಖವಾಡ_ISR( ( ಪೋರ್ಟ್_MUX_TYPE * ) &( px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ ), ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ );
     {
-        uxReturn = pxEventBits->uxEventBits;
+        uxReturn = px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು;
     }
-    prvEXIT_CRITICAL_OR_UNMASK_ISR( ( portMUX_TYPE * ) &( pxEventBits->xEventGroupLock ), uxSavedInterruptStatus );
+    prvEXIT_CRITICAL_OR_UNMASK_ISR( ( ಪೋರ್ಟ್_MUX_TYPE * ) &( px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ ), ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ );
 
-    return uxReturn;
+    ಹಿಂತಿರುಗಿ uxReturn;
 } /*lint !e818 EventGroupHandle_t is a typedef used in other functions to so can't be pointer to const. */
 /*-----------------------------------------------------------*/
 
-EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
-                                const EventBits_t uxBitsToSet )
+Event_ಬಿಟ್ಟುಗಳು_t x_Event_ಗುಂಪು_ಗಣ_ಬಿಟ್ಟುಗಳು( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು,
+                                ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ )
 {
-    ListItem_t * pxListItem;
-    ListItem_t * pxNext;
-    ListItem_t const * pxListEnd;
-    List_t const * pxList;
-    EventBits_t uxBitsToClear = 0, uxBitsWaitedFor, uxControlBits;
-    EventGroup_t * pxEventBits = xEventGroup;
-    BaseType_t xMatchFound = pdFALSE;
+    List_ಅಂಶ_t * px_List_ಅಂಶ;
+    List_ಅಂಶ_t * px_ಮುಂದಿನ;
+    List_ಅಂಶ_t ಸ್ಥಿರಾಂಕ * px_List_ಕೊನೆ;
+    List_t ಸ್ಥಿರಾಂಕ * pxList;
+    Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear = 0, ux_ಬಿಟ್ಟುಗಳು_Waited_For, ux_Control_ಬಿಟ್ಟುಗಳು;
+    Event_ಗುಂಪು_t * px_Event_ಬಿಟ್ಟುಗಳು = x_Event_ಗುಂಪು;
+    ತಳ_Type_t x_ಹೊಂದಿಕೆ_ಸಿಕ್ಕಿತು = pdFALSE;
 
     /* Check the user is not attempting to set the bits used by the kernel
      * itself. */
-    configASSERT( xEventGroup );
-    configASSERT( ( uxBitsToSet & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
+    configASSERT( x_Event_ಗುಂಪು );
+    configASSERT( ( ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ & event_EVENT_ಬಿಟ್ಟುಗಳು_CONTROL_ಬೈಟುಗಳು ) == 0 );
 
-    pxList = &( pxEventBits->xTasksWaitingForBits );
-    pxListEnd = listGET_END_MARKER( pxList ); /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
+    pxList = &( px_Event_ಬಿಟ್ಟುಗಳು->x_Tasks_ಕಾಯುವಿಕೆ_For_ಬಿಟ್ಟುಗಳು );
+    px_List_ಕೊನೆ = list_GET_ಕೊನೆ_MARKER( pxList ); /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
 
-    prvENTER_CRITICAL_OR_SUSPEND_ALL( &( pxEventBits->xEventGroupLock ) );
-    #if ( configNUMBER_OF_CORES > 1 )
+    prvENTER_CRITICAL_OR_SUSPEND_ALL( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ ) );
+    #ಆದರೆ ( config_ಸಂಖ್ಯೆ_ದ_CORES > 1 )
 
         /* We are about to traverse a task list which is a kernel data structure.
          * Thus we need to call prvTakeKernelLock() to take the kernel lock. */
-        prvTakeKernelLock();
-    #endif /* configNUMBER_OF_CORES > 1 */
+        prv_Take_Kernel_ಬೀಗ();
+    #ಆದರೆ_ಅಂತ್ಯ /* configNUMBER_OF_CORES > 1 */
     {
-        traceEVENT_GROUP_SET_BITS( xEventGroup, uxBitsToSet );
+        trace_EVENT_ಗುಂಪು_ಗಣ_ಬಿಟ್ಟುಗಳು( x_Event_ಗುಂಪು, ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ );
 
-        pxListItem = listGET_HEAD_ENTRY( pxList );
+        px_List_ಅಂಶ = list_GET_ತಲೆ_ನಮೂದು( pxList );
 
         /* Set the bits. */
-        pxEventBits->uxEventBits |= uxBitsToSet;
+        px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು |= ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ;
 
         /* See if the new bit value should unblock any tasks. */
-        while( pxListItem != pxListEnd )
+        ಆಗ( px_List_ಅಂಶ != px_List_ಕೊನೆ )
         {
-            pxNext = listGET_NEXT( pxListItem );
-            uxBitsWaitedFor = listGET_LIST_ITEM_VALUE( pxListItem );
-            xMatchFound = pdFALSE;
+            px_ಮುಂದಿನ = list_GET_ಮುಂದಿನ( px_List_ಅಂಶ );
+            ux_ಬಿಟ್ಟುಗಳು_Waited_For = list_GET_LIST_ಅಂಶ_ಮೌಲ್ಯ( px_List_ಅಂಶ );
+            x_ಹೊಂದಿಕೆ_ಸಿಕ್ಕಿತು = pdFALSE;
 
             /* Split the bits waited for from the control bits. */
-            uxControlBits = uxBitsWaitedFor & eventEVENT_BITS_CONTROL_BYTES;
-            uxBitsWaitedFor &= ~eventEVENT_BITS_CONTROL_BYTES;
+            ux_Control_ಬಿಟ್ಟುಗಳು = ux_ಬಿಟ್ಟುಗಳು_Waited_For & event_EVENT_ಬಿಟ್ಟುಗಳು_CONTROL_ಬೈಟುಗಳು;
+            ux_ಬಿಟ್ಟುಗಳು_Waited_For &= ~event_EVENT_ಬಿಟ್ಟುಗಳು_CONTROL_ಬೈಟುಗಳು;
 
-            if( ( uxControlBits & eventWAIT_FOR_ALL_BITS ) == ( EventBits_t ) 0 )
+            ಆದರೆ( ( ux_Control_ಬಿಟ್ಟುಗಳು & event_WAIT_FOR_ALL_ಬಿಟ್ಟುಗಳು ) == ( Event_ಬಿಟ್ಟುಗಳು_t ) 0 )
             {
                 /* Just looking for single bit being set. */
-                if( ( uxBitsWaitedFor & pxEventBits->uxEventBits ) != ( EventBits_t ) 0 )
+                ಆದರೆ( ( ux_ಬಿಟ್ಟುಗಳು_Waited_For & px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು ) != ( Event_ಬಿಟ್ಟುಗಳು_t ) 0 )
                 {
-                    xMatchFound = pdTRUE;
+                    x_ಹೊಂದಿಕೆ_ಸಿಕ್ಕಿತು = pdTRUE;
                 }
-                else
+                ಇಲ್ಲದಿದ್ದರೆ
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else if( ( uxBitsWaitedFor & pxEventBits->uxEventBits ) == uxBitsWaitedFor )
+            ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ( ( ux_ಬಿಟ್ಟುಗಳು_Waited_For & px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು ) == ux_ಬಿಟ್ಟುಗಳು_Waited_For )
             {
                 /* All bits are set. */
-                xMatchFound = pdTRUE;
+                x_ಹೊಂದಿಕೆ_ಸಿಕ್ಕಿತು = pdTRUE;
             }
-            else
+            ಇಲ್ಲದಿದ್ದರೆ
             {
                 /* Need all bits to be set, but not all the bits were set. */
             }
 
-            if( xMatchFound != pdFALSE )
+            ಆದರೆ( x_ಹೊಂದಿಕೆ_ಸಿಕ್ಕಿತು != pdFALSE )
             {
                 /* The bits match.  Should the bits be cleared on exit? */
-                if( ( uxControlBits & eventCLEAR_EVENTS_ON_EXIT_BIT ) != ( EventBits_t ) 0 )
+                ಆದರೆ( ( ux_Control_ಬಿಟ್ಟುಗಳು & event_CLEAR_EVENTS_ON_EXIT_ಬಿಟ್ ) != ( Event_ಬಿಟ್ಟುಗಳು_t ) 0 )
                 {
-                    uxBitsToClear |= uxBitsWaitedFor;
+                    ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear |= ux_ಬಿಟ್ಟುಗಳು_Waited_For;
                 }
-                else
+                ಇಲ್ಲದಿದ್ದರೆ
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
@@ -629,223 +629,223 @@ EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
                  * eventUNBLOCKED_DUE_TO_BIT_SET bit is set so the task knows
                  * that is was unblocked due to its required bits matching, rather
                  * than because it timed out. */
-                vTaskRemoveFromUnorderedEventList( pxListItem, pxEventBits->uxEventBits | eventUNBLOCKED_DUE_TO_BIT_SET );
+                vTaskRemoveFromUnorderedEventList( px_List_ಅಂಶ, px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು | event_UNBLOCKED_DUE_ಗಮ್ಯ_ಬಿಟ್_ಗಣ );
             }
 
             /* Move onto the next list item.  Note pxListItem->pxNext is not
              * used here as the list item may have been removed from the event list
              * and inserted into the ready/pending reading list. */
-            pxListItem = pxNext;
+            px_List_ಅಂಶ = px_ಮುಂದಿನ;
         }
 
         /* Clear any bits that matched when the eventCLEAR_EVENTS_ON_EXIT_BIT
          * bit was set in the control word. */
-        pxEventBits->uxEventBits &= ~uxBitsToClear;
+        px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು &= ~ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear;
     }
-    #if ( configNUMBER_OF_CORES > 1 )
+    #ಆದರೆ ( config_ಸಂಖ್ಯೆ_ದ_CORES > 1 )
         /* Release the previously taken kernel lock. */
-        prvReleaseKernelLock();
-    #endif /* configNUMBER_OF_CORES > 1 */
-    ( void ) prvEXIT_CRITICAL_OR_RESUME_ALL( &( pxEventBits->xEventGroupLock ) );
+        prv_Release_Kernel_ಬೀಗ();
+    #ಆದರೆ_ಅಂತ್ಯ /* configNUMBER_OF_CORES > 1 */
+    ( ಶೂನ್ಯ ) prvEXIT_CRITICAL_OR_RESUME_ALL( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ ) );
 
 
-    return pxEventBits->uxEventBits;
+    ಹಿಂತಿರುಗಿ px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಬಿಟ್ಟುಗಳು;
 }
 /*-----------------------------------------------------------*/
 
-void vEventGroupDelete( EventGroupHandle_t xEventGroup )
+ಶೂನ್ಯ v_Event_ಗುಂಪು_Delete( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು )
 {
-    EventGroup_t * pxEventBits = xEventGroup;
-    const List_t * pxTasksWaitingForBits;
+    Event_ಗುಂಪು_t * px_Event_ಬಿಟ್ಟುಗಳು = x_Event_ಗುಂಪು;
+    ಸ್ಥಿರಾಂಕ List_t * px_Tasks_ಕಾಯುವಿಕೆ_For_ಬಿಟ್ಟುಗಳು;
 
-    configASSERT( pxEventBits );
+    configASSERT( px_Event_ಬಿಟ್ಟುಗಳು );
 
-    pxTasksWaitingForBits = &( pxEventBits->xTasksWaitingForBits );
+    px_Tasks_ಕಾಯುವಿಕೆ_For_ಬಿಟ್ಟುಗಳು = &( px_Event_ಬಿಟ್ಟುಗಳು->x_Tasks_ಕಾಯುವಿಕೆ_For_ಬಿಟ್ಟುಗಳು );
 
-    prvENTER_CRITICAL_OR_SUSPEND_ALL( &( pxEventBits->xEventGroupLock ) );
-    #if ( configNUMBER_OF_CORES > 1 )
+    prvENTER_CRITICAL_OR_SUSPEND_ALL( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ ) );
+    #ಆದರೆ ( config_ಸಂಖ್ಯೆ_ದ_CORES > 1 )
 
         /* We are about to traverse a task list which is a kernel data structure.
          * Thus we need to call prvTakeKernelLock() to take the kernel lock. */
-        prvTakeKernelLock();
-    #endif /* configNUMBER_OF_CORES > 1 */
+        prv_Take_Kernel_ಬೀಗ();
+    #ಆದರೆ_ಅಂತ್ಯ /* configNUMBER_OF_CORES > 1 */
     {
-        traceEVENT_GROUP_DELETE( xEventGroup );
+        trace_EVENT_ಗುಂಪು_DELETE( x_Event_ಗುಂಪು );
 
-        while( listCURRENT_LIST_LENGTH( pxTasksWaitingForBits ) > ( UBaseType_t ) 0 )
+        ಆಗ( list_CURRENT_LIST_ಉದ್ದಳತೆ( px_Tasks_ಕಾಯುವಿಕೆ_For_ಬಿಟ್ಟುಗಳು ) > ( UBaseType_t ) 0 )
         {
             /* Unblock the task, returning 0 as the event list is being deleted
              * and cannot therefore have any bits set. */
-            configASSERT( pxTasksWaitingForBits->xListEnd.pxNext != ( const ListItem_t * ) &( pxTasksWaitingForBits->xListEnd ) );
-            vTaskRemoveFromUnorderedEventList( pxTasksWaitingForBits->xListEnd.pxNext, eventUNBLOCKED_DUE_TO_BIT_SET );
+            configASSERT( px_Tasks_ಕಾಯುವಿಕೆ_For_ಬಿಟ್ಟುಗಳು->x_List_ಕೊನೆ.px_ಮುಂದಿನ != ( ಸ್ಥಿರಾಂಕ List_ಅಂಶ_t * ) &( px_Tasks_ಕಾಯುವಿಕೆ_For_ಬಿಟ್ಟುಗಳು->x_List_ಕೊನೆ ) );
+            vTaskRemoveFromUnorderedEventList( px_Tasks_ಕಾಯುವಿಕೆ_For_ಬಿಟ್ಟುಗಳು->x_List_ಕೊನೆ.px_ಮುಂದಿನ, event_UNBLOCKED_DUE_ಗಮ್ಯ_ಬಿಟ್_ಗಣ );
         }
     }
-    #if ( configNUMBER_OF_CORES > 1 )
+    #ಆದರೆ ( config_ಸಂಖ್ಯೆ_ದ_CORES > 1 )
         /* Release the previously taken kernel lock. */
-        prvReleaseKernelLock();
-    #endif /* configNUMBER_OF_CORES > 1 */
-    prvEXIT_CRITICAL_OR_RESUME_ALL( &( pxEventBits->xEventGroupLock ) );
+        prv_Release_Kernel_ಬೀಗ();
+    #ಆದರೆ_ಅಂತ್ಯ /* configNUMBER_OF_CORES > 1 */
+    prvEXIT_CRITICAL_OR_RESUME_ALL( &( px_Event_ಬಿಟ್ಟುಗಳು->x_Event_ಗುಂಪು_ಬೀಗ ) );
 
-    #if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 0 ) )
+    #ಆದರೆ ( ( config_SUPPORT_DYNAMIC_ಹಂಚಿಕೆ == 1 ) && ( config_SUPPORT_STATIC_ಹಂಚಿಕೆ == 0 ) )
     {
         /* The event group can only have been allocated dynamically - free
          * it again. */
-        vPortFree( pxEventBits );
+        v_ಪೋರ್ಟ್_Free( px_Event_ಬಿಟ್ಟುಗಳು );
     }
-    #elif ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
+    #ಅಥವಾಆದರೆ ( ( config_SUPPORT_DYNAMIC_ಹಂಚಿಕೆ == 1 ) && ( config_SUPPORT_STATIC_ಹಂಚಿಕೆ == 1 ) )
     {
         /* The event group could have been allocated statically or
          * dynamically, so check before attempting to free the memory. */
-        if( pxEventBits->ucStaticallyAllocated == ( uint8_t ) pdFALSE )
+        ಆದರೆ( px_Event_ಬಿಟ್ಟುಗಳು->ucStaticallyAllocated == ( uint8_t ) pdFALSE )
         {
-            vPortFree( pxEventBits );
+            v_ಪೋರ್ಟ್_Free( px_Event_ಬಿಟ್ಟುಗಳು );
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+    #ಆದರೆ_ಅಂತ್ಯ /* configSUPPORT_DYNAMIC_ALLOCATION */
 }
 /*-----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    BaseType_t xEventGroupGetStaticBuffer( EventGroupHandle_t xEventGroup,
-                                           StaticEventGroup_t ** ppxEventGroupBuffer )
+#ಆದರೆ ( config_SUPPORT_STATIC_ಹಂಚಿಕೆ == 1 )
+    ತಳ_Type_t x_Event_ಗುಂಪು_Get_Static_ಬಫರ್( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು,
+                                           Static_Event_ಗುಂಪು_t ** ppx_Event_ಗುಂಪು_ಬಫರ್ )
     {
-        BaseType_t xReturn;
-        EventGroup_t * pxEventBits = xEventGroup;
+        ತಳ_Type_t xReturn;
+        Event_ಗುಂಪು_t * px_Event_ಬಿಟ್ಟುಗಳು = x_Event_ಗುಂಪು;
 
-        configASSERT( pxEventBits );
-        configASSERT( ppxEventGroupBuffer );
+        configASSERT( px_Event_ಬಿಟ್ಟುಗಳು );
+        configASSERT( ppx_Event_ಗುಂಪು_ಬಫರ್ );
 
-        #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+        #ಆದರೆ ( config_SUPPORT_DYNAMIC_ಹಂಚಿಕೆ == 1 )
         {
             /* Check if the event group was statically allocated. */
-            if( pxEventBits->ucStaticallyAllocated == ( uint8_t ) pdTRUE )
+            ಆದರೆ( px_Event_ಬಿಟ್ಟುಗಳು->ucStaticallyAllocated == ( uint8_t ) pdTRUE )
             {
-                *ppxEventGroupBuffer = ( StaticEventGroup_t * ) pxEventBits;
+                *ppx_Event_ಗುಂಪು_ಬಫರ್ = ( Static_Event_ಗುಂಪು_t * ) px_Event_ಬಿಟ್ಟುಗಳು;
                 xReturn = pdTRUE;
             }
-            else
+            ಇಲ್ಲದಿದ್ದರೆ
             {
                 xReturn = pdFALSE;
             }
         }
-        #else /* configSUPPORT_DYNAMIC_ALLOCATION */
+        #ಇಲ್ಲದಿದ್ದರೆ /* configSUPPORT_DYNAMIC_ALLOCATION */
         {
             /* Event group must have been statically allocated. */
-            *ppxEventGroupBuffer = ( StaticEventGroup_t * ) pxEventBits;
+            *ppx_Event_ಗುಂಪು_ಬಫರ್ = ( Static_Event_ಗುಂಪು_t * ) px_Event_ಬಿಟ್ಟುಗಳು;
             xReturn = pdTRUE;
         }
-        #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+        #ಆದರೆ_ಅಂತ್ಯ /* configSUPPORT_DYNAMIC_ALLOCATION */
 
-        return xReturn;
+        ಹಿಂತಿರುಗಿ xReturn;
     }
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#ಆದರೆ_ಅಂತ್ಯ /* configSUPPORT_STATIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
 /* For internal use only - execute a 'set bits' command that was pended from
  * an interrupt. */
-void vEventGroupSetBitsCallback( void * pvEventGroup,
-                                 const uint32_t ulBitsToSet )
+ಶೂನ್ಯ v_Event_ಗುಂಪು_ಗಣ_ಬಿಟ್ಟುಗಳು_Callback( ಶೂನ್ಯ * pv_Event_ಗುಂಪು,
+                                 ಸ್ಥಿರಾಂಕ uint32_t ul_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ )
 {
-    ( void ) xEventGroupSetBits( pvEventGroup, ( EventBits_t ) ulBitsToSet ); /*lint !e9079 Can't avoid cast to void* as a generic timer callback prototype. Callback casts back to original type so safe. */
+    ( ಶೂನ್ಯ ) x_Event_ಗುಂಪು_ಗಣ_ಬಿಟ್ಟುಗಳು( pv_Event_ಗುಂಪು, ( Event_ಬಿಟ್ಟುಗಳು_t ) ul_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ ); /*lint !e9079 Can't avoid cast to void* as a generic timer callback prototype. Callback casts back to original type so safe. */
 }
 /*-----------------------------------------------------------*/
 
 /* For internal use only - execute a 'clear bits' command that was pended from
  * an interrupt. */
-void vEventGroupClearBitsCallback( void * pvEventGroup,
-                                   const uint32_t ulBitsToClear )
+ಶೂನ್ಯ v_Event_ಗುಂಪು_Clear_ಬಿಟ್ಟುಗಳು_Callback( ಶೂನ್ಯ * pv_Event_ಗುಂಪು,
+                                   ಸ್ಥಿರಾಂಕ uint32_t ul_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear )
 {
-    ( void ) xEventGroupClearBits( pvEventGroup, ( EventBits_t ) ulBitsToClear ); /*lint !e9079 Can't avoid cast to void* as a generic timer callback prototype. Callback casts back to original type so safe. */
+    ( ಶೂನ್ಯ ) x_Event_ಗುಂಪು_Clear_ಬಿಟ್ಟುಗಳು( pv_Event_ಗುಂಪು, ( Event_ಬಿಟ್ಟುಗಳು_t ) ul_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Clear ); /*lint !e9079 Can't avoid cast to void* as a generic timer callback prototype. Callback casts back to original type so safe. */
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvTestWaitCondition( const EventBits_t uxCurrentEventBits,
-                                        const EventBits_t uxBitsToWaitFor,
-                                        const BaseType_t xWaitForAllBits )
+ಸ್ಥಿರ ತಳ_Type_t prvTestWaitCondition( ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_Current_Event_ಬಿಟ್ಟುಗಳು,
+                                        ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For,
+                                        ಸ್ಥಿರಾಂಕ ತಳ_Type_t x_Wait_For_All_ಬಿಟ್ಟುಗಳು )
 {
-    BaseType_t xWaitConditionMet = pdFALSE;
+    ತಳ_Type_t xWaitConditionMet = pdFALSE;
 
-    if( xWaitForAllBits == pdFALSE )
+    ಆದರೆ( x_Wait_For_All_ಬಿಟ್ಟುಗಳು == pdFALSE )
     {
         /* Task only has to wait for one bit within uxBitsToWaitFor to be
          * set.  Is one already set? */
-        if( ( uxCurrentEventBits & uxBitsToWaitFor ) != ( EventBits_t ) 0 )
+        ಆದರೆ( ( ux_Current_Event_ಬಿಟ್ಟುಗಳು & ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For ) != ( Event_ಬಿಟ್ಟುಗಳು_t ) 0 )
         {
             xWaitConditionMet = pdTRUE;
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         /* Task has to wait for all the bits in uxBitsToWaitFor to be set.
          * Are they set already? */
-        if( ( uxCurrentEventBits & uxBitsToWaitFor ) == uxBitsToWaitFor )
+        ಆದರೆ( ( ux_Current_Event_ಬಿಟ್ಟುಗಳು & ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For ) == ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_Wait_For )
         {
             xWaitConditionMet = pdTRUE;
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
 
-    return xWaitConditionMet;
+    ಹಿಂತಿರುಗಿ xWaitConditionMet;
 }
 /*-----------------------------------------------------------*/
 
-#if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) )
+#ಆದರೆ ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) )
 
-    BaseType_t xEventGroupSetBitsFromISR( EventGroupHandle_t xEventGroup,
-                                          const EventBits_t uxBitsToSet,
-                                          BaseType_t * pxHigherPriorityTaskWoken )
+    ತಳ_Type_t x_Event_ಗುಂಪು_ಗಣ_ಬಿಟ್ಟುಗಳು_From_ISR( Event_ಗುಂಪು_Handle_t x_Event_ಗುಂಪು,
+                                          ಸ್ಥಿರಾಂಕ Event_ಬಿಟ್ಟುಗಳು_t ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ,
+                                          ತಳ_Type_t * px_Higher_ಆದ್ಯತೆ_Task_Woken )
     {
-        BaseType_t xReturn;
+        ತಳ_Type_t xReturn;
 
-        traceEVENT_GROUP_SET_BITS_FROM_ISR( xEventGroup, uxBitsToSet );
-        xReturn = xTimerPendFunctionCallFromISR( vEventGroupSetBitsCallback, ( void * ) xEventGroup, ( uint32_t ) uxBitsToSet, pxHigherPriorityTaskWoken ); /*lint !e9087 Can't avoid cast to void* as a generic callback function not specific to this use case. Callback casts back to original type so safe. */
+        trace_EVENT_ಗುಂಪು_ಗಣ_ಬಿಟ್ಟುಗಳು_FROM_ISR( x_Event_ಗುಂಪು, ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ );
+        xReturn = xTimerPendFunctionCallFromISR( v_Event_ಗುಂಪು_ಗಣ_ಬಿಟ್ಟುಗಳು_Callback, ( ಶೂನ್ಯ * ) x_Event_ಗುಂಪು, ( uint32_t ) ux_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ಗಣ, px_Higher_ಆದ್ಯತೆ_Task_Woken ); /*lint !e9087 Can't avoid cast to void* as a generic callback function not specific to this use case. Callback casts back to original type so safe. */
 
-        return xReturn;
+        ಹಿಂತಿರುಗಿ xReturn;
     }
 
-#endif /* if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) ) */
+#ಆದರೆ_ಅಂತ್ಯ /* if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_TRACE_FACILITY == 1 )
+#ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
 
-    UBaseType_t uxEventGroupGetNumber( void * xEventGroup )
+    UBaseType_t ux_Event_ಗುಂಪು_Get_ಸಂಖ್ಯೆ( ಶೂನ್ಯ * x_Event_ಗುಂಪು )
     {
         UBaseType_t xReturn;
-        EventGroup_t const * pxEventBits = ( EventGroup_t * ) xEventGroup; /*lint !e9087 !e9079 EventGroupHandle_t is a pointer to an EventGroup_t, but EventGroupHandle_t is kept opaque outside of this file for data hiding purposes. */
+        Event_ಗುಂಪು_t ಸ್ಥಿರಾಂಕ * px_Event_ಬಿಟ್ಟುಗಳು = ( Event_ಗುಂಪು_t * ) x_Event_ಗುಂಪು; /*lint !e9087 !e9079 EventGroupHandle_t is a pointer to an EventGroup_t, but EventGroupHandle_t is kept opaque outside of this file for data hiding purposes. */
 
-        if( xEventGroup == NULL )
+        ಆದರೆ( x_Event_ಗುಂಪು == ಖಾಲಿ )
         {
             xReturn = 0;
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
-            xReturn = pxEventBits->uxEventGroupNumber;
+            xReturn = px_Event_ಬಿಟ್ಟುಗಳು->ux_Event_ಗುಂಪು_ಸಂಖ್ಯೆ;
         }
 
-        return xReturn;
+        ಹಿಂತಿರುಗಿ xReturn;
     }
 
-#endif /* configUSE_TRACE_FACILITY */
+#ಆದರೆ_ಅಂತ್ಯ /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_TRACE_FACILITY == 1 )
+#ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
 
-    void vEventGroupSetNumber( void * xEventGroup,
-                               UBaseType_t uxEventGroupNumber )
+    ಶೂನ್ಯ v_Event_ಗುಂಪು_ಗಣ_ಸಂಖ್ಯೆ( ಶೂನ್ಯ * x_Event_ಗುಂಪು,
+                               UBaseType_t ux_Event_ಗುಂಪು_ಸಂಖ್ಯೆ )
     {
-        ( ( EventGroup_t * ) xEventGroup )->uxEventGroupNumber = uxEventGroupNumber; /*lint !e9087 !e9079 EventGroupHandle_t is a pointer to an EventGroup_t, but EventGroupHandle_t is kept opaque outside of this file for data hiding purposes. */
+        ( ( Event_ಗುಂಪು_t * ) x_Event_ಗುಂಪು )->ux_Event_ಗುಂಪು_ಸಂಖ್ಯೆ = ux_Event_ಗುಂಪು_ಸಂಖ್ಯೆ; /*lint !e9087 !e9079 EventGroupHandle_t is a pointer to an EventGroup_t, but EventGroupHandle_t is kept opaque outside of this file for data hiding purposes. */
     }
 
-#endif /* configUSE_TRACE_FACILITY */
+#ಆದರೆ_ಅಂತ್ಯ /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/

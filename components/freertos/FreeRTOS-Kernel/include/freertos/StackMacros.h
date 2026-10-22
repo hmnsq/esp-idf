@@ -31,8 +31,8 @@
  */
 
 
-#ifndef _MSC_VER /* Visual Studio doesn't support #warning. */
-    #warning The name of this file has changed to stack_macros.h.  Please update your code accordingly.  This source file (which has the original name) will be removed in a future release.
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ _MSC_VER /* Visual Studio doesn't support #warning. */
+    #warning The name ದ this file has ಬದಲಾಯಿತು ಗಮ್ಯ ರಾಶಿ_macros.h.  Please update your ಸಂಕೇತ_2 accordingly.  This ಮೂಲ file (which has the original name) will be removed ಒಳ a future release.
+#ಆದರೆ_ಅಂತ್ಯ
 
-#include "stack_macros.h"
+#ಅನ್ತರ್ಭಾವ "stack_macros.h"

@@ -30,8 +30,8 @@
  *
  */
 
-#ifndef INC_NEWLIB_FREERTOS_H
-#define INC_NEWLIB_FREERTOS_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ INC_NEWLIB_FREERTOS_H
+#ವ್ಯಾಖ್ಯಾನಿಸು INC_NEWLIB_FREERTOS_H
 
 /* Note Newlib support has been included by popular demand, but is not
  * used by the FreeRTOS maintainers themselves.  FreeRTOS is not
@@ -43,24 +43,24 @@
  * See the third party link http://www.nadler.com/embedded/newlibAndFreeRTOS.html
  * for additional information. */
 
-#include <reent.h>
+#ಅನ್ತರ್ಭಾವ <reent.h>
 
-#define configUSE_C_RUNTIME_TLS_SUPPORT    1
+#ವ್ಯಾಖ್ಯಾನಿಸು configUSE_C_RUNTIME_TLS_SUPPORT    1
 
-#ifndef configTLS_BLOCK_TYPE
-    #define configTLS_BLOCK_TYPE           struct _reent
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ config_TLS_ಖಂಡ_TYPE
+    #ವ್ಯಾಖ್ಯಾನಿಸು config_TLS_ಖಂಡ_TYPE           ರಚನೆ _reent
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifndef configINIT_TLS_BLOCK
-    #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )    _REENT_INIT_PTR( &( xTLSBlock ) )
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ config_INIT_TLS_ಖಂಡ
+    #ವ್ಯಾಖ್ಯಾನಿಸು config_INIT_TLS_ಖಂಡ( xTLSBlock, px_ತುದಿ_ದ_ರಾಶಿ )    _REENT_INIT_PTR( &( xTLSBlock ) )
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifndef configSET_TLS_BLOCK
-    #define configSET_TLS_BLOCK( xTLSBlock )    ( _impure_ptr = &( xTLSBlock ) )
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ config_ಗಣ_TLS_ಖಂಡ
+    #ವ್ಯಾಖ್ಯಾನಿಸು config_ಗಣ_TLS_ಖಂಡ( xTLSBlock )    ( _impure_ptr = &( xTLSBlock ) )
+#ಆದರೆ_ಅಂತ್ಯ
 
-#ifndef configDEINIT_TLS_BLOCK
-    #define configDEINIT_TLS_BLOCK( xTLSBlock )    _reclaim_reent( &( xTLSBlock ) )
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ config_DEINIT_TLS_ಖಂಡ
+    #ವ್ಯಾಖ್ಯಾನಿಸು config_DEINIT_TLS_ಖಂಡ( xTLSBlock )    _reclaim_reent( &( xTLSBlock ) )
+#ಆದರೆ_ಅಂತ್ಯ
 
-#endif /* INC_NEWLIB_FREERTOS_H */
+#ಆದರೆ_ಅಂತ್ಯ /* INC_NEWLIB_FREERTOS_H */

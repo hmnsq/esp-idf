@@ -31,234 +31,234 @@
  */
 
 /* Standard includes. */
-#include <string.h>
+#ಅನ್ತರ್ಭಾವ <string.h>
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
  * task.h is included from an application file. */
-#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#ವ್ಯಾಖ್ಯಾನಿಸು MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /* FreeRTOS includes. */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "stream_buffer.h"
+#ಅನ್ತರ್ಭಾವ "FreeRTOS.h"
+#ಅನ್ತರ್ಭಾವ "task.h"
+#ಅನ್ತರ್ಭಾವ "stream_buffer.h"
 
-#if ( configUSE_TASK_NOTIFICATIONS != 1 )
-    #error configUSE_TASK_NOTIFICATIONS must be set to 1 to build stream_buffer.c
-#endif
+#ಆದರೆ ( configUSE_TASK_NOTIFICATIONS != 1 )
+    #ದೋಷ configUSE_TASK_NOTIFICATIONS must be ಗಣ ಗಮ್ಯ 1 ಗಮ್ಯ build ಹರಿವು_ಬಫರ್.c
+#ಆದರೆ_ಅಂತ್ಯ
 
-#if ( INCLUDE_xTaskGetCurrentTaskHandle != 1 )
-    #error INCLUDE_xTaskGetCurrentTaskHandle must be set to 1 to build stream_buffer.c
-#endif
+#ಆದರೆ ( INCLUDE_xTaskGetCurrentTaskHandle != 1 )
+    #ದೋಷ INCLUDE_xTaskGetCurrentTaskHandle must be ಗಣ ಗಮ್ಯ 1 ಗಮ್ಯ build ಹರಿವು_ಬಫರ್.c
+#ಆದರೆ_ಅಂತ್ಯ
 
 /* The MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined
  * for the header files above, but not in this file, in order to generate the
  * correct privileged Vs unprivileged linkage and placement. */
-#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#ವ್ಯಾಖ್ಯಾನ_ರದ್ದು MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /* This entire source file will be skipped if the application is not configured
  * to include stream buffer functionality. This #if is closed at the very bottom
  * of this file. If you want to include stream buffers then ensure
  * configUSE_STREAM_BUFFERS is set to 1 in FreeRTOSConfig.h. */
-#if ( configUSE_STREAM_BUFFERS == 1 )
+#ಆದರೆ ( config_USE_ಹರಿವು_BUFFERS == 1 )
 
 /* If the user has not provided application specific Rx notification macros,
  * or #defined the notification macros away, then provide default implementations
  * that uses task notifications. */
-    #ifndef sbRECEIVE_COMPLETED
-        #define sbRECEIVE_COMPLETED( pxStreamBuffer )                                 \
-    do                                                                                \
+    #ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ sbRECEIVE_COMPLETED
+        #ವ್ಯಾಖ್ಯಾನಿಸು sbRECEIVE_COMPLETED( px_ಹರಿವು_ಬಫರ್ )                                 \
+    ಮಾಡು                                                                                \
     {                                                                                 \
         vTaskSuspendAll();                                                            \
         {                                                                             \
-            if( ( pxStreamBuffer )->xTaskWaitingToSend != NULL )                      \
+            ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Send != ಖಾಲಿ )                      \
             {                                                                         \
-                ( void ) xTaskNotifyIndexed( ( pxStreamBuffer )->xTaskWaitingToSend,  \
-                                             ( pxStreamBuffer )->uxNotificationIndex, \
+                ( ಶೂನ್ಯ ) x_Task_Notify_ಸೂಚ್ಯಂಕಿತ( ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Send,  \
+                                             ( px_ಹರಿವು_ಬಫರ್ )->ux_Notification_ಸೂಚ್ಯಂಕ, \
                                              ( uint32_t ) 0,                          \
                                              eNoAction );                             \
-                ( pxStreamBuffer )->xTaskWaitingToSend = NULL;                        \
+                ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Send = ಖಾಲಿ;                        \
             }                                                                         \
         }                                                                             \
-        ( void ) xTaskResumeAll();                                                    \
-    } while( 0 )
-    #endif /* sbRECEIVE_COMPLETED */
+        ( ಶೂನ್ಯ ) xTaskResumeAll();                                                    \
+    } ಆಗ( 0 )
+    #ಆದರೆ_ಅಂತ್ಯ /* sbRECEIVE_COMPLETED */
 
 /* If user has provided a per-instance receive complete callback, then
  * invoke the callback else use the receive complete macro which is provided by default for all instances.
  */
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-        #define prvRECEIVE_COMPLETED( pxStreamBuffer )                                           \
-    do {                                                                                         \
-        if( ( pxStreamBuffer )->pxReceiveCompletedCallback != NULL )                             \
+    #ಆದರೆ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+        #ವ್ಯಾಖ್ಯಾನಿಸು prvRECEIVE_COMPLETED( px_ಹರಿವು_ಬಫರ್ )                                           \
+    ಮಾಡು {                                                                                         \
+        ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್ )->pxReceiveCompletedCallback != ಖಾಲಿ )                             \
         {                                                                                        \
-            ( pxStreamBuffer )->pxReceiveCompletedCallback( ( pxStreamBuffer ), pdFALSE, NULL ); \
+            ( px_ಹರಿವು_ಬಫರ್ )->pxReceiveCompletedCallback( ( px_ಹರಿವು_ಬಫರ್ ), pdFALSE, ಖಾಲಿ ); \
         }                                                                                        \
-        else                                                                                     \
+        ಇಲ್ಲದಿದ್ದರೆ                                                                                     \
         {                                                                                        \
-            sbRECEIVE_COMPLETED( ( pxStreamBuffer ) );                                           \
+            sbRECEIVE_COMPLETED( ( px_ಹರಿವು_ಬಫರ್ ) );                                           \
         }                                                                                        \
-    } while( 0 )
-    #else /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
-        #define prvRECEIVE_COMPLETED( pxStreamBuffer )    sbRECEIVE_COMPLETED( ( pxStreamBuffer ) )
-    #endif /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+    } ಆಗ( 0 )
+    #ಇಲ್ಲದಿದ್ದರೆ /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+        #ವ್ಯಾಖ್ಯಾನಿಸು prvRECEIVE_COMPLETED( px_ಹರಿವು_ಬಫರ್ )    sbRECEIVE_COMPLETED( ( px_ಹರಿವು_ಬಫರ್ ) )
+    #ಆದರೆ_ಅಂತ್ಯ /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
 
-    #ifndef sbRECEIVE_COMPLETED_FROM_ISR
-        #define sbRECEIVE_COMPLETED_FROM_ISR( pxStreamBuffer,                                \
-                                              pxHigherPriorityTaskWoken )                    \
-    do {                                                                                     \
-        UBaseType_t uxSavedInterruptStatus;                                                  \
+    #ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ sbRECEIVE_COMPLETED_FROM_ISR
+        #ವ್ಯಾಖ್ಯಾನಿಸು sbRECEIVE_COMPLETED_FROM_ISR( px_ಹರಿವು_ಬಫರ್,                                \
+                                              px_Higher_ಆದ್ಯತೆ_Task_Woken )                    \
+    ಮಾಡು {                                                                                     \
+        UBaseType_t ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ;                                                  \
                                                                                              \
-        uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();                              \
+        ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ = taskENTER_CRITICAL_FROM_ISR();                              \
         {                                                                                    \
-            if( ( pxStreamBuffer )->xTaskWaitingToSend != NULL )                             \
+            ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Send != ಖಾಲಿ )                             \
             {                                                                                \
-                ( void ) xTaskNotifyIndexedFromISR( ( pxStreamBuffer )->xTaskWaitingToSend,  \
-                                                    ( pxStreamBuffer )->uxNotificationIndex, \
+                ( ಶೂನ್ಯ ) x_Task_Notify_ಸೂಚ್ಯಂಕಿತ_From_ISR( ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Send,  \
+                                                    ( px_ಹರಿವು_ಬಫರ್ )->ux_Notification_ಸೂಚ್ಯಂಕ, \
                                                     ( uint32_t ) 0,                          \
                                                     eNoAction,                               \
-                                                    ( pxHigherPriorityTaskWoken ) );         \
-                ( pxStreamBuffer )->xTaskWaitingToSend = NULL;                               \
+                                                    ( px_Higher_ಆದ್ಯತೆ_Task_Woken ) );         \
+                ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Send = ಖಾಲಿ;                               \
             }                                                                                \
         }                                                                                    \
-        taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );                                \
-    } while( 0 )
-    #endif /* sbRECEIVE_COMPLETED_FROM_ISR */
+        taskEXIT_CRITICAL_FROM_ISR( ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ );                                \
+    } ಆಗ( 0 )
+    #ಆದರೆ_ಅಂತ್ಯ /* sbRECEIVE_COMPLETED_FROM_ISR */
 
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-        #define prvRECEIVE_COMPLETED_FROM_ISR( pxStreamBuffer,                                                           \
-                                               pxHigherPriorityTaskWoken )                                               \
-    do {                                                                                                                 \
-        if( ( pxStreamBuffer )->pxReceiveCompletedCallback != NULL )                                                     \
+    #ಆದರೆ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+        #ವ್ಯಾಖ್ಯಾನಿಸು prvRECEIVE_COMPLETED_FROM_ISR( px_ಹರಿವು_ಬಫರ್,                                                           \
+                                               px_Higher_ಆದ್ಯತೆ_Task_Woken )                                               \
+    ಮಾಡು {                                                                                                                 \
+        ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್ )->pxReceiveCompletedCallback != ಖಾಲಿ )                                                     \
         {                                                                                                                \
-            ( pxStreamBuffer )->pxReceiveCompletedCallback( ( pxStreamBuffer ), pdTRUE, ( pxHigherPriorityTaskWoken ) ); \
+            ( px_ಹರಿವು_ಬಫರ್ )->pxReceiveCompletedCallback( ( px_ಹರಿವು_ಬಫರ್ ), pdTRUE, ( px_Higher_ಆದ್ಯತೆ_Task_Woken ) ); \
         }                                                                                                                \
-        else                                                                                                             \
+        ಇಲ್ಲದಿದ್ದರೆ                                                                                                             \
         {                                                                                                                \
-            sbRECEIVE_COMPLETED_FROM_ISR( ( pxStreamBuffer ), ( pxHigherPriorityTaskWoken ) );                           \
+            sbRECEIVE_COMPLETED_FROM_ISR( ( px_ಹರಿವು_ಬಫರ್ ), ( px_Higher_ಆದ್ಯತೆ_Task_Woken ) );                           \
         }                                                                                                                \
-    } while( 0 )
-    #else /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
-        #define prvRECEIVE_COMPLETED_FROM_ISR( pxStreamBuffer, pxHigherPriorityTaskWoken ) \
-    sbRECEIVE_COMPLETED_FROM_ISR( ( pxStreamBuffer ), ( pxHigherPriorityTaskWoken ) )
-    #endif /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+    } ಆಗ( 0 )
+    #ಇಲ್ಲದಿದ್ದರೆ /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+        #ವ್ಯಾಖ್ಯಾನಿಸು prvRECEIVE_COMPLETED_FROM_ISR( px_ಹರಿವು_ಬಫರ್, px_Higher_ಆದ್ಯತೆ_Task_Woken ) \
+    sbRECEIVE_COMPLETED_FROM_ISR( ( px_ಹರಿವು_ಬಫರ್ ), ( px_Higher_ಆದ್ಯತೆ_Task_Woken ) )
+    #ಆದರೆ_ಅಂತ್ಯ /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
 
 /* If the user has not provided an application specific Tx notification macro,
  * or #defined the notification macro away, then provide a default
  * implementation that uses task notifications.
  */
-    #ifndef sbSEND_COMPLETED
-        #define sbSEND_COMPLETED( pxStreamBuffer )                                  \
+    #ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ sbSEND_COMPLETED
+        #ವ್ಯಾಖ್ಯಾನಿಸು sbSEND_COMPLETED( px_ಹರಿವು_ಬಫರ್ )                                  \
     vTaskSuspendAll();                                                              \
     {                                                                               \
-        if( ( pxStreamBuffer )->xTaskWaitingToReceive != NULL )                     \
+        ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Receive != ಖಾಲಿ )                     \
         {                                                                           \
-            ( void ) xTaskNotifyIndexed( ( pxStreamBuffer )->xTaskWaitingToReceive, \
-                                         ( pxStreamBuffer )->uxNotificationIndex,   \
+            ( ಶೂನ್ಯ ) x_Task_Notify_ಸೂಚ್ಯಂಕಿತ( ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Receive, \
+                                         ( px_ಹರಿವು_ಬಫರ್ )->ux_Notification_ಸೂಚ್ಯಂಕ,   \
                                          ( uint32_t ) 0,                            \
                                          eNoAction );                               \
-            ( pxStreamBuffer )->xTaskWaitingToReceive = NULL;                       \
+            ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Receive = ಖಾಲಿ;                       \
         }                                                                           \
     }                                                                               \
-    ( void ) xTaskResumeAll()
-    #endif /* sbSEND_COMPLETED */
+    ( ಶೂನ್ಯ ) xTaskResumeAll()
+    #ಆದರೆ_ಅಂತ್ಯ /* sbSEND_COMPLETED */
 
 /* If user has provided a per-instance send completed callback, then
  * invoke the callback else use the send complete macro which is provided by default for all instances.
  */
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-        #define prvSEND_COMPLETED( pxStreamBuffer )                                           \
-    do {                                                                                      \
-        if( ( pxStreamBuffer )->pxSendCompletedCallback != NULL )                             \
+    #ಆದರೆ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+        #ವ್ಯಾಖ್ಯಾನಿಸು prvSEND_COMPLETED( px_ಹರಿವು_ಬಫರ್ )                                           \
+    ಮಾಡು {                                                                                      \
+        ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್ )->pxSendCompletedCallback != ಖಾಲಿ )                             \
         {                                                                                     \
-            ( pxStreamBuffer )->pxSendCompletedCallback( ( pxStreamBuffer ), pdFALSE, NULL ); \
+            ( px_ಹರಿವು_ಬಫರ್ )->pxSendCompletedCallback( ( px_ಹರಿವು_ಬಫರ್ ), pdFALSE, ಖಾಲಿ ); \
         }                                                                                     \
-        else                                                                                  \
+        ಇಲ್ಲದಿದ್ದರೆ                                                                                  \
         {                                                                                     \
-            sbSEND_COMPLETED( ( pxStreamBuffer ) );                                           \
+            sbSEND_COMPLETED( ( px_ಹರಿವು_ಬಫರ್ ) );                                           \
         }                                                                                     \
-    } while( 0 )
-    #else /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
-        #define prvSEND_COMPLETED( pxStreamBuffer )    sbSEND_COMPLETED( ( pxStreamBuffer ) )
-    #endif /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+    } ಆಗ( 0 )
+    #ಇಲ್ಲದಿದ್ದರೆ /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+        #ವ್ಯಾಖ್ಯಾನಿಸು prvSEND_COMPLETED( px_ಹರಿವು_ಬಫರ್ )    sbSEND_COMPLETED( ( px_ಹರಿವು_ಬಫರ್ ) )
+    #ಆದರೆ_ಅಂತ್ಯ /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
 
 
-    #ifndef sbSEND_COMPLETE_FROM_ISR
-        #define sbSEND_COMPLETE_FROM_ISR( pxStreamBuffer, pxHigherPriorityTaskWoken )          \
-    do {                                                                                       \
-        UBaseType_t uxSavedInterruptStatus;                                                    \
+    #ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ sbSEND_COMPLETE_FROM_ISR
+        #ವ್ಯಾಖ್ಯಾನಿಸು sbSEND_COMPLETE_FROM_ISR( px_ಹರಿವು_ಬಫರ್, px_Higher_ಆದ್ಯತೆ_Task_Woken )          \
+    ಮಾಡು {                                                                                       \
+        UBaseType_t ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ;                                                    \
                                                                                                \
-        uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();                                \
+        ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ = taskENTER_CRITICAL_FROM_ISR();                                \
         {                                                                                      \
-            if( ( pxStreamBuffer )->xTaskWaitingToReceive != NULL )                            \
+            ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Receive != ಖಾಲಿ )                            \
             {                                                                                  \
-                ( void ) xTaskNotifyIndexedFromISR( ( pxStreamBuffer )->xTaskWaitingToReceive, \
-                                                    ( pxStreamBuffer )->uxNotificationIndex,   \
+                ( ಶೂನ್ಯ ) x_Task_Notify_ಸೂಚ್ಯಂಕಿತ_From_ISR( ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Receive, \
+                                                    ( px_ಹರಿವು_ಬಫರ್ )->ux_Notification_ಸೂಚ್ಯಂಕ,   \
                                                     ( uint32_t ) 0,                            \
                                                     eNoAction,                                 \
-                                                    ( pxHigherPriorityTaskWoken ) );           \
-                ( pxStreamBuffer )->xTaskWaitingToReceive = NULL;                              \
+                                                    ( px_Higher_ಆದ್ಯತೆ_Task_Woken ) );           \
+                ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Receive = ಖಾಲಿ;                              \
             }                                                                                  \
         }                                                                                      \
-        taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );                                  \
-    } while( 0 )
-    #endif /* sbSEND_COMPLETE_FROM_ISR */
+        taskEXIT_CRITICAL_FROM_ISR( ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ );                                  \
+    } ಆಗ( 0 )
+    #ಆದರೆ_ಅಂತ್ಯ /* sbSEND_COMPLETE_FROM_ISR */
 
 
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-        #define prvSEND_COMPLETE_FROM_ISR( pxStreamBuffer, pxHigherPriorityTaskWoken )                                \
-    do {                                                                                                              \
-        if( ( pxStreamBuffer )->pxSendCompletedCallback != NULL )                                                     \
+    #ಆದರೆ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+        #ವ್ಯಾಖ್ಯಾನಿಸು prvSEND_COMPLETE_FROM_ISR( px_ಹರಿವು_ಬಫರ್, px_Higher_ಆದ್ಯತೆ_Task_Woken )                                \
+    ಮಾಡು {                                                                                                              \
+        ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್ )->pxSendCompletedCallback != ಖಾಲಿ )                                                     \
         {                                                                                                             \
-            ( pxStreamBuffer )->pxSendCompletedCallback( ( pxStreamBuffer ), pdTRUE, ( pxHigherPriorityTaskWoken ) ); \
+            ( px_ಹರಿವು_ಬಫರ್ )->pxSendCompletedCallback( ( px_ಹರಿವು_ಬಫರ್ ), pdTRUE, ( px_Higher_ಆದ್ಯತೆ_Task_Woken ) ); \
         }                                                                                                             \
-        else                                                                                                          \
+        ಇಲ್ಲದಿದ್ದರೆ                                                                                                          \
         {                                                                                                             \
-            sbSEND_COMPLETE_FROM_ISR( ( pxStreamBuffer ), ( pxHigherPriorityTaskWoken ) );                            \
+            sbSEND_COMPLETE_FROM_ISR( ( px_ಹರಿವು_ಬಫರ್ ), ( px_Higher_ಆದ್ಯತೆ_Task_Woken ) );                            \
         }                                                                                                             \
-    } while( 0 )
-    #else /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
-        #define prvSEND_COMPLETE_FROM_ISR( pxStreamBuffer, pxHigherPriorityTaskWoken ) \
-    sbSEND_COMPLETE_FROM_ISR( ( pxStreamBuffer ), ( pxHigherPriorityTaskWoken ) )
-    #endif /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+    } ಆಗ( 0 )
+    #ಇಲ್ಲದಿದ್ದರೆ /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+        #ವ್ಯಾಖ್ಯಾನಿಸು prvSEND_COMPLETE_FROM_ISR( px_ಹರಿವು_ಬಫರ್, px_Higher_ಆದ್ಯತೆ_Task_Woken ) \
+    sbSEND_COMPLETE_FROM_ISR( ( px_ಹರಿವು_ಬಫರ್ ), ( px_Higher_ಆದ್ಯತೆ_Task_Woken ) )
+    #ಆದರೆ_ಅಂತ್ಯ /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
 
 /* The number of bytes used to hold the length of a message in the buffer. */
-    #define sbBYTES_TO_STORE_MESSAGE_LENGTH    ( sizeof( configMESSAGE_BUFFER_LENGTH_TYPE ) )
+    #ವ್ಯಾಖ್ಯಾನಿಸು sb_ಬೈಟುಗಳು_ಗಮ್ಯ_STORE_ಸಂದೇಶ_ಉದ್ದಳತೆ    ( ಗಾತ್ರ( config_ಸಂದೇಶ_ಬಫರ್_ಉದ್ದಳತೆ_TYPE ) )
 
 /* Bits stored in the ucFlags field of the stream buffer. */
-    #define sbFLAGS_IS_MESSAGE_BUFFER          ( ( uint8_t ) 1 ) /* Set if the stream buffer was created as a message buffer, in which case it holds discrete messages rather than a stream. */
-    #define sbFLAGS_IS_STATICALLY_ALLOCATED    ( ( uint8_t ) 2 ) /* Set if the stream buffer was created using statically allocated memory. */
-    #define sbFLAGS_IS_BATCHING_BUFFER         ( ( uint8_t ) 4 ) /* Set if the stream buffer was created as a batching buffer, meaning the receiver task will only unblock when the trigger level exceededs. */
+    #ವ್ಯಾಖ್ಯಾನಿಸು sb_FLAGS_IS_ಸಂದೇಶ_ಬಫರ್          ( ( uint8_t ) 1 ) /* Set if the stream buffer was created as a message buffer, in which case it holds discrete messages rather than a stream. */
+    #ವ್ಯಾಖ್ಯಾನಿಸು sbFLAGS_IS_STATICALLY_ALLOCATED    ( ( uint8_t ) 2 ) /* Set if the stream buffer was created using statically allocated memory. */
+    #ವ್ಯಾಖ್ಯಾನಿಸು sb_FLAGS_IS_BATCHING_ಬಫರ್         ( ( uint8_t ) 4 ) /* Set if the stream buffer was created as a batching buffer, meaning the receiver task will only unblock when the trigger level exceededs. */
 
 /*-----------------------------------------------------------*/
 
 /* Structure that hold state information on the buffer. */
-typedef struct StreamBufferDef_t
+ಪ್ರಕಾರವ್ಯಾಖ್ಯೆ ರಚನೆ ಹರಿವು_ಬಫರ್_Def_t
 {
-    volatile size_t xTail;                       /* Index to the next item to read within the buffer. */
-    volatile size_t xHead;                       /* Index to the next item to write within the buffer. */
-    size_t xLength;                              /* The length of the buffer pointed to by pucBuffer. */
-    size_t xTriggerLevelBytes;                   /* The number of bytes that must be in the stream buffer before a task that is waiting for data is unblocked. */
-    volatile TaskHandle_t xTaskWaitingToReceive; /* Holds the handle of a task waiting for data, or NULL if no tasks are waiting. */
-    volatile TaskHandle_t xTaskWaitingToSend;    /* Holds the handle of a task waiting to send data to a message buffer that is full. */
-    uint8_t * pucBuffer;                         /* Points to the buffer itself - that is - the RAM that stores the data passed through the buffer. */
+    ಅಸ್ಥಿರ size_t x_ಬಾಲ;                       /* Index to the next item to read within the buffer. */
+    ಅಸ್ಥಿರ size_t x_ತಲೆ;                       /* Index to the next item to write within the buffer. */
+    size_t x_ಉದ್ದಳತೆ;                              /* The length of the buffer pointed to by pucBuffer. */
+    size_t x_Trigger_Level_ಬೈಟುಗಳು;                   /* The number of bytes that must be in the stream buffer before a task that is waiting for data is unblocked. */
+    ಅಸ್ಥಿರ TaskHandle_t x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Receive; /* Holds the handle of a task waiting for data, or NULL if no tasks are waiting. */
+    ಅಸ್ಥಿರ TaskHandle_t x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Send;    /* Holds the handle of a task waiting to send data to a message buffer that is full. */
+    uint8_t * puc_ಬಫರ್;                         /* Points to the buffer itself - that is - the RAM that stores the data passed through the buffer. */
     uint8_t ucFlags;
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
-        UBaseType_t uxStreamBufferNumber; /* Used for tracing purposes. */
-    #endif
+    #ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
+        UBaseType_t ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ; /* Used for tracing purposes. */
+    #ಆದರೆ_ಅಂತ್ಯ
 
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-        StreamBufferCallbackFunction_t pxSendCompletedCallback;    /* Optional callback called on send complete. sbSEND_COMPLETED is called if this is NULL. */
-        StreamBufferCallbackFunction_t pxReceiveCompletedCallback; /* Optional callback called on receive complete.  sbRECEIVE_COMPLETED is called if this is NULL. */
-    #endif
-    UBaseType_t uxNotificationIndex;                               /* The index we are using for notification, by default tskDEFAULT_INDEX_TO_NOTIFY. */
-} StreamBuffer_t;
+    #ಆದರೆ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+        ಹರಿವು_ಬಫರ್_Callback_Function_t pxSendCompletedCallback;    /* Optional callback called on send complete. sbSEND_COMPLETED is called if this is NULL. */
+        ಹರಿವು_ಬಫರ್_Callback_Function_t pxReceiveCompletedCallback; /* Optional callback called on receive complete.  sbRECEIVE_COMPLETED is called if this is NULL. */
+    #ಆದರೆ_ಅಂತ್ಯ
+    UBaseType_t ux_Notification_ಸೂಚ್ಯಂಕ;                               /* The index we are using for notification, by default tskDEFAULT_INDEX_TO_NOTIFY. */
+} ಹರಿವು_ಬಫರ್_t;
 
 /*
  * The number of bytes available to be read from the buffer.
  */
-static size_t prvBytesInBuffer( const StreamBuffer_t * const pxStreamBuffer ) PRIVILEGED_FUNCTION;
+ಸ್ಥಿರ size_t prv_ಬೈಟುಗಳು_ಒಳ_ಬಫರ್( ಸ್ಥಿರಾಂಕ ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ ) PRIVILEGED_FUNCTION;
 
 /*
  * Add xCount bytes from pucData into the pxStreamBuffer's data storage area.
@@ -271,10 +271,10 @@ static size_t prvBytesInBuffer( const StreamBuffer_t * const pxStreamBuffer ) PR
  * To mark the write as complete, manually set the buffer's xHead field with the
  * returned xHead from this function.
  */
-static size_t prvWriteBytesToBuffer( StreamBuffer_t * const pxStreamBuffer,
-                                     const uint8_t * pucData,
-                                     size_t xCount,
-                                     size_t xHead ) PRIVILEGED_FUNCTION;
+ಸ್ಥಿರ size_t prv_Write_ಬೈಟುಗಳು_ಗಮ್ಯ_ಬಫರ್( ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್,
+                                     ಸ್ಥಿರಾಂಕ uint8_t * puc_ದತ್ತಾಂಶ,
+                                     size_t x_ಎಣಿಕೆ,
+                                     size_t x_ತಲೆ ) PRIVILEGED_FUNCTION;
 
 /*
  * If the stream buffer is being used as a message buffer, then reads an entire
@@ -283,10 +283,10 @@ static size_t prvWriteBytesToBuffer( StreamBuffer_t * const pxStreamBuffer,
  * prvReadBytesFromBuffer() is called to actually extract the bytes from the
  * buffer's data storage area.
  */
-static size_t prvReadMessageFromBuffer( StreamBuffer_t * pxStreamBuffer,
-                                        void * pvRxData,
-                                        size_t xBufferLengthBytes,
-                                        size_t xBytesAvailable ) PRIVILEGED_FUNCTION;
+ಸ್ಥಿರ size_t prv_Read_ಸಂದೇಶ_From_ಬಫರ್( ಹರಿವು_ಬಫರ್_t * px_ಹರಿವು_ಬಫರ್,
+                                        ಶೂನ್ಯ * pv_Rx_ದತ್ತಾಂಶ,
+                                        size_t x_ಬಫರ್_ಉದ್ದಳತೆ_ಬೈಟುಗಳು,
+                                        size_t x_ಬೈಟುಗಳು_ಲಭ್ಯ ) PRIVILEGED_FUNCTION;
 
 /*
  * If the stream buffer is being used as a message buffer, then writes an entire
@@ -295,9 +295,9 @@ static size_t prvReadMessageFromBuffer( StreamBuffer_t * pxStreamBuffer,
  * prvWriteBytestoBuffer() is called to actually send the bytes to the buffer's
  * data storage area.
  */
-static size_t prvWriteMessageToBuffer( StreamBuffer_t * const pxStreamBuffer,
-                                       const void * pvTxData,
-                                       size_t xDataLengthBytes,
+ಸ್ಥಿರ size_t prv_Write_ಸಂದೇಶ_ಗಮ್ಯ_ಬಫರ್( ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್,
+                                       ಸ್ಥಿರಾಂಕ ಶೂನ್ಯ * pv_Tx_ದತ್ತಾಂಶ,
+                                       size_t x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು,
                                        size_t xSpace,
                                        size_t xRequiredSpace ) PRIVILEGED_FUNCTION;
 
@@ -313,66 +313,66 @@ static size_t prvWriteMessageToBuffer( StreamBuffer_t * const pxStreamBuffer,
  * To mark the read as complete, manually set the buffer's xTail field with the
  * returned xTail from this function.
  */
-static size_t prvReadBytesFromBuffer( StreamBuffer_t * pxStreamBuffer,
-                                      uint8_t * pucData,
-                                      size_t xCount,
-                                      size_t xTail ) PRIVILEGED_FUNCTION;
+ಸ್ಥಿರ size_t prv_Read_ಬೈಟುಗಳು_From_ಬಫರ್( ಹರಿವು_ಬಫರ್_t * px_ಹರಿವು_ಬಫರ್,
+                                      uint8_t * puc_ದತ್ತಾಂಶ,
+                                      size_t x_ಎಣಿಕೆ,
+                                      size_t x_ಬಾಲ ) PRIVILEGED_FUNCTION;
 
 /*
  * Called by both pxStreamBufferCreate() and pxStreamBufferCreateStatic() to
  * initialise the members of the newly created stream buffer structure.
  */
-static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
-                                          uint8_t * const pucBuffer,
-                                          size_t xBufferSizeBytes,
-                                          size_t xTriggerLevelBytes,
+ಸ್ಥಿರ ಶೂನ್ಯ prv_Initialise_New_ಹರಿವು_ಬಫರ್( ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್,
+                                          uint8_t * ಸ್ಥಿರಾಂಕ puc_ಬಫರ್,
+                                          size_t x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು,
+                                          size_t x_Trigger_Level_ಬೈಟುಗಳು,
                                           uint8_t ucFlags,
-                                          StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                          StreamBufferCallbackFunction_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
+                                          ಹರಿವು_ಬಫರ್_Callback_Function_t pxSendCompletedCallback,
+                                          ಹರಿವು_ಬಫರ್_Callback_Function_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
 
 /*-----------------------------------------------------------*/
-    #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    StreamBufferHandle_t xStreamBufferGenericCreate( size_t xBufferSizeBytes,
-                                                     size_t xTriggerLevelBytes,
-                                                     BaseType_t xStreamBufferType,
-                                                     StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                                     StreamBufferCallbackFunction_t pxReceiveCompletedCallback )
+    #ಆದರೆ ( config_SUPPORT_DYNAMIC_ಹಂಚಿಕೆ == 1 )
+    ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್_Generic_Create( size_t x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು,
+                                                     size_t x_Trigger_Level_ಬೈಟುಗಳು,
+                                                     ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_Type,
+                                                     ಹರಿವು_ಬಫರ್_Callback_Function_t pxSendCompletedCallback,
+                                                     ಹರಿವು_ಬಫರ್_Callback_Function_t pxReceiveCompletedCallback )
     {
-        void * pvAllocatedMemory;
+        ಶೂನ್ಯ * pv_Allocated_ಸ್ಮರಣೆ;
         uint8_t ucFlags;
 
-        traceENTER_xStreamBufferGenericCreate( xBufferSizeBytes, xTriggerLevelBytes, xStreamBufferType, pxSendCompletedCallback, pxReceiveCompletedCallback );
+        trace_ENTER_x_ಹರಿವು_ಬಫರ್_Generic_Create( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು, x_Trigger_Level_ಬೈಟುಗಳು, x_ಹರಿವು_ಬಫರ್_Type, pxSendCompletedCallback, pxReceiveCompletedCallback );
 
         /* In case the stream buffer is going to be used as a message buffer
          * (that is, it will hold discrete messages with a little meta data that
          * says how big the next message is) check the buffer will be large enough
          * to hold at least one message. */
-        if( xStreamBufferType == sbTYPE_MESSAGE_BUFFER )
+        ಆದರೆ( x_ಹರಿವು_ಬಫರ್_Type == sb_TYPE_ಸಂದೇಶ_ಬಫರ್ )
         {
             /* Is a message buffer but not statically allocated. */
-            ucFlags = sbFLAGS_IS_MESSAGE_BUFFER;
-            configASSERT( xBufferSizeBytes > sbBYTES_TO_STORE_MESSAGE_LENGTH );
+            ucFlags = sb_FLAGS_IS_ಸಂದೇಶ_ಬಫರ್;
+            configASSERT( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು > sb_ಬೈಟುಗಳು_ಗಮ್ಯ_STORE_ಸಂದೇಶ_ಉದ್ದಳತೆ );
         }
-        else if( xStreamBufferType == sbTYPE_STREAM_BATCHING_BUFFER )
+        ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ( x_ಹರಿವು_ಬಫರ್_Type == sb_TYPE_ಹರಿವು_BATCHING_ಬಫರ್ )
         {
             /* Is a batching buffer but not statically allocated. */
-            ucFlags = sbFLAGS_IS_BATCHING_BUFFER;
-            configASSERT( xBufferSizeBytes > 0 );
+            ucFlags = sb_FLAGS_IS_BATCHING_ಬಫರ್;
+            configASSERT( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು > 0 );
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             /* Not a message buffer and not statically allocated. */
             ucFlags = 0;
-            configASSERT( xBufferSizeBytes > 0 );
+            configASSERT( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು > 0 );
         }
 
-        configASSERT( xTriggerLevelBytes <= xBufferSizeBytes );
+        configASSERT( x_Trigger_Level_ಬೈಟುಗಳು <= x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು );
 
         /* A trigger level of 0 would cause a waiting task to unblock even when
          * the buffer was empty. */
-        if( xTriggerLevelBytes == ( size_t ) 0 )
+        ಆದರೆ( x_Trigger_Level_ಬೈಟುಗಳು == ( size_t ) 0 )
         {
-            xTriggerLevelBytes = ( size_t ) 1;
+            x_Trigger_Level_ಬೈಟುಗಳು = ( size_t ) 1;
         }
 
         /* A stream buffer requires a StreamBuffer_t structure and a buffer.
@@ -383,77 +383,77 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
          * this is a quirk of the implementation that means otherwise the free
          * space would be reported as one byte smaller than would be logically
          * expected. */
-        if( xBufferSizeBytes < ( xBufferSizeBytes + 1U + sizeof( StreamBuffer_t ) ) )
+        ಆದರೆ( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು < ( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು + 1U + ಗಾತ್ರ( ಹರಿವು_ಬಫರ್_t ) ) )
         {
-            xBufferSizeBytes++;
-            pvAllocatedMemory = pvPortMalloc( xBufferSizeBytes + sizeof( StreamBuffer_t ) );
+            x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು++;
+            pv_Allocated_ಸ್ಮರಣೆ = pv_ಪೋರ್ಟ್_Malloc( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು + ಗಾತ್ರ( ಹರಿವು_ಬಫರ್_t ) );
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
-            pvAllocatedMemory = NULL;
+            pv_Allocated_ಸ್ಮರಣೆ = ಖಾಲಿ;
         }
 
-        if( pvAllocatedMemory != NULL )
+        ಆದರೆ( pv_Allocated_ಸ್ಮರಣೆ != ಖಾಲಿ )
         {
             /* MISRA Ref 11.5.1 [Malloc memory assignment] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
             /* coverity[misra_c_2012_rule_11_5_violation] */
-            prvInitialiseNewStreamBuffer( ( StreamBuffer_t * ) pvAllocatedMemory,                         /* Structure at the start of the allocated memory. */
+            prv_Initialise_New_ಹರಿವು_ಬಫರ್( ( ಹರಿವು_ಬಫರ್_t * ) pv_Allocated_ಸ್ಮರಣೆ,                         /* Structure at the start of the allocated memory. */
                                                                                                           /* MISRA Ref 11.5.1 [Malloc memory assignment] */
                                                                                                           /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
                                                                                                           /* coverity[misra_c_2012_rule_11_5_violation] */
-                                          ( ( uint8_t * ) pvAllocatedMemory ) + sizeof( StreamBuffer_t ), /* Storage area follows. */
-                                          xBufferSizeBytes,
-                                          xTriggerLevelBytes,
+                                          ( ( uint8_t * ) pv_Allocated_ಸ್ಮರಣೆ ) + ಗಾತ್ರ( ಹರಿವು_ಬಫರ್_t ), /* Storage area follows. */
+                                          x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು,
+                                          x_Trigger_Level_ಬೈಟುಗಳು,
                                           ucFlags,
                                           pxSendCompletedCallback,
                                           pxReceiveCompletedCallback );
 
-            traceSTREAM_BUFFER_CREATE( ( ( StreamBuffer_t * ) pvAllocatedMemory ), xStreamBufferType );
+            trace_ಹರಿವು_ಬಫರ್_CREATE( ( ( ಹರಿವು_ಬಫರ್_t * ) pv_Allocated_ಸ್ಮರಣೆ ), x_ಹರಿವು_ಬಫರ್_Type );
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
-            traceSTREAM_BUFFER_CREATE_FAILED( xStreamBufferType );
+            trace_ಹರಿವು_ಬಫರ್_CREATE_FAILED( x_ಹರಿವು_ಬಫರ್_Type );
         }
 
-        traceRETURN_xStreamBufferGenericCreate( pvAllocatedMemory );
+        trace_RETURN_x_ಹರಿವು_ಬಫರ್_Generic_Create( pv_Allocated_ಸ್ಮರಣೆ );
 
         /* MISRA Ref 11.5.1 [Malloc memory assignment] */
         /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
         /* coverity[misra_c_2012_rule_11_5_violation] */
-        return ( StreamBufferHandle_t ) pvAllocatedMemory;
+        ಹಿಂತಿರುಗಿ ( ಹರಿವು_ಬಫರ್_Handle_t ) pv_Allocated_ಸ್ಮರಣೆ;
     }
-    #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+    #ಆದರೆ_ಅಂತ್ಯ /* configSUPPORT_DYNAMIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-    #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+    #ಆದರೆ ( config_SUPPORT_STATIC_ಹಂಚಿಕೆ == 1 )
 
-    StreamBufferHandle_t xStreamBufferGenericCreateStatic( size_t xBufferSizeBytes,
-                                                           size_t xTriggerLevelBytes,
-                                                           BaseType_t xStreamBufferType,
-                                                           uint8_t * const pucStreamBufferStorageArea,
-                                                           StaticStreamBuffer_t * const pxStaticStreamBuffer,
-                                                           StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                                           StreamBufferCallbackFunction_t pxReceiveCompletedCallback )
+    ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್_Generic_Create_Static( size_t x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು,
+                                                           size_t x_Trigger_Level_ಬೈಟುಗಳು,
+                                                           ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_Type,
+                                                           uint8_t * ಸ್ಥಿರಾಂಕ puc_ಹರಿವು_ಬಫರ್_Storage_Area,
+                                                           Static_ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_Static_ಹರಿವು_ಬಫರ್,
+                                                           ಹರಿವು_ಬಫರ್_Callback_Function_t pxSendCompletedCallback,
+                                                           ಹರಿವು_ಬಫರ್_Callback_Function_t pxReceiveCompletedCallback )
     {
         /* MISRA Ref 11.3.1 [Misaligned access] */
         /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-113 */
         /* coverity[misra_c_2012_rule_11_3_violation] */
-        StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) pxStaticStreamBuffer;
-        StreamBufferHandle_t xReturn;
+        ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = ( ಹರಿವು_ಬಫರ್_t * ) px_Static_ಹರಿವು_ಬಫರ್;
+        ಹರಿವು_ಬಫರ್_Handle_t xReturn;
         uint8_t ucFlags;
 
-        traceENTER_xStreamBufferGenericCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, xStreamBufferType, pucStreamBufferStorageArea, pxStaticStreamBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback );
+        trace_ENTER_x_ಹರಿವು_ಬಫರ್_Generic_Create_Static( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು, x_Trigger_Level_ಬೈಟುಗಳು, x_ಹರಿವು_ಬಫರ್_Type, puc_ಹರಿವು_ಬಫರ್_Storage_Area, px_Static_ಹರಿವು_ಬಫರ್, pxSendCompletedCallback, pxReceiveCompletedCallback );
 
-        configASSERT( pucStreamBufferStorageArea );
-        configASSERT( pxStaticStreamBuffer );
-        configASSERT( xTriggerLevelBytes <= xBufferSizeBytes );
+        configASSERT( puc_ಹರಿವು_ಬಫರ್_Storage_Area );
+        configASSERT( px_Static_ಹರಿವು_ಬಫರ್ );
+        configASSERT( x_Trigger_Level_ಬೈಟುಗಳು <= x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು );
 
         /* A trigger level of 0 would cause a waiting task to unblock even when
          * the buffer was empty. */
-        if( xTriggerLevelBytes == ( size_t ) 0 )
+        ಆದರೆ( x_Trigger_Level_ಬೈಟುಗಳು == ( size_t ) 0 )
         {
-            xTriggerLevelBytes = ( size_t ) 1;
+            x_Trigger_Level_ಬೈಟುಗಳು = ( size_t ) 1;
         }
 
         /* In case the stream buffer is going to be used as a message buffer
@@ -461,639 +461,639 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
          * says how big the next message is) check the buffer will be large enough
          * to hold at least one message. */
 
-        if( xStreamBufferType == sbTYPE_MESSAGE_BUFFER )
+        ಆದರೆ( x_ಹರಿವು_ಬಫರ್_Type == sb_TYPE_ಸಂದೇಶ_ಬಫರ್ )
         {
             /* Statically allocated message buffer. */
-            ucFlags = sbFLAGS_IS_MESSAGE_BUFFER | sbFLAGS_IS_STATICALLY_ALLOCATED;
-            configASSERT( xBufferSizeBytes > sbBYTES_TO_STORE_MESSAGE_LENGTH );
+            ucFlags = sb_FLAGS_IS_ಸಂದೇಶ_ಬಫರ್ | sbFLAGS_IS_STATICALLY_ALLOCATED;
+            configASSERT( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು > sb_ಬೈಟುಗಳು_ಗಮ್ಯ_STORE_ಸಂದೇಶ_ಉದ್ದಳತೆ );
         }
-        else if( xStreamBufferType == sbTYPE_STREAM_BATCHING_BUFFER )
+        ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ( x_ಹರಿವು_ಬಫರ್_Type == sb_TYPE_ಹರಿವು_BATCHING_ಬಫರ್ )
         {
             /* Statically allocated batching buffer. */
-            ucFlags = sbFLAGS_IS_BATCHING_BUFFER | sbFLAGS_IS_STATICALLY_ALLOCATED;
-            configASSERT( xBufferSizeBytes > 0 );
+            ucFlags = sb_FLAGS_IS_BATCHING_ಬಫರ್ | sbFLAGS_IS_STATICALLY_ALLOCATED;
+            configASSERT( x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು > 0 );
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             /* Statically allocated stream buffer. */
             ucFlags = sbFLAGS_IS_STATICALLY_ALLOCATED;
         }
 
-        #if ( configASSERT_DEFINED == 1 )
+        #ಆದರೆ ( configASSERT_DEFINED == 1 )
         {
             /* Sanity check that the size of the structure used to declare a
              * variable of type StaticStreamBuffer_t equals the size of the real
              * message buffer structure. */
-            volatile size_t xSize = sizeof( StaticStreamBuffer_t );
-            configASSERT( xSize == sizeof( StreamBuffer_t ) );
+            ಅಸ್ಥಿರ size_t x_ಗಾತ್ರ = ಗಾತ್ರ( Static_ಹರಿವು_ಬಫರ್_t );
+            configASSERT( x_ಗಾತ್ರ == ಗಾತ್ರ( ಹರಿವು_ಬಫರ್_t ) );
         }
-        #endif /* configASSERT_DEFINED */
+        #ಆದರೆ_ಅಂತ್ಯ /* configASSERT_DEFINED */
 
-        if( ( pucStreamBufferStorageArea != NULL ) && ( pxStaticStreamBuffer != NULL ) )
+        ಆದರೆ( ( puc_ಹರಿವು_ಬಫರ್_Storage_Area != ಖಾಲಿ ) && ( px_Static_ಹರಿವು_ಬಫರ್ != ಖಾಲಿ ) )
         {
-            prvInitialiseNewStreamBuffer( pxStreamBuffer,
-                                          pucStreamBufferStorageArea,
-                                          xBufferSizeBytes,
-                                          xTriggerLevelBytes,
+            prv_Initialise_New_ಹರಿವು_ಬಫರ್( px_ಹರಿವು_ಬಫರ್,
+                                          puc_ಹರಿವು_ಬಫರ್_Storage_Area,
+                                          x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು,
+                                          x_Trigger_Level_ಬೈಟುಗಳು,
                                           ucFlags,
                                           pxSendCompletedCallback,
                                           pxReceiveCompletedCallback );
 
             /* Remember this was statically allocated in case it is ever deleted
              * again. */
-            pxStreamBuffer->ucFlags |= sbFLAGS_IS_STATICALLY_ALLOCATED;
+            px_ಹರಿವು_ಬಫರ್->ucFlags |= sbFLAGS_IS_STATICALLY_ALLOCATED;
 
-            traceSTREAM_BUFFER_CREATE( pxStreamBuffer, xStreamBufferType );
+            trace_ಹರಿವು_ಬಫರ್_CREATE( px_ಹರಿವು_ಬಫರ್, x_ಹರಿವು_ಬಫರ್_Type );
 
             /* MISRA Ref 11.3.1 [Misaligned access] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-113 */
             /* coverity[misra_c_2012_rule_11_3_violation] */
-            xReturn = ( StreamBufferHandle_t ) pxStaticStreamBuffer;
+            xReturn = ( ಹರಿವು_ಬಫರ್_Handle_t ) px_Static_ಹರಿವು_ಬಫರ್;
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
-            xReturn = NULL;
-            traceSTREAM_BUFFER_CREATE_STATIC_FAILED( xReturn, xStreamBufferType );
+            xReturn = ಖಾಲಿ;
+            trace_ಹರಿವು_ಬಫರ್_CREATE_STATIC_FAILED( xReturn, x_ಹರಿವು_ಬಫರ್_Type );
         }
 
-        traceRETURN_xStreamBufferGenericCreateStatic( xReturn );
+        trace_RETURN_x_ಹರಿವು_ಬಫರ್_Generic_Create_Static( xReturn );
 
-        return xReturn;
+        ಹಿಂತಿರುಗಿ xReturn;
     }
-    #endif /* ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+    #ಆದರೆ_ಅಂತ್ಯ /* ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*-----------------------------------------------------------*/
 
-    #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    BaseType_t xStreamBufferGetStaticBuffers( StreamBufferHandle_t xStreamBuffer,
-                                              uint8_t ** ppucStreamBufferStorageArea,
-                                              StaticStreamBuffer_t ** ppxStaticStreamBuffer )
+    #ಆದರೆ ( config_SUPPORT_STATIC_ಹಂಚಿಕೆ == 1 )
+    ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_Get_Static_Buffers( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                                              uint8_t ** ppuc_ಹರಿವು_ಬಫರ್_Storage_Area,
+                                              Static_ಹರಿವು_ಬಫರ್_t ** ppx_Static_ಹರಿವು_ಬಫರ್ )
     {
-        BaseType_t xReturn;
-        StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
+        ತಳ_Type_t xReturn;
+        ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
 
-        traceENTER_xStreamBufferGetStaticBuffers( xStreamBuffer, ppucStreamBufferStorageArea, ppxStaticStreamBuffer );
+        trace_ENTER_x_ಹರಿವು_ಬಫರ್_Get_Static_Buffers( x_ಹರಿವು_ಬಫರ್, ppuc_ಹರಿವು_ಬಫರ್_Storage_Area, ppx_Static_ಹರಿವು_ಬಫರ್ );
 
-        configASSERT( pxStreamBuffer );
-        configASSERT( ppucStreamBufferStorageArea );
-        configASSERT( ppxStaticStreamBuffer );
+        configASSERT( px_ಹರಿವು_ಬಫರ್ );
+        configASSERT( ppuc_ಹರಿವು_ಬಫರ್_Storage_Area );
+        configASSERT( ppx_Static_ಹರಿವು_ಬಫರ್ );
 
-        if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_STATICALLY_ALLOCATED ) != ( uint8_t ) 0 )
+        ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್->ucFlags & sbFLAGS_IS_STATICALLY_ALLOCATED ) != ( uint8_t ) 0 )
         {
-            *ppucStreamBufferStorageArea = pxStreamBuffer->pucBuffer;
+            *ppuc_ಹರಿವು_ಬಫರ್_Storage_Area = px_ಹರಿವು_ಬಫರ್->puc_ಬಫರ್;
             /* MISRA Ref 11.3.1 [Misaligned access] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-113 */
             /* coverity[misra_c_2012_rule_11_3_violation] */
-            *ppxStaticStreamBuffer = ( StaticStreamBuffer_t * ) pxStreamBuffer;
+            *ppx_Static_ಹರಿವು_ಬಫರ್ = ( Static_ಹರಿವು_ಬಫರ್_t * ) px_ಹರಿವು_ಬಫರ್;
             xReturn = pdTRUE;
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             xReturn = pdFALSE;
         }
 
-        traceRETURN_xStreamBufferGetStaticBuffers( xReturn );
+        trace_RETURN_x_ಹರಿವು_ಬಫರ್_Get_Static_Buffers( xReturn );
 
-        return xReturn;
+        ಹಿಂತಿರುಗಿ xReturn;
     }
-    #endif /* configSUPPORT_STATIC_ALLOCATION */
+    #ಆದರೆ_ಅಂತ್ಯ /* configSUPPORT_STATIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-void vStreamBufferDelete( StreamBufferHandle_t xStreamBuffer )
+ಶೂನ್ಯ v_ಹರಿವು_ಬಫರ್_Delete( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ )
 {
-    StreamBuffer_t * pxStreamBuffer = xStreamBuffer;
+    ಹರಿವು_ಬಫರ್_t * px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
 
-    traceENTER_vStreamBufferDelete( xStreamBuffer );
+    trace_ENTER_v_ಹರಿವು_ಬಫರ್_Delete( x_ಹರಿವು_ಬಫರ್ );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
-    traceSTREAM_BUFFER_DELETE( xStreamBuffer );
+    trace_ಹರಿವು_ಬಫರ್_DELETE( x_ಹರಿವು_ಬಫರ್ );
 
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_STATICALLY_ALLOCATED ) == ( uint8_t ) pdFALSE )
+    ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್->ucFlags & sbFLAGS_IS_STATICALLY_ALLOCATED ) == ( uint8_t ) pdFALSE )
     {
-        #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+        #ಆದರೆ ( config_SUPPORT_DYNAMIC_ಹಂಚಿಕೆ == 1 )
         {
             /* Both the structure and the buffer were allocated using a single call
             * to pvPortMalloc(), hence only one call to vPortFree() is required. */
-            vPortFree( ( void * ) pxStreamBuffer );
+            v_ಪೋರ್ಟ್_Free( ( ಶೂನ್ಯ * ) px_ಹರಿವು_ಬಫರ್ );
         }
-        #else
+        #ಇಲ್ಲದಿದ್ದರೆ
         {
             /* Should not be possible to get here, ucFlags must be corrupt.
              * Force an assert. */
-            configASSERT( xStreamBuffer == ( StreamBufferHandle_t ) ~0 );
+            configASSERT( x_ಹರಿವು_ಬಫರ್ == ( ಹರಿವು_ಬಫರ್_Handle_t ) ~0 );
         }
-        #endif
+        #ಆದರೆ_ಅಂತ್ಯ
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         /* The structure and buffer were not allocated dynamically and cannot be
          * freed - just scrub the structure so future use will assert. */
-        ( void ) memset( pxStreamBuffer, 0x00, sizeof( StreamBuffer_t ) );
+        ( ಶೂನ್ಯ ) memset( px_ಹರಿವು_ಬಫರ್, 0x00, ಗಾತ್ರ( ಹರಿವು_ಬಫರ್_t ) );
     }
 
-    traceRETURN_vStreamBufferDelete();
+    trace_RETURN_v_ಹರಿವು_ಬಫರ್_Delete();
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xStreamBufferReset( StreamBufferHandle_t xStreamBuffer )
+ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_Reset( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    BaseType_t xReturn = pdFAIL;
-    StreamBufferCallbackFunction_t pxSendCallback = NULL, pxReceiveCallback = NULL;
+    ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
+    ತಳ_Type_t xReturn = pdFAIL;
+    ಹರಿವು_ಬಫರ್_Callback_Function_t pxSendCallback = ಖಾಲಿ, pxReceiveCallback = ಖಾಲಿ;
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
-        UBaseType_t uxStreamBufferNumber;
-    #endif
+    #ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
+        UBaseType_t ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ;
+    #ಆದರೆ_ಅಂತ್ಯ
 
-    traceENTER_xStreamBufferReset( xStreamBuffer );
+    trace_ENTER_x_ಹರಿವು_ಬಫರ್_Reset( x_ಹರಿವು_ಬಫರ್ );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
     {
         /* Store the stream buffer number so it can be restored after the
          * reset. */
-        uxStreamBufferNumber = pxStreamBuffer->uxStreamBufferNumber;
+        ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ = px_ಹರಿವು_ಬಫರ್->ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ;
     }
-    #endif
+    #ಆದರೆ_ಅಂತ್ಯ
 
     /* Can only reset a message buffer if there are no tasks blocked on it. */
     taskENTER_CRITICAL();
     {
-        if( ( pxStreamBuffer->xTaskWaitingToReceive == NULL ) && ( pxStreamBuffer->xTaskWaitingToSend == NULL ) )
+        ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Receive == ಖಾಲಿ ) && ( px_ಹರಿವು_ಬಫರ್->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Send == ಖಾಲಿ ) )
         {
-            #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+            #ಆದರೆ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
             {
-                pxSendCallback = pxStreamBuffer->pxSendCompletedCallback;
-                pxReceiveCallback = pxStreamBuffer->pxReceiveCompletedCallback;
+                pxSendCallback = px_ಹರಿವು_ಬಫರ್->pxSendCompletedCallback;
+                pxReceiveCallback = px_ಹರಿವು_ಬಫರ್->pxReceiveCompletedCallback;
             }
-            #endif
+            #ಆದರೆ_ಅಂತ್ಯ
 
-            prvInitialiseNewStreamBuffer( pxStreamBuffer,
-                                          pxStreamBuffer->pucBuffer,
-                                          pxStreamBuffer->xLength,
-                                          pxStreamBuffer->xTriggerLevelBytes,
-                                          pxStreamBuffer->ucFlags,
+            prv_Initialise_New_ಹರಿವು_ಬಫರ್( px_ಹರಿವು_ಬಫರ್,
+                                          px_ಹರಿವು_ಬಫರ್->puc_ಬಫರ್,
+                                          px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ,
+                                          px_ಹರಿವು_ಬಫರ್->x_Trigger_Level_ಬೈಟುಗಳು,
+                                          px_ಹರಿವು_ಬಫರ್->ucFlags,
                                           pxSendCallback,
                                           pxReceiveCallback );
 
-            #if ( configUSE_TRACE_FACILITY == 1 )
+            #ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
             {
-                pxStreamBuffer->uxStreamBufferNumber = uxStreamBufferNumber;
+                px_ಹರಿವು_ಬಫರ್->ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ = ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ;
             }
-            #endif
+            #ಆದರೆ_ಅಂತ್ಯ
 
-            traceSTREAM_BUFFER_RESET( xStreamBuffer );
+            trace_ಹರಿವು_ಬಫರ್_RESET( x_ಹರಿವು_ಬಫರ್ );
 
             xReturn = pdPASS;
         }
     }
     taskEXIT_CRITICAL();
 
-    traceRETURN_xStreamBufferReset( xReturn );
+    trace_RETURN_x_ಹರಿವು_ಬಫರ್_Reset( xReturn );
 
-    return xReturn;
+    ಹಿಂತಿರುಗಿ xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xStreamBufferResetFromISR( StreamBufferHandle_t xStreamBuffer )
+ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_Reset_From_ISR( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    BaseType_t xReturn = pdFAIL;
-    StreamBufferCallbackFunction_t pxSendCallback = NULL, pxReceiveCallback = NULL;
-    UBaseType_t uxSavedInterruptStatus;
+    ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
+    ತಳ_Type_t xReturn = pdFAIL;
+    ಹರಿವು_ಬಫರ್_Callback_Function_t pxSendCallback = ಖಾಲಿ, pxReceiveCallback = ಖಾಲಿ;
+    UBaseType_t ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ;
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
-        UBaseType_t uxStreamBufferNumber;
-    #endif
+    #ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
+        UBaseType_t ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ;
+    #ಆದರೆ_ಅಂತ್ಯ
 
-    traceENTER_xStreamBufferResetFromISR( xStreamBuffer );
+    trace_ENTER_x_ಹರಿವು_ಬಫರ್_Reset_From_ISR( x_ಹರಿವು_ಬಫರ್ );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
     {
         /* Store the stream buffer number so it can be restored after the
          * reset. */
-        uxStreamBufferNumber = pxStreamBuffer->uxStreamBufferNumber;
+        ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ = px_ಹರಿವು_ಬಫರ್->ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ;
     }
-    #endif
+    #ಆದರೆ_ಅಂತ್ಯ
 
     /* Can only reset a message buffer if there are no tasks blocked on it. */
     /* MISRA Ref 4.7.1 [Return value shall be checked] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
     /* coverity[misra_c_2012_directive_4_7_violation] */
-    uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();
+    ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ = taskENTER_CRITICAL_FROM_ISR();
     {
-        if( ( pxStreamBuffer->xTaskWaitingToReceive == NULL ) && ( pxStreamBuffer->xTaskWaitingToSend == NULL ) )
+        ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Receive == ಖಾಲಿ ) && ( px_ಹರಿವು_ಬಫರ್->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Send == ಖಾಲಿ ) )
         {
-            #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+            #ಆದರೆ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
             {
-                pxSendCallback = pxStreamBuffer->pxSendCompletedCallback;
-                pxReceiveCallback = pxStreamBuffer->pxReceiveCompletedCallback;
+                pxSendCallback = px_ಹರಿವು_ಬಫರ್->pxSendCompletedCallback;
+                pxReceiveCallback = px_ಹರಿವು_ಬಫರ್->pxReceiveCompletedCallback;
             }
-            #endif
+            #ಆದರೆ_ಅಂತ್ಯ
 
-            prvInitialiseNewStreamBuffer( pxStreamBuffer,
-                                          pxStreamBuffer->pucBuffer,
-                                          pxStreamBuffer->xLength,
-                                          pxStreamBuffer->xTriggerLevelBytes,
-                                          pxStreamBuffer->ucFlags,
+            prv_Initialise_New_ಹರಿವು_ಬಫರ್( px_ಹರಿವು_ಬಫರ್,
+                                          px_ಹರಿವು_ಬಫರ್->puc_ಬಫರ್,
+                                          px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ,
+                                          px_ಹರಿವು_ಬಫರ್->x_Trigger_Level_ಬೈಟುಗಳು,
+                                          px_ಹರಿವು_ಬಫರ್->ucFlags,
                                           pxSendCallback,
                                           pxReceiveCallback );
 
-            #if ( configUSE_TRACE_FACILITY == 1 )
+            #ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
             {
-                pxStreamBuffer->uxStreamBufferNumber = uxStreamBufferNumber;
+                px_ಹರಿವು_ಬಫರ್->ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ = ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ;
             }
-            #endif
+            #ಆದರೆ_ಅಂತ್ಯ
 
-            traceSTREAM_BUFFER_RESET_FROM_ISR( xStreamBuffer );
+            trace_ಹರಿವು_ಬಫರ್_RESET_FROM_ISR( x_ಹರಿವು_ಬಫರ್ );
 
             xReturn = pdPASS;
         }
     }
-    taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );
+    taskEXIT_CRITICAL_FROM_ISR( ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ );
 
-    traceRETURN_xStreamBufferResetFromISR( xReturn );
+    trace_RETURN_x_ಹರಿವು_ಬಫರ್_Reset_From_ISR( xReturn );
 
-    return xReturn;
+    ಹಿಂತಿರುಗಿ xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xStreamBufferSetTriggerLevel( StreamBufferHandle_t xStreamBuffer,
+ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_ಗಣ_Trigger_Level( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
                                          size_t xTriggerLevel )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    BaseType_t xReturn;
+    ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
+    ತಳ_Type_t xReturn;
 
-    traceENTER_xStreamBufferSetTriggerLevel( xStreamBuffer, xTriggerLevel );
+    trace_ENTER_x_ಹರಿವು_ಬಫರ್_ಗಣ_Trigger_Level( x_ಹರಿವು_ಬಫರ್, xTriggerLevel );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
     /* It is not valid for the trigger level to be 0. */
-    if( xTriggerLevel == ( size_t ) 0 )
+    ಆದರೆ( xTriggerLevel == ( size_t ) 0 )
     {
         xTriggerLevel = ( size_t ) 1;
     }
 
     /* The trigger level is the number of bytes that must be in the stream
      * buffer before a task that is waiting for data is unblocked. */
-    if( xTriggerLevel < pxStreamBuffer->xLength )
+    ಆದರೆ( xTriggerLevel < px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ )
     {
-        pxStreamBuffer->xTriggerLevelBytes = xTriggerLevel;
+        px_ಹರಿವು_ಬಫರ್->x_Trigger_Level_ಬೈಟುಗಳು = xTriggerLevel;
         xReturn = pdPASS;
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         xReturn = pdFALSE;
     }
 
-    traceRETURN_xStreamBufferSetTriggerLevel( xReturn );
+    trace_RETURN_x_ಹರಿವು_ಬಫರ್_ಗಣ_Trigger_Level( xReturn );
 
-    return xReturn;
+    ಹಿಂತಿರುಗಿ xReturn;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer )
+size_t x_ಹರಿವು_ಬಫರ್_Spaces_ಲಭ್ಯ( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ )
 {
-    const StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
+    ಸ್ಥಿರಾಂಕ ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
     size_t xSpace;
-    size_t xOriginalTail;
+    size_t x_Original_ಬಾಲ;
 
-    traceENTER_xStreamBufferSpacesAvailable( xStreamBuffer );
+    trace_ENTER_x_ಹರಿವು_ಬಫರ್_Spaces_ಲಭ್ಯ( x_ಹರಿವು_ಬಫರ್ );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
     /* The code below reads xTail and then xHead.  This is safe if the stream
      * buffer is updated once between the two reads - but not if the stream buffer
      * is updated more than once between the two reads - hence the loop. */
-    do
+    ಮಾಡು
     {
-        xOriginalTail = pxStreamBuffer->xTail;
-        xSpace = pxStreamBuffer->xLength + pxStreamBuffer->xTail;
-        xSpace -= pxStreamBuffer->xHead;
-    } while( xOriginalTail != pxStreamBuffer->xTail );
+        x_Original_ಬಾಲ = px_ಹರಿವು_ಬಫರ್->x_ಬಾಲ;
+        xSpace = px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ + px_ಹರಿವು_ಬಫರ್->x_ಬಾಲ;
+        xSpace -= px_ಹರಿವು_ಬಫರ್->x_ತಲೆ;
+    } ಆಗ( x_Original_ಬಾಲ != px_ಹರಿವು_ಬಫರ್->x_ಬಾಲ );
 
     xSpace -= ( size_t ) 1;
 
-    if( xSpace >= pxStreamBuffer->xLength )
+    ಆದರೆ( xSpace >= px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ )
     {
-        xSpace -= pxStreamBuffer->xLength;
+        xSpace -= px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ;
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    traceRETURN_xStreamBufferSpacesAvailable( xSpace );
+    trace_RETURN_x_ಹರಿವು_ಬಫರ್_Spaces_ಲಭ್ಯ( xSpace );
 
-    return xSpace;
+    ಹಿಂತಿರುಗಿ xSpace;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer )
+size_t x_ಹರಿವು_ಬಫರ್_ಬೈಟುಗಳು_ಲಭ್ಯ( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ )
 {
-    const StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
+    ಸ್ಥಿರಾಂಕ ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
     size_t xReturn;
 
-    traceENTER_xStreamBufferBytesAvailable( xStreamBuffer );
+    trace_ENTER_x_ಹರಿವು_ಬಫರ್_ಬೈಟುಗಳು_ಲಭ್ಯ( x_ಹರಿವು_ಬಫರ್ );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
-    xReturn = prvBytesInBuffer( pxStreamBuffer );
+    xReturn = prv_ಬೈಟುಗಳು_ಒಳ_ಬಫರ್( px_ಹರಿವು_ಬಫರ್ );
 
-    traceRETURN_xStreamBufferBytesAvailable( xReturn );
+    trace_RETURN_x_ಹರಿವು_ಬಫರ್_ಬೈಟುಗಳು_ಲಭ್ಯ( xReturn );
 
-    return xReturn;
+    ಹಿಂತಿರುಗಿ xReturn;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
-                          const void * pvTxData,
-                          size_t xDataLengthBytes,
-                          TickType_t xTicksToWait )
+size_t x_ಹರಿವು_ಬಫರ್_Send( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                          ಸ್ಥಿರಾಂಕ ಶೂನ್ಯ * pv_Tx_ದತ್ತಾಂಶ,
+                          size_t x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು,
+                          TickType_t x_Ticks_ಗಮ್ಯ_Wait )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
+    ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
     size_t xReturn, xSpace = 0;
-    size_t xRequiredSpace = xDataLengthBytes;
-    TimeOut_t xTimeOut;
+    size_t xRequiredSpace = x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು;
+    ಸಮಯ_ಹೊರಹೋಗು_t x_ಸಮಯ_ಹೊರಹೋಗು_2;
     size_t xMaxReportedSpace = 0;
 
-    traceENTER_xStreamBufferSend( xStreamBuffer, pvTxData, xDataLengthBytes, xTicksToWait );
+    trace_ENTER_x_ಹರಿವು_ಬಫರ್_Send( x_ಹರಿವು_ಬಫರ್, pv_Tx_ದತ್ತಾಂಶ, x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು, x_Ticks_ಗಮ್ಯ_Wait );
 
-    configASSERT( pvTxData );
-    configASSERT( pxStreamBuffer );
+    configASSERT( pv_Tx_ದತ್ತಾಂಶ );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
     /* The maximum amount of space a stream buffer will ever report is its length
      * minus 1. */
-    xMaxReportedSpace = pxStreamBuffer->xLength - ( size_t ) 1;
+    xMaxReportedSpace = px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ - ( size_t ) 1;
 
     /* This send function is used to write to both message buffers and stream
      * buffers.  If this is a message buffer then the space needed must be
      * increased by the amount of bytes needed to store the length of the
      * message. */
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) != ( uint8_t ) 0 )
+    ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್->ucFlags & sb_FLAGS_IS_ಸಂದೇಶ_ಬಫರ್ ) != ( uint8_t ) 0 )
     {
-        xRequiredSpace += sbBYTES_TO_STORE_MESSAGE_LENGTH;
+        xRequiredSpace += sb_ಬೈಟುಗಳು_ಗಮ್ಯ_STORE_ಸಂದೇಶ_ಉದ್ದಳತೆ;
 
         /* Overflow? */
-        configASSERT( xRequiredSpace > xDataLengthBytes );
+        configASSERT( xRequiredSpace > x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು );
 
         /* If this is a message buffer then it must be possible to write the
          * whole message. */
-        if( xRequiredSpace > xMaxReportedSpace )
+        ಆದರೆ( xRequiredSpace > xMaxReportedSpace )
         {
             /* The message would not fit even if the entire buffer was empty,
              * so don't wait for space. */
-            xTicksToWait = ( TickType_t ) 0;
+            x_Ticks_ಗಮ್ಯ_Wait = ( TickType_t ) 0;
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         /* If this is a stream buffer then it is acceptable to write only part
          * of the message to the buffer.  Cap the length to the total length of
          * the buffer. */
-        if( xRequiredSpace > xMaxReportedSpace )
+        ಆದರೆ( xRequiredSpace > xMaxReportedSpace )
         {
             xRequiredSpace = xMaxReportedSpace;
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
 
-    if( xTicksToWait != ( TickType_t ) 0 )
+    ಆದರೆ( x_Ticks_ಗಮ್ಯ_Wait != ( TickType_t ) 0 )
     {
-        vTaskSetTimeOutState( &xTimeOut );
+        v_Task_ಗಣ_ಸಮಯ_ಹೊರಹೋಗು_State( &x_ಸಮಯ_ಹೊರಹೋಗು_2 );
 
-        do
+        ಮಾಡು
         {
             /* Wait until the required number of bytes are free in the message
              * buffer. */
             taskENTER_CRITICAL();
             {
-                xSpace = xStreamBufferSpacesAvailable( pxStreamBuffer );
+                xSpace = x_ಹರಿವು_ಬಫರ್_Spaces_ಲಭ್ಯ( px_ಹರಿವು_ಬಫರ್ );
 
-                if( xSpace < xRequiredSpace )
+                ಆದರೆ( xSpace < xRequiredSpace )
                 {
                     /* Clear notification state as going to wait for space. */
-                    ( void ) xTaskNotifyStateClearIndexed( NULL, pxStreamBuffer->uxNotificationIndex );
+                    ( ಶೂನ್ಯ ) x_Task_Notify_State_Clear_ಸೂಚ್ಯಂಕಿತ( ಖಾಲಿ, px_ಹರಿವು_ಬಫರ್->ux_Notification_ಸೂಚ್ಯಂಕ );
 
                     /* Should only be one writer. */
-                    configASSERT( pxStreamBuffer->xTaskWaitingToSend == NULL );
-                    pxStreamBuffer->xTaskWaitingToSend = xTaskGetCurrentTaskHandle();
+                    configASSERT( px_ಹರಿವು_ಬಫರ್->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Send == ಖಾಲಿ );
+                    px_ಹರಿವು_ಬಫರ್->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Send = xTaskGetCurrentTaskHandle();
                 }
-                else
+                ಇಲ್ಲದಿದ್ದರೆ
                 {
                     taskEXIT_CRITICAL();
-                    break;
+                    ನಿಲ್ಲಿಸು;
                 }
             }
             taskEXIT_CRITICAL();
 
-            traceBLOCKING_ON_STREAM_BUFFER_SEND( xStreamBuffer );
-            ( void ) xTaskNotifyWaitIndexed( pxStreamBuffer->uxNotificationIndex, ( uint32_t ) 0, ( uint32_t ) 0, NULL, xTicksToWait );
-            pxStreamBuffer->xTaskWaitingToSend = NULL;
-        } while( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE );
+            trace_BLOCKING_ON_ಹರಿವು_ಬಫರ್_SEND( x_ಹರಿವು_ಬಫರ್ );
+            ( ಶೂನ್ಯ ) x_Task_Notify_Wait_ಸೂಚ್ಯಂಕಿತ( px_ಹರಿವು_ಬಫರ್->ux_Notification_ಸೂಚ್ಯಂಕ, ( uint32_t ) 0, ( uint32_t ) 0, ಖಾಲಿ, x_Ticks_ಗಮ್ಯ_Wait );
+            px_ಹರಿವು_ಬಫರ್->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Send = ಖಾಲಿ;
+        } ಆಗ( x_Task_Check_For_ಸಮಯ_ಹೊರಹೋಗು( &x_ಸಮಯ_ಹೊರಹೋಗು_2, &x_Ticks_ಗಮ್ಯ_Wait ) == pdFALSE );
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    if( xSpace == ( size_t ) 0 )
+    ಆದರೆ( xSpace == ( size_t ) 0 )
     {
-        xSpace = xStreamBufferSpacesAvailable( pxStreamBuffer );
+        xSpace = x_ಹರಿವು_ಬಫರ್_Spaces_ಲಭ್ಯ( px_ಹರಿವು_ಬಫರ್ );
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    xReturn = prvWriteMessageToBuffer( pxStreamBuffer, pvTxData, xDataLengthBytes, xSpace, xRequiredSpace );
+    xReturn = prv_Write_ಸಂದೇಶ_ಗಮ್ಯ_ಬಫರ್( px_ಹರಿವು_ಬಫರ್, pv_Tx_ದತ್ತಾಂಶ, x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು, xSpace, xRequiredSpace );
 
-    if( xReturn > ( size_t ) 0 )
+    ಆದರೆ( xReturn > ( size_t ) 0 )
     {
-        traceSTREAM_BUFFER_SEND( xStreamBuffer, xReturn );
+        trace_ಹರಿವು_ಬಫರ್_SEND( x_ಹರಿವು_ಬಫರ್, xReturn );
 
         /* Was a task waiting for the data? */
-        if( prvBytesInBuffer( pxStreamBuffer ) >= pxStreamBuffer->xTriggerLevelBytes )
+        ಆದರೆ( prv_ಬೈಟುಗಳು_ಒಳ_ಬಫರ್( px_ಹರಿವು_ಬಫರ್ ) >= px_ಹರಿವು_ಬಫರ್->x_Trigger_Level_ಬೈಟುಗಳು )
         {
-            prvSEND_COMPLETED( pxStreamBuffer );
+            prvSEND_COMPLETED( px_ಹರಿವು_ಬಫರ್ );
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         mtCOVERAGE_TEST_MARKER();
-        traceSTREAM_BUFFER_SEND_FAILED( xStreamBuffer );
+        trace_ಹರಿವು_ಬಫರ್_SEND_FAILED( x_ಹರಿವು_ಬಫರ್ );
     }
 
-    traceRETURN_xStreamBufferSend( xReturn );
+    trace_RETURN_x_ಹರಿವು_ಬಫರ್_Send( xReturn );
 
-    return xReturn;
+    ಹಿಂತಿರುಗಿ xReturn;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
-                                 const void * pvTxData,
-                                 size_t xDataLengthBytes,
-                                 BaseType_t * const pxHigherPriorityTaskWoken )
+size_t x_ಹರಿವು_ಬಫರ್_Send_From_ISR( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                                 ಸ್ಥಿರಾಂಕ ಶೂನ್ಯ * pv_Tx_ದತ್ತಾಂಶ,
+                                 size_t x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು,
+                                 ತಳ_Type_t * ಸ್ಥಿರಾಂಕ px_Higher_ಆದ್ಯತೆ_Task_Woken )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
+    ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
     size_t xReturn, xSpace;
-    size_t xRequiredSpace = xDataLengthBytes;
+    size_t xRequiredSpace = x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು;
 
-    traceENTER_xStreamBufferSendFromISR( xStreamBuffer, pvTxData, xDataLengthBytes, pxHigherPriorityTaskWoken );
+    trace_ENTER_x_ಹರಿವು_ಬಫರ್_Send_From_ISR( x_ಹರಿವು_ಬಫರ್, pv_Tx_ದತ್ತಾಂಶ, x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು, px_Higher_ಆದ್ಯತೆ_Task_Woken );
 
-    configASSERT( pvTxData );
-    configASSERT( pxStreamBuffer );
+    configASSERT( pv_Tx_ದತ್ತಾಂಶ );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
     /* This send function is used to write to both message buffers and stream
      * buffers.  If this is a message buffer then the space needed must be
      * increased by the amount of bytes needed to store the length of the
      * message. */
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) != ( uint8_t ) 0 )
+    ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್->ucFlags & sb_FLAGS_IS_ಸಂದೇಶ_ಬಫರ್ ) != ( uint8_t ) 0 )
     {
-        xRequiredSpace += sbBYTES_TO_STORE_MESSAGE_LENGTH;
+        xRequiredSpace += sb_ಬೈಟುಗಳು_ಗಮ್ಯ_STORE_ಸಂದೇಶ_ಉದ್ದಳತೆ;
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    xSpace = xStreamBufferSpacesAvailable( pxStreamBuffer );
-    xReturn = prvWriteMessageToBuffer( pxStreamBuffer, pvTxData, xDataLengthBytes, xSpace, xRequiredSpace );
+    xSpace = x_ಹರಿವು_ಬಫರ್_Spaces_ಲಭ್ಯ( px_ಹರಿವು_ಬಫರ್ );
+    xReturn = prv_Write_ಸಂದೇಶ_ಗಮ್ಯ_ಬಫರ್( px_ಹರಿವು_ಬಫರ್, pv_Tx_ದತ್ತಾಂಶ, x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು, xSpace, xRequiredSpace );
 
-    if( xReturn > ( size_t ) 0 )
+    ಆದರೆ( xReturn > ( size_t ) 0 )
     {
         /* Was a task waiting for the data? */
-        if( prvBytesInBuffer( pxStreamBuffer ) >= pxStreamBuffer->xTriggerLevelBytes )
+        ಆದರೆ( prv_ಬೈಟುಗಳು_ಒಳ_ಬಫರ್( px_ಹರಿವು_ಬಫರ್ ) >= px_ಹರಿವು_ಬಫರ್->x_Trigger_Level_ಬೈಟುಗಳು )
         {
             /* MISRA Ref 4.7.1 [Return value shall be checked] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
             /* coverity[misra_c_2012_directive_4_7_violation] */
-            prvSEND_COMPLETE_FROM_ISR( pxStreamBuffer, pxHigherPriorityTaskWoken );
+            prvSEND_COMPLETE_FROM_ISR( px_ಹರಿವು_ಬಫರ್, px_Higher_ಆದ್ಯತೆ_Task_Woken );
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    traceSTREAM_BUFFER_SEND_FROM_ISR( xStreamBuffer, xReturn );
-    traceRETURN_xStreamBufferSendFromISR( xReturn );
+    trace_ಹರಿವು_ಬಫರ್_SEND_FROM_ISR( x_ಹರಿವು_ಬಫರ್, xReturn );
+    trace_RETURN_x_ಹರಿವು_ಬಫರ್_Send_From_ISR( xReturn );
 
-    return xReturn;
+    ಹಿಂತಿರುಗಿ xReturn;
 }
 /*-----------------------------------------------------------*/
 
-static size_t prvWriteMessageToBuffer( StreamBuffer_t * const pxStreamBuffer,
-                                       const void * pvTxData,
-                                       size_t xDataLengthBytes,
+ಸ್ಥಿರ size_t prv_Write_ಸಂದೇಶ_ಗಮ್ಯ_ಬಫರ್( ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್,
+                                       ಸ್ಥಿರಾಂಕ ಶೂನ್ಯ * pv_Tx_ದತ್ತಾಂಶ,
+                                       size_t x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು,
                                        size_t xSpace,
                                        size_t xRequiredSpace )
 {
-    size_t xNextHead = pxStreamBuffer->xHead;
-    configMESSAGE_BUFFER_LENGTH_TYPE xMessageLength;
+    size_t x_ಮುಂದಿನ_ತಲೆ = px_ಹರಿವು_ಬಫರ್->x_ತಲೆ;
+    config_ಸಂದೇಶ_ಬಫರ್_ಉದ್ದಳತೆ_TYPE x_ಸಂದೇಶ_ಉದ್ದಳತೆ;
 
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) != ( uint8_t ) 0 )
+    ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್->ucFlags & sb_FLAGS_IS_ಸಂದೇಶ_ಬಫರ್ ) != ( uint8_t ) 0 )
     {
         /* This is a message buffer, as opposed to a stream buffer. */
 
         /* Convert xDataLengthBytes to the message length type. */
-        xMessageLength = ( configMESSAGE_BUFFER_LENGTH_TYPE ) xDataLengthBytes;
+        x_ಸಂದೇಶ_ಉದ್ದಳತೆ = ( config_ಸಂದೇಶ_ಬಫರ್_ಉದ್ದಳತೆ_TYPE ) x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು;
 
         /* Ensure the data length given fits within configMESSAGE_BUFFER_LENGTH_TYPE. */
-        configASSERT( ( size_t ) xMessageLength == xDataLengthBytes );
+        configASSERT( ( size_t ) x_ಸಂದೇಶ_ಉದ್ದಳತೆ == x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು );
 
-        if( xSpace >= xRequiredSpace )
+        ಆದರೆ( xSpace >= xRequiredSpace )
         {
             /* There is enough space to write both the message length and the message
              * itself into the buffer.  Start by writing the length of the data, the data
              * itself will be written later in this function. */
-            xNextHead = prvWriteBytesToBuffer( pxStreamBuffer, ( const uint8_t * ) &( xMessageLength ), sbBYTES_TO_STORE_MESSAGE_LENGTH, xNextHead );
+            x_ಮುಂದಿನ_ತಲೆ = prv_Write_ಬೈಟುಗಳು_ಗಮ್ಯ_ಬಫರ್( px_ಹರಿವು_ಬಫರ್, ( ಸ್ಥಿರಾಂಕ uint8_t * ) &( x_ಸಂದೇಶ_ಉದ್ದಳತೆ ), sb_ಬೈಟುಗಳು_ಗಮ್ಯ_STORE_ಸಂದೇಶ_ಉದ್ದಳತೆ, x_ಮುಂದಿನ_ತಲೆ );
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             /* Not enough space, so do not write data to the buffer. */
-            xDataLengthBytes = 0;
+            x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು = 0;
         }
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         /* This is a stream buffer, as opposed to a message buffer, so writing a
          * stream of bytes rather than discrete messages.  Plan to write as many
          * bytes as possible. */
-        xDataLengthBytes = configMIN( xDataLengthBytes, xSpace );
+        x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು = configMIN( x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು, xSpace );
     }
 
-    if( xDataLengthBytes != ( size_t ) 0 )
+    ಆದರೆ( x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು != ( size_t ) 0 )
     {
         /* Write the data to the buffer. */
         /* MISRA Ref 11.5.5 [Void pointer assignment] */
         /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
         /* coverity[misra_c_2012_rule_11_5_violation] */
-        pxStreamBuffer->xHead = prvWriteBytesToBuffer( pxStreamBuffer, ( const uint8_t * ) pvTxData, xDataLengthBytes, xNextHead );
+        px_ಹರಿವು_ಬಫರ್->x_ತಲೆ = prv_Write_ಬೈಟುಗಳು_ಗಮ್ಯ_ಬಫರ್( px_ಹರಿವು_ಬಫರ್, ( ಸ್ಥಿರಾಂಕ uint8_t * ) pv_Tx_ದತ್ತಾಂಶ, x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು, x_ಮುಂದಿನ_ತಲೆ );
     }
 
-    return xDataLengthBytes;
+    ಹಿಂತಿರುಗಿ x_ದತ್ತಾಂಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
-                             void * pvRxData,
-                             size_t xBufferLengthBytes,
-                             TickType_t xTicksToWait )
+size_t x_ಹರಿವು_ಬಫರ್_Receive( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                             ಶೂನ್ಯ * pv_Rx_ದತ್ತಾಂಶ,
+                             size_t x_ಬಫರ್_ಉದ್ದಳತೆ_ಬೈಟುಗಳು,
+                             TickType_t x_Ticks_ಗಮ್ಯ_Wait )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    size_t xReceivedLength = 0, xBytesAvailable, xBytesToStoreMessageLength;
+    ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
+    size_t x_Received_ಉದ್ದಳತೆ = 0, x_ಬೈಟುಗಳು_ಲಭ್ಯ, x_ಬೈಟುಗಳು_ಗಮ್ಯ_Store_ಸಂದೇಶ_ಉದ್ದಳತೆ;
 
-    traceENTER_xStreamBufferReceive( xStreamBuffer, pvRxData, xBufferLengthBytes, xTicksToWait );
+    trace_ENTER_x_ಹರಿವು_ಬಫರ್_Receive( x_ಹರಿವು_ಬಫರ್, pv_Rx_ದತ್ತಾಂಶ, x_ಬಫರ್_ಉದ್ದಳತೆ_ಬೈಟುಗಳು, x_Ticks_ಗಮ್ಯ_Wait );
 
-    configASSERT( pvRxData );
-    configASSERT( pxStreamBuffer );
+    configASSERT( pv_Rx_ದತ್ತಾಂಶ );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
     /* This receive function is used by both message buffers, which store
      * discrete messages, and stream buffers, which store a continuous stream of
      * bytes.  Discrete messages include an additional
      * sbBYTES_TO_STORE_MESSAGE_LENGTH bytes that hold the length of the
      * message. */
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) != ( uint8_t ) 0 )
+    ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್->ucFlags & sb_FLAGS_IS_ಸಂದೇಶ_ಬಫರ್ ) != ( uint8_t ) 0 )
     {
-        xBytesToStoreMessageLength = sbBYTES_TO_STORE_MESSAGE_LENGTH;
+        x_ಬೈಟುಗಳು_ಗಮ್ಯ_Store_ಸಂದೇಶ_ಉದ್ದಳತೆ = sb_ಬೈಟುಗಳು_ಗಮ್ಯ_STORE_ಸಂದೇಶ_ಉದ್ದಳತೆ;
     }
-    else if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_BATCHING_BUFFER ) != ( uint8_t ) 0 )
+    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್->ucFlags & sb_FLAGS_IS_BATCHING_ಬಫರ್ ) != ( uint8_t ) 0 )
     {
         /* Force task to block if the batching buffer contains less bytes than
          * the trigger level. */
-        xBytesToStoreMessageLength = pxStreamBuffer->xTriggerLevelBytes;
+        x_ಬೈಟುಗಳು_ಗಮ್ಯ_Store_ಸಂದೇಶ_ಉದ್ದಳತೆ = px_ಹರಿವು_ಬಫರ್->x_Trigger_Level_ಬೈಟುಗಳು;
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
-        xBytesToStoreMessageLength = 0;
+        x_ಬೈಟುಗಳು_ಗಮ್ಯ_Store_ಸಂದೇಶ_ಉದ್ದಳತೆ = 0;
     }
 
-    if( xTicksToWait != ( TickType_t ) 0 )
+    ಆದರೆ( x_Ticks_ಗಮ್ಯ_Wait != ( TickType_t ) 0 )
     {
         /* Checking if there is data and clearing the notification state must be
          * performed atomically. */
         taskENTER_CRITICAL();
         {
-            xBytesAvailable = prvBytesInBuffer( pxStreamBuffer );
+            x_ಬೈಟುಗಳು_ಲಭ್ಯ = prv_ಬೈಟುಗಳು_ಒಳ_ಬಫರ್( px_ಹರಿವು_ಬಫರ್ );
 
             /* If this function was invoked by a message buffer read then
              * xBytesToStoreMessageLength holds the number of bytes used to hold
@@ -1102,40 +1102,40 @@ size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
              * be 0. If this function was invoked by a stream batch buffer read
              * then xBytesToStoreMessageLength will be xTriggerLevelBytes value
              * for the buffer.*/
-            if( xBytesAvailable <= xBytesToStoreMessageLength )
+            ಆದರೆ( x_ಬೈಟುಗಳು_ಲಭ್ಯ <= x_ಬೈಟುಗಳು_ಗಮ್ಯ_Store_ಸಂದೇಶ_ಉದ್ದಳತೆ )
             {
                 /* Clear notification state as going to wait for data. */
-                ( void ) xTaskNotifyStateClearIndexed( NULL, pxStreamBuffer->uxNotificationIndex );
+                ( ಶೂನ್ಯ ) x_Task_Notify_State_Clear_ಸೂಚ್ಯಂಕಿತ( ಖಾಲಿ, px_ಹರಿವು_ಬಫರ್->ux_Notification_ಸೂಚ್ಯಂಕ );
 
                 /* Should only be one reader. */
-                configASSERT( pxStreamBuffer->xTaskWaitingToReceive == NULL );
-                pxStreamBuffer->xTaskWaitingToReceive = xTaskGetCurrentTaskHandle();
+                configASSERT( px_ಹರಿವು_ಬಫರ್->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Receive == ಖಾಲಿ );
+                px_ಹರಿವು_ಬಫರ್->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Receive = xTaskGetCurrentTaskHandle();
             }
-            else
+            ಇಲ್ಲದಿದ್ದರೆ
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
         taskEXIT_CRITICAL();
 
-        if( xBytesAvailable <= xBytesToStoreMessageLength )
+        ಆದರೆ( x_ಬೈಟುಗಳು_ಲಭ್ಯ <= x_ಬೈಟುಗಳು_ಗಮ್ಯ_Store_ಸಂದೇಶ_ಉದ್ದಳತೆ )
         {
             /* Wait for data to be available. */
-            traceBLOCKING_ON_STREAM_BUFFER_RECEIVE( xStreamBuffer );
-            ( void ) xTaskNotifyWaitIndexed( pxStreamBuffer->uxNotificationIndex, ( uint32_t ) 0, ( uint32_t ) 0, NULL, xTicksToWait );
-            pxStreamBuffer->xTaskWaitingToReceive = NULL;
+            trace_BLOCKING_ON_ಹರಿವು_ಬಫರ್_RECEIVE( x_ಹರಿವು_ಬಫರ್ );
+            ( ಶೂನ್ಯ ) x_Task_Notify_Wait_ಸೂಚ್ಯಂಕಿತ( px_ಹರಿವು_ಬಫರ್->ux_Notification_ಸೂಚ್ಯಂಕ, ( uint32_t ) 0, ( uint32_t ) 0, ಖಾಲಿ, x_Ticks_ಗಮ್ಯ_Wait );
+            px_ಹರಿವು_ಬಫರ್->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Receive = ಖಾಲಿ;
 
             /* Recheck the data available after blocking. */
-            xBytesAvailable = prvBytesInBuffer( pxStreamBuffer );
+            x_ಬೈಟುಗಳು_ಲಭ್ಯ = prv_ಬೈಟುಗಳು_ಒಳ_ಬಫರ್( px_ಹರಿವು_ಬಫರ್ );
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
-        xBytesAvailable = prvBytesInBuffer( pxStreamBuffer );
+        x_ಬೈಟುಗಳು_ಲಭ್ಯ = prv_ಬೈಟುಗಳು_ಒಳ_ಬಫರ್( px_ಹರಿವು_ಬಫರ್ );
     }
 
     /* Whether receiving a discrete message (where xBytesToStoreMessageLength
@@ -1143,580 +1143,580 @@ size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
      * bytes (where xBytesToStoreMessageLength is zero), the number of bytes
      * available must be greater than xBytesToStoreMessageLength to be able to
      * read bytes from the buffer. */
-    if( xBytesAvailable > xBytesToStoreMessageLength )
+    ಆದರೆ( x_ಬೈಟುಗಳು_ಲಭ್ಯ > x_ಬೈಟುಗಳು_ಗಮ್ಯ_Store_ಸಂದೇಶ_ಉದ್ದಳತೆ )
     {
-        xReceivedLength = prvReadMessageFromBuffer( pxStreamBuffer, pvRxData, xBufferLengthBytes, xBytesAvailable );
+        x_Received_ಉದ್ದಳತೆ = prv_Read_ಸಂದೇಶ_From_ಬಫರ್( px_ಹರಿವು_ಬಫರ್, pv_Rx_ದತ್ತಾಂಶ, x_ಬಫರ್_ಉದ್ದಳತೆ_ಬೈಟುಗಳು, x_ಬೈಟುಗಳು_ಲಭ್ಯ );
 
         /* Was a task waiting for space in the buffer? */
-        if( xReceivedLength != ( size_t ) 0 )
+        ಆದರೆ( x_Received_ಉದ್ದಳತೆ != ( size_t ) 0 )
         {
-            traceSTREAM_BUFFER_RECEIVE( xStreamBuffer, xReceivedLength );
-            prvRECEIVE_COMPLETED( xStreamBuffer );
+            trace_ಹರಿವು_ಬಫರ್_RECEIVE( x_ಹರಿವು_ಬಫರ್, x_Received_ಉದ್ದಳತೆ );
+            prvRECEIVE_COMPLETED( x_ಹರಿವು_ಬಫರ್ );
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
-        traceSTREAM_BUFFER_RECEIVE_FAILED( xStreamBuffer );
+        trace_ಹರಿವು_ಬಫರ್_RECEIVE_FAILED( x_ಹರಿವು_ಬಫರ್ );
         mtCOVERAGE_TEST_MARKER();
     }
 
-    traceRETURN_xStreamBufferReceive( xReceivedLength );
+    trace_RETURN_x_ಹರಿವು_ಬಫರ್_Receive( x_Received_ಉದ್ದಳತೆ );
 
-    return xReceivedLength;
+    ಹಿಂತಿರುಗಿ x_Received_ಉದ್ದಳತೆ;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferNextMessageLengthBytes( StreamBufferHandle_t xStreamBuffer )
+size_t x_ಹರಿವು_ಬಫರ್_ಮುಂದಿನ_ಸಂದೇಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    size_t xReturn, xBytesAvailable;
-    configMESSAGE_BUFFER_LENGTH_TYPE xTempReturn;
+    ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
+    size_t xReturn, x_ಬೈಟುಗಳು_ಲಭ್ಯ;
+    config_ಸಂದೇಶ_ಬಫರ್_ಉದ್ದಳತೆ_TYPE x_ತಾತ್ಕಾಲಿಕ_Return;
 
-    traceENTER_xStreamBufferNextMessageLengthBytes( xStreamBuffer );
+    trace_ENTER_x_ಹರಿವು_ಬಫರ್_ಮುಂದಿನ_ಸಂದೇಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು( x_ಹರಿವು_ಬಫರ್ );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
     /* Ensure the stream buffer is being used as a message buffer. */
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) != ( uint8_t ) 0 )
+    ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್->ucFlags & sb_FLAGS_IS_ಸಂದೇಶ_ಬಫರ್ ) != ( uint8_t ) 0 )
     {
-        xBytesAvailable = prvBytesInBuffer( pxStreamBuffer );
+        x_ಬೈಟುಗಳು_ಲಭ್ಯ = prv_ಬೈಟುಗಳು_ಒಳ_ಬಫರ್( px_ಹರಿವು_ಬಫರ್ );
 
-        if( xBytesAvailable > sbBYTES_TO_STORE_MESSAGE_LENGTH )
+        ಆದರೆ( x_ಬೈಟುಗಳು_ಲಭ್ಯ > sb_ಬೈಟುಗಳು_ಗಮ್ಯ_STORE_ಸಂದೇಶ_ಉದ್ದಳತೆ )
         {
             /* The number of bytes available is greater than the number of bytes
              * required to hold the length of the next message, so another message
              * is available. */
-            ( void ) prvReadBytesFromBuffer( pxStreamBuffer, ( uint8_t * ) &xTempReturn, sbBYTES_TO_STORE_MESSAGE_LENGTH, pxStreamBuffer->xTail );
-            xReturn = ( size_t ) xTempReturn;
+            ( ಶೂನ್ಯ ) prv_Read_ಬೈಟುಗಳು_From_ಬಫರ್( px_ಹರಿವು_ಬಫರ್, ( uint8_t * ) &x_ತಾತ್ಕಾಲಿಕ_Return, sb_ಬೈಟುಗಳು_ಗಮ್ಯ_STORE_ಸಂದೇಶ_ಉದ್ದಳತೆ, px_ಹರಿವು_ಬಫರ್->x_ಬಾಲ );
+            xReturn = ( size_t ) x_ತಾತ್ಕಾಲಿಕ_Return;
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             /* The minimum amount of bytes in a message buffer is
              * ( sbBYTES_TO_STORE_MESSAGE_LENGTH + 1 ), so if xBytesAvailable is
              * less than sbBYTES_TO_STORE_MESSAGE_LENGTH the only other valid
              * value is 0. */
-            configASSERT( xBytesAvailable == 0 );
+            configASSERT( x_ಬೈಟುಗಳು_ಲಭ್ಯ == 0 );
             xReturn = 0;
         }
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         xReturn = 0;
     }
 
-    traceRETURN_xStreamBufferNextMessageLengthBytes( xReturn );
+    trace_RETURN_x_ಹರಿವು_ಬಫರ್_ಮುಂದಿನ_ಸಂದೇಶ_ಉದ್ದಳತೆ_ಬೈಟುಗಳು( xReturn );
 
-    return xReturn;
+    ಹಿಂತಿರುಗಿ xReturn;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
-                                    void * pvRxData,
-                                    size_t xBufferLengthBytes,
-                                    BaseType_t * const pxHigherPriorityTaskWoken )
+size_t x_ಹರಿವು_ಬಫರ್_Receive_From_ISR( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                                    ಶೂನ್ಯ * pv_Rx_ದತ್ತಾಂಶ,
+                                    size_t x_ಬಫರ್_ಉದ್ದಳತೆ_ಬೈಟುಗಳು,
+                                    ತಳ_Type_t * ಸ್ಥಿರಾಂಕ px_Higher_ಆದ್ಯತೆ_Task_Woken )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    size_t xReceivedLength = 0, xBytesAvailable, xBytesToStoreMessageLength;
+    ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
+    size_t x_Received_ಉದ್ದಳತೆ = 0, x_ಬೈಟುಗಳು_ಲಭ್ಯ, x_ಬೈಟುಗಳು_ಗಮ್ಯ_Store_ಸಂದೇಶ_ಉದ್ದಳತೆ;
 
-    traceENTER_xStreamBufferReceiveFromISR( xStreamBuffer, pvRxData, xBufferLengthBytes, pxHigherPriorityTaskWoken );
+    trace_ENTER_x_ಹರಿವು_ಬಫರ್_Receive_From_ISR( x_ಹರಿವು_ಬಫರ್, pv_Rx_ದತ್ತಾಂಶ, x_ಬಫರ್_ಉದ್ದಳತೆ_ಬೈಟುಗಳು, px_Higher_ಆದ್ಯತೆ_Task_Woken );
 
-    configASSERT( pvRxData );
-    configASSERT( pxStreamBuffer );
+    configASSERT( pv_Rx_ದತ್ತಾಂಶ );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
     /* This receive function is used by both message buffers, which store
      * discrete messages, and stream buffers, which store a continuous stream of
      * bytes.  Discrete messages include an additional
      * sbBYTES_TO_STORE_MESSAGE_LENGTH bytes that hold the length of the
      * message. */
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) != ( uint8_t ) 0 )
+    ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್->ucFlags & sb_FLAGS_IS_ಸಂದೇಶ_ಬಫರ್ ) != ( uint8_t ) 0 )
     {
-        xBytesToStoreMessageLength = sbBYTES_TO_STORE_MESSAGE_LENGTH;
+        x_ಬೈಟುಗಳು_ಗಮ್ಯ_Store_ಸಂದೇಶ_ಉದ್ದಳತೆ = sb_ಬೈಟುಗಳು_ಗಮ್ಯ_STORE_ಸಂದೇಶ_ಉದ್ದಳತೆ;
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
-        xBytesToStoreMessageLength = 0;
+        x_ಬೈಟುಗಳು_ಗಮ್ಯ_Store_ಸಂದೇಶ_ಉದ್ದಳತೆ = 0;
     }
 
-    xBytesAvailable = prvBytesInBuffer( pxStreamBuffer );
+    x_ಬೈಟುಗಳು_ಲಭ್ಯ = prv_ಬೈಟುಗಳು_ಒಳ_ಬಫರ್( px_ಹರಿವು_ಬಫರ್ );
 
     /* Whether receiving a discrete message (where xBytesToStoreMessageLength
      * holds the number of bytes used to store the message length) or a stream of
      * bytes (where xBytesToStoreMessageLength is zero), the number of bytes
      * available must be greater than xBytesToStoreMessageLength to be able to
      * read bytes from the buffer. */
-    if( xBytesAvailable > xBytesToStoreMessageLength )
+    ಆದರೆ( x_ಬೈಟುಗಳು_ಲಭ್ಯ > x_ಬೈಟುಗಳು_ಗಮ್ಯ_Store_ಸಂದೇಶ_ಉದ್ದಳತೆ )
     {
-        xReceivedLength = prvReadMessageFromBuffer( pxStreamBuffer, pvRxData, xBufferLengthBytes, xBytesAvailable );
+        x_Received_ಉದ್ದಳತೆ = prv_Read_ಸಂದೇಶ_From_ಬಫರ್( px_ಹರಿವು_ಬಫರ್, pv_Rx_ದತ್ತಾಂಶ, x_ಬಫರ್_ಉದ್ದಳತೆ_ಬೈಟುಗಳು, x_ಬೈಟುಗಳು_ಲಭ್ಯ );
 
         /* Was a task waiting for space in the buffer? */
-        if( xReceivedLength != ( size_t ) 0 )
+        ಆದರೆ( x_Received_ಉದ್ದಳತೆ != ( size_t ) 0 )
         {
             /* MISRA Ref 4.7.1 [Return value shall be checked] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
             /* coverity[misra_c_2012_directive_4_7_violation] */
-            prvRECEIVE_COMPLETED_FROM_ISR( pxStreamBuffer, pxHigherPriorityTaskWoken );
+            prvRECEIVE_COMPLETED_FROM_ISR( px_ಹರಿವು_ಬಫರ್, px_Higher_ಆದ್ಯತೆ_Task_Woken );
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    traceSTREAM_BUFFER_RECEIVE_FROM_ISR( xStreamBuffer, xReceivedLength );
-    traceRETURN_xStreamBufferReceiveFromISR( xReceivedLength );
+    trace_ಹರಿವು_ಬಫರ್_RECEIVE_FROM_ISR( x_ಹರಿವು_ಬಫರ್, x_Received_ಉದ್ದಳತೆ );
+    trace_RETURN_x_ಹರಿವು_ಬಫರ್_Receive_From_ISR( x_Received_ಉದ್ದಳತೆ );
 
-    return xReceivedLength;
+    ಹಿಂತಿರುಗಿ x_Received_ಉದ್ದಳತೆ;
 }
 /*-----------------------------------------------------------*/
 
-static size_t prvReadMessageFromBuffer( StreamBuffer_t * pxStreamBuffer,
-                                        void * pvRxData,
-                                        size_t xBufferLengthBytes,
-                                        size_t xBytesAvailable )
+ಸ್ಥಿರ size_t prv_Read_ಸಂದೇಶ_From_ಬಫರ್( ಹರಿವು_ಬಫರ್_t * px_ಹರಿವು_ಬಫರ್,
+                                        ಶೂನ್ಯ * pv_Rx_ದತ್ತಾಂಶ,
+                                        size_t x_ಬಫರ್_ಉದ್ದಳತೆ_ಬೈಟುಗಳು,
+                                        size_t x_ಬೈಟುಗಳು_ಲಭ್ಯ )
 {
-    size_t xCount, xNextMessageLength;
-    configMESSAGE_BUFFER_LENGTH_TYPE xTempNextMessageLength;
-    size_t xNextTail = pxStreamBuffer->xTail;
+    size_t x_ಎಣಿಕೆ, x_ಮುಂದಿನ_ಸಂದೇಶ_ಉದ್ದಳತೆ;
+    config_ಸಂದೇಶ_ಬಫರ್_ಉದ್ದಳತೆ_TYPE x_ತಾತ್ಕಾಲಿಕ_ಮುಂದಿನ_ಸಂದೇಶ_ಉದ್ದಳತೆ;
+    size_t x_ಮುಂದಿನ_ಬಾಲ = px_ಹರಿವು_ಬಫರ್->x_ಬಾಲ;
 
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) != ( uint8_t ) 0 )
+    ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್->ucFlags & sb_FLAGS_IS_ಸಂದೇಶ_ಬಫರ್ ) != ( uint8_t ) 0 )
     {
         /* A discrete message is being received.  First receive the length
          * of the message. */
-        xNextTail = prvReadBytesFromBuffer( pxStreamBuffer, ( uint8_t * ) &xTempNextMessageLength, sbBYTES_TO_STORE_MESSAGE_LENGTH, xNextTail );
-        xNextMessageLength = ( size_t ) xTempNextMessageLength;
+        x_ಮುಂದಿನ_ಬಾಲ = prv_Read_ಬೈಟುಗಳು_From_ಬಫರ್( px_ಹರಿವು_ಬಫರ್, ( uint8_t * ) &x_ತಾತ್ಕಾಲಿಕ_ಮುಂದಿನ_ಸಂದೇಶ_ಉದ್ದಳತೆ, sb_ಬೈಟುಗಳು_ಗಮ್ಯ_STORE_ಸಂದೇಶ_ಉದ್ದಳತೆ, x_ಮುಂದಿನ_ಬಾಲ );
+        x_ಮುಂದಿನ_ಸಂದೇಶ_ಉದ್ದಳತೆ = ( size_t ) x_ತಾತ್ಕಾಲಿಕ_ಮುಂದಿನ_ಸಂದೇಶ_ಉದ್ದಳತೆ;
 
         /* Reduce the number of bytes available by the number of bytes just
          * read out. */
-        xBytesAvailable -= sbBYTES_TO_STORE_MESSAGE_LENGTH;
+        x_ಬೈಟುಗಳು_ಲಭ್ಯ -= sb_ಬೈಟುಗಳು_ಗಮ್ಯ_STORE_ಸಂದೇಶ_ಉದ್ದಳತೆ;
 
         /* Check there is enough space in the buffer provided by the
          * user. */
-        if( xNextMessageLength > xBufferLengthBytes )
+        ಆದರೆ( x_ಮುಂದಿನ_ಸಂದೇಶ_ಉದ್ದಳತೆ > x_ಬಫರ್_ಉದ್ದಳತೆ_ಬೈಟುಗಳು )
         {
             /* The user has provided insufficient space to read the message. */
-            xNextMessageLength = 0;
+            x_ಮುಂದಿನ_ಸಂದೇಶ_ಉದ್ದಳತೆ = 0;
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         /* A stream of bytes is being received (as opposed to a discrete
          * message), so read as many bytes as possible. */
-        xNextMessageLength = xBufferLengthBytes;
+        x_ಮುಂದಿನ_ಸಂದೇಶ_ಉದ್ದಳತೆ = x_ಬಫರ್_ಉದ್ದಳತೆ_ಬೈಟುಗಳು;
     }
 
     /* Use the minimum of the wanted bytes and the available bytes. */
-    xCount = configMIN( xNextMessageLength, xBytesAvailable );
+    x_ಎಣಿಕೆ = configMIN( x_ಮುಂದಿನ_ಸಂದೇಶ_ಉದ್ದಳತೆ, x_ಬೈಟುಗಳು_ಲಭ್ಯ );
 
-    if( xCount != ( size_t ) 0 )
+    ಆದರೆ( x_ಎಣಿಕೆ != ( size_t ) 0 )
     {
         /* Read the actual data and update the tail to mark the data as officially consumed. */
         /* MISRA Ref 11.5.5 [Void pointer assignment] */
         /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
         /* coverity[misra_c_2012_rule_11_5_violation] */
-        pxStreamBuffer->xTail = prvReadBytesFromBuffer( pxStreamBuffer, ( uint8_t * ) pvRxData, xCount, xNextTail );
+        px_ಹರಿವು_ಬಫರ್->x_ಬಾಲ = prv_Read_ಬೈಟುಗಳು_From_ಬಫರ್( px_ಹರಿವು_ಬಫರ್, ( uint8_t * ) pv_Rx_ದತ್ತಾಂಶ, x_ಎಣಿಕೆ, x_ಮುಂದಿನ_ಬಾಲ );
     }
 
-    return xCount;
+    ಹಿಂತಿರುಗಿ x_ಎಣಿಕೆ;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xStreamBufferIsEmpty( StreamBufferHandle_t xStreamBuffer )
+ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_Is_ಖಾಲಿಗಳು( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ )
 {
-    const StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    BaseType_t xReturn;
-    size_t xTail;
+    ಸ್ಥಿರಾಂಕ ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
+    ತಳ_Type_t xReturn;
+    size_t x_ಬಾಲ;
 
-    traceENTER_xStreamBufferIsEmpty( xStreamBuffer );
+    trace_ENTER_x_ಹರಿವು_ಬಫರ್_Is_ಖಾಲಿಗಳು( x_ಹರಿವು_ಬಫರ್ );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
     /* True if no bytes are available. */
-    xTail = pxStreamBuffer->xTail;
+    x_ಬಾಲ = px_ಹರಿವು_ಬಫರ್->x_ಬಾಲ;
 
-    if( pxStreamBuffer->xHead == xTail )
+    ಆದರೆ( px_ಹರಿವು_ಬಫರ್->x_ತಲೆ == x_ಬಾಲ )
     {
         xReturn = pdTRUE;
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         xReturn = pdFALSE;
     }
 
-    traceRETURN_xStreamBufferIsEmpty( xReturn );
+    trace_RETURN_x_ಹರಿವು_ಬಫರ್_Is_ಖಾಲಿಗಳು( xReturn );
 
-    return xReturn;
+    ಹಿಂತಿರುಗಿ xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xStreamBufferIsFull( StreamBufferHandle_t xStreamBuffer )
+ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_Is_ತುಂಬಿದ( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ )
 {
-    BaseType_t xReturn;
-    size_t xBytesToStoreMessageLength;
-    const StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
+    ತಳ_Type_t xReturn;
+    size_t x_ಬೈಟುಗಳು_ಗಮ್ಯ_Store_ಸಂದೇಶ_ಉದ್ದಳತೆ;
+    ಸ್ಥಿರಾಂಕ ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
 
-    traceENTER_xStreamBufferIsFull( xStreamBuffer );
+    trace_ENTER_x_ಹರಿವು_ಬಫರ್_Is_ತುಂಬಿದ( x_ಹರಿವು_ಬಫರ್ );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
     /* This generic version of the receive function is used by both message
      * buffers, which store discrete messages, and stream buffers, which store a
      * continuous stream of bytes.  Discrete messages include an additional
      * sbBYTES_TO_STORE_MESSAGE_LENGTH bytes that hold the length of the message. */
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) != ( uint8_t ) 0 )
+    ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್->ucFlags & sb_FLAGS_IS_ಸಂದೇಶ_ಬಫರ್ ) != ( uint8_t ) 0 )
     {
-        xBytesToStoreMessageLength = sbBYTES_TO_STORE_MESSAGE_LENGTH;
+        x_ಬೈಟುಗಳು_ಗಮ್ಯ_Store_ಸಂದೇಶ_ಉದ್ದಳತೆ = sb_ಬೈಟುಗಳು_ಗಮ್ಯ_STORE_ಸಂದೇಶ_ಉದ್ದಳತೆ;
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
-        xBytesToStoreMessageLength = 0;
+        x_ಬೈಟುಗಳು_ಗಮ್ಯ_Store_ಸಂದೇಶ_ಉದ್ದಳತೆ = 0;
     }
 
     /* True if the available space equals zero. */
-    if( xStreamBufferSpacesAvailable( xStreamBuffer ) <= xBytesToStoreMessageLength )
+    ಆದರೆ( x_ಹರಿವು_ಬಫರ್_Spaces_ಲಭ್ಯ( x_ಹರಿವು_ಬಫರ್ ) <= x_ಬೈಟುಗಳು_ಗಮ್ಯ_Store_ಸಂದೇಶ_ಉದ್ದಳತೆ )
     {
         xReturn = pdTRUE;
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         xReturn = pdFALSE;
     }
 
-    traceRETURN_xStreamBufferIsFull( xReturn );
+    trace_RETURN_x_ಹರಿವು_ಬಫರ್_Is_ತುಂಬಿದ( xReturn );
 
-    return xReturn;
+    ಹಿಂತಿರುಗಿ xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xStreamBufferSendCompletedFromISR( StreamBufferHandle_t xStreamBuffer,
-                                              BaseType_t * pxHigherPriorityTaskWoken )
+ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_Send_Completed_From_ISR( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                                              ತಳ_Type_t * px_Higher_ಆದ್ಯತೆ_Task_Woken )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    BaseType_t xReturn;
-    UBaseType_t uxSavedInterruptStatus;
+    ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
+    ತಳ_Type_t xReturn;
+    UBaseType_t ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ;
 
-    traceENTER_xStreamBufferSendCompletedFromISR( xStreamBuffer, pxHigherPriorityTaskWoken );
+    trace_ENTER_x_ಹರಿವು_ಬಫರ್_Send_Completed_From_ISR( x_ಹರಿವು_ಬಫರ್, px_Higher_ಆದ್ಯತೆ_Task_Woken );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
     /* MISRA Ref 4.7.1 [Return value shall be checked] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
     /* coverity[misra_c_2012_directive_4_7_violation] */
-    uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();
+    ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ = taskENTER_CRITICAL_FROM_ISR();
     {
-        if( ( pxStreamBuffer )->xTaskWaitingToReceive != NULL )
+        ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Receive != ಖಾಲಿ )
         {
-            ( void ) xTaskNotifyIndexedFromISR( ( pxStreamBuffer )->xTaskWaitingToReceive,
-                                                ( pxStreamBuffer )->uxNotificationIndex,
+            ( ಶೂನ್ಯ ) x_Task_Notify_ಸೂಚ್ಯಂಕಿತ_From_ISR( ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Receive,
+                                                ( px_ಹರಿವು_ಬಫರ್ )->ux_Notification_ಸೂಚ್ಯಂಕ,
                                                 ( uint32_t ) 0,
                                                 eNoAction,
-                                                pxHigherPriorityTaskWoken );
-            ( pxStreamBuffer )->xTaskWaitingToReceive = NULL;
+                                                px_Higher_ಆದ್ಯತೆ_Task_Woken );
+            ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Receive = ಖಾಲಿ;
             xReturn = pdTRUE;
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             xReturn = pdFALSE;
         }
     }
-    taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );
+    taskEXIT_CRITICAL_FROM_ISR( ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ );
 
-    traceRETURN_xStreamBufferSendCompletedFromISR( xReturn );
+    trace_RETURN_x_ಹರಿವು_ಬಫರ್_Send_Completed_From_ISR( xReturn );
 
-    return xReturn;
+    ಹಿಂತಿರುಗಿ xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xStreamBufferReceiveCompletedFromISR( StreamBufferHandle_t xStreamBuffer,
-                                                 BaseType_t * pxHigherPriorityTaskWoken )
+ತಳ_Type_t x_ಹರಿವು_ಬಫರ್_Receive_Completed_From_ISR( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                                                 ತಳ_Type_t * px_Higher_ಆದ್ಯತೆ_Task_Woken )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    BaseType_t xReturn;
-    UBaseType_t uxSavedInterruptStatus;
+    ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
+    ತಳ_Type_t xReturn;
+    UBaseType_t ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ;
 
-    traceENTER_xStreamBufferReceiveCompletedFromISR( xStreamBuffer, pxHigherPriorityTaskWoken );
+    trace_ENTER_x_ಹರಿವು_ಬಫರ್_Receive_Completed_From_ISR( x_ಹರಿವು_ಬಫರ್, px_Higher_ಆದ್ಯತೆ_Task_Woken );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
     /* MISRA Ref 4.7.1 [Return value shall be checked] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
     /* coverity[misra_c_2012_directive_4_7_violation] */
-    uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();
+    ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ = taskENTER_CRITICAL_FROM_ISR();
     {
-        if( ( pxStreamBuffer )->xTaskWaitingToSend != NULL )
+        ಆದರೆ( ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Send != ಖಾಲಿ )
         {
-            ( void ) xTaskNotifyIndexedFromISR( ( pxStreamBuffer )->xTaskWaitingToSend,
-                                                ( pxStreamBuffer )->uxNotificationIndex,
+            ( ಶೂನ್ಯ ) x_Task_Notify_ಸೂಚ್ಯಂಕಿತ_From_ISR( ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Send,
+                                                ( px_ಹರಿವು_ಬಫರ್ )->ux_Notification_ಸೂಚ್ಯಂಕ,
                                                 ( uint32_t ) 0,
                                                 eNoAction,
-                                                pxHigherPriorityTaskWoken );
-            ( pxStreamBuffer )->xTaskWaitingToSend = NULL;
+                                                px_Higher_ಆದ್ಯತೆ_Task_Woken );
+            ( px_ಹರಿವು_ಬಫರ್ )->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Send = ಖಾಲಿ;
             xReturn = pdTRUE;
         }
-        else
+        ಇಲ್ಲದಿದ್ದರೆ
         {
             xReturn = pdFALSE;
         }
     }
-    taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );
+    taskEXIT_CRITICAL_FROM_ISR( ux_Saved_ಅಡಚಣೆ_ಸ್ಥಿತಿ );
 
-    traceRETURN_xStreamBufferReceiveCompletedFromISR( xReturn );
+    trace_RETURN_x_ಹರಿವು_ಬಫರ್_Receive_Completed_From_ISR( xReturn );
 
-    return xReturn;
+    ಹಿಂತಿರುಗಿ xReturn;
 }
 /*-----------------------------------------------------------*/
 
-static size_t prvWriteBytesToBuffer( StreamBuffer_t * const pxStreamBuffer,
-                                     const uint8_t * pucData,
-                                     size_t xCount,
-                                     size_t xHead )
+ಸ್ಥಿರ size_t prv_Write_ಬೈಟುಗಳು_ಗಮ್ಯ_ಬಫರ್( ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್,
+                                     ಸ್ಥಿರಾಂಕ uint8_t * puc_ದತ್ತಾಂಶ,
+                                     size_t x_ಎಣಿಕೆ,
+                                     size_t x_ತಲೆ )
 {
-    size_t xFirstLength;
+    size_t x_ಮೊದಲ_ಉದ್ದಳತೆ;
 
-    configASSERT( xCount > ( size_t ) 0 );
+    configASSERT( x_ಎಣಿಕೆ > ( size_t ) 0 );
 
     /* Calculate the number of bytes that can be added in the first write -
      * which may be less than the total number of bytes that need to be added if
      * the buffer will wrap back to the beginning. */
-    xFirstLength = configMIN( pxStreamBuffer->xLength - xHead, xCount );
+    x_ಮೊದಲ_ಉದ್ದಳತೆ = configMIN( px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ - x_ತಲೆ, x_ಎಣಿಕೆ );
 
     /* Write as many bytes as can be written in the first write. */
-    configASSERT( ( xHead + xFirstLength ) <= pxStreamBuffer->xLength );
-    ( void ) memcpy( ( void * ) ( &( pxStreamBuffer->pucBuffer[ xHead ] ) ), ( const void * ) pucData, xFirstLength );
+    configASSERT( ( x_ತಲೆ + x_ಮೊದಲ_ಉದ್ದಳತೆ ) <= px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ );
+    ( ಶೂನ್ಯ ) ಸ್ಮರಣೆ_ನಕಲು( ( ಶೂನ್ಯ * ) ( &( px_ಹರಿವು_ಬಫರ್->puc_ಬಫರ್[ x_ತಲೆ ] ) ), ( ಸ್ಥಿರಾಂಕ ಶೂನ್ಯ * ) puc_ದತ್ತಾಂಶ, x_ಮೊದಲ_ಉದ್ದಳತೆ );
 
     /* If the number of bytes written was less than the number that could be
      * written in the first write... */
-    if( xCount > xFirstLength )
+    ಆದರೆ( x_ಎಣಿಕೆ > x_ಮೊದಲ_ಉದ್ದಳತೆ )
     {
         /* ...then write the remaining bytes to the start of the buffer. */
-        configASSERT( ( xCount - xFirstLength ) <= pxStreamBuffer->xLength );
-        ( void ) memcpy( ( void * ) pxStreamBuffer->pucBuffer, ( const void * ) &( pucData[ xFirstLength ] ), xCount - xFirstLength );
+        configASSERT( ( x_ಎಣಿಕೆ - x_ಮೊದಲ_ಉದ್ದಳತೆ ) <= px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ );
+        ( ಶೂನ್ಯ ) ಸ್ಮರಣೆ_ನಕಲು( ( ಶೂನ್ಯ * ) px_ಹರಿವು_ಬಫರ್->puc_ಬಫರ್, ( ಸ್ಥಿರಾಂಕ ಶೂನ್ಯ * ) &( puc_ದತ್ತಾಂಶ[ x_ಮೊದಲ_ಉದ್ದಳತೆ ] ), x_ಎಣಿಕೆ - x_ಮೊದಲ_ಉದ್ದಳತೆ );
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    xHead += xCount;
+    x_ತಲೆ += x_ಎಣಿಕೆ;
 
-    if( xHead >= pxStreamBuffer->xLength )
+    ಆದರೆ( x_ತಲೆ >= px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ )
     {
-        xHead -= pxStreamBuffer->xLength;
+        x_ತಲೆ -= px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ;
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    return xHead;
+    ಹಿಂತಿರುಗಿ x_ತಲೆ;
 }
 /*-----------------------------------------------------------*/
 
-static size_t prvReadBytesFromBuffer( StreamBuffer_t * pxStreamBuffer,
-                                      uint8_t * pucData,
-                                      size_t xCount,
-                                      size_t xTail )
+ಸ್ಥಿರ size_t prv_Read_ಬೈಟುಗಳು_From_ಬಫರ್( ಹರಿವು_ಬಫರ್_t * px_ಹರಿವು_ಬಫರ್,
+                                      uint8_t * puc_ದತ್ತಾಂಶ,
+                                      size_t x_ಎಣಿಕೆ,
+                                      size_t x_ಬಾಲ )
 {
-    size_t xFirstLength;
+    size_t x_ಮೊದಲ_ಉದ್ದಳತೆ;
 
-    configASSERT( xCount != ( size_t ) 0 );
+    configASSERT( x_ಎಣಿಕೆ != ( size_t ) 0 );
 
     /* Calculate the number of bytes that can be read - which may be
      * less than the number wanted if the data wraps around to the start of
      * the buffer. */
-    xFirstLength = configMIN( pxStreamBuffer->xLength - xTail, xCount );
+    x_ಮೊದಲ_ಉದ್ದಳತೆ = configMIN( px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ - x_ಬಾಲ, x_ಎಣಿಕೆ );
 
     /* Obtain the number of bytes it is possible to obtain in the first
      * read.  Asserts check bounds of read and write. */
-    configASSERT( xFirstLength <= xCount );
-    configASSERT( ( xTail + xFirstLength ) <= pxStreamBuffer->xLength );
-    ( void ) memcpy( ( void * ) pucData, ( const void * ) &( pxStreamBuffer->pucBuffer[ xTail ] ), xFirstLength );
+    configASSERT( x_ಮೊದಲ_ಉದ್ದಳತೆ <= x_ಎಣಿಕೆ );
+    configASSERT( ( x_ಬಾಲ + x_ಮೊದಲ_ಉದ್ದಳತೆ ) <= px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ );
+    ( ಶೂನ್ಯ ) ಸ್ಮರಣೆ_ನಕಲು( ( ಶೂನ್ಯ * ) puc_ದತ್ತಾಂಶ, ( ಸ್ಥಿರಾಂಕ ಶೂನ್ಯ * ) &( px_ಹರಿವು_ಬಫರ್->puc_ಬಫರ್[ x_ಬಾಲ ] ), x_ಮೊದಲ_ಉದ್ದಳತೆ );
 
     /* If the total number of wanted bytes is greater than the number
      * that could be read in the first read... */
-    if( xCount > xFirstLength )
+    ಆದರೆ( x_ಎಣಿಕೆ > x_ಮೊದಲ_ಉದ್ದಳತೆ )
     {
         /* ...then read the remaining bytes from the start of the buffer. */
-        ( void ) memcpy( ( void * ) &( pucData[ xFirstLength ] ), ( void * ) ( pxStreamBuffer->pucBuffer ), xCount - xFirstLength );
+        ( ಶೂನ್ಯ ) ಸ್ಮರಣೆ_ನಕಲು( ( ಶೂನ್ಯ * ) &( puc_ದತ್ತಾಂಶ[ x_ಮೊದಲ_ಉದ್ದಳತೆ ] ), ( ಶೂನ್ಯ * ) ( px_ಹರಿವು_ಬಫರ್->puc_ಬಫರ್ ), x_ಎಣಿಕೆ - x_ಮೊದಲ_ಉದ್ದಳತೆ );
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
     /* Move the tail pointer to effectively remove the data read from the buffer. */
-    xTail += xCount;
+    x_ಬಾಲ += x_ಎಣಿಕೆ;
 
-    if( xTail >= pxStreamBuffer->xLength )
+    ಆದರೆ( x_ಬಾಲ >= px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ )
     {
-        xTail -= pxStreamBuffer->xLength;
+        x_ಬಾಲ -= px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ;
     }
 
-    return xTail;
+    ಹಿಂತಿರುಗಿ x_ಬಾಲ;
 }
 /*-----------------------------------------------------------*/
 
-static size_t prvBytesInBuffer( const StreamBuffer_t * const pxStreamBuffer )
+ಸ್ಥಿರ size_t prv_ಬೈಟುಗಳು_ಒಳ_ಬಫರ್( ಸ್ಥಿರಾಂಕ ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ )
 {
     /* Returns the distance between xTail and xHead. */
-    size_t xCount;
+    size_t x_ಎಣಿಕೆ;
 
-    xCount = pxStreamBuffer->xLength + pxStreamBuffer->xHead;
-    xCount -= pxStreamBuffer->xTail;
+    x_ಎಣಿಕೆ = px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ + px_ಹರಿವು_ಬಫರ್->x_ತಲೆ;
+    x_ಎಣಿಕೆ -= px_ಹರಿವು_ಬಫರ್->x_ಬಾಲ;
 
-    if( xCount >= pxStreamBuffer->xLength )
+    ಆದರೆ( x_ಎಣಿಕೆ >= px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ )
     {
-        xCount -= pxStreamBuffer->xLength;
+        x_ಎಣಿಕೆ -= px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ;
     }
-    else
+    ಇಲ್ಲದಿದ್ದರೆ
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    return xCount;
+    ಹಿಂತಿರುಗಿ x_ಎಣಿಕೆ;
 }
 /*-----------------------------------------------------------*/
 
-static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
-                                          uint8_t * const pucBuffer,
-                                          size_t xBufferSizeBytes,
-                                          size_t xTriggerLevelBytes,
+ಸ್ಥಿರ ಶೂನ್ಯ prv_Initialise_New_ಹರಿವು_ಬಫರ್( ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್,
+                                          uint8_t * ಸ್ಥಿರಾಂಕ puc_ಬಫರ್,
+                                          size_t x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು,
+                                          size_t x_Trigger_Level_ಬೈಟುಗಳು,
                                           uint8_t ucFlags,
-                                          StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                          StreamBufferCallbackFunction_t pxReceiveCompletedCallback )
+                                          ಹರಿವು_ಬಫರ್_Callback_Function_t pxSendCompletedCallback,
+                                          ಹರಿವು_ಬಫರ್_Callback_Function_t pxReceiveCompletedCallback )
 {
     /* Assert here is deliberately writing to the entire buffer to ensure it can
      * be written to without generating exceptions, and is setting the buffer to a
      * known value to assist in development/debugging. */
-    #if ( configASSERT_DEFINED == 1 )
+    #ಆದರೆ ( configASSERT_DEFINED == 1 )
     {
         /* The value written just has to be identifiable when looking at the
          * memory.  Don't use 0xA5 as that is the stack fill value and could
          * result in confusion as to what is actually being observed. */
-        #define STREAM_BUFFER_BUFFER_WRITE_VALUE    ( 0x55 )
-        configASSERT( memset( pucBuffer, ( int ) STREAM_BUFFER_BUFFER_WRITE_VALUE, xBufferSizeBytes ) == pucBuffer );
+        #ವ್ಯಾಖ್ಯಾನಿಸು ಹರಿವು_ಬಫರ್_ಬಫರ್_WRITE_ಮೌಲ್ಯ    ( 0x55 )
+        configASSERT( memset( puc_ಬಫರ್, ( ಪೂರ್ಣಾಂಕ ) ಹರಿವು_ಬಫರ್_ಬಫರ್_WRITE_ಮೌಲ್ಯ, x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು ) == puc_ಬಫರ್ );
     }
-    #endif
+    #ಆದರೆ_ಅಂತ್ಯ
 
-    ( void ) memset( ( void * ) pxStreamBuffer, 0x00, sizeof( StreamBuffer_t ) );
-    pxStreamBuffer->pucBuffer = pucBuffer;
-    pxStreamBuffer->xLength = xBufferSizeBytes;
-    pxStreamBuffer->xTriggerLevelBytes = xTriggerLevelBytes;
-    pxStreamBuffer->ucFlags = ucFlags;
-    pxStreamBuffer->uxNotificationIndex = tskDEFAULT_INDEX_TO_NOTIFY;
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    ( ಶೂನ್ಯ ) memset( ( ಶೂನ್ಯ * ) px_ಹರಿವು_ಬಫರ್, 0x00, ಗಾತ್ರ( ಹರಿವು_ಬಫರ್_t ) );
+    px_ಹರಿವು_ಬಫರ್->puc_ಬಫರ್ = puc_ಬಫರ್;
+    px_ಹರಿವು_ಬಫರ್->x_ಉದ್ದಳತೆ = x_ಬಫರ್_ಗಾತ್ರ_ಬೈಟುಗಳು;
+    px_ಹರಿವು_ಬಫರ್->x_Trigger_Level_ಬೈಟುಗಳು = x_Trigger_Level_ಬೈಟುಗಳು;
+    px_ಹರಿವು_ಬಫರ್->ucFlags = ucFlags;
+    px_ಹರಿವು_ಬಫರ್->ux_Notification_ಸೂಚ್ಯಂಕ = tsk_DEFAULT_ಸೂಚ್ಯಂಕ_ಗಮ್ಯ_NOTIFY;
+    #ಆದರೆ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
     {
-        pxStreamBuffer->pxSendCompletedCallback = pxSendCompletedCallback;
-        pxStreamBuffer->pxReceiveCompletedCallback = pxReceiveCompletedCallback;
+        px_ಹರಿವು_ಬಫರ್->pxSendCompletedCallback = pxSendCompletedCallback;
+        px_ಹರಿವು_ಬಫರ್->pxReceiveCompletedCallback = pxReceiveCompletedCallback;
     }
-    #else
+    #ಇಲ್ಲದಿದ್ದರೆ
     {
         /* MISRA Ref 11.1.1 [Object type casting] */
         /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-111 */
         /* coverity[misra_c_2012_rule_11_1_violation] */
-        ( void ) pxSendCompletedCallback;
+        ( ಶೂನ್ಯ ) pxSendCompletedCallback;
 
         /* MISRA Ref 11.1.1 [Object type casting] */
         /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-111 */
         /* coverity[misra_c_2012_rule_11_1_violation] */
-        ( void ) pxReceiveCompletedCallback;
+        ( ಶೂನ್ಯ ) pxReceiveCompletedCallback;
     }
-    #endif /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+    #ಆದರೆ_ಅಂತ್ಯ /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
 }
 /*-----------------------------------------------------------*/
 
-UBaseType_t uxStreamBufferGetStreamBufferNotificationIndex( StreamBufferHandle_t xStreamBuffer )
+UBaseType_t ux_ಹರಿವು_ಬಫರ್_Get_ಹರಿವು_ಬಫರ್_Notification_ಸೂಚ್ಯಂಕ( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
+    ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
 
-    traceENTER_uxStreamBufferGetStreamBufferNotificationIndex( xStreamBuffer );
+    trace_ENTER_ux_ಹರಿವು_ಬಫರ್_Get_ಹರಿವು_ಬಫರ್_Notification_ಸೂಚ್ಯಂಕ( x_ಹರಿವು_ಬಫರ್ );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
-    traceRETURN_uxStreamBufferGetStreamBufferNotificationIndex( pxStreamBuffer->uxNotificationIndex );
+    trace_RETURN_ux_ಹರಿವು_ಬಫರ್_Get_ಹರಿವು_ಬಫರ್_Notification_ಸೂಚ್ಯಂಕ( px_ಹರಿವು_ಬಫರ್->ux_Notification_ಸೂಚ್ಯಂಕ );
 
-    return pxStreamBuffer->uxNotificationIndex;
+    ಹಿಂತಿರುಗಿ px_ಹರಿವು_ಬಫರ್->ux_Notification_ಸೂಚ್ಯಂಕ;
 }
 /*-----------------------------------------------------------*/
 
-void vStreamBufferSetStreamBufferNotificationIndex( StreamBufferHandle_t xStreamBuffer,
-                                                    UBaseType_t uxNotificationIndex )
+ಶೂನ್ಯ v_ಹರಿವು_ಬಫರ್_ಗಣ_ಹರಿವು_ಬಫರ್_Notification_ಸೂಚ್ಯಂಕ( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                                                    UBaseType_t ux_Notification_ಸೂಚ್ಯಂಕ )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
+    ಹರಿವು_ಬಫರ್_t * ಸ್ಥಿರಾಂಕ px_ಹರಿವು_ಬಫರ್ = x_ಹರಿವು_ಬಫರ್;
 
-    traceENTER_vStreamBufferSetStreamBufferNotificationIndex( xStreamBuffer, uxNotificationIndex );
+    trace_ENTER_v_ಹರಿವು_ಬಫರ್_ಗಣ_ಹರಿವು_ಬಫರ್_Notification_ಸೂಚ್ಯಂಕ( x_ಹರಿವು_ಬಫರ್, ux_Notification_ಸೂಚ್ಯಂಕ );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_ಹರಿವು_ಬಫರ್ );
 
     /* There should be no task waiting otherwise we'd never resume them. */
-    configASSERT( pxStreamBuffer->xTaskWaitingToReceive == NULL );
-    configASSERT( pxStreamBuffer->xTaskWaitingToSend == NULL );
+    configASSERT( px_ಹರಿವು_ಬಫರ್->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Receive == ಖಾಲಿ );
+    configASSERT( px_ಹರಿವು_ಬಫರ್->x_Task_ಕಾಯುವಿಕೆ_ಗಮ್ಯ_Send == ಖಾಲಿ );
 
     /* Check that the task notification index is valid. */
-    configASSERT( uxNotificationIndex < configTASK_NOTIFICATION_ARRAY_ENTRIES );
+    configASSERT( ux_Notification_ಸೂಚ್ಯಂಕ < configTASK_NOTIFICATION_ARRAY_ENTRIES );
 
-    pxStreamBuffer->uxNotificationIndex = uxNotificationIndex;
+    px_ಹರಿವು_ಬಫರ್->ux_Notification_ಸೂಚ್ಯಂಕ = ux_Notification_ಸೂಚ್ಯಂಕ;
 
-    traceRETURN_vStreamBufferSetStreamBufferNotificationIndex();
+    trace_RETURN_v_ಹರಿವು_ಬಫರ್_ಗಣ_ಹರಿವು_ಬಫರ್_Notification_ಸೂಚ್ಯಂಕ();
 }
 /*-----------------------------------------------------------*/
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
 
-    UBaseType_t uxStreamBufferGetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer )
+    UBaseType_t ux_ಹರಿವು_ಬಫರ್_Get_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ )
     {
-        traceENTER_uxStreamBufferGetStreamBufferNumber( xStreamBuffer );
+        trace_ENTER_ux_ಹರಿವು_ಬಫರ್_Get_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ( x_ಹರಿವು_ಬಫರ್ );
 
-        traceRETURN_uxStreamBufferGetStreamBufferNumber( xStreamBuffer->uxStreamBufferNumber );
+        trace_RETURN_ux_ಹರಿವು_ಬಫರ್_Get_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ( x_ಹರಿವು_ಬಫರ್->ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ );
 
-        return xStreamBuffer->uxStreamBufferNumber;
+        ಹಿಂತಿರುಗಿ x_ಹರಿವು_ಬಫರ್->ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ;
     }
 
-    #endif /* configUSE_TRACE_FACILITY */
+    #ಆದರೆ_ಅಂತ್ಯ /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
 
-    void vStreamBufferSetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer,
-                                             UBaseType_t uxStreamBufferNumber )
+    ಶೂನ್ಯ v_ಹರಿವು_ಬಫರ್_ಗಣ_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್,
+                                             UBaseType_t ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ )
     {
-        traceENTER_vStreamBufferSetStreamBufferNumber( xStreamBuffer, uxStreamBufferNumber );
+        trace_ENTER_v_ಹರಿವು_ಬಫರ್_ಗಣ_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ( x_ಹರಿವು_ಬಫರ್, ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ );
 
-        xStreamBuffer->uxStreamBufferNumber = uxStreamBufferNumber;
+        x_ಹರಿವು_ಬಫರ್->ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ = ux_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ;
 
-        traceRETURN_vStreamBufferSetStreamBufferNumber();
+        trace_RETURN_v_ಹರಿವು_ಬಫರ್_ಗಣ_ಹರಿವು_ಬಫರ್_ಸಂಖ್ಯೆ();
     }
 
-    #endif /* configUSE_TRACE_FACILITY */
+    #ಆದರೆ_ಅಂತ್ಯ /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ಆದರೆ ( configUSE_TRACE_FACILITY == 1 )
 
-    uint8_t ucStreamBufferGetStreamBufferType( StreamBufferHandle_t xStreamBuffer )
+    uint8_t uc_ಹರಿವು_ಬಫರ್_Get_ಹರಿವು_ಬಫರ್_Type( ಹರಿವು_ಬಫರ್_Handle_t x_ಹರಿವು_ಬಫರ್ )
     {
-        traceENTER_ucStreamBufferGetStreamBufferType( xStreamBuffer );
+        trace_ENTER_uc_ಹರಿವು_ಬಫರ್_Get_ಹರಿವು_ಬಫರ್_Type( x_ಹರಿವು_ಬಫರ್ );
 
-        traceRETURN_ucStreamBufferGetStreamBufferType( ( uint8_t ) ( xStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) );
+        trace_RETURN_uc_ಹರಿವು_ಬಫರ್_Get_ಹರಿವು_ಬಫರ್_Type( ( uint8_t ) ( x_ಹರಿವು_ಬಫರ್->ucFlags & sb_FLAGS_IS_ಸಂದೇಶ_ಬಫರ್ ) );
 
-        return( ( uint8_t ) ( xStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) );
+        ಹಿಂತಿರುಗಿ( ( uint8_t ) ( x_ಹರಿವು_ಬಫರ್->ucFlags & sb_FLAGS_IS_ಸಂದೇಶ_ಬಫರ್ ) );
     }
 
-    #endif /* configUSE_TRACE_FACILITY */
+    #ಆದರೆ_ಅಂತ್ಯ /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
 /* This entire source file will be skipped if the application is not configured
  * to include stream buffer functionality. This #if is closed at the very bottom
  * of this file. If you want to include stream buffers then ensure
  * configUSE_STREAM_BUFFERS is set to 1 in FreeRTOSConfig.h. */
-#endif /* configUSE_STREAM_BUFFERS == 1 */
+#ಆದರೆ_ಅಂತ್ಯ /* configUSE_STREAM_BUFFERS == 1 */

@@ -31,20 +31,20 @@
  *
  */
 
-#pragma once
+#ಸೂಚನೆ once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ __cplusplus
+ಬಾಹ್ಯ "C" {
+#ಆದರೆ_ಅಂತ್ಯ
 
-#include <stdbool.h>
-#include <time.h>
+#ಅನ್ತರ್ಭಾವ <stdbool.h>
+#ಅನ್ತರ್ಭಾವ <time.h>
 
 /**
  * @brief
  *
  */
-typedef struct event
+ಪ್ರಕಾರವ್ಯಾಖ್ಯೆ ರಚನೆ event
 {
     pthread_mutex_t mutex;
     pthread_cond_t cond;
@@ -57,14 +57,14 @@ typedef struct event
  *
  * @return event_t*
  */
-event_t *event_create(void);
+event_t *event_create(ಶೂನ್ಯ);
 
 /**
  * @brief
  *
  * @param ev
  */
-void event_delete(event_t *ev);
+ಶೂನ್ಯ event_delete(event_t *ev);
 
 /**
  * @brief
@@ -90,15 +90,15 @@ bool event_wait_timed(event_t *ev, time_t ms);
  *
  * @param ev
  */
-void event_signal(event_t *ev);
+ಶೂನ್ಯ event_signal(event_t *ev);
 
 /**
  * @brief Discard a pending signal that was never consumed by a wait
  *
  * @param ev
  */
-void event_clear(event_t *ev);
+ಶೂನ್ಯ event_clear(event_t *ev);
 
-#ifdef __cplusplus
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ __cplusplus
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
