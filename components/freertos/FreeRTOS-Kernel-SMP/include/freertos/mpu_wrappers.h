@@ -35,7 +35,7 @@
 
 /* This file redefines API functions to be called through a wrapper macro, but
  * only for ports that are using the MPU. */
-#if ( portUSING_MPU_WRAPPERS == 1 )
+#যদি ( portUSING_MPU_WRAPPERS == 1 )
 
 /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE will be defined when this file is
  * included from queue.c or task.c to prevent it from having an effect within
@@ -59,30 +59,30 @@
         #define vTaskGetInfo                          MPU_vTaskGetInfo
         #define vTaskSuspend                          MPU_vTaskSuspend
         #define vTaskResume                           MPU_vTaskResume
-        #define xTaskGetTickCount                     MPU_xTaskGetTickCount
-        #define uxTaskGetNumberOfTasks                MPU_uxTaskGetNumberOfTasks
-        #define uxTaskGetStackHighWaterMark           MPU_uxTaskGetStackHighWaterMark
-        #define uxTaskGetStackHighWaterMark2          MPU_uxTaskGetStackHighWaterMark2
+        #define x_Task_Get_Tick_গুনতি                     MPU_x_Task_Get_Tick_গুনতি
+        #define ux_Task_Get_সংখ্যা_Of_Tasks                MPU_ux_Task_Get_সংখ্যা_Of_Tasks
+        #define ux_Task_Get_স্তূপ_উপরের_Water_Mark           MPU_ux_Task_Get_স্তূপ_উপরের_Water_Mark
+        #define ux_Task_Get_স্তূপ_উপরের_Water_Mark2          MPU_ux_Task_Get_স্তূপ_উপরের_Water_Mark2
         #define vTaskSetApplicationTaskTag            MPU_vTaskSetApplicationTaskTag
         #define xTaskGetApplicationTaskTag            MPU_xTaskGetApplicationTaskTag
         #define vTaskSetThreadLocalStoragePointer     MPU_vTaskSetThreadLocalStoragePointer
         #define pvTaskGetThreadLocalStoragePointer    MPU_pvTaskGetThreadLocalStoragePointer
         #define xTaskGetIdleTaskHandle                MPU_xTaskGetIdleTaskHandle
         #define uxTaskGetSystemState                  MPU_uxTaskGetSystemState
-        #define ulTaskGetIdleRunTimeCounter           MPU_ulTaskGetIdleRunTimeCounter
+        #define ul_Task_Get_Idle_Run_Time_গণক           MPU_ul_Task_Get_Idle_Run_Time_গণক
         #define ulTaskGetIdleRunTimePercent           MPU_ulTaskGetIdleRunTimePercent
         #define xTaskGenericNotify                    MPU_xTaskGenericNotify
         #define xTaskGenericNotifyWait                MPU_xTaskGenericNotifyWait
         #define ulTaskGenericNotifyTake               MPU_ulTaskGenericNotifyTake
         #define xTaskGenericNotifyStateClear          MPU_xTaskGenericNotifyStateClear
-        #define ulTaskGenericNotifyValueClear         MPU_ulTaskGenericNotifyValueClear
+        #define ul_Task_Generic_Notify_মান_Clear         MPU_ul_Task_Generic_Notify_মান_Clear
         #define vTaskSetTimeOutState                  MPU_vTaskSetTimeOutState
         #define xTaskCheckForTimeOut                  MPU_xTaskCheckForTimeOut
         #define xTaskGetCurrentTaskHandle             MPU_xTaskGetCurrentTaskHandle
         #define xTaskGetSchedulerState                MPU_xTaskGetSchedulerState
 
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
-            #define ulTaskGetRunTimeCounter           MPU_ulTaskGetRunTimeCounter
+        #যদি ( configUSE_MPU_WRAPPERS_V1 == 0 )
+            #define ul_Task_Get_Run_Time_গণক           MPU_ul_Task_Get_Run_Time_গণক
             #define ulTaskGetRunTimePercent           MPU_ulTaskGetRunTimePercent
         #endif /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 
@@ -96,7 +96,7 @@
         #define xTaskGetHandle                           MPU_xTaskGetHandle
         #define xTaskCallApplicationTaskHook             MPU_xTaskCallApplicationTaskHook
 
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
+        #যদি ( configUSE_MPU_WRAPPERS_V1 == 0 )
             #define pcTaskGetName                        MPU_pcTaskGetName
             #define xTaskCreateRestricted                MPU_xTaskCreateRestricted
             #define xTaskCreateRestrictedStatic          MPU_xTaskCreateRestrictedStatic
@@ -124,7 +124,7 @@
         #define xQueueAddToSet               MPU_xQueueAddToSet
         #define xQueueSelectFromSet          MPU_xQueueSelectFromSet
 
-        #if ( configQUEUE_REGISTRY_SIZE > 0 )
+        #যদি ( config_QUEUE_REGISTRY_আকার > 0 )
             #define vQueueAddToRegistry      MPU_vQueueAddToRegistry
             #define vQueueUnregisterQueue    MPU_vQueueUnregisterQueue
             #define pcQueueGetName           MPU_pcQueueGetName
@@ -144,7 +144,7 @@
         #define xQueueCreateSet                        MPU_xQueueCreateSet
         #define xQueueRemoveFromSet                    MPU_xQueueRemoveFromSet
 
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
+        #যদি ( configUSE_MPU_WRAPPERS_V1 == 0 )
             #define xQueueGenericGetStaticBuffers      MPU_xQueueGenericGetStaticBuffers
             #define xQueueGenericSendFromISR           MPU_xQueueGenericSendFromISR
             #define xQueueGiveFromISR                  MPU_xQueueGiveFromISR
@@ -172,11 +172,11 @@
 /* Privileged only wrappers for Timer APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
+        #যদি ( configUSE_MPU_WRAPPERS_V1 == 0 )
             #define xTimerGetReloadMode            MPU_xTimerGetReloadMode
             #define xTimerCreate                   MPU_xTimerCreate
             #define xTimerCreateStatic             MPU_xTimerCreateStatic
-            #define xTimerGetStaticBuffer          MPU_xTimerGetStaticBuffer
+            #define x_Timer_Get_Static_বাফার          MPU_x_Timer_Get_Static_বাফার
             #define xTimerGenericCommandFromISR    MPU_xTimerGenericCommandFromISR
         #endif /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 
@@ -186,9 +186,9 @@
         #define xEventGroupSetBits           MPU_xEventGroupSetBits
         #define xEventGroupSync              MPU_xEventGroupSync
 
-        #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) )
-            #define uxEventGroupGetNumber    MPU_uxEventGroupGetNumber
-            #define vEventGroupSetNumber     MPU_vEventGroupSetNumber
+        #যদি ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) )
+            #define ux_Event_Group_Get_সংখ্যা    MPU_ux_Event_Group_Get_সংখ্যা
+            #define v_Event_Group_Set_সংখ্যা     MPU_v_Event_Group_Set_সংখ্যা
         #endif /* #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) ) */
 
 /* Privileged only wrappers for Event Group APIs. These are needed so that
@@ -198,8 +198,8 @@
         #define xEventGroupCreateStatic            MPU_xEventGroupCreateStatic
         #define vEventGroupDelete                  MPU_vEventGroupDelete
 
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
-            #define xEventGroupGetStaticBuffer     MPU_xEventGroupGetStaticBuffer
+        #যদি ( configUSE_MPU_WRAPPERS_V1 == 0 )
+            #define x_Event_Group_Get_Static_বাফার     MPU_x_Event_Group_Get_Static_বাফার
             #define xEventGroupClearBitsFromISR    MPU_xEventGroupClearBitsFromISR
             #define xEventGroupSetBitsFromISR      MPU_xEventGroupSetBitsFromISR
             #define xEventGroupGetBitsFromISR      MPU_xEventGroupGetBitsFromISR
@@ -207,34 +207,34 @@
 
 /* Map standard message/stream_buffer.h API functions to the MPU
  * equivalents. */
-        #define xStreamBufferSend                      MPU_xStreamBufferSend
-        #define xStreamBufferReceive                   MPU_xStreamBufferReceive
-        #define xStreamBufferIsFull                    MPU_xStreamBufferIsFull
-        #define xStreamBufferIsEmpty                   MPU_xStreamBufferIsEmpty
-        #define xStreamBufferSpacesAvailable           MPU_xStreamBufferSpacesAvailable
-        #define xStreamBufferBytesAvailable            MPU_xStreamBufferBytesAvailable
-        #define xStreamBufferSetTriggerLevel           MPU_xStreamBufferSetTriggerLevel
-        #define xStreamBufferNextMessageLengthBytes    MPU_xStreamBufferNextMessageLengthBytes
+        #define x_Stream_বাফার_Send                      MPU_x_Stream_বাফার_Send
+        #define x_Stream_বাফার_Receive                   MPU_x_Stream_বাফার_Receive
+        #define x_Stream_বাফার_Is_Full                    MPU_x_Stream_বাফার_Is_Full
+        #define x_Stream_বাফার_Is_Empty                   MPU_x_Stream_বাফার_Is_Empty
+        #define x_Stream_বাফার_Spaces_Available           MPU_x_Stream_বাফার_Spaces_Available
+        #define x_Stream_বাফার_Bytes_Available            MPU_x_Stream_বাফার_Bytes_Available
+        #define x_Stream_বাফার_Set_Trigger_Level           MPU_x_Stream_বাফার_Set_Trigger_Level
+        #define x_Stream_বাফার_পরবর্তী_Message_দৈর্ঘ্য_Bytes    MPU_x_Stream_বাফার_পরবর্তী_Message_দৈর্ঘ্য_Bytes
 
 /* Privileged only wrappers for Stream Buffer APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
 
-        #define xStreamBufferGenericCreate                  MPU_xStreamBufferGenericCreate
-        #define xStreamBufferGenericCreateStatic            MPU_xStreamBufferGenericCreateStatic
-        #define vStreamBufferDelete                         MPU_vStreamBufferDelete
-        #define xStreamBufferReset                          MPU_xStreamBufferReset
+        #define x_Stream_বাফার_Generic_Create                  MPU_x_Stream_বাফার_Generic_Create
+        #define x_Stream_বাফার_Generic_Create_Static            MPU_x_Stream_বাফার_Generic_Create_Static
+        #define v_Stream_বাফার_Delete                         MPU_v_Stream_বাফার_Delete
+        #define x_Stream_বাফার_Reset                          MPU_x_Stream_বাফার_Reset
 
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
-            #define xStreamBufferGetStaticBuffers           MPU_xStreamBufferGetStaticBuffers
-            #define xStreamBufferSendFromISR                MPU_xStreamBufferSendFromISR
-            #define xStreamBufferReceiveFromISR             MPU_xStreamBufferReceiveFromISR
-            #define xStreamBufferSendCompletedFromISR       MPU_xStreamBufferSendCompletedFromISR
-            #define xStreamBufferReceiveCompletedFromISR    MPU_xStreamBufferReceiveCompletedFromISR
-            #define xStreamBufferResetFromISR               MPU_xStreamBufferResetFromISR
+        #যদি ( configUSE_MPU_WRAPPERS_V1 == 0 )
+            #define x_Stream_বাফার_Get_Static_Buffers           MPU_x_Stream_বাফার_Get_Static_Buffers
+            #define x_Stream_বাফার_Send_From_ISR                MPU_x_Stream_বাফার_Send_From_ISR
+            #define x_Stream_বাফার_Receive_From_ISR             MPU_x_Stream_বাফার_Receive_From_ISR
+            #define x_Stream_বাফার_Send_Completed_From_ISR       MPU_x_Stream_বাফার_Send_Completed_From_ISR
+            #define x_Stream_বাফার_Receive_Completed_From_ISR    MPU_x_Stream_বাফার_Receive_Completed_From_ISR
+            #define x_Stream_বাফার_Reset_From_ISR               MPU_x_Stream_বাফার_Reset_From_ISR
         #endif /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 
-        #if ( ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) )
+        #যদি ( ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) )
 
             #define vGrantAccessToTask( xTask, xTaskToGrantAccess )                        vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xTaskToGrantAccess ) )
             #define vRevokeAccessToTask( xTask, xTaskToRevokeAccess )                      vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xTaskToRevokeAccess ) )
@@ -251,11 +251,11 @@
             #define vGrantAccessToEventGroup( xTask, xEventGroupToGrantAccess )            vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xEventGroupToGrantAccess ) )
             #define vRevokeAccessToEventGroup( xTask, xEventGroupToRevokeAccess )          vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xEventGroupToRevokeAccess ) )
 
-            #define vGrantAccessToStreamBuffer( xTask, xStreamBufferToGrantAccess )        vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xStreamBufferToGrantAccess ) )
-            #define vRevokeAccessToStreamBuffer( xTask, xStreamBufferToRevokeAccess )      vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xStreamBufferToRevokeAccess ) )
+            #define v_Grant_Access_To_Stream_বাফার( xTask, x_Stream_বাফার_To_Grant_Access )        vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( x_Stream_বাফার_To_Grant_Access ) )
+            #define v_Revoke_Access_To_Stream_বাফার( xTask, x_Stream_বাফার_To_Revoke_Access )      vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( x_Stream_বাফার_To_Revoke_Access ) )
 
-            #define vGrantAccessToMessageBuffer( xTask, xMessageBufferToGrantAccess )      vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xMessageBufferToGrantAccess ) )
-            #define vRevokeAccessToMessageBuffer( xTask, xMessageBufferToRevokeAccess )    vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xMessageBufferToRevokeAccess ) )
+            #define v_Grant_Access_To_Message_বাফার( xTask, x_Message_বাফার_To_Grant_Access )      vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( x_Message_বাফার_To_Grant_Access ) )
+            #define v_Revoke_Access_To_Message_বাফার( xTask, x_Message_বাফার_To_Revoke_Access )    vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( x_Message_বাফার_To_Revoke_Access ) )
 
             #define vGrantAccessToTimer( xTask, xTimerToGrantAccess )                      vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xTimerToGrantAccess ) )
             #define vRevokeAccessToTimer( xTask, xTimerToRevokeAccess )                    vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xTimerToRevokeAccess ) )
@@ -265,13 +265,13 @@
     #endif /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
 
     #define PRIVILEGED_FUNCTION     __attribute__( ( section( "privileged_functions" ) ) )
-    #define PRIVILEGED_DATA         __attribute__( ( section( "privileged_data" ) ) )
+    #define PRIVILEGED_তথ্য         __attribute__( ( section( "privileged_data" ) ) )
     #define FREERTOS_SYSTEM_CALL    __attribute__( ( section( "freertos_system_calls" ) ) )
 
-#else /* portUSING_MPU_WRAPPERS */
+#অন্যথা /* portUSING_MPU_WRAPPERS */
 
     #define PRIVILEGED_FUNCTION
-    #define PRIVILEGED_DATA
+    #define PRIVILEGED_তথ্য
     #define FREERTOS_SYSTEM_CALL
 
 #endif /* portUSING_MPU_WRAPPERS */

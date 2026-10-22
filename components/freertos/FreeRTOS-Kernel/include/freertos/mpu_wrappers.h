@@ -35,7 +35,7 @@
 
 /* This file redefines API functions to be called through a wrapper macro, but
  * only for ports that are using the MPU. */
-#if ( portUSING_MPU_WRAPPERS == 1 )
+#যদি ( portUSING_MPU_WRAPPERS == 1 )
 
 /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE will be defined when this file is
  * included from queue.c or task.c to prevent it from having an effect within
@@ -65,12 +65,12 @@
         #define vTaskResume                            MPU_vTaskResume
         #define vTaskSuspendAll                        MPU_vTaskSuspendAll
         #define xTaskResumeAll                         MPU_xTaskResumeAll
-        #define xTaskGetTickCount                      MPU_xTaskGetTickCount
-        #define uxTaskGetNumberOfTasks                 MPU_uxTaskGetNumberOfTasks
+        #define x_Task_Get_Tick_গুনতি                      MPU_x_Task_Get_Tick_গুনতি
+        #define ux_Task_Get_সংখ্যা_Of_Tasks                 MPU_ux_Task_Get_সংখ্যা_Of_Tasks
         #define pcTaskGetName                          MPU_pcTaskGetName
         #define xTaskGetHandle                         MPU_xTaskGetHandle
-        #define uxTaskGetStackHighWaterMark            MPU_uxTaskGetStackHighWaterMark
-        #define uxTaskGetStackHighWaterMark2           MPU_uxTaskGetStackHighWaterMark2
+        #define ux_Task_Get_স্তূপ_উপরের_Water_Mark            MPU_ux_Task_Get_স্তূপ_উপরের_Water_Mark
+        #define ux_Task_Get_স্তূপ_উপরের_Water_Mark2           MPU_ux_Task_Get_স্তূপ_উপরের_Water_Mark2
         #define vTaskSetApplicationTaskTag             MPU_vTaskSetApplicationTaskTag
         #define xTaskGetApplicationTaskTag             MPU_xTaskGetApplicationTaskTag
         #define vTaskSetThreadLocalStoragePointer      MPU_vTaskSetThreadLocalStoragePointer
@@ -80,13 +80,13 @@
         #define uxTaskGetSystemState                   MPU_uxTaskGetSystemState
         #define vTaskList                              MPU_vTaskList
         #define vTaskGetRunTimeStats                   MPU_vTaskGetRunTimeStats
-        #define ulTaskGetIdleRunTimeCounter            MPU_ulTaskGetIdleRunTimeCounter
+        #define ul_Task_Get_Idle_Run_Time_গণক            MPU_ul_Task_Get_Idle_Run_Time_গণক
         #define ulTaskGetIdleRunTimePercent            MPU_ulTaskGetIdleRunTimePercent
         #define xTaskGenericNotify                     MPU_xTaskGenericNotify
         #define xTaskGenericNotifyWait                 MPU_xTaskGenericNotifyWait
         #define ulTaskGenericNotifyTake                MPU_ulTaskGenericNotifyTake
         #define xTaskGenericNotifyStateClear           MPU_xTaskGenericNotifyStateClear
-        #define ulTaskGenericNotifyValueClear          MPU_ulTaskGenericNotifyValueClear
+        #define ul_Task_Generic_Notify_মান_Clear          MPU_ul_Task_Generic_Notify_মান_Clear
         #define xTaskCatchUpTicks                      MPU_xTaskCatchUpTicks
 
         #define xTaskGetCurrentTaskHandle              MPU_xTaskGetCurrentTaskHandle
@@ -117,7 +117,7 @@
         #define xQueueSelectFromSet                    MPU_xQueueSelectFromSet
         #define xQueueGenericReset                     MPU_xQueueGenericReset
 
-        #if ( configQUEUE_REGISTRY_SIZE > 0 )
+        #যদি ( config_QUEUE_REGISTRY_আকার > 0 )
             #define vQueueAddToRegistry                MPU_vQueueAddToRegistry
             #define vQueueUnregisterQueue              MPU_vQueueUnregisterQueue
             #define pcQueueGetName                     MPU_pcQueueGetName
@@ -146,40 +146,40 @@
 
 /* Map standard message/stream_buffer.h API functions to the MPU
  * equivalents. */
-        #define xStreamBufferSend                      MPU_xStreamBufferSend
-        #define xStreamBufferReceive                   MPU_xStreamBufferReceive
-        #define xStreamBufferNextMessageLengthBytes    MPU_xStreamBufferNextMessageLengthBytes
-        #define vStreamBufferDelete                    MPU_vStreamBufferDelete
-        #define xStreamBufferIsFull                    MPU_xStreamBufferIsFull
-        #define xStreamBufferIsEmpty                   MPU_xStreamBufferIsEmpty
-        #define xStreamBufferReset                     MPU_xStreamBufferReset
-        #define xStreamBufferSpacesAvailable           MPU_xStreamBufferSpacesAvailable
-        #define xStreamBufferBytesAvailable            MPU_xStreamBufferBytesAvailable
-        #define xStreamBufferSetTriggerLevel           MPU_xStreamBufferSetTriggerLevel
-        #define xStreamBufferGenericCreate             MPU_xStreamBufferGenericCreate
-        #define xStreamBufferGenericCreateStatic       MPU_xStreamBufferGenericCreateStatic
+        #define x_Stream_বাফার_Send                      MPU_x_Stream_বাফার_Send
+        #define x_Stream_বাফার_Receive                   MPU_x_Stream_বাফার_Receive
+        #define x_Stream_বাফার_পরবর্তী_Message_দৈর্ঘ্য_Bytes    MPU_x_Stream_বাফার_পরবর্তী_Message_দৈর্ঘ্য_Bytes
+        #define v_Stream_বাফার_Delete                    MPU_v_Stream_বাফার_Delete
+        #define x_Stream_বাফার_Is_Full                    MPU_x_Stream_বাফার_Is_Full
+        #define x_Stream_বাফার_Is_Empty                   MPU_x_Stream_বাফার_Is_Empty
+        #define x_Stream_বাফার_Reset                     MPU_x_Stream_বাফার_Reset
+        #define x_Stream_বাফার_Spaces_Available           MPU_x_Stream_বাফার_Spaces_Available
+        #define x_Stream_বাফার_Bytes_Available            MPU_x_Stream_বাফার_Bytes_Available
+        #define x_Stream_বাফার_Set_Trigger_Level           MPU_x_Stream_বাফার_Set_Trigger_Level
+        #define x_Stream_বাফার_Generic_Create             MPU_x_Stream_বাফার_Generic_Create
+        #define x_Stream_বাফার_Generic_Create_Static       MPU_x_Stream_বাফার_Generic_Create_Static
 
 
 /* Remove the privileged function macro, but keep the PRIVILEGED_DATA
  * macro so applications can place data in privileged access sections
  * (useful when using statically allocated objects). */
         #define PRIVILEGED_FUNCTION
-        #define PRIVILEGED_DATA    __attribute__( ( section( "privileged_data" ) ) )
+        #define PRIVILEGED_তথ্য    __attribute__( ( section( "privileged_data" ) ) )
         #define FREERTOS_SYSTEM_CALL
 
-    #else /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
+    #অন্যথা /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
 
 /* Ensure API functions go in the privileged execution section. */
         #define PRIVILEGED_FUNCTION     __attribute__( ( section( "privileged_functions" ) ) )
-        #define PRIVILEGED_DATA         __attribute__( ( section( "privileged_data" ) ) )
+        #define PRIVILEGED_তথ্য         __attribute__( ( section( "privileged_data" ) ) )
         #define FREERTOS_SYSTEM_CALL    __attribute__( ( section( "freertos_system_calls" ) ) )
 
     #endif /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
 
-#else /* portUSING_MPU_WRAPPERS */
+#অন্যথা /* portUSING_MPU_WRAPPERS */
 
     #define PRIVILEGED_FUNCTION
-    #define PRIVILEGED_DATA
+    #define PRIVILEGED_তথ্য
     #define FREERTOS_SYSTEM_CALL
 
 #endif /* portUSING_MPU_WRAPPERS */

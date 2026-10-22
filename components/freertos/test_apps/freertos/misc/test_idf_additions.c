@@ -4,23 +4,23 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/queue.h"
-#include "freertos/semphr.h"
-#include "freertos/stream_buffer.h"
-#include "freertos/message_buffer.h"
-#include "freertos/event_groups.h"
-#include "freertos/idf_additions.h"
-#include "freertos/freertos_debug.h"
-#include "esp_memory_utils.h"
-#include "esp_heap_caps.h"
-#include "unity.h"
-#include "test_utils.h"
-#include <stdio.h>
-#include <string.h>
-#include <inttypes.h>
+#অন্তর্ভাব "sdkconfig.h"
+#অন্তর্ভাব "freertos/FreeRTOS.h"
+#অন্তর্ভাব "freertos/task.h"
+#অন্তর্ভাব "freertos/queue.h"
+#অন্তর্ভাব "freertos/semphr.h"
+#অন্তর্ভাব "freertos/stream_buffer.h"
+#অন্তর্ভাব "freertos/message_buffer.h"
+#অন্তর্ভাব "freertos/event_groups.h"
+#অন্তর্ভাব "freertos/idf_additions.h"
+#অন্তর্ভাব "freertos/freertos_debug.h"
+#অন্তর্ভাব "esp_memory_utils.h"
+#অন্তর্ভাব "esp_heap_caps.h"
+#অন্তর্ভাব "unity.h"
+#অন্তর্ভাব "test_utils.h"
+#অন্তর্ভাব <stdio.h>
+#অন্তর্ভাব <string.h>
+#অন্তর্ভাব <inttypes.h>
 
 /*
 Test ESP-IDF FreeRTOS API additions from idf_additions.h:
@@ -34,35 +34,35 @@ Run only these cases from the Unity menu with the [idf_additions] tag filter.
 #define OBJECT_MEMORY_CAPS      (MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT)
 #define SPIRAM_OBJECT_MEMORY_CAPS (MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT)
 
-static void task_with_caps(void *arg)
+স্থির শূন্য task_with_caps(শূন্য *arg)
 {
     xTaskNotifyGive((TaskHandle_t)arg);
-    vTaskSuspend(NULL);
+    vTaskSuspend(ফাঁকা);
 }
 
-static void task_with_caps_self_delete(void *arg)
+স্থির শূন্য task_with_caps_self_delete(শূন্য *arg)
 {
     /* Wait for the unity task to indicate that this task should delete itself */
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
     /* Although it is not recommended to self-delete a task with memory caps but this
      * is done intentionally to test for memory leaks */
-    vTaskDeleteWithCaps(NULL);
+    vTaskDeleteWithCaps(ফাঁকা);
 }
 
 TEST_CASE("IDF additions: Task creation with memory caps and deletion from another task", "[freertos][idf_additions]")
 {
-    TaskHandle_t task_handle = NULL;
-    StackType_t *puxStackBuffer;
-    StaticTask_t *pxTaskBuffer;
+    TaskHandle_t task_handle = ফাঁকা;
+    স্তূপ_Type_t *pux_স্তূপ_বাফার;
+    StaticTask_t *px_Task_বাফার;
 
     // Create a task with caps
-    TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCoreWithCaps(task_with_caps, "task", 4096, (void *)xTaskGetCurrentTaskHandle(), UNITY_FREERTOS_PRIORITY + 1, &task_handle, UNITY_FREERTOS_CPU, OBJECT_MEMORY_CAPS));
-    TEST_ASSERT_NOT_EQUAL(NULL, task_handle);
+    TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCoreWithCaps(task_with_caps, "task", 4096, (শূন্য *)xTaskGetCurrentTaskHandle(), UNITY_FREERTOS_PRIORITY + 1, &task_handle, UNITY_FREERTOS_CPU, OBJECT_MEMORY_CAPS));
+    TEST_ASSERT_NOT_EQUAL(ফাঁকা, task_handle);
     // Get the task's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(task_handle, &puxStackBuffer, &pxTaskBuffer));
-    TEST_ASSERT(esp_ptr_in_dram(puxStackBuffer));
-    TEST_ASSERT(esp_ptr_in_dram(pxTaskBuffer));
+    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(task_handle, &pux_স্তূপ_বাফার, &px_Task_বাফার));
+    TEST_ASSERT(esp_ptr_in_dram(pux_স্তূপ_বাফার));
+    TEST_ASSERT(esp_ptr_in_dram(px_Task_বাফার));
     // Wait for the created task to block
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
     // Delete the task
@@ -71,42 +71,42 @@ TEST_CASE("IDF additions: Task creation with memory caps and deletion from anoth
 
 TEST_CASE("IDF additions: Task creation with memory caps and self deletion", "[freertos][idf_additions]")
 {
-    TaskHandle_t task_handle = NULL;
-    StackType_t *puxStackBuffer;
-    StaticTask_t *pxTaskBuffer;
+    TaskHandle_t task_handle = ফাঁকা;
+    স্তূপ_Type_t *pux_স্তূপ_বাফার;
+    StaticTask_t *px_Task_বাফার;
 
     // Create a task with caps
-    TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCoreWithCaps(task_with_caps_self_delete, "task", 4096, (void *)xTaskGetCurrentTaskHandle(), UNITY_FREERTOS_PRIORITY + 1, &task_handle, UNITY_FREERTOS_CPU, OBJECT_MEMORY_CAPS));
-    TEST_ASSERT_NOT_EQUAL(NULL, task_handle);
+    TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCoreWithCaps(task_with_caps_self_delete, "task", 4096, (শূন্য *)xTaskGetCurrentTaskHandle(), UNITY_FREERTOS_PRIORITY + 1, &task_handle, UNITY_FREERTOS_CPU, OBJECT_MEMORY_CAPS));
+    TEST_ASSERT_NOT_EQUAL(ফাঁকা, task_handle);
     // Get the task's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(task_handle, &puxStackBuffer, &pxTaskBuffer));
-    TEST_ASSERT(esp_ptr_in_dram(puxStackBuffer));
-    TEST_ASSERT(esp_ptr_in_dram(pxTaskBuffer));
+    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(task_handle, &pux_স্তূপ_বাফার, &px_Task_বাফার));
+    TEST_ASSERT(esp_ptr_in_dram(pux_স্তূপ_বাফার));
+    TEST_ASSERT(esp_ptr_in_dram(px_Task_বাফার));
     // Notify the task to delete itself
     xTaskNotifyGive(task_handle);
 }
 
-#if CONFIG_FREERTOS_TASK_CREATE_ALLOW_EXT_MEM
+#যদি CONFIG_FREERTOS_TASK_CREATE_ALLOW_EXT_MEM
 
 TEST_CASE("IDF additions: Task creation with SPIRAM memory caps and self deletion stress test", "[freertos][idf_additions]")
 {
-#define TEST_NUM_TASKS      5
-#define TEST_NUM_ITERATIONS 1000
-    TaskHandle_t task_handle[TEST_NUM_TASKS];
-    StackType_t *puxStackBuffer;
-    StaticTask_t *pxTaskBuffer;
+#define TEST_অঙ্ক_TASKS      5
+#define TEST_অঙ্ক_ITERATIONS 1000
+    TaskHandle_t task_handle[TEST_অঙ্ক_TASKS];
+    স্তূপ_Type_t *pux_স্তূপ_বাফার;
+    StaticTask_t *px_Task_বাফার;
 
-    for (int j = 0; j < TEST_NUM_ITERATIONS; j++) {
-        for (int i = 0; i < TEST_NUM_TASKS; i++) {
+    জন্য (পূর্ণসংখ্যা j = 0; j < TEST_অঙ্ক_ITERATIONS; j++) {
+        জন্য (পূর্ণসংখ্যা i = 0; i < TEST_অঙ্ক_TASKS; i++) {
             // Create a task with caps
-            TEST_ASSERT_EQUAL(pdPASS, xTaskCreateWithCaps(task_with_caps_self_delete, "task", 4096, NULL, UNITY_FREERTOS_PRIORITY, &task_handle[i], MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT));
+            TEST_ASSERT_EQUAL(pdPASS, xTaskCreateWithCaps(task_with_caps_self_delete, "task", 4096, ফাঁকা, UNITY_FREERTOS_PRIORITY, &task_handle[i], MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT));
             // Get the task's memory
-            TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(task_handle[i], &puxStackBuffer, &pxTaskBuffer));
-            TEST_ASSERT(esp_ptr_external_ram(puxStackBuffer));
-            TEST_ASSERT(esp_ptr_in_dram(pxTaskBuffer));
+            TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(task_handle[i], &pux_স্তূপ_বাফার, &px_Task_বাফার));
+            TEST_ASSERT(esp_ptr_external_ram(pux_স্তূপ_বাফার));
+            TEST_ASSERT(esp_ptr_in_dram(px_Task_বাফার));
         }
 
-        for (int i = 0; i < TEST_NUM_TASKS; i++) {
+        জন্য (পূর্ণসংখ্যা i = 0; i < TEST_অঙ্ক_TASKS; i++) {
             // Notify the task to delete itself
             xTaskNotifyGive(task_handle[i]);
         }
@@ -119,32 +119,32 @@ TEST_CASE("IDF additions: Task creation with SPIRAM memory caps and self deletio
 
 #endif /* CONFIG_FREERTOS_TASK_CREATE_ALLOW_EXT_MEM */
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
+#যদি ( CONFIG_FREERTOS_সংখ্যা_OF_CORES > 1 )
 
-static void task_with_caps_running_on_other_core(void *arg)
+স্থির শূন্য task_with_caps_running_on_other_core(শূন্য *arg)
 {
     /* Notify the unity task that this task is running on the other core */
     xTaskNotifyGive((TaskHandle_t)arg);
 
     /* We make sure that this task is running on the other core */
-    while (1) {
+    যখন (1) {
         ;
     }
 }
 
 TEST_CASE("IDF additions: Task creation with memory caps and deletion from another core", "[freertos][idf_additions]")
 {
-    TaskHandle_t task_handle = NULL;
-    StackType_t *puxStackBuffer;
-    StaticTask_t *pxTaskBuffer;
+    TaskHandle_t task_handle = ফাঁকা;
+    স্তূপ_Type_t *pux_স্তূপ_বাফার;
+    StaticTask_t *px_Task_বাফার;
 
     // Create a task with caps on the other core
-    TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCoreWithCaps(task_with_caps_running_on_other_core, "task", 4096, (void *)xTaskGetCurrentTaskHandle(), UNITY_FREERTOS_PRIORITY + 1, &task_handle, !UNITY_FREERTOS_CPU, OBJECT_MEMORY_CAPS));
-    TEST_ASSERT_NOT_EQUAL(NULL, task_handle);
+    TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCoreWithCaps(task_with_caps_running_on_other_core, "task", 4096, (শূন্য *)xTaskGetCurrentTaskHandle(), UNITY_FREERTOS_PRIORITY + 1, &task_handle, !UNITY_FREERTOS_CPU, OBJECT_MEMORY_CAPS));
+    TEST_ASSERT_NOT_EQUAL(ফাঁকা, task_handle);
     // Get the task's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(task_handle, &puxStackBuffer, &pxTaskBuffer));
-    TEST_ASSERT(esp_ptr_in_dram(puxStackBuffer));
-    TEST_ASSERT(esp_ptr_in_dram(pxTaskBuffer));
+    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(task_handle, &pux_স্তূপ_বাফার, &px_Task_বাফার));
+    TEST_ASSERT(esp_ptr_in_dram(pux_স্তূপ_বাফার));
+    TEST_ASSERT(esp_ptr_in_dram(px_Task_বাফার));
     // Wait for the created task to start running
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
     // Delete the task from another core
@@ -160,8 +160,8 @@ TEST_CASE("IDF additions: Queue creation with memory caps", "[freertos][idf_addi
     StaticQueue_t *queue_obj;
 
     // Create queue with caps
-    queue_handle = xQueueCreateWithCaps(5, sizeof(uint32_t), OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_EQUAL(NULL, queue_handle);
+    queue_handle = xQueueCreateWithCaps(5, আকার(uint32_t), OBJECT_MEMORY_CAPS);
+    TEST_ASSERT_NOT_EQUAL(ফাঁকা, queue_handle);
     // Get the queue's memory
     TEST_ASSERT_EQUAL(pdTRUE, xQueueGetStaticBuffers(queue_handle, &queue_storage, &queue_obj));
     TEST_ASSERT(esp_ptr_in_dram(queue_storage));
@@ -176,37 +176,37 @@ TEST_CASE("IDF additions: Semaphore creation with memory caps", "[freertos][idf_
     StaticSemaphore_t *sem_obj;
 
     // Create binary semaphore with caps
-    sem_handle = xSemaphoreCreateBinaryWithCaps(OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_EQUAL(NULL, sem_handle);
+    sem_handle = x_Semaphore_Create_দ্বিমিক_With_Caps(OBJECT_MEMORY_CAPS);
+    TEST_ASSERT_NOT_EQUAL(ফাঁকা, sem_handle);
     // Get the binary semaphore's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGetStaticBuffer(sem_handle, &sem_obj));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Semaphore_Get_Static_বাফার(sem_handle, &sem_obj));
     TEST_ASSERT(esp_ptr_in_dram(sem_obj));
     // Free the binary semaphore
     vSemaphoreDeleteWithCaps(sem_handle);
 
     // Create counting semaphore with caps
     sem_handle = xSemaphoreCreateCountingWithCaps(4, 0, OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_EQUAL(NULL, sem_handle);
+    TEST_ASSERT_NOT_EQUAL(ফাঁকা, sem_handle);
     // Get the counting semaphore's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGetStaticBuffer(sem_handle, &sem_obj));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Semaphore_Get_Static_বাফার(sem_handle, &sem_obj));
     TEST_ASSERT(esp_ptr_in_dram(sem_obj));
     // Free the counting semaphore
     vSemaphoreDeleteWithCaps(sem_handle);
 
     // Create mutex semaphore with caps
     sem_handle = xSemaphoreCreateMutexWithCaps(OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_EQUAL(NULL, sem_handle);
+    TEST_ASSERT_NOT_EQUAL(ফাঁকা, sem_handle);
     // Get the mutex semaphore's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGetStaticBuffer(sem_handle, &sem_obj));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Semaphore_Get_Static_বাফার(sem_handle, &sem_obj));
     TEST_ASSERT(esp_ptr_in_dram(sem_obj));
     // Free the mutex semaphore
     vSemaphoreDeleteWithCaps(sem_handle);
 
     // Create recursive mutex with caps
     sem_handle = xSemaphoreCreateRecursiveMutexWithCaps(OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_EQUAL(NULL, sem_handle);
+    TEST_ASSERT_NOT_EQUAL(ফাঁকা, sem_handle);
     // Get the recursive mutex's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGetStaticBuffer(sem_handle, &sem_obj));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Semaphore_Get_Static_বাফার(sem_handle, &sem_obj));
     TEST_ASSERT(esp_ptr_in_dram(sem_obj));
     // Free the recursive mutex
     vSemaphoreDeleteWithCaps(sem_handle);
@@ -214,33 +214,33 @@ TEST_CASE("IDF additions: Semaphore creation with memory caps", "[freertos][idf_
 
 TEST_CASE("IDF additions: Stream & message buffer creation with memory caps", "[freertos][idf_additions]")
 {
-    StreamBufferHandle_t stream_buffer_handle;
-    uint8_t *stream_buffer_storage;
-    StaticStreamBuffer_t *stream_buffer_obj;
+    Stream_বাফার_Handle_t stream_বাফার_handle;
+    uint8_t *stream_বাফার_storage;
+    Static_Stream_বাফার_t *stream_বাফার_obj;
 
     // Create stream buffer with caps
-    stream_buffer_handle = xStreamBufferCreateWithCaps(16, 0, OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_EQUAL(NULL, stream_buffer_handle);
+    stream_বাফার_handle = x_Stream_বাফার_Create_With_Caps(16, 0, OBJECT_MEMORY_CAPS);
+    TEST_ASSERT_NOT_EQUAL(ফাঁকা, stream_বাফার_handle);
     // Get the stream buffer's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xStreamBufferGetStaticBuffers(stream_buffer_handle, &stream_buffer_storage, &stream_buffer_obj));
-    TEST_ASSERT(esp_ptr_in_dram(stream_buffer_storage));
-    TEST_ASSERT(esp_ptr_in_dram(stream_buffer_obj));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Stream_বাফার_Get_Static_Buffers(stream_বাফার_handle, &stream_বাফার_storage, &stream_বাফার_obj));
+    TEST_ASSERT(esp_ptr_in_dram(stream_বাফার_storage));
+    TEST_ASSERT(esp_ptr_in_dram(stream_বাফার_obj));
     // Free the stream buffer
-    vStreamBufferDeleteWithCaps(stream_buffer_handle);
+    v_Stream_বাফার_Delete_With_Caps(stream_বাফার_handle);
 
-    MessageBufferHandle_t msg_buffer_handle;
-    uint8_t *msg_buffer_storage;
-    StaticMessageBuffer_t *msg_buffer_obj;
+    Message_বাফার_Handle_t বার্তা_বাফার_handle;
+    uint8_t *বার্তা_বাফার_storage;
+    Static_Message_বাফার_t *বার্তা_বাফার_obj;
 
     // Create message buffer with caps
-    msg_buffer_handle = xMessageBufferCreateWithCaps(16, OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_EQUAL(NULL, msg_buffer_handle);
+    বার্তা_বাফার_handle = x_Message_বাফার_Create_With_Caps(16, OBJECT_MEMORY_CAPS);
+    TEST_ASSERT_NOT_EQUAL(ফাঁকা, বার্তা_বাফার_handle);
     // Get the message buffer's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xMessageBufferGetStaticBuffers(msg_buffer_handle, &msg_buffer_storage, &msg_buffer_obj));
-    TEST_ASSERT(esp_ptr_in_dram(msg_buffer_storage));
-    TEST_ASSERT(esp_ptr_in_dram(msg_buffer_obj));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Message_বাফার_Get_Static_Buffers(বার্তা_বাফার_handle, &বার্তা_বাফার_storage, &বার্তা_বাফার_obj));
+    TEST_ASSERT(esp_ptr_in_dram(বার্তা_বাফার_storage));
+    TEST_ASSERT(esp_ptr_in_dram(বার্তা_বাফার_obj));
     // Free the message buffer
-    vMessageBufferDeleteWithCaps(msg_buffer_handle);
+    v_Message_বাফার_Delete_With_Caps(বার্তা_বাফার_handle);
 }
 
 TEST_CASE("IDF additions: Event group creation with memory caps", "[freertos][idf_additions]")
@@ -250,9 +250,9 @@ TEST_CASE("IDF additions: Event group creation with memory caps", "[freertos][id
 
     // Create event group with caps
     evt_group_handle = xEventGroupCreateWithCaps(OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_EQUAL(NULL, evt_group_handle);
+    TEST_ASSERT_NOT_EQUAL(ফাঁকা, evt_group_handle);
     // Get the event group's memory
-    TEST_ASSERT_EQUAL(pdTRUE, xEventGroupGetStaticBuffer(evt_group_handle, &evt_group_obj));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Event_Group_Get_Static_বাফার(evt_group_handle, &evt_group_obj));
     TEST_ASSERT(esp_ptr_in_dram(evt_group_obj));
     // Free the event group
     vEventGroupDeleteWithCaps(evt_group_handle);
@@ -264,38 +264,38 @@ TEST_CASE("IDF additions: WithCaps objects functional smoke test", "[freertos][i
     uint32_t send_val = 0xA5A5A5A5;
     uint32_t recv_val = 0;
 
-    queue_handle = xQueueCreateWithCaps(4, sizeof(uint32_t), OBJECT_MEMORY_CAPS);
+    queue_handle = xQueueCreateWithCaps(4, আকার(uint32_t), OBJECT_MEMORY_CAPS);
     TEST_ASSERT_NOT_NULL(queue_handle);
     TEST_ASSERT_EQUAL(pdTRUE, xQueueSend(queue_handle, &send_val, 0));
     TEST_ASSERT_EQUAL(pdTRUE, xQueueReceive(queue_handle, &recv_val, 0));
     TEST_ASSERT_EQUAL(send_val, recv_val);
     vQueueDeleteWithCaps(queue_handle);
 
-    SemaphoreHandle_t sem_handle = xSemaphoreCreateBinaryWithCaps(OBJECT_MEMORY_CAPS);
+    SemaphoreHandle_t sem_handle = x_Semaphore_Create_দ্বিমিক_With_Caps(OBJECT_MEMORY_CAPS);
     TEST_ASSERT_NOT_NULL(sem_handle);
     TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGive(sem_handle));
     TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTake(sem_handle, 0));
     vSemaphoreDeleteWithCaps(sem_handle);
 
-    StreamBufferHandle_t stream_buffer_handle;
+    Stream_বাফার_Handle_t stream_বাফার_handle;
     uint8_t stream_tx[] = {0x01, 0x02, 0x03};
-    uint8_t stream_rx[sizeof(stream_tx)] = {0};
+    uint8_t stream_rx[আকার(stream_tx)] = {0};
 
-    stream_buffer_handle = xStreamBufferCreateWithCaps(32, 1, OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_NULL(stream_buffer_handle);
-    TEST_ASSERT_EQUAL(sizeof(stream_tx), xStreamBufferSend(stream_buffer_handle, stream_tx, sizeof(stream_tx), 0));
-    TEST_ASSERT_EQUAL(sizeof(stream_rx), xStreamBufferReceive(stream_buffer_handle, stream_rx, sizeof(stream_rx), 0));
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(stream_tx, stream_rx, sizeof(stream_tx));
-    vStreamBufferDeleteWithCaps(stream_buffer_handle);
+    stream_বাফার_handle = x_Stream_বাফার_Create_With_Caps(32, 1, OBJECT_MEMORY_CAPS);
+    TEST_ASSERT_NOT_NULL(stream_বাফার_handle);
+    TEST_ASSERT_EQUAL(আকার(stream_tx), x_Stream_বাফার_Send(stream_বাফার_handle, stream_tx, আকার(stream_tx), 0));
+    TEST_ASSERT_EQUAL(আকার(stream_rx), x_Stream_বাফার_Receive(stream_বাফার_handle, stream_rx, আকার(stream_rx), 0));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(stream_tx, stream_rx, আকার(stream_tx));
+    v_Stream_বাফার_Delete_With_Caps(stream_বাফার_handle);
 
-    MessageBufferHandle_t msg_buffer_handle;
+    Message_বাফার_Handle_t বার্তা_বাফার_handle;
 
-    msg_buffer_handle = xMessageBufferCreateWithCaps(32, OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_NULL(msg_buffer_handle);
-    TEST_ASSERT_EQUAL(sizeof(stream_tx), xMessageBufferSend(msg_buffer_handle, stream_tx, sizeof(stream_tx), 0));
-    TEST_ASSERT_EQUAL(sizeof(stream_rx), xMessageBufferReceive(msg_buffer_handle, stream_rx, sizeof(stream_rx), 0));
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(stream_tx, stream_rx, sizeof(stream_tx));
-    vMessageBufferDeleteWithCaps(msg_buffer_handle);
+    বার্তা_বাফার_handle = x_Message_বাফার_Create_With_Caps(32, OBJECT_MEMORY_CAPS);
+    TEST_ASSERT_NOT_NULL(বার্তা_বাফার_handle);
+    TEST_ASSERT_EQUAL(আকার(stream_tx), x_Message_বাফার_Send(বার্তা_বাফার_handle, stream_tx, আকার(stream_tx), 0));
+    TEST_ASSERT_EQUAL(আকার(stream_rx), x_Message_বাফার_Receive(বার্তা_বাফার_handle, stream_rx, আকার(stream_rx), 0));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(stream_tx, stream_rx, আকার(stream_tx));
+    v_Message_বাফার_Delete_With_Caps(বার্তা_বাফার_handle);
 
     EventGroupHandle_t evt_group_handle = xEventGroupCreateWithCaps(OBJECT_MEMORY_CAPS);
     TEST_ASSERT_NOT_NULL(evt_group_handle);
@@ -308,20 +308,20 @@ TEST_CASE("IDF additions: WithCaps creation fails on out of memory", "[freertos]
 {
     /* Size just past the total heap for these caps so allocation must fail on every target,
      * without fixed constants that can overflow size_t (e.g. stack_words * sizeof(StackType_t)). */
-    const size_t total_caps = heap_caps_get_total_size(OBJECT_MEMORY_CAPS);
-    const size_t oom_bytes = total_caps + 1024;
-    const UBaseType_t oom_queue_len = (UBaseType_t)((oom_bytes / sizeof(uint32_t)) + 1);
-    const configSTACK_DEPTH_TYPE oom_stack_words =
-        (configSTACK_DEPTH_TYPE)((oom_bytes / sizeof(StackType_t)) + 1);
-    TaskHandle_t task_handle = NULL;
+    ধ্রুবক size_t যোগ_caps = heap_caps_get_যোগ_আকার(OBJECT_MEMORY_CAPS);
+    ধ্রুবক size_t oom_bytes = যোগ_caps + 1024;
+    ধ্রুবক UBaseType_t oom_queue_len = (UBaseType_t)((oom_bytes / আকার(uint32_t)) + 1);
+    ধ্রুবক config_স্তূপ_DEPTH_TYPE oom_স্তূপ_শব্দগুলি =
+        (config_স্তূপ_DEPTH_TYPE)((oom_bytes / আকার(স্তূপ_Type_t)) + 1);
+    TaskHandle_t task_handle = ফাঁকা;
 
-    TEST_ASSERT_NULL(xQueueCreateWithCaps(oom_queue_len, sizeof(uint32_t), OBJECT_MEMORY_CAPS));
-    TEST_ASSERT_NULL(xStreamBufferCreateWithCaps(oom_bytes, 1, OBJECT_MEMORY_CAPS));
-    TEST_ASSERT_NULL(xMessageBufferCreateWithCaps(oom_bytes, OBJECT_MEMORY_CAPS));
+    TEST_ASSERT_NULL(xQueueCreateWithCaps(oom_queue_len, আকার(uint32_t), OBJECT_MEMORY_CAPS));
+    TEST_ASSERT_NULL(x_Stream_বাফার_Create_With_Caps(oom_bytes, 1, OBJECT_MEMORY_CAPS));
+    TEST_ASSERT_NULL(x_Message_বাফার_Create_With_Caps(oom_bytes, OBJECT_MEMORY_CAPS));
     TEST_ASSERT_EQUAL(pdFAIL, xTaskCreatePinnedToCoreWithCaps(task_with_caps,
                                                               "oom_task",
-                                                              oom_stack_words,
-                                                              NULL,
+                                                              oom_স্তূপ_শব্দগুলি,
+                                                              ফাঁকা,
                                                               UNITY_FREERTOS_PRIORITY,
                                                               &task_handle,
                                                               UNITY_FREERTOS_CPU,
@@ -332,7 +332,7 @@ TEST_CASE("IDF additions: WithCaps creation fails on out of memory", "[freertos]
 /* Create/delete coverage for remaining WithCaps types; Unity setUp/tearDown leak check verifies heap restore. */
 TEST_CASE("IDF additions: WithCaps create delete restores heap", "[freertos][idf_additions]")
 {
-    QueueHandle_t queue_handle = xQueueCreateWithCaps(4, sizeof(uint32_t), OBJECT_MEMORY_CAPS);
+    QueueHandle_t queue_handle = xQueueCreateWithCaps(4, আকার(uint32_t), OBJECT_MEMORY_CAPS);
     TEST_ASSERT_NOT_NULL(queue_handle);
     vQueueDeleteWithCaps(queue_handle);
 
@@ -340,20 +340,20 @@ TEST_CASE("IDF additions: WithCaps create delete restores heap", "[freertos][idf
     TEST_ASSERT_NOT_NULL(sem_handle);
     vSemaphoreDeleteWithCaps(sem_handle);
 
-    StreamBufferHandle_t stream_buffer_handle = xStreamBufferCreateWithCaps(16, 1, OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_NULL(stream_buffer_handle);
-    vStreamBufferDeleteWithCaps(stream_buffer_handle);
+    Stream_বাফার_Handle_t stream_বাফার_handle = x_Stream_বাফার_Create_With_Caps(16, 1, OBJECT_MEMORY_CAPS);
+    TEST_ASSERT_NOT_NULL(stream_বাফার_handle);
+    v_Stream_বাফার_Delete_With_Caps(stream_বাফার_handle);
 
-    MessageBufferHandle_t msg_buffer_handle = xMessageBufferCreateWithCaps(16, OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_NULL(msg_buffer_handle);
-    vMessageBufferDeleteWithCaps(msg_buffer_handle);
+    Message_বাফার_Handle_t বার্তা_বাফার_handle = x_Message_বাফার_Create_With_Caps(16, OBJECT_MEMORY_CAPS);
+    TEST_ASSERT_NOT_NULL(বার্তা_বাফার_handle);
+    v_Message_বাফার_Delete_With_Caps(বার্তা_বাফার_handle);
 
     EventGroupHandle_t evt_group_handle = xEventGroupCreateWithCaps(OBJECT_MEMORY_CAPS);
     TEST_ASSERT_NOT_NULL(evt_group_handle);
     vEventGroupDeleteWithCaps(evt_group_handle);
 }
 
-#if CONFIG_SPIRAM
+#যদি CONFIG_SPIRAM
 
 TEST_CASE("IDF additions: WithCaps objects allocate in SPIRAM when requested", "[freertos][idf_additions]")
 {
@@ -362,23 +362,23 @@ TEST_CASE("IDF additions: WithCaps objects allocate in SPIRAM when requested", "
     uint8_t *queue_storage;
     StaticQueue_t *queue_obj;
 
-    queue_handle = xQueueCreateWithCaps(4, sizeof(uint32_t), SPIRAM_OBJECT_MEMORY_CAPS);
+    queue_handle = xQueueCreateWithCaps(4, আকার(uint32_t), SPIRAM_OBJECT_MEMORY_CAPS);
     TEST_ASSERT_NOT_NULL(queue_handle);
     TEST_ASSERT_EQUAL(pdTRUE, xQueueGetStaticBuffers(queue_handle, &queue_storage, &queue_obj));
     TEST_ASSERT(esp_ptr_external_ram(queue_storage));
     TEST_ASSERT(esp_ptr_external_ram(queue_obj));
     vQueueDeleteWithCaps(queue_handle);
 
-    StreamBufferHandle_t stream_buffer_handle;
-    uint8_t *stream_buffer_storage;
-    StaticStreamBuffer_t *stream_buffer_obj;
+    Stream_বাফার_Handle_t stream_বাফার_handle;
+    uint8_t *stream_বাফার_storage;
+    Static_Stream_বাফার_t *stream_বাফার_obj;
 
-    stream_buffer_handle = xStreamBufferCreateWithCaps(16, 1, SPIRAM_OBJECT_MEMORY_CAPS);
-    TEST_ASSERT_NOT_NULL(stream_buffer_handle);
-    TEST_ASSERT_EQUAL(pdTRUE, xStreamBufferGetStaticBuffers(stream_buffer_handle, &stream_buffer_storage, &stream_buffer_obj));
-    TEST_ASSERT(esp_ptr_external_ram(stream_buffer_storage));
-    TEST_ASSERT(esp_ptr_external_ram(stream_buffer_obj));
-    vStreamBufferDeleteWithCaps(stream_buffer_handle);
+    stream_বাফার_handle = x_Stream_বাফার_Create_With_Caps(16, 1, SPIRAM_OBJECT_MEMORY_CAPS);
+    TEST_ASSERT_NOT_NULL(stream_বাফার_handle);
+    TEST_ASSERT_EQUAL(pdTRUE, x_Stream_বাফার_Get_Static_Buffers(stream_বাফার_handle, &stream_বাফার_storage, &stream_বাফার_obj));
+    TEST_ASSERT(esp_ptr_external_ram(stream_বাফার_storage));
+    TEST_ASSERT(esp_ptr_external_ram(stream_বাফার_obj));
+    v_Stream_বাফার_Delete_With_Caps(stream_বাফার_handle);
 }
 
 #endif /* CONFIG_SPIRAM */
@@ -387,90 +387,90 @@ TEST_CASE("IDF additions: WithCaps objects allocate in SPIRAM when requested", "
  * Task utility API tests (xTaskGetCoreID, xTaskGetStackStart, per-core handle helpers, etc.)
  * --------------------------------------------------------------------------------------------------------------------- */
 
-static void stack_test_task(void *arg)
+স্থির শূন্য স্তূপ_test_task(শূন্য *arg)
 {
-    (void)arg;
-    vTaskSuspend(NULL);
+    (শূন্য)arg;
+    vTaskSuspend(ফাঁকা);
 }
 
-typedef struct {
+প্রকারলেখ কাঠামো {
     TaskHandle_t parent;
     BaseType_t expected_core;
     BaseType_t observed_core;
     TaskHandle_t self_handle;
 } core_id_query_ctx_t;
 
-static void pinned_core_id_task(void *arg)
+স্থির শূন্য pinned_core_id_task(শূন্য *arg)
 {
     core_id_query_ctx_t *ctx = (core_id_query_ctx_t *)arg;
 
     ctx->self_handle = xTaskGetCurrentTaskHandle();
     ctx->observed_core = xPortGetCoreID();
     TEST_ASSERT_EQUAL(ctx->expected_core, ctx->observed_core);
-    TEST_ASSERT_EQUAL(ctx->expected_core, xTaskGetCoreID(NULL));
+    TEST_ASSERT_EQUAL(ctx->expected_core, xTaskGetCoreID(ফাঁকা));
     TEST_ASSERT_EQUAL(ctx->expected_core, xTaskGetCoreID(ctx->self_handle));
 
     xTaskNotifyGive(ctx->parent);
-    vTaskSuspend(NULL);
+    vTaskSuspend(ফাঁকা);
 }
 
 TEST_CASE("IDF additions: xTaskGetCoreID for pinned tasks", "[freertos][idf_additions]")
 {
-    const TaskHandle_t parent = xTaskGetCurrentTaskHandle();
-    core_id_query_ctx_t ctx[CONFIG_FREERTOS_NUMBER_OF_CORES];
+    ধ্রুবক TaskHandle_t parent = xTaskGetCurrentTaskHandle();
+    core_id_query_ctx_t ctx[CONFIG_FREERTOS_সংখ্যা_OF_CORES];
 
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    জন্য (পূর্ণসংখ্যা core = 0; core < CONFIG_FREERTOS_সংখ্যা_OF_CORES; core++) {
         ctx[core].parent = parent;
         ctx[core].expected_core = core;
         ctx[core].observed_core = -1;
-        ctx[core].self_handle = NULL;
+        ctx[core].self_handle = ফাঁকা;
 
         TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCore(pinned_core_id_task,
                                                           "core_id",
                                                           2048,
                                                           &ctx[core],
                                                           UNITY_FREERTOS_PRIORITY + 1,
-                                                          NULL,
+                                                          ফাঁকা,
                                                           core));
     }
 
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    জন্য (পূর্ণসংখ্যা core = 0; core < CONFIG_FREERTOS_সংখ্যা_OF_CORES; core++) {
         TEST_ASSERT_NOT_EQUAL(0, ulTaskNotifyTake(pdFALSE, pdMS_TO_TICKS(1000)));
         TEST_ASSERT_EQUAL(core, ctx[core].observed_core);
         TEST_ASSERT_EQUAL(core, xTaskGetCoreID(ctx[core].self_handle));
     }
 
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    জন্য (পূর্ণসংখ্যা core = 0; core < CONFIG_FREERTOS_সংখ্যা_OF_CORES; core++) {
         vTaskDelete(ctx[core].self_handle);
     }
     vTaskDelay(1);
 }
 
-#if (CONFIG_FREERTOS_NUMBER_OF_CORES > 1) && !CONFIG_FREERTOS_SMP
+#যদি (CONFIG_FREERTOS_সংখ্যা_OF_CORES > 1) && !CONFIG_FREERTOS_SMP
 
-static SemaphoreHandle_t s_unpinned_done_sem;
-static TaskHandle_t s_unpinned_task_handle;
+স্থির SemaphoreHandle_t s_unpinned_done_sem;
+স্থির TaskHandle_t s_unpinned_task_handle;
 
-static void unpinned_core_id_task(void *arg)
+স্থির শূন্য unpinned_core_id_task(শূন্য *arg)
 {
-    (void)arg;
+    (শূন্য)arg;
     s_unpinned_task_handle = xTaskGetCurrentTaskHandle();
     xSemaphoreGive(s_unpinned_done_sem);
-    vTaskSuspend(NULL);
+    vTaskSuspend(ফাঁকা);
 }
 
 TEST_CASE("IDF additions: xTaskGetCoreID returns tskNO_AFFINITY for unpinned task", "[freertos][idf_additions]")
 {
-    s_unpinned_done_sem = xSemaphoreCreateBinary();
+    s_unpinned_done_sem = x_Semaphore_Create_দ্বিমিক();
     TEST_ASSERT_NOT_NULL(s_unpinned_done_sem);
-    s_unpinned_task_handle = NULL;
+    s_unpinned_task_handle = ফাঁকা;
 
     TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCore(unpinned_core_id_task,
                                                       "unpinned",
                                                       2048,
-                                                      NULL,
+                                                      ফাঁকা,
                                                       UNITY_FREERTOS_PRIORITY - 1,
-                                                      NULL,
+                                                      ফাঁকা,
                                                       tskNO_AFFINITY));
     TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTake(s_unpinned_done_sem, pdMS_TO_TICKS(1000)));
     TEST_ASSERT_NOT_NULL(s_unpinned_task_handle);
@@ -483,11 +483,11 @@ TEST_CASE("IDF additions: xTaskGetCoreID returns tskNO_AFFINITY for unpinned tas
 
 #endif /* CONFIG_FREERTOS_NUMBER_OF_CORES > 1 && !CONFIG_FREERTOS_SMP */
 
-#if CONFIG_FREERTOS_UNICORE
+#যদি CONFIG_FREERTOS_UNICORE
 
 TEST_CASE("IDF additions: xTaskGetCoreID returns 0 on unicore", "[freertos][idf_additions]")
 {
-    TEST_ASSERT_EQUAL(0, xTaskGetCoreID(NULL));
+    TEST_ASSERT_EQUAL(0, xTaskGetCoreID(ফাঁকা));
     TEST_ASSERT_EQUAL(0, xTaskGetCoreID(xTaskGetCurrentTaskHandle()));
 }
 
@@ -495,83 +495,83 @@ TEST_CASE("IDF additions: xTaskGetCoreID returns 0 on unicore", "[freertos][idf_
 
 TEST_CASE("IDF additions: xTaskGetStackStart", "[freertos][idf_additions]")
 {
-    StackType_t *current_stack_via_null = xTaskGetStackStart(NULL);
-    StackType_t *current_stack_via_handle = xTaskGetStackStart(xTaskGetCurrentTaskHandle());
+    স্তূপ_Type_t *current_স্তূপ_via_null = x_Task_Get_স্তূপ_Start(ফাঁকা);
+    স্তূপ_Type_t *current_স্তূপ_via_handle = x_Task_Get_স্তূপ_Start(xTaskGetCurrentTaskHandle());
 
-    TEST_ASSERT_NOT_NULL(current_stack_via_null);
-    TEST_ASSERT_EQUAL_PTR(current_stack_via_null, current_stack_via_handle);
+    TEST_ASSERT_NOT_NULL(current_স্তূপ_via_null);
+    TEST_ASSERT_EQUAL_PTR(current_স্তূপ_via_null, current_স্তূপ_via_handle);
 
-    TaskHandle_t caps_task = NULL;
-    StackType_t *caps_stack_buffer = NULL;
-    StaticTask_t *caps_task_buffer = NULL;
+    TaskHandle_t caps_task = ফাঁকা;
+    স্তূপ_Type_t *caps_স্তূপ_বাফার = ফাঁকা;
+    StaticTask_t *caps_task_বাফার = ফাঁকা;
 
-    TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCoreWithCaps(stack_test_task,
+    TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCoreWithCaps(স্তূপ_test_task,
                                                               "stack_caps",
                                                               4096,
-                                                              NULL,
+                                                              ফাঁকা,
                                                               UNITY_FREERTOS_PRIORITY + 1,
                                                               &caps_task,
                                                               UNITY_FREERTOS_CPU,
                                                               OBJECT_MEMORY_CAPS));
     TEST_ASSERT_NOT_NULL(caps_task);
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(caps_task, &caps_stack_buffer, &caps_task_buffer));
-    TEST_ASSERT_EQUAL_PTR(caps_stack_buffer, xTaskGetStackStart(caps_task));
+    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetStaticBuffers(caps_task, &caps_স্তূপ_বাফার, &caps_task_বাফার));
+    TEST_ASSERT_EQUAL_PTR(caps_স্তূপ_বাফার, x_Task_Get_স্তূপ_Start(caps_task));
 
     vTaskDeleteWithCaps(caps_task);
     vTaskDelay(10);
 
-#define STATIC_STACK_BYTES 4096
-    static StackType_t static_stack[STATIC_STACK_BYTES / sizeof(StackType_t)];
-    static StaticTask_t static_task_buffer;
+#define STATIC_স্তূপ_BYTES 4096
+    স্থির স্তূপ_Type_t static_স্তূপ[STATIC_স্তূপ_BYTES / আকার(স্তূপ_Type_t)];
+    স্থির StaticTask_t static_task_বাফার;
 
-    memset(&static_task_buffer, 0, sizeof(static_task_buffer));
+    memset(&static_task_বাফার, 0, আকার(static_task_বাফার));
 
-    TaskHandle_t static_task = xTaskCreateStaticPinnedToCore(stack_test_task,
+    TaskHandle_t static_task = xTaskCreateStaticPinnedToCore(স্তূপ_test_task,
                                                              "stack_static",
-                                                             STATIC_STACK_BYTES,
-                                                             NULL,
+                                                             STATIC_স্তূপ_BYTES,
+                                                             ফাঁকা,
                                                              UNITY_FREERTOS_PRIORITY + 1,
-                                                             static_stack,
-                                                             &static_task_buffer,
+                                                             static_স্তূপ,
+                                                             &static_task_বাফার,
                                                              UNITY_FREERTOS_CPU);
     TEST_ASSERT_NOT_NULL(static_task);
-    TEST_ASSERT_EQUAL_PTR(static_stack, xTaskGetStackStart(static_task));
+    TEST_ASSERT_EQUAL_PTR(static_স্তূপ, x_Task_Get_স্তূপ_Start(static_task));
 
     vTaskDelete(static_task);
     vTaskDelay(1);
 }
 
-#if !CONFIG_FREERTOS_SMP
+#যদি !CONFIG_FREERTOS_SMP
 
 TEST_CASE("IDF additions: xTaskGetIdleTaskHandleForCore", "[freertos][idf_additions]")
 {
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    জন্য (পূর্ণসংখ্যা core = 0; core < CONFIG_FREERTOS_সংখ্যা_OF_CORES; core++) {
         TaskHandle_t idle_for_core = xTaskGetIdleTaskHandleForCore(core);
-        char expected_name[configMAX_TASK_NAME_LEN];
+        অক্ষর expected_name[configMAX_TASK_NAME_LEN];
 
         TEST_ASSERT_NOT_NULL(idle_for_core);
-#if CONFIG_FREERTOS_NUMBER_OF_CORES > 1
-        snprintf(expected_name, sizeof(expected_name), "IDLE%d", core);
-#else
-        snprintf(expected_name, sizeof(expected_name), "IDLE");
+#যদি CONFIG_FREERTOS_সংখ্যা_OF_CORES > 1
+        snprintf(expected_name, আকার(expected_name), "IDLE%d", core);
+#অন্যথা
+        snprintf(expected_name, আকার(expected_name), "IDLE");
 #endif
         TEST_ASSERT_EQUAL_STRING(expected_name, pcTaskGetName(idle_for_core));
     }
 
-#if CONFIG_FREERTOS_UNICORE
+#যদি CONFIG_FREERTOS_UNICORE
     TEST_ASSERT_EQUAL(xTaskGetIdleTaskHandle(), xTaskGetIdleTaskHandleForCore(0));
 #endif
 }
 
-typedef struct {
+প্রকারলেখ কাঠামো {
     TaskHandle_t parent;
     BaseType_t core;
     TaskHandle_t self_handle;
     TaskHandle_t queried_handle;
-    void * queried_tcb;
+    শূন্য * queried_tcb;
 } per_core_handle_ctx_t;
 
-static void running_on_core_task(void *arg)
+স্থির শূন্য running_on_core_task(শূন্য *arg)
 {
     per_core_handle_ctx_t *ctx = (per_core_handle_ctx_t *)arg;
 
@@ -580,23 +580,23 @@ static void running_on_core_task(void *arg)
     ctx->queried_tcb = pvTaskGetCurrentTCBForCore(ctx->core);
 
     xTaskNotifyGive(ctx->parent);
-    vTaskSuspend(NULL);
+    vTaskSuspend(ফাঁকা);
 }
 
 TEST_CASE("IDF additions: xTaskGetCurrentTaskHandleForCore and pvTaskGetCurrentTCBForCore", "[freertos][idf_additions]")
 {
-    const TaskHandle_t parent = xTaskGetCurrentTaskHandle();
+    ধ্রুবক TaskHandle_t parent = xTaskGetCurrentTaskHandle();
 
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    জন্য (পূর্ণসংখ্যা core = 0; core < CONFIG_FREERTOS_সংখ্যা_OF_CORES; core++) {
         per_core_handle_ctx_t ctx = {
             .parent = parent,
             .core = core,
-            .self_handle = NULL,
-            .queried_handle = NULL,
-            .queried_tcb = NULL,
+            .self_handle = ফাঁকা,
+            .queried_handle = ফাঁকা,
+            .queried_tcb = ফাঁকা,
         };
 
-        while (ulTaskNotifyTake(pdFALSE, 0) != 0) {
+        যখন (ulTaskNotifyTake(pdFALSE, 0) != 0) {
             ;
         }
 
@@ -605,13 +605,13 @@ TEST_CASE("IDF additions: xTaskGetCurrentTaskHandleForCore and pvTaskGetCurrentT
                                                           2048,
                                                           &ctx,
                                                           UNITY_FREERTOS_PRIORITY + 1,
-                                                          NULL,
+                                                          ফাঁকা,
                                                           core));
 
         TEST_ASSERT_NOT_EQUAL(0, ulTaskNotifyTake(pdFALSE, pdMS_TO_TICKS(1000)));
 
         TEST_ASSERT_EQUAL_PTR(ctx.self_handle, ctx.queried_handle);
-        TEST_ASSERT_EQUAL_PTR((void *)ctx.self_handle, ctx.queried_tcb);
+        TEST_ASSERT_EQUAL_PTR((শূন্য *)ctx.self_handle, ctx.queried_tcb);
 
         vTaskDelete(ctx.self_handle);
         vTaskDelay(1);
@@ -620,15 +620,15 @@ TEST_CASE("IDF additions: xTaskGetCurrentTaskHandleForCore and pvTaskGetCurrentT
 
 #endif /* !CONFIG_FREERTOS_SMP */
 
-#if CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS && !CONFIG_FREERTOS_SMP
+#যদি CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS && !CONFIG_FREERTOS_SMP
 
 TEST_CASE("IDF additions: ulTaskGetIdleRunTimeCounterForCore", "[freertos][idf_additions]")
 {
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
-        configRUN_TIME_COUNTER_TYPE idle_counter = ulTaskGetIdleRunTimeCounterForCore(core);
-        configRUN_TIME_COUNTER_TYPE idle_percent = ulTaskGetIdleRunTimePercentForCore(core);
+    জন্য (পূর্ণসংখ্যা core = 0; core < CONFIG_FREERTOS_সংখ্যা_OF_CORES; core++) {
+        config_RUN_TIME_গণক_TYPE idle_গণক = ul_Task_Get_Idle_Run_Time_গণক_For_Core(core);
+        config_RUN_TIME_গণক_TYPE idle_percent = ulTaskGetIdleRunTimePercentForCore(core);
 
-        TEST_ASSERT_GREATER_OR_EQUAL(0, idle_counter);
+        TEST_ASSERT_GREATER_OR_EQUAL(0, idle_গণক);
         TEST_ASSERT_LESS_OR_EQUAL(100, idle_percent);
     }
 }
@@ -640,34 +640,34 @@ TEST_CASE("IDF additions: ulTaskGetIdleRunTimeCounterForCore", "[freertos][idf_a
  * --------------------------------------------------------------------------------------------------------------------- */
 
 #define PIN_SEMANTICS_SAMPLES     5
-#define PIN_SEMANTICS_STACK_BYTES 4096
+#define PIN_SEMANTICS_স্তূপ_BYTES 4096
 
-typedef struct {
+প্রকারলেখ কাঠামো {
     TaskHandle_t parent;
     BaseType_t requested_core;
     BaseType_t samples[PIN_SEMANTICS_SAMPLES];
     TaskHandle_t self_handle;
 } pin_semantics_ctx_t;
 
-static void drain_task_notifications(void)
+স্থির শূন্য drain_task_notifications(শূন্য)
 {
-    while (ulTaskNotifyTake(pdFALSE, 0) != 0) {
+    যখন (ulTaskNotifyTake(pdFALSE, 0) != 0) {
         ;
     }
 }
 
-static void pin_semantics_task(void *arg)
+স্থির শূন্য pin_semantics_task(শূন্য *arg)
 {
     pin_semantics_ctx_t *ctx = (pin_semantics_ctx_t *)arg;
 
     ctx->self_handle = xTaskGetCurrentTaskHandle();
-    for (int i = 0; i < PIN_SEMANTICS_SAMPLES; i++) {
+    জন্য (পূর্ণসংখ্যা i = 0; i < PIN_SEMANTICS_SAMPLES; i++) {
         ctx->samples[i] = xPortGetCoreID();
-        if (ctx->requested_core != tskNO_AFFINITY) {
+        যদি (ctx->requested_core != tskNO_AFFINITY) {
             TEST_ASSERT_EQUAL(ctx->requested_core, ctx->samples[i]);
-        } else {
+        } অন্যথা {
             TEST_ASSERT_GREATER_OR_EQUAL(0, ctx->samples[i]);
-            TEST_ASSERT_LESS_THAN(CONFIG_FREERTOS_NUMBER_OF_CORES, ctx->samples[i]);
+            TEST_ASSERT_LESS_THAN(CONFIG_FREERTOS_সংখ্যা_OF_CORES, ctx->samples[i]);
         }
         /* Yield and sleep so a wrongly pinned task would have a chance to migrate. */
         taskYIELD();
@@ -675,16 +675,16 @@ static void pin_semantics_task(void *arg)
     }
 
     xTaskNotifyGive(ctx->parent);
-    vTaskSuspend(NULL);
+    vTaskSuspend(ফাঁকা);
 }
 
-static void verify_pin_samples(const pin_semantics_ctx_t *ctx)
+স্থির শূন্য verify_pin_samples(ধ্রুবক pin_semantics_ctx_t *ctx)
 {
-    for (int i = 0; i < PIN_SEMANTICS_SAMPLES; i++) {
-        if (ctx->requested_core == tskNO_AFFINITY) {
+    জন্য (পূর্ণসংখ্যা i = 0; i < PIN_SEMANTICS_SAMPLES; i++) {
+        যদি (ctx->requested_core == tskNO_AFFINITY) {
             TEST_ASSERT_GREATER_OR_EQUAL(0, ctx->samples[i]);
-            TEST_ASSERT_LESS_THAN(CONFIG_FREERTOS_NUMBER_OF_CORES, ctx->samples[i]);
-        } else {
+            TEST_ASSERT_LESS_THAN(CONFIG_FREERTOS_সংখ্যা_OF_CORES, ctx->samples[i]);
+        } অন্যথা {
             TEST_ASSERT_EQUAL(ctx->requested_core, ctx->samples[i]);
         }
     }
@@ -692,21 +692,21 @@ static void verify_pin_samples(const pin_semantics_ctx_t *ctx)
 
 TEST_CASE("IDF additions: xTaskCreatePinnedToCore pinning semantics", "[freertos][idf_additions]")
 {
-    const TaskHandle_t parent = xTaskGetCurrentTaskHandle();
+    ধ্রুবক TaskHandle_t parent = xTaskGetCurrentTaskHandle();
 
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    জন্য (পূর্ণসংখ্যা core = 0; core < CONFIG_FREERTOS_সংখ্যা_OF_CORES; core++) {
         pin_semantics_ctx_t ctx = {
             .parent = parent,
             .requested_core = core,
-            .self_handle = NULL,
+            .self_handle = ফাঁকা,
         };
-        TaskHandle_t created = NULL;
+        TaskHandle_t created = ফাঁকা;
 
         drain_task_notifications();
 
         TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCore(pin_semantics_task,
                                                           "pin_dyn",
-                                                          PIN_SEMANTICS_STACK_BYTES,
+                                                          PIN_SEMANTICS_স্তূপ_BYTES,
                                                           &ctx,
                                                           UNITY_FREERTOS_PRIORITY + 1,
                                                           &created,
@@ -724,26 +724,26 @@ TEST_CASE("IDF additions: xTaskCreatePinnedToCore pinning semantics", "[freertos
 
 TEST_CASE("IDF additions: xTaskCreateStaticPinnedToCore pinning semantics", "[freertos][idf_additions]")
 {
-    static StackType_t pin_static_stack[PIN_SEMANTICS_STACK_BYTES / sizeof(StackType_t)];
-    static StaticTask_t pin_static_tcb;
-    const TaskHandle_t parent = xTaskGetCurrentTaskHandle();
+    স্থির স্তূপ_Type_t pin_static_স্তূপ[PIN_SEMANTICS_স্তূপ_BYTES / আকার(স্তূপ_Type_t)];
+    স্থির StaticTask_t pin_static_tcb;
+    ধ্রুবক TaskHandle_t parent = xTaskGetCurrentTaskHandle();
 
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    জন্য (পূর্ণসংখ্যা core = 0; core < CONFIG_FREERTOS_সংখ্যা_OF_CORES; core++) {
         pin_semantics_ctx_t ctx = {
             .parent = parent,
             .requested_core = core,
-            .self_handle = NULL,
+            .self_handle = ফাঁকা,
         };
 
-        memset(&pin_static_tcb, 0, sizeof(pin_static_tcb));
+        memset(&pin_static_tcb, 0, আকার(pin_static_tcb));
         drain_task_notifications();
 
         TaskHandle_t created = xTaskCreateStaticPinnedToCore(pin_semantics_task,
                                                              "pin_static",
-                                                             PIN_SEMANTICS_STACK_BYTES,
+                                                             PIN_SEMANTICS_স্তূপ_BYTES,
                                                              &ctx,
                                                              UNITY_FREERTOS_PRIORITY + 1,
-                                                             pin_static_stack,
+                                                             pin_static_স্তূপ,
                                                              &pin_static_tcb,
                                                              core);
         TEST_ASSERT_NOT_NULL(created);
@@ -764,15 +764,15 @@ TEST_CASE("IDF additions: xTaskCreatePinnedToCore tskNO_AFFINITY", "[freertos][i
     pin_semantics_ctx_t ctx = {
         .parent = xTaskGetCurrentTaskHandle(),
         .requested_core = tskNO_AFFINITY,
-        .self_handle = NULL,
+        .self_handle = ফাঁকা,
     };
-    TaskHandle_t created = NULL;
+    TaskHandle_t created = ফাঁকা;
 
     drain_task_notifications();
 
     TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCore(pin_semantics_task,
                                                       "pin_any",
-                                                      PIN_SEMANTICS_STACK_BYTES,
+                                                      PIN_SEMANTICS_স্তূপ_BYTES,
                                                       &ctx,
                                                       UNITY_FREERTOS_PRIORITY + 1,
                                                       &created,
@@ -782,9 +782,9 @@ TEST_CASE("IDF additions: xTaskCreatePinnedToCore tskNO_AFFINITY", "[freertos][i
     TEST_ASSERT_EQUAL_PTR(created, ctx.self_handle);
     verify_pin_samples(&ctx);
 
-#if CONFIG_FREERTOS_NUMBER_OF_CORES > 1
+#যদি CONFIG_FREERTOS_সংখ্যা_OF_CORES > 1
     TEST_ASSERT_EQUAL(tskNO_AFFINITY, xTaskGetCoreID(created));
-#else
+#অন্যথা
     /* Unicore treats tskNO_AFFINITY as core 0. */
     TEST_ASSERT_EQUAL(0, xTaskGetCoreID(created));
     TEST_ASSERT_EQUAL(0, ctx.samples[0]);
