@@ -3,44 +3,44 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-#include <stdio.h>
-#include "unity.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "esp_pm.h"
-#include "esp_private/esp_clk.h"
-#include "esp_clk_tree.h"
+#ضمن <stdio.h>
+#ضمن "unity.h"
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
+#ضمن "freertos/semphr.h"
+#ضمن "esp_pm.h"
+#ضمن "esp_private/esp_clk.h"
+#ضمن "esp_clk_tree.h"
 
-#include "sdkconfig.h"
+#ضمن "sdkconfig.h"
 
-#if CONFIG_FREERTOS_USE_TICKLESS_IDLE && CONFIG_PM_ENABLE
+#ܐܢ CONFIG_FREERTOS_USE_TICKLESS_IDLE && CONFIG_PM_ENABLE
 
 #define MHZ (1000000)
 
-static SemaphoreHandle_t test_sem;
-static volatile bool test_timeout_occurred = false;
+ساكن SemaphoreHandle_t test_sem;
+ساكن متطاير bool test_timeout_occurred = false;
 
-static void producer_task(void *arg)
+ساكن فراغ producer_task(فراغ *arg)
 {
-    while (1) {
+    ܟܡܐ (1) {
         xSemaphoreGive(test_sem);
         vTaskDelay(pdMS_TO_TICKS(5));  // Give semaphore every 5ms
     }
 }
 
-static void consumer_task(void *arg)
+ساكن فراغ consumer_task(فراغ *arg)
 {
-    while (1) {
+    ܟܡܐ (1) {
         // Try to take semaphore with 1 second timeout
         // Should never timeout as producer is giving the semaphore every 5ms
-        if (xSemaphoreTake(test_sem, pdMS_TO_TICKS(1000)) == pdFALSE) {
+        ܐܢ (xSemaphoreTake(test_sem, pdMS_TO_TICKS(1000)) == pdFALSE) {
             test_timeout_occurred = true;  // Mark that timeout occurred
-            break;
+            اكسر;
         }
     }
 
-    vTaskSuspend(NULL);
+    vTaskSuspend(عدم);
 }
 
 /**
@@ -84,8 +84,8 @@ TEST_CASE("Test semaphore timeout during tickless idle", "[freertos]")
 
     // Create producer and consumer tasks
     TaskHandle_t producer_handle, consumer_handle;
-    TEST_ASSERT_EQUAL(pdPASS, xTaskCreate(producer_task, "producer", 2048, NULL, 1, &producer_handle));
-    TEST_ASSERT_EQUAL(pdPASS, xTaskCreate(consumer_task, "consumer", 2048, NULL, 2, &consumer_handle));
+    TEST_ASSERT_EQUAL(pdPASS, xTaskCreate(producer_task, "producer", 2048, عدم, 1, &producer_handle));
+    TEST_ASSERT_EQUAL(pdPASS, xTaskCreate(consumer_task, "consumer", 2048, عدم, 2, &consumer_handle));
 
     // Run the test for a while to ensure tickless idle mode has
     // enough time to enter and exit multiple times

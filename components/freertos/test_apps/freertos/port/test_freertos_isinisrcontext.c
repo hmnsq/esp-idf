@@ -8,32 +8,32 @@
  See if xPortInIsrContext works
 */
 
-#include <esp_types.h>
-#include <stdio.h>
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "unity.h"
-#include "esp_intr_alloc.h"
-#include "esp_rom_sys.h"
-#include "esp_freertos_hooks.h"
+#ضمن <esp_types.h>
+#ضمن <stdio.h>
+#ضمن "sdkconfig.h"
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
+#ضمن "freertos/semphr.h"
+#ضمن "freertos/queue.h"
+#ضمن "unity.h"
+#ضمن "esp_intr_alloc.h"
+#ضمن "esp_rom_sys.h"
+#ضمن "esp_freertos_hooks.h"
 
-#if CONFIG_FREERTOS_CORETIMER_0
+#ܐܢ CONFIG_FREERTOS_CORETIMER_0
 
-static volatile int in_int_context, int_handled;
+ساكن متطاير صحيح in_int_context, int_handled;
 
-static void testint(void)
+ساكن فراغ testint(فراغ)
 {
     esp_rom_printf("INT!\n");
-    if (xPortInIsrContext()) {
+    ܐܢ (xPortInIsrContext()) {
         in_int_context++;
     }
     int_handled++;
 }
 
-static void testthread(void *arg)
+ساكن فراغ testthread(فراغ *arg)
 {
     in_int_context = 0;
     int_handled = 0;
@@ -44,24 +44,24 @@ static void testthread(void *arg)
     TEST_ASSERT(int_handled);
     TEST_ASSERT(in_int_context);
     esp_deregister_freertos_tick_hook_for_cpu(testint, xPortGetCoreID());
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
 TEST_CASE("xPortInIsrContext test", "[freertos]")
 {
-    xTaskCreatePinnedToCore(testthread, "tst", 4096, NULL, 3, NULL, 0);
+    xTaskCreatePinnedToCore(testthread, "tst", 4096, عدم, 3, عدم, 0);
     vTaskDelay(150 / portTICK_PERIOD_MS);
-#if CONFIG_FREERTOS_NUMBER_OF_CORES == 2
-    xTaskCreatePinnedToCore(testthread, "tst", 4096, NULL, 3, NULL, 1);
+#ܐܢ CONFIG_FREERTOS_NUMBER_OF_CORES == 2
+    xTaskCreatePinnedToCore(testthread, "tst", 4096, عدم, 3, عدم, 1);
     vTaskDelay(150 / portTICK_PERIOD_MS);
 #endif
 }
 
 #endif
 
-#if !CONFIG_FREERTOS_SMP // TODO: Enable when IDF-10540 is fixed
+#ܐܢ !CONFIG_FREERTOS_SMP // TODO: Enable when IDF-10540 is fixed
 
-static void testint_assert(void)
+ساكن فراغ testint_assert(فراغ)
 {
     esp_rom_printf("INT!\n");
     portASSERT_IF_IN_ISR();
