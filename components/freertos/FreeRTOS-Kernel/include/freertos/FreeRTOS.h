@@ -36,7 +36,7 @@
 /*
  * Include the generic headers required for the FreeRTOS port being used.
  */
-#include <stddef.h>
+#अन्तर्भाव <stddef.h>
 
 /*
  * If stdint.h cannot be located then:
@@ -51,22 +51,22 @@
  *     contains the typedefs required to build FreeRTOS.  Read the instructions
  *     in FreeRTOS/source/stdint.readme for more information.
  */
-#include <stdint.h> /* READ COMMENT ABOVE. */
+#अन्तर्भाव <stdint.h> /* READ COMMENT ABOVE. */
 
 /* *INDENT-OFF* */
 #ifdef __cplusplus
-    extern "C" {
+    बाह्य "C" {
 #endif
 /* *INDENT-ON* */
 
 /* Application specific configuration options. */
-#include "FreeRTOSConfig.h"
+#अन्तर्भाव "FreeRTOSConfig.h"
 
 /* Basic FreeRTOS definitions. */
-#include "projdefs.h"
+#अन्तर्भाव "projdefs.h"
 
 /* Definitions specific to the port being used. */
-#include "portable.h"
+#अन्तर्भाव "portable.h"
 
 /* Must be defaulted before configUSE_NEWLIB_REENTRANT is used below. */
 #ifndef configUSE_NEWLIB_REENTRANT
@@ -74,7 +74,7 @@
 #endif
 
 /* Required if struct _reent is used. */
-#if ( configUSE_NEWLIB_REENTRANT == 1 )
+#सचे ( configUSE_NEWLIB_REENTRANT == 1 )
 
 /* Note Newlib support has been included by popular demand, but is not
  * used by the FreeRTOS maintainers themselves.  FreeRTOS is not
@@ -85,12 +85,12 @@
  *
  * See the third party link http://www.nadler.com/embedded/newlibAndFreeRTOS.html
  * for additional information. */
-    #include <reent.h>
+    #अन्तर्भाव <reent.h>
 
     #define configUSE_C_RUNTIME_TLS_SUPPORT    1
 
     #ifndef configTLS_BLOCK_TYPE
-        #define configTLS_BLOCK_TYPE           struct _reent
+        #define configTLS_BLOCK_TYPE           संरचना _reent
     #endif
 
     #ifndef configINIT_TLS_BLOCK
@@ -110,7 +110,7 @@
     #define configUSE_C_RUNTIME_TLS_SUPPORT    0
 #endif
 
-#if ( ( configUSE_NEWLIB_REENTRANT == 0 ) && ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) )
+#सचे ( ( configUSE_NEWLIB_REENTRANT == 0 ) && ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) )
 
     #ifndef configTLS_BLOCK_TYPE
         #error Missing definition:  configTLS_BLOCK_TYPE must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
@@ -135,50 +135,50 @@
  * within FreeRTOSConfig.h.
  */
 
-#ifndef configNUMBER_OF_CORES
-    #error Missing definition:  configNUMBER_OF_CORES must be defined in FreeRTOSConfig.h
+#ifndef config_सङ्ख्या_OF_CORES
+    #error Missing definition:  config_सङ्ख्या_OF_CORES must be defined in FreeRTOSConfig.h
 #endif
 
-#if ( configNUMBER_OF_CORES > 1 )
+#सचे ( config_सङ्ख्या_OF_CORES > 1 )
     #ifndef portGET_CORE_ID
         #error "Missing definition: portGET_CORE_ID() must be defined if in portmacro.h if configNUMBER_OF_CORES > 1"
     #endif
     #ifndef portYIELD_CORE
         #error "Missing definition: portYIELD_CORE() must be defined if in portmacro.h if configNUMBER_OF_CORES > 1"
     #endif
-#elif ( configNUMBER_OF_CORES == 1 )
+#नोचेद्यदि ( config_सङ्ख्या_OF_CORES == 1 )
     #undef portGET_CORE_ID
     #define portGET_CORE_ID()    0
-#else
-    #error configNUMBER_OF_CORES must be defined to either 1 or > 1.
+#अञ्ञथा
+    #error config_सङ्ख्या_OF_CORES must be defined to either 1 or > 1.
 #endif /* if ( configNUMBER_OF_CORES > 1 ) */
 
-#ifndef configMINIMAL_STACK_SIZE
-    #error Missing definition:  configMINIMAL_STACK_SIZE must be defined in FreeRTOSConfig.h.  configMINIMAL_STACK_SIZE defines the size (in words) of the stack allocated to the idle task.  Refer to the demo project provided for your port for a suitable value.
+#ifndef config_MINIMAL_राशिः_SIZE
+    #error Missing definition:  config_MINIMAL_राशिः_SIZE must be defined in FreeRTOSConfig.h.  config_MINIMAL_राशिः_SIZE defines the size (in शब्दाः) of the राशिः allocated to the idle task.  Refer to the demo project provided अत्थाय your port अत्थाय a suitable मानम्.
 #endif
 
 #ifndef configMAX_PRIORITIES
-    #error Missing definition:  configMAX_PRIORITIES must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation for details.
+    #error Missing definition:  configMAX_PRIORITIES must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation अत्थाय details.
 #endif
 
-#if configMAX_PRIORITIES < 1
+#सचे configMAX_PRIORITIES < 1
     #error configMAX_PRIORITIES must be defined to be greater than or equal to 1.
 #endif
 
 #ifndef configUSE_PREEMPTION
-    #error Missing definition:  configUSE_PREEMPTION must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
+    #error Missing definition:  configUSE_PREEMPTION must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation अत्थाय details.
 #endif
 
 #ifndef configUSE_IDLE_HOOK
-    #error Missing definition:  configUSE_IDLE_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
+    #error Missing definition:  configUSE_IDLE_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation अत्थाय details.
 #endif
 
 #ifndef configUSE_TICK_HOOK
-    #error Missing definition:  configUSE_TICK_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
+    #error Missing definition:  configUSE_TICK_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation अत्थाय details.
 #endif
 
 #ifndef configUSE_16_BIT_TICKS
-    #error Missing definition:  configUSE_16_BIT_TICKS must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
+    #error Missing definition:  configUSE_16_BIT_TICKS must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation अत्थाय details.
 #endif
 
 #ifndef configUSE_CO_ROUTINES
@@ -251,12 +251,12 @@
     #define INCLUDE_xTaskGetHandle    0
 #endif
 
-#ifndef INCLUDE_uxTaskGetStackHighWaterMark
-    #define INCLUDE_uxTaskGetStackHighWaterMark    0
+#ifndef INCLUDE_ux_Task_Get_राशिः_उच्चः_Water_Mark
+    #define INCLUDE_ux_Task_Get_राशिः_उच्चः_Water_Mark    0
 #endif
 
-#ifndef INCLUDE_uxTaskGetStackHighWaterMark2
-    #define INCLUDE_uxTaskGetStackHighWaterMark2    0
+#ifndef INCLUDE_ux_Task_Get_राशिः_उच्चः_Water_Mark2
+    #define INCLUDE_ux_Task_Get_राशिः_उच्चः_Water_Mark2    0
 #endif
 
 #ifndef INCLUDE_eTaskGetState
@@ -279,7 +279,7 @@
     #define INCLUDE_xTaskGetCurrentTaskHandle    1
 #endif
 
-#if configUSE_CO_ROUTINES != 0
+#सचे configUSE_CO_ROUTINES != 0
     #ifndef configMAX_CO_ROUTINE_PRIORITIES
         #error configMAX_CO_ROUTINE_PRIORITIES must be greater than or equal to 1.
     #endif
@@ -293,8 +293,8 @@
     #define configUSE_APPLICATION_TASK_TAG    0
 #endif
 
-#ifndef configNUM_THREAD_LOCAL_STORAGE_POINTERS
-    #define configNUM_THREAD_LOCAL_STORAGE_POINTERS    0
+#ifndef config_अङ्कः_THREAD_LOCAL_STORAGE_POINTERS
+    #define config_अङ्कः_THREAD_LOCAL_STORAGE_POINTERS    0
 #endif
 
 #ifndef configUSE_RECURSIVE_MUTEXES
@@ -329,14 +329,14 @@
     #define configIDLE_SHOULD_YIELD    1
 #endif
 
-#if configMAX_TASK_NAME_LEN < 1
+#सचे configMAX_TASK_NAME_LEN < 1
     #error configMAX_TASK_NAME_LEN must be set to a minimum of 1 in FreeRTOSConfig.h
 #endif
 
 #ifndef configASSERT
     #define configASSERT( x )
     #define configASSERT_DEFINED    0
-#else
+#अञ्ञथा
     #define configASSERT_DEFINED    1
 #endif
 
@@ -348,7 +348,7 @@
 #ifndef configPRECONDITION
     #define configPRECONDITION( X )    configASSERT( X )
     #define configPRECONDITION_DEFINED    0
-#else
+#अञ्ञथा
     #define configPRECONDITION_DEFINED    1
 #endif
 
@@ -361,7 +361,7 @@
 #endif
 
 /* The timers module relies on xTaskGetSchedulerState(). */
-#if configUSE_TIMERS == 1
+#सचे configUSE_TIMERS == 1
 
     #ifndef configTIMER_TASK_PRIORITY
         #error If configUSE_TIMERS is set to 1 then configTIMER_TASK_PRIORITY must also be defined.
@@ -371,8 +371,8 @@
         #error If configUSE_TIMERS is set to 1 then configTIMER_QUEUE_LENGTH must also be defined.
     #endif /* configTIMER_QUEUE_LENGTH */
 
-    #ifndef configTIMER_TASK_STACK_DEPTH
-        #error If configUSE_TIMERS is set to 1 then configTIMER_TASK_STACK_DEPTH must also be defined.
+    #ifndef config_TIMER_TASK_राशिः_DEPTH
+        #error If configUSE_TIMERS is set to 1 then config_TIMER_TASK_राशिः_DEPTH must also be defined.
     #endif /* configTIMER_TASK_STACK_DEPTH */
 
 #endif /* configUSE_TIMERS */
@@ -382,11 +382,11 @@
 #endif
 
 #ifndef portCLEAR_INTERRUPT_MASK_FROM_ISR
-    #define portCLEAR_INTERRUPT_MASK_FROM_ISR( uxSavedStatusValue )    ( void ) ( uxSavedStatusValue )
+    #define portCLEAR_INTERRUPT_MASK_FROM_ISR( ux_Saved_Status_मानम् )    ( शून्य ) ( ux_Saved_Status_मानम् )
 #endif
 
 #ifndef portCLEAN_UP_TCB
-    #define portCLEAN_UP_TCB( pxTCB )    ( void ) ( pxTCB )
+    #define portCLEAN_UP_TCB( pxTCB )    ( शून्य ) ( pxTCB )
 #endif
 
 #ifndef portPRE_TASK_DELETE_HOOK
@@ -394,14 +394,14 @@
 #endif
 
 #ifndef portSETUP_TCB
-    #define portSETUP_TCB( pxTCB )    ( void ) ( pxTCB )
+    #define portSETUP_TCB( pxTCB )    ( शून्य ) ( pxTCB )
 #endif
 
 #ifndef configQUEUE_REGISTRY_SIZE
     #define configQUEUE_REGISTRY_SIZE    0U
 #endif
 
-#if ( configQUEUE_REGISTRY_SIZE < 1 )
+#सचे ( configQUEUE_REGISTRY_SIZE < 1 )
     #define vQueueAddToRegistry( xQueue, pcName )
     #define vQueueUnregisterQueue( xQueue )
     #define pcQueueGetName( xQueue )
@@ -437,21 +437,21 @@
     #define traceTASK_SWITCHED_IN()
 #endif
 
-#ifndef traceINCREASE_TICK_COUNT
+#ifndef trace_INCREASE_TICK_गणनम्
 
 /* Called before stepping the tick count after waking from tickless idle
  * sleep. */
-    #define traceINCREASE_TICK_COUNT( x )
+    #define trace_INCREASE_TICK_गणनम्( x )
 #endif
 
-#ifndef traceLOW_POWER_IDLE_BEGIN
+#ifndef trace_नीचः_POWER_IDLE_BEGIN
     /* Called immediately before entering tickless idle. */
-    #define traceLOW_POWER_IDLE_BEGIN()
+    #define trace_नीचः_POWER_IDLE_BEGIN()
 #endif
 
-#ifndef traceLOW_POWER_IDLE_END
+#ifndef trace_नीचः_POWER_IDLE_END
     /* Called when returning to the Idle task after a tickless idle. */
-    #define traceLOW_POWER_IDLE_END()
+    #define trace_नीचः_POWER_IDLE_END()
 #endif
 
 #ifndef traceTASK_SWITCHED_OUT
@@ -507,12 +507,12 @@
     #define traceBLOCKING_ON_QUEUE_SEND( pxQueue )
 #endif
 
-#ifndef configCHECK_FOR_STACK_OVERFLOW
-    #define configCHECK_FOR_STACK_OVERFLOW    0
+#ifndef config_CHECK_FOR_राशिः_OVERFLOW
+    #define config_CHECK_FOR_राशिः_OVERFLOW    0
 #endif
 
-#ifndef configRECORD_STACK_HIGH_ADDRESS
-    #define configRECORD_STACK_HIGH_ADDRESS    0
+#ifndef config_RECORD_राशिः_उच्चः_ADDRESS
+    #define config_RECORD_राशिः_उच्चः_ADDRESS    0
 #endif
 
 #ifndef configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H
@@ -662,7 +662,7 @@
 #endif
 
 #ifndef traceTASK_INCREMENT_TICK
-    #define traceTASK_INCREMENT_TICK( xTickCount )
+    #define traceTASK_INCREMENT_TICK( x_Tick_गणनम् )
 #endif
 
 #ifndef traceTIMER_CREATE
@@ -674,7 +674,7 @@
 #endif
 
 #ifndef traceTIMER_COMMAND_SEND
-    #define traceTIMER_COMMAND_SEND( xTimer, xMessageID, xMessageValueValue, xReturn )
+    #define traceTIMER_COMMAND_SEND( xTimer, xMessageID, x_Message_मानम्_मानम्, xReturn )
 #endif
 
 #ifndef traceTIMER_EXPIRED
@@ -682,7 +682,7 @@
 #endif
 
 #ifndef traceTIMER_COMMAND_RECEIVED
-    #define traceTIMER_COMMAND_RECEIVED( pxTimer, xMessageID, xMessageValue )
+    #define traceTIMER_COMMAND_RECEIVED( pxTimer, xMessageID, x_Message_मानम् )
 #endif
 
 #ifndef traceMALLOC
@@ -706,7 +706,7 @@
 #endif
 
 #ifndef traceEVENT_GROUP_SYNC_END
-    #define traceEVENT_GROUP_SYNC_END( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTimeoutOccurred )    ( void ) ( xTimeoutOccurred )
+    #define traceEVENT_GROUP_SYNC_END( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTimeoutOccurred )    ( शून्य ) ( xTimeoutOccurred )
 #endif
 
 #ifndef traceEVENT_GROUP_WAIT_BITS_BLOCK
@@ -714,7 +714,7 @@
 #endif
 
 #ifndef traceEVENT_GROUP_WAIT_BITS_END
-    #define traceEVENT_GROUP_WAIT_BITS_END( xEventGroup, uxBitsToWaitFor, xTimeoutOccurred )    ( void ) ( xTimeoutOccurred )
+    #define traceEVENT_GROUP_WAIT_BITS_END( xEventGroup, uxBitsToWaitFor, xTimeoutOccurred )    ( शून्य ) ( xTimeoutOccurred )
 #endif
 
 #ifndef traceEVENT_GROUP_CLEAR_BITS
@@ -833,15 +833,15 @@
     #define configGENERATE_RUN_TIME_STATS    0
 #endif
 
-#if ( configGENERATE_RUN_TIME_STATS == 1 )
+#सचे ( configGENERATE_RUN_TIME_STATS == 1 )
 
     #ifndef portCONFIGURE_TIMER_FOR_RUN_TIME_STATS
         #error If configGENERATE_RUN_TIME_STATS is defined then portCONFIGURE_TIMER_FOR_RUN_TIME_STATS must also be defined.  portCONFIGURE_TIMER_FOR_RUN_TIME_STATS should call a port layer function to setup a peripheral timer/counter that can then be used as the run time counter time base.
     #endif /* portCONFIGURE_TIMER_FOR_RUN_TIME_STATS */
 
-    #ifndef portGET_RUN_TIME_COUNTER_VALUE
-        #ifndef portALT_GET_RUN_TIME_COUNTER_VALUE
-            #error If configGENERATE_RUN_TIME_STATS is defined then either portGET_RUN_TIME_COUNTER_VALUE or portALT_GET_RUN_TIME_COUNTER_VALUE must also be defined.  See the examples provided and the FreeRTOS web site for more information.
+    #ifndef port_GET_RUN_TIME_COUNTER_मानम्
+        #ifndef port_ALT_GET_RUN_TIME_COUNTER_मानम्
+            #error If configGENERATE_RUN_TIME_STATS is defined then either port_GET_RUN_TIME_COUNTER_मानम् or port_ALT_GET_RUN_TIME_COUNTER_मानम् must also be defined.  See the examples provided and the FreeRTOS web site अत्थाय more information.
         #endif /* portALT_GET_RUN_TIME_COUNTER_VALUE */
     #endif /* portGET_RUN_TIME_COUNTER_VALUE */
 
@@ -871,7 +871,7 @@
     #define configEXPECTED_IDLE_TIME_BEFORE_SLEEP    2
 #endif
 
-#if configEXPECTED_IDLE_TIME_BEFORE_SLEEP < 2
+#सचे configEXPECTED_IDLE_TIME_BEFORE_SLEEP < 2
     #error configEXPECTED_IDLE_TIME_BEFORE_SLEEP must not be less than 2
 #endif
 
@@ -900,7 +900,7 @@
 #endif
 
 #ifndef portALLOCATE_SECURE_CONTEXT
-    #define portALLOCATE_SECURE_CONTEXT( ulSecureStackSize )
+    #define portALLOCATE_SECURE_CONTEXT( ul_Secure_राशिः_Size )
 #endif
 
 #ifndef portDONT_DISCARD
@@ -955,7 +955,7 @@
     #define configTASK_NOTIFICATION_ARRAY_ENTRIES    1
 #endif
 
-#if configTASK_NOTIFICATION_ARRAY_ENTRIES < 1
+#सचे configTASK_NOTIFICATION_ARRAY_ENTRIES < 1
     #error configTASK_NOTIFICATION_ARRAY_ENTRIES must be at least 1
 #endif
 
@@ -983,21 +983,21 @@
     #define configSUPPORT_DYNAMIC_ALLOCATION    1
 #endif
 
-#if ( ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION != 1 ) )
+#सचे ( ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION != 1 ) )
     #error configUSE_STATS_FORMATTING_FUNCTIONS cannot be used without dynamic allocation, but configSUPPORT_DYNAMIC_ALLOCATION is not set to 1.
 #endif
 
-#if ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 )
-    #if ( ( configUSE_TRACE_FACILITY != 1 ) && ( configGENERATE_RUN_TIME_STATS != 1 ) )
+#सचे ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 )
+    #सचे ( ( configUSE_TRACE_FACILITY != 1 ) && ( configGENERATE_RUN_TIME_STATS != 1 ) )
         #error configUSE_STATS_FORMATTING_FUNCTIONS is 1 but the functions it enables are not used because neither configUSE_TRACE_FACILITY or configGENERATE_RUN_TIME_STATS are 1.  Set configUSE_STATS_FORMATTING_FUNCTIONS to 0 in FreeRTOSConfig.h.
     #endif
 #endif
 
-#ifndef configSTACK_DEPTH_TYPE
+#ifndef config_राशिः_DEPTH_TYPE
 
 /* Defaults to uint16_t for backward compatibility, but can be overridden
  * in FreeRTOSConfig.h if uint16_t is too restrictive. */
-    #define configSTACK_DEPTH_TYPE    uint16_t
+    #define config_राशिः_DEPTH_TYPE    uint16_t
 #endif
 
 #ifndef configRUN_TIME_COUNTER_TYPE
@@ -1017,23 +1017,23 @@
 #endif
 
 /* Sanity check the configuration. */
-#if ( ( configSUPPORT_STATIC_ALLOCATION == 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 0 ) )
+#सचे ( ( configSUPPORT_STATIC_ALLOCATION == 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 0 ) )
     #error configSUPPORT_STATIC_ALLOCATION and configSUPPORT_DYNAMIC_ALLOCATION cannot both be 0, but can both be 1.
 #endif
 
-#if ( ( configUSE_RECURSIVE_MUTEXES == 1 ) && ( configUSE_MUTEXES != 1 ) )
+#सचे ( ( configUSE_RECURSIVE_MUTEXES == 1 ) && ( configUSE_MUTEXES != 1 ) )
     #error configUSE_MUTEXES must be set to 1 to use recursive mutexes
 #endif
 
-#if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_PORT_OPTIMISED_TASK_SELECTION != 0 ) )
+#सचे ( ( config_सङ्ख्या_OF_CORES > 1 ) && ( configUSE_PORT_OPTIMISED_TASK_SELECTION != 0 ) )
     #error configUSE_PORT_OPTIMISED_TASK_SELECTION is not supported in SMP
 #endif
 
-#ifndef configINITIAL_TICK_COUNT
-    #define configINITIAL_TICK_COUNT    0
+#ifndef config_INITIAL_TICK_गणनम्
+    #define config_INITIAL_TICK_गणनम्    0
 #endif
 
-#if ( portTICK_TYPE_IS_ATOMIC == 0 )
+#सचे ( portTICK_TYPE_IS_ATOMIC == 0 )
 
 /* Either variables of tick type cannot be read atomically, or
  * portTICK_TYPE_IS_ATOMIC was not set - map the critical sections used when
@@ -1042,14 +1042,14 @@
     #define portTICK_TYPE_EXIT_CRITICAL()                       portEXIT_CRITICAL()
     #define portTICK_TYPE_SET_INTERRUPT_MASK_FROM_ISR()         portSET_INTERRUPT_MASK_FROM_ISR()
     #define portTICK_TYPE_CLEAR_INTERRUPT_MASK_FROM_ISR( x )    portCLEAR_INTERRUPT_MASK_FROM_ISR( ( x ) )
-#else
+#अञ्ञथा
 
 /* The tick type can be read atomically, so critical sections used when the
  * tick count is returned can be defined away. */
     #define portTICK_TYPE_ENTER_CRITICAL()
     #define portTICK_TYPE_EXIT_CRITICAL()
     #define portTICK_TYPE_SET_INTERRUPT_MASK_FROM_ISR()         0
-    #define portTICK_TYPE_CLEAR_INTERRUPT_MASK_FROM_ISR( x )    ( void ) ( x )
+    #define portTICK_TYPE_CLEAR_INTERRUPT_MASK_FROM_ISR( x )    ( शून्य ) ( x )
 #endif /* if ( portTICK_TYPE_IS_ATOMIC == 0 ) */
 
 /* Definitions to allow backward compatibility with FreeRTOS versions prior to
@@ -1087,7 +1087,7 @@
     #define configMIN( a, b )    ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
 #endif
 
-#if configENABLE_BACKWARD_COMPATIBILITY == 1
+#सचे configENABLE_BACKWARD_COMPATIBILITY == 1
     #define eTaskStateGet                 eTaskGetState
     #define portTickType                  TickType_t
     #define xTaskHandle                   TaskHandle_t
@@ -1121,7 +1121,7 @@
     #define pxContainer                   pvContainer
 #endif /* configENABLE_BACKWARD_COMPATIBILITY */
 
-#if ( configUSE_ALTERNATIVE_API != 0 )
+#सचे ( configUSE_ALTERNATIVE_API != 0 )
     #error The alternative API was deprecated some time ago, and was removed in FreeRTOS V9.0 0
 #endif
 
@@ -1224,44 +1224,44 @@
  * real objects are used for this purpose.  The dummy list and list item
  * structures below are used for inclusion in such a dummy structure.
  */
-struct xSTATIC_LIST_ITEM
+संरचना xSTATIC_LIST_ITEM
 {
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #सचे ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
         TickType_t xDummy1;
     #endif
     TickType_t xDummy2;
-    void * pvDummy3[ 4 ];
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    शून्य * pvDummy3[ 4 ];
+    #सचे ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
         TickType_t xDummy4;
     #endif
 };
-typedef struct xSTATIC_LIST_ITEM StaticListItem_t;
+प्रकारनिर्देश संरचना xSTATIC_LIST_ITEM StaticListItem_t;
 
-#if ( configUSE_MINI_LIST_ITEM == 1 )
+#सचे ( configUSE_MINI_LIST_ITEM == 1 )
     /* See the comments above the struct xSTATIC_LIST_ITEM definition. */
-    struct xSTATIC_MINI_LIST_ITEM
+    संरचना xSTATIC_MINI_LIST_ITEM
     {
-        #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+        #सचे ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
             TickType_t xDummy1;
         #endif
         TickType_t xDummy2;
-        void * pvDummy3[ 2 ];
+        शून्य * pvDummy3[ 2 ];
     };
-    typedef struct xSTATIC_MINI_LIST_ITEM StaticMiniListItem_t;
-#else /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
-    typedef struct xSTATIC_LIST_ITEM      StaticMiniListItem_t;
+    प्रकारनिर्देश संरचना xSTATIC_MINI_LIST_ITEM StaticMiniListItem_t;
+#अञ्ञथा /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
+    प्रकारनिर्देश संरचना xSTATIC_LIST_ITEM      StaticMiniListItem_t;
 #endif /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
 
 /* See the comments above the struct xSTATIC_LIST_ITEM definition. */
-typedef struct xSTATIC_LIST
+प्रकारनिर्देश संरचना xSTATIC_LIST
 {
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #सचे ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
         TickType_t xDummy1;
     #endif
     UBaseType_t uxDummy2;
-    void * pvDummy3;
+    शून्य * pvDummy3;
     StaticMiniListItem_t xDummy4;
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #सचे ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
         TickType_t xDummy5;
     #endif
 } StaticList_t;
@@ -1279,56 +1279,56 @@ typedef struct xSTATIC_LIST
  * are set.  Its contents are somewhat obfuscated in the hope users will
  * recognise that it would be unwise to make direct use of the structure members.
  */
-typedef struct xSTATIC_TCB
+प्रकारनिर्देश संरचना xSTATIC_TCB
 {
-    void * pxDummy1;
-    #if ( portUSING_MPU_WRAPPERS == 1 )
+    शून्य * pxDummy1;
+    #सचे ( portUSING_MPU_WRAPPERS == 1 )
         xMPU_SETTINGS xDummy2;
     #endif
     StaticListItem_t xDummy3[ 2 ];
     UBaseType_t uxDummy5;
-    void * pxDummy6;
+    शून्य * pxDummy6;
     uint8_t ucDummy7[ configMAX_TASK_NAME_LEN ];
-    #if ( configNUMBER_OF_CORES > 1 )
+    #सचे ( config_सङ्ख्या_OF_CORES > 1 )
         BaseType_t xDummyCoreID;
     #endif /* configNUMBER_OF_CORES > 1 */
-    #if ( ( portSTACK_GROWTH > 0 ) || ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
-        void * pxDummy8;
+    #सचे ( ( port_राशिः_GROWTH > 0 ) || ( config_RECORD_राशिः_उच्चः_ADDRESS == 1 ) )
+        शून्य * pxDummy8;
     #endif
-    #if ( portCRITICAL_NESTING_IN_TCB == 1 )
+    #सचे ( portCRITICAL_NESTING_IN_TCB == 1 )
         UBaseType_t uxDummy9;
     #endif
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #सचे ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy10[ 2 ];
     #endif
-    #if ( configUSE_MUTEXES == 1 )
+    #सचे ( configUSE_MUTEXES == 1 )
         UBaseType_t uxDummy12[ 2 ];
     #endif
-    #if ( configUSE_APPLICATION_TASK_TAG == 1 )
-        void * pxDummy14;
+    #सचे ( configUSE_APPLICATION_TASK_TAG == 1 )
+        शून्य * pxDummy14;
     #endif
-    #if ( configNUM_THREAD_LOCAL_STORAGE_POINTERS > 0 )
-        void * pvDummy15[ configNUM_THREAD_LOCAL_STORAGE_POINTERS ];
+    #सचे ( config_अङ्कः_THREAD_LOCAL_STORAGE_POINTERS > 0 )
+        शून्य * pvDummy15[ config_अङ्कः_THREAD_LOCAL_STORAGE_POINTERS ];
     #endif
-    #if ( configGENERATE_RUN_TIME_STATS == 1 )
+    #सचे ( configGENERATE_RUN_TIME_STATS == 1 )
         configRUN_TIME_COUNTER_TYPE ulDummy16;
     #endif
-    #if ( ( configUSE_NEWLIB_REENTRANT == 1 ) || ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) )
+    #सचे ( ( configUSE_NEWLIB_REENTRANT == 1 ) || ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) )
         configTLS_BLOCK_TYPE xDummy17;
     #endif
-    #if ( configUSE_TASK_NOTIFICATIONS == 1 )
+    #सचे ( configUSE_TASK_NOTIFICATIONS == 1 )
         uint32_t ulDummy18[ configTASK_NOTIFICATION_ARRAY_ENTRIES ];
         uint8_t ucDummy19[ configTASK_NOTIFICATION_ARRAY_ENTRIES ];
     #endif
-    #if ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )
+    #सचे ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )
         uint8_t uxDummy20;
     #endif
 
-    #if ( INCLUDE_xTaskAbortDelay == 1 )
+    #सचे ( INCLUDE_xTaskAbortDelay == 1 )
         uint8_t ucDummy21;
     #endif
-    #if ( configUSE_POSIX_ERRNO == 1 )
-        int iDummy22;
+    #सचे ( configUSE_POSIX_ERRNO == 1 )
+        पूर्णाङ्क iDummy22;
     #endif
 } StaticTask_t;
 
@@ -1346,13 +1346,13 @@ typedef struct xSTATIC_TCB
  * users will recognise that it would be unwise to make direct use of the
  * structure members.
  */
-typedef struct xSTATIC_QUEUE
+प्रकारनिर्देश संरचना xSTATIC_QUEUE
 {
-    void * pvDummy1[ 3 ];
+    शून्य * pvDummy1[ 3 ];
 
-    union
+    सङ्घ
     {
-        void * pvDummy2;
+        शून्य * pvDummy2;
         UBaseType_t uxDummy2;
     } u;
 
@@ -1360,21 +1360,21 @@ typedef struct xSTATIC_QUEUE
     UBaseType_t uxDummy4[ 3 ];
     uint8_t ucDummy5[ 2 ];
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #सचे ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
         uint8_t ucDummy6;
     #endif
 
-    #if ( configUSE_QUEUE_SETS == 1 )
-        void * pvDummy7;
+    #सचे ( configUSE_QUEUE_SETS == 1 )
+        शून्य * pvDummy7;
     #endif
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #सचे ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy8;
         uint8_t ucDummy9;
     #endif
     portMUX_TYPE xDummyQueueLock;
 } StaticQueue_t;
-typedef StaticQueue_t StaticSemaphore_t;
+प्रकारनिर्देश StaticQueue_t StaticSemaphore_t;
 
 /*
  * In line with software engineering best practice, especially when supplying a
@@ -1390,16 +1390,16 @@ typedef StaticQueue_t StaticSemaphore_t;
  * obfuscated in the hope users will recognise that it would be unwise to make
  * direct use of the structure members.
  */
-typedef struct xSTATIC_EVENT_GROUP
+प्रकारनिर्देश संरचना xSTATIC_EVENT_GROUP
 {
     TickType_t xDummy1;
     StaticList_t xDummy2;
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #सचे ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy3;
     #endif
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #सचे ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
         uint8_t ucDummy4;
     #endif
     portMUX_TYPE xDummyEventGroupLock;
@@ -1419,14 +1419,14 @@ typedef struct xSTATIC_EVENT_GROUP
  * the hope users will recognise that it would be unwise to make direct use of
  * the structure members.
  */
-typedef struct xSTATIC_TIMER
+प्रकारनिर्देश संरचना xSTATIC_TIMER
 {
-    void * pvDummy1;
+    शून्य * pvDummy1;
     StaticListItem_t xDummy2;
     TickType_t xDummy3;
-    void * pvDummy5;
+    शून्य * pvDummy5;
     TaskFunction_t pvDummy6;
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #सचे ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy7;
     #endif
     uint8_t ucDummy8;
@@ -1446,22 +1446,22 @@ typedef struct xSTATIC_TIMER
  * somewhat obfuscated in the hope users will recognise that it would be unwise
  * to make direct use of the structure members.
  */
-typedef struct xSTATIC_STREAM_BUFFER
+प्रकारनिर्देश संरचना xSTATIC_STREAM_BUFFER
 {
     size_t uxDummy1[ 4 ];
-    void * pvDummy2[ 3 ];
+    शून्य * pvDummy2[ 3 ];
     uint8_t ucDummy3;
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #सचे ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy4;
     #endif
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-        void * pvDummy5[ 2 ];
+    #सचे ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+        शून्य * pvDummy5[ 2 ];
     #endif
     portMUX_TYPE xDummyStreamBufferLock;
 } StaticStreamBuffer_t;
 
 /* Message buffers are built on stream buffers. */
-typedef StaticStreamBuffer_t StaticMessageBuffer_t;
+प्रकारनिर्देश StaticStreamBuffer_t StaticMessageBuffer_t;
 
 /* *INDENT-OFF* */
 #ifdef __cplusplus
@@ -1477,7 +1477,7 @@ typedef StaticStreamBuffer_t StaticMessageBuffer_t;
 
 /* *INDENT-OFF* */
 #ifdef __cplusplus
-    extern "C" {
+    बाह्य "C" {
 #endif
 /* *INDENT-ON* */
 
@@ -1528,7 +1528,7 @@ typedef StaticStreamBuffer_t StaticMessageBuffer_t;
  * any existing source code can continue using these relocated APIs without
  * any additional header inclusions via this implicit inclusion.
  */
-    #include "freertos/idf_additions.h"
+    #अन्तर्भाव "freertos/idf_additions.h"
 
 #endif /* ESP_PLATFORM */
 

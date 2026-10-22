@@ -4,15 +4,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <stdbool.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/queue.h"
-#include "esp_rom_sys.h"
-#include "esp_cpu.h"
-#include "unity.h"
-#include "test_utils.h"
+#अन्तर्भाव "sdkconfig.h"
+#अन्तर्भाव <stdbool.h>
+#अन्तर्भाव "freertos/FreeRTOS.h"
+#अन्तर्भाव "freertos/task.h"
+#अन्तर्भाव "freertos/queue.h"
+#अन्तर्भाव "esp_rom_sys.h"
+#अन्तर्भाव "esp_cpu.h"
+#अन्तर्भाव "unity.h"
+#अन्तर्भाव "test_utils.h"
 
 /*
 Test Best Effort Round Robin Scheduling:
@@ -38,23 +38,23 @@ Test flow as follows:
    robin schedules the tasks in a sequential order.
 */
 
-#if !defined(CONFIG_FREERTOS_UNICORE) && (defined(CONFIG_FREERTOS_CORETIMER_0) || defined(CONFIG_FREERTOS_CORETIMER_1))
+#सचे !defined(CONFIG_FREERTOS_UNICORE) && (defined(CONFIG_FREERTOS_CORETIMER_0) || defined(CONFIG_FREERTOS_CORETIMER_1))
 
 #define SPIN_TASK_PRIO                  (CONFIG_UNITY_FREERTOS_PRIORITY + 1)
-#define SPIN_TASK_NUM_ITER              3
-#define TASK_STACK_SIZE                 1024
-#define NUM_PINNED_SPIN_TASK_PER_CORE   3
-#if defined(CONFIG_FREERTOS_CORETIMER_0)
+#define SPIN_TASK_अङ्कः_ITER              3
+#define TASK_राशिः_SIZE                 1024
+#define अङ्कः_PINNED_SPIN_TASK_PER_CORE   3
+#सचे defined(CONFIG_FREERTOS_CORETIMER_0)
 #define TICK_INTR_IDX                   6
-#else   //defined(CONFIG_FREERTOS_CORETIMER_1)
+#अञ्ञथा   //defined(CONFIG_FREERTOS_CORETIMER_1)
 #define TICK_INTR_IDX                   15
 #endif
 
-static QueueHandle_t core0_run_order_queue;
-static QueueHandle_t core1_run_order_queue;
-static uint32_t total_iter_count[CONFIG_FREERTOS_NUMBER_OF_CORES] = {0};
+स्थिर QueueHandle_t core0_run_order_queue;
+स्थिर QueueHandle_t core1_run_order_queue;
+स्थिर uint32_t total_iter_गणनम्[CONFIG_FREERTOS_सङ्ख्या_OF_CORES] = {0};
 
-static void spin_task(void *arg)
+स्थिर शून्य spin_task(शून्य *arg)
 {
     uint32_t task_code = (uint32_t)arg;
     QueueHandle_t run_order_queue = ((task_code >> 4) == 0) ? core0_run_order_queue : core1_run_order_queue;
@@ -62,75 +62,75 @@ static void spin_task(void *arg)
     //Wait to be started
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
-    for (int i = 0; i < SPIN_TASK_NUM_ITER; i++) {
+    अत्थाय (पूर्णाङ्क i = 0; i < SPIN_TASK_अङ्कः_ITER; i++) {
         xQueueSend(run_order_queue, &task_code, 0);
         //No need for critical sections as tick interrupt is disabled
-        total_iter_count[xPortGetCoreID()]++;
+        total_iter_गणनम्[xPortGetCoreID()]++;
         taskYIELD();
     }
 
     //Last iteration of the last spin task on this core. Reenable this core's tick interrupt
-    if (total_iter_count[xPortGetCoreID()] == (NUM_PINNED_SPIN_TASK_PER_CORE * SPIN_TASK_NUM_ITER)) {
+    सचे (total_iter_गणनम्[xPortGetCoreID()] == (अङ्कः_PINNED_SPIN_TASK_PER_CORE * SPIN_TASK_अङ्कः_ITER)) {
         esp_cpu_intr_enable(1 << TICK_INTR_IDX);
     }
-    vTaskDelete(NULL);
+    vTaskDelete(रिक्त);
 }
 
-static void blocker_task(void *arg)
+स्थिर शून्य blocker_task(शून्य *arg)
 {
-    volatile bool *exit_loop = (volatile bool *)arg;
+    चञ्चल bool *exit_loop = (चञ्चल bool *)arg;
 
     //Disable tick interrupts on core 1 the duration of the test
     taskDISABLE_INTERRUPTS();
     esp_cpu_intr_disable(1 << TICK_INTR_IDX);
     taskENABLE_INTERRUPTS();
 
-    while (!*exit_loop) {
+    याव (!*exit_loop) {
         ;
     }
 
     //Wait to be resumed
-    vTaskSuspend(NULL);
+    vTaskSuspend(रिक्त);
 
     //Reenable tick interrupt on core 1
     taskDISABLE_INTERRUPTS();
     esp_cpu_intr_enable(1 << TICK_INTR_IDX);
     taskENABLE_INTERRUPTS();
 
-    vTaskDelete(NULL);
+    vTaskDelete(रिक्त);
 }
 
 TEST_CASE("Test FreeRTOS Scheduling Round Robin", "[freertos]")
 {
-    core0_run_order_queue = xQueueCreate(SPIN_TASK_NUM_ITER * NUM_PINNED_SPIN_TASK_PER_CORE, sizeof(uint32_t));
-    core1_run_order_queue = xQueueCreate(SPIN_TASK_NUM_ITER * NUM_PINNED_SPIN_TASK_PER_CORE, sizeof(uint32_t));
+    core0_run_order_queue = xQueueCreate(SPIN_TASK_अङ्कः_ITER * अङ्कः_PINNED_SPIN_TASK_PER_CORE, परिमाण(uint32_t));
+    core1_run_order_queue = xQueueCreate(SPIN_TASK_अङ्कः_ITER * अङ्कः_PINNED_SPIN_TASK_PER_CORE, परिमाण(uint32_t));
 
     /* Increase priority of unity task so that the spin tasks don't preempt us
     during task creation. */
-    vTaskPrioritySet(NULL, SPIN_TASK_PRIO + 1);
+    vTaskPrioritySet(रिक्त, SPIN_TASK_PRIO + 1);
     /* Create a task on core 1 of the same priority to block core 1 */
-    volatile bool suspend_blocker = false;
+    चञ्चल bool suspend_blocker = false;
     TaskHandle_t blocker_task_hdl;
-    xTaskCreatePinnedToCore(blocker_task, "blk", TASK_STACK_SIZE, (void *)&suspend_blocker, SPIN_TASK_PRIO + 1, &blocker_task_hdl, 1);
+    xTaskCreatePinnedToCore(blocker_task, "blk", TASK_राशिः_SIZE, (शून्य *)&suspend_blocker, SPIN_TASK_PRIO + 1, &blocker_task_hdl, 1);
 
     //Disable tick interrupts on core 0 the duration of the test
     taskDISABLE_INTERRUPTS();
     esp_cpu_intr_disable(1 << TICK_INTR_IDX);
     taskENABLE_INTERRUPTS();
 
-    TaskHandle_t core0_task_hdls[NUM_PINNED_SPIN_TASK_PER_CORE];
-    TaskHandle_t core1_task_hdls[NUM_PINNED_SPIN_TASK_PER_CORE];
+    TaskHandle_t core0_task_hdls[अङ्कः_PINNED_SPIN_TASK_PER_CORE];
+    TaskHandle_t core1_task_hdls[अङ्कः_PINNED_SPIN_TASK_PER_CORE];
 
-    for (int i = 0; i < NUM_PINNED_SPIN_TASK_PER_CORE; i++) {
+    अत्थाय (पूर्णाङ्क i = 0; i < अङ्कः_PINNED_SPIN_TASK_PER_CORE; i++) {
         //Create a spin task pinned to core 0
-        xTaskCreatePinnedToCore(spin_task, "spin", TASK_STACK_SIZE, (void *)(0x00 + i), SPIN_TASK_PRIO, &core0_task_hdls[i], 0);
+        xTaskCreatePinnedToCore(spin_task, "spin", TASK_राशिः_SIZE, (शून्य *)(0x00 + i), SPIN_TASK_PRIO, &core0_task_hdls[i], 0);
         //Create a spin task pinned to core 1
-        xTaskCreatePinnedToCore(spin_task, "spin", TASK_STACK_SIZE, (void *)(0x10 + i), SPIN_TASK_PRIO, &core1_task_hdls[i], 1);
+        xTaskCreatePinnedToCore(spin_task, "spin", TASK_राशिः_SIZE, (शून्य *)(0x10 + i), SPIN_TASK_PRIO, &core1_task_hdls[i], 1);
     }
 
     /* Start the tasks in a particular order. This order should be reflected in
     in the round robin scheduling on each core */
-    for (int i = 0; i < NUM_PINNED_SPIN_TASK_PER_CORE; i++) {
+    अत्थाय (पूर्णाङ्क i = 0; i < अङ्कः_PINNED_SPIN_TASK_PER_CORE; i++) {
         //Start a spin task on core 0
         xTaskNotifyGive(core0_task_hdls[i]);
         //Start a spin task on core 1
@@ -139,13 +139,13 @@ TEST_CASE("Test FreeRTOS Scheduling Round Robin", "[freertos]")
 
     //Lower priority of this task and stop blocker task to allow the spin tasks to be scheduled
     suspend_blocker = true;
-    vTaskPrioritySet(NULL, UNITY_FREERTOS_PRIORITY);
+    vTaskPrioritySet(रिक्त, UNITY_FREERTOS_PRIORITY);
 
     //Give a enough delay to allow all iterations of the round robin to occur
     esp_rom_delay_us(10000);
 
-    for (int i = 0; i < SPIN_TASK_NUM_ITER; i++) {
-        for (int j = 0; j < NUM_PINNED_SPIN_TASK_PER_CORE; j++) {
+    अत्थाय (पूर्णाङ्क i = 0; i < SPIN_TASK_अङ्कः_ITER; i++) {
+        अत्थाय (पूर्णाङ्क j = 0; j < अङ्कः_PINNED_SPIN_TASK_PER_CORE; j++) {
             uint32_t core0_entry;
             uint32_t core1_entry;
             TEST_ASSERT_EQUAL(pdTRUE, xQueueReceive(core0_run_order_queue, &core0_entry, 0));
