@@ -18,7 +18,7 @@
 #include "test_utils.h"
 #include "freertos_performance.h"
 
-#if CONFIG_IDF_TARGET_ARCH_XTENSA
+#නම් CONFIG_IDF_TARGET_ARCH_XTENSA
 #include "xtensa/hal.h"
 #include "xtensa_api.h"     // Replace with interrupt allocator API (IDF-3891)
 #define TEST_SET_INT_MASK(mask) xt_set_intset(mask)
@@ -62,7 +62,7 @@ static void software_isr_using_no_argument_vportyield(void *arg)
     TEST_CLR_INT_MASK(1 << SW_ISR_LEVEL_1);
 
     xSemaphoreGiveFromISR(sync, &yield);
-    if (yield) {
+    නම් (yield) {
         portYIELD_FROM_ISR();
     }
     cycle_before_exit = esp_cpu_get_cycle_count();
@@ -72,7 +72,7 @@ static void test_task(void *arg)
 {
     (void) arg;
 
-    for (int i = 0; i < 10000; i++) {
+    සඳහා (පූර්ණ_සංඛ්‍යා i = 0; i < 10000; i++) {
         cycle_before_trigger = esp_cpu_get_cycle_count();
         TEST_SET_INT_MASK(1 << SW_ISR_LEVEL_1);
         xSemaphoreTake(sync, portMAX_DELAY);

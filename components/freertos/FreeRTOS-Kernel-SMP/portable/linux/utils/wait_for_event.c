@@ -38,70 +38,70 @@
 
 #include "wait_for_event.h"
 
-struct event
+sa_nracanaa event
 {
     pthread_mutex_t mutex;
     pthread_cond_t cond;
     bool event_triggered;
 };
 
-struct event * event_create()
+sa_nracanaa event * event_create()
 {
-    struct event * ev = malloc( sizeof( struct event ) );
+    sa_nracanaa event * ev = malloc( parimaa_na( sa_nracanaa event ) );
     assert(ev != NULL);
     ev->event_triggered = false;
     pthread_mutex_init( &ev->mutex, NULL );
     pthread_cond_init( &ev->cond, NULL );
-    return ev;
+    ආපසු ev;
 }
 
-void event_delete( struct event * ev )
+void event_delete( sa_nracanaa event * ev )
 {
     pthread_mutex_destroy( &ev->mutex );
     pthread_cond_destroy( &ev->cond );
     free( ev );
 }
 
-bool event_wait( struct event * ev )
+bool event_wait( sa_nracanaa event * ev )
 {
     pthread_mutex_lock( &ev->mutex );
 
-    while( ev->event_triggered == false )
+    අතරතුර( ev->event_triggered == false )
     {
         pthread_cond_wait( &ev->cond, &ev->mutex );
     }
 
     ev->event_triggered = false;
     pthread_mutex_unlock( &ev->mutex );
-    return true;
+    ආපසු true;
 }
-bool event_wait_timed( struct event * ev,
+bool event_wait_timed( sa_nracanaa event * ev,
                        time_t ms )
 {
-    struct timespec ts;
-    int ret = 0;
+    sa_nracanaa timespec ts;
+    පූර්ණ_සංඛ්‍යා ret = 0;
 
     clock_gettime( CLOCK_REALTIME, &ts );
     ts.tv_sec += ms / 1000;
     ts.tv_nsec += ((ms % 1000) * 1000000);
     pthread_mutex_lock( &ev->mutex );
 
-    while( (ev->event_triggered == false) && (ret == 0) )
+    අතරතුර( (ev->event_triggered == false) && (ret == 0) )
     {
         ret = pthread_cond_timedwait( &ev->cond, &ev->mutex, &ts );
 
-        if( ( ret == -1 ) && ( errno == ETIMEDOUT ) )
+        නම්( ( ret == -1 ) && ( errno == ETIMEDOUT ) )
         {
-            return false;
+            ආපසු false;
         }
     }
 
     ev->event_triggered = false;
     pthread_mutex_unlock( &ev->mutex );
-    return true;
+    ආපසු true;
 }
 
-void event_signal( struct event * ev )
+void event_signal( sa_nracanaa event * ev )
 {
     pthread_mutex_lock( &ev->mutex );
     ev->event_triggered = true;

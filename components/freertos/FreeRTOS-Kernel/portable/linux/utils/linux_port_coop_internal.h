@@ -46,7 +46,7 @@ bool linux_port_in_freertos_task(void);
  *
  * @param fd File descriptor to make non-blocking.
  */
-void linux_coop_set_nonblocking(int fd);
+void linux_coop_set_nonblocking(පූර්ණ_සංඛ්‍යා fd);
 
 /**
  * @brief Track a file descriptor in the cooperative mode table.
@@ -58,14 +58,14 @@ void linux_coop_set_nonblocking(int fd);
  * @param fd         File descriptor to track.
  * @param user_flags User-visible status flags (as passed to fcntl F_SETFL).
  */
-void linux_coop_track_fd(int fd, int user_flags);
+void linux_coop_track_fd(පූර්ණ_සංඛ්‍යා fd, පූර්ණ_සංඛ්‍යා user_flags);
 
 /**
  * @brief Stop tracking a file descriptor in the cooperative mode table.
  *
  * @param fd File descriptor to untrack.
  */
-void linux_coop_untrack_fd(int fd);
+void linux_coop_untrack_fd(පූර්ණ_සංඛ්‍යා fd);
 
 /**
  * @brief Update user-visible status flags for a tracked file descriptor.
@@ -73,7 +73,7 @@ void linux_coop_untrack_fd(int fd);
  * @param fd         File descriptor to update.
  * @param user_flags New user-visible status flags.
  */
-void linux_coop_set_user_flags(int fd, int user_flags);
+void linux_coop_set_user_flags(පූර්ණ_සංඛ්‍යා fd, පූර්ණ_සංඛ්‍යා user_flags);
 
 /**
  * @brief Query whether user-visible mode is non-blocking for a file descriptor.
@@ -81,7 +81,7 @@ void linux_coop_set_user_flags(int fd, int user_flags);
  * @param fd File descriptor to query.
  * @return true if user-visible mode is non-blocking, false otherwise.
  */
-bool linux_coop_fd_user_nonblocking(int fd);
+bool linux_coop_fd_user_nonblocking(පූර්ණ_සංඛ්‍යා fd);
 
 /**
  * @brief Get tracked user-visible status flags for a file descriptor.
@@ -90,7 +90,7 @@ bool linux_coop_fd_user_nonblocking(int fd);
  * @param[out] flags Output for tracked user-visible flags.
  * @return true if the fd is tracked and flags were written, false otherwise.
  */
-bool linux_coop_get_user_flags(int fd, int *flags);
+bool linux_coop_get_user_flags(පූර්ණ_සංඛ්‍යා fd, පූර්ණ_සංඛ්‍යා *flags);
 
 /**
  * @brief Cooperatively yield for @p ms milliseconds.
@@ -99,16 +99,16 @@ bool linux_coop_get_user_flags(int fd, int *flags);
  *
  * @param ms Number of milliseconds to yield.
  */
-static inline __attribute__((always_inline))
-void linux_coop_yield(int ms)
+static anta_hstha __attribute__((always_inline))
+void linux_coop_yield(පූර්ණ_සංඛ්‍යා ms)
 {
-    if (linux_port_in_freertos_task()) {
+    නම් (linux_port_in_freertos_task()) {
         vTaskDelay(pdMS_TO_TICKS(ms));
-    } else {
-        struct timespec ts;
+    } නැතහොත් {
+        sa_nracanaa timespec ts;
         ts.tv_sec  = ms / 1000;
         ts.tv_nsec = (ms % 1000) * 1000000L;
-        while (nanosleep(&ts, &ts) == -1 && errno == EINTR) {
+        අතරතුර (nanosleep(&ts, &ts) == -1 && errno == EINTR) {
             /* retry with remaining time */
         }
     }
@@ -124,20 +124,20 @@ void linux_coop_yield(int ms)
  * @param expr Expression to evaluate in the retry loop (must yield ssize_t).
  */
 #define LINUX_COOP_IO_LOOP(fd, expr)                           \
-    while (1)                                                  \
+    අතරතුර (1)                                                  \
     {                                                          \
         ssize_t _n = (expr);                                   \
-        if (_n >= 0) {                                         \
-            return _n;                                         \
+        නම් (_n >= 0) {                                         \
+            ආපසු _n;                                         \
         }                                                      \
-        if (errno == EAGAIN || errno == EWOULDBLOCK) {         \
-            if (linux_coop_fd_user_nonblocking(fd)) {          \
-                return -1;                                     \
+        නම් (errno == EAGAIN || errno == EWOULDBLOCK) {         \
+            නම් (linux_coop_fd_user_nonblocking(fd)) {          \
+                ආපසු -1;                                     \
             }                                                  \
             linux_coop_yield(LINUX_COOP_TICK_MS);              \
             continue;                                          \
         }                                                      \
-        return -1;                                             \
+        ආපසු -1;                                             \
     }
 
 #ifdef __cplusplus
