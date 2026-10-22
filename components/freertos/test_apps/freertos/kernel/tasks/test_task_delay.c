@@ -4,16 +4,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "semphr.h"
-#include "unity.h"
-#include "freertos_test_utils.h"
-#include "portTestMacro.h"
+#ضمن "sdkconfig.h"
+#ضمن "FreeRTOS.h"
+#ضمن "task.h"
+#ضمن "semphr.h"
+#ضمن "unity.h"
+#ضمن "freertos_test_utils.h"
+#ضمن "portTestMacro.h"
 
 /* ------------------------------------------------------------------------------------------------------------------ */
-#if SOC_GPTIMER_SUPPORTED
+#𐡄𐡍 SOC_GPTIMER_SUPPORTED
 
 /*
 Test vTaskDelay
@@ -35,19 +35,19 @@ Expected:
       period of error allowed (in case ref clock functions last longer that a tick period).
 */
 
-#if ( INCLUDE_vTaskDelay == 1 )
+#𐡄𐡍 ( INCLUDE_vTaskDelay == 1 )
 
 #define TEST_VTASKDELAY_TICKS           5   // Number of ticks to delay in test
 #define TEST_VTASKDELAY_ITERATIONS      5   // Number of iterations in test
-#if CONFIG_FREERTOS_SMP
+#𐡄𐡍 CONFIG_FREERTOS_SMP
 #define TEST_VTASKDELAY_DELTA_TICKS     1   // Number of ticks worth of delta allowed
-#else
+#وإلا
 #define TEST_VTASKDELAY_DELTA_TICKS     2   // Number of ticks worth of delta allowed. We allow 2 ticks in IDF FreeRTOS as each core's tick interrupt could be out of phase
 #endif
 
-static void test_vTaskDelay(void *arg)
+ساكن فراغ test_vTaskDelay(فراغ *arg)
 {
-    for (int i = 0; i < TEST_VTASKDELAY_ITERATIONS; i++) {
+    لكل (صحيح i = 0; i < TEST_VTASKDELAY_ITERATIONS; i++) {
         TickType_t tick_start, tick_end;
         portTEST_REF_CLOCK_TYPE ref_clock_start, ref_clock_end;
 
@@ -66,9 +66,9 @@ static void test_vTaskDelay(void *arg)
 
         /* Check that elapsed ticks and ref clock is accurate. We allow TEST_VTASKDELAY_DELTA_TICKS of error in case
          * vTaskDelay() or portTEST_REF_CLOCK_GET_TIME() last long enough to cross a tick boundary */
-#if ( configUSE_16_BIT_TICKS == 1 )
+#𐡄𐡍 ( configUSE_16_BIT_TICKS == 1 )
         TEST_ASSERT_UINT16_WITHIN(TEST_VTASKDELAY_DELTA_TICKS, TEST_VTASKDELAY_TICKS, tick_end - tick_start);
-#else
+#وإلا
         TEST_ASSERT_UINT32_WITHIN(TEST_VTASKDELAY_DELTA_TICKS, TEST_VTASKDELAY_TICKS, tick_end - tick_start);
 #endif
         TEST_ASSERT_UINT32_WITHIN(portTEST_TICKS_TO_REF_CLOCK(TEST_VTASKDELAY_DELTA_TICKS),
@@ -81,11 +81,11 @@ TEST_CASE("Tasks: Test vTaskDelay", "[freertos]")
 {
     portTEST_REF_CLOCK_INIT();
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
-    vTestOnAllCores(test_vTaskDelay, NULL, configTEST_DEFAULT_STACK_SIZE, configTEST_UNITY_TASK_PRIORITY - 1);
-#else
+#𐡄𐡍 ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
+    vTestOnAllCores(test_vTaskDelay, عدم, configTEST_DEFAULT_STACK_SIZE, configTEST_UNITY_TASK_PRIORITY - 1);
+#وإلا
     /* Test vTaskDelay directly on the current core */
-    test_vTaskDelay(NULL);
+    test_vTaskDelay(عدم);
 #endif
 
     portTEST_REF_CLOCK_DEINIT();
@@ -116,19 +116,19 @@ Expected:
       period).
 */
 
-#if ( INCLUDE_xTaskDelayUntil == 1 )
+#𐡄𐡍 ( INCLUDE_xTaskDelayUntil == 1 )
 
 #define TEST_VTASKDELAYUNTIL_TICKS              5   // Number of ticks to delay in test
 #define TEST_VTASKDELAYUNTIL_ITERATIONS         5   // Number of iterations in test
-#if CONFIG_FREERTOS_SMP
+#𐡄𐡍 CONFIG_FREERTOS_SMP
 #define TEST_VTASKDELAYUNTIL_DELTA_TICKS        1   // Number of ticks worth of delta allowed
-#else
+#وإلا
 #define TEST_VTASKDELAYUNTIL_DELTA_TICKS        2   // Number of ticks worth of delta allowed. We allow 2 ticks in IDF FreeRTOS as each core's tick interrupt could be out of phase
 #endif
 
-static void test_vTaskDelayUntil(void *arg)
+ساكن فراغ test_vTaskDelayUntil(فراغ *arg)
 {
-    for (int i = 0; i < TEST_VTASKDELAYUNTIL_ITERATIONS; i++) {
+    لكل (صحيح i = 0; i < TEST_VTASKDELAYUNTIL_ITERATIONS; i++) {
         TickType_t tick_start, tick_end, last_wake_tick;
         portTEST_REF_CLOCK_TYPE ref_clock_start, ref_clock_end;
 
@@ -148,10 +148,10 @@ static void test_vTaskDelayUntil(void *arg)
 
         /* Check that elapsed ticks and ref clock is accurate. We allow TEST_VTASKDELAYUNTIL_DELTA_TICKS of error in
          * case vTaskDelayUntil() or portTEST_REF_CLOCK_GET_TIME() last long enough to cross a tick boundary */
-#if ( configUSE_16_BIT_TICKS == 1 )
+#𐡄𐡍 ( configUSE_16_BIT_TICKS == 1 )
         TEST_ASSERT_UINT16_WITHIN(TEST_VTASKDELAYUNTIL_DELTA_TICKS, TEST_VTASKDELAYUNTIL_TICKS, tick_end - tick_start);
         TEST_ASSERT_UINT16_WITHIN(TEST_VTASKDELAYUNTIL_DELTA_TICKS, tick_end, last_wake_tick);
-#else
+#وإلا
         TEST_ASSERT_UINT32_WITHIN(TEST_VTASKDELAYUNTIL_DELTA_TICKS, TEST_VTASKDELAYUNTIL_TICKS, tick_end - tick_start);
         TEST_ASSERT_UINT32_WITHIN(TEST_VTASKDELAYUNTIL_DELTA_TICKS, tick_end, last_wake_tick);
 #endif
@@ -168,11 +168,11 @@ TEST_CASE("Tasks: Test vTaskDelayUntil", "[freertos]")
 {
     portTEST_REF_CLOCK_INIT();
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
-    vTestOnAllCores(test_vTaskDelayUntil, NULL, configTEST_DEFAULT_STACK_SIZE, configTEST_UNITY_TASK_PRIORITY - 1);
-#else
+#𐡄𐡍 ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
+    vTestOnAllCores(test_vTaskDelayUntil, عدم, configTEST_DEFAULT_STACK_SIZE, configTEST_UNITY_TASK_PRIORITY - 1);
+#وإلا
     /* Test vTaskDelay directly on the current core */
-    test_vTaskDelayUntil(NULL);
+    test_vTaskDelayUntil(عدم);
 #endif
 
     portTEST_REF_CLOCK_DEINIT();

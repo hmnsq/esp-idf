@@ -6,26 +6,26 @@
 
 /* FreeRTOS timer tests
 */
-#include <stdio.h>
-#include "unity.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/timers.h"
-#include "test_utils.h"
+#ضمن <stdio.h>
+#ضمن "unity.h"
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
+#ضمن "freertos/timers.h"
+#ضمن "test_utils.h"
 
-static void timer_callback(TimerHandle_t timer)
+ساكن فراغ timer_callback(TimerHandle_t timer)
 {
-    volatile int *count;
-    count = (volatile int *)pvTimerGetTimerID(timer);
+    متطاير صحيح *count;
+    count = (متطاير صحيح *)pvTimerGetTimerID(timer);
     (*count)++;
     printf("Callback timer %p count %p = %d\n", timer, count, *count);
 }
 
 TEST_CASE("Oneshot FreeRTOS timers", "[freertos]")
 {
-    volatile int count = 0;
+    متطاير صحيح count = 0;
     TimerHandle_t oneshot = xTimerCreate("oneshot", 100 / portTICK_PERIOD_MS, pdFALSE,
-                                         (void *)&count, timer_callback);
+                                         (فراغ *)&count, timer_callback);
     TEST_ASSERT(oneshot);
     TEST_ASSERT_EQUAL(pdFALSE, xTimerIsTimerActive(oneshot));
     TEST_ASSERT_EQUAL(0, count);
@@ -46,9 +46,9 @@ TEST_CASE("Oneshot FreeRTOS timers", "[freertos]")
 
 TEST_CASE("Recurring FreeRTOS timers", "[freertos]")
 {
-    volatile int count = 0;
+    متطاير صحيح count = 0;
     TimerHandle_t recurring = xTimerCreate("oneshot", 100 / portTICK_PERIOD_MS, pdTRUE,
-                                           (void *)&count, timer_callback);
+                                           (فراغ *)&count, timer_callback);
     TEST_ASSERT(recurring);
     TEST_ASSERT_EQUAL(pdFALSE, xTimerIsTimerActive(recurring));
     TEST_ASSERT_EQUAL(0, count);
@@ -79,11 +79,11 @@ TEST_CASE("Static timer creation", "[freertos]")
 {
     StaticTimer_t static_timer;
     TimerHandle_t created_timer;
-    volatile int count = 0;
+    متطاير صحيح count = 0;
 
     created_timer = xTimerCreateStatic("oneshot", 100 / portTICK_PERIOD_MS,
                                        pdTRUE,
-                                       (void *)&count,
+                                       (فراغ *)&count,
                                        timer_callback,
                                        &static_timer);
 

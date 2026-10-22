@@ -5,39 +5,39 @@
  */
 
 /* Tests for FreeRTOS task suspend & resume */
-#include <stdio.h>
-#include <string.h>
-#include <inttypes.h>
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/timers.h"
-#include "freertos/queue.h"
-#include "unity.h"
-#include "test_utils.h"
-#include "driver/gptimer.h"
-#include "esp_rom_sys.h"
+#ضمن <stdio.h>
+#ضمن <string.h>
+#ضمن <inttypes.h>
+#ضمن "sdkconfig.h"
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
+#ضمن "freertos/semphr.h"
+#ضمن "freertos/timers.h"
+#ضمن "freertos/queue.h"
+#ضمن "unity.h"
+#ضمن "test_utils.h"
+#ضمن "driver/gptimer.h"
+#ضمن "esp_rom_sys.h"
 
 /* Counter task counts a target variable forever */
-static void task_count(void *vp_counter)
+ساكن فراغ task_count(فراغ *vp_counter)
 {
-    volatile unsigned *counter = (volatile unsigned *)vp_counter;
+    متطاير unsigned *counter = (متطاير unsigned *)vp_counter;
     *counter = 0;
 
-    while (1) {
+    طالما (1) {
         (*counter)++;
         vTaskDelay(1);
     }
 }
 
-static void test_suspend_resume(int target_core)
+ساكن فراغ test_suspend_resume(صحيح target_core)
 {
-    volatile unsigned counter = 0;
+    متطاير unsigned counter = 0;
     TaskHandle_t counter_task;
 
     xTaskCreatePinnedToCore(task_count, "Count", 2048,
-                            (void *)&counter, UNITY_FREERTOS_PRIORITY + 1,
+                            (فراغ *)&counter, UNITY_FREERTOS_PRIORITY + 1,
                             &counter_task, target_core);
 
     vTaskDelay(10);
@@ -46,8 +46,8 @@ static void test_suspend_resume(int target_core)
 
     // Do the next part a few times, just to be sure multiple suspends & resumes
     // work as expected...
-    const int TEST_ITERATIONS = 5;
-    for (int i = 0; i < TEST_ITERATIONS; i++) {
+    ثابت صحيح TEST_ITERATIONS = 5;
+    لكل (صحيح i = 0; i < TEST_ITERATIONS; i++) {
         vTaskSuspend(counter_task);
         unsigned suspend_count = counter;
         printf("Suspending @ %d\n", suspend_count);
@@ -92,22 +92,22 @@ TEST_CASE("Suspend/resume task on other core", "[freertos][ignore]")
 #endif
 
 /* Task suspends itself, then sets a flag and deletes itself */
-static void task_suspend_self(void *vp_resumed)
+ساكن فراغ task_suspend_self(فراغ *vp_resumed)
 {
-    volatile bool *resumed = (volatile bool *)vp_resumed;
+    متطاير bool *resumed = (متطاير bool *)vp_resumed;
     *resumed = false;
-    vTaskSuspend(NULL);
+    vTaskSuspend(عدم);
     *resumed = true;
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
 TEST_CASE("Suspend the current running task", "[freertos]")
 {
-    volatile bool resumed = false;
+    متطاير bool resumed = false;
     TaskHandle_t suspend_task;
 
     xTaskCreatePinnedToCore(task_suspend_self, "suspend_self", 2048,
-                            (void *)&resumed, UNITY_FREERTOS_PRIORITY + 1,
+                            (فراغ *)&resumed, UNITY_FREERTOS_PRIORITY + 1,
                             &suspend_task, UNITY_FREERTOS_CPU);
 
     vTaskDelay(1);
@@ -118,43 +118,43 @@ TEST_CASE("Suspend the current running task", "[freertos]")
     TEST_ASSERT_TRUE(resumed);
 }
 
-#if SOC_GPTIMER_SUPPORTED
+#𐡄𐡍 SOC_GPTIMER_SUPPORTED
 
-static volatile bool timer_isr_fired;
-static gptimer_handle_t gptimer = NULL;
+ساكن متطاير bool timer_isr_fired;
+ساكن gptimer_handle_t gptimer = عدم;
 
 /* Timer ISR clears interrupt, sets flag, then resumes the task supplied in the
  * callback argument.
  */
-bool on_timer_alarm_cb(gptimer_handle_t timer, const gptimer_alarm_event_data_t *edata, void *user_ctx)
+bool on_timer_alarm_cb(gptimer_handle_t timer, ثابت gptimer_alarm_event_data_t *edata, فراغ *user_ctx)
 {
     TaskHandle_t handle = user_ctx;
     BaseType_t higherPriorityTaskWoken = pdFALSE;
     gptimer_stop(timer);
     timer_isr_fired = true;
     higherPriorityTaskWoken = xTaskResumeFromISR(handle);
-    return higherPriorityTaskWoken == pdTRUE;
+    أرجع higherPriorityTaskWoken == pdTRUE;
 }
 
 /* Task suspends itself, then sets parameter value to the current timer group counter and deletes itself */
-static IRAM_ATTR void task_suspend_self_with_timer(void *vp_resumed)
+ساكن IRAM_ATTR فراغ task_suspend_self_with_timer(فراغ *vp_resumed)
 {
-    volatile uint64_t *resumed_counter = vp_resumed;
+    متطاير uint64_t *resumed_counter = vp_resumed;
     *resumed_counter = 0;
-    vTaskSuspend(NULL);
+    vTaskSuspend(عدم);
     gptimer_get_raw_count(gptimer, (uint64_t *)resumed_counter);
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
 /* Create a task which suspends itself, then resume it from a timer
  * interrupt. */
-static void test_resume_task_from_isr(int target_core)
+ساكن فراغ test_resume_task_from_isr(صحيح target_core)
 {
-    volatile uint64_t resumed_counter = 99;
+    متطاير uint64_t resumed_counter = 99;
     TaskHandle_t suspend_task;
 
     xTaskCreatePinnedToCore(task_suspend_self_with_timer, "suspend_self", 2048,
-                            (void *)&resumed_counter, UNITY_FREERTOS_PRIORITY + 1,
+                            (فراغ *)&resumed_counter, UNITY_FREERTOS_PRIORITY + 1,
                             &suspend_task, target_core);
     // delay to make the task has resumed itself
     vTaskDelay(1);
