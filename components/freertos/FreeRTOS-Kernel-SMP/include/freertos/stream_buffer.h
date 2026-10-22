@@ -61,8 +61,8 @@
 #endif
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
-    extern "C" {
+#यदि defined( __cplusplus )
+    बाह्य "C" {
 #endif
 /* *INDENT-ON* */
 
@@ -79,15 +79,15 @@
  * then be used as a parameter to xStreamBufferSend(), xStreamBufferReceive(),
  * etc.
  */
-struct StreamBufferDef_t;
-typedef struct StreamBufferDef_t * StreamBufferHandle_t;
+संरचना StreamBufferDef_t;
+प्रकारनिर्देश संरचना StreamBufferDef_t * StreamBufferHandle_t;
 
 /**
  *  Type used as a stream buffer's optional callback.
  */
-typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuffer,
+प्रकारनिर्देश शून्य (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuffer,
                                                  BaseType_t xIsInsideISR,
-                                                 BaseType_t * const pxHigherPriorityTaskWoken );
+                                                 BaseType_t * ध्रुव pxHigherPriorityTaskWoken );
 
 /**
  * stream_buffer.h
@@ -168,9 +168,9 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  */
 
 #define xStreamBufferCreate( xBufferSizeBytes, xTriggerLevelBytes ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BUFFER, NULL, NULL )
+    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BUFFER, रिक्त, रिक्त )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+#यदि ( configUSE_SB_COMPLETED_CALLBACK == 1 )
     #define xStreamBufferCreateWithCallback( xBufferSizeBytes, xTriggerLevelBytes, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
     xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BUFFER, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
 #endif
@@ -268,9 +268,9 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  */
 
 #define xStreamBufferCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BUFFER, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), NULL, NULL )
+    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BUFFER, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), रिक्त, रिक्त )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+#यदि ( configUSE_SB_COMPLETED_CALLBACK == 1 )
     #define xStreamBufferCreateStaticWithCallback( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
     xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BUFFER, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
 #endif
@@ -354,9 +354,9 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  */
 
 #define xStreamBatchingBufferCreate( xBufferSizeBytes, xTriggerLevelBytes ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BATCHING_BUFFER, NULL, NULL )
+    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BATCHING_BUFFER, रिक्त, रिक्त )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+#यदि ( configUSE_SB_COMPLETED_CALLBACK == 1 )
     #define xStreamBatchingBufferCreateWithCallback( xBufferSizeBytes, xTriggerLevelBytes, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
     xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BATCHING_BUFFER, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
 #endif
@@ -456,9 +456,9 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  */
 
 #define xStreamBatchingBufferCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BATCHING_BUFFER, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), NULL, NULL )
+    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BATCHING_BUFFER, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), रिक्त, रिक्त )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+#यदि ( configUSE_SB_COMPLETED_CALLBACK == 1 )
     #define xStreamBatchingBufferCreateStaticWithCallback( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
     xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BATCHING_BUFFER, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
 #endif
@@ -492,7 +492,7 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  * \defgroup xStreamBufferGetStaticBuffers xStreamBufferGetStaticBuffers
  * \ingroup StreamBufferManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#यदि ( configSUPPORT_STATIC_ALLOCATION == 1 )
     BaseType_t xStreamBufferGetStaticBuffers( StreamBufferHandle_t xStreamBuffer,
                                               uint8_t ** ppucStreamBufferStorageArea,
                                               StaticStreamBuffer_t ** ppxStaticStreamBuffer ) PRIVILEGED_FUNCTION;
@@ -593,9 +593,9 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  * \defgroup xStreamBufferSend xStreamBufferSend
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
-                          const void * pvTxData,
-                          size_t xDataLengthBytes,
+माप_प्रकार xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
+                          ध्रुव शून्य * pvTxData,
+                          माप_प्रकार xDataLengthBytes,
                           TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
 
 /**
@@ -697,10 +697,10 @@ size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
  * \defgroup xStreamBufferSendFromISR xStreamBufferSendFromISR
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
-                                 const void * pvTxData,
-                                 size_t xDataLengthBytes,
-                                 BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+माप_प्रकार xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
+                                 ध्रुव शून्य * pvTxData,
+                                 माप_प्रकार xDataLengthBytes,
+                                 BaseType_t * ध्रुव pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -789,9 +789,9 @@ size_t xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
  * \defgroup xStreamBufferReceive xStreamBufferReceive
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
-                             void * pvRxData,
-                             size_t xBufferLengthBytes,
+माप_प्रकार xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
+                             शून्य * pvRxData,
+                             माप_प्रकार xBufferLengthBytes,
                              TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
 
 /**
@@ -878,10 +878,10 @@ size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
  * \defgroup xStreamBufferReceiveFromISR xStreamBufferReceiveFromISR
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
-                                    void * pvRxData,
-                                    size_t xBufferLengthBytes,
-                                    BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+माप_प्रकार xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
+                                    शून्य * pvRxData,
+                                    माप_प्रकार xBufferLengthBytes,
+                                    BaseType_t * ध्रुव pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -906,7 +906,7 @@ size_t xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
  * \defgroup vStreamBufferDelete vStreamBufferDelete
  * \ingroup StreamBufferManagement
  */
-void vStreamBufferDelete( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+शून्य vStreamBufferDelete( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -1038,7 +1038,7 @@ BaseType_t xStreamBufferResetFromISR( StreamBufferHandle_t xStreamBuffer ) PRIVI
  * \defgroup xStreamBufferSpacesAvailable xStreamBufferSpacesAvailable
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+माप_प्रकार xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -1062,7 +1062,7 @@ size_t xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVIL
  * \defgroup xStreamBufferBytesAvailable xStreamBufferBytesAvailable
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+माप_प्रकार xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -1103,7 +1103,7 @@ size_t xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVILE
  * \ingroup StreamBufferManagement
  */
 BaseType_t xStreamBufferSetTriggerLevel( StreamBufferHandle_t xStreamBuffer,
-                                         size_t xTriggerLevel ) PRIVILEGED_FUNCTION;
+                                         माप_प्रकार xTriggerLevel ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -1246,37 +1246,37 @@ UBaseType_t uxStreamBufferGetStreamBufferNotificationIndex( StreamBufferHandle_t
  * \defgroup vStreamBufferSetStreamBufferNotificationIndex vStreamBufferSetStreamBufferNotificationIndex
  * \ingroup StreamBufferManagement
  */
-void vStreamBufferSetStreamBufferNotificationIndex( StreamBufferHandle_t xStreamBuffer,
+शून्य vStreamBufferSetStreamBufferNotificationIndex( StreamBufferHandle_t xStreamBuffer,
                                                     UBaseType_t uxNotificationIndex ) PRIVILEGED_FUNCTION;
 
 /* Functions below here are not part of the public API. */
-StreamBufferHandle_t xStreamBufferGenericCreate( size_t xBufferSizeBytes,
-                                                 size_t xTriggerLevelBytes,
+StreamBufferHandle_t xStreamBufferGenericCreate( माप_प्रकार xBufferSizeBytes,
+                                                 माप_प्रकार xTriggerLevelBytes,
                                                  BaseType_t xStreamBufferType,
                                                  StreamBufferCallbackFunction_t pxSendCompletedCallback,
                                                  StreamBufferCallbackFunction_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    StreamBufferHandle_t xStreamBufferGenericCreateStatic( size_t xBufferSizeBytes,
-                                                           size_t xTriggerLevelBytes,
+#यदि ( configSUPPORT_STATIC_ALLOCATION == 1 )
+    StreamBufferHandle_t xStreamBufferGenericCreateStatic( माप_प्रकार xBufferSizeBytes,
+                                                           माप_प्रकार xTriggerLevelBytes,
                                                            BaseType_t xStreamBufferType,
-                                                           uint8_t * const pucStreamBufferStorageArea,
-                                                           StaticStreamBuffer_t * const pxStaticStreamBuffer,
+                                                           uint8_t * ध्रुव pucStreamBufferStorageArea,
+                                                           StaticStreamBuffer_t * ध्रुव pxStaticStreamBuffer,
                                                            StreamBufferCallbackFunction_t pxSendCompletedCallback,
                                                            StreamBufferCallbackFunction_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
 #endif
 
-size_t xStreamBufferNextMessageLengthBytes( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+माप_प्रकार xStreamBufferNextMessageLengthBytes( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
 
-#if ( configUSE_TRACE_FACILITY == 1 )
-    void vStreamBufferSetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer,
-                                             UBaseType_t uxStreamBufferNumber ) PRIVILEGED_FUNCTION;
-    UBaseType_t uxStreamBufferGetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+#यदि ( configUSE_TRACE_FACILITY == 1 )
+    शून्य v_Stream_Buffer_Set_Stream_Buffer_संख्या( StreamBufferHandle_t xStreamBuffer,
+                                             UBaseType_t ux_Stream_Buffer_संख्या ) PRIVILEGED_FUNCTION;
+    UBaseType_t ux_Stream_Buffer_Get_Stream_Buffer_संख्या( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
     uint8_t ucStreamBufferGetStreamBufferType( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
 #endif
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
+#यदि defined( __cplusplus )
     }
 #endif
 /* *INDENT-ON* */
