@@ -20,14 +20,14 @@
 #include "esp_rom_sys.h"
 #include "esp_freertos_hooks.h"
 
-#if CONFIG_FREERTOS_CORETIMER_0
+#အကယ်၍ CONFIG_FREERTOS_CORETIMER_0
 
-static volatile int in_int_context, int_handled;
+static ca_ncala ကိန်းပြည့် in_int_context, int_handled;
 
 static void testint(void)
 {
     esp_rom_printf("INT!\n");
-    if (xPortInIsrContext()) {
+    အကယ်၍ (xPortInIsrContext()) {
         in_int_context++;
     }
     int_handled++;
@@ -51,7 +51,7 @@ TEST_CASE("xPortInIsrContext test", "[freertos]")
 {
     xTaskCreatePinnedToCore(testthread, "tst", 4096, NULL, 3, NULL, 0);
     vTaskDelay(150 / portTICK_PERIOD_MS);
-#if CONFIG_FREERTOS_NUMBER_OF_CORES == 2
+#အကယ်၍ CONFIG_FREERTOS_NUMBER_OF_CORES == 2
     xTaskCreatePinnedToCore(testthread, "tst", 4096, NULL, 3, NULL, 1);
     vTaskDelay(150 / portTICK_PERIOD_MS);
 #endif
@@ -59,7 +59,7 @@ TEST_CASE("xPortInIsrContext test", "[freertos]")
 
 #endif
 
-#if !CONFIG_FREERTOS_SMP // TODO: Enable when IDF-10540 is fixed
+#အကယ်၍ !CONFIG_FREERTOS_SMP // TODO: Enable when IDF-10540 is fixed
 
 static void testint_assert(void)
 {

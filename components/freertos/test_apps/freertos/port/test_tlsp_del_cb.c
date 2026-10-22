@@ -33,9 +33,9 @@ Expected:
 
 #define NUM_TLSP        CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_POINTERS
 
-static void tlsp_del_cb(int index, void *tlsp)
+static void tlsp_del_cb(ကိန်းပြည့် index, void *tlsp)
 {
-    int *val = (int *)tlsp;
+    ကိန်းပြည့် *val = (ကိန်းပြည့် *)tlsp;
 
     // Check that the TLSP's initialization value is correct
     TEST_ASSERT_EQUAL(index, *val);
@@ -45,9 +45,9 @@ static void tlsp_del_cb(int index, void *tlsp)
 
 static void tlsp_task(void *arg)
 {
-    int *tlsps = (int *)arg;
+    ကိန်းပြည့် *tlsps = (ကိန်းပြည့် *)arg;
 
-    for (int index = 0; index < NUM_TLSP; index++) {
+    အတွက် (ကိန်းပြည့် index = 0; index < NUM_TLSP; index++) {
         // Initialize the TLSPs to a positive value
         tlsps[index] = index;
         // Set TLSPs and deletion callbacks
@@ -61,17 +61,17 @@ static void tlsp_task(void *arg)
 TEST_CASE("Test TLSP deletion callbacks", "[freertos]")
 {
     TaskHandle_t tasks[CONFIG_FREERTOS_NUMBER_OF_CORES];
-    int tlsps[CONFIG_FREERTOS_NUMBER_OF_CORES][NUM_TLSP];
+    ကိန်းပြည့် tlsps[CONFIG_FREERTOS_NUMBER_OF_CORES][NUM_TLSP];
 
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    အတွက် (ကိန်းပြည့် i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCore(tlsp_task, "tlsp_tsk", configMINIMAL_STACK_SIZE * 2, (void *)&tlsps[i], UNITY_FREERTOS_PRIORITY - 1, &tasks[i], i));
     }
     // Significant delay to let tasks run and delete themselves
     vTaskDelay(100);
 
     // Check the values of the TLSPs to see if the del cb have ran
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        for (int index = 0; index < NUM_TLSP; index++) {
+    အတွက် (ကိန်းပြည့် i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+        အတွက် (ကိန်းပြည့် index = 0; index < NUM_TLSP; index++) {
             // Del cb should have set the TLSP to a negative value
             TEST_ASSERT_EQUAL(-index, tlsps[i][index]);
         }

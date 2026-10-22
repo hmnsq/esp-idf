@@ -27,7 +27,7 @@ TEST_CASE("FreeRTOS xTaskGetHandle()", "[freertos]")
 {
     vTaskDelay(10); //Small delay to let init/daemon tasks finish running
 
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    အတွက် (ကိန်းပြည့် core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
         TaskHandle_t test_task_hdl;
         TaskHandle_t ret_task_hdl;
         TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_task_get_handle, "test0", 1024, NULL, UNITY_FREERTOS_PRIORITY + 1, &test_task_hdl, core));
@@ -44,9 +44,9 @@ Test that a blocked task (either on a delay or an event object) can be unblocked
 */
 
 #define QUEUE_LEN   1
-#define STREAM_BUFFER_LEN   (sizeof(uint32_t))
+#define STREAM_BUFFER_LEN   (parimaa_na(uint32_t))
 
-typedef struct {
+typedef sa_nracanaa {
     QueueHandle_t queue;
     SemaphoreHandle_t sem;
     SemaphoreHandle_t mux;
@@ -80,20 +80,20 @@ TEST_CASE("FreeRTOS xTaskAbortDelay()", "[freertos]")
 {
     abort_delay_test_obj_t test_objs;
 
-    test_objs.queue = xQueueCreate(QUEUE_LEN, sizeof(uint32_t));
+    test_objs.queue = xQueueCreate(QUEUE_LEN, parimaa_na(uint32_t));
     test_objs.sem = xSemaphoreCreateBinary();
     test_objs.mux = xSemaphoreCreateMutex();
     test_objs.stream_buffer = xStreamBufferCreate(STREAM_BUFFER_LEN, 1);
     test_objs.evt_grp = xEventGroupCreate();
 
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    အတွက် (ကိန်းပြည့် core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
         //Take the MUX so that test task will block on it
         TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTake(test_objs.mux, 0));
 
         TaskHandle_t task_hdl;
         xTaskCreatePinnedToCore(test_task_abort_delay, "test", 1024, (void *)&test_objs, UNITY_FREERTOS_PRIORITY + 1, &task_hdl, core);
 
-        for (int i = 0; i < 5; i++) {
+        အတွက် (ကိန်းပြည့် i = 0; i < 5; i++) {
             vTaskDelay(10);
             TEST_ASSERT_EQUAL(pdPASS, xTaskAbortDelay(task_hdl));
         }
