@@ -35,18 +35,18 @@
  * portbenchmark.c and the complete version of portbenchmark.h
  */
 
-#ifndef PORTBENCHMARK_H
-#define PORTBENCHMARK_H
+#که_نه_تعریف_شوی PORTBENCHMARK_H
+#تعریف_کړه PORTBENCHMARK_H
 
-#if configBENCHMARK
-    #error "You need to download the FreeRTOS_trace patch that overwrites this file"
-#endif
+#إذا configBENCHMARK
+    #تېروتنه "You need to download the FreeRTOS_trace patch that overwrites this file"
+#د_که_پای
 
-#define portbenchmarkINTERRUPT_DISABLE()
-#define portbenchmarkINTERRUPT_RESTORE(newstate)
-#define portbenchmarkIntLatency()
-#define portbenchmarkIntWait()
-#define portbenchmarkReset()
-#define portbenchmarkPrint()
+#تعریف_کړه portbenchmark_مداخله_DISABLE()
+#تعریف_کړه portbenchmark_مداخله_RESTORE(newstate)
+#تعریف_کړه portbenchmarkIntLatency()
+#تعریف_کړه portbenchmarkIntWait()
+#تعریف_کړه portbenchmarkReset()
+#تعریف_کړه portbenchmarkPrint()
 
-#endif /* PORTBENCHMARK */
+#د_که_پای /* PORTBENCHMARK */

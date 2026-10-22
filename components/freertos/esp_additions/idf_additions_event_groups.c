@@ -18,62 +18,62 @@
  * event group functions
  */
 
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/event_groups.h"
-#include "freertos/idf_additions.h"
-#include "esp_heap_caps.h"
+#ضمن "sdkconfig.h"
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/event_groups.h"
+#ضمن "freertos/idf_additions.h"
+#ضمن "esp_heap_caps.h"
 
 /* ------------------------------ Event Groups ------------------------------ */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#إذا ( config_SUPPORT_STATIC_ویش == 1 )
 
-    EventGroupHandle_t xEventGroupCreateWithCaps( UBaseType_t uxMemoryCaps )
+    Event_ډله_Handle_t x_Event_ډله_Create_With_Caps( UBaseType_t ux_حافظه_Caps )
     {
-        EventGroupHandle_t xEventGroup;
-        StaticEventGroup_t * pxEventGroupBuffer;
+        Event_ډله_Handle_t x_Event_ډله;
+        Static_Event_ډله_t * px_Event_ډله_بفر;
 
         /* Allocate memory for the event group using the provided memory caps */
-        pxEventGroupBuffer = heap_caps_malloc( sizeof( StaticEventGroup_t ), uxMemoryCaps );
+        px_Event_ډله_بفر = ډېرۍ_caps_malloc( حجم( Static_Event_ډله_t ), ux_حافظه_Caps );
 
-        if( pxEventGroupBuffer == NULL )
+        إذا( px_Event_ډله_بفر == عدم )
         {
-            return NULL;
+            أرجع عدم;
         }
 
         /* Create the event group using static creation API */
-        xEventGroup = xEventGroupCreateStatic( pxEventGroupBuffer );
+        x_Event_ډله = x_Event_ډله_Create_Static( px_Event_ډله_بفر );
 
-        if( xEventGroup == NULL )
+        إذا( x_Event_ډله == عدم )
         {
-            heap_caps_free( pxEventGroupBuffer );
+            ډېرۍ_caps_free( px_Event_ډله_بفر );
         }
 
-        return xEventGroup;
+        أرجع x_Event_ډله;
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#د_که_پای /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#إذا ( config_SUPPORT_STATIC_ویش == 1 )
 
-    void vEventGroupDeleteWithCaps( EventGroupHandle_t xEventGroup )
+    فراغ v_Event_ډله_Delete_With_Caps( Event_ډله_Handle_t x_Event_ډله )
     {
         // Return value unused if asserts are disabled
-        BaseType_t __attribute__((unused)) xResult;
-        StaticEventGroup_t * pxEventGroupBuffer;
+        بنسټ_Type_t __attribute__((ناکارول_شوی)) x_پایله;
+        Static_Event_ډله_t * px_Event_ډله_بفر;
 
         /* Retrieve the buffer used to create the event group before deleting it
          * */
-        xResult = xEventGroupGetStaticBuffer( xEventGroup, &pxEventGroupBuffer );
-        configASSERT( xResult == pdTRUE );
+        x_پایله = x_Event_ډله_Get_Static_بفر( x_Event_ډله, &px_Event_ډله_بفر );
+        configASSERT( x_پایله == pdTRUE );
 
         /* Delete the event group */
-        vEventGroupDelete( xEventGroup );
+        v_Event_ډله_Delete( x_Event_ډله );
 
         /* Free the memory buffer */
-        heap_caps_free( pxEventGroupBuffer );
+        ډېرۍ_caps_free( px_Event_ډله_بفر );
     }
 
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+#د_که_پای /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/

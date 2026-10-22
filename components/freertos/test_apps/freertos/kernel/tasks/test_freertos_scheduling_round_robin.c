@@ -4,15 +4,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <stdbool.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/queue.h"
-#include "esp_rom_sys.h"
-#include "esp_cpu.h"
-#include "unity.h"
-#include "test_utils.h"
+#ضمن "sdkconfig.h"
+#ضمن <stdbool.h>
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
+#ضمن "freertos/queue.h"
+#ضمن "esp_rom_sys.h"
+#ضمن "esp_cpu.h"
+#ضمن "unity.h"
+#ضمن "test_utils.h"
 
 /*
 Test Best Effort Round Robin Scheduling:
@@ -38,99 +38,99 @@ Test flow as follows:
    robin schedules the tasks in a sequential order.
 */
 
-#if !defined(CONFIG_FREERTOS_UNICORE) && (defined(CONFIG_FREERTOS_CORETIMER_0) || defined(CONFIG_FREERTOS_CORETIMER_1))
+#إذا !defined(CONFIG_FREERTOS_UNICORE) && (defined(CONFIG_FREERTOS_CORETIMER_0) || defined(CONFIG_FREERTOS_CORETIMER_1))
 
-#define SPIN_TASK_PRIO                  (CONFIG_UNITY_FREERTOS_PRIORITY + 1)
-#define SPIN_TASK_NUM_ITER              3
-#define TASK_STACK_SIZE                 1024
-#define NUM_PINNED_SPIN_TASK_PER_CORE   3
-#if defined(CONFIG_FREERTOS_CORETIMER_0)
-#define TICK_INTR_IDX                   6
-#else   //defined(CONFIG_FREERTOS_CORETIMER_1)
-#define TICK_INTR_IDX                   15
-#endif
+#تعریف_کړه SPIN_TASK_PRIO                  (CONFIG_UNITY_FREERTOS_لومړیتوب + 1)
+#تعریف_کړه SPIN_TASK_عدد_ITER              3
+#تعریف_کړه TASK_ډېری_اندازه                 1024
+#تعریف_کړه عدد_PINNED_SPIN_TASK_فی_CORE   3
+#إذا defined(CONFIG_FREERTOS_CORETIMER_0)
+#تعریف_کړه TICK_INTR_IDX                   6
+#وإلا   //defined(CONFIG_FREERTOS_CORETIMER_1)
+#تعریف_کړه TICK_INTR_IDX                   15
+#د_که_پای
 
-static QueueHandle_t core0_run_order_queue;
-static QueueHandle_t core1_run_order_queue;
-static uint32_t total_iter_count[CONFIG_FREERTOS_NUMBER_OF_CORES] = {0};
+ساكن کتار_Handle_t core0_پرلپسې_ترتیب_کتار;
+ساكن کتار_Handle_t core1_پرلپسې_ترتیب_کتار;
+ساكن uint32_t ټول_iter_شمېر[CONFIG_FREERTOS_شمېره_د_CORES] = {0};
 
-static void spin_task(void *arg)
+ساكن فراغ spin_task(فراغ *arg)
 {
-    uint32_t task_code = (uint32_t)arg;
-    QueueHandle_t run_order_queue = ((task_code >> 4) == 0) ? core0_run_order_queue : core1_run_order_queue;
+    uint32_t task_کوډ = (uint32_t)arg;
+    کتار_Handle_t پرلپسې_ترتیب_کتار = ((task_کوډ >> 4) == 0) ? core0_پرلپسې_ترتیب_کتار : core1_پرلپسې_ترتیب_کتار;
 
     //Wait to be started
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, پورټ_MAX_DELAY);
 
-    for (int i = 0; i < SPIN_TASK_NUM_ITER; i++) {
-        xQueueSend(run_order_queue, &task_code, 0);
+    لكل (صحيح i = 0; i < SPIN_TASK_عدد_ITER; i++) {
+        x_کتار_Send(پرلپسې_ترتیب_کتار, &task_کوډ, 0);
         //No need for critical sections as tick interrupt is disabled
-        total_iter_count[xPortGetCoreID()]++;
+        ټول_iter_شمېر[x_پورټ_Get_Core_ID()]++;
         taskYIELD();
     }
 
     //Last iteration of the last spin task on this core. Reenable this core's tick interrupt
-    if (total_iter_count[xPortGetCoreID()] == (NUM_PINNED_SPIN_TASK_PER_CORE * SPIN_TASK_NUM_ITER)) {
+    إذا (ټول_iter_شمېر[x_پورټ_Get_Core_ID()] == (عدد_PINNED_SPIN_TASK_فی_CORE * SPIN_TASK_عدد_ITER)) {
         esp_cpu_intr_enable(1 << TICK_INTR_IDX);
     }
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
-static void blocker_task(void *arg)
+ساكن فراغ blocker_task(فراغ *arg)
 {
-    volatile bool *exit_loop = (volatile bool *)arg;
+    متطاير bool *exit_loop = (متطاير bool *)arg;
 
     //Disable tick interrupts on core 1 the duration of the test
     taskDISABLE_INTERRUPTS();
     esp_cpu_intr_disable(1 << TICK_INTR_IDX);
     taskENABLE_INTERRUPTS();
 
-    while (!*exit_loop) {
+    طالما (!*exit_loop) {
         ;
     }
 
     //Wait to be resumed
-    vTaskSuspend(NULL);
+    vTaskSuspend(عدم);
 
     //Reenable tick interrupt on core 1
     taskDISABLE_INTERRUPTS();
     esp_cpu_intr_enable(1 << TICK_INTR_IDX);
     taskENABLE_INTERRUPTS();
 
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
 TEST_CASE("Test FreeRTOS Scheduling Round Robin", "[freertos]")
 {
-    core0_run_order_queue = xQueueCreate(SPIN_TASK_NUM_ITER * NUM_PINNED_SPIN_TASK_PER_CORE, sizeof(uint32_t));
-    core1_run_order_queue = xQueueCreate(SPIN_TASK_NUM_ITER * NUM_PINNED_SPIN_TASK_PER_CORE, sizeof(uint32_t));
+    core0_پرلپسې_ترتیب_کتار = x_کتار_Create(SPIN_TASK_عدد_ITER * عدد_PINNED_SPIN_TASK_فی_CORE, حجم(uint32_t));
+    core1_پرلپسې_ترتیب_کتار = x_کتار_Create(SPIN_TASK_عدد_ITER * عدد_PINNED_SPIN_TASK_فی_CORE, حجم(uint32_t));
 
     /* Increase priority of unity task so that the spin tasks don't preempt us
     during task creation. */
-    vTaskPrioritySet(NULL, SPIN_TASK_PRIO + 1);
+    v_Task_لومړیتوب_سېټ(عدم, SPIN_TASK_PRIO + 1);
     /* Create a task on core 1 of the same priority to block core 1 */
-    volatile bool suspend_blocker = false;
+    متطاير bool suspend_blocker = false;
     TaskHandle_t blocker_task_hdl;
-    xTaskCreatePinnedToCore(blocker_task, "blk", TASK_STACK_SIZE, (void *)&suspend_blocker, SPIN_TASK_PRIO + 1, &blocker_task_hdl, 1);
+    x_Task_Create_Pinned_منزل_Core(blocker_task, "blk", TASK_ډېری_اندازه, (فراغ *)&suspend_blocker, SPIN_TASK_PRIO + 1, &blocker_task_hdl, 1);
 
     //Disable tick interrupts on core 0 the duration of the test
     taskDISABLE_INTERRUPTS();
     esp_cpu_intr_disable(1 << TICK_INTR_IDX);
     taskENABLE_INTERRUPTS();
 
-    TaskHandle_t core0_task_hdls[NUM_PINNED_SPIN_TASK_PER_CORE];
-    TaskHandle_t core1_task_hdls[NUM_PINNED_SPIN_TASK_PER_CORE];
+    TaskHandle_t core0_task_hdls[عدد_PINNED_SPIN_TASK_فی_CORE];
+    TaskHandle_t core1_task_hdls[عدد_PINNED_SPIN_TASK_فی_CORE];
 
-    for (int i = 0; i < NUM_PINNED_SPIN_TASK_PER_CORE; i++) {
+    لكل (صحيح i = 0; i < عدد_PINNED_SPIN_TASK_فی_CORE; i++) {
         //Create a spin task pinned to core 0
-        xTaskCreatePinnedToCore(spin_task, "spin", TASK_STACK_SIZE, (void *)(0x00 + i), SPIN_TASK_PRIO, &core0_task_hdls[i], 0);
+        x_Task_Create_Pinned_منزل_Core(spin_task, "spin", TASK_ډېری_اندازه, (فراغ *)(0x00 + i), SPIN_TASK_PRIO, &core0_task_hdls[i], 0);
         //Create a spin task pinned to core 1
-        xTaskCreatePinnedToCore(spin_task, "spin", TASK_STACK_SIZE, (void *)(0x10 + i), SPIN_TASK_PRIO, &core1_task_hdls[i], 1);
+        x_Task_Create_Pinned_منزل_Core(spin_task, "spin", TASK_ډېری_اندازه, (فراغ *)(0x10 + i), SPIN_TASK_PRIO, &core1_task_hdls[i], 1);
     }
 
     /* Start the tasks in a particular order. This order should be reflected in
     in the round robin scheduling on each core */
-    for (int i = 0; i < NUM_PINNED_SPIN_TASK_PER_CORE; i++) {
+    لكل (صحيح i = 0; i < عدد_PINNED_SPIN_TASK_فی_CORE; i++) {
         //Start a spin task on core 0
         xTaskNotifyGive(core0_task_hdls[i]);
         //Start a spin task on core 1
@@ -139,19 +139,19 @@ TEST_CASE("Test FreeRTOS Scheduling Round Robin", "[freertos]")
 
     //Lower priority of this task and stop blocker task to allow the spin tasks to be scheduled
     suspend_blocker = true;
-    vTaskPrioritySet(NULL, UNITY_FREERTOS_PRIORITY);
+    v_Task_لومړیتوب_سېټ(عدم, UNITY_FREERTOS_لومړیتوب);
 
     //Give a enough delay to allow all iterations of the round robin to occur
     esp_rom_delay_us(10000);
 
-    for (int i = 0; i < SPIN_TASK_NUM_ITER; i++) {
-        for (int j = 0; j < NUM_PINNED_SPIN_TASK_PER_CORE; j++) {
-            uint32_t core0_entry;
-            uint32_t core1_entry;
-            TEST_ASSERT_EQUAL(pdTRUE, xQueueReceive(core0_run_order_queue, &core0_entry, 0));
-            TEST_ASSERT_EQUAL(pdTRUE, xQueueReceive(core1_run_order_queue, &core1_entry, 0));
-            TEST_ASSERT_EQUAL(0x00 + j, core0_entry);
-            TEST_ASSERT_EQUAL(0x10 + j, core1_entry);
+    لكل (صحيح i = 0; i < SPIN_TASK_عدد_ITER; i++) {
+        لكل (صحيح j = 0; j < عدد_PINNED_SPIN_TASK_فی_CORE; j++) {
+            uint32_t core0_ثبت;
+            uint32_t core1_ثبت;
+            TEST_ASSERT_EQUAL(pdTRUE, x_کتار_Receive(core0_پرلپسې_ترتیب_کتار, &core0_ثبت, 0));
+            TEST_ASSERT_EQUAL(pdTRUE, x_کتار_Receive(core1_پرلپسې_ترتیب_کتار, &core1_ثبت, 0));
+            TEST_ASSERT_EQUAL(0x00 + j, core0_ثبت);
+            TEST_ASSERT_EQUAL(0x10 + j, core1_ثبت);
         }
     }
 
@@ -163,8 +163,8 @@ TEST_CASE("Test FreeRTOS Scheduling Round Robin", "[freertos]")
     taskENABLE_INTERRUPTS();
     vTaskDelay(10); //Wait for blocker task to clean up
     //Clean up queues
-    vQueueDelete(core0_run_order_queue);
-    vQueueDelete(core1_run_order_queue);
+    v_کتار_Delete(core0_پرلپسې_ترتیب_کتار);
+    v_کتار_Delete(core1_پرلپسې_ترتیب_کتار);
 }
 
-#endif  //!defined(CONFIG_FREERTOS_UNICORE) && (efined(CONFIG_FREERTOS_CORETIMER_0) || defined(CONFIG_FREERTOS_CORETIMER_1))
+#د_که_پای  //!defined(CONFIG_FREERTOS_UNICORE) && (efined(CONFIG_FREERTOS_CORETIMER_0) || defined(CONFIG_FREERTOS_CORETIMER_1))

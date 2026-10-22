@@ -34,8 +34,8 @@
 * Portable layer API.  Each function must be defined for each port.
 *----------------------------------------------------------*/
 
-#ifndef PORTABLE_H
-#define PORTABLE_H
+#که_نه_تعریف_شوی PORTABLE_H
+#تعریف_کړه PORTABLE_H
 
 /* Each FreeRTOS port has a unique portmacro.h header file.  Originally a
  * pre-processor definition was used to ensure the pre-processor found the correct
@@ -47,64 +47,64 @@
  * to make it clear that new projects should not use it, support for the port
  * specific constants has been moved into the deprecated_definitions.h header
  * file. */
-#include "deprecated_definitions.h"
+#ضمن "deprecated_definitions.h"
 
 /* If portENTER_CRITICAL is not defined then including deprecated_definitions.h
  * did not result in a portmacro.h header file being included - and it should be
  * included here.  In this case the path to the correct portmacro.h header file
  * must be set in the compiler's include path. */
-#ifndef portENTER_CRITICAL
-    #include "portmacro.h"
-#endif
+#که_نه_تعریف_شوی پورټ_ENTER_CRITICAL
+    #ضمن "portmacro.h"
+#د_که_پای
 
-#if portBYTE_ALIGNMENT == 32
-    #define portBYTE_ALIGNMENT_MASK    ( 0x001f )
-#elif portBYTE_ALIGNMENT == 16
-    #define portBYTE_ALIGNMENT_MASK    ( 0x000f )
-#elif portBYTE_ALIGNMENT == 8
-    #define portBYTE_ALIGNMENT_MASK    ( 0x0007 )
-#elif portBYTE_ALIGNMENT == 4
-    #define portBYTE_ALIGNMENT_MASK    ( 0x0003 )
-#elif portBYTE_ALIGNMENT == 2
-    #define portBYTE_ALIGNMENT_MASK    ( 0x0001 )
-#elif portBYTE_ALIGNMENT == 1
-    #define portBYTE_ALIGNMENT_MASK    ( 0x0000 )
-#else /* if portBYTE_ALIGNMENT == 32 */
-    #error "Invalid portBYTE_ALIGNMENT definition"
-#endif /* if portBYTE_ALIGNMENT == 32 */
+#إذا پورټ_BYTE_ALIGNMENT == 32
+    #تعریف_کړه پورټ_BYTE_ALIGNMENT_ماسک    ( 0x001f )
+#وإلاإذا پورټ_BYTE_ALIGNMENT == 16
+    #تعریف_کړه پورټ_BYTE_ALIGNMENT_ماسک    ( 0x000f )
+#وإلاإذا پورټ_BYTE_ALIGNMENT == 8
+    #تعریف_کړه پورټ_BYTE_ALIGNMENT_ماسک    ( 0x0007 )
+#وإلاإذا پورټ_BYTE_ALIGNMENT == 4
+    #تعریف_کړه پورټ_BYTE_ALIGNMENT_ماسک    ( 0x0003 )
+#وإلاإذا پورټ_BYTE_ALIGNMENT == 2
+    #تعریف_کړه پورټ_BYTE_ALIGNMENT_ماسک    ( 0x0001 )
+#وإلاإذا پورټ_BYTE_ALIGNMENT == 1
+    #تعریف_کړه پورټ_BYTE_ALIGNMENT_ماسک    ( 0x0000 )
+#وإلا /* if portBYTE_ALIGNMENT == 32 */
+    #تېروتنه "Invalid portBYTE_ALIGNMENT definition"
+#د_که_پای /* if portBYTE_ALIGNMENT == 32 */
 
-#ifndef portUSING_MPU_WRAPPERS
-    #define portUSING_MPU_WRAPPERS    0
-#endif
+#که_نه_تعریف_شوی پورټ_USING_MPU_WRAPPERS
+    #تعریف_کړه پورټ_USING_MPU_WRAPPERS    0
+#د_که_پای
 
-#ifndef portNUM_CONFIGURABLE_REGIONS
-    #define portNUM_CONFIGURABLE_REGIONS    1
-#endif
+#که_نه_تعریف_شوی پورټ_عدد_CONFIGURABLE_REGIONS
+    #تعریف_کړه پورټ_عدد_CONFIGURABLE_REGIONS    1
+#د_که_پای
 
-#ifndef portHAS_STACK_OVERFLOW_CHECKING
-    #define portHAS_STACK_OVERFLOW_CHECKING    0
-#endif
+#که_نه_تعریف_شوی پورټ_HAS_ډېری_ډکېدنه_CHECKING
+    #تعریف_کړه پورټ_HAS_ډېری_ډکېدنه_CHECKING    0
+#د_که_پای
 
-#ifndef portARCH_NAME
-    #define portARCH_NAME    NULL
-#endif
+#که_نه_تعریف_شوی پورټ_ARCH_NAME
+    #تعریف_کړه پورټ_ARCH_NAME    عدم
+#د_که_پای
 
-#ifndef configSTACK_DEPTH_TYPE
-    #define configSTACK_DEPTH_TYPE    StackType_t
-#endif
+#که_نه_تعریف_شوی config_ډېری_ژوروالی_TYPE
+    #تعریف_کړه config_ډېری_ژوروالی_TYPE    ډېری_Type_t
+#د_که_پای
 
-#ifndef configSTACK_ALLOCATION_FROM_SEPARATE_HEAP
+#که_نه_تعریف_شوی config_ډېری_ویش_FROM_SEPARATE_ډېرۍ
     /* Defaults to 0 for backward compatibility. */
-    #define configSTACK_ALLOCATION_FROM_SEPARATE_HEAP    0
-#endif
+    #تعریف_کړه config_ډېری_ویش_FROM_SEPARATE_ډېرۍ    0
+#د_که_پای
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#که_تعریف_شوی __cplusplus
+    خارجي "C" {
+#د_که_پای
 /* *INDENT-ON* */
 
-#include "mpu_wrappers.h"
+#ضمن "mpu_wrappers.h"
 
 /*
  * Setup the stack of a new task so it is ready to be placed under the
@@ -112,53 +112,53 @@
  * the order that the port expects to find them.
  *
  */
-#if ( portUSING_MPU_WRAPPERS == 1 )
-    #if ( portHAS_STACK_OVERFLOW_CHECKING == 1 )
-        StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
-                                             StackType_t * pxEndOfStack,
-                                             TaskFunction_t pxCode,
-                                             void * pvParameters,
-                                             BaseType_t xRunPrivileged,
+#إذا ( پورټ_USING_MPU_WRAPPERS == 1 )
+    #إذا ( پورټ_HAS_ډېری_ډکېدنه_CHECKING == 1 )
+        ډېری_Type_t * px_پورټ_Initialise_ډېری( ډېری_Type_t * px_سر_د_ډېری,
+                                             ډېری_Type_t * px_پای_ټکی_د_ډېری,
+                                             TaskFunction_t px_کوډ,
+                                             فراغ * pvParameters,
+                                             بنسټ_Type_t x_پرلپسې_Privileged,
                                              xMPU_SETTINGS * xMPUSettings ) PRIVILEGED_FUNCTION;
-    #else
-        StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
-                                             TaskFunction_t pxCode,
-                                             void * pvParameters,
-                                             BaseType_t xRunPrivileged,
+    #وإلا
+        ډېری_Type_t * px_پورټ_Initialise_ډېری( ډېری_Type_t * px_سر_د_ډېری,
+                                             TaskFunction_t px_کوډ,
+                                             فراغ * pvParameters,
+                                             بنسټ_Type_t x_پرلپسې_Privileged,
                                              xMPU_SETTINGS * xMPUSettings ) PRIVILEGED_FUNCTION;
-    #endif /* if ( portHAS_STACK_OVERFLOW_CHECKING == 1 ) */
-#else /* if ( portUSING_MPU_WRAPPERS == 1 ) */
-    #if ( portHAS_STACK_OVERFLOW_CHECKING == 1 )
-        StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
-                                             StackType_t * pxEndOfStack,
-                                             TaskFunction_t pxCode,
-                                             void * pvParameters ) PRIVILEGED_FUNCTION;
-    #else
-        StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
-                                             TaskFunction_t pxCode,
-                                             void * pvParameters ) PRIVILEGED_FUNCTION;
-    #endif
-#endif /* if ( portUSING_MPU_WRAPPERS == 1 ) */
+    #د_که_پای /* if ( portHAS_STACK_OVERFLOW_CHECKING == 1 ) */
+#وإلا /* if ( portUSING_MPU_WRAPPERS == 1 ) */
+    #إذا ( پورټ_HAS_ډېری_ډکېدنه_CHECKING == 1 )
+        ډېری_Type_t * px_پورټ_Initialise_ډېری( ډېری_Type_t * px_سر_د_ډېری,
+                                             ډېری_Type_t * px_پای_ټکی_د_ډېری,
+                                             TaskFunction_t px_کوډ,
+                                             فراغ * pvParameters ) PRIVILEGED_FUNCTION;
+    #وإلا
+        ډېری_Type_t * px_پورټ_Initialise_ډېری( ډېری_Type_t * px_سر_د_ډېری,
+                                             TaskFunction_t px_کوډ,
+                                             فراغ * pvParameters ) PRIVILEGED_FUNCTION;
+    #د_که_پای
+#د_که_پای /* if ( portUSING_MPU_WRAPPERS == 1 ) */
 
 /* Used by heap_5.c to define the start address and size of each memory region
  * that together comprise the total FreeRTOS heap space. */
-typedef struct HeapRegion
+تعريفنوع بنية ډېرۍ_Region
 {
-    uint8_t * pucStartAddress;
-    size_t xSizeInBytes;
-} HeapRegion_t;
+    uint8_t * puc_پیل_پته;
+    size_t x_اندازه_دننه_بایټونه;
+} ډېرۍ_Region_t;
 
 /* Used to pass information about the heap out of vPortGetHeapStats(). */
-typedef struct xHeapStats
+تعريفنوع بنية x_ډېرۍ_Stats
 {
-    size_t xAvailableHeapSpaceInBytes;      /* The total heap size currently available - this is the sum of all the free blocks, not the largest block that can be allocated. */
-    size_t xSizeOfLargestFreeBlockInBytes;  /* The maximum size, in bytes, of all the free blocks within the heap at the time vPortGetHeapStats() is called. */
-    size_t xSizeOfSmallestFreeBlockInBytes; /* The minimum size, in bytes, of all the free blocks within the heap at the time vPortGetHeapStats() is called. */
-    size_t xNumberOfFreeBlocks;             /* The number of free memory blocks within the heap at the time vPortGetHeapStats() is called. */
-    size_t xMinimumEverFreeBytesRemaining;  /* The minimum amount of total free memory (sum of all free blocks) there has been in the heap since the system booted. */
-    size_t xNumberOfSuccessfulAllocations;  /* The number of calls to pvPortMalloc() that have returned a valid memory block. */
-    size_t xNumberOfSuccessfulFrees;        /* The number of calls to vPortFree() that has successfully freed a block of memory. */
-} HeapStats_t;
+    size_t x_شته_ډېرۍ_Space_دننه_بایټونه;      /* The total heap size currently available - this is the sum of all the free blocks, not the largest block that can be allocated. */
+    size_t x_اندازه_د_تر_ټولو_لوی_Free_بلاک_دننه_بایټونه;  /* The maximum size, in bytes, of all the free blocks within the heap at the time vPortGetHeapStats() is called. */
+    size_t x_اندازه_د_تر_ټولو_کوچنی_Free_بلاک_دننه_بایټونه; /* The minimum size, in bytes, of all the free blocks within the heap at the time vPortGetHeapStats() is called. */
+    size_t x_شمېره_د_Free_بلاکونه;             /* The number of free memory blocks within the heap at the time vPortGetHeapStats() is called. */
+    size_t x_Minimum_Ever_Free_بایټونه_پاتې_شوی;  /* The minimum amount of total free memory (sum of all free blocks) there has been in the heap since the system booted. */
+    size_t x_شمېره_د_Successful_Allocations;  /* The number of calls to pvPortMalloc() that have returned a valid memory block. */
+    size_t x_شمېره_د_Successful_Frees;        /* The number of calls to vPortFree() that has successfully freed a block of memory. */
+} ډېرۍ_Stats_t;
 
 /*
  * Used to define multiple heap regions for use by heap_5.c.  This function
@@ -171,40 +171,40 @@ typedef struct xHeapStats
  * terminated by a HeapRegions_t structure that has a size of 0.  The region
  * with the lowest start address must appear first in the array.
  */
-void vPortDefineHeapRegions( const HeapRegion_t * const pxHeapRegions ) PRIVILEGED_FUNCTION;
+فراغ v_پورټ_Define_ډېرۍ_Regions( ثابت ډېرۍ_Region_t * ثابت px_ډېرۍ_Regions ) PRIVILEGED_FUNCTION;
 
 /*
  * Returns a HeapStats_t structure filled with information about the current
  * heap state.
  */
-void vPortGetHeapStats( HeapStats_t * pxHeapStats );
+فراغ v_پورټ_Get_ډېرۍ_Stats( ډېرۍ_Stats_t * px_ډېرۍ_Stats );
 
 /*
  * Map to the memory management routines required for the port.
  */
-void * pvPortMalloc( size_t xWantedSize ) PRIVILEGED_FUNCTION;
-void * pvPortCalloc( size_t xNum,
-                     size_t xSize ) PRIVILEGED_FUNCTION;
-void vPortFree( void * pv ) PRIVILEGED_FUNCTION;
-void vPortInitialiseBlocks( void ) PRIVILEGED_FUNCTION;
-size_t xPortGetFreeHeapSize( void ) PRIVILEGED_FUNCTION;
-size_t xPortGetMinimumEverFreeHeapSize( void ) PRIVILEGED_FUNCTION;
+فراغ * pv_پورټ_Malloc( size_t x_Wanted_اندازه ) PRIVILEGED_FUNCTION;
+فراغ * pv_پورټ_Calloc( size_t x_عدد,
+                     size_t x_اندازه ) PRIVILEGED_FUNCTION;
+فراغ v_پورټ_Free( فراغ * pv ) PRIVILEGED_FUNCTION;
+فراغ v_پورټ_Initialise_بلاکونه( فراغ ) PRIVILEGED_FUNCTION;
+size_t x_پورټ_Get_Free_ډېرۍ_اندازه( فراغ ) PRIVILEGED_FUNCTION;
+size_t x_پورټ_Get_Minimum_Ever_Free_ډېرۍ_اندازه( فراغ ) PRIVILEGED_FUNCTION;
 
-#if ( configSTACK_ALLOCATION_FROM_SEPARATE_HEAP == 1 )
-    void * pvPortMallocStack( size_t xSize ) PRIVILEGED_FUNCTION;
-    void vPortFreeStack( void * pv ) PRIVILEGED_FUNCTION;
-#else
-    #define pvPortMallocStack    pvPortMalloc
-    #define vPortFreeStack       vPortFree
-#endif
+#إذا ( config_ډېری_ویش_FROM_SEPARATE_ډېرۍ == 1 )
+    فراغ * pv_پورټ_Malloc_ډېری( size_t x_اندازه ) PRIVILEGED_FUNCTION;
+    فراغ v_پورټ_Free_ډېری( فراغ * pv ) PRIVILEGED_FUNCTION;
+#وإلا
+    #تعریف_کړه pv_پورټ_Malloc_ډېری    pv_پورټ_Malloc
+    #تعریف_کړه v_پورټ_Free_ډېری       v_پورټ_Free
+#د_که_پای
 
 /*
  * This function resets the internal state of the heap module. It must be called
  * by the application before restarting the scheduler.
  */
-void vPortHeapResetState( void ) PRIVILEGED_FUNCTION;
+فراغ v_پورټ_ډېرۍ_Reset_State( فراغ ) PRIVILEGED_FUNCTION;
 
-#if ( configUSE_MALLOC_FAILED_HOOK == 1 )
+#إذا ( configUSE_MALLOC_FAILED_HOOK == 1 )
 
 /**
  * task.h
@@ -214,21 +214,21 @@ void vPortHeapResetState( void ) PRIVILEGED_FUNCTION;
  *
  * This hook function is called when allocation failed.
  */
-    void vApplicationMallocFailedHook( void );
-#endif
+    فراغ vApplicationMallocFailedHook( فراغ );
+#د_که_پای
 
 /*
  * Setup the hardware ready for the scheduler to take control.  This generally
  * sets up a tick interrupt and sets timers for the correct tick frequency.
  */
-BaseType_t xPortStartScheduler( void ) PRIVILEGED_FUNCTION;
+بنسټ_Type_t x_پورټ_پیل_Scheduler( فراغ ) PRIVILEGED_FUNCTION;
 
 /*
  * Undo any hardware/ISR setup that was performed by xPortStartScheduler() so
  * the hardware is left in its original condition after the scheduler stops
  * executing.
  */
-void vPortEndScheduler( void ) PRIVILEGED_FUNCTION;
+فراغ v_پورټ_پای_ټکی_Scheduler( فراغ ) PRIVILEGED_FUNCTION;
 
 /*
  * The structures and methods of manipulating the MPU are contained within the
@@ -237,13 +237,13 @@ void vPortEndScheduler( void ) PRIVILEGED_FUNCTION;
  * Fills the xMPUSettings structure with the memory region information
  * contained in xRegions.
  */
-#if ( portUSING_MPU_WRAPPERS == 1 )
-    struct xMEMORY_REGION;
-    void vPortStoreTaskMPUSettings( xMPU_SETTINGS * xMPUSettings,
-                                    const struct xMEMORY_REGION * const xRegions,
-                                    StackType_t * pxBottomOfStack,
-                                    configSTACK_DEPTH_TYPE uxStackDepth ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( پورټ_USING_MPU_WRAPPERS == 1 )
+    بنية x_حافظه_REGION;
+    فراغ v_پورټ_Store_Task_MPUSettings( xMPU_SETTINGS * xMPUSettings,
+                                    ثابت بنية x_حافظه_REGION * ثابت xRegions,
+                                    ډېری_Type_t * px_Bottom_د_ډېری,
+                                    config_ډېری_ژوروالی_TYPE ux_ډېری_ژوروالی ) PRIVILEGED_FUNCTION;
+#د_که_پای
 
 /**
  * @brief Checks if the calling task is authorized to access the given buffer.
@@ -255,11 +255,11 @@ void vPortEndScheduler( void ) PRIVILEGED_FUNCTION;
  * @return pdTRUE if the calling task is authorized to access the buffer,
  *         pdFALSE otherwise.
  */
-#if ( portUSING_MPU_WRAPPERS == 1 )
-    BaseType_t xPortIsAuthorizedToAccessBuffer( const void * pvBuffer,
-                                                uint32_t ulBufferLength,
+#إذا ( پورټ_USING_MPU_WRAPPERS == 1 )
+    بنسټ_Type_t x_پورټ_Is_Authorized_منزل_Access_بفر( ثابت فراغ * pv_بفر,
+                                                uint32_t ul_بفر_اوږدتیا,
                                                 uint32_t ulAccessRequested ) PRIVILEGED_FUNCTION;
-#endif
+#د_که_پای
 
 /**
  * @brief Checks if the calling task is authorized to access the given kernel object.
@@ -270,16 +270,16 @@ void vPortEndScheduler( void ) PRIVILEGED_FUNCTION;
  * @return pdTRUE if the calling task is authorized to access the kernel object,
  *         pdFALSE otherwise.
  */
-#if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) )
+#إذا ( ( پورټ_USING_MPU_WRAPPERS == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) )
 
-    BaseType_t xPortIsAuthorizedToAccessKernelObject( int32_t lInternalIndexOfKernelObject ) PRIVILEGED_FUNCTION;
+    بنسټ_Type_t x_پورټ_Is_Authorized_منزل_Access_Kernel_Object( int32_t l_دننی_شاخص_د_Kernel_Object ) PRIVILEGED_FUNCTION;
 
-#endif
+#د_که_پای
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#که_تعریف_شوی __cplusplus
     }
-#endif
+#د_که_پای
 /* *INDENT-ON* */
 
-#endif /* PORTABLE_H */
+#د_که_پای /* PORTABLE_H */

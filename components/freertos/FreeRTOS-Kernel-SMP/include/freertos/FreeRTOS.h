@@ -30,13 +30,13 @@
  *
  */
 
-#ifndef INC_FREERTOS_H
-#define INC_FREERTOS_H
+#که_نه_تعریف_شوی INC_FREERTOS_H
+#تعریف_کړه INC_FREERTOS_H
 
 /*
  * Include the generic headers required for the FreeRTOS port being used.
  */
-#include <stddef.h>
+#ضمن <stddef.h>
 
 /*
  * If stdint.h cannot be located then:
@@ -51,110 +51,110 @@
  *     contains the typedefs required to build FreeRTOS.  Read the instructions
  *     in FreeRTOS/source/stdint.readme for more information.
  */
-#include <stdint.h> /* READ COMMENT ABOVE. */
+#ضمن <stdint.h> /* READ COMMENT ABOVE. */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#که_تعریف_شوی __cplusplus
+    خارجي "C" {
+#د_که_پای
 /* *INDENT-ON* */
 
 /* Acceptable values for configTICK_TYPE_WIDTH_IN_BITS. */
-#define TICK_TYPE_WIDTH_16_BITS    0
-#define TICK_TYPE_WIDTH_32_BITS    1
-#define TICK_TYPE_WIDTH_64_BITS    2
+#تعریف_کړه TICK_TYPE_پلنوالی_16_بټونه    0
+#تعریف_کړه TICK_TYPE_پلنوالی_32_بټونه    1
+#تعریف_کړه TICK_TYPE_پلنوالی_64_بټونه    2
 
 /* Application specific configuration options. */
-#include "FreeRTOSConfig.h"
+#ضمن "FreeRTOSConfig.h"
 
-#if !defined( configUSE_16_BIT_TICKS ) && !defined( configTICK_TYPE_WIDTH_IN_BITS )
-    #error Missing definition:  One of configUSE_16_BIT_TICKS and configTICK_TYPE_WIDTH_IN_BITS must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#إذا !defined( config_USE_16_بټ_TICKS ) && !defined( config_TICK_TYPE_پلنوالی_دننه_بټونه )
+    #تېروتنه Missing definition:  One د config_USE_16_بټ_TICKS and config_TICK_TYPE_پلنوالی_دننه_بټونه must be defined دننه FreeRTOSConfig.h.  See the Configuration section د the FreeRTOS API documentation لكل details.
+#د_که_پای
 
-#if defined( configUSE_16_BIT_TICKS ) && defined( configTICK_TYPE_WIDTH_IN_BITS )
-    #error Only one of configUSE_16_BIT_TICKS and configTICK_TYPE_WIDTH_IN_BITS must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#إذا defined( config_USE_16_بټ_TICKS ) && defined( config_TICK_TYPE_پلنوالی_دننه_بټونه )
+    #تېروتنه Only one د config_USE_16_بټ_TICKS and config_TICK_TYPE_پلنوالی_دننه_بټونه must be defined دننه FreeRTOSConfig.h.  See the Configuration section د the FreeRTOS API documentation لكل details.
+#د_که_پای
 
 /* Define configTICK_TYPE_WIDTH_IN_BITS according to the
  * value of configUSE_16_BIT_TICKS for backward compatibility. */
-#ifndef configTICK_TYPE_WIDTH_IN_BITS
-    #if ( configUSE_16_BIT_TICKS == 1 )
-        #define configTICK_TYPE_WIDTH_IN_BITS    TICK_TYPE_WIDTH_16_BITS
-    #else
-        #define configTICK_TYPE_WIDTH_IN_BITS    TICK_TYPE_WIDTH_32_BITS
-    #endif
-#endif
+#که_نه_تعریف_شوی config_TICK_TYPE_پلنوالی_دننه_بټونه
+    #إذا ( config_USE_16_بټ_TICKS == 1 )
+        #تعریف_کړه config_TICK_TYPE_پلنوالی_دننه_بټونه    TICK_TYPE_پلنوالی_16_بټونه
+    #وإلا
+        #تعریف_کړه config_TICK_TYPE_پلنوالی_دننه_بټونه    TICK_TYPE_پلنوالی_32_بټونه
+    #د_که_پای
+#د_که_پای
 
 /* Set configUSE_MPU_WRAPPERS_V1 to 1 to use MPU wrappers v1. */
-#ifndef configUSE_MPU_WRAPPERS_V1
-    #define configUSE_MPU_WRAPPERS_V1    0
-#endif
+#که_نه_تعریف_شوی configUSE_MPU_WRAPPERS_V1
+    #تعریف_کړه configUSE_MPU_WRAPPERS_V1    0
+#د_که_پای
 
 /* Set configENABLE_ACCESS_CONTROL_LIST to 1 to enable access control list support. */
-#ifndef configENABLE_ACCESS_CONTROL_LIST
-    #define configENABLE_ACCESS_CONTROL_LIST    0
-#endif
+#که_نه_تعریف_شوی configENABLE_ACCESS_CONTROL_LIST
+    #تعریف_کړه configENABLE_ACCESS_CONTROL_LIST    0
+#د_که_پای
 
 /* Set default value of configNUMBER_OF_CORES to 1 to use single core FreeRTOS. */
-#ifndef configNUMBER_OF_CORES
-    #define configNUMBER_OF_CORES    1
-#endif
+#که_نه_تعریف_شوی config_شمېره_د_CORES
+    #تعریف_کړه config_شمېره_د_CORES    1
+#د_که_پای
 
-#ifndef configUSE_MALLOC_FAILED_HOOK
-    #define configUSE_MALLOC_FAILED_HOOK    0
-#endif
+#که_نه_تعریف_شوی configUSE_MALLOC_FAILED_HOOK
+    #تعریف_کړه configUSE_MALLOC_FAILED_HOOK    0
+#د_که_پای
 
 /* Basic FreeRTOS definitions. */
-#include "projdefs.h"
+#ضمن "projdefs.h"
 
 /* Definitions specific to the port being used. */
-#include "portable.h"
+#ضمن "portable.h"
 
 /* Must be defaulted before configUSE_NEWLIB_REENTRANT is used below. */
-#ifndef configUSE_NEWLIB_REENTRANT
-    #define configUSE_NEWLIB_REENTRANT    0
-#endif
+#که_نه_تعریف_شوی configUSE_NEWLIB_REENTRANT
+    #تعریف_کړه configUSE_NEWLIB_REENTRANT    0
+#د_که_پای
 
 /* Required if struct _reent is used. */
-#if ( configUSE_NEWLIB_REENTRANT == 1 )
+#إذا ( configUSE_NEWLIB_REENTRANT == 1 )
 
-    #include "newlib-freertos.h"
+    #ضمن "newlib-freertos.h"
 
-#endif /* if ( configUSE_NEWLIB_REENTRANT == 1 ) */
+#د_که_پای /* if ( configUSE_NEWLIB_REENTRANT == 1 ) */
 
 /* Must be defaulted before configUSE_PICOLIBC_TLS is used below. */
-#ifndef configUSE_PICOLIBC_TLS
-    #define configUSE_PICOLIBC_TLS    0
-#endif
+#که_نه_تعریف_شوی configUSE_PICOLIBC_TLS
+    #تعریف_کړه configUSE_PICOLIBC_TLS    0
+#د_که_پای
 
-#if ( configUSE_PICOLIBC_TLS == 1 )
+#إذا ( configUSE_PICOLIBC_TLS == 1 )
 
-    #include "picolibc-freertos.h"
+    #ضمن "picolibc-freertos.h"
 
-#endif /* if ( configUSE_PICOLIBC_TLS == 1 ) */
+#د_که_پای /* if ( configUSE_PICOLIBC_TLS == 1 ) */
 
-#ifndef configUSE_C_RUNTIME_TLS_SUPPORT
-    #define configUSE_C_RUNTIME_TLS_SUPPORT    0
-#endif
+#که_نه_تعریف_شوی configUSE_C_RUNTIME_TLS_SUPPORT
+    #تعریف_کړه configUSE_C_RUNTIME_TLS_SUPPORT    0
+#د_که_پای
 
-#if ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 )
+#إذا ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 )
 
-    #ifndef configTLS_BLOCK_TYPE
-        #error Missing definition:  configTLS_BLOCK_TYPE must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
+    #که_نه_تعریف_شوی config_TLS_بلاک_TYPE
+        #تېروتنه Missing definition:  config_TLS_بلاک_TYPE must be defined دننه FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is سېټ منزل 1.
+    #د_که_پای
 
-    #ifndef configINIT_TLS_BLOCK
-        #error Missing definition:  configINIT_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
+    #که_نه_تعریف_شوی config_INIT_TLS_بلاک
+        #تېروتنه Missing definition:  config_INIT_TLS_بلاک must be defined دننه FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is سېټ منزل 1.
+    #د_که_پای
 
-    #ifndef configSET_TLS_BLOCK
-        #error Missing definition:  configSET_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
+    #که_نه_تعریف_شوی config_سېټ_TLS_بلاک
+        #تېروتنه Missing definition:  config_سېټ_TLS_بلاک must be defined دننه FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is سېټ منزل 1.
+    #د_که_پای
 
-    #ifndef configDEINIT_TLS_BLOCK
-        #error Missing definition:  configDEINIT_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
-#endif /* if ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) */
+    #که_نه_تعریف_شوی config_DEINIT_TLS_بلاک
+        #تېروتنه Missing definition:  config_DEINIT_TLS_بلاک must be defined دننه FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is سېټ منزل 1.
+    #د_که_پای
+#د_که_پای /* if ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) */
 
 /*
  * Check all the required application specific macros have been defined.
@@ -162,2759 +162,2759 @@
  * within FreeRTOSConfig.h.
  */
 
-#ifndef configMINIMAL_STACK_SIZE
-    #error Missing definition:  configMINIMAL_STACK_SIZE must be defined in FreeRTOSConfig.h.  configMINIMAL_STACK_SIZE defines the size (in words) of the stack allocated to the idle task.  Refer to the demo project provided for your port for a suitable value.
-#endif
+#که_نه_تعریف_شوی config_اصغري_ډېری_اندازه
+    #تېروتنه Missing definition:  config_اصغري_ډېری_اندازه must be defined دننه FreeRTOSConfig.h.  config_اصغري_ډېری_اندازه تعریفوي the اندازه (دننه ټکي) د the ډېری allocated منزل the idle task.  Refer منزل the demo project provided لكل your پورټ لكل a suitable ارزښت.
+#د_که_پای
 
-#ifndef configMAX_PRIORITIES
-    #error Missing definition:  configMAX_PRIORITIES must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#که_نه_تعریف_شوی configMAX_PRIORITIES
+    #تېروتنه Missing definition:  configMAX_PRIORITIES must be defined دننه FreeRTOSConfig.h.  See the Configuration section د the FreeRTOS API documentation لكل details.
+#د_که_پای
 
-#if configMAX_PRIORITIES < 1
-    #error configMAX_PRIORITIES must be defined to be greater than or equal to 1.
-#endif
+#إذا configMAX_PRIORITIES < 1
+    #تېروتنه configMAX_PRIORITIES must be defined منزل be greater than or equal منزل 1.
+#د_که_پای
 
-#ifndef configUSE_PREEMPTION
-    #error Missing definition:  configUSE_PREEMPTION must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#که_نه_تعریف_شوی configUSE_PREEMPTION
+    #تېروتنه Missing definition:  configUSE_PREEMPTION must be defined دننه FreeRTOSConfig.h as either 1 or 0.  See the Configuration section د the FreeRTOS API documentation لكل details.
+#د_که_پای
 
-#ifndef configUSE_IDLE_HOOK
-    #error Missing definition:  configUSE_IDLE_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#که_نه_تعریف_شوی configUSE_IDLE_HOOK
+    #تېروتنه Missing definition:  configUSE_IDLE_HOOK must be defined دننه FreeRTOSConfig.h as either 1 or 0.  See the Configuration section د the FreeRTOS API documentation لكل details.
+#د_که_پای
 
-#if ( configNUMBER_OF_CORES > 1 )
-    #ifndef configUSE_PASSIVE_IDLE_HOOK
-        #error Missing definition:  configUSE_PASSIVE_IDLE_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-    #endif
-#endif
+#إذا ( config_شمېره_د_CORES > 1 )
+    #که_نه_تعریف_شوی configUSE_PASSIVE_IDLE_HOOK
+        #تېروتنه Missing definition:  configUSE_PASSIVE_IDLE_HOOK must be defined دننه FreeRTOSConfig.h as either 1 or 0.  See the Configuration section د the FreeRTOS API documentation لكل details.
+    #د_که_پای
+#د_که_پای
 
-#ifndef configUSE_TICK_HOOK
-    #error Missing definition:  configUSE_TICK_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#که_نه_تعریف_شوی configUSE_TICK_HOOK
+    #تېروتنه Missing definition:  configUSE_TICK_HOOK must be defined دننه FreeRTOSConfig.h as either 1 or 0.  See the Configuration section د the FreeRTOS API documentation لكل details.
+#د_که_پای
 
-#if ( ( configTICK_TYPE_WIDTH_IN_BITS != TICK_TYPE_WIDTH_16_BITS ) && \
-    ( configTICK_TYPE_WIDTH_IN_BITS != TICK_TYPE_WIDTH_32_BITS ) &&   \
-    ( configTICK_TYPE_WIDTH_IN_BITS != TICK_TYPE_WIDTH_64_BITS ) )
-    #error Macro configTICK_TYPE_WIDTH_IN_BITS is defined to incorrect value.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#إذا ( ( config_TICK_TYPE_پلنوالی_دننه_بټونه != TICK_TYPE_پلنوالی_16_بټونه ) && \
+    ( config_TICK_TYPE_پلنوالی_دننه_بټونه != TICK_TYPE_پلنوالی_32_بټونه ) &&   \
+    ( config_TICK_TYPE_پلنوالی_دننه_بټونه != TICK_TYPE_پلنوالی_64_بټونه ) )
+    #تېروتنه Macro config_TICK_TYPE_پلنوالی_دننه_بټونه is defined منزل incorrect ارزښت.  See the Configuration section د the FreeRTOS API documentation لكل details.
+#د_که_پای
 
-#ifndef configUSE_CO_ROUTINES
-    #define configUSE_CO_ROUTINES    0
-#endif
+#که_نه_تعریف_شوی configUSE_CO_ROUTINES
+    #تعریف_کړه configUSE_CO_ROUTINES    0
+#د_که_پای
 
-#ifndef INCLUDE_vTaskPrioritySet
-    #define INCLUDE_vTaskPrioritySet    0
-#endif
+#که_نه_تعریف_شوی INCLUDE_v_Task_لومړیتوب_سېټ
+    #تعریف_کړه INCLUDE_v_Task_لومړیتوب_سېټ    0
+#د_که_پای
 
-#ifndef INCLUDE_uxTaskPriorityGet
-    #define INCLUDE_uxTaskPriorityGet    0
-#endif
+#که_نه_تعریف_شوی INCLUDE_ux_Task_لومړیتوب_Get
+    #تعریف_کړه INCLUDE_ux_Task_لومړیتوب_Get    0
+#د_که_پای
 
-#ifndef INCLUDE_vTaskDelete
-    #define INCLUDE_vTaskDelete    0
-#endif
+#که_نه_تعریف_شوی INCLUDE_vTaskDelete
+    #تعریف_کړه INCLUDE_vTaskDelete    0
+#د_که_پای
 
-#ifndef INCLUDE_vTaskSuspend
-    #define INCLUDE_vTaskSuspend    0
-#endif
+#که_نه_تعریف_شوی INCLUDE_vTaskSuspend
+    #تعریف_کړه INCLUDE_vTaskSuspend    0
+#د_که_پای
 
-#ifdef INCLUDE_xTaskDelayUntil
-    #ifdef INCLUDE_vTaskDelayUntil
+#که_تعریف_شوی INCLUDE_xTaskDelayUntil
+    #که_تعریف_شوی INCLUDE_vTaskDelayUntil
 
 /* INCLUDE_vTaskDelayUntil was replaced by INCLUDE_xTaskDelayUntil.  Backward
  * compatibility is maintained if only one or the other is defined, but
  * there is a conflict if both are defined. */
-        #error INCLUDE_vTaskDelayUntil and INCLUDE_xTaskDelayUntil are both defined.  INCLUDE_vTaskDelayUntil is no longer required and should be removed
-    #endif
-#endif
+        #تېروتنه INCLUDE_vTaskDelayUntil and INCLUDE_xTaskDelayUntil are both defined.  INCLUDE_vTaskDelayUntil is no longer required and should be removed
+    #د_که_پای
+#د_که_پای
 
-#ifndef INCLUDE_xTaskDelayUntil
-    #ifdef INCLUDE_vTaskDelayUntil
+#که_نه_تعریف_شوی INCLUDE_xTaskDelayUntil
+    #که_تعریف_شوی INCLUDE_vTaskDelayUntil
 
 /* If INCLUDE_vTaskDelayUntil is set but INCLUDE_xTaskDelayUntil is not then
  * the project's FreeRTOSConfig.h probably pre-dates the introduction of
  * xTaskDelayUntil and setting INCLUDE_xTaskDelayUntil to whatever
  * INCLUDE_vTaskDelayUntil is set to will ensure backward compatibility.
  */
-        #define INCLUDE_xTaskDelayUntil    INCLUDE_vTaskDelayUntil
-    #endif
-#endif
+        #تعریف_کړه INCLUDE_xTaskDelayUntil    INCLUDE_vTaskDelayUntil
+    #د_که_پای
+#د_که_پای
 
-#ifndef INCLUDE_xTaskDelayUntil
-    #define INCLUDE_xTaskDelayUntil    0
-#endif
+#که_نه_تعریف_شوی INCLUDE_xTaskDelayUntil
+    #تعریف_کړه INCLUDE_xTaskDelayUntil    0
+#د_که_پای
 
-#ifndef INCLUDE_vTaskDelay
-    #define INCLUDE_vTaskDelay    0
-#endif
+#که_نه_تعریف_شوی INCLUDE_vTaskDelay
+    #تعریف_کړه INCLUDE_vTaskDelay    0
+#د_که_پای
 
-#ifndef INCLUDE_xTaskGetIdleTaskHandle
-    #define INCLUDE_xTaskGetIdleTaskHandle    0
-#endif
+#که_نه_تعریف_شوی INCLUDE_xTaskGetIdleTaskHandle
+    #تعریف_کړه INCLUDE_xTaskGetIdleTaskHandle    0
+#د_که_پای
 
-#ifndef INCLUDE_xTaskAbortDelay
-    #define INCLUDE_xTaskAbortDelay    0
-#endif
+#که_نه_تعریف_شوی INCLUDE_xTaskAbortDelay
+    #تعریف_کړه INCLUDE_xTaskAbortDelay    0
+#د_که_پای
 
-#ifndef INCLUDE_xQueueGetMutexHolder
-    #define INCLUDE_xQueueGetMutexHolder    0
-#endif
+#که_نه_تعریف_شوی INCLUDE_x_کتار_Get_Mutex_Holder
+    #تعریف_کړه INCLUDE_x_کتار_Get_Mutex_Holder    0
+#د_که_پای
 
-#ifndef INCLUDE_xSemaphoreGetMutexHolder
-    #define INCLUDE_xSemaphoreGetMutexHolder    INCLUDE_xQueueGetMutexHolder
-#endif
+#که_نه_تعریف_شوی INCLUDE_xSemaphoreGetMutexHolder
+    #تعریف_کړه INCLUDE_xSemaphoreGetMutexHolder    INCLUDE_x_کتار_Get_Mutex_Holder
+#د_که_پای
 
-#ifndef INCLUDE_xTaskGetHandle
-    #define INCLUDE_xTaskGetHandle    0
-#endif
+#که_نه_تعریف_شوی INCLUDE_xTaskGetHandle
+    #تعریف_کړه INCLUDE_xTaskGetHandle    0
+#د_که_پای
 
-#ifndef INCLUDE_uxTaskGetStackHighWaterMark
-    #define INCLUDE_uxTaskGetStackHighWaterMark    0
-#endif
+#که_نه_تعریف_شوی INCLUDE_ux_Task_Get_ډېری_لوړ_Water_Mark
+    #تعریف_کړه INCLUDE_ux_Task_Get_ډېری_لوړ_Water_Mark    0
+#د_که_پای
 
-#ifndef INCLUDE_uxTaskGetStackHighWaterMark2
-    #define INCLUDE_uxTaskGetStackHighWaterMark2    0
-#endif
+#که_نه_تعریف_شوی INCLUDE_ux_Task_Get_ډېری_لوړ_Water_Mark2
+    #تعریف_کړه INCLUDE_ux_Task_Get_ډېری_لوړ_Water_Mark2    0
+#د_که_پای
 
-#ifndef INCLUDE_eTaskGetState
-    #define INCLUDE_eTaskGetState    0
-#endif
+#که_نه_تعریف_شوی INCLUDE_eTaskGetState
+    #تعریف_کړه INCLUDE_eTaskGetState    0
+#د_که_پای
 
-#ifndef INCLUDE_xTaskResumeFromISR
-    #define INCLUDE_xTaskResumeFromISR    1
-#endif
+#که_نه_تعریف_شوی INCLUDE_xTaskResumeFromISR
+    #تعریف_کړه INCLUDE_xTaskResumeFromISR    1
+#د_که_پای
 
-#ifndef INCLUDE_xTimerPendFunctionCall
-    #define INCLUDE_xTimerPendFunctionCall    0
-#endif
+#که_نه_تعریف_شوی INCLUDE_xTimerPendFunctionCall
+    #تعریف_کړه INCLUDE_xTimerPendFunctionCall    0
+#د_که_پای
 
-#ifndef INCLUDE_xTaskGetSchedulerState
-    #define INCLUDE_xTaskGetSchedulerState    0
-#endif
+#که_نه_تعریف_شوی INCLUDE_xTaskGetSchedulerState
+    #تعریف_کړه INCLUDE_xTaskGetSchedulerState    0
+#د_که_پای
 
-#ifndef INCLUDE_xTaskGetCurrentTaskHandle
-    #define INCLUDE_xTaskGetCurrentTaskHandle    1
-#endif
+#که_نه_تعریف_شوی INCLUDE_xTaskGetCurrentTaskHandle
+    #تعریف_کړه INCLUDE_xTaskGetCurrentTaskHandle    1
+#د_که_پای
 
-#if configUSE_CO_ROUTINES != 0
-    #ifndef configMAX_CO_ROUTINE_PRIORITIES
-        #error configMAX_CO_ROUTINE_PRIORITIES must be greater than or equal to 1.
-    #endif
-#endif
+#إذا configUSE_CO_ROUTINES != 0
+    #که_نه_تعریف_شوی configMAX_CO_ROUTINE_PRIORITIES
+        #تېروتنه configMAX_CO_ROUTINE_PRIORITIES must be greater than or equal منزل 1.
+    #د_که_پای
+#د_که_پای
 
-#ifndef configUSE_APPLICATION_TASK_TAG
-    #define configUSE_APPLICATION_TASK_TAG    0
-#endif
+#که_نه_تعریف_شوی config_USE_APPLICATION_TASK_نښان
+    #تعریف_کړه config_USE_APPLICATION_TASK_نښان    0
+#د_که_پای
 
-#ifndef configNUM_THREAD_LOCAL_STORAGE_POINTERS
-    #define configNUM_THREAD_LOCAL_STORAGE_POINTERS    0
-#endif
+#که_نه_تعریف_شوی config_عدد_THREAD_LOCAL_STORAGE_اشارې
+    #تعریف_کړه config_عدد_THREAD_LOCAL_STORAGE_اشارې    0
+#د_که_پای
 
-#ifndef configUSE_RECURSIVE_MUTEXES
-    #define configUSE_RECURSIVE_MUTEXES    0
-#endif
+#که_نه_تعریف_شوی configUSE_RECURSIVE_MUTEXES
+    #تعریف_کړه configUSE_RECURSIVE_MUTEXES    0
+#د_که_پای
 
-#ifndef configUSE_MUTEXES
-    #define configUSE_MUTEXES    0
-#endif
+#که_نه_تعریف_شوی configUSE_MUTEXES
+    #تعریف_کړه configUSE_MUTEXES    0
+#د_که_پای
 
-#ifndef configUSE_TIMERS
-    #define configUSE_TIMERS    0
-#endif
+#که_نه_تعریف_شوی configUSE_TIMERS
+    #تعریف_کړه configUSE_TIMERS    0
+#د_که_پای
 
-#ifndef configUSE_EVENT_GROUPS
-    #define configUSE_EVENT_GROUPS    1
-#endif
+#که_نه_تعریف_شوی configUSE_EVENT_GROUPS
+    #تعریف_کړه configUSE_EVENT_GROUPS    1
+#د_که_پای
 
-#ifndef configUSE_STREAM_BUFFERS
-    #define configUSE_STREAM_BUFFERS    1
-#endif
+#که_نه_تعریف_شوی config_USE_بهیر_BUFFERS
+    #تعریف_کړه config_USE_بهیر_BUFFERS    1
+#د_که_پای
 
-#ifndef configUSE_DAEMON_TASK_STARTUP_HOOK
-    #define configUSE_DAEMON_TASK_STARTUP_HOOK    0
-#endif
+#که_نه_تعریف_شوی configUSE_DAEMON_TASK_STARTUP_HOOK
+    #تعریف_کړه configUSE_DAEMON_TASK_STARTUP_HOOK    0
+#د_که_پای
 
-#if ( configUSE_DAEMON_TASK_STARTUP_HOOK != 0 )
-    #if ( configUSE_TIMERS == 0 )
-        #error configUSE_DAEMON_TASK_STARTUP_HOOK is set, but the daemon task is not created because configUSE_TIMERS is 0.
-    #endif
-#endif
+#إذا ( configUSE_DAEMON_TASK_STARTUP_HOOK != 0 )
+    #إذا ( configUSE_TIMERS == 0 )
+        #تېروتنه configUSE_DAEMON_TASK_STARTUP_HOOK is سېټ, but the daemon task is not created because configUSE_TIMERS is 0.
+    #د_که_پای
+#د_که_پای
 
-#ifndef configUSE_COUNTING_SEMAPHORES
-    #define configUSE_COUNTING_SEMAPHORES    0
-#endif
+#که_نه_تعریف_شوی configUSE_COUNTING_SEMAPHORES
+    #تعریف_کړه configUSE_COUNTING_SEMAPHORES    0
+#د_که_پای
 
-#ifndef configUSE_TASK_PREEMPTION_DISABLE
-    #define configUSE_TASK_PREEMPTION_DISABLE    0
-#endif
+#که_نه_تعریف_شوی configUSE_TASK_PREEMPTION_DISABLE
+    #تعریف_کړه configUSE_TASK_PREEMPTION_DISABLE    0
+#د_که_پای
 
-#ifndef configUSE_ALTERNATIVE_API
-    #define configUSE_ALTERNATIVE_API    0
-#endif
+#که_نه_تعریف_شوی configUSE_ALTERNATIVE_API
+    #تعریف_کړه configUSE_ALTERNATIVE_API    0
+#د_که_پای
 
-#ifndef portCRITICAL_NESTING_IN_TCB
-    #define portCRITICAL_NESTING_IN_TCB    0
-#endif
+#که_نه_تعریف_شوی پورټ_CRITICAL_NESTING_دننه_TCB
+    #تعریف_کړه پورټ_CRITICAL_NESTING_دننه_TCB    0
+#د_که_پای
 
-#ifndef configMAX_TASK_NAME_LEN
-    #define configMAX_TASK_NAME_LEN    16
-#endif
+#که_نه_تعریف_شوی configMAX_TASK_NAME_LEN
+    #تعریف_کړه configMAX_TASK_NAME_LEN    16
+#د_که_پای
 
-#ifndef configIDLE_SHOULD_YIELD
-    #define configIDLE_SHOULD_YIELD    1
-#endif
+#که_نه_تعریف_شوی configIDLE_SHOULD_YIELD
+    #تعریف_کړه configIDLE_SHOULD_YIELD    1
+#د_که_پای
 
-#if configMAX_TASK_NAME_LEN < 1
-    #error configMAX_TASK_NAME_LEN must be set to a minimum of 1 in FreeRTOSConfig.h
-#endif
+#إذا configMAX_TASK_NAME_LEN < 1
+    #تېروتنه configMAX_TASK_NAME_LEN must be سېټ منزل a minimum د 1 دننه FreeRTOSConfig.h
+#د_که_پای
 
-#ifndef configASSERT
-    #define configASSERT( x )
-    #define configASSERT_DEFINED    0
-#else
-    #define configASSERT_DEFINED    1
-#endif
+#که_نه_تعریف_شوی configASSERT
+    #تعریف_کړه configASSERT( x )
+    #تعریف_کړه configASSERT_DEFINED    0
+#وإلا
+    #تعریف_کړه configASSERT_DEFINED    1
+#د_که_پای
 
 /* configPRECONDITION should be defined as configASSERT.
  * The CBMC proofs need a way to track assumptions and assertions.
  * A configPRECONDITION statement should express an implicit invariant or
  * assumption made.  A configASSERT statement should express an invariant that must
  * hold explicit before calling the code. */
-#ifndef configPRECONDITION
-    #define configPRECONDITION( X )    configASSERT( X )
-    #define configPRECONDITION_DEFINED    0
-#else
-    #define configPRECONDITION_DEFINED    1
-#endif
+#که_نه_تعریف_شوی configPRECONDITION
+    #تعریف_کړه configPRECONDITION( X )    configASSERT( X )
+    #تعریف_کړه configPRECONDITION_DEFINED    0
+#وإلا
+    #تعریف_کړه configPRECONDITION_DEFINED    1
+#د_که_پای
 
-#ifndef configCHECK_HANDLER_INSTALLATION
-    #define configCHECK_HANDLER_INSTALLATION    1
-#else
+#که_نه_تعریف_شوی configCHECK_HANDLER_INSTALLATION
+    #تعریف_کړه configCHECK_HANDLER_INSTALLATION    1
+#وإلا
 
 /* The application has explicitly defined configCHECK_HANDLER_INSTALLATION
  * to 1. The checks requires configASSERT() to be defined. */
-    #if ( ( configCHECK_HANDLER_INSTALLATION == 1 ) && ( configASSERT_DEFINED == 0 ) )
-        #error You must define configASSERT() when configCHECK_HANDLER_INSTALLATION is 1.
-    #endif
-#endif
+    #إذا ( ( configCHECK_HANDLER_INSTALLATION == 1 ) && ( configASSERT_DEFINED == 0 ) )
+        #تېروتنه You must define configASSERT() when configCHECK_HANDLER_INSTALLATION is 1.
+    #د_که_پای
+#د_که_پای
 
-#ifndef portMEMORY_BARRIER
-    #define portMEMORY_BARRIER()
-#endif
+#که_نه_تعریف_شوی پورټ_حافظه_BARRIER
+    #تعریف_کړه پورټ_حافظه_BARRIER()
+#د_که_پای
 
-#ifndef portSOFTWARE_BARRIER
-    #define portSOFTWARE_BARRIER()
-#endif
+#که_نه_تعریف_شوی پورټ_SOFTWARE_BARRIER
+    #تعریف_کړه پورټ_SOFTWARE_BARRIER()
+#د_که_پای
 
-#ifndef configRUN_MULTIPLE_PRIORITIES
-    #define configRUN_MULTIPLE_PRIORITIES    0
-#endif
+#که_نه_تعریف_شوی config_پرلپسې_مضرب_PRIORITIES
+    #تعریف_کړه config_پرلپسې_مضرب_PRIORITIES    0
+#د_که_پای
 
-#ifndef portGET_CORE_ID
+#که_نه_تعریف_شوی پورټ_GET_CORE_ID
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portGET_CORE_ID()    0
-    #else
-        #error configNUMBER_OF_CORES is set to more than 1 then portGET_CORE_ID must also be defined.
-    #endif /* configNUMBER_OF_CORES */
+    #إذا ( config_شمېره_د_CORES == 1 )
+        #تعریف_کړه پورټ_GET_CORE_ID()    0
+    #وإلا
+        #تېروتنه config_شمېره_د_CORES is سېټ منزل نور than 1 then پورټ_GET_CORE_ID must also be defined.
+    #د_که_پای /* configNUMBER_OF_CORES */
 
-#endif /* portGET_CORE_ID */
+#د_که_پای /* portGET_CORE_ID */
 
-#ifndef portYIELD_CORE
+#که_نه_تعریف_شوی پورټ_YIELD_CORE
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portYIELD_CORE( x )    portYIELD()
-    #else
-        #error configNUMBER_OF_CORES is set to more than 1 then portYIELD_CORE must also be defined.
-    #endif /* configNUMBER_OF_CORES */
+    #إذا ( config_شمېره_د_CORES == 1 )
+        #تعریف_کړه پورټ_YIELD_CORE( x )    پورټ_YIELD()
+    #وإلا
+        #تېروتنه config_شمېره_د_CORES is سېټ منزل نور than 1 then پورټ_YIELD_CORE must also be defined.
+    #د_که_پای /* configNUMBER_OF_CORES */
 
-#endif /* portYIELD_CORE */
+#د_که_پای /* portYIELD_CORE */
 
-#ifndef portSET_INTERRUPT_MASK
+#که_نه_تعریف_شوی پورټ_سېټ_مداخله_ماسک
 
-    #if ( configNUMBER_OF_CORES > 1 )
-        #error portSET_INTERRUPT_MASK is required in SMP
-    #endif
+    #إذا ( config_شمېره_د_CORES > 1 )
+        #تېروتنه پورټ_سېټ_مداخله_ماسک is required دننه SMP
+    #د_که_پای
 
-#endif /* portSET_INTERRUPT_MASK */
+#د_که_پای /* portSET_INTERRUPT_MASK */
 
-#ifndef portCLEAR_INTERRUPT_MASK
+#که_نه_تعریف_شوی پورټ_CLEAR_مداخله_ماسک
 
-    #if ( configNUMBER_OF_CORES > 1 )
-        #error portCLEAR_INTERRUPT_MASK is required in SMP
-    #endif
+    #إذا ( config_شمېره_د_CORES > 1 )
+        #تېروتنه پورټ_CLEAR_مداخله_ماسک is required دننه SMP
+    #د_که_پای
 
-#endif /* portCLEAR_INTERRUPT_MASK */
+#د_که_پای /* portCLEAR_INTERRUPT_MASK */
 
-#ifndef portRELEASE_TASK_LOCK
+#که_نه_تعریف_شوی پورټ_RELEASE_TASK_قلف
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portRELEASE_TASK_LOCK()
-    #else
-        #error portRELEASE_TASK_LOCK is required in SMP
-    #endif
+    #إذا ( config_شمېره_د_CORES == 1 )
+        #تعریف_کړه پورټ_RELEASE_TASK_قلف()
+    #وإلا
+        #تېروتنه پورټ_RELEASE_TASK_قلف is required دننه SMP
+    #د_که_پای
 
-#endif /* portRELEASE_TASK_LOCK */
+#د_که_پای /* portRELEASE_TASK_LOCK */
 
-#ifndef portGET_TASK_LOCK
+#که_نه_تعریف_شوی پورټ_GET_TASK_قلف
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portGET_TASK_LOCK()
-    #else
-        #error portGET_TASK_LOCK is required in SMP
-    #endif
+    #إذا ( config_شمېره_د_CORES == 1 )
+        #تعریف_کړه پورټ_GET_TASK_قلف()
+    #وإلا
+        #تېروتنه پورټ_GET_TASK_قلف is required دننه SMP
+    #د_که_پای
 
-#endif /* portGET_TASK_LOCK */
+#د_که_پای /* portGET_TASK_LOCK */
 
-#ifndef portRELEASE_ISR_LOCK
+#که_نه_تعریف_شوی پورټ_RELEASE_ISR_قلف
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portRELEASE_ISR_LOCK()
-    #else
-        #error portRELEASE_ISR_LOCK is required in SMP
-    #endif
+    #إذا ( config_شمېره_د_CORES == 1 )
+        #تعریف_کړه پورټ_RELEASE_ISR_قلف()
+    #وإلا
+        #تېروتنه پورټ_RELEASE_ISR_قلف is required دننه SMP
+    #د_که_پای
 
-#endif /* portRELEASE_ISR_LOCK */
+#د_که_پای /* portRELEASE_ISR_LOCK */
 
-#ifndef portGET_ISR_LOCK
+#که_نه_تعریف_شوی پورټ_GET_ISR_قلف
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portGET_ISR_LOCK()
-    #else
-        #error portGET_ISR_LOCK is required in SMP
-    #endif
+    #إذا ( config_شمېره_د_CORES == 1 )
+        #تعریف_کړه پورټ_GET_ISR_قلف()
+    #وإلا
+        #تېروتنه پورټ_GET_ISR_قلف is required دننه SMP
+    #د_که_پای
 
-#endif /* portGET_ISR_LOCK */
+#د_که_پای /* portGET_ISR_LOCK */
 
-#ifndef portENTER_CRITICAL_FROM_ISR
+#که_نه_تعریف_شوی پورټ_ENTER_CRITICAL_FROM_ISR
 
-    #if ( configNUMBER_OF_CORES > 1 )
-        #error portENTER_CRITICAL_FROM_ISR is required in SMP
-    #endif
+    #إذا ( config_شمېره_د_CORES > 1 )
+        #تېروتنه پورټ_ENTER_CRITICAL_FROM_ISR is required دننه SMP
+    #د_که_پای
 
-#endif
+#د_که_پای
 
-#ifndef portEXIT_CRITICAL_FROM_ISR
+#که_نه_تعریف_شوی پورټ_EXIT_CRITICAL_FROM_ISR
 
-    #if ( configNUMBER_OF_CORES > 1 )
-        #error portEXIT_CRITICAL_FROM_ISR is required in SMP
-    #endif
+    #إذا ( config_شمېره_د_CORES > 1 )
+        #تېروتنه پورټ_EXIT_CRITICAL_FROM_ISR is required دننه SMP
+    #د_که_پای
 
-#endif
+#د_که_پای
 
-#ifndef configUSE_CORE_AFFINITY
-    #define configUSE_CORE_AFFINITY    0
-#endif /* configUSE_CORE_AFFINITY */
+#که_نه_تعریف_شوی configUSE_CORE_AFFINITY
+    #تعریف_کړه configUSE_CORE_AFFINITY    0
+#د_که_پای /* configUSE_CORE_AFFINITY */
 
-#if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
-    #ifndef configTASK_DEFAULT_CORE_AFFINITY
-        #define configTASK_DEFAULT_CORE_AFFINITY    tskNO_AFFINITY
-    #endif
-#endif
+#إذا ( ( config_شمېره_د_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+    #که_نه_تعریف_شوی configTASK_DEFAULT_CORE_AFFINITY
+        #تعریف_کړه configTASK_DEFAULT_CORE_AFFINITY    tskNO_AFFINITY
+    #د_که_پای
+#د_که_پای
 
-#ifndef configUSE_PASSIVE_IDLE_HOOK
-    #define configUSE_PASSIVE_IDLE_HOOK    0
-#endif /* configUSE_PASSIVE_IDLE_HOOK */
+#که_نه_تعریف_شوی configUSE_PASSIVE_IDLE_HOOK
+    #تعریف_کړه configUSE_PASSIVE_IDLE_HOOK    0
+#د_که_پای /* configUSE_PASSIVE_IDLE_HOOK */
 
 /* The timers module relies on xTaskGetSchedulerState(). */
-#if configUSE_TIMERS == 1
+#إذا configUSE_TIMERS == 1
 
-    #ifndef configTIMER_TASK_PRIORITY
-        #error If configUSE_TIMERS is set to 1 then configTIMER_TASK_PRIORITY must also be defined.
-    #endif /* configTIMER_TASK_PRIORITY */
+    #که_نه_تعریف_شوی config_TIMER_TASK_لومړیتوب
+        #تېروتنه If configUSE_TIMERS is سېټ منزل 1 then config_TIMER_TASK_لومړیتوب must also be defined.
+    #د_که_پای /* configTIMER_TASK_PRIORITY */
 
-    #ifndef configTIMER_QUEUE_LENGTH
-        #error If configUSE_TIMERS is set to 1 then configTIMER_QUEUE_LENGTH must also be defined.
-    #endif /* configTIMER_QUEUE_LENGTH */
+    #که_نه_تعریف_شوی config_TIMER_کتار_اوږدتیا
+        #تېروتنه If configUSE_TIMERS is سېټ منزل 1 then config_TIMER_کتار_اوږدتیا must also be defined.
+    #د_که_پای /* configTIMER_QUEUE_LENGTH */
 
-    #ifndef configTIMER_TASK_STACK_DEPTH
-        #error If configUSE_TIMERS is set to 1 then configTIMER_TASK_STACK_DEPTH must also be defined.
-    #endif /* configTIMER_TASK_STACK_DEPTH */
+    #که_نه_تعریف_شوی config_TIMER_TASK_ډېری_ژوروالی
+        #تېروتنه If configUSE_TIMERS is سېټ منزل 1 then config_TIMER_TASK_ډېری_ژوروالی must also be defined.
+    #د_که_پای /* configTIMER_TASK_STACK_DEPTH */
 
-    #ifndef portTIMER_CALLBACK_ATTRIBUTE
-        #define portTIMER_CALLBACK_ATTRIBUTE
-    #endif /* portTIMER_CALLBACK_ATTRIBUTE */
+    #که_نه_تعریف_شوی پورټ_TIMER_CALLBACK_ATTRIBUTE
+        #تعریف_کړه پورټ_TIMER_CALLBACK_ATTRIBUTE
+    #د_که_پای /* portTIMER_CALLBACK_ATTRIBUTE */
 
-#endif /* configUSE_TIMERS */
+#د_که_پای /* configUSE_TIMERS */
 
-#ifndef portHAS_NESTED_INTERRUPTS
-    #if defined( portSET_INTERRUPT_MASK_FROM_ISR ) && defined( portCLEAR_INTERRUPT_MASK_FROM_ISR )
-        #define portHAS_NESTED_INTERRUPTS    1
-    #else
-        #define portHAS_NESTED_INTERRUPTS    0
-    #endif
-#endif
+#که_نه_تعریف_شوی پورټ_HAS_NESTED_INTERRUPTS
+    #إذا defined( پورټ_سېټ_مداخله_ماسک_FROM_ISR ) && defined( پورټ_CLEAR_مداخله_ماسک_FROM_ISR )
+        #تعریف_کړه پورټ_HAS_NESTED_INTERRUPTS    1
+    #وإلا
+        #تعریف_کړه پورټ_HAS_NESTED_INTERRUPTS    0
+    #د_که_پای
+#د_که_پای
 
-#ifndef portSET_INTERRUPT_MASK_FROM_ISR
-    #if ( portHAS_NESTED_INTERRUPTS == 1 )
-        #error portSET_INTERRUPT_MASK_FROM_ISR must be defined for ports that support nested interrupts (i.e. portHAS_NESTED_INTERRUPTS is set to 1)
-    #else
-        #define portSET_INTERRUPT_MASK_FROM_ISR()    0
-    #endif
-#else
-    #if ( portHAS_NESTED_INTERRUPTS == 0 )
-        #error portSET_INTERRUPT_MASK_FROM_ISR must not be defined for ports that do not support nested interrupts (i.e. portHAS_NESTED_INTERRUPTS is set to 0)
-    #endif
-#endif
+#که_نه_تعریف_شوی پورټ_سېټ_مداخله_ماسک_FROM_ISR
+    #إذا ( پورټ_HAS_NESTED_INTERRUPTS == 1 )
+        #تېروتنه پورټ_سېټ_مداخله_ماسک_FROM_ISR must be defined لكل ports that support nested interrupts (i.e. پورټ_HAS_NESTED_INTERRUPTS is سېټ منزل 1)
+    #وإلا
+        #تعریف_کړه پورټ_سېټ_مداخله_ماسک_FROM_ISR()    0
+    #د_که_پای
+#وإلا
+    #إذا ( پورټ_HAS_NESTED_INTERRUPTS == 0 )
+        #تېروتنه پورټ_سېټ_مداخله_ماسک_FROM_ISR must not be defined لكل ports that افعل not support nested interrupts (i.e. پورټ_HAS_NESTED_INTERRUPTS is سېټ منزل 0)
+    #د_که_پای
+#د_که_پای
 
-#ifndef portCLEAR_INTERRUPT_MASK_FROM_ISR
-    #if ( portHAS_NESTED_INTERRUPTS == 1 )
-        #error portCLEAR_INTERRUPT_MASK_FROM_ISR must be defined for ports that support nested interrupts  (i.e. portHAS_NESTED_INTERRUPTS is set to 1)
-    #else
-        #define portCLEAR_INTERRUPT_MASK_FROM_ISR( uxSavedStatusValue )    ( void ) ( uxSavedStatusValue )
-    #endif
-#else
-    #if ( portHAS_NESTED_INTERRUPTS == 0 )
-        #error portCLEAR_INTERRUPT_MASK_FROM_ISR must not be defined for ports that do not support nested interrupts (i.e. portHAS_NESTED_INTERRUPTS is set to 0)
-    #endif
-#endif
+#که_نه_تعریف_شوی پورټ_CLEAR_مداخله_ماسک_FROM_ISR
+    #إذا ( پورټ_HAS_NESTED_INTERRUPTS == 1 )
+        #تېروتنه پورټ_CLEAR_مداخله_ماسک_FROM_ISR must be defined لكل ports that support nested interrupts  (i.e. پورټ_HAS_NESTED_INTERRUPTS is سېټ منزل 1)
+    #وإلا
+        #تعریف_کړه پورټ_CLEAR_مداخله_ماسک_FROM_ISR( ux_Saved_حالت_ارزښت )    ( فراغ ) ( ux_Saved_حالت_ارزښت )
+    #د_که_پای
+#وإلا
+    #إذا ( پورټ_HAS_NESTED_INTERRUPTS == 0 )
+        #تېروتنه پورټ_CLEAR_مداخله_ماسک_FROM_ISR must not be defined لكل ports that افعل not support nested interrupts (i.e. پورټ_HAS_NESTED_INTERRUPTS is سېټ منزل 0)
+    #د_که_پای
+#د_که_پای
 
-#ifndef portCLEAN_UP_TCB
-    #define portCLEAN_UP_TCB( pxTCB )    ( void ) ( pxTCB )
-#endif
+#که_نه_تعریف_شوی پورټ_CLEAN_پورته_TCB
+    #تعریف_کړه پورټ_CLEAN_پورته_TCB( pxTCB )    ( فراغ ) ( pxTCB )
+#د_که_پای
 
-#ifndef portPRE_TASK_DELETE_HOOK
-    #define portPRE_TASK_DELETE_HOOK( pvTaskToDelete, pxYieldPending )
-#endif
+#که_نه_تعریف_شوی پورټ_PRE_TASK_DELETE_HOOK
+    #تعریف_کړه پورټ_PRE_TASK_DELETE_HOOK( pv_Task_منزل_Delete, pxYieldPending )
+#د_که_پای
 
-#ifndef portSETUP_TCB
-    #define portSETUP_TCB( pxTCB )    ( void ) ( pxTCB )
-#endif
+#که_نه_تعریف_شوی پورټ_تیاری_TCB
+    #تعریف_کړه پورټ_تیاری_TCB( pxTCB )    ( فراغ ) ( pxTCB )
+#د_که_پای
 
-#ifndef portTASK_SWITCH_HOOK
-    #define portTASK_SWITCH_HOOK( pxTCB )    ( void ) ( pxTCB )
-#endif
+#که_نه_تعریف_شوی پورټ_TASK_SWITCH_HOOK
+    #تعریف_کړه پورټ_TASK_SWITCH_HOOK( pxTCB )    ( فراغ ) ( pxTCB )
+#د_که_پای
 
-#ifndef configQUEUE_REGISTRY_SIZE
-    #define configQUEUE_REGISTRY_SIZE    0U
-#endif
+#که_نه_تعریف_شوی config_کتار_REGISTRY_اندازه
+    #تعریف_کړه config_کتار_REGISTRY_اندازه    0U
+#د_که_پای
 
-#if ( configQUEUE_REGISTRY_SIZE < 1 )
-    #define vQueueAddToRegistry( xQueue, pcName )
-    #define vQueueUnregisterQueue( xQueue )
-    #define pcQueueGetName( xQueue )
-#endif
+#إذا ( config_کتار_REGISTRY_اندازه < 1 )
+    #تعریف_کړه v_کتار_جمع_کړه_منزل_Registry( x_کتار, pcName )
+    #تعریف_کړه v_کتار_Unregister_کتار( x_کتار )
+    #تعریف_کړه pc_کتار_Get_Name( x_کتار )
+#د_که_پای
 
-#ifndef configUSE_MINI_LIST_ITEM
-    #define configUSE_MINI_LIST_ITEM    1
-#endif
+#که_نه_تعریف_شوی config_USE_MINI_LIST_توکی
+    #تعریف_کړه config_USE_MINI_LIST_توکی    1
+#د_که_پای
 
-#ifndef portPOINTER_SIZE_TYPE
-    #define portPOINTER_SIZE_TYPE    uint32_t
-#endif
+#که_نه_تعریف_شوی پورټ_اشاره_ګر_اندازه_TYPE
+    #تعریف_کړه پورټ_اشاره_ګر_اندازه_TYPE    uint32_t
+#د_که_پای
 
 /* Remove any unused trace macros. */
-#ifndef traceSTART
+#که_نه_تعریف_شوی trace_پیل
 
 /* Used to perform any necessary initialisation - for example, open a file
  * into which trace is to be written. */
-    #define traceSTART()
-#endif
+    #تعریف_کړه trace_پیل()
+#د_که_پای
 
-#ifndef traceEND
+#که_نه_تعریف_شوی trace_پای_ټکی
 
 /* Use to close a trace, for example close a file into which trace has been
  * written. */
-    #define traceEND()
-#endif
+    #تعریف_کړه trace_پای_ټکی()
+#د_که_پای
 
-#ifndef traceTASK_SWITCHED_IN
+#که_نه_تعریف_شوی trace_TASK_SWITCHED_دننه
 
 /* Called after a task has been selected to run.  pxCurrentTCB holds a pointer
  * to the task control block of the selected task. */
-    #define traceTASK_SWITCHED_IN()
-#endif
+    #تعریف_کړه trace_TASK_SWITCHED_دننه()
+#د_که_پای
 
-#ifndef traceINCREASE_TICK_COUNT
+#که_نه_تعریف_شوی trace_INCREASE_TICK_شمېر
 
 /* Called before stepping the tick count after waking from tickless idle
  * sleep. */
-    #define traceINCREASE_TICK_COUNT( x )
-#endif
+    #تعریف_کړه trace_INCREASE_TICK_شمېر( x )
+#د_که_پای
 
-#ifndef traceLOW_POWER_IDLE_BEGIN
+#که_نه_تعریف_شوی trace_ټیټ_POWER_IDLE_BEGIN
     /* Called immediately before entering tickless idle. */
-    #define traceLOW_POWER_IDLE_BEGIN()
-#endif
+    #تعریف_کړه trace_ټیټ_POWER_IDLE_BEGIN()
+#د_که_پای
 
-#ifndef traceLOW_POWER_IDLE_END
+#که_نه_تعریف_شوی trace_ټیټ_POWER_IDLE_پای_ټکی
     /* Called when returning to the Idle task after a tickless idle. */
-    #define traceLOW_POWER_IDLE_END()
-#endif
+    #تعریف_کړه trace_ټیټ_POWER_IDLE_پای_ټکی()
+#د_که_پای
 
-#ifndef traceTASK_SWITCHED_OUT
+#که_نه_تعریف_شوی trace_TASK_SWITCHED_بهر
 
 /* Called before a task has been selected to run.  pxCurrentTCB holds a pointer
  * to the task control block of the task being switched out. */
-    #define traceTASK_SWITCHED_OUT()
-#endif
+    #تعریف_کړه trace_TASK_SWITCHED_بهر()
+#د_که_پای
 
-#ifndef traceTASK_PRIORITY_INHERIT
+#که_نه_تعریف_شوی trace_TASK_لومړیتوب_INHERIT
 
 /* Called when a task attempts to take a mutex that is already held by a
  * lower priority task.  pxTCBOfMutexHolder is a pointer to the TCB of the task
  * that holds the mutex.  uxInheritedPriority is the priority the mutex holder
  * will inherit (the priority of the task that is attempting to obtain the
  * muted. */
-    #define traceTASK_PRIORITY_INHERIT( pxTCBOfMutexHolder, uxInheritedPriority )
-#endif
+    #تعریف_کړه trace_TASK_لومړیتوب_INHERIT( pxTCBOfMutexHolder, ux_Inherited_لومړیتوب )
+#د_که_پای
 
-#ifndef traceTASK_PRIORITY_DISINHERIT
+#که_نه_تعریف_شوی trace_TASK_لومړیتوب_DISINHERIT
 
 /* Called when a task releases a mutex, the holding of which had resulted in
  * the task inheriting the priority of a higher priority task.
  * pxTCBOfMutexHolder is a pointer to the TCB of the task that is releasing the
  * mutex.  uxOriginalPriority is the task's configured (base) priority. */
-    #define traceTASK_PRIORITY_DISINHERIT( pxTCBOfMutexHolder, uxOriginalPriority )
-#endif
+    #تعریف_کړه trace_TASK_لومړیتوب_DISINHERIT( pxTCBOfMutexHolder, ux_Original_لومړیتوب )
+#د_که_پای
 
-#ifndef traceBLOCKING_ON_QUEUE_RECEIVE
-
-/* Task is about to block because it cannot read from a
- * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
- * upon which the read was attempted.  pxCurrentTCB points to the TCB of the
- * task that attempted the read. */
-    #define traceBLOCKING_ON_QUEUE_RECEIVE( pxQueue )
-#endif
-
-#ifndef traceBLOCKING_ON_QUEUE_PEEK
+#که_نه_تعریف_شوی trace_BLOCKING_ON_کتار_RECEIVE
 
 /* Task is about to block because it cannot read from a
  * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
  * upon which the read was attempted.  pxCurrentTCB points to the TCB of the
  * task that attempted the read. */
-    #define traceBLOCKING_ON_QUEUE_PEEK( pxQueue )
-#endif
+    #تعریف_کړه trace_BLOCKING_ON_کتار_RECEIVE( px_کتار )
+#د_که_پای
 
-#ifndef traceBLOCKING_ON_QUEUE_SEND
+#که_نه_تعریف_شوی trace_BLOCKING_ON_کتار_PEEK
+
+/* Task is about to block because it cannot read from a
+ * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
+ * upon which the read was attempted.  pxCurrentTCB points to the TCB of the
+ * task that attempted the read. */
+    #تعریف_کړه trace_BLOCKING_ON_کتار_PEEK( px_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_BLOCKING_ON_کتار_SEND
 
 /* Task is about to block because it cannot write to a
  * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
  * upon which the write was attempted.  pxCurrentTCB points to the TCB of the
  * task that attempted the write. */
-    #define traceBLOCKING_ON_QUEUE_SEND( pxQueue )
-#endif
+    #تعریف_کړه trace_BLOCKING_ON_کتار_SEND( px_کتار )
+#د_که_پای
 
-#ifndef configCHECK_FOR_STACK_OVERFLOW
-    #define configCHECK_FOR_STACK_OVERFLOW    0
-#endif
+#که_نه_تعریف_شوی config_CHECK_FOR_ډېری_ډکېدنه
+    #تعریف_کړه config_CHECK_FOR_ډېری_ډکېدنه    0
+#د_که_پای
 
-#ifndef configRECORD_STACK_HIGH_ADDRESS
-    #define configRECORD_STACK_HIGH_ADDRESS    0
-#endif
+#که_نه_تعریف_شوی config_ریکارډ_ډېری_لوړ_پته
+    #تعریف_کړه config_ریکارډ_ډېری_لوړ_پته    0
+#د_که_پای
 
-#ifndef configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H
-    #define configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H    0
-#endif
+#که_نه_تعریف_شوی configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H
+    #تعریف_کړه configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H    0
+#د_که_پای
 
 /* The following event macros are embedded in the kernel API calls. */
 
-#ifndef traceMOVED_TASK_TO_READY_STATE
-    #define traceMOVED_TASK_TO_READY_STATE( pxTCB )
-#endif
-
-#ifndef tracePOST_MOVED_TASK_TO_READY_STATE
-    #define tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )
-#endif
-
-#ifndef traceMOVED_TASK_TO_DELAYED_LIST
-    #define traceMOVED_TASK_TO_DELAYED_LIST()
-#endif
-
-#ifndef traceMOVED_TASK_TO_OVERFLOW_DELAYED_LIST
-    #define traceMOVED_TASK_TO_OVERFLOW_DELAYED_LIST()
-#endif
-
-#ifndef traceQUEUE_CREATE
-    #define traceQUEUE_CREATE( pxNewQueue )
-#endif
-
-#ifndef traceQUEUE_CREATE_FAILED
-    #define traceQUEUE_CREATE_FAILED( ucQueueType )
-#endif
-
-#ifndef traceCREATE_MUTEX
-    #define traceCREATE_MUTEX( pxNewQueue )
-#endif
-
-#ifndef traceCREATE_MUTEX_FAILED
-    #define traceCREATE_MUTEX_FAILED()
-#endif
-
-#ifndef traceGIVE_MUTEX_RECURSIVE
-    #define traceGIVE_MUTEX_RECURSIVE( pxMutex )
-#endif
-
-#ifndef traceGIVE_MUTEX_RECURSIVE_FAILED
-    #define traceGIVE_MUTEX_RECURSIVE_FAILED( pxMutex )
-#endif
-
-#ifndef traceTAKE_MUTEX_RECURSIVE
-    #define traceTAKE_MUTEX_RECURSIVE( pxMutex )
-#endif
-
-#ifndef traceTAKE_MUTEX_RECURSIVE_FAILED
-    #define traceTAKE_MUTEX_RECURSIVE_FAILED( pxMutex )
-#endif
-
-#ifndef traceCREATE_COUNTING_SEMAPHORE
-    #define traceCREATE_COUNTING_SEMAPHORE()
-#endif
-
-#ifndef traceCREATE_COUNTING_SEMAPHORE_FAILED
-    #define traceCREATE_COUNTING_SEMAPHORE_FAILED()
-#endif
-
-#ifndef traceQUEUE_SET_SEND
-    #define traceQUEUE_SET_SEND    traceQUEUE_SEND
-#endif
-
-#ifndef traceQUEUE_SEND
-    #define traceQUEUE_SEND( pxQueue )
-#endif
-
-#ifndef traceQUEUE_SEND_FAILED
-    #define traceQUEUE_SEND_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE
-    #define traceQUEUE_RECEIVE( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK
-    #define traceQUEUE_PEEK( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK_FAILED
-    #define traceQUEUE_PEEK_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK_FROM_ISR
-    #define traceQUEUE_PEEK_FROM_ISR( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE_FAILED
-    #define traceQUEUE_RECEIVE_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_SEND_FROM_ISR
-    #define traceQUEUE_SEND_FROM_ISR( pxQueue )
-#endif
-
-#ifndef traceQUEUE_SEND_FROM_ISR_FAILED
-    #define traceQUEUE_SEND_FROM_ISR_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE_FROM_ISR
-    #define traceQUEUE_RECEIVE_FROM_ISR( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE_FROM_ISR_FAILED
-    #define traceQUEUE_RECEIVE_FROM_ISR_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK_FROM_ISR_FAILED
-    #define traceQUEUE_PEEK_FROM_ISR_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_DELETE
-    #define traceQUEUE_DELETE( pxQueue )
-#endif
-
-#ifndef traceTASK_CREATE
-    #define traceTASK_CREATE( pxNewTCB )
-#endif
-
-#ifndef traceTASK_CREATE_FAILED
-    #define traceTASK_CREATE_FAILED()
-#endif
-
-#ifndef traceTASK_DELETE
-    #define traceTASK_DELETE( pxTaskToDelete )
-#endif
-
-#ifndef traceTASK_DELAY_UNTIL
-    #define traceTASK_DELAY_UNTIL( x )
-#endif
-
-#ifndef traceTASK_DELAY
-    #define traceTASK_DELAY()
-#endif
-
-#ifndef traceTASK_PRIORITY_SET
-    #define traceTASK_PRIORITY_SET( pxTask, uxNewPriority )
-#endif
-
-#ifndef traceTASK_SUSPEND
-    #define traceTASK_SUSPEND( pxTaskToSuspend )
-#endif
-
-#ifndef traceTASK_RESUME
-    #define traceTASK_RESUME( pxTaskToResume )
-#endif
-
-#ifndef traceTASK_RESUME_FROM_ISR
-    #define traceTASK_RESUME_FROM_ISR( pxTaskToResume )
-#endif
-
-#ifndef traceTASK_INCREMENT_TICK
-    #define traceTASK_INCREMENT_TICK( xTickCount )
-#endif
-
-#ifndef traceTIMER_CREATE
-    #define traceTIMER_CREATE( pxNewTimer )
-#endif
-
-#ifndef traceTIMER_CREATE_FAILED
-    #define traceTIMER_CREATE_FAILED()
-#endif
-
-#ifndef traceTIMER_COMMAND_SEND
-    #define traceTIMER_COMMAND_SEND( xTimer, xMessageID, xMessageValueValue, xReturn )
-#endif
-
-#ifndef traceTIMER_EXPIRED
-    #define traceTIMER_EXPIRED( pxTimer )
-#endif
-
-#ifndef traceTIMER_COMMAND_RECEIVED
-    #define traceTIMER_COMMAND_RECEIVED( pxTimer, xMessageID, xMessageValue )
-#endif
-
-#ifndef traceMALLOC
-    #define traceMALLOC( pvAddress, uiSize )
-#endif
-
-#ifndef traceFREE
-    #define traceFREE( pvAddress, uiSize )
-#endif
-
-#ifndef traceEVENT_GROUP_CREATE
-    #define traceEVENT_GROUP_CREATE( xEventGroup )
-#endif
-
-#ifndef traceEVENT_GROUP_CREATE_FAILED
-    #define traceEVENT_GROUP_CREATE_FAILED()
-#endif
-
-#ifndef traceEVENT_GROUP_SYNC_BLOCK
-    #define traceEVENT_GROUP_SYNC_BLOCK( xEventGroup, uxBitsToSet, uxBitsToWaitFor )
-#endif
-
-#ifndef traceEVENT_GROUP_SYNC_END
-    #define traceEVENT_GROUP_SYNC_END( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTimeoutOccurred )    ( void ) ( xTimeoutOccurred )
-#endif
-
-#ifndef traceEVENT_GROUP_WAIT_BITS_BLOCK
-    #define traceEVENT_GROUP_WAIT_BITS_BLOCK( xEventGroup, uxBitsToWaitFor )
-#endif
-
-#ifndef traceEVENT_GROUP_WAIT_BITS_END
-    #define traceEVENT_GROUP_WAIT_BITS_END( xEventGroup, uxBitsToWaitFor, xTimeoutOccurred )    ( void ) ( xTimeoutOccurred )
-#endif
-
-#ifndef traceEVENT_GROUP_CLEAR_BITS
-    #define traceEVENT_GROUP_CLEAR_BITS( xEventGroup, uxBitsToClear )
-#endif
-
-#ifndef traceEVENT_GROUP_CLEAR_BITS_FROM_ISR
-    #define traceEVENT_GROUP_CLEAR_BITS_FROM_ISR( xEventGroup, uxBitsToClear )
-#endif
-
-#ifndef traceEVENT_GROUP_SET_BITS
-    #define traceEVENT_GROUP_SET_BITS( xEventGroup, uxBitsToSet )
-#endif
-
-#ifndef traceEVENT_GROUP_SET_BITS_FROM_ISR
-    #define traceEVENT_GROUP_SET_BITS_FROM_ISR( xEventGroup, uxBitsToSet )
-#endif
-
-#ifndef traceEVENT_GROUP_DELETE
-    #define traceEVENT_GROUP_DELETE( xEventGroup )
-#endif
-
-#ifndef tracePEND_FUNC_CALL
-    #define tracePEND_FUNC_CALL( xFunctionToPend, pvParameter1, ulParameter2, ret )
-#endif
-
-#ifndef tracePEND_FUNC_CALL_FROM_ISR
-    #define tracePEND_FUNC_CALL_FROM_ISR( xFunctionToPend, pvParameter1, ulParameter2, ret )
-#endif
-
-#ifndef traceQUEUE_REGISTRY_ADD
-    #define traceQUEUE_REGISTRY_ADD( xQueue, pcQueueName )
-#endif
-
-#ifndef traceTASK_NOTIFY_TAKE_BLOCK
-    #define traceTASK_NOTIFY_TAKE_BLOCK( uxIndexToWait )
-#endif
-
-#ifndef traceTASK_NOTIFY_TAKE
-    #define traceTASK_NOTIFY_TAKE( uxIndexToWait )
-#endif
-
-#ifndef traceTASK_NOTIFY_WAIT_BLOCK
-    #define traceTASK_NOTIFY_WAIT_BLOCK( uxIndexToWait )
-#endif
-
-#ifndef traceTASK_NOTIFY_WAIT
-    #define traceTASK_NOTIFY_WAIT( uxIndexToWait )
-#endif
-
-#ifndef traceTASK_NOTIFY
-    #define traceTASK_NOTIFY( uxIndexToNotify )
-#endif
-
-#ifndef traceTASK_NOTIFY_FROM_ISR
-    #define traceTASK_NOTIFY_FROM_ISR( uxIndexToNotify )
-#endif
-
-#ifndef traceTASK_NOTIFY_GIVE_FROM_ISR
-    #define traceTASK_NOTIFY_GIVE_FROM_ISR( uxIndexToNotify )
-#endif
-
-#ifndef traceISR_EXIT_TO_SCHEDULER
-    #define traceISR_EXIT_TO_SCHEDULER()
-#endif
-
-#ifndef traceISR_EXIT
-    #define traceISR_EXIT()
-#endif
-
-#ifndef traceISR_ENTER
-    #define traceISR_ENTER()
-#endif
-
-#ifndef traceSTREAM_BUFFER_CREATE_FAILED
-    #define traceSTREAM_BUFFER_CREATE_FAILED( xStreamBufferType )
-#endif
-
-#ifndef traceSTREAM_BUFFER_CREATE_STATIC_FAILED
-    #define traceSTREAM_BUFFER_CREATE_STATIC_FAILED( xReturn, xStreamBufferType )
-#endif
-
-#ifndef traceSTREAM_BUFFER_CREATE
-    #define traceSTREAM_BUFFER_CREATE( pxStreamBuffer, xStreamBufferType )
-#endif
-
-#ifndef traceSTREAM_BUFFER_DELETE
-    #define traceSTREAM_BUFFER_DELETE( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_RESET
-    #define traceSTREAM_BUFFER_RESET( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_RESET_FROM_ISR
-    #define traceSTREAM_BUFFER_RESET_FROM_ISR( xStreamBuffer )
-#endif
-
-#ifndef traceBLOCKING_ON_STREAM_BUFFER_SEND
-    #define traceBLOCKING_ON_STREAM_BUFFER_SEND( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_SEND
-    #define traceSTREAM_BUFFER_SEND( xStreamBuffer, xBytesSent )
-#endif
-
-#ifndef traceSTREAM_BUFFER_SEND_FAILED
-    #define traceSTREAM_BUFFER_SEND_FAILED( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_SEND_FROM_ISR
-    #define traceSTREAM_BUFFER_SEND_FROM_ISR( xStreamBuffer, xBytesSent )
-#endif
-
-#ifndef traceBLOCKING_ON_STREAM_BUFFER_RECEIVE
-    #define traceBLOCKING_ON_STREAM_BUFFER_RECEIVE( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_RECEIVE
-    #define traceSTREAM_BUFFER_RECEIVE( xStreamBuffer, xReceivedLength )
-#endif
-
-#ifndef traceSTREAM_BUFFER_RECEIVE_FAILED
-    #define traceSTREAM_BUFFER_RECEIVE_FAILED( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_RECEIVE_FROM_ISR
-    #define traceSTREAM_BUFFER_RECEIVE_FROM_ISR( xStreamBuffer, xReceivedLength )
-#endif
-
-#ifndef traceENTER_xEventGroupCreateStatic
-    #define traceENTER_xEventGroupCreateStatic( pxEventGroupBuffer )
-#endif
-
-#ifndef traceRETURN_xEventGroupCreateStatic
-    #define traceRETURN_xEventGroupCreateStatic( pxEventBits )
-#endif
-
-#ifndef traceENTER_xEventGroupCreate
-    #define traceENTER_xEventGroupCreate()
-#endif
-
-#ifndef traceRETURN_xEventGroupCreate
-    #define traceRETURN_xEventGroupCreate( pxEventBits )
-#endif
-
-#ifndef traceENTER_xEventGroupSync
-    #define traceENTER_xEventGroupSync( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xEventGroupSync
-    #define traceRETURN_xEventGroupSync( uxReturn )
-#endif
-
-#ifndef traceENTER_xEventGroupWaitBits
-    #define traceENTER_xEventGroupWaitBits( xEventGroup, uxBitsToWaitFor, xClearOnExit, xWaitForAllBits, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xEventGroupWaitBits
-    #define traceRETURN_xEventGroupWaitBits( uxReturn )
-#endif
-
-#ifndef traceENTER_xEventGroupClearBits
-    #define traceENTER_xEventGroupClearBits( xEventGroup, uxBitsToClear )
-#endif
-
-#ifndef traceRETURN_xEventGroupClearBits
-    #define traceRETURN_xEventGroupClearBits( uxReturn )
-#endif
-
-#ifndef traceENTER_xEventGroupClearBitsFromISR
-    #define traceENTER_xEventGroupClearBitsFromISR( xEventGroup, uxBitsToClear )
-#endif
-
-#ifndef traceRETURN_xEventGroupClearBitsFromISR
-    #define traceRETURN_xEventGroupClearBitsFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xEventGroupGetBitsFromISR
-    #define traceENTER_xEventGroupGetBitsFromISR( xEventGroup )
-#endif
-
-#ifndef traceRETURN_xEventGroupGetBitsFromISR
-    #define traceRETURN_xEventGroupGetBitsFromISR( uxReturn )
-#endif
-
-#ifndef traceENTER_xEventGroupSetBits
-    #define traceENTER_xEventGroupSetBits( xEventGroup, uxBitsToSet )
-#endif
-
-#ifndef traceRETURN_xEventGroupSetBits
-    #define traceRETURN_xEventGroupSetBits( uxEventBits )
-#endif
-
-#ifndef traceENTER_vEventGroupDelete
-    #define traceENTER_vEventGroupDelete( xEventGroup )
-#endif
-
-#ifndef traceRETURN_vEventGroupDelete
-    #define traceRETURN_vEventGroupDelete()
-#endif
-
-#ifndef traceENTER_xEventGroupGetStaticBuffer
-    #define traceENTER_xEventGroupGetStaticBuffer( xEventGroup, ppxEventGroupBuffer )
-#endif
-
-#ifndef traceRETURN_xEventGroupGetStaticBuffer
-    #define traceRETURN_xEventGroupGetStaticBuffer( xReturn )
-#endif
-
-#ifndef traceENTER_vEventGroupSetBitsCallback
-    #define traceENTER_vEventGroupSetBitsCallback( pvEventGroup, ulBitsToSet )
-#endif
-
-#ifndef traceRETURN_vEventGroupSetBitsCallback
-    #define traceRETURN_vEventGroupSetBitsCallback()
-#endif
-
-#ifndef traceENTER_vEventGroupClearBitsCallback
-    #define traceENTER_vEventGroupClearBitsCallback( pvEventGroup, ulBitsToClear )
-#endif
-
-#ifndef traceRETURN_vEventGroupClearBitsCallback
-    #define traceRETURN_vEventGroupClearBitsCallback()
-#endif
-
-#ifndef traceENTER_xEventGroupSetBitsFromISR
-    #define traceENTER_xEventGroupSetBitsFromISR( xEventGroup, uxBitsToSet, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xEventGroupSetBitsFromISR
-    #define traceRETURN_xEventGroupSetBitsFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_uxEventGroupGetNumber
-    #define traceENTER_uxEventGroupGetNumber( xEventGroup )
-#endif
-
-#ifndef traceRETURN_uxEventGroupGetNumber
-    #define traceRETURN_uxEventGroupGetNumber( xReturn )
-#endif
-
-#ifndef traceENTER_vEventGroupSetNumber
-    #define traceENTER_vEventGroupSetNumber( xEventGroup, uxEventGroupNumber )
-#endif
-
-#ifndef traceRETURN_vEventGroupSetNumber
-    #define traceRETURN_vEventGroupSetNumber()
-#endif
-
-#ifndef traceENTER_xQueueGenericReset
-    #define traceENTER_xQueueGenericReset( xQueue, xNewQueue )
-#endif
-
-#ifndef traceRETURN_xQueueGenericReset
-    #define traceRETURN_xQueueGenericReset( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueGenericCreateStatic
-    #define traceENTER_xQueueGenericCreateStatic( uxQueueLength, uxItemSize, pucQueueStorage, pxStaticQueue, ucQueueType )
-#endif
-
-#ifndef traceRETURN_xQueueGenericCreateStatic
-    #define traceRETURN_xQueueGenericCreateStatic( pxNewQueue )
-#endif
-
-#ifndef traceENTER_xQueueGenericGetStaticBuffers
-    #define traceENTER_xQueueGenericGetStaticBuffers( xQueue, ppucQueueStorage, ppxStaticQueue )
-#endif
-
-#ifndef traceRETURN_xQueueGenericGetStaticBuffers
-    #define traceRETURN_xQueueGenericGetStaticBuffers( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueGenericCreate
-    #define traceENTER_xQueueGenericCreate( uxQueueLength, uxItemSize, ucQueueType )
-#endif
-
-#ifndef traceRETURN_xQueueGenericCreate
-    #define traceRETURN_xQueueGenericCreate( pxNewQueue )
-#endif
-
-#ifndef traceENTER_xQueueCreateMutex
-    #define traceENTER_xQueueCreateMutex( ucQueueType )
-#endif
-
-#ifndef traceRETURN_xQueueCreateMutex
-    #define traceRETURN_xQueueCreateMutex( xNewQueue )
-#endif
-
-#ifndef traceENTER_xQueueCreateMutexStatic
-    #define traceENTER_xQueueCreateMutexStatic( ucQueueType, pxStaticQueue )
-#endif
-
-#ifndef traceRETURN_xQueueCreateMutexStatic
-    #define traceRETURN_xQueueCreateMutexStatic( xNewQueue )
-#endif
-
-#ifndef traceENTER_xQueueGetMutexHolder
-    #define traceENTER_xQueueGetMutexHolder( xSemaphore )
-#endif
-
-#ifndef traceRETURN_xQueueGetMutexHolder
-    #define traceRETURN_xQueueGetMutexHolder( pxReturn )
-#endif
-
-#ifndef traceENTER_xQueueGetMutexHolderFromISR
-    #define traceENTER_xQueueGetMutexHolderFromISR( xSemaphore )
-#endif
-
-#ifndef traceRETURN_xQueueGetMutexHolderFromISR
-    #define traceRETURN_xQueueGetMutexHolderFromISR( pxReturn )
-#endif
-
-#ifndef traceENTER_xQueueGiveMutexRecursive
-    #define traceENTER_xQueueGiveMutexRecursive( xMutex )
-#endif
-
-#ifndef traceRETURN_xQueueGiveMutexRecursive
-    #define traceRETURN_xQueueGiveMutexRecursive( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueTakeMutexRecursive
-    #define traceENTER_xQueueTakeMutexRecursive( xMutex, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueTakeMutexRecursive
-    #define traceRETURN_xQueueTakeMutexRecursive( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueCreateCountingSemaphoreStatic
-    #define traceENTER_xQueueCreateCountingSemaphoreStatic( uxMaxCount, uxInitialCount, pxStaticQueue )
-#endif
-
-#ifndef traceRETURN_xQueueCreateCountingSemaphoreStatic
-    #define traceRETURN_xQueueCreateCountingSemaphoreStatic( xHandle )
-#endif
-
-#ifndef traceENTER_xQueueCreateCountingSemaphore
-    #define traceENTER_xQueueCreateCountingSemaphore( uxMaxCount, uxInitialCount )
-#endif
-
-#ifndef traceRETURN_xQueueCreateCountingSemaphore
-    #define traceRETURN_xQueueCreateCountingSemaphore( xHandle )
-#endif
-
-#ifndef traceENTER_xQueueGenericSend
-    #define traceENTER_xQueueGenericSend( xQueue, pvItemToQueue, xTicksToWait, xCopyPosition )
-#endif
-
-#ifndef traceRETURN_xQueueGenericSend
-    #define traceRETURN_xQueueGenericSend( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueGenericSendFromISR
-    #define traceENTER_xQueueGenericSendFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken, xCopyPosition )
-#endif
-
-#ifndef traceRETURN_xQueueGenericSendFromISR
-    #define traceRETURN_xQueueGenericSendFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueGiveFromISR
-    #define traceENTER_xQueueGiveFromISR( xQueue, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xQueueGiveFromISR
-    #define traceRETURN_xQueueGiveFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueReceive
-    #define traceENTER_xQueueReceive( xQueue, pvBuffer, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueReceive
-    #define traceRETURN_xQueueReceive( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueSemaphoreTake
-    #define traceENTER_xQueueSemaphoreTake( xQueue, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueSemaphoreTake
-    #define traceRETURN_xQueueSemaphoreTake( xReturn )
-#endif
-
-#ifndef traceENTER_xQueuePeek
-    #define traceENTER_xQueuePeek( xQueue, pvBuffer, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueuePeek
-    #define traceRETURN_xQueuePeek( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueReceiveFromISR
-    #define traceENTER_xQueueReceiveFromISR( xQueue, pvBuffer, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xQueueReceiveFromISR
-    #define traceRETURN_xQueueReceiveFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xQueuePeekFromISR
-    #define traceENTER_xQueuePeekFromISR( xQueue, pvBuffer )
-#endif
-
-#ifndef traceRETURN_xQueuePeekFromISR
-    #define traceRETURN_xQueuePeekFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_uxQueueMessagesWaiting
-    #define traceENTER_uxQueueMessagesWaiting( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueMessagesWaiting
-    #define traceRETURN_uxQueueMessagesWaiting( uxReturn )
-#endif
-
-#ifndef traceENTER_uxQueueSpacesAvailable
-    #define traceENTER_uxQueueSpacesAvailable( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueSpacesAvailable
-    #define traceRETURN_uxQueueSpacesAvailable( uxReturn )
-#endif
-
-#ifndef traceENTER_uxQueueMessagesWaitingFromISR
-    #define traceENTER_uxQueueMessagesWaitingFromISR( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueMessagesWaitingFromISR
-    #define traceRETURN_uxQueueMessagesWaitingFromISR( uxReturn )
-#endif
-
-#ifndef traceENTER_vQueueDelete
-    #define traceENTER_vQueueDelete( xQueue )
-#endif
-
-#ifndef traceRETURN_vQueueDelete
-    #define traceRETURN_vQueueDelete()
-#endif
-
-#ifndef traceENTER_uxQueueGetQueueNumber
-    #define traceENTER_uxQueueGetQueueNumber( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueGetQueueNumber
-    #define traceRETURN_uxQueueGetQueueNumber( uxQueueNumber )
-#endif
-
-#ifndef traceENTER_vQueueSetQueueNumber
-    #define traceENTER_vQueueSetQueueNumber( xQueue, uxQueueNumber )
-#endif
-
-#ifndef traceRETURN_vQueueSetQueueNumber
-    #define traceRETURN_vQueueSetQueueNumber()
-#endif
-
-#ifndef traceENTER_ucQueueGetQueueType
-    #define traceENTER_ucQueueGetQueueType( xQueue )
-#endif
-
-#ifndef traceRETURN_ucQueueGetQueueType
-    #define traceRETURN_ucQueueGetQueueType( ucQueueType )
-#endif
-
-#ifndef traceENTER_uxQueueGetQueueItemSize
-    #define traceENTER_uxQueueGetQueueItemSize( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueGetQueueItemSize
-    #define traceRETURN_uxQueueGetQueueItemSize( uxItemSize )
-#endif
-
-#ifndef traceENTER_uxQueueGetQueueLength
-    #define traceENTER_uxQueueGetQueueLength( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueGetQueueLength
-    #define traceRETURN_uxQueueGetQueueLength( uxLength )
-#endif
-
-#ifndef traceENTER_xQueueIsQueueEmptyFromISR
-    #define traceENTER_xQueueIsQueueEmptyFromISR( xQueue )
-#endif
-
-#ifndef traceRETURN_xQueueIsQueueEmptyFromISR
-    #define traceRETURN_xQueueIsQueueEmptyFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueIsQueueFullFromISR
-    #define traceENTER_xQueueIsQueueFullFromISR( xQueue )
-#endif
-
-#ifndef traceRETURN_xQueueIsQueueFullFromISR
-    #define traceRETURN_xQueueIsQueueFullFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueCRSend
-    #define traceENTER_xQueueCRSend( xQueue, pvItemToQueue, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueCRSend
-    #define traceRETURN_xQueueCRSend( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueCRReceive
-    #define traceENTER_xQueueCRReceive( xQueue, pvBuffer, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueCRReceive
-    #define traceRETURN_xQueueCRReceive( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueCRSendFromISR
-    #define traceENTER_xQueueCRSendFromISR( xQueue, pvItemToQueue, xCoRoutinePreviouslyWoken )
-#endif
-
-#ifndef traceRETURN_xQueueCRSendFromISR
-    #define traceRETURN_xQueueCRSendFromISR( xCoRoutinePreviouslyWoken )
-#endif
-
-#ifndef traceENTER_xQueueCRReceiveFromISR
-    #define traceENTER_xQueueCRReceiveFromISR( xQueue, pvBuffer, pxCoRoutineWoken )
-#endif
-
-#ifndef traceRETURN_xQueueCRReceiveFromISR
-    #define traceRETURN_xQueueCRReceiveFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_vQueueAddToRegistry
-    #define traceENTER_vQueueAddToRegistry( xQueue, pcQueueName )
-#endif
-
-#ifndef traceRETURN_vQueueAddToRegistry
-    #define traceRETURN_vQueueAddToRegistry()
-#endif
-
-#ifndef traceENTER_pcQueueGetName
-    #define traceENTER_pcQueueGetName( xQueue )
-#endif
-
-#ifndef traceRETURN_pcQueueGetName
-    #define traceRETURN_pcQueueGetName( pcReturn )
-#endif
-
-#ifndef traceENTER_vQueueUnregisterQueue
-    #define traceENTER_vQueueUnregisterQueue( xQueue )
-#endif
-
-#ifndef traceRETURN_vQueueUnregisterQueue
-    #define traceRETURN_vQueueUnregisterQueue()
-#endif
-
-#ifndef traceENTER_vQueueWaitForMessageRestricted
-    #define traceENTER_vQueueWaitForMessageRestricted( xQueue, xTicksToWait, xWaitIndefinitely )
-#endif
-
-#ifndef traceRETURN_vQueueWaitForMessageRestricted
-    #define traceRETURN_vQueueWaitForMessageRestricted()
-#endif
-
-#ifndef traceENTER_xQueueCreateSet
-    #define traceENTER_xQueueCreateSet( uxEventQueueLength )
-#endif
-
-#ifndef traceRETURN_xQueueCreateSet
-    #define traceRETURN_xQueueCreateSet( pxQueue )
-#endif
-
-#ifndef traceENTER_xQueueAddToSet
-    #define traceENTER_xQueueAddToSet( xQueueOrSemaphore, xQueueSet )
-#endif
-
-#ifndef traceRETURN_xQueueAddToSet
-    #define traceRETURN_xQueueAddToSet( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueRemoveFromSet
-    #define traceENTER_xQueueRemoveFromSet( xQueueOrSemaphore, xQueueSet )
-#endif
-
-#ifndef traceRETURN_xQueueRemoveFromSet
-    #define traceRETURN_xQueueRemoveFromSet( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueSelectFromSet
-    #define traceENTER_xQueueSelectFromSet( xQueueSet, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueSelectFromSet
-    #define traceRETURN_xQueueSelectFromSet( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueSelectFromSetFromISR
-    #define traceENTER_xQueueSelectFromSetFromISR( xQueueSet )
-#endif
-
-#ifndef traceRETURN_xQueueSelectFromSetFromISR
-    #define traceRETURN_xQueueSelectFromSetFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerCreateTimerTask
-    #define traceENTER_xTimerCreateTimerTask()
-#endif
-
-#ifndef traceRETURN_xTimerCreateTimerTask
-    #define traceRETURN_xTimerCreateTimerTask( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerCreate
-    #define traceENTER_xTimerCreate( pcTimerName, xTimerPeriodInTicks, xAutoReload, pvTimerID, pxCallbackFunction )
-#endif
-
-#ifndef traceRETURN_xTimerCreate
-    #define traceRETURN_xTimerCreate( pxNewTimer )
-#endif
-
-#ifndef traceENTER_xTimerCreateStatic
-    #define traceENTER_xTimerCreateStatic( pcTimerName, xTimerPeriodInTicks, xAutoReload, pvTimerID, pxCallbackFunction, pxTimerBuffer )
-#endif
-
-#ifndef traceRETURN_xTimerCreateStatic
-    #define traceRETURN_xTimerCreateStatic( pxNewTimer )
-#endif
-
-#ifndef traceENTER_xTimerGenericCommandFromTask
-    #define traceENTER_xTimerGenericCommandFromTask( xTimer, xCommandID, xOptionalValue, pxHigherPriorityTaskWoken, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xTimerGenericCommandFromTask
-    #define traceRETURN_xTimerGenericCommandFromTask( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerGenericCommandFromISR
-    #define traceENTER_xTimerGenericCommandFromISR( xTimer, xCommandID, xOptionalValue, pxHigherPriorityTaskWoken, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xTimerGenericCommandFromISR
-    #define traceRETURN_xTimerGenericCommandFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerGetTimerDaemonTaskHandle
-    #define traceENTER_xTimerGetTimerDaemonTaskHandle()
-#endif
-
-#ifndef traceRETURN_xTimerGetTimerDaemonTaskHandle
-    #define traceRETURN_xTimerGetTimerDaemonTaskHandle( xTimerTaskHandle )
-#endif
-
-#ifndef traceENTER_xTimerGetPeriod
-    #define traceENTER_xTimerGetPeriod( xTimer )
-#endif
-
-#ifndef traceRETURN_xTimerGetPeriod
-    #define traceRETURN_xTimerGetPeriod( xTimerPeriodInTicks )
-#endif
-
-#ifndef traceENTER_vTimerSetReloadMode
-    #define traceENTER_vTimerSetReloadMode( xTimer, xAutoReload )
-#endif
-
-#ifndef traceRETURN_vTimerSetReloadMode
-    #define traceRETURN_vTimerSetReloadMode()
-#endif
-
-#ifndef traceENTER_xTimerGetReloadMode
-    #define traceENTER_xTimerGetReloadMode( xTimer )
-#endif
-
-#ifndef traceRETURN_xTimerGetReloadMode
-    #define traceRETURN_xTimerGetReloadMode( xReturn )
-#endif
-
-#ifndef traceENTER_uxTimerGetReloadMode
-    #define traceENTER_uxTimerGetReloadMode( xTimer )
-#endif
-
-#ifndef traceRETURN_uxTimerGetReloadMode
-    #define traceRETURN_uxTimerGetReloadMode( uxReturn )
-#endif
-
-#ifndef traceENTER_xTimerGetExpiryTime
-    #define traceENTER_xTimerGetExpiryTime( xTimer )
-#endif
-
-#ifndef traceRETURN_xTimerGetExpiryTime
-    #define traceRETURN_xTimerGetExpiryTime( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerGetStaticBuffer
-    #define traceENTER_xTimerGetStaticBuffer( xTimer, ppxTimerBuffer )
-#endif
-
-#ifndef traceRETURN_xTimerGetStaticBuffer
-    #define traceRETURN_xTimerGetStaticBuffer( xReturn )
-#endif
-
-#ifndef traceENTER_pcTimerGetName
-    #define traceENTER_pcTimerGetName( xTimer )
-#endif
-
-#ifndef traceRETURN_pcTimerGetName
-    #define traceRETURN_pcTimerGetName( pcTimerName )
-#endif
-
-#ifndef traceENTER_xTimerIsTimerActive
-    #define traceENTER_xTimerIsTimerActive( xTimer )
-#endif
-
-#ifndef traceRETURN_xTimerIsTimerActive
-    #define traceRETURN_xTimerIsTimerActive( xReturn )
-#endif
-
-#ifndef traceENTER_pvTimerGetTimerID
-    #define traceENTER_pvTimerGetTimerID( xTimer )
-#endif
-
-#ifndef traceRETURN_pvTimerGetTimerID
-    #define traceRETURN_pvTimerGetTimerID( pvReturn )
-#endif
-
-#ifndef traceENTER_vTimerSetTimerID
-    #define traceENTER_vTimerSetTimerID( xTimer, pvNewID )
-#endif
-
-#ifndef traceRETURN_vTimerSetTimerID
-    #define traceRETURN_vTimerSetTimerID()
-#endif
-
-#ifndef traceENTER_xTimerPendFunctionCallFromISR
-    #define traceENTER_xTimerPendFunctionCallFromISR( xFunctionToPend, pvParameter1, ulParameter2, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xTimerPendFunctionCallFromISR
-    #define traceRETURN_xTimerPendFunctionCallFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerPendFunctionCall
-    #define traceENTER_xTimerPendFunctionCall( xFunctionToPend, pvParameter1, ulParameter2, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xTimerPendFunctionCall
-    #define traceRETURN_xTimerPendFunctionCall( xReturn )
-#endif
-
-#ifndef traceENTER_uxTimerGetTimerNumber
-    #define traceENTER_uxTimerGetTimerNumber( xTimer )
-#endif
-
-#ifndef traceRETURN_uxTimerGetTimerNumber
-    #define traceRETURN_uxTimerGetTimerNumber( uxTimerNumber )
-#endif
-
-#ifndef traceENTER_vTimerSetTimerNumber
-    #define traceENTER_vTimerSetTimerNumber( xTimer, uxTimerNumber )
-#endif
-
-#ifndef traceRETURN_vTimerSetTimerNumber
-    #define traceRETURN_vTimerSetTimerNumber()
-#endif
-
-#ifndef traceENTER_xTaskCreateStatic
-    #define traceENTER_xTaskCreateStatic( pxTaskCode, pcName, uxStackDepth, pvParameters, uxPriority, puxStackBuffer, pxTaskBuffer )
-#endif
-
-#ifndef traceRETURN_xTaskCreateStatic
-    #define traceRETURN_xTaskCreateStatic( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateStaticAffinitySet
-    #define traceENTER_xTaskCreateStaticAffinitySet( pxTaskCode, pcName, uxStackDepth, pvParameters, uxPriority, puxStackBuffer, pxTaskBuffer, uxCoreAffinityMask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateStaticAffinitySet
-    #define traceRETURN_xTaskCreateStaticAffinitySet( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateRestrictedStatic
-    #define traceENTER_xTaskCreateRestrictedStatic( pxTaskDefinition, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateRestrictedStatic
-    #define traceRETURN_xTaskCreateRestrictedStatic( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateRestrictedStaticAffinitySet
-    #define traceENTER_xTaskCreateRestrictedStaticAffinitySet( pxTaskDefinition, uxCoreAffinityMask, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateRestrictedStaticAffinitySet
-    #define traceRETURN_xTaskCreateRestrictedStaticAffinitySet( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateRestricted
-    #define traceENTER_xTaskCreateRestricted( pxTaskDefinition, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateRestricted
-    #define traceRETURN_xTaskCreateRestricted( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateRestrictedAffinitySet
-    #define traceENTER_xTaskCreateRestrictedAffinitySet( pxTaskDefinition, uxCoreAffinityMask, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateRestrictedAffinitySet
-    #define traceRETURN_xTaskCreateRestrictedAffinitySet( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreate
-    #define traceENTER_xTaskCreate( pxTaskCode, pcName, uxStackDepth, pvParameters, uxPriority, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreate
-    #define traceRETURN_xTaskCreate( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateAffinitySet
-    #define traceENTER_xTaskCreateAffinitySet( pxTaskCode, pcName, uxStackDepth, pvParameters, uxPriority, uxCoreAffinityMask, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateAffinitySet
-    #define traceRETURN_xTaskCreateAffinitySet( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskDelete
-    #define traceENTER_vTaskDelete( xTaskToDelete )
-#endif
-
-#ifndef traceRETURN_vTaskDelete
-    #define traceRETURN_vTaskDelete()
-#endif
-
-#ifndef traceENTER_xTaskDelayUntil
-    #define traceENTER_xTaskDelayUntil( pxPreviousWakeTime, xTimeIncrement )
-#endif
-
-#ifndef traceRETURN_xTaskDelayUntil
-    #define traceRETURN_xTaskDelayUntil( xShouldDelay )
-#endif
-
-#ifndef traceENTER_vTaskDelay
-    #define traceENTER_vTaskDelay( xTicksToDelay )
-#endif
-
-#ifndef traceRETURN_vTaskDelay
-    #define traceRETURN_vTaskDelay()
-#endif
-
-#ifndef traceENTER_eTaskGetState
-    #define traceENTER_eTaskGetState( xTask )
-#endif
-
-#ifndef traceRETURN_eTaskGetState
-    #define traceRETURN_eTaskGetState( eReturn )
-#endif
-
-#ifndef traceENTER_uxTaskPriorityGet
-    #define traceENTER_uxTaskPriorityGet( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskPriorityGet
-    #define traceRETURN_uxTaskPriorityGet( uxReturn )
-#endif
-
-#ifndef traceENTER_uxTaskPriorityGetFromISR
-    #define traceENTER_uxTaskPriorityGetFromISR( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskPriorityGetFromISR
-    #define traceRETURN_uxTaskPriorityGetFromISR( uxReturn )
-#endif
-
-#ifndef traceENTER_uxTaskBasePriorityGet
-    #define traceENTER_uxTaskBasePriorityGet( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskBasePriorityGet
-    #define traceRETURN_uxTaskBasePriorityGet( uxReturn )
-#endif
-
-#ifndef traceENTER_uxTaskBasePriorityGetFromISR
-    #define traceENTER_uxTaskBasePriorityGetFromISR( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskBasePriorityGetFromISR
-    #define traceRETURN_uxTaskBasePriorityGetFromISR( uxReturn )
-#endif
-
-#ifndef traceENTER_vTaskPrioritySet
-    #define traceENTER_vTaskPrioritySet( xTask, uxNewPriority )
-#endif
-
-#ifndef traceRETURN_vTaskPrioritySet
-    #define traceRETURN_vTaskPrioritySet()
-#endif
-
-#ifndef traceENTER_vTaskCoreAffinitySet
-    #define traceENTER_vTaskCoreAffinitySet( xTask, uxCoreAffinityMask )
-#endif
-
-#ifndef traceRETURN_vTaskCoreAffinitySet
-    #define traceRETURN_vTaskCoreAffinitySet()
-#endif
-
-#ifndef traceENTER_vTaskCoreAffinityGet
-    #define traceENTER_vTaskCoreAffinityGet( xTask )
-#endif
-
-#ifndef traceRETURN_vTaskCoreAffinityGet
-    #define traceRETURN_vTaskCoreAffinityGet( uxCoreAffinityMask )
-#endif
-
-#ifndef traceENTER_vTaskPreemptionDisable
-    #define traceENTER_vTaskPreemptionDisable( xTask )
-#endif
-
-#ifndef traceRETURN_vTaskPreemptionDisable
-    #define traceRETURN_vTaskPreemptionDisable()
-#endif
-
-#ifndef traceENTER_vTaskPreemptionEnable
-    #define traceENTER_vTaskPreemptionEnable( xTask )
-#endif
-
-#ifndef traceRETURN_vTaskPreemptionEnable
-    #define traceRETURN_vTaskPreemptionEnable()
-#endif
-
-#ifndef traceENTER_vTaskSuspend
-    #define traceENTER_vTaskSuspend( xTaskToSuspend )
-#endif
-
-#ifndef traceRETURN_vTaskSuspend
-    #define traceRETURN_vTaskSuspend()
-#endif
-
-#ifndef traceENTER_vTaskResume
-    #define traceENTER_vTaskResume( xTaskToResume )
-#endif
-
-#ifndef traceRETURN_vTaskResume
-    #define traceRETURN_vTaskResume()
-#endif
-
-#ifndef traceENTER_xTaskResumeFromISR
-    #define traceENTER_xTaskResumeFromISR( xTaskToResume )
-#endif
-
-#ifndef traceRETURN_xTaskResumeFromISR
-    #define traceRETURN_xTaskResumeFromISR( xYieldRequired )
-#endif
-
-#ifndef traceENTER_vTaskStartScheduler
-    #define traceENTER_vTaskStartScheduler()
-#endif
-
-#ifndef traceRETURN_vTaskStartScheduler
-    #define traceRETURN_vTaskStartScheduler()
-#endif
-
-#ifndef traceENTER_vTaskEndScheduler
-    #define traceENTER_vTaskEndScheduler()
-#endif
-
-#ifndef traceRETURN_vTaskEndScheduler
-    #define traceRETURN_vTaskEndScheduler()
-#endif
-
-#ifndef traceENTER_vTaskSuspendAll
-    #define traceENTER_vTaskSuspendAll()
-#endif
-
-#ifndef traceRETURN_vTaskSuspendAll
-    #define traceRETURN_vTaskSuspendAll()
-#endif
-
-#ifndef traceENTER_xTaskResumeAll
-    #define traceENTER_xTaskResumeAll()
-#endif
-
-#ifndef traceRETURN_xTaskResumeAll
-    #define traceRETURN_xTaskResumeAll( xAlreadyYielded )
-#endif
-
-#ifndef traceENTER_xTaskGetTickCount
-    #define traceENTER_xTaskGetTickCount()
-#endif
-
-#ifndef traceRETURN_xTaskGetTickCount
-    #define traceRETURN_xTaskGetTickCount( xTicks )
-#endif
-
-#ifndef traceENTER_xTaskGetTickCountFromISR
-    #define traceENTER_xTaskGetTickCountFromISR()
-#endif
-
-#ifndef traceRETURN_xTaskGetTickCountFromISR
-    #define traceRETURN_xTaskGetTickCountFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_uxTaskGetNumberOfTasks
-    #define traceENTER_uxTaskGetNumberOfTasks()
-#endif
-
-#ifndef traceRETURN_uxTaskGetNumberOfTasks
-    #define traceRETURN_uxTaskGetNumberOfTasks( uxCurrentNumberOfTasks )
-#endif
-
-#ifndef traceENTER_pcTaskGetName
-    #define traceENTER_pcTaskGetName( xTaskToQuery )
-#endif
-
-#ifndef traceRETURN_pcTaskGetName
-    #define traceRETURN_pcTaskGetName( pcTaskName )
-#endif
-
-#ifndef traceENTER_xTaskGetHandle
-    #define traceENTER_xTaskGetHandle( pcNameToQuery )
-#endif
-
-#ifndef traceRETURN_xTaskGetHandle
-    #define traceRETURN_xTaskGetHandle( pxTCB )
-#endif
-
-#ifndef traceENTER_xTaskGetStaticBuffers
-    #define traceENTER_xTaskGetStaticBuffers( xTask, ppuxStackBuffer, ppxTaskBuffer )
-#endif
-
-#ifndef traceRETURN_xTaskGetStaticBuffers
-    #define traceRETURN_xTaskGetStaticBuffers( xReturn )
-#endif
-
-#ifndef traceENTER_uxTaskGetSystemState
-    #define traceENTER_uxTaskGetSystemState( pxTaskStatusArray, uxArraySize, pulTotalRunTime )
-#endif
-
-#ifndef traceRETURN_uxTaskGetSystemState
-    #define traceRETURN_uxTaskGetSystemState( uxTask )
-#endif
-
-#if ( configNUMBER_OF_CORES == 1 )
-    #ifndef traceENTER_xTaskGetIdleTaskHandle
-        #define traceENTER_xTaskGetIdleTaskHandle()
-    #endif
-#endif
-
-#if ( configNUMBER_OF_CORES == 1 )
-    #ifndef traceRETURN_xTaskGetIdleTaskHandle
-        #define traceRETURN_xTaskGetIdleTaskHandle( xIdleTaskHandle )
-    #endif
-#endif
-
-#ifndef traceENTER_xTaskGetIdleTaskHandleForCore
-    #define traceENTER_xTaskGetIdleTaskHandleForCore( xCoreID )
-#endif
-
-#ifndef traceRETURN_xTaskGetIdleTaskHandleForCore
-    #define traceRETURN_xTaskGetIdleTaskHandleForCore( xIdleTaskHandle )
-#endif
-
-#ifndef traceENTER_vTaskStepTick
-    #define traceENTER_vTaskStepTick( xTicksToJump )
-#endif
-
-#ifndef traceRETURN_vTaskStepTick
-    #define traceRETURN_vTaskStepTick()
-#endif
-
-#ifndef traceENTER_xTaskCatchUpTicks
-    #define traceENTER_xTaskCatchUpTicks( xTicksToCatchUp )
-#endif
-
-#ifndef traceRETURN_xTaskCatchUpTicks
-    #define traceRETURN_xTaskCatchUpTicks( xYieldOccurred )
-#endif
-
-#ifndef traceENTER_xTaskAbortDelay
-    #define traceENTER_xTaskAbortDelay( xTask )
-#endif
-
-#ifndef traceRETURN_xTaskAbortDelay
-    #define traceRETURN_xTaskAbortDelay( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskIncrementTick
-    #define traceENTER_xTaskIncrementTick()
-#endif
-
-#ifndef traceRETURN_xTaskIncrementTick
-    #define traceRETURN_xTaskIncrementTick( xSwitchRequired )
-#endif
-
-#ifndef traceENTER_vTaskSetApplicationTaskTag
-    #define traceENTER_vTaskSetApplicationTaskTag( xTask, pxHookFunction )
-#endif
-
-#ifndef traceRETURN_vTaskSetApplicationTaskTag
-    #define traceRETURN_vTaskSetApplicationTaskTag()
-#endif
-
-#ifndef traceENTER_xTaskGetApplicationTaskTag
-    #define traceENTER_xTaskGetApplicationTaskTag( xTask )
-#endif
-
-#ifndef traceRETURN_xTaskGetApplicationTaskTag
-    #define traceRETURN_xTaskGetApplicationTaskTag( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskGetApplicationTaskTagFromISR
-    #define traceENTER_xTaskGetApplicationTaskTagFromISR( xTask )
-#endif
-
-#ifndef traceRETURN_xTaskGetApplicationTaskTagFromISR
-    #define traceRETURN_xTaskGetApplicationTaskTagFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCallApplicationTaskHook
-    #define traceENTER_xTaskCallApplicationTaskHook( xTask, pvParameter )
-#endif
-
-#ifndef traceRETURN_xTaskCallApplicationTaskHook
-    #define traceRETURN_xTaskCallApplicationTaskHook( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskSwitchContext
-    #define traceENTER_vTaskSwitchContext()
-#endif
-
-#ifndef traceRETURN_vTaskSwitchContext
-    #define traceRETURN_vTaskSwitchContext()
-#endif
-
-#ifndef traceENTER_vTaskPlaceOnEventList
-    #define traceENTER_vTaskPlaceOnEventList( pxEventList, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_vTaskPlaceOnEventList
-    #define traceRETURN_vTaskPlaceOnEventList()
-#endif
-
-#ifndef traceENTER_vTaskPlaceOnUnorderedEventList
-    #define traceENTER_vTaskPlaceOnUnorderedEventList( pxEventList, xItemValue, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_vTaskPlaceOnUnorderedEventList
-    #define traceRETURN_vTaskPlaceOnUnorderedEventList()
-#endif
-
-#ifndef traceENTER_vTaskPlaceOnEventListRestricted
-    #define traceENTER_vTaskPlaceOnEventListRestricted( pxEventList, xTicksToWait, xWaitIndefinitely )
-#endif
-
-#ifndef traceRETURN_vTaskPlaceOnEventListRestricted
-    #define traceRETURN_vTaskPlaceOnEventListRestricted()
-#endif
-
-#ifndef traceENTER_xTaskRemoveFromEventList
-    #define traceENTER_xTaskRemoveFromEventList( pxEventList )
-#endif
-
-#ifndef traceRETURN_xTaskRemoveFromEventList
-    #define traceRETURN_xTaskRemoveFromEventList( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskRemoveFromUnorderedEventList
-    #define traceENTER_vTaskRemoveFromUnorderedEventList( pxEventListItem, xItemValue )
-#endif
-
-#ifndef traceRETURN_vTaskRemoveFromUnorderedEventList
-    #define traceRETURN_vTaskRemoveFromUnorderedEventList()
-#endif
-
-#ifndef traceENTER_vTaskSetTimeOutState
-    #define traceENTER_vTaskSetTimeOutState( pxTimeOut )
-#endif
-
-#ifndef traceRETURN_vTaskSetTimeOutState
-    #define traceRETURN_vTaskSetTimeOutState()
-#endif
-
-#ifndef traceENTER_vTaskInternalSetTimeOutState
-    #define traceENTER_vTaskInternalSetTimeOutState( pxTimeOut )
-#endif
-
-#ifndef traceRETURN_vTaskInternalSetTimeOutState
-    #define traceRETURN_vTaskInternalSetTimeOutState()
-#endif
-
-#ifndef traceENTER_xTaskCheckForTimeOut
-    #define traceENTER_xTaskCheckForTimeOut( pxTimeOut, pxTicksToWait )
-#endif
-
-#ifndef traceRETURN_xTaskCheckForTimeOut
-    #define traceRETURN_xTaskCheckForTimeOut( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskMissedYield
-    #define traceENTER_vTaskMissedYield()
-#endif
-
-#ifndef traceRETURN_vTaskMissedYield
-    #define traceRETURN_vTaskMissedYield()
-#endif
-
-#ifndef traceENTER_uxTaskGetTaskNumber
-    #define traceENTER_uxTaskGetTaskNumber( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskGetTaskNumber
-    #define traceRETURN_uxTaskGetTaskNumber( uxReturn )
-#endif
-
-#ifndef traceENTER_vTaskSetTaskNumber
-    #define traceENTER_vTaskSetTaskNumber( xTask, uxHandle )
-#endif
-
-#ifndef traceRETURN_vTaskSetTaskNumber
-    #define traceRETURN_vTaskSetTaskNumber()
-#endif
-
-#ifndef traceENTER_eTaskConfirmSleepModeStatus
-    #define traceENTER_eTaskConfirmSleepModeStatus()
-#endif
-
-#ifndef traceRETURN_eTaskConfirmSleepModeStatus
-    #define traceRETURN_eTaskConfirmSleepModeStatus( eReturn )
-#endif
-
-#ifndef traceENTER_vTaskSetThreadLocalStoragePointer
-    #define traceENTER_vTaskSetThreadLocalStoragePointer( xTaskToSet, xIndex, pvValue )
-#endif
-
-#ifndef traceRETURN_vTaskSetThreadLocalStoragePointer
-    #define traceRETURN_vTaskSetThreadLocalStoragePointer()
-#endif
-
-#ifndef traceENTER_pvTaskGetThreadLocalStoragePointer
-    #define traceENTER_pvTaskGetThreadLocalStoragePointer( xTaskToQuery, xIndex )
-#endif
-
-#ifndef traceRETURN_pvTaskGetThreadLocalStoragePointer
-    #define traceRETURN_pvTaskGetThreadLocalStoragePointer( pvReturn )
-#endif
-
-#ifndef traceENTER_vTaskAllocateMPURegions
-    #define traceENTER_vTaskAllocateMPURegions( xTaskToModify, pxRegions )
-#endif
-
-#ifndef traceRETURN_vTaskAllocateMPURegions
-    #define traceRETURN_vTaskAllocateMPURegions()
-#endif
-
-#ifndef traceENTER_vTaskGetInfo
-    #define traceENTER_vTaskGetInfo( xTask, pxTaskStatus, xGetFreeStackSpace, eState )
-#endif
-
-#ifndef traceRETURN_vTaskGetInfo
-    #define traceRETURN_vTaskGetInfo()
-#endif
-
-#ifndef traceENTER_uxTaskGetStackHighWaterMark2
-    #define traceENTER_uxTaskGetStackHighWaterMark2( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskGetStackHighWaterMark2
-    #define traceRETURN_uxTaskGetStackHighWaterMark2( uxReturn )
-#endif
-
-#ifndef traceENTER_uxTaskGetStackHighWaterMark
-    #define traceENTER_uxTaskGetStackHighWaterMark( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskGetStackHighWaterMark
-    #define traceRETURN_uxTaskGetStackHighWaterMark( uxReturn )
-#endif
-
-#ifndef traceENTER_xTaskGetCurrentTaskHandle
-    #define traceENTER_xTaskGetCurrentTaskHandle()
-#endif
-
-#ifndef traceRETURN_xTaskGetCurrentTaskHandle
-    #define traceRETURN_xTaskGetCurrentTaskHandle( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskGetCurrentTaskHandleForCore
-    #define traceENTER_xTaskGetCurrentTaskHandleForCore( xCoreID )
-#endif
-
-#ifndef traceRETURN_xTaskGetCurrentTaskHandleForCore
-    #define traceRETURN_xTaskGetCurrentTaskHandleForCore( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskGetSchedulerState
-    #define traceENTER_xTaskGetSchedulerState()
-#endif
-
-#ifndef traceRETURN_xTaskGetSchedulerState
-    #define traceRETURN_xTaskGetSchedulerState( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskPriorityInherit
-    #define traceENTER_xTaskPriorityInherit( pxMutexHolder )
-#endif
-
-#ifndef traceRETURN_xTaskPriorityInherit
-    #define traceRETURN_xTaskPriorityInherit( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskPriorityDisinherit
-    #define traceENTER_xTaskPriorityDisinherit( pxMutexHolder )
-#endif
-
-#ifndef traceRETURN_xTaskPriorityDisinherit
-    #define traceRETURN_xTaskPriorityDisinherit( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskPriorityDisinheritAfterTimeout
-    #define traceENTER_vTaskPriorityDisinheritAfterTimeout( pxMutexHolder, uxHighestPriorityWaitingTask )
-#endif
-
-#ifndef traceRETURN_vTaskPriorityDisinheritAfterTimeout
-    #define traceRETURN_vTaskPriorityDisinheritAfterTimeout()
-#endif
-
-#ifndef traceENTER_vTaskYieldWithinAPI
-    #define traceENTER_vTaskYieldWithinAPI()
-#endif
-
-#ifndef traceRETURN_vTaskYieldWithinAPI
-    #define traceRETURN_vTaskYieldWithinAPI()
-#endif
-
-#ifndef traceENTER_vTaskEnterCritical
-    #define traceENTER_vTaskEnterCritical()
-#endif
-
-#ifndef traceRETURN_vTaskEnterCritical
-    #define traceRETURN_vTaskEnterCritical()
-#endif
-
-#ifndef traceENTER_vTaskEnterCriticalFromISR
-    #define traceENTER_vTaskEnterCriticalFromISR()
-#endif
-
-#ifndef traceRETURN_vTaskEnterCriticalFromISR
-    #define traceRETURN_vTaskEnterCriticalFromISR( uxSavedInterruptStatus )
-#endif
-
-#ifndef traceENTER_vTaskExitCritical
-    #define traceENTER_vTaskExitCritical()
-#endif
-
-#ifndef traceRETURN_vTaskExitCritical
-    #define traceRETURN_vTaskExitCritical()
-#endif
-
-#ifndef traceENTER_vTaskExitCriticalFromISR
-    #define traceENTER_vTaskExitCriticalFromISR( uxSavedInterruptStatus )
-#endif
-
-#ifndef traceRETURN_vTaskExitCriticalFromISR
-    #define traceRETURN_vTaskExitCriticalFromISR()
-#endif
-
-#ifndef traceENTER_vTaskListTasks
-    #define traceENTER_vTaskListTasks( pcWriteBuffer, uxBufferLength )
-#endif
-
-#ifndef traceRETURN_vTaskListTasks
-    #define traceRETURN_vTaskListTasks()
-#endif
-
-#ifndef traceENTER_vTaskGetRunTimeStatistics
-    #define traceENTER_vTaskGetRunTimeStatistics( pcWriteBuffer, uxBufferLength )
-#endif
-
-#ifndef traceRETURN_vTaskGetRunTimeStatistics
-    #define traceRETURN_vTaskGetRunTimeStatistics()
-#endif
-
-#ifndef traceENTER_uxTaskResetEventItemValue
-    #define traceENTER_uxTaskResetEventItemValue()
-#endif
-
-#ifndef traceRETURN_uxTaskResetEventItemValue
-    #define traceRETURN_uxTaskResetEventItemValue( uxReturn )
-#endif
-
-#ifndef traceENTER_pvTaskIncrementMutexHeldCount
-    #define traceENTER_pvTaskIncrementMutexHeldCount()
-#endif
-
-#ifndef traceRETURN_pvTaskIncrementMutexHeldCount
-    #define traceRETURN_pvTaskIncrementMutexHeldCount( pxTCB )
-#endif
-
-#ifndef traceENTER_ulTaskGenericNotifyTake
-    #define traceENTER_ulTaskGenericNotifyTake( uxIndexToWaitOn, xClearCountOnExit, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_ulTaskGenericNotifyTake
-    #define traceRETURN_ulTaskGenericNotifyTake( ulReturn )
-#endif
-
-#ifndef traceENTER_xTaskGenericNotifyWait
-    #define traceENTER_xTaskGenericNotifyWait( uxIndexToWaitOn, ulBitsToClearOnEntry, ulBitsToClearOnExit, pulNotificationValue, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xTaskGenericNotifyWait
-    #define traceRETURN_xTaskGenericNotifyWait( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskGenericNotify
-    #define traceENTER_xTaskGenericNotify( xTaskToNotify, uxIndexToNotify, ulValue, eAction, pulPreviousNotificationValue )
-#endif
-
-#ifndef traceRETURN_xTaskGenericNotify
-    #define traceRETURN_xTaskGenericNotify( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskGenericNotifyFromISR
-    #define traceENTER_xTaskGenericNotifyFromISR( xTaskToNotify, uxIndexToNotify, ulValue, eAction, pulPreviousNotificationValue, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xTaskGenericNotifyFromISR
-    #define traceRETURN_xTaskGenericNotifyFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskGenericNotifyGiveFromISR
-    #define traceENTER_vTaskGenericNotifyGiveFromISR( xTaskToNotify, uxIndexToNotify, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_vTaskGenericNotifyGiveFromISR
-    #define traceRETURN_vTaskGenericNotifyGiveFromISR()
-#endif
-
-#ifndef traceENTER_xTaskGenericNotifyStateClear
-    #define traceENTER_xTaskGenericNotifyStateClear( xTask, uxIndexToClear )
-#endif
-
-#ifndef traceRETURN_xTaskGenericNotifyStateClear
-    #define traceRETURN_xTaskGenericNotifyStateClear( xReturn )
-#endif
-
-#ifndef traceENTER_ulTaskGenericNotifyValueClear
-    #define traceENTER_ulTaskGenericNotifyValueClear( xTask, uxIndexToClear, ulBitsToClear )
-#endif
-
-#ifndef traceRETURN_ulTaskGenericNotifyValueClear
-    #define traceRETURN_ulTaskGenericNotifyValueClear( ulReturn )
-#endif
-
-#ifndef traceENTER_ulTaskGetRunTimeCounter
-    #define traceENTER_ulTaskGetRunTimeCounter( xTask )
-#endif
-
-#ifndef traceRETURN_ulTaskGetRunTimeCounter
-    #define traceRETURN_ulTaskGetRunTimeCounter( ulRunTimeCounter )
-#endif
-
-#ifndef traceENTER_ulTaskGetRunTimePercent
-    #define traceENTER_ulTaskGetRunTimePercent( xTask )
-#endif
-
-#ifndef traceRETURN_ulTaskGetRunTimePercent
-    #define traceRETURN_ulTaskGetRunTimePercent( ulReturn )
-#endif
-
-#ifndef traceENTER_ulTaskGetIdleRunTimeCounter
-    #define traceENTER_ulTaskGetIdleRunTimeCounter()
-#endif
-
-#ifndef traceRETURN_ulTaskGetIdleRunTimeCounter
-    #define traceRETURN_ulTaskGetIdleRunTimeCounter( ulReturn )
-#endif
-
-#ifndef traceENTER_ulTaskGetIdleRunTimePercent
-    #define traceENTER_ulTaskGetIdleRunTimePercent()
-#endif
-
-#ifndef traceRETURN_ulTaskGetIdleRunTimePercent
-    #define traceRETURN_ulTaskGetIdleRunTimePercent( ulReturn )
-#endif
-
-#ifndef traceENTER_xTaskGetMPUSettings
-    #define traceENTER_xTaskGetMPUSettings( xTask )
-#endif
-
-#ifndef traceRETURN_xTaskGetMPUSettings
-    #define traceRETURN_xTaskGetMPUSettings( xMPUSettings )
-#endif
-
-#ifndef traceENTER_xStreamBufferGenericCreate
-    #define traceENTER_xStreamBufferGenericCreate( xBufferSizeBytes, xTriggerLevelBytes, xStreamBufferType, pxSendCompletedCallback, pxReceiveCompletedCallback )
-#endif
-
-#ifndef traceRETURN_xStreamBufferGenericCreate
-    #define traceRETURN_xStreamBufferGenericCreate( pvAllocatedMemory )
-#endif
-
-#ifndef traceENTER_xStreamBufferGenericCreateStatic
-    #define traceENTER_xStreamBufferGenericCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, xStreamBufferType, pucStreamBufferStorageArea, pxStaticStreamBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback )
-#endif
-
-#ifndef traceRETURN_xStreamBufferGenericCreateStatic
-    #define traceRETURN_xStreamBufferGenericCreateStatic( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferGetStaticBuffers
-    #define traceENTER_xStreamBufferGetStaticBuffers( xStreamBuffer, ppucStreamBufferStorageArea, ppxStaticStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferGetStaticBuffers
-    #define traceRETURN_xStreamBufferGetStaticBuffers( xReturn )
-#endif
-
-#ifndef traceENTER_vStreamBufferDelete
-    #define traceENTER_vStreamBufferDelete( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_vStreamBufferDelete
-    #define traceRETURN_vStreamBufferDelete()
-#endif
-
-#ifndef traceENTER_xStreamBufferReset
-    #define traceENTER_xStreamBufferReset( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferReset
-    #define traceRETURN_xStreamBufferReset( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferResetFromISR
-    #define traceENTER_xStreamBufferResetFromISR( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferResetFromISR
-    #define traceRETURN_xStreamBufferResetFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferSetTriggerLevel
-    #define traceENTER_xStreamBufferSetTriggerLevel( xStreamBuffer, xTriggerLevel )
-#endif
-
-#ifndef traceRETURN_xStreamBufferSetTriggerLevel
-    #define traceRETURN_xStreamBufferSetTriggerLevel( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferSpacesAvailable
-    #define traceENTER_xStreamBufferSpacesAvailable( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferSpacesAvailable
-    #define traceRETURN_xStreamBufferSpacesAvailable( xSpace )
-#endif
-
-#ifndef traceENTER_xStreamBufferBytesAvailable
-    #define traceENTER_xStreamBufferBytesAvailable( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferBytesAvailable
-    #define traceRETURN_xStreamBufferBytesAvailable( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferSend
-    #define traceENTER_xStreamBufferSend( xStreamBuffer, pvTxData, xDataLengthBytes, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xStreamBufferSend
-    #define traceRETURN_xStreamBufferSend( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferSendFromISR
-    #define traceENTER_xStreamBufferSendFromISR( xStreamBuffer, pvTxData, xDataLengthBytes, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xStreamBufferSendFromISR
-    #define traceRETURN_xStreamBufferSendFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferReceive
-    #define traceENTER_xStreamBufferReceive( xStreamBuffer, pvRxData, xBufferLengthBytes, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xStreamBufferReceive
-    #define traceRETURN_xStreamBufferReceive( xReceivedLength )
-#endif
-
-#ifndef traceENTER_xStreamBufferNextMessageLengthBytes
-    #define traceENTER_xStreamBufferNextMessageLengthBytes( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferNextMessageLengthBytes
-    #define traceRETURN_xStreamBufferNextMessageLengthBytes( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferReceiveFromISR
-    #define traceENTER_xStreamBufferReceiveFromISR( xStreamBuffer, pvRxData, xBufferLengthBytes, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xStreamBufferReceiveFromISR
-    #define traceRETURN_xStreamBufferReceiveFromISR( xReceivedLength )
-#endif
-
-#ifndef traceENTER_xStreamBufferIsEmpty
-    #define traceENTER_xStreamBufferIsEmpty( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferIsEmpty
-    #define traceRETURN_xStreamBufferIsEmpty( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferIsFull
-    #define traceENTER_xStreamBufferIsFull( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferIsFull
-    #define traceRETURN_xStreamBufferIsFull( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferSendCompletedFromISR
-    #define traceENTER_xStreamBufferSendCompletedFromISR( xStreamBuffer, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xStreamBufferSendCompletedFromISR
-    #define traceRETURN_xStreamBufferSendCompletedFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferReceiveCompletedFromISR
-    #define traceENTER_xStreamBufferReceiveCompletedFromISR( xStreamBuffer, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xStreamBufferReceiveCompletedFromISR
-    #define traceRETURN_xStreamBufferReceiveCompletedFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_uxStreamBufferGetStreamBufferNotificationIndex
-    #define traceENTER_uxStreamBufferGetStreamBufferNotificationIndex( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_uxStreamBufferGetStreamBufferNotificationIndex
-    #define traceRETURN_uxStreamBufferGetStreamBufferNotificationIndex( uxNotificationIndex )
-#endif
-
-#ifndef traceENTER_vStreamBufferSetStreamBufferNotificationIndex
-    #define traceENTER_vStreamBufferSetStreamBufferNotificationIndex( xStreamBuffer, uxNotificationIndex )
-#endif
-
-#ifndef traceRETURN_vStreamBufferSetStreamBufferNotificationIndex
-    #define traceRETURN_vStreamBufferSetStreamBufferNotificationIndex()
-#endif
-
-#ifndef traceENTER_uxStreamBufferGetStreamBufferNumber
-    #define traceENTER_uxStreamBufferGetStreamBufferNumber( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_uxStreamBufferGetStreamBufferNumber
-    #define traceRETURN_uxStreamBufferGetStreamBufferNumber( uxStreamBufferNumber )
-#endif
-
-#ifndef traceENTER_vStreamBufferSetStreamBufferNumber
-    #define traceENTER_vStreamBufferSetStreamBufferNumber( xStreamBuffer, uxStreamBufferNumber )
-#endif
-
-#ifndef traceRETURN_vStreamBufferSetStreamBufferNumber
-    #define traceRETURN_vStreamBufferSetStreamBufferNumber()
-#endif
-
-#ifndef traceENTER_ucStreamBufferGetStreamBufferType
-    #define traceENTER_ucStreamBufferGetStreamBufferType( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_ucStreamBufferGetStreamBufferType
-    #define traceRETURN_ucStreamBufferGetStreamBufferType( ucStreamBufferType )
-#endif
-
-#ifndef traceENTER_vListInitialise
-    #define traceENTER_vListInitialise( pxList )
-#endif
-
-#ifndef traceRETURN_vListInitialise
-    #define traceRETURN_vListInitialise()
-#endif
-
-#ifndef traceENTER_vListInitialiseItem
-    #define traceENTER_vListInitialiseItem( pxItem )
-#endif
-
-#ifndef traceRETURN_vListInitialiseItem
-    #define traceRETURN_vListInitialiseItem()
-#endif
-
-#ifndef traceENTER_vListInsertEnd
-    #define traceENTER_vListInsertEnd( pxList, pxNewListItem )
-#endif
-
-#ifndef traceRETURN_vListInsertEnd
-    #define traceRETURN_vListInsertEnd()
-#endif
-
-#ifndef traceENTER_vListInsert
-    #define traceENTER_vListInsert( pxList, pxNewListItem )
-#endif
-
-#ifndef traceRETURN_vListInsert
-    #define traceRETURN_vListInsert()
-#endif
-
-#ifndef traceENTER_uxListRemove
-    #define traceENTER_uxListRemove( pxItemToRemove )
-#endif
-
-#ifndef traceRETURN_uxListRemove
-    #define traceRETURN_uxListRemove( uxNumberOfItems )
-#endif
-
-#ifndef traceENTER_xCoRoutineCreate
-    #define traceENTER_xCoRoutineCreate( pxCoRoutineCode, uxPriority, uxIndex )
-#endif
-
-#ifndef traceRETURN_xCoRoutineCreate
-    #define traceRETURN_xCoRoutineCreate( xReturn )
-#endif
-
-#ifndef traceENTER_vCoRoutineAddToDelayedList
-    #define traceENTER_vCoRoutineAddToDelayedList( xTicksToDelay, pxEventList )
-#endif
-
-#ifndef traceRETURN_vCoRoutineAddToDelayedList
-    #define traceRETURN_vCoRoutineAddToDelayedList()
-#endif
-
-#ifndef traceENTER_vCoRoutineSchedule
-    #define traceENTER_vCoRoutineSchedule()
-#endif
-
-#ifndef traceRETURN_vCoRoutineSchedule
-    #define traceRETURN_vCoRoutineSchedule()
-#endif
-
-#ifndef traceENTER_xCoRoutineRemoveFromEventList
-    #define traceENTER_xCoRoutineRemoveFromEventList( pxEventList )
-#endif
-
-#ifndef traceRETURN_xCoRoutineRemoveFromEventList
-    #define traceRETURN_xCoRoutineRemoveFromEventList( xReturn )
-#endif
-
-#ifndef configGENERATE_RUN_TIME_STATS
-    #define configGENERATE_RUN_TIME_STATS    0
-#endif
-
-#if ( configGENERATE_RUN_TIME_STATS == 1 )
-
-    #ifndef portCONFIGURE_TIMER_FOR_RUN_TIME_STATS
-        #error If configGENERATE_RUN_TIME_STATS is defined then portCONFIGURE_TIMER_FOR_RUN_TIME_STATS must also be defined.  portCONFIGURE_TIMER_FOR_RUN_TIME_STATS should call a port layer function to setup a peripheral timer/counter that can then be used as the run time counter time base.
-    #endif /* portCONFIGURE_TIMER_FOR_RUN_TIME_STATS */
-
-    #ifndef portGET_RUN_TIME_COUNTER_VALUE
-        #ifndef portALT_GET_RUN_TIME_COUNTER_VALUE
-            #error If configGENERATE_RUN_TIME_STATS is defined then either portGET_RUN_TIME_COUNTER_VALUE or portALT_GET_RUN_TIME_COUNTER_VALUE must also be defined.  See the examples provided and the FreeRTOS web site for more information.
-        #endif /* portALT_GET_RUN_TIME_COUNTER_VALUE */
-    #endif /* portGET_RUN_TIME_COUNTER_VALUE */
-
-#endif /* configGENERATE_RUN_TIME_STATS */
-
-#ifndef portCONFIGURE_TIMER_FOR_RUN_TIME_STATS
-    #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
-#endif
-
-#ifndef portPRIVILEGE_BIT
-    #define portPRIVILEGE_BIT    ( ( UBaseType_t ) 0x00 )
-#endif
-
-#ifndef portYIELD_WITHIN_API
-    #define portYIELD_WITHIN_API    portYIELD
-#endif
-
-#ifndef portSUPPRESS_TICKS_AND_SLEEP
-    #define portSUPPRESS_TICKS_AND_SLEEP( xExpectedIdleTime )
-#endif
-
-#ifndef configEXPECTED_IDLE_TIME_BEFORE_SLEEP
-    #define configEXPECTED_IDLE_TIME_BEFORE_SLEEP    2
-#endif
-
-#if configEXPECTED_IDLE_TIME_BEFORE_SLEEP < 2
-    #error configEXPECTED_IDLE_TIME_BEFORE_SLEEP must not be less than 2
-#endif
-
-#ifndef configUSE_TICKLESS_IDLE
-    #define configUSE_TICKLESS_IDLE    0
-#endif
-
-#ifndef configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING
-    #define configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING( x )
-#endif
-
-#ifndef configPRE_SLEEP_PROCESSING
-    #define configPRE_SLEEP_PROCESSING( x )
-#endif
-
-#ifndef configPOST_SLEEP_PROCESSING
-    #define configPOST_SLEEP_PROCESSING( x )
-#endif
-
-#ifndef configUSE_QUEUE_SETS
-    #define configUSE_QUEUE_SETS    0
-#endif
-
-#ifndef portTASK_USES_FLOATING_POINT
-    #define portTASK_USES_FLOATING_POINT()
-#endif
-
-#ifndef portALLOCATE_SECURE_CONTEXT
-    #define portALLOCATE_SECURE_CONTEXT( ulSecureStackSize )
-#endif
-
-#ifndef portDONT_DISCARD
-    #define portDONT_DISCARD
-#endif
-
-#ifndef configUSE_TIME_SLICING
-    #define configUSE_TIME_SLICING    1
-#endif
-
-#ifndef configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS
-    #define configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS    0
-#endif
-
-#ifndef configUSE_STATS_FORMATTING_FUNCTIONS
-    #define configUSE_STATS_FORMATTING_FUNCTIONS    0
-#endif
-
-#ifndef portASSERT_IF_INTERRUPT_PRIORITY_INVALID
-    #define portASSERT_IF_INTERRUPT_PRIORITY_INVALID()
-#endif
-
-#ifndef configUSE_TRACE_FACILITY
-    #define configUSE_TRACE_FACILITY    0
-#endif
-
-#ifndef mtCOVERAGE_TEST_MARKER
-    #define mtCOVERAGE_TEST_MARKER()
-#endif
-
-#ifndef mtCOVERAGE_TEST_DELAY
-    #define mtCOVERAGE_TEST_DELAY()
-#endif
-
-#ifndef portASSERT_IF_IN_ISR
-    #define portASSERT_IF_IN_ISR()
-#endif
-
-#ifndef configUSE_PORT_OPTIMISED_TASK_SELECTION
-    #define configUSE_PORT_OPTIMISED_TASK_SELECTION    0
-#endif
-
-#ifndef configAPPLICATION_ALLOCATED_HEAP
-    #define configAPPLICATION_ALLOCATED_HEAP    0
-#endif
-
-#ifndef configENABLE_HEAP_PROTECTOR
-    #define configENABLE_HEAP_PROTECTOR    0
-#endif
-
-#ifndef configUSE_TASK_NOTIFICATIONS
-    #define configUSE_TASK_NOTIFICATIONS    1
-#endif
-
-#ifndef configTASK_NOTIFICATION_ARRAY_ENTRIES
-    #define configTASK_NOTIFICATION_ARRAY_ENTRIES    1
-#endif
-
-#if configTASK_NOTIFICATION_ARRAY_ENTRIES < 1
-    #error configTASK_NOTIFICATION_ARRAY_ENTRIES must be at least 1
-#endif
-
-#ifndef configUSE_POSIX_ERRNO
-    #define configUSE_POSIX_ERRNO    0
-#endif
-
-#ifndef configUSE_SB_COMPLETED_CALLBACK
+#که_نه_تعریف_شوی trace_MOVED_TASK_منزل_READY_STATE
+    #تعریف_کړه trace_MOVED_TASK_منزل_READY_STATE( pxTCB )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_POST_MOVED_TASK_منزل_READY_STATE
+    #تعریف_کړه trace_POST_MOVED_TASK_منزل_READY_STATE( pxTCB )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_MOVED_TASK_منزل_DELAYED_LIST
+    #تعریف_کړه trace_MOVED_TASK_منزل_DELAYED_LIST()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_MOVED_TASK_منزل_ډکېدنه_DELAYED_LIST
+    #تعریف_کړه trace_MOVED_TASK_منزل_ډکېدنه_DELAYED_LIST()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_CREATE
+    #تعریف_کړه trace_کتار_CREATE( px_New_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_CREATE_FAILED
+    #تعریف_کړه trace_کتار_CREATE_FAILED( uc_کتار_Type )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceCREATE_MUTEX
+    #تعریف_کړه traceCREATE_MUTEX( px_New_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceCREATE_MUTEX_FAILED
+    #تعریف_کړه traceCREATE_MUTEX_FAILED()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceGIVE_MUTEX_RECURSIVE
+    #تعریف_کړه traceGIVE_MUTEX_RECURSIVE( pxMutex )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceGIVE_MUTEX_RECURSIVE_FAILED
+    #تعریف_کړه traceGIVE_MUTEX_RECURSIVE_FAILED( pxMutex )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTAKE_MUTEX_RECURSIVE
+    #تعریف_کړه traceTAKE_MUTEX_RECURSIVE( pxMutex )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTAKE_MUTEX_RECURSIVE_FAILED
+    #تعریف_کړه traceTAKE_MUTEX_RECURSIVE_FAILED( pxMutex )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceCREATE_COUNTING_SEMAPHORE
+    #تعریف_کړه traceCREATE_COUNTING_SEMAPHORE()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceCREATE_COUNTING_SEMAPHORE_FAILED
+    #تعریف_کړه traceCREATE_COUNTING_SEMAPHORE_FAILED()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_سېټ_SEND
+    #تعریف_کړه trace_کتار_سېټ_SEND    trace_کتار_SEND
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_SEND
+    #تعریف_کړه trace_کتار_SEND( px_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_SEND_FAILED
+    #تعریف_کړه trace_کتار_SEND_FAILED( px_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_RECEIVE
+    #تعریف_کړه trace_کتار_RECEIVE( px_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_PEEK
+    #تعریف_کړه trace_کتار_PEEK( px_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_PEEK_FAILED
+    #تعریف_کړه trace_کتار_PEEK_FAILED( px_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_PEEK_FROM_ISR
+    #تعریف_کړه trace_کتار_PEEK_FROM_ISR( px_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_RECEIVE_FAILED
+    #تعریف_کړه trace_کتار_RECEIVE_FAILED( px_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_SEND_FROM_ISR
+    #تعریف_کړه trace_کتار_SEND_FROM_ISR( px_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_SEND_FROM_ISR_FAILED
+    #تعریف_کړه trace_کتار_SEND_FROM_ISR_FAILED( px_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_RECEIVE_FROM_ISR
+    #تعریف_کړه trace_کتار_RECEIVE_FROM_ISR( px_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_RECEIVE_FROM_ISR_FAILED
+    #تعریف_کړه trace_کتار_RECEIVE_FROM_ISR_FAILED( px_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_PEEK_FROM_ISR_FAILED
+    #تعریف_کړه trace_کتار_PEEK_FROM_ISR_FAILED( px_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_DELETE
+    #تعریف_کړه trace_کتار_DELETE( px_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTASK_CREATE
+    #تعریف_کړه traceTASK_CREATE( pxNewTCB )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTASK_CREATE_FAILED
+    #تعریف_کړه traceTASK_CREATE_FAILED()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTASK_DELETE
+    #تعریف_کړه traceTASK_DELETE( px_Task_منزل_Delete )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTASK_DELAY_UNTIL
+    #تعریف_کړه traceTASK_DELAY_UNTIL( x )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTASK_DELAY
+    #تعریف_کړه traceTASK_DELAY()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_TASK_لومړیتوب_سېټ
+    #تعریف_کړه trace_TASK_لومړیتوب_سېټ( pxTask, ux_New_لومړیتوب )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTASK_SUSPEND
+    #تعریف_کړه traceTASK_SUSPEND( px_Task_منزل_Suspend )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTASK_RESUME
+    #تعریف_کړه traceTASK_RESUME( px_Task_منزل_Resume )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTASK_RESUME_FROM_ISR
+    #تعریف_کړه traceTASK_RESUME_FROM_ISR( px_Task_منزل_Resume )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTASK_INCREMENT_TICK
+    #تعریف_کړه traceTASK_INCREMENT_TICK( x_Tick_شمېر )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTIMER_CREATE
+    #تعریف_کړه traceTIMER_CREATE( pxNewTimer )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTIMER_CREATE_FAILED
+    #تعریف_کړه traceTIMER_CREATE_FAILED()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTIMER_COMMAND_SEND
+    #تعریف_کړه traceTIMER_COMMAND_SEND( xTimer, x_پیغام_ID, x_پیغام_ارزښت_ارزښت, xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTIMER_EXPIRED
+    #تعریف_کړه traceTIMER_EXPIRED( pxTimer )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTIMER_COMMAND_RECEIVED
+    #تعریف_کړه traceTIMER_COMMAND_RECEIVED( pxTimer, x_پیغام_ID, x_پیغام_ارزښت )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceMALLOC
+    #تعریف_کړه traceMALLOC( pv_پته, ui_اندازه )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceFREE
+    #تعریف_کړه traceFREE( pv_پته, ui_اندازه )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_EVENT_ډله_CREATE
+    #تعریف_کړه trace_EVENT_ډله_CREATE( x_Event_ډله )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_EVENT_ډله_CREATE_FAILED
+    #تعریف_کړه trace_EVENT_ډله_CREATE_FAILED()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_EVENT_ډله_SYNC_بلاک
+    #تعریف_کړه trace_EVENT_ډله_SYNC_بلاک( x_Event_ډله, ux_بټونه_منزل_سېټ, ux_بټونه_منزل_Wait_For )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_EVENT_ډله_SYNC_پای_ټکی
+    #تعریف_کړه trace_EVENT_ډله_SYNC_پای_ټکی( x_Event_ډله, ux_بټونه_منزل_سېټ, ux_بټونه_منزل_Wait_For, xTimeoutOccurred )    ( فراغ ) ( xTimeoutOccurred )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_EVENT_ډله_WAIT_بټونه_بلاک
+    #تعریف_کړه trace_EVENT_ډله_WAIT_بټونه_بلاک( x_Event_ډله, ux_بټونه_منزل_Wait_For )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_EVENT_ډله_WAIT_بټونه_پای_ټکی
+    #تعریف_کړه trace_EVENT_ډله_WAIT_بټونه_پای_ټکی( x_Event_ډله, ux_بټونه_منزل_Wait_For, xTimeoutOccurred )    ( فراغ ) ( xTimeoutOccurred )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_EVENT_ډله_CLEAR_بټونه
+    #تعریف_کړه trace_EVENT_ډله_CLEAR_بټونه( x_Event_ډله, ux_بټونه_منزل_Clear )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_EVENT_ډله_CLEAR_بټونه_FROM_ISR
+    #تعریف_کړه trace_EVENT_ډله_CLEAR_بټونه_FROM_ISR( x_Event_ډله, ux_بټونه_منزل_Clear )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_EVENT_ډله_سېټ_بټونه
+    #تعریف_کړه trace_EVENT_ډله_سېټ_بټونه( x_Event_ډله, ux_بټونه_منزل_سېټ )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_EVENT_ډله_سېټ_بټونه_FROM_ISR
+    #تعریف_کړه trace_EVENT_ډله_سېټ_بټونه_FROM_ISR( x_Event_ډله, ux_بټونه_منزل_سېټ )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_EVENT_ډله_DELETE
+    #تعریف_کړه trace_EVENT_ډله_DELETE( x_Event_ډله )
+#د_که_پای
+
+#که_نه_تعریف_شوی tracePEND_FUNC_CALL
+    #تعریف_کړه tracePEND_FUNC_CALL( x_Function_منزل_Pend, pvParameter1, ulParameter2, ret )
+#د_که_پای
+
+#که_نه_تعریف_شوی tracePEND_FUNC_CALL_FROM_ISR
+    #تعریف_کړه tracePEND_FUNC_CALL_FROM_ISR( x_Function_منزل_Pend, pvParameter1, ulParameter2, ret )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_کتار_REGISTRY_جمع_کړه
+    #تعریف_کړه trace_کتار_REGISTRY_جمع_کړه( x_کتار, pc_کتار_Name )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_TASK_NOTIFY_TAKE_بلاک
+    #تعریف_کړه trace_TASK_NOTIFY_TAKE_بلاک( ux_شاخص_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTASK_NOTIFY_TAKE
+    #تعریف_کړه traceTASK_NOTIFY_TAKE( ux_شاخص_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_TASK_NOTIFY_WAIT_بلاک
+    #تعریف_کړه trace_TASK_NOTIFY_WAIT_بلاک( ux_شاخص_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTASK_NOTIFY_WAIT
+    #تعریف_کړه traceTASK_NOTIFY_WAIT( ux_شاخص_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTASK_NOTIFY
+    #تعریف_کړه traceTASK_NOTIFY( ux_شاخص_منزل_Notify )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTASK_NOTIFY_FROM_ISR
+    #تعریف_کړه traceTASK_NOTIFY_FROM_ISR( ux_شاخص_منزل_Notify )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceTASK_NOTIFY_GIVE_FROM_ISR
+    #تعریف_کړه traceTASK_NOTIFY_GIVE_FROM_ISR( ux_شاخص_منزل_Notify )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ISR_EXIT_منزل_SCHEDULER
+    #تعریف_کړه trace_ISR_EXIT_منزل_SCHEDULER()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceISR_EXIT
+    #تعریف_کړه traceISR_EXIT()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceISR_ENTER
+    #تعریف_کړه traceISR_ENTER()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_بهیر_بفر_CREATE_FAILED
+    #تعریف_کړه trace_بهیر_بفر_CREATE_FAILED( x_بهیر_بفر_Type )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_بهیر_بفر_CREATE_STATIC_FAILED
+    #تعریف_کړه trace_بهیر_بفر_CREATE_STATIC_FAILED( xReturn, x_بهیر_بفر_Type )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_بهیر_بفر_CREATE
+    #تعریف_کړه trace_بهیر_بفر_CREATE( px_بهیر_بفر, x_بهیر_بفر_Type )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_بهیر_بفر_DELETE
+    #تعریف_کړه trace_بهیر_بفر_DELETE( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_بهیر_بفر_RESET
+    #تعریف_کړه trace_بهیر_بفر_RESET( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_بهیر_بفر_RESET_FROM_ISR
+    #تعریف_کړه trace_بهیر_بفر_RESET_FROM_ISR( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_BLOCKING_ON_بهیر_بفر_SEND
+    #تعریف_کړه trace_BLOCKING_ON_بهیر_بفر_SEND( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_بهیر_بفر_SEND
+    #تعریف_کړه trace_بهیر_بفر_SEND( x_بهیر_بفر, x_بایټونه_لېږل_شوی )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_بهیر_بفر_SEND_FAILED
+    #تعریف_کړه trace_بهیر_بفر_SEND_FAILED( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_بهیر_بفر_SEND_FROM_ISR
+    #تعریف_کړه trace_بهیر_بفر_SEND_FROM_ISR( x_بهیر_بفر, x_بایټونه_لېږل_شوی )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_BLOCKING_ON_بهیر_بفر_RECEIVE
+    #تعریف_کړه trace_BLOCKING_ON_بهیر_بفر_RECEIVE( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_بهیر_بفر_RECEIVE
+    #تعریف_کړه trace_بهیر_بفر_RECEIVE( x_بهیر_بفر, x_Received_اوږدتیا )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_بهیر_بفر_RECEIVE_FAILED
+    #تعریف_کړه trace_بهیر_بفر_RECEIVE_FAILED( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_بهیر_بفر_RECEIVE_FROM_ISR
+    #تعریف_کړه trace_بهیر_بفر_RECEIVE_FROM_ISR( x_بهیر_بفر, x_Received_اوږدتیا )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Event_ډله_Create_Static
+    #تعریف_کړه trace_ENTER_x_Event_ډله_Create_Static( px_Event_ډله_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Event_ډله_Create_Static
+    #تعریف_کړه trace_RETURN_x_Event_ډله_Create_Static( px_Event_بټونه )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Event_ډله_Create
+    #تعریف_کړه trace_ENTER_x_Event_ډله_Create()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Event_ډله_Create
+    #تعریف_کړه trace_RETURN_x_Event_ډله_Create( px_Event_بټونه )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Event_ډله_Sync
+    #تعریف_کړه trace_ENTER_x_Event_ډله_Sync( x_Event_ډله, ux_بټونه_منزل_سېټ, ux_بټونه_منزل_Wait_For, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Event_ډله_Sync
+    #تعریف_کړه trace_RETURN_x_Event_ډله_Sync( uxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Event_ډله_Wait_بټونه
+    #تعریف_کړه trace_ENTER_x_Event_ډله_Wait_بټونه( x_Event_ډله, ux_بټونه_منزل_Wait_For, xClearOnExit, x_Wait_For_All_بټونه, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Event_ډله_Wait_بټونه
+    #تعریف_کړه trace_RETURN_x_Event_ډله_Wait_بټونه( uxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Event_ډله_Clear_بټونه
+    #تعریف_کړه trace_ENTER_x_Event_ډله_Clear_بټونه( x_Event_ډله, ux_بټونه_منزل_Clear )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Event_ډله_Clear_بټونه
+    #تعریف_کړه trace_RETURN_x_Event_ډله_Clear_بټونه( uxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Event_ډله_Clear_بټونه_From_ISR
+    #تعریف_کړه trace_ENTER_x_Event_ډله_Clear_بټونه_From_ISR( x_Event_ډله, ux_بټونه_منزل_Clear )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Event_ډله_Clear_بټونه_From_ISR
+    #تعریف_کړه trace_RETURN_x_Event_ډله_Clear_بټونه_From_ISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Event_ډله_Get_بټونه_From_ISR
+    #تعریف_کړه trace_ENTER_x_Event_ډله_Get_بټونه_From_ISR( x_Event_ډله )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Event_ډله_Get_بټونه_From_ISR
+    #تعریف_کړه trace_RETURN_x_Event_ډله_Get_بټونه_From_ISR( uxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Event_ډله_سېټ_بټونه
+    #تعریف_کړه trace_ENTER_x_Event_ډله_سېټ_بټونه( x_Event_ډله, ux_بټونه_منزل_سېټ )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Event_ډله_سېټ_بټونه
+    #تعریف_کړه trace_RETURN_x_Event_ډله_سېټ_بټونه( ux_Event_بټونه )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Event_ډله_Delete
+    #تعریف_کړه trace_ENTER_v_Event_ډله_Delete( x_Event_ډله )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Event_ډله_Delete
+    #تعریف_کړه trace_RETURN_v_Event_ډله_Delete()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Event_ډله_Get_Static_بفر
+    #تعریف_کړه trace_ENTER_x_Event_ډله_Get_Static_بفر( x_Event_ډله, ppx_Event_ډله_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Event_ډله_Get_Static_بفر
+    #تعریف_کړه trace_RETURN_x_Event_ډله_Get_Static_بفر( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Event_ډله_سېټ_بټونه_Callback
+    #تعریف_کړه trace_ENTER_v_Event_ډله_سېټ_بټونه_Callback( pv_Event_ډله, ul_بټونه_منزل_سېټ )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Event_ډله_سېټ_بټونه_Callback
+    #تعریف_کړه trace_RETURN_v_Event_ډله_سېټ_بټونه_Callback()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Event_ډله_Clear_بټونه_Callback
+    #تعریف_کړه trace_ENTER_v_Event_ډله_Clear_بټونه_Callback( pv_Event_ډله, ul_بټونه_منزل_Clear )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Event_ډله_Clear_بټونه_Callback
+    #تعریف_کړه trace_RETURN_v_Event_ډله_Clear_بټونه_Callback()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Event_ډله_سېټ_بټونه_From_ISR
+    #تعریف_کړه trace_ENTER_x_Event_ډله_سېټ_بټونه_From_ISR( x_Event_ډله, ux_بټونه_منزل_سېټ, px_Higher_لومړیتوب_Task_Woken )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Event_ډله_سېټ_بټونه_From_ISR
+    #تعریف_کړه trace_RETURN_x_Event_ډله_سېټ_بټونه_From_ISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_Event_ډله_Get_شمېره
+    #تعریف_کړه trace_ENTER_ux_Event_ډله_Get_شمېره( x_Event_ډله )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_Event_ډله_Get_شمېره
+    #تعریف_کړه trace_RETURN_ux_Event_ډله_Get_شمېره( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Event_ډله_سېټ_شمېره
+    #تعریف_کړه trace_ENTER_v_Event_ډله_سېټ_شمېره( x_Event_ډله, ux_Event_ډله_شمېره )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Event_ډله_سېټ_شمېره
+    #تعریف_کړه trace_RETURN_v_Event_ډله_سېټ_شمېره()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Generic_Reset
+    #تعریف_کړه trace_ENTER_x_کتار_Generic_Reset( x_کتار, x_New_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Generic_Reset
+    #تعریف_کړه trace_RETURN_x_کتار_Generic_Reset( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Generic_Create_Static
+    #تعریف_کړه trace_ENTER_x_کتار_Generic_Create_Static( ux_کتار_اوږدتیا, ux_توکی_اندازه, puc_کتار_Storage, px_Static_کتار, uc_کتار_Type )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Generic_Create_Static
+    #تعریف_کړه trace_RETURN_x_کتار_Generic_Create_Static( px_New_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Generic_Get_Static_Buffers
+    #تعریف_کړه trace_ENTER_x_کتار_Generic_Get_Static_Buffers( x_کتار, ppuc_کتار_Storage, ppx_Static_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Generic_Get_Static_Buffers
+    #تعریف_کړه trace_RETURN_x_کتار_Generic_Get_Static_Buffers( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Generic_Create
+    #تعریف_کړه trace_ENTER_x_کتار_Generic_Create( ux_کتار_اوږدتیا, ux_توکی_اندازه, uc_کتار_Type )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Generic_Create
+    #تعریف_کړه trace_RETURN_x_کتار_Generic_Create( px_New_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Create_Mutex
+    #تعریف_کړه trace_ENTER_x_کتار_Create_Mutex( uc_کتار_Type )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Create_Mutex
+    #تعریف_کړه trace_RETURN_x_کتار_Create_Mutex( x_New_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Create_Mutex_Static
+    #تعریف_کړه trace_ENTER_x_کتار_Create_Mutex_Static( uc_کتار_Type, px_Static_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Create_Mutex_Static
+    #تعریف_کړه trace_RETURN_x_کتار_Create_Mutex_Static( x_New_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Get_Mutex_Holder
+    #تعریف_کړه trace_ENTER_x_کتار_Get_Mutex_Holder( xSemaphore )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Get_Mutex_Holder
+    #تعریف_کړه trace_RETURN_x_کتار_Get_Mutex_Holder( pxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Get_Mutex_Holder_From_ISR
+    #تعریف_کړه trace_ENTER_x_کتار_Get_Mutex_Holder_From_ISR( xSemaphore )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Get_Mutex_Holder_From_ISR
+    #تعریف_کړه trace_RETURN_x_کتار_Get_Mutex_Holder_From_ISR( pxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Give_Mutex_Recursive
+    #تعریف_کړه trace_ENTER_x_کتار_Give_Mutex_Recursive( xMutex )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Give_Mutex_Recursive
+    #تعریف_کړه trace_RETURN_x_کتار_Give_Mutex_Recursive( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Take_Mutex_Recursive
+    #تعریف_کړه trace_ENTER_x_کتار_Take_Mutex_Recursive( xMutex, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Take_Mutex_Recursive
+    #تعریف_کړه trace_RETURN_x_کتار_Take_Mutex_Recursive( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Create_Counting_Semaphore_Static
+    #تعریف_کړه trace_ENTER_x_کتار_Create_Counting_Semaphore_Static( ux_Max_شمېر, ux_Initial_شمېر, px_Static_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Create_Counting_Semaphore_Static
+    #تعریف_کړه trace_RETURN_x_کتار_Create_Counting_Semaphore_Static( xHandle )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Create_Counting_Semaphore
+    #تعریف_کړه trace_ENTER_x_کتار_Create_Counting_Semaphore( ux_Max_شمېر, ux_Initial_شمېر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Create_Counting_Semaphore
+    #تعریف_کړه trace_RETURN_x_کتار_Create_Counting_Semaphore( xHandle )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Generic_Send
+    #تعریف_کړه trace_ENTER_x_کتار_Generic_Send( x_کتار, pv_توکی_منزل_کتار, x_Ticks_منزل_Wait, xCopyPosition )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Generic_Send
+    #تعریف_کړه trace_RETURN_x_کتار_Generic_Send( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Generic_Send_From_ISR
+    #تعریف_کړه trace_ENTER_x_کتار_Generic_Send_From_ISR( x_کتار, pv_توکی_منزل_کتار, px_Higher_لومړیتوب_Task_Woken, xCopyPosition )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Generic_Send_From_ISR
+    #تعریف_کړه trace_RETURN_x_کتار_Generic_Send_From_ISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Give_From_ISR
+    #تعریف_کړه trace_ENTER_x_کتار_Give_From_ISR( x_کتار, px_Higher_لومړیتوب_Task_Woken )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Give_From_ISR
+    #تعریف_کړه trace_RETURN_x_کتار_Give_From_ISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Receive
+    #تعریف_کړه trace_ENTER_x_کتار_Receive( x_کتار, pv_بفر, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Receive
+    #تعریف_کړه trace_RETURN_x_کتار_Receive( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Semaphore_Take
+    #تعریف_کړه trace_ENTER_x_کتار_Semaphore_Take( x_کتار, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Semaphore_Take
+    #تعریف_کړه trace_RETURN_x_کتار_Semaphore_Take( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Peek
+    #تعریف_کړه trace_ENTER_x_کتار_Peek( x_کتار, pv_بفر, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Peek
+    #تعریف_کړه trace_RETURN_x_کتار_Peek( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Receive_From_ISR
+    #تعریف_کړه trace_ENTER_x_کتار_Receive_From_ISR( x_کتار, pv_بفر, px_Higher_لومړیتوب_Task_Woken )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Receive_From_ISR
+    #تعریف_کړه trace_RETURN_x_کتار_Receive_From_ISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Peek_From_ISR
+    #تعریف_کړه trace_ENTER_x_کتار_Peek_From_ISR( x_کتار, pv_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Peek_From_ISR
+    #تعریف_کړه trace_RETURN_x_کتار_Peek_From_ISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_کتار_Messages_انتظار
+    #تعریف_کړه trace_ENTER_ux_کتار_Messages_انتظار( x_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_کتار_Messages_انتظار
+    #تعریف_کړه trace_RETURN_ux_کتار_Messages_انتظار( uxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_کتار_Spaces_شته
+    #تعریف_کړه trace_ENTER_ux_کتار_Spaces_شته( x_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_کتار_Spaces_شته
+    #تعریف_کړه trace_RETURN_ux_کتار_Spaces_شته( uxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_کتار_Messages_انتظار_From_ISR
+    #تعریف_کړه trace_ENTER_ux_کتار_Messages_انتظار_From_ISR( x_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_کتار_Messages_انتظار_From_ISR
+    #تعریف_کړه trace_RETURN_ux_کتار_Messages_انتظار_From_ISR( uxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_کتار_Delete
+    #تعریف_کړه trace_ENTER_v_کتار_Delete( x_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_کتار_Delete
+    #تعریف_کړه trace_RETURN_v_کتار_Delete()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_کتار_Get_کتار_شمېره
+    #تعریف_کړه trace_ENTER_ux_کتار_Get_کتار_شمېره( x_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_کتار_Get_کتار_شمېره
+    #تعریف_کړه trace_RETURN_ux_کتار_Get_کتار_شمېره( ux_کتار_شمېره )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_کتار_سېټ_کتار_شمېره
+    #تعریف_کړه trace_ENTER_v_کتار_سېټ_کتار_شمېره( x_کتار, ux_کتار_شمېره )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_کتار_سېټ_کتار_شمېره
+    #تعریف_کړه trace_RETURN_v_کتار_سېټ_کتار_شمېره()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_uc_کتار_Get_کتار_Type
+    #تعریف_کړه trace_ENTER_uc_کتار_Get_کتار_Type( x_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_uc_کتار_Get_کتار_Type
+    #تعریف_کړه trace_RETURN_uc_کتار_Get_کتار_Type( uc_کتار_Type )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_کتار_Get_کتار_توکی_اندازه
+    #تعریف_کړه trace_ENTER_ux_کتار_Get_کتار_توکی_اندازه( x_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_کتار_Get_کتار_توکی_اندازه
+    #تعریف_کړه trace_RETURN_ux_کتار_Get_کتار_توکی_اندازه( ux_توکی_اندازه )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_کتار_Get_کتار_اوږدتیا
+    #تعریف_کړه trace_ENTER_ux_کتار_Get_کتار_اوږدتیا( x_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_کتار_Get_کتار_اوږدتیا
+    #تعریف_کړه trace_RETURN_ux_کتار_Get_کتار_اوږدتیا( ux_اوږدتیا )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Is_کتار_تشه_From_ISR
+    #تعریف_کړه trace_ENTER_x_کتار_Is_کتار_تشه_From_ISR( x_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Is_کتار_تشه_From_ISR
+    #تعریف_کړه trace_RETURN_x_کتار_Is_کتار_تشه_From_ISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Is_کتار_ډک_From_ISR
+    #تعریف_کړه trace_ENTER_x_کتار_Is_کتار_ډک_From_ISR( x_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Is_کتار_ډک_From_ISR
+    #تعریف_کړه trace_RETURN_x_کتار_Is_کتار_ډک_From_ISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_CRSend
+    #تعریف_کړه trace_ENTER_x_کتار_CRSend( x_کتار, pv_توکی_منزل_کتار, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_CRSend
+    #تعریف_کړه trace_RETURN_x_کتار_CRSend( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_CRReceive
+    #تعریف_کړه trace_ENTER_x_کتار_CRReceive( x_کتار, pv_بفر, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_CRReceive
+    #تعریف_کړه trace_RETURN_x_کتار_CRReceive( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_CRSend_From_ISR
+    #تعریف_کړه trace_ENTER_x_کتار_CRSend_From_ISR( x_کتار, pv_توکی_منزل_کتار, xCoRoutinePreviouslyWoken )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_CRSend_From_ISR
+    #تعریف_کړه trace_RETURN_x_کتار_CRSend_From_ISR( xCoRoutinePreviouslyWoken )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_CRReceive_From_ISR
+    #تعریف_کړه trace_ENTER_x_کتار_CRReceive_From_ISR( x_کتار, pv_بفر, pxCoRoutineWoken )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_CRReceive_From_ISR
+    #تعریف_کړه trace_RETURN_x_کتار_CRReceive_From_ISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_کتار_جمع_کړه_منزل_Registry
+    #تعریف_کړه trace_ENTER_v_کتار_جمع_کړه_منزل_Registry( x_کتار, pc_کتار_Name )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_کتار_جمع_کړه_منزل_Registry
+    #تعریف_کړه trace_RETURN_v_کتار_جمع_کړه_منزل_Registry()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_pc_کتار_Get_Name
+    #تعریف_کړه trace_ENTER_pc_کتار_Get_Name( x_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_pc_کتار_Get_Name
+    #تعریف_کړه trace_RETURN_pc_کتار_Get_Name( pcReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_کتار_Unregister_کتار
+    #تعریف_کړه trace_ENTER_v_کتار_Unregister_کتار( x_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_کتار_Unregister_کتار
+    #تعریف_کړه trace_RETURN_v_کتار_Unregister_کتار()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_کتار_Wait_For_پیغام_Restricted
+    #تعریف_کړه trace_ENTER_v_کتار_Wait_For_پیغام_Restricted( x_کتار, x_Ticks_منزل_Wait, xWaitIndefinitely )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_کتار_Wait_For_پیغام_Restricted
+    #تعریف_کړه trace_RETURN_v_کتار_Wait_For_پیغام_Restricted()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Create_سېټ
+    #تعریف_کړه trace_ENTER_x_کتار_Create_سېټ( ux_Event_کتار_اوږدتیا )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Create_سېټ
+    #تعریف_کړه trace_RETURN_x_کتار_Create_سېټ( px_کتار )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_جمع_کړه_منزل_سېټ
+    #تعریف_کړه trace_ENTER_x_کتار_جمع_کړه_منزل_سېټ( x_کتار_Or_Semaphore, x_کتار_سېټ )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_جمع_کړه_منزل_سېټ
+    #تعریف_کړه trace_RETURN_x_کتار_جمع_کړه_منزل_سېټ( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Remove_From_سېټ
+    #تعریف_کړه trace_ENTER_x_کتار_Remove_From_سېټ( x_کتار_Or_Semaphore, x_کتار_سېټ )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Remove_From_سېټ
+    #تعریف_کړه trace_RETURN_x_کتار_Remove_From_سېټ( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Select_From_سېټ
+    #تعریف_کړه trace_ENTER_x_کتار_Select_From_سېټ( x_کتار_سېټ, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Select_From_سېټ
+    #تعریف_کړه trace_RETURN_x_کتار_Select_From_سېټ( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_کتار_Select_From_سېټ_From_ISR
+    #تعریف_کړه trace_ENTER_x_کتار_Select_From_سېټ_From_ISR( x_کتار_سېټ )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_کتار_Select_From_سېټ_From_ISR
+    #تعریف_کړه trace_RETURN_x_کتار_Select_From_سېټ_From_ISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTimerCreateTimerTask
+    #تعریف_کړه traceENTER_xTimerCreateTimerTask()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTimerCreateTimerTask
+    #تعریف_کړه traceRETURN_xTimerCreateTimerTask( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTimerCreate
+    #تعریف_کړه traceENTER_xTimerCreate( pcTimerName, x_Timer_Period_دننه_Ticks, xAutoReload, pvTimerID, pxCallbackFunction )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTimerCreate
+    #تعریف_کړه traceRETURN_xTimerCreate( pxNewTimer )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTimerCreateStatic
+    #تعریف_کړه traceENTER_xTimerCreateStatic( pcTimerName, x_Timer_Period_دننه_Ticks, xAutoReload, pvTimerID, pxCallbackFunction, px_Timer_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTimerCreateStatic
+    #تعریف_کړه traceRETURN_xTimerCreateStatic( pxNewTimer )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTimerGenericCommandFromTask
+    #تعریف_کړه traceENTER_xTimerGenericCommandFromTask( xTimer, xCommandID, x_Optional_ارزښت, px_Higher_لومړیتوب_Task_Woken, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTimerGenericCommandFromTask
+    #تعریف_کړه traceRETURN_xTimerGenericCommandFromTask( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTimerGenericCommandFromISR
+    #تعریف_کړه traceENTER_xTimerGenericCommandFromISR( xTimer, xCommandID, x_Optional_ارزښت, px_Higher_لومړیتوب_Task_Woken, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTimerGenericCommandFromISR
+    #تعریف_کړه traceRETURN_xTimerGenericCommandFromISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTimerGetTimerDaemonTaskHandle
+    #تعریف_کړه traceENTER_xTimerGetTimerDaemonTaskHandle()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTimerGetTimerDaemonTaskHandle
+    #تعریف_کړه traceRETURN_xTimerGetTimerDaemonTaskHandle( xTimerTaskHandle )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTimerGetPeriod
+    #تعریف_کړه traceENTER_xTimerGetPeriod( xTimer )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTimerGetPeriod
+    #تعریف_کړه traceRETURN_xTimerGetPeriod( x_Timer_Period_دننه_Ticks )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Timer_سېټ_Reload_ډېرپېښ
+    #تعریف_کړه trace_ENTER_v_Timer_سېټ_Reload_ډېرپېښ( xTimer, xAutoReload )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Timer_سېټ_Reload_ډېرپېښ
+    #تعریف_کړه trace_RETURN_v_Timer_سېټ_Reload_ډېرپېښ()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Timer_Get_Reload_ډېرپېښ
+    #تعریف_کړه trace_ENTER_x_Timer_Get_Reload_ډېرپېښ( xTimer )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Timer_Get_Reload_ډېرپېښ
+    #تعریف_کړه trace_RETURN_x_Timer_Get_Reload_ډېرپېښ( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_Timer_Get_Reload_ډېرپېښ
+    #تعریف_کړه trace_ENTER_ux_Timer_Get_Reload_ډېرپېښ( xTimer )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_Timer_Get_Reload_ډېرپېښ
+    #تعریف_کړه trace_RETURN_ux_Timer_Get_Reload_ډېرپېښ( uxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Timer_Get_Expiry_وخت
+    #تعریف_کړه trace_ENTER_x_Timer_Get_Expiry_وخت( xTimer )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Timer_Get_Expiry_وخت
+    #تعریف_کړه trace_RETURN_x_Timer_Get_Expiry_وخت( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Timer_Get_Static_بفر
+    #تعریف_کړه trace_ENTER_x_Timer_Get_Static_بفر( xTimer, ppx_Timer_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Timer_Get_Static_بفر
+    #تعریف_کړه trace_RETURN_x_Timer_Get_Static_بفر( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_pcTimerGetName
+    #تعریف_کړه traceENTER_pcTimerGetName( xTimer )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_pcTimerGetName
+    #تعریف_کړه traceRETURN_pcTimerGetName( pcTimerName )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Timer_Is_Timer_فعال
+    #تعریف_کړه trace_ENTER_x_Timer_Is_Timer_فعال( xTimer )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Timer_Is_Timer_فعال
+    #تعریف_کړه trace_RETURN_x_Timer_Is_Timer_فعال( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_pvTimerGetTimerID
+    #تعریف_کړه traceENTER_pvTimerGetTimerID( xTimer )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_pvTimerGetTimerID
+    #تعریف_کړه traceRETURN_pvTimerGetTimerID( pvReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Timer_سېټ_Timer_ID
+    #تعریف_کړه trace_ENTER_v_Timer_سېټ_Timer_ID( xTimer, pvNewID )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Timer_سېټ_Timer_ID
+    #تعریف_کړه trace_RETURN_v_Timer_سېټ_Timer_ID()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTimerPendFunctionCallFromISR
+    #تعریف_کړه traceENTER_xTimerPendFunctionCallFromISR( x_Function_منزل_Pend, pvParameter1, ulParameter2, px_Higher_لومړیتوب_Task_Woken )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTimerPendFunctionCallFromISR
+    #تعریف_کړه traceRETURN_xTimerPendFunctionCallFromISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTimerPendFunctionCall
+    #تعریف_کړه traceENTER_xTimerPendFunctionCall( x_Function_منزل_Pend, pvParameter1, ulParameter2, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTimerPendFunctionCall
+    #تعریف_کړه traceRETURN_xTimerPendFunctionCall( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_Timer_Get_Timer_شمېره
+    #تعریف_کړه trace_ENTER_ux_Timer_Get_Timer_شمېره( xTimer )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_Timer_Get_Timer_شمېره
+    #تعریف_کړه trace_RETURN_ux_Timer_Get_Timer_شمېره( ux_Timer_شمېره )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Timer_سېټ_Timer_شمېره
+    #تعریف_کړه trace_ENTER_v_Timer_سېټ_Timer_شمېره( xTimer, ux_Timer_شمېره )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Timer_سېټ_Timer_شمېره
+    #تعریف_کړه trace_RETURN_v_Timer_سېټ_Timer_شمېره()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskCreateStatic
+    #تعریف_کړه traceENTER_xTaskCreateStatic( px_Task_کوډ, pcName, ux_ډېری_ژوروالی, pvParameters, ux_لومړیتوب, pux_ډېری_بفر, px_Task_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskCreateStatic
+    #تعریف_کړه traceRETURN_xTaskCreateStatic( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Task_Create_Static_Affinity_سېټ
+    #تعریف_کړه trace_ENTER_x_Task_Create_Static_Affinity_سېټ( px_Task_کوډ, pcName, ux_ډېری_ژوروالی, pvParameters, ux_لومړیتوب, pux_ډېری_بفر, px_Task_بفر, ux_Core_Affinity_ماسک )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Task_Create_Static_Affinity_سېټ
+    #تعریف_کړه trace_RETURN_x_Task_Create_Static_Affinity_سېټ( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskCreateRestrictedStatic
+    #تعریف_کړه traceENTER_xTaskCreateRestrictedStatic( pxTaskDefinition, pxCreatedTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskCreateRestrictedStatic
+    #تعریف_کړه traceRETURN_xTaskCreateRestrictedStatic( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Task_Create_Restricted_Static_Affinity_سېټ
+    #تعریف_کړه trace_ENTER_x_Task_Create_Restricted_Static_Affinity_سېټ( pxTaskDefinition, ux_Core_Affinity_ماسک, pxCreatedTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Task_Create_Restricted_Static_Affinity_سېټ
+    #تعریف_کړه trace_RETURN_x_Task_Create_Restricted_Static_Affinity_سېټ( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskCreateRestricted
+    #تعریف_کړه traceENTER_xTaskCreateRestricted( pxTaskDefinition, pxCreatedTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskCreateRestricted
+    #تعریف_کړه traceRETURN_xTaskCreateRestricted( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Task_Create_Restricted_Affinity_سېټ
+    #تعریف_کړه trace_ENTER_x_Task_Create_Restricted_Affinity_سېټ( pxTaskDefinition, ux_Core_Affinity_ماسک, pxCreatedTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Task_Create_Restricted_Affinity_سېټ
+    #تعریف_کړه trace_RETURN_x_Task_Create_Restricted_Affinity_سېټ( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskCreate
+    #تعریف_کړه traceENTER_xTaskCreate( px_Task_کوډ, pcName, ux_ډېری_ژوروالی, pvParameters, ux_لومړیتوب, pxCreatedTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskCreate
+    #تعریف_کړه traceRETURN_xTaskCreate( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Task_Create_Affinity_سېټ
+    #تعریف_کړه trace_ENTER_x_Task_Create_Affinity_سېټ( px_Task_کوډ, pcName, ux_ډېری_ژوروالی, pvParameters, ux_لومړیتوب, ux_Core_Affinity_ماسک, pxCreatedTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Task_Create_Affinity_سېټ
+    #تعریف_کړه trace_RETURN_x_Task_Create_Affinity_سېټ( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskDelete
+    #تعریف_کړه traceENTER_vTaskDelete( x_Task_منزل_Delete )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskDelete
+    #تعریف_کړه traceRETURN_vTaskDelete()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskDelayUntil
+    #تعریف_کړه traceENTER_xTaskDelayUntil( px_پخوانی_Wake_وخت, x_وخت_Increment )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskDelayUntil
+    #تعریف_کړه traceRETURN_xTaskDelayUntil( xShouldDelay )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskDelay
+    #تعریف_کړه traceENTER_vTaskDelay( x_Ticks_منزل_Delay )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskDelay
+    #تعریف_کړه traceRETURN_vTaskDelay()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_eTaskGetState
+    #تعریف_کړه traceENTER_eTaskGetState( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_eTaskGetState
+    #تعریف_کړه traceRETURN_eTaskGetState( eReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_Task_لومړیتوب_Get
+    #تعریف_کړه trace_ENTER_ux_Task_لومړیتوب_Get( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_Task_لومړیتوب_Get
+    #تعریف_کړه trace_RETURN_ux_Task_لومړیتوب_Get( uxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_Task_لومړیتوب_Get_From_ISR
+    #تعریف_کړه trace_ENTER_ux_Task_لومړیتوب_Get_From_ISR( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_Task_لومړیتوب_Get_From_ISR
+    #تعریف_کړه trace_RETURN_ux_Task_لومړیتوب_Get_From_ISR( uxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_Task_بنسټ_لومړیتوب_Get
+    #تعریف_کړه trace_ENTER_ux_Task_بنسټ_لومړیتوب_Get( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_Task_بنسټ_لومړیتوب_Get
+    #تعریف_کړه trace_RETURN_ux_Task_بنسټ_لومړیتوب_Get( uxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_Task_بنسټ_لومړیتوب_Get_From_ISR
+    #تعریف_کړه trace_ENTER_ux_Task_بنسټ_لومړیتوب_Get_From_ISR( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_Task_بنسټ_لومړیتوب_Get_From_ISR
+    #تعریف_کړه trace_RETURN_ux_Task_بنسټ_لومړیتوب_Get_From_ISR( uxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Task_لومړیتوب_سېټ
+    #تعریف_کړه trace_ENTER_v_Task_لومړیتوب_سېټ( xTask, ux_New_لومړیتوب )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Task_لومړیتوب_سېټ
+    #تعریف_کړه trace_RETURN_v_Task_لومړیتوب_سېټ()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Task_Core_Affinity_سېټ
+    #تعریف_کړه trace_ENTER_v_Task_Core_Affinity_سېټ( xTask, ux_Core_Affinity_ماسک )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Task_Core_Affinity_سېټ
+    #تعریف_کړه trace_RETURN_v_Task_Core_Affinity_سېټ()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskCoreAffinityGet
+    #تعریف_کړه traceENTER_vTaskCoreAffinityGet( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskCoreAffinityGet
+    #تعریف_کړه traceRETURN_vTaskCoreAffinityGet( ux_Core_Affinity_ماسک )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskPreemptionDisable
+    #تعریف_کړه traceENTER_vTaskPreemptionDisable( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskPreemptionDisable
+    #تعریف_کړه traceRETURN_vTaskPreemptionDisable()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskPreemptionEnable
+    #تعریف_کړه traceENTER_vTaskPreemptionEnable( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskPreemptionEnable
+    #تعریف_کړه traceRETURN_vTaskPreemptionEnable()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskSuspend
+    #تعریف_کړه traceENTER_vTaskSuspend( x_Task_منزل_Suspend )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskSuspend
+    #تعریف_کړه traceRETURN_vTaskSuspend()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskResume
+    #تعریف_کړه traceENTER_vTaskResume( x_Task_منزل_Resume )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskResume
+    #تعریف_کړه traceRETURN_vTaskResume()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskResumeFromISR
+    #تعریف_کړه traceENTER_xTaskResumeFromISR( x_Task_منزل_Resume )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskResumeFromISR
+    #تعریف_کړه traceRETURN_xTaskResumeFromISR( xYieldRequired )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Task_پیل_Scheduler
+    #تعریف_کړه trace_ENTER_v_Task_پیل_Scheduler()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Task_پیل_Scheduler
+    #تعریف_کړه trace_RETURN_v_Task_پیل_Scheduler()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Task_پای_ټکی_Scheduler
+    #تعریف_کړه trace_ENTER_v_Task_پای_ټکی_Scheduler()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Task_پای_ټکی_Scheduler
+    #تعریف_کړه trace_RETURN_v_Task_پای_ټکی_Scheduler()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskSuspendAll
+    #تعریف_کړه traceENTER_vTaskSuspendAll()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskSuspendAll
+    #تعریف_کړه traceRETURN_vTaskSuspendAll()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskResumeAll
+    #تعریف_کړه traceENTER_xTaskResumeAll()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskResumeAll
+    #تعریف_کړه traceRETURN_xTaskResumeAll( xAlreadyYielded )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Task_Get_Tick_شمېر
+    #تعریف_کړه trace_ENTER_x_Task_Get_Tick_شمېر()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Task_Get_Tick_شمېر
+    #تعریف_کړه trace_RETURN_x_Task_Get_Tick_شمېر( xTicks )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Task_Get_Tick_شمېر_From_ISR
+    #تعریف_کړه trace_ENTER_x_Task_Get_Tick_شمېر_From_ISR()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Task_Get_Tick_شمېر_From_ISR
+    #تعریف_کړه trace_RETURN_x_Task_Get_Tick_شمېر_From_ISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_Task_Get_شمېره_د_Tasks
+    #تعریف_کړه trace_ENTER_ux_Task_Get_شمېره_د_Tasks()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_Task_Get_شمېره_د_Tasks
+    #تعریف_کړه trace_RETURN_ux_Task_Get_شمېره_د_Tasks( ux_Current_شمېره_د_Tasks )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_pcTaskGetName
+    #تعریف_کړه traceENTER_pcTaskGetName( x_Task_منزل_Query )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_pcTaskGetName
+    #تعریف_کړه traceRETURN_pcTaskGetName( pcTaskName )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskGetHandle
+    #تعریف_کړه traceENTER_xTaskGetHandle( pc_Name_منزل_Query )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskGetHandle
+    #تعریف_کړه traceRETURN_xTaskGetHandle( pxTCB )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskGetStaticBuffers
+    #تعریف_کړه traceENTER_xTaskGetStaticBuffers( xTask, ppux_ډېری_بفر, ppx_Task_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskGetStaticBuffers
+    #تعریف_کړه traceRETURN_xTaskGetStaticBuffers( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_uxTaskGetSystemState
+    #تعریف_کړه traceENTER_uxTaskGetSystemState( px_Task_حالت_Array, ux_Array_اندازه, pul_ټول_پرلپسې_وخت )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_uxTaskGetSystemState
+    #تعریف_کړه traceRETURN_uxTaskGetSystemState( uxTask )
+#د_که_پای
+
+#إذا ( config_شمېره_د_CORES == 1 )
+    #که_نه_تعریف_شوی traceENTER_xTaskGetIdleTaskHandle
+        #تعریف_کړه traceENTER_xTaskGetIdleTaskHandle()
+    #د_که_پای
+#د_که_پای
+
+#إذا ( config_شمېره_د_CORES == 1 )
+    #که_نه_تعریف_شوی traceRETURN_xTaskGetIdleTaskHandle
+        #تعریف_کړه traceRETURN_xTaskGetIdleTaskHandle( xIdleTaskHandle )
+    #د_که_پای
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskGetIdleTaskHandleForCore
+    #تعریف_کړه traceENTER_xTaskGetIdleTaskHandleForCore( xCoreID )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskGetIdleTaskHandleForCore
+    #تعریف_کړه traceRETURN_xTaskGetIdleTaskHandleForCore( xIdleTaskHandle )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Task_ګام_Tick
+    #تعریف_کړه trace_ENTER_v_Task_ګام_Tick( x_Ticks_منزل_Jump )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Task_ګام_Tick
+    #تعریف_کړه trace_RETURN_v_Task_ګام_Tick()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Task_Catch_پورته_Ticks
+    #تعریف_کړه trace_ENTER_x_Task_Catch_پورته_Ticks( x_Ticks_منزل_Catch_پورته )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Task_Catch_پورته_Ticks
+    #تعریف_کړه trace_RETURN_x_Task_Catch_پورته_Ticks( xYieldOccurred )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskAbortDelay
+    #تعریف_کړه traceENTER_xTaskAbortDelay( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskAbortDelay
+    #تعریف_کړه traceRETURN_xTaskAbortDelay( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskIncrementTick
+    #تعریف_کړه traceENTER_xTaskIncrementTick()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskIncrementTick
+    #تعریف_کړه traceRETURN_xTaskIncrementTick( xSwitchRequired )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Task_سېټ_Application_Task_نښان
+    #تعریف_کړه trace_ENTER_v_Task_سېټ_Application_Task_نښان( xTask, pxHookFunction )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Task_سېټ_Application_Task_نښان
+    #تعریف_کړه trace_RETURN_v_Task_سېټ_Application_Task_نښان()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Task_Get_Application_Task_نښان
+    #تعریف_کړه trace_ENTER_x_Task_Get_Application_Task_نښان( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Task_Get_Application_Task_نښان
+    #تعریف_کړه trace_RETURN_x_Task_Get_Application_Task_نښان( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Task_Get_Application_Task_نښان_From_ISR
+    #تعریف_کړه trace_ENTER_x_Task_Get_Application_Task_نښان_From_ISR( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Task_Get_Application_Task_نښان_From_ISR
+    #تعریف_کړه trace_RETURN_x_Task_Get_Application_Task_نښان_From_ISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskCallApplicationTaskHook
+    #تعریف_کړه traceENTER_xTaskCallApplicationTaskHook( xTask, pvParameter )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskCallApplicationTaskHook
+    #تعریف_کړه traceRETURN_xTaskCallApplicationTaskHook( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskSwitchContext
+    #تعریف_کړه traceENTER_vTaskSwitchContext()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskSwitchContext
+    #تعریف_کړه traceRETURN_vTaskSwitchContext()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Task_ځای_پرځای_کړه_On_Event_List
+    #تعریف_کړه trace_ENTER_v_Task_ځای_پرځای_کړه_On_Event_List( pxEventList, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Task_ځای_پرځای_کړه_On_Event_List
+    #تعریف_کړه trace_RETURN_v_Task_ځای_پرځای_کړه_On_Event_List()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Task_ځای_پرځای_کړه_On_Unordered_Event_List
+    #تعریف_کړه trace_ENTER_v_Task_ځای_پرځای_کړه_On_Unordered_Event_List( pxEventList, x_توکی_ارزښت, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Task_ځای_پرځای_کړه_On_Unordered_Event_List
+    #تعریف_کړه trace_RETURN_v_Task_ځای_پرځای_کړه_On_Unordered_Event_List()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Task_ځای_پرځای_کړه_On_Event_List_Restricted
+    #تعریف_کړه trace_ENTER_v_Task_ځای_پرځای_کړه_On_Event_List_Restricted( pxEventList, x_Ticks_منزل_Wait, xWaitIndefinitely )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Task_ځای_پرځای_کړه_On_Event_List_Restricted
+    #تعریف_کړه trace_RETURN_v_Task_ځای_پرځای_کړه_On_Event_List_Restricted()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskRemoveFromEventList
+    #تعریف_کړه traceENTER_xTaskRemoveFromEventList( pxEventList )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskRemoveFromEventList
+    #تعریف_کړه traceRETURN_xTaskRemoveFromEventList( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskRemoveFromUnorderedEventList
+    #تعریف_کړه traceENTER_vTaskRemoveFromUnorderedEventList( px_Event_List_توکی, x_توکی_ارزښت )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskRemoveFromUnorderedEventList
+    #تعریف_کړه traceRETURN_vTaskRemoveFromUnorderedEventList()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Task_سېټ_وخت_بهر_State
+    #تعریف_کړه trace_ENTER_v_Task_سېټ_وخت_بهر_State( px_وخت_بهر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Task_سېټ_وخت_بهر_State
+    #تعریف_کړه trace_RETURN_v_Task_سېټ_وخت_بهر_State()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Task_دننی_سېټ_وخت_بهر_State
+    #تعریف_کړه trace_ENTER_v_Task_دننی_سېټ_وخت_بهر_State( px_وخت_بهر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Task_دننی_سېټ_وخت_بهر_State
+    #تعریف_کړه trace_RETURN_v_Task_دننی_سېټ_وخت_بهر_State()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Task_Check_For_وخت_بهر
+    #تعریف_کړه trace_ENTER_x_Task_Check_For_وخت_بهر( px_وخت_بهر, px_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Task_Check_For_وخت_بهر
+    #تعریف_کړه trace_RETURN_x_Task_Check_For_وخت_بهر( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskMissedYield
+    #تعریف_کړه traceENTER_vTaskMissedYield()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskMissedYield
+    #تعریف_کړه traceRETURN_vTaskMissedYield()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_Task_Get_Task_شمېره
+    #تعریف_کړه trace_ENTER_ux_Task_Get_Task_شمېره( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_Task_Get_Task_شمېره
+    #تعریف_کړه trace_RETURN_ux_Task_Get_Task_شمېره( uxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Task_سېټ_Task_شمېره
+    #تعریف_کړه trace_ENTER_v_Task_سېټ_Task_شمېره( xTask, uxHandle )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Task_سېټ_Task_شمېره
+    #تعریف_کړه trace_RETURN_v_Task_سېټ_Task_شمېره()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_e_Task_Confirm_Sleep_ډېرپېښ_حالت
+    #تعریف_کړه trace_ENTER_e_Task_Confirm_Sleep_ډېرپېښ_حالت()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_e_Task_Confirm_Sleep_ډېرپېښ_حالت
+    #تعریف_کړه trace_RETURN_e_Task_Confirm_Sleep_ډېرپېښ_حالت( eReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Task_سېټ_Thread_Local_Storage_اشاره_ګر
+    #تعریف_کړه trace_ENTER_v_Task_سېټ_Thread_Local_Storage_اشاره_ګر( x_Task_منزل_سېټ, x_شاخص, pv_ارزښت )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Task_سېټ_Thread_Local_Storage_اشاره_ګر
+    #تعریف_کړه trace_RETURN_v_Task_سېټ_Thread_Local_Storage_اشاره_ګر()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_pv_Task_Get_Thread_Local_Storage_اشاره_ګر
+    #تعریف_کړه trace_ENTER_pv_Task_Get_Thread_Local_Storage_اشاره_ګر( x_Task_منزل_Query, x_شاخص )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_pv_Task_Get_Thread_Local_Storage_اشاره_ګر
+    #تعریف_کړه trace_RETURN_pv_Task_Get_Thread_Local_Storage_اشاره_ګر( pvReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskAllocateMPURegions
+    #تعریف_کړه traceENTER_vTaskAllocateMPURegions( x_Task_منزل_Modify, pxRegions )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskAllocateMPURegions
+    #تعریف_کړه traceRETURN_vTaskAllocateMPURegions()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskGetInfo
+    #تعریف_کړه traceENTER_vTaskGetInfo( xTask, px_Task_حالت, x_Get_Free_ډېری_Space, eState )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskGetInfo
+    #تعریف_کړه traceRETURN_vTaskGetInfo()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_Task_Get_ډېری_لوړ_Water_Mark2
+    #تعریف_کړه trace_ENTER_ux_Task_Get_ډېری_لوړ_Water_Mark2( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_Task_Get_ډېری_لوړ_Water_Mark2
+    #تعریف_کړه trace_RETURN_ux_Task_Get_ډېری_لوړ_Water_Mark2( uxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_Task_Get_ډېری_لوړ_Water_Mark
+    #تعریف_کړه trace_ENTER_ux_Task_Get_ډېری_لوړ_Water_Mark( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_Task_Get_ډېری_لوړ_Water_Mark
+    #تعریف_کړه trace_RETURN_ux_Task_Get_ډېری_لوړ_Water_Mark( uxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskGetCurrentTaskHandle
+    #تعریف_کړه traceENTER_xTaskGetCurrentTaskHandle()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskGetCurrentTaskHandle
+    #تعریف_کړه traceRETURN_xTaskGetCurrentTaskHandle( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskGetCurrentTaskHandleForCore
+    #تعریف_کړه traceENTER_xTaskGetCurrentTaskHandleForCore( xCoreID )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskGetCurrentTaskHandleForCore
+    #تعریف_کړه traceRETURN_xTaskGetCurrentTaskHandleForCore( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskGetSchedulerState
+    #تعریف_کړه traceENTER_xTaskGetSchedulerState()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskGetSchedulerState
+    #تعریف_کړه traceRETURN_xTaskGetSchedulerState( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Task_لومړیتوب_Inherit
+    #تعریف_کړه trace_ENTER_x_Task_لومړیتوب_Inherit( pxMutexHolder )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Task_لومړیتوب_Inherit
+    #تعریف_کړه trace_RETURN_x_Task_لومړیتوب_Inherit( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_Task_لومړیتوب_Disinherit
+    #تعریف_کړه trace_ENTER_x_Task_لومړیتوب_Disinherit( pxMutexHolder )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_Task_لومړیتوب_Disinherit
+    #تعریف_کړه trace_RETURN_x_Task_لومړیتوب_Disinherit( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Task_لومړیتوب_Disinherit_After_Timeout
+    #تعریف_کړه trace_ENTER_v_Task_لومړیتوب_Disinherit_After_Timeout( pxMutexHolder, ux_Highest_لومړیتوب_انتظار_Task )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Task_لومړیتوب_Disinherit_After_Timeout
+    #تعریف_کړه trace_RETURN_v_Task_لومړیتوب_Disinherit_After_Timeout()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskYieldWithinAPI
+    #تعریف_کړه traceENTER_vTaskYieldWithinAPI()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskYieldWithinAPI
+    #تعریف_کړه traceRETURN_vTaskYieldWithinAPI()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskEnterCritical
+    #تعریف_کړه traceENTER_vTaskEnterCritical()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskEnterCritical
+    #تعریف_کړه traceRETURN_vTaskEnterCritical()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskEnterCriticalFromISR
+    #تعریف_کړه traceENTER_vTaskEnterCriticalFromISR()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskEnterCriticalFromISR
+    #تعریف_کړه traceRETURN_vTaskEnterCriticalFromISR( ux_Saved_مداخله_حالت )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskExitCritical
+    #تعریف_کړه traceENTER_vTaskExitCritical()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskExitCritical
+    #تعریف_کړه traceRETURN_vTaskExitCritical()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskExitCriticalFromISR
+    #تعریف_کړه traceENTER_vTaskExitCriticalFromISR( ux_Saved_مداخله_حالت )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskExitCriticalFromISR
+    #تعریف_کړه traceRETURN_vTaskExitCriticalFromISR()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskListTasks
+    #تعریف_کړه traceENTER_vTaskListTasks( pc_Write_بفر, ux_بفر_اوږدتیا )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskListTasks
+    #تعریف_کړه traceRETURN_vTaskListTasks()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Task_Get_پرلپسې_وخت_Statistics
+    #تعریف_کړه trace_ENTER_v_Task_Get_پرلپسې_وخت_Statistics( pc_Write_بفر, ux_بفر_اوږدتیا )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Task_Get_پرلپسې_وخت_Statistics
+    #تعریف_کړه trace_RETURN_v_Task_Get_پرلپسې_وخت_Statistics()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_Task_Reset_Event_توکی_ارزښت
+    #تعریف_کړه trace_ENTER_ux_Task_Reset_Event_توکی_ارزښت()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_Task_Reset_Event_توکی_ارزښت
+    #تعریف_کړه trace_RETURN_ux_Task_Reset_Event_توکی_ارزښت( uxReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_pv_Task_Increment_Mutex_Held_شمېر
+    #تعریف_کړه trace_ENTER_pv_Task_Increment_Mutex_Held_شمېر()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_pv_Task_Increment_Mutex_Held_شمېر
+    #تعریف_کړه trace_RETURN_pv_Task_Increment_Mutex_Held_شمېر( pxTCB )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_ulTaskGenericNotifyTake
+    #تعریف_کړه traceENTER_ulTaskGenericNotifyTake( ux_شاخص_منزل_Wait_On, x_Clear_شمېر_On_Exit, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_ulTaskGenericNotifyTake
+    #تعریف_کړه traceRETURN_ulTaskGenericNotifyTake( ulReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskGenericNotifyWait
+    #تعریف_کړه traceENTER_xTaskGenericNotifyWait( ux_شاخص_منزل_Wait_On, ul_بټونه_منزل_Clear_On_ثبت, ul_بټونه_منزل_Clear_On_Exit, pul_Notification_ارزښت, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskGenericNotifyWait
+    #تعریف_کړه traceRETURN_xTaskGenericNotifyWait( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskGenericNotify
+    #تعریف_کړه traceENTER_xTaskGenericNotify( x_Task_منزل_Notify, ux_شاخص_منزل_Notify, ul_ارزښت, eAction, pul_پخوانی_Notification_ارزښت )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskGenericNotify
+    #تعریف_کړه traceRETURN_xTaskGenericNotify( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskGenericNotifyFromISR
+    #تعریف_کړه traceENTER_xTaskGenericNotifyFromISR( x_Task_منزل_Notify, ux_شاخص_منزل_Notify, ul_ارزښت, eAction, pul_پخوانی_Notification_ارزښت, px_Higher_لومړیتوب_Task_Woken )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskGenericNotifyFromISR
+    #تعریف_کړه traceRETURN_xTaskGenericNotifyFromISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vTaskGenericNotifyGiveFromISR
+    #تعریف_کړه traceENTER_vTaskGenericNotifyGiveFromISR( x_Task_منزل_Notify, ux_شاخص_منزل_Notify, px_Higher_لومړیتوب_Task_Woken )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vTaskGenericNotifyGiveFromISR
+    #تعریف_کړه traceRETURN_vTaskGenericNotifyGiveFromISR()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskGenericNotifyStateClear
+    #تعریف_کړه traceENTER_xTaskGenericNotifyStateClear( xTask, ux_شاخص_منزل_Clear )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskGenericNotifyStateClear
+    #تعریف_کړه traceRETURN_xTaskGenericNotifyStateClear( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ul_Task_Generic_Notify_ارزښت_Clear
+    #تعریف_کړه trace_ENTER_ul_Task_Generic_Notify_ارزښت_Clear( xTask, ux_شاخص_منزل_Clear, ul_بټونه_منزل_Clear )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ul_Task_Generic_Notify_ارزښت_Clear
+    #تعریف_کړه trace_RETURN_ul_Task_Generic_Notify_ارزښت_Clear( ulReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ul_Task_Get_پرلپسې_وخت_Counter
+    #تعریف_کړه trace_ENTER_ul_Task_Get_پرلپسې_وخت_Counter( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ul_Task_Get_پرلپسې_وخت_Counter
+    #تعریف_کړه trace_RETURN_ul_Task_Get_پرلپسې_وخت_Counter( ul_پرلپسې_وخت_Counter )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ul_Task_Get_پرلپسې_وخت_Percent
+    #تعریف_کړه trace_ENTER_ul_Task_Get_پرلپسې_وخت_Percent( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ul_Task_Get_پرلپسې_وخت_Percent
+    #تعریف_کړه trace_RETURN_ul_Task_Get_پرلپسې_وخت_Percent( ulReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ul_Task_Get_Idle_پرلپسې_وخت_Counter
+    #تعریف_کړه trace_ENTER_ul_Task_Get_Idle_پرلپسې_وخت_Counter()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ul_Task_Get_Idle_پرلپسې_وخت_Counter
+    #تعریف_کړه trace_RETURN_ul_Task_Get_Idle_پرلپسې_وخت_Counter( ulReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ul_Task_Get_Idle_پرلپسې_وخت_Percent
+    #تعریف_کړه trace_ENTER_ul_Task_Get_Idle_پرلپسې_وخت_Percent()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ul_Task_Get_Idle_پرلپسې_وخت_Percent
+    #تعریف_کړه trace_RETURN_ul_Task_Get_Idle_پرلپسې_وخت_Percent( ulReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xTaskGetMPUSettings
+    #تعریف_کړه traceENTER_xTaskGetMPUSettings( xTask )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xTaskGetMPUSettings
+    #تعریف_کړه traceRETURN_xTaskGetMPUSettings( xMPUSettings )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_Generic_Create
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_Generic_Create( x_بفر_اندازه_بایټونه, x_Trigger_Level_بایټونه, x_بهیر_بفر_Type, pxSendCompletedCallback, pxReceiveCompletedCallback )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_Generic_Create
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_Generic_Create( pv_Allocated_حافظه )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_Generic_Create_Static
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_Generic_Create_Static( x_بفر_اندازه_بایټونه, x_Trigger_Level_بایټونه, x_بهیر_بفر_Type, puc_بهیر_بفر_Storage_Area, px_Static_بهیر_بفر, pxSendCompletedCallback, pxReceiveCompletedCallback )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_Generic_Create_Static
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_Generic_Create_Static( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_Get_Static_Buffers
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_Get_Static_Buffers( x_بهیر_بفر, ppuc_بهیر_بفر_Storage_Area, ppx_Static_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_Get_Static_Buffers
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_Get_Static_Buffers( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_بهیر_بفر_Delete
+    #تعریف_کړه trace_ENTER_v_بهیر_بفر_Delete( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_بهیر_بفر_Delete
+    #تعریف_کړه trace_RETURN_v_بهیر_بفر_Delete()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_Reset
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_Reset( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_Reset
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_Reset( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_Reset_From_ISR
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_Reset_From_ISR( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_Reset_From_ISR
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_Reset_From_ISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_سېټ_Trigger_Level
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_سېټ_Trigger_Level( x_بهیر_بفر, xTriggerLevel )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_سېټ_Trigger_Level
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_سېټ_Trigger_Level( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_Spaces_شته
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_Spaces_شته( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_Spaces_شته
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_Spaces_شته( xSpace )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_بایټونه_شته
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_بایټونه_شته( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_بایټونه_شته
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_بایټونه_شته( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_Send
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_Send( x_بهیر_بفر, pv_Tx_معلومات, x_معلومات_اوږدتیا_بایټونه, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_Send
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_Send( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_Send_From_ISR
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_Send_From_ISR( x_بهیر_بفر, pv_Tx_معلومات, x_معلومات_اوږدتیا_بایټونه, px_Higher_لومړیتوب_Task_Woken )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_Send_From_ISR
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_Send_From_ISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_Receive
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_Receive( x_بهیر_بفر, pv_Rx_معلومات, x_بفر_اوږدتیا_بایټونه, x_Ticks_منزل_Wait )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_Receive
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_Receive( x_Received_اوږدتیا )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_بل_پیغام_اوږدتیا_بایټونه
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_بل_پیغام_اوږدتیا_بایټونه( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_بل_پیغام_اوږدتیا_بایټونه
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_بل_پیغام_اوږدتیا_بایټونه( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_Receive_From_ISR
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_Receive_From_ISR( x_بهیر_بفر, pv_Rx_معلومات, x_بفر_اوږدتیا_بایټونه, px_Higher_لومړیتوب_Task_Woken )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_Receive_From_ISR
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_Receive_From_ISR( x_Received_اوږدتیا )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_Is_تشه
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_Is_تشه( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_Is_تشه
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_Is_تشه( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_Is_ډک
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_Is_ډک( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_Is_ډک
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_Is_ډک( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_Send_Completed_From_ISR
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_Send_Completed_From_ISR( x_بهیر_بفر, px_Higher_لومړیتوب_Task_Woken )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_Send_Completed_From_ISR
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_Send_Completed_From_ISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_x_بهیر_بفر_Receive_Completed_From_ISR
+    #تعریف_کړه trace_ENTER_x_بهیر_بفر_Receive_Completed_From_ISR( x_بهیر_بفر, px_Higher_لومړیتوب_Task_Woken )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_x_بهیر_بفر_Receive_Completed_From_ISR
+    #تعریف_کړه trace_RETURN_x_بهیر_بفر_Receive_Completed_From_ISR( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_بهیر_بفر_Get_بهیر_بفر_Notification_شاخص
+    #تعریف_کړه trace_ENTER_ux_بهیر_بفر_Get_بهیر_بفر_Notification_شاخص( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_بهیر_بفر_Get_بهیر_بفر_Notification_شاخص
+    #تعریف_کړه trace_RETURN_ux_بهیر_بفر_Get_بهیر_بفر_Notification_شاخص( ux_Notification_شاخص )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_بهیر_بفر_سېټ_بهیر_بفر_Notification_شاخص
+    #تعریف_کړه trace_ENTER_v_بهیر_بفر_سېټ_بهیر_بفر_Notification_شاخص( x_بهیر_بفر, ux_Notification_شاخص )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_بهیر_بفر_سېټ_بهیر_بفر_Notification_شاخص
+    #تعریف_کړه trace_RETURN_v_بهیر_بفر_سېټ_بهیر_بفر_Notification_شاخص()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_ux_بهیر_بفر_Get_بهیر_بفر_شمېره
+    #تعریف_کړه trace_ENTER_ux_بهیر_بفر_Get_بهیر_بفر_شمېره( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_ux_بهیر_بفر_Get_بهیر_بفر_شمېره
+    #تعریف_کړه trace_RETURN_ux_بهیر_بفر_Get_بهیر_بفر_شمېره( ux_بهیر_بفر_شمېره )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_بهیر_بفر_سېټ_بهیر_بفر_شمېره
+    #تعریف_کړه trace_ENTER_v_بهیر_بفر_سېټ_بهیر_بفر_شمېره( x_بهیر_بفر, ux_بهیر_بفر_شمېره )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_بهیر_بفر_سېټ_بهیر_بفر_شمېره
+    #تعریف_کړه trace_RETURN_v_بهیر_بفر_سېټ_بهیر_بفر_شمېره()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_uc_بهیر_بفر_Get_بهیر_بفر_Type
+    #تعریف_کړه trace_ENTER_uc_بهیر_بفر_Get_بهیر_بفر_Type( x_بهیر_بفر )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_uc_بهیر_بفر_Get_بهیر_بفر_Type
+    #تعریف_کړه trace_RETURN_uc_بهیر_بفر_Get_بهیر_بفر_Type( uc_بهیر_بفر_Type )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_vListInitialise
+    #تعریف_کړه traceENTER_vListInitialise( pxList )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_vListInitialise
+    #تعریف_کړه traceRETURN_vListInitialise()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_List_Initialise_توکی
+    #تعریف_کړه trace_ENTER_v_List_Initialise_توکی( px_توکی )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_List_Initialise_توکی
+    #تعریف_کړه trace_RETURN_v_List_Initialise_توکی()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_List_ورننباسه_پای_ټکی
+    #تعریف_کړه trace_ENTER_v_List_ورننباسه_پای_ټکی( pxList, px_New_List_توکی )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_List_ورننباسه_پای_ټکی
+    #تعریف_کړه trace_RETURN_v_List_ورننباسه_پای_ټکی()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_List_ورننباسه
+    #تعریف_کړه trace_ENTER_v_List_ورننباسه( pxList, px_New_List_توکی )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_List_ورننباسه
+    #تعریف_کړه trace_RETURN_v_List_ورننباسه()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_uxListRemove
+    #تعریف_کړه traceENTER_uxListRemove( px_توکی_منزل_Remove )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_uxListRemove
+    #تعریف_کړه traceRETURN_uxListRemove( ux_شمېره_د_توکي )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xCoRoutineCreate
+    #تعریف_کړه traceENTER_xCoRoutineCreate( px_Co_Routine_کوډ, ux_لومړیتوب, ux_شاخص )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xCoRoutineCreate
+    #تعریف_کړه traceRETURN_xCoRoutineCreate( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Co_Routine_جمع_کړه_منزل_Delayed_List
+    #تعریف_کړه trace_ENTER_v_Co_Routine_جمع_کړه_منزل_Delayed_List( x_Ticks_منزل_Delay, pxEventList )
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Co_Routine_جمع_کړه_منزل_Delayed_List
+    #تعریف_کړه trace_RETURN_v_Co_Routine_جمع_کړه_منزل_Delayed_List()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_ENTER_v_Co_Routine_مهالوېش
+    #تعریف_کړه trace_ENTER_v_Co_Routine_مهالوېش()
+#د_که_پای
+
+#که_نه_تعریف_شوی trace_RETURN_v_Co_Routine_مهالوېش
+    #تعریف_کړه trace_RETURN_v_Co_Routine_مهالوېش()
+#د_که_پای
+
+#که_نه_تعریف_شوی traceENTER_xCoRoutineRemoveFromEventList
+    #تعریف_کړه traceENTER_xCoRoutineRemoveFromEventList( pxEventList )
+#د_که_پای
+
+#که_نه_تعریف_شوی traceRETURN_xCoRoutineRemoveFromEventList
+    #تعریف_کړه traceRETURN_xCoRoutineRemoveFromEventList( xReturn )
+#د_که_پای
+
+#که_نه_تعریف_شوی config_GENERATE_پرلپسې_وخت_STATS
+    #تعریف_کړه config_GENERATE_پرلپسې_وخت_STATS    0
+#د_که_پای
+
+#إذا ( config_GENERATE_پرلپسې_وخت_STATS == 1 )
+
+    #که_نه_تعریف_شوی پورټ_CONFIGURE_TIMER_FOR_پرلپسې_وخت_STATS
+        #تېروتنه If config_GENERATE_پرلپسې_وخت_STATS is defined then پورټ_CONFIGURE_TIMER_FOR_پرلپسې_وخت_STATS must also be defined.  پورټ_CONFIGURE_TIMER_FOR_پرلپسې_وخت_STATS should call a پورټ layer function منزل تیاری a peripheral timer/counter that can then be کارول_شوی as the پرلپسې time counter time بنسټ.
+    #د_که_پای /* portCONFIGURE_TIMER_FOR_RUN_TIME_STATS */
+
+    #که_نه_تعریف_شوی پورټ_GET_پرلپسې_وخت_COUNTER_ارزښت
+        #که_نه_تعریف_شوی پورټ_ALT_GET_پرلپسې_وخت_COUNTER_ارزښت
+            #تېروتنه If config_GENERATE_پرلپسې_وخت_STATS is defined then either پورټ_GET_پرلپسې_وخت_COUNTER_ارزښت or پورټ_ALT_GET_پرلپسې_وخت_COUNTER_ارزښت must also be defined.  See the examples provided and the FreeRTOS web site لكل نور information.
+        #د_که_پای /* portALT_GET_RUN_TIME_COUNTER_VALUE */
+    #د_که_پای /* portGET_RUN_TIME_COUNTER_VALUE */
+
+#د_که_پای /* configGENERATE_RUN_TIME_STATS */
+
+#که_نه_تعریف_شوی پورټ_CONFIGURE_TIMER_FOR_پرلپسې_وخت_STATS
+    #تعریف_کړه پورټ_CONFIGURE_TIMER_FOR_پرلپسې_وخت_STATS()
+#د_که_پای
+
+#که_نه_تعریف_شوی پورټ_PRIVILEGE_بټ
+    #تعریف_کړه پورټ_PRIVILEGE_بټ    ( ( UBaseType_t ) 0x00 )
+#د_که_پای
+
+#که_نه_تعریف_شوی پورټ_YIELD_WITHIN_API
+    #تعریف_کړه پورټ_YIELD_WITHIN_API    پورټ_YIELD
+#د_که_پای
+
+#که_نه_تعریف_شوی پورټ_SUPPRESS_TICKS_AND_SLEEP
+    #تعریف_کړه پورټ_SUPPRESS_TICKS_AND_SLEEP( x_Expected_Idle_وخت )
+#د_که_پای
+
+#که_نه_تعریف_شوی config_EXPECTED_IDLE_وخت_BEFORE_SLEEP
+    #تعریف_کړه config_EXPECTED_IDLE_وخت_BEFORE_SLEEP    2
+#د_که_پای
+
+#إذا config_EXPECTED_IDLE_وخت_BEFORE_SLEEP < 2
+    #تېروتنه config_EXPECTED_IDLE_وخت_BEFORE_SLEEP must not be less than 2
+#د_که_پای
+
+#که_نه_تعریف_شوی configUSE_TICKLESS_IDLE
+    #تعریف_کړه configUSE_TICKLESS_IDLE    0
+#د_که_پای
+
+#که_نه_تعریف_شوی configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING
+    #تعریف_کړه configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING( x )
+#د_که_پای
+
+#که_نه_تعریف_شوی configPRE_SLEEP_PROCESSING
+    #تعریف_کړه configPRE_SLEEP_PROCESSING( x )
+#د_که_پای
+
+#که_نه_تعریف_شوی configPOST_SLEEP_PROCESSING
+    #تعریف_کړه configPOST_SLEEP_PROCESSING( x )
+#د_که_پای
+
+#که_نه_تعریف_شوی config_USE_کتار_SETS
+    #تعریف_کړه config_USE_کتار_SETS    0
+#د_که_پای
+
+#که_نه_تعریف_شوی پورټ_TASK_کاروي_FLOATING_ټکی
+    #تعریف_کړه پورټ_TASK_کاروي_FLOATING_ټکی()
+#د_که_پای
+
+#که_نه_تعریف_شوی پورټ_ALLOCATE_SECURE_CONTEXT
+    #تعریف_کړه پورټ_ALLOCATE_SECURE_CONTEXT( ul_Secure_ډېری_اندازه )
+#د_که_پای
+
+#که_نه_تعریف_شوی پورټ_DONT_DISCARD
+    #تعریف_کړه پورټ_DONT_DISCARD
+#د_که_پای
+
+#که_نه_تعریف_شوی config_USE_وخت_SLICING
+    #تعریف_کړه config_USE_وخت_SLICING    1
+#د_که_پای
+
+#که_نه_تعریف_شوی configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS
+    #تعریف_کړه configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS    0
+#د_که_پای
+
+#که_نه_تعریف_شوی configUSE_STATS_FORMATTING_FUNCTIONS
+    #تعریف_کړه configUSE_STATS_FORMATTING_FUNCTIONS    0
+#د_که_پای
+
+#که_نه_تعریف_شوی پورټ_ASSERT_IF_مداخله_لومړیتوب_INVALID
+    #تعریف_کړه پورټ_ASSERT_IF_مداخله_لومړیتوب_INVALID()
+#د_که_پای
+
+#که_نه_تعریف_شوی configUSE_TRACE_FACILITY
+    #تعریف_کړه configUSE_TRACE_FACILITY    0
+#د_که_پای
+
+#که_نه_تعریف_شوی mtCOVERAGE_TEST_MARKER
+    #تعریف_کړه mtCOVERAGE_TEST_MARKER()
+#د_که_پای
+
+#که_نه_تعریف_شوی mtCOVERAGE_TEST_DELAY
+    #تعریف_کړه mtCOVERAGE_TEST_DELAY()
+#د_که_پای
+
+#که_نه_تعریف_شوی پورټ_ASSERT_IF_دننه_ISR
+    #تعریف_کړه پورټ_ASSERT_IF_دننه_ISR()
+#د_که_پای
+
+#که_نه_تعریف_شوی config_USE_پورټ_OPTIMISED_TASK_SELECTION
+    #تعریف_کړه config_USE_پورټ_OPTIMISED_TASK_SELECTION    0
+#د_که_پای
+
+#که_نه_تعریف_شوی config_APPLICATION_ALLOCATED_ډېرۍ
+    #تعریف_کړه config_APPLICATION_ALLOCATED_ډېرۍ    0
+#د_که_پای
+
+#که_نه_تعریف_شوی config_ENABLE_ډېرۍ_PROTECTOR
+    #تعریف_کړه config_ENABLE_ډېرۍ_PROTECTOR    0
+#د_که_پای
+
+#که_نه_تعریف_شوی configUSE_TASK_NOTIFICATIONS
+    #تعریف_کړه configUSE_TASK_NOTIFICATIONS    1
+#د_که_پای
+
+#که_نه_تعریف_شوی configTASK_NOTIFICATION_ARRAY_ENTRIES
+    #تعریف_کړه configTASK_NOTIFICATION_ARRAY_ENTRIES    1
+#د_که_پای
+
+#إذا configTASK_NOTIFICATION_ARRAY_ENTRIES < 1
+    #تېروتنه configTASK_NOTIFICATION_ARRAY_ENTRIES must be at لږترلږه 1
+#د_که_پای
+
+#که_نه_تعریف_شوی configUSE_POSIX_ERRNO
+    #تعریف_کړه configUSE_POSIX_ERRNO    0
+#د_که_پای
+
+#که_نه_تعریف_شوی configUSE_SB_COMPLETED_CALLBACK
 
 /* By default per-instance callbacks are not enabled for stream buffer or message buffer. */
-    #define configUSE_SB_COMPLETED_CALLBACK    0
-#endif
+    #تعریف_کړه configUSE_SB_COMPLETED_CALLBACK    0
+#د_که_پای
 
-#ifndef portTICK_TYPE_IS_ATOMIC
-    #define portTICK_TYPE_IS_ATOMIC    0
-#endif
+#که_نه_تعریف_شوی پورټ_TICK_TYPE_IS_ATOMIC
+    #تعریف_کړه پورټ_TICK_TYPE_IS_ATOMIC    0
+#د_که_پای
 
-#ifndef configSUPPORT_STATIC_ALLOCATION
+#که_نه_تعریف_شوی config_SUPPORT_STATIC_ویش
     /* Defaults to 0 for backward compatibility. */
-    #define configSUPPORT_STATIC_ALLOCATION    0
-#endif
+    #تعریف_کړه config_SUPPORT_STATIC_ویش    0
+#د_که_پای
 
-#ifndef configKERNEL_PROVIDED_STATIC_MEMORY
-    #define configKERNEL_PROVIDED_STATIC_MEMORY    0
-#endif
+#که_نه_تعریف_شوی config_KERNEL_PROVIDED_STATIC_حافظه
+    #تعریف_کړه config_KERNEL_PROVIDED_STATIC_حافظه    0
+#د_که_پای
 
-#ifndef configSUPPORT_DYNAMIC_ALLOCATION
+#که_نه_تعریف_شوی config_SUPPORT_DYNAMIC_ویش
     /* Defaults to 1 for backward compatibility. */
-    #define configSUPPORT_DYNAMIC_ALLOCATION    1
-#endif
+    #تعریف_کړه config_SUPPORT_DYNAMIC_ویش    1
+#د_که_پای
 
-#if ( ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION != 1 ) )
-    #error configUSE_STATS_FORMATTING_FUNCTIONS cannot be used without dynamic allocation, but configSUPPORT_DYNAMIC_ALLOCATION is not set to 1.
-#endif
+#إذا ( ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( config_SUPPORT_DYNAMIC_ویش != 1 ) )
+    #تېروتنه configUSE_STATS_FORMATTING_FUNCTIONS cannot be کارول_شوی without dynamic ویش, but config_SUPPORT_DYNAMIC_ویش is not سېټ منزل 1.
+#د_که_پای
 
-#if ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 )
-    #if ( ( configUSE_TRACE_FACILITY != 1 ) && ( configGENERATE_RUN_TIME_STATS != 1 ) )
-        #error configUSE_STATS_FORMATTING_FUNCTIONS is 1 but the functions it enables are not used because neither configUSE_TRACE_FACILITY or configGENERATE_RUN_TIME_STATS are 1.  Set configUSE_STATS_FORMATTING_FUNCTIONS to 0 in FreeRTOSConfig.h.
-    #endif
-#endif
+#إذا ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 )
+    #إذا ( ( configUSE_TRACE_FACILITY != 1 ) && ( config_GENERATE_پرلپسې_وخت_STATS != 1 ) )
+        #تېروتنه configUSE_STATS_FORMATTING_FUNCTIONS is 1 but the functions it enables are not کارول_شوی because neither configUSE_TRACE_FACILITY or config_GENERATE_پرلپسې_وخت_STATS are 1.  سېټ_2 configUSE_STATS_FORMATTING_FUNCTIONS منزل 0 دننه FreeRTOSConfig.h.
+    #د_که_پای
+#د_که_پای
 
-#ifndef configSTATS_BUFFER_MAX_LENGTH
-    #define configSTATS_BUFFER_MAX_LENGTH    0xFFFF
-#endif
+#که_نه_تعریف_شوی config_STATS_بفر_MAX_اوږدتیا
+    #تعریف_کړه config_STATS_بفر_MAX_اوږدتیا    0xFFFF
+#د_که_پای
 
-#ifndef configSTACK_DEPTH_TYPE
+#که_نه_تعریف_شوی config_ډېری_ژوروالی_TYPE
 
 /* Defaults to StackType_t for backward compatibility, but can be overridden
  * in FreeRTOSConfig.h if StackType_t is too restrictive. */
-    #define configSTACK_DEPTH_TYPE    StackType_t
-#endif
+    #تعریف_کړه config_ډېری_ژوروالی_TYPE    ډېری_Type_t
+#د_که_پای
 
-#ifndef configRUN_TIME_COUNTER_TYPE
+#که_نه_تعریف_شوی config_پرلپسې_وخت_COUNTER_TYPE
 
 /* Defaults to uint32_t for backward compatibility, but can be overridden in
  * FreeRTOSConfig.h if uint32_t is too restrictive. */
 
-    #define configRUN_TIME_COUNTER_TYPE    uint32_t
-#endif
+    #تعریف_کړه config_پرلپسې_وخت_COUNTER_TYPE    uint32_t
+#د_که_پای
 
-#ifndef configMESSAGE_BUFFER_LENGTH_TYPE
+#که_نه_تعریف_شوی config_پیغام_بفر_اوږدتیا_TYPE
 
 /* Defaults to size_t for backward compatibility, but can be overridden
  * in FreeRTOSConfig.h if lengths will always be less than the number of bytes
  * in a size_t. */
-    #define configMESSAGE_BUFFER_LENGTH_TYPE    size_t
-#endif
+    #تعریف_کړه config_پیغام_بفر_اوږدتیا_TYPE    size_t
+#د_که_پای
 
 /* Sanity check the configuration. */
-#if ( ( configSUPPORT_STATIC_ALLOCATION == 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 0 ) )
-    #error configSUPPORT_STATIC_ALLOCATION and configSUPPORT_DYNAMIC_ALLOCATION cannot both be 0, but can both be 1.
-#endif
+#إذا ( ( config_SUPPORT_STATIC_ویش == 0 ) && ( config_SUPPORT_DYNAMIC_ویش == 0 ) )
+    #تېروتنه config_SUPPORT_STATIC_ویش and config_SUPPORT_DYNAMIC_ویش cannot both be 0, but can both be 1.
+#د_که_پای
 
-#if ( ( configUSE_RECURSIVE_MUTEXES == 1 ) && ( configUSE_MUTEXES != 1 ) )
-    #error configUSE_MUTEXES must be set to 1 to use recursive mutexes
-#endif
+#إذا ( ( configUSE_RECURSIVE_MUTEXES == 1 ) && ( configUSE_MUTEXES != 1 ) )
+    #تېروتنه configUSE_MUTEXES must be سېټ منزل 1 منزل use recursive mutexes
+#د_که_پای
 
-#if ( ( configRUN_MULTIPLE_PRIORITIES == 0 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
-    #error configRUN_MULTIPLE_PRIORITIES must be set to 1 to use task preemption disable
-#endif
+#إذا ( ( config_پرلپسې_مضرب_PRIORITIES == 0 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
+    #تېروتنه config_پرلپسې_مضرب_PRIORITIES must be سېټ منزل 1 منزل use task preemption disable
+#د_که_پای
 
-#if ( ( configUSE_PREEMPTION == 0 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
-    #error configUSE_PREEMPTION must be set to 1 to use task preemption disable
-#endif
+#إذا ( ( configUSE_PREEMPTION == 0 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
+    #تېروتنه configUSE_PREEMPTION must be سېټ منزل 1 منزل use task preemption disable
+#د_که_پای
 
-#if ( ( configNUMBER_OF_CORES == 1 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
-    #error configUSE_TASK_PREEMPTION_DISABLE is not supported in single core FreeRTOS
-#endif
+#إذا ( ( config_شمېره_د_CORES == 1 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
+    #تېروتنه configUSE_TASK_PREEMPTION_DISABLE is not supported دننه single core FreeRTOS
+#د_که_پای
 
-#if ( ( configNUMBER_OF_CORES == 1 ) && ( configUSE_CORE_AFFINITY != 0 ) )
-    #error configUSE_CORE_AFFINITY is not supported in single core FreeRTOS
-#endif
+#إذا ( ( config_شمېره_د_CORES == 1 ) && ( configUSE_CORE_AFFINITY != 0 ) )
+    #تېروتنه configUSE_CORE_AFFINITY is not supported دننه single core FreeRTOS
+#د_که_پای
 
-#if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_PORT_OPTIMISED_TASK_SELECTION != 0 ) )
-    #error configUSE_PORT_OPTIMISED_TASK_SELECTION is not supported in SMP FreeRTOS
-#endif
+#إذا ( ( config_شمېره_د_CORES > 1 ) && ( config_USE_پورټ_OPTIMISED_TASK_SELECTION != 0 ) )
+    #تېروتنه config_USE_پورټ_OPTIMISED_TASK_SELECTION is not supported دننه SMP FreeRTOS
+#د_که_پای
 
-#ifndef configINITIAL_TICK_COUNT
-    #define configINITIAL_TICK_COUNT    0
-#endif
+#که_نه_تعریف_شوی config_INITIAL_TICK_شمېر
+    #تعریف_کړه config_INITIAL_TICK_شمېر    0
+#د_که_پای
 
-#if ( portTICK_TYPE_IS_ATOMIC == 0 )
+#إذا ( پورټ_TICK_TYPE_IS_ATOMIC == 0 )
 
 /* Either variables of tick type cannot be read atomically, or
  * portTICK_TYPE_IS_ATOMIC was not set - map the critical sections used when
  * the tick count is returned to the standard critical section macros. */
-    #define portTICK_TYPE_ENTER_CRITICAL()                      portENTER_CRITICAL()
-    #define portTICK_TYPE_EXIT_CRITICAL()                       portEXIT_CRITICAL()
-    #define portTICK_TYPE_SET_INTERRUPT_MASK_FROM_ISR()         portSET_INTERRUPT_MASK_FROM_ISR()
-    #define portTICK_TYPE_CLEAR_INTERRUPT_MASK_FROM_ISR( x )    portCLEAR_INTERRUPT_MASK_FROM_ISR( ( x ) )
-#else
+    #تعریف_کړه پورټ_TICK_TYPE_ENTER_CRITICAL()                      پورټ_ENTER_CRITICAL()
+    #تعریف_کړه پورټ_TICK_TYPE_EXIT_CRITICAL()                       پورټ_EXIT_CRITICAL()
+    #تعریف_کړه پورټ_TICK_TYPE_سېټ_مداخله_ماسک_FROM_ISR()         پورټ_سېټ_مداخله_ماسک_FROM_ISR()
+    #تعریف_کړه پورټ_TICK_TYPE_CLEAR_مداخله_ماسک_FROM_ISR( x )    پورټ_CLEAR_مداخله_ماسک_FROM_ISR( ( x ) )
+#وإلا
 
 /* The tick type can be read atomically, so critical sections used when the
  * tick count is returned can be defined away. */
-    #define portTICK_TYPE_ENTER_CRITICAL()
-    #define portTICK_TYPE_EXIT_CRITICAL()
-    #define portTICK_TYPE_SET_INTERRUPT_MASK_FROM_ISR()         0
-    #define portTICK_TYPE_CLEAR_INTERRUPT_MASK_FROM_ISR( x )    ( void ) ( x )
-#endif /* if ( portTICK_TYPE_IS_ATOMIC == 0 ) */
+    #تعریف_کړه پورټ_TICK_TYPE_ENTER_CRITICAL()
+    #تعریف_کړه پورټ_TICK_TYPE_EXIT_CRITICAL()
+    #تعریف_کړه پورټ_TICK_TYPE_سېټ_مداخله_ماسک_FROM_ISR()         0
+    #تعریف_کړه پورټ_TICK_TYPE_CLEAR_مداخله_ماسک_FROM_ISR( x )    ( فراغ ) ( x )
+#د_که_پای /* if ( portTICK_TYPE_IS_ATOMIC == 0 ) */
 
 /* Definitions to allow backward compatibility with FreeRTOS versions prior to
  * V8 if desired. */
-#ifndef configENABLE_BACKWARD_COMPATIBILITY
-    #define configENABLE_BACKWARD_COMPATIBILITY    1
-#endif
+#که_نه_تعریف_شوی configENABLE_BACKWARD_COMPATIBILITY
+    #تعریف_کړه configENABLE_BACKWARD_COMPATIBILITY    1
+#د_که_پای
 
-#ifndef configPRINTF
+#که_نه_تعریف_شوی configPRINTF
 
 /* configPRINTF() was not defined, so define it away to nothing.  To use
  * configPRINTF() then define it as follows (where MyPrintFunction() is
@@ -2926,108 +2926,108 @@
  * Then call like a standard printf() function, but placing brackets around
  * all parameters so they are passed as a single parameter.  For example:
  * configPRINTF( ("Value = %d", MyVariable) ); */
-    #define configPRINTF( X )
-#endif
+    #تعریف_کړه configPRINTF( X )
+#د_که_پای
 
-#ifndef configMAX
+#که_نه_تعریف_شوی configMAX
 
 /* The application writer has not provided their own MAX macro, so define
  * the following generic implementation. */
-    #define configMAX( a, b )    ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) )
-#endif
+    #تعریف_کړه configMAX( a, b )    ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) )
+#د_که_پای
 
-#ifndef configMIN
+#که_نه_تعریف_شوی configMIN
 
 /* The application writer has not provided their own MIN macro, so define
  * the following generic implementation. */
-    #define configMIN( a, b )    ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
-#endif
+    #تعریف_کړه configMIN( a, b )    ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
+#د_که_پای
 
-#if configENABLE_BACKWARD_COMPATIBILITY == 1
-    #define eTaskStateGet                 eTaskGetState
-    #define portTickType                  TickType_t
-    #define xTaskHandle                   TaskHandle_t
-    #define xQueueHandle                  QueueHandle_t
-    #define xSemaphoreHandle              SemaphoreHandle_t
-    #define xQueueSetHandle               QueueSetHandle_t
-    #define xQueueSetMemberHandle         QueueSetMemberHandle_t
-    #define xTimeOutType                  TimeOut_t
-    #define xMemoryRegion                 MemoryRegion_t
-    #define xTaskParameters               TaskParameters_t
-    #define xTaskStatusType               TaskStatus_t
-    #define xTimerHandle                  TimerHandle_t
-    #define xCoRoutineHandle              CoRoutineHandle_t
-    #define pdTASK_HOOK_CODE              TaskHookFunction_t
-    #define portTICK_RATE_MS              portTICK_PERIOD_MS
-    #define pcTaskGetTaskName             pcTaskGetName
-    #define pcTimerGetTimerName           pcTimerGetName
-    #define pcQueueGetQueueName           pcQueueGetName
-    #define vTaskGetTaskInfo              vTaskGetInfo
-    #define xTaskGetIdleRunTimeCounter    ulTaskGetIdleRunTimeCounter
+#إذا configENABLE_BACKWARD_COMPATIBILITY == 1
+    #تعریف_کړه eTaskStateGet                 eTaskGetState
+    #تعریف_کړه پورټ_Tick_Type                  TickType_t
+    #تعریف_کړه xTaskHandle                   TaskHandle_t
+    #تعریف_کړه x_کتار_Handle                  کتار_Handle_t
+    #تعریف_کړه xSemaphoreHandle              SemaphoreHandle_t
+    #تعریف_کړه x_کتار_سېټ_Handle               کتار_سېټ_Handle_t
+    #تعریف_کړه x_کتار_سېټ_Member_Handle         کتار_سېټ_Member_Handle_t
+    #تعریف_کړه x_وخت_بهر_Type                  وخت_بهر_t
+    #تعریف_کړه x_حافظه_Region                 حافظه_Region_t
+    #تعریف_کړه xTaskParameters               TaskParameters_t
+    #تعریف_کړه x_Task_حالت_Type               Task_حالت_t
+    #تعریف_کړه xTimerHandle                  TimerHandle_t
+    #تعریف_کړه xCoRoutineHandle              CoRoutineHandle_t
+    #تعریف_کړه pd_TASK_HOOK_کوډ              TaskHookFunction_t
+    #تعریف_کړه پورټ_TICK_شرح_MS              پورټ_TICK_PERIOD_MS
+    #تعریف_کړه pcTaskGetTaskName             pcTaskGetName
+    #تعریف_کړه pcTimerGetTimerName           pcTimerGetName
+    #تعریف_کړه pc_کتار_Get_کتار_Name           pc_کتار_Get_Name
+    #تعریف_کړه vTaskGetTaskInfo              vTaskGetInfo
+    #تعریف_کړه x_Task_Get_Idle_پرلپسې_وخت_Counter    ul_Task_Get_Idle_پرلپسې_وخت_Counter
 
 /* Backward compatibility within the scheduler code only - these definitions
  * are not really required but are included for completeness. */
-    #define tmrTIMER_CALLBACK             TimerCallbackFunction_t
-    #define pdTASK_CODE                   TaskFunction_t
-    #define xListItem                     ListItem_t
-    #define xList                         List_t
+    #تعریف_کړه tmrTIMER_CALLBACK             TimerCallbackFunction_t
+    #تعریف_کړه pd_TASK_کوډ                   TaskFunction_t
+    #تعریف_کړه x_List_توکی                     List_توکی_t
+    #تعریف_کړه xList                         List_t
 
 /* For libraries that break the list data hiding, and access list structure
  * members directly (which is not supposed to be done). */
-    #define pxContainer                   pvContainer
-#endif /* configENABLE_BACKWARD_COMPATIBILITY */
+    #تعریف_کړه pxContainer                   pvContainer
+#د_که_پای /* configENABLE_BACKWARD_COMPATIBILITY */
 
-#if ( configUSE_ALTERNATIVE_API != 0 )
-    #error The alternative API was deprecated some time ago, and was removed in FreeRTOS V9.0 0
-#endif
+#إذا ( configUSE_ALTERNATIVE_API != 0 )
+    #تېروتنه The alternative API was deprecated some time ago, and was removed دننه FreeRTOS V9.0 0
+#د_که_پای
 
 /* Set configUSE_TASK_FPU_SUPPORT to 0 to omit floating point support even
  * if floating point hardware is otherwise supported by the FreeRTOS port in use.
  * This constant is not supported by all FreeRTOS ports that include floating
  * point support. */
-#ifndef configUSE_TASK_FPU_SUPPORT
-    #define configUSE_TASK_FPU_SUPPORT    1
-#endif
+#که_نه_تعریف_شوی configUSE_TASK_FPU_SUPPORT
+    #تعریف_کړه configUSE_TASK_FPU_SUPPORT    1
+#د_که_پای
 
 /* Set configENABLE_MPU to 1 to enable MPU support and 0 to disable it. This is
  * currently used in ARMv8M ports. */
-#ifndef configENABLE_MPU
-    #define configENABLE_MPU    0
-#endif
+#که_نه_تعریف_شوی configENABLE_MPU
+    #تعریف_کړه configENABLE_MPU    0
+#د_که_پای
 
 /* Set configENABLE_FPU to 1 to enable FPU support and 0 to disable it. This is
  * currently used in ARMv8M ports. */
-#ifndef configENABLE_FPU
-    #define configENABLE_FPU    1
-#endif
+#که_نه_تعریف_شوی configENABLE_FPU
+    #تعریف_کړه configENABLE_FPU    1
+#د_که_پای
 
 /* Set configENABLE_MVE to 1 to enable MVE support and 0 to disable it. This is
  * currently used in ARMv8M ports. */
-#ifndef configENABLE_MVE
-    #define configENABLE_MVE    0
-#endif
+#که_نه_تعریف_شوی configENABLE_MVE
+    #تعریف_کړه configENABLE_MVE    0
+#د_که_پای
 
 /* Set configENABLE_TRUSTZONE to 1 enable TrustZone support and 0 to disable it.
  * This is currently used in ARMv8M ports. */
-#ifndef configENABLE_TRUSTZONE
-    #define configENABLE_TRUSTZONE    1
-#endif
+#که_نه_تعریف_شوی configENABLE_TRUSTZONE
+    #تعریف_کړه configENABLE_TRUSTZONE    1
+#د_که_پای
 
 /* Set configRUN_FREERTOS_SECURE_ONLY to 1 to run the FreeRTOS ARMv8M port on
  * the Secure Side only. */
-#ifndef configRUN_FREERTOS_SECURE_ONLY
-    #define configRUN_FREERTOS_SECURE_ONLY    0
-#endif
+#که_نه_تعریف_شوی config_پرلپسې_FREERTOS_SECURE_ONLY
+    #تعریف_کړه config_پرلپسې_FREERTOS_SECURE_ONLY    0
+#د_که_پای
 
-#ifndef configRUN_ADDITIONAL_TESTS
-    #define configRUN_ADDITIONAL_TESTS    0
-#endif
+#که_نه_تعریف_شوی config_پرلپسې_ADDITIONAL_TESTS
+    #تعریف_کړه config_پرلپسې_ADDITIONAL_TESTS    0
+#د_که_پای
 
 /* The following config allows infinite loop control. For example, control the
  * infinite loop in idle task function when performing unit tests. */
-#ifndef configCONTROL_INFINITE_LOOP
-    #define configCONTROL_INFINITE_LOOP()
-#endif
+#که_نه_تعریف_شوی configCONTROL_INFINITE_LOOP
+    #تعریف_کړه configCONTROL_INFINITE_LOOP()
+#د_که_پای
 
 /* Sometimes the FreeRTOSConfig.h settings only allow a task to be created using
  * dynamically allocated RAM, in which case when any task is deleted it is known
@@ -3071,9 +3071,9 @@
  * |     |         |        | xTaskCreateRestrictedStatic |                                   |                  |           |
  * +-----+---------+--------+-----------------------------+-----------------------------------+------------------+-----------+
  */
-#define tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE                                                                                     \
-    ( ( ( portUSING_MPU_WRAPPERS == 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) ) || \
-      ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) ) )
+#تعریف_کړه tsk_STATIC_AND_DYNAMIC_ویش_POSSIBLE                                                                                     \
+    ( ( ( پورټ_USING_MPU_WRAPPERS == 0 ) && ( config_SUPPORT_DYNAMIC_ویش == 1 ) && ( config_SUPPORT_STATIC_ویش == 1 ) ) || \
+      ( ( پورټ_USING_MPU_WRAPPERS == 1 ) && ( config_SUPPORT_DYNAMIC_ویش == 1 ) ) )
 
 /*
  * In line with software engineering best practice, FreeRTOS implements a strict
@@ -3085,46 +3085,46 @@
  * real objects are used for this purpose.  The dummy list and list item
  * structures below are used for inclusion in such a dummy structure.
  */
-struct xSTATIC_LIST_ITEM
+بنية x_STATIC_LIST_توکی
 {
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #إذا ( config_USE_LIST_معلومات_INTEGRITY_CHECK_بایټونه == 1 )
         TickType_t xDummy1;
-    #endif
+    #د_که_پای
     TickType_t xDummy2;
-    void * pvDummy3[ 4 ];
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    فراغ * pvDummy3[ 4 ];
+    #إذا ( config_USE_LIST_معلومات_INTEGRITY_CHECK_بایټونه == 1 )
         TickType_t xDummy4;
-    #endif
+    #د_که_پای
 };
-typedef struct xSTATIC_LIST_ITEM StaticListItem_t;
+تعريفنوع بنية x_STATIC_LIST_توکی Static_List_توکی_t;
 
-#if ( configUSE_MINI_LIST_ITEM == 1 )
+#إذا ( config_USE_MINI_LIST_توکی == 1 )
     /* See the comments above the struct xSTATIC_LIST_ITEM definition. */
-    struct xSTATIC_MINI_LIST_ITEM
+    بنية x_STATIC_MINI_LIST_توکی
     {
-        #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+        #إذا ( config_USE_LIST_معلومات_INTEGRITY_CHECK_بایټونه == 1 )
             TickType_t xDummy1;
-        #endif
+        #د_که_پای
         TickType_t xDummy2;
-        void * pvDummy3[ 2 ];
+        فراغ * pvDummy3[ 2 ];
     };
-    typedef struct xSTATIC_MINI_LIST_ITEM StaticMiniListItem_t;
-#else /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
-    typedef struct xSTATIC_LIST_ITEM      StaticMiniListItem_t;
-#endif /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
+    تعريفنوع بنية x_STATIC_MINI_LIST_توکی Static_Mini_List_توکی_t;
+#وإلا /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
+    تعريفنوع بنية x_STATIC_LIST_توکی      Static_Mini_List_توکی_t;
+#د_که_پای /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
 
 /* See the comments above the struct xSTATIC_LIST_ITEM definition. */
-typedef struct xSTATIC_LIST
+تعريفنوع بنية xSTATIC_LIST
 {
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #إذا ( config_USE_LIST_معلومات_INTEGRITY_CHECK_بایټونه == 1 )
         TickType_t xDummy1;
-    #endif
+    #د_که_پای
     UBaseType_t uxDummy2;
-    void * pvDummy3;
-    StaticMiniListItem_t xDummy4;
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    فراغ * pvDummy3;
+    Static_Mini_List_توکی_t xDummy4;
+    #إذا ( config_USE_LIST_معلومات_INTEGRITY_CHECK_بایټونه == 1 )
         TickType_t xDummy5;
-    #endif
+    #د_که_پای
 } StaticList_t;
 
 /*
@@ -3140,64 +3140,64 @@ typedef struct xSTATIC_LIST
  * are set.  Its contents are somewhat obfuscated in the hope users will
  * recognise that it would be unwise to make direct use of the structure members.
  */
-typedef struct xSTATIC_TCB
+تعريفنوع بنية xSTATIC_TCB
 {
-    void * pxDummy1;
-    #if ( portUSING_MPU_WRAPPERS == 1 )
+    فراغ * pxDummy1;
+    #إذا ( پورټ_USING_MPU_WRAPPERS == 1 )
         xMPU_SETTINGS xDummy2;
-    #endif
-    #if ( configUSE_CORE_AFFINITY == 1 ) && ( configNUMBER_OF_CORES > 1 )
+    #د_که_پای
+    #إذا ( configUSE_CORE_AFFINITY == 1 ) && ( config_شمېره_د_CORES > 1 )
         UBaseType_t uxDummy26;
-    #endif
-    StaticListItem_t xDummy3[ 2 ];
+    #د_که_پای
+    Static_List_توکی_t xDummy3[ 2 ];
     UBaseType_t uxDummy5;
-    void * pxDummy6;
-    #if ( configNUMBER_OF_CORES > 1 )
-        BaseType_t xDummy23;
+    فراغ * pxDummy6;
+    #إذا ( config_شمېره_د_CORES > 1 )
+        بنسټ_Type_t xDummy23;
         UBaseType_t uxDummy24;
-    #endif
+    #د_که_پای
     uint8_t ucDummy7[ configMAX_TASK_NAME_LEN ];
-    #if ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
-        BaseType_t xDummy25;
-    #endif
-    #if ( ( portSTACK_GROWTH > 0 ) || ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
-        void * pxDummy8;
-    #endif
-    #if ( portCRITICAL_NESTING_IN_TCB == 1 )
+    #إذا ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
+        بنسټ_Type_t xDummy25;
+    #د_که_پای
+    #إذا ( ( پورټ_ډېری_GROWTH > 0 ) || ( config_ریکارډ_ډېری_لوړ_پته == 1 ) )
+        فراغ * pxDummy8;
+    #د_که_پای
+    #إذا ( پورټ_CRITICAL_NESTING_دننه_TCB == 1 )
         UBaseType_t uxDummy9;
-    #endif
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #د_که_پای
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy10[ 2 ];
-    #endif
-    #if ( configUSE_MUTEXES == 1 )
+    #د_که_پای
+    #إذا ( configUSE_MUTEXES == 1 )
         UBaseType_t uxDummy12[ 2 ];
-    #endif
-    #if ( configUSE_APPLICATION_TASK_TAG == 1 )
-        void * pxDummy14;
-    #endif
-    #if ( configNUM_THREAD_LOCAL_STORAGE_POINTERS > 0 )
-        void * pvDummy15[ configNUM_THREAD_LOCAL_STORAGE_POINTERS ];
-    #endif
-    #if ( configGENERATE_RUN_TIME_STATS == 1 )
-        configRUN_TIME_COUNTER_TYPE ulDummy16;
-    #endif
-    #if ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 )
-        configTLS_BLOCK_TYPE xDummy17;
-    #endif
-    #if ( configUSE_TASK_NOTIFICATIONS == 1 )
+    #د_که_پای
+    #إذا ( config_USE_APPLICATION_TASK_نښان == 1 )
+        فراغ * pxDummy14;
+    #د_که_پای
+    #إذا ( config_عدد_THREAD_LOCAL_STORAGE_اشارې > 0 )
+        فراغ * pvDummy15[ config_عدد_THREAD_LOCAL_STORAGE_اشارې ];
+    #د_که_پای
+    #إذا ( config_GENERATE_پرلپسې_وخت_STATS == 1 )
+        config_پرلپسې_وخت_COUNTER_TYPE ulDummy16;
+    #د_که_پای
+    #إذا ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 )
+        config_TLS_بلاک_TYPE xDummy17;
+    #د_که_پای
+    #إذا ( configUSE_TASK_NOTIFICATIONS == 1 )
         uint32_t ulDummy18[ configTASK_NOTIFICATION_ARRAY_ENTRIES ];
         uint8_t ucDummy19[ configTASK_NOTIFICATION_ARRAY_ENTRIES ];
-    #endif
-    #if ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )
+    #د_که_پای
+    #إذا ( tsk_STATIC_AND_DYNAMIC_ویش_POSSIBLE != 0 )
         uint8_t uxDummy20;
-    #endif
+    #د_که_پای
 
-    #if ( INCLUDE_xTaskAbortDelay == 1 )
+    #إذا ( INCLUDE_xTaskAbortDelay == 1 )
         uint8_t ucDummy21;
-    #endif
-    #if ( configUSE_POSIX_ERRNO == 1 )
-        int iDummy22;
-    #endif
+    #د_که_پای
+    #إذا ( configUSE_POSIX_ERRNO == 1 )
+        صحيح iDummy22;
+    #د_که_پای
 } StaticTask_t;
 
 /*
@@ -3214,13 +3214,13 @@ typedef struct xSTATIC_TCB
  * users will recognise that it would be unwise to make direct use of the
  * structure members.
  */
-typedef struct xSTATIC_QUEUE
+تعريفنوع بنية x_STATIC_کتار
 {
-    void * pvDummy1[ 3 ];
+    فراغ * pvDummy1[ 3 ];
 
-    union
+    اتحاد
     {
-        void * pvDummy2;
+        فراغ * pvDummy2;
         UBaseType_t uxDummy2;
     } u;
 
@@ -3228,20 +3228,20 @@ typedef struct xSTATIC_QUEUE
     UBaseType_t uxDummy4[ 3 ];
     uint8_t ucDummy5[ 2 ];
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #إذا ( ( config_SUPPORT_STATIC_ویش == 1 ) && ( config_SUPPORT_DYNAMIC_ویش == 1 ) )
         uint8_t ucDummy6;
-    #endif
+    #د_که_پای
 
-    #if ( configUSE_QUEUE_SETS == 1 )
-        void * pvDummy7;
-    #endif
+    #إذا ( config_USE_کتار_SETS == 1 )
+        فراغ * pvDummy7;
+    #د_که_پای
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy8;
         uint8_t ucDummy9;
-    #endif
-} StaticQueue_t;
-typedef StaticQueue_t StaticSemaphore_t;
+    #د_که_پای
+} Static_کتار_t;
+تعريفنوع Static_کتار_t StaticSemaphore_t;
 
 /*
  * In line with software engineering best practice, especially when supplying a
@@ -3257,19 +3257,19 @@ typedef StaticQueue_t StaticSemaphore_t;
  * obfuscated in the hope users will recognise that it would be unwise to make
  * direct use of the structure members.
  */
-typedef struct xSTATIC_EVENT_GROUP
+تعريفنوع بنية x_STATIC_EVENT_ډله
 {
     TickType_t xDummy1;
     StaticList_t xDummy2;
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy3;
-    #endif
+    #د_که_پای
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #إذا ( ( config_SUPPORT_STATIC_ویش == 1 ) && ( config_SUPPORT_DYNAMIC_ویش == 1 ) )
         uint8_t ucDummy4;
-    #endif
-} StaticEventGroup_t;
+    #د_که_پای
+} Static_Event_ډله_t;
 
 /*
  * In line with software engineering best practice, especially when supplying a
@@ -3285,16 +3285,16 @@ typedef struct xSTATIC_EVENT_GROUP
  * the hope users will recognise that it would be unwise to make direct use of
  * the structure members.
  */
-typedef struct xSTATIC_TIMER
+تعريفنوع بنية xSTATIC_TIMER
 {
-    void * pvDummy1;
-    StaticListItem_t xDummy2;
+    فراغ * pvDummy1;
+    Static_List_توکی_t xDummy2;
     TickType_t xDummy3;
-    void * pvDummy5;
+    فراغ * pvDummy5;
     TaskFunction_t pvDummy6;
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy7;
-    #endif
+    #د_که_پای
     uint8_t ucDummy8;
 } StaticTimer_t;
 
@@ -3312,34 +3312,34 @@ typedef struct xSTATIC_TIMER
  * somewhat obfuscated in the hope users will recognise that it would be unwise
  * to make direct use of the structure members.
  */
-typedef struct xSTATIC_STREAM_BUFFER
+تعريفنوع بنية x_STATIC_بهیر_بفر
 {
     size_t uxDummy1[ 4 ];
-    void * pvDummy2[ 3 ];
+    فراغ * pvDummy2[ 3 ];
     uint8_t ucDummy3;
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy4;
-    #endif
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-        void * pvDummy5[ 2 ];
-    #endif
+    #د_که_پای
+    #إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+        فراغ * pvDummy5[ 2 ];
+    #د_که_پای
     UBaseType_t uxDummy6;
-} StaticStreamBuffer_t;
+} Static_بهیر_بفر_t;
 
 /* Message buffers are built on stream buffers. */
-typedef StaticStreamBuffer_t StaticMessageBuffer_t;
+تعريفنوع Static_بهیر_بفر_t Static_پیغام_بفر_t;
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#که_تعریف_شوی __cplusplus
     }
-#endif
+#د_که_پای
 /* *INDENT-ON* */
 
 /*-----------------------------------------------------------
 * IDF Compatibility
 *----------------------------------------------------------*/
 
-#ifdef ESP_PLATFORM
+#که_تعریف_شوی ESP_PLATFORM
 
 /*
  * Include ESP-IDF API additions implicitly for compatibility reasons.
@@ -3354,8 +3354,8 @@ typedef StaticStreamBuffer_t StaticMessageBuffer_t;
  * any existing source code can continue using these relocated APIs without
  * any additional header inclusions via this implicit inclusion.
  */
-    #include "freertos/idf_additions.h"
+    #ضمن "freertos/idf_additions.h"
 
-#endif /* ESP_PLATFORM */
+#د_که_پای /* ESP_PLATFORM */
 
-#endif /* INC_FREERTOS_H */
+#د_که_پای /* INC_FREERTOS_H */

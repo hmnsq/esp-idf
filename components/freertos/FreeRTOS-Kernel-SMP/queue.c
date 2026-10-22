@@ -30,32 +30,32 @@
  *
  */
 
-#include <stdlib.h>
-#include <string.h>
+#ضمن <stdlib.h>
+#ضمن <string.h>
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
  * task.h is included from an application file. */
-#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#تعریف_کړه MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
+#ضمن "FreeRTOS.h"
+#ضمن "task.h"
+#ضمن "queue.h"
 
-#if ( configUSE_CO_ROUTINES == 1 )
-    #include "croutine.h"
-#endif
+#إذا ( configUSE_CO_ROUTINES == 1 )
+    #ضمن "croutine.h"
+#د_که_پای
 
 /* The MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined
  * for the header files above, but not in this file, in order to generate the
  * correct privileged Vs unprivileged linkage and placement. */
-#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#تعریف_لغوه MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 
 /* Constants used with the cRxLock and cTxLock structure members. */
-#define queueUNLOCKED             ( ( int8_t ) -1 )
-#define queueLOCKED_UNMODIFIED    ( ( int8_t ) 0 )
-#define queueINT8_MAX             ( ( int8_t ) 127 )
+#تعریف_کړه کتار_UNLOCKED             ( ( int8_t ) -1 )
+#تعریف_کړه کتار_LOCKED_UNMODIFIED    ( ( int8_t ) 0 )
+#تعریف_کړه کتار_INT8_MAX             ( ( int8_t ) 127 )
 
 /* When the Queue_t structure is used to represent a base queue its pcHead and
  * pcTail members are used as pointers into the queue storage area.  When the
@@ -66,82 +66,82 @@
  * is maintained.  The QueuePointers_t and SemaphoreData_t types are used to form
  * a union as their usage is mutually exclusive dependent on what the queue is
  * being used for. */
-#define uxQueueType               pcHead
-#define queueQUEUE_IS_MUTEX       NULL
+#تعریف_کړه ux_کتار_Type               pc_سر
+#تعریف_کړه کتار_کتار_IS_MUTEX       عدم
 
-typedef struct QueuePointers
+تعريفنوع بنية کتار_اشارې
 {
-    int8_t * pcTail;     /**< Points to the byte at the end of the queue storage area.  Once more byte is allocated than necessary to store the queue items, this is used as a marker. */
+    int8_t * pc_لکۍ;     /**< Points to the byte at the end of the queue storage area.  Once more byte is allocated than necessary to store the queue items, this is used as a marker. */
     int8_t * pcReadFrom; /**< Points to the last place that a queued item was read from when the structure is used as a queue. */
-} QueuePointers_t;
+} کتار_اشارې_t;
 
-typedef struct SemaphoreData
+تعريفنوع بنية Semaphore_معلومات
 {
     TaskHandle_t xMutexHolder;        /**< The handle of the task that holds the mutex. */
-    UBaseType_t uxRecursiveCallCount; /**< Maintains a count of the number of times a recursive mutex has been recursively 'taken' when the structure is used as a mutex. */
-} SemaphoreData_t;
+    UBaseType_t ux_Recursive_Call_شمېر; /**< Maintains a count of the number of times a recursive mutex has been recursively 'taken' when the structure is used as a mutex. */
+} Semaphore_معلومات_t;
 
 /* Semaphores do not actually store or copy data, so have an item size of
  * zero. */
-#define queueSEMAPHORE_QUEUE_ITEM_LENGTH    ( ( UBaseType_t ) 0 )
-#define queueMUTEX_GIVE_BLOCK_TIME          ( ( TickType_t ) 0U )
+#تعریف_کړه کتار_SEMAPHORE_کتار_توکی_اوږدتیا    ( ( UBaseType_t ) 0 )
+#تعریف_کړه کتار_MUTEX_GIVE_بلاک_وخت          ( ( TickType_t ) 0U )
 
-#if ( configUSE_PREEMPTION == 0 )
+#إذا ( configUSE_PREEMPTION == 0 )
 
 /* If the cooperative scheduler is being used then a yield should not be
  * performed just because a higher priority task has been woken. */
-    #define queueYIELD_IF_USING_PREEMPTION()
-#else
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define queueYIELD_IF_USING_PREEMPTION()    portYIELD_WITHIN_API()
-    #else /* #if ( configNUMBER_OF_CORES == 1 ) */
-        #define queueYIELD_IF_USING_PREEMPTION()    vTaskYieldWithinAPI()
-    #endif /* #if ( configNUMBER_OF_CORES == 1 ) */
-#endif
+    #تعریف_کړه کتار_YIELD_IF_USING_PREEMPTION()
+#وإلا
+    #إذا ( config_شمېره_د_CORES == 1 )
+        #تعریف_کړه کتار_YIELD_IF_USING_PREEMPTION()    پورټ_YIELD_WITHIN_API()
+    #وإلا /* #if ( configNUMBER_OF_CORES == 1 ) */
+        #تعریف_کړه کتار_YIELD_IF_USING_PREEMPTION()    vTaskYieldWithinAPI()
+    #د_که_پای /* #if ( configNUMBER_OF_CORES == 1 ) */
+#د_که_پای
 
 /*
  * Definition of the queue used by the scheduler.
  * Items are queued by copy, not reference.  See the following link for the
  * rationale: https://www.FreeRTOS.org/Embedded-RTOS-Queues.html
  */
-typedef struct QueueDefinition /* The old naming convention is used to prevent breaking kernel aware debuggers. */
+تعريفنوع بنية کتار_Definition /* The old naming convention is used to prevent breaking kernel aware debuggers. */
 {
-    int8_t * pcHead;           /**< Points to the beginning of the queue storage area. */
-    int8_t * pcWriteTo;        /**< Points to the free next place in the storage area. */
+    int8_t * pc_سر;           /**< Points to the beginning of the queue storage area. */
+    int8_t * pc_Write_منزل;        /**< Points to the free next place in the storage area. */
 
-    union
+    اتحاد
     {
-        QueuePointers_t xQueue;     /**< Data required exclusively when this structure is used as a queue. */
-        SemaphoreData_t xSemaphore; /**< Data required exclusively when this structure is used as a semaphore. */
+        کتار_اشارې_t x_کتار;     /**< Data required exclusively when this structure is used as a queue. */
+        Semaphore_معلومات_t xSemaphore; /**< Data required exclusively when this structure is used as a semaphore. */
     } u;
 
-    List_t xTasksWaitingToSend;             /**< List of tasks that are blocked waiting to post onto this queue.  Stored in priority order. */
-    List_t xTasksWaitingToReceive;          /**< List of tasks that are blocked waiting to read from this queue.  Stored in priority order. */
+    List_t x_Tasks_انتظار_منزل_Send;             /**< List of tasks that are blocked waiting to post onto this queue.  Stored in priority order. */
+    List_t x_Tasks_انتظار_منزل_Receive;          /**< List of tasks that are blocked waiting to read from this queue.  Stored in priority order. */
 
-    volatile UBaseType_t uxMessagesWaiting; /**< The number of items currently in the queue. */
-    UBaseType_t uxLength;                   /**< The length of the queue defined as the number of items it will hold, not the number of bytes. */
-    UBaseType_t uxItemSize;                 /**< The size of each items that the queue will hold. */
+    متطاير UBaseType_t ux_Messages_انتظار; /**< The number of items currently in the queue. */
+    UBaseType_t ux_اوږدتیا;                   /**< The length of the queue defined as the number of items it will hold, not the number of bytes. */
+    UBaseType_t ux_توکی_اندازه;                 /**< The size of each items that the queue will hold. */
 
-    volatile int8_t cRxLock;                /**< Stores the number of items received from the queue (removed from the queue) while the queue was locked.  Set to queueUNLOCKED when the queue is not locked. */
-    volatile int8_t cTxLock;                /**< Stores the number of items transmitted to the queue (added to the queue) while the queue was locked.  Set to queueUNLOCKED when the queue is not locked. */
+    متطاير int8_t c_Rx_قلف;                /**< Stores the number of items received from the queue (removed from the queue) while the queue was locked.  Set to queueUNLOCKED when the queue is not locked. */
+    متطاير int8_t c_Tx_قلف;                /**< Stores the number of items transmitted to the queue (added to the queue) while the queue was locked.  Set to queueUNLOCKED when the queue is not locked. */
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #إذا ( ( config_SUPPORT_STATIC_ویش == 1 ) && ( config_SUPPORT_DYNAMIC_ویش == 1 ) )
         uint8_t ucStaticallyAllocated; /**< Set to pdTRUE if the memory used by the queue was statically allocated to ensure no attempt is made to free the memory. */
-    #endif
+    #د_که_پای
 
-    #if ( configUSE_QUEUE_SETS == 1 )
-        struct QueueDefinition * pxQueueSetContainer;
-    #endif
+    #إذا ( config_USE_کتار_SETS == 1 )
+        بنية کتار_Definition * px_کتار_سېټ_Container;
+    #د_که_پای
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
-        UBaseType_t uxQueueNumber;
-        uint8_t ucQueueType;
-    #endif
-} xQUEUE;
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
+        UBaseType_t ux_کتار_شمېره;
+        uint8_t uc_کتار_Type;
+    #د_که_پای
+} x_کتار_2;
 
 /* The old xQUEUE name is maintained above then typedefed to the new Queue_t
  * name below to enable the use of older kernel aware debuggers. */
-typedef xQUEUE Queue_t;
+تعريفنوع x_کتار_2 کتار_t;
 
 /*-----------------------------------------------------------*/
 
@@ -149,21 +149,21 @@ typedef xQUEUE Queue_t;
  * The queue registry is just a means for kernel aware debuggers to locate
  * queue structures.  It has no other purpose so is an optional component.
  */
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
+#إذا ( config_کتار_REGISTRY_اندازه > 0 )
 
 /* The type stored within the queue registry array.  This allows a name
  * to be assigned to each queue making kernel aware debugging a little
  * more user friendly. */
-    typedef struct QUEUE_REGISTRY_ITEM
+    تعريفنوع بنية کتار_REGISTRY_توکی
     {
-        const char * pcQueueName;
-        QueueHandle_t xHandle;
-    } xQueueRegistryItem;
+        ثابت حرف * pc_کتار_Name;
+        کتار_Handle_t xHandle;
+    } x_کتار_Registry_توکی;
 
 /* The old xQueueRegistryItem name is maintained above then typedefed to the
  * new xQueueRegistryItem name below to enable the use of older kernel aware
  * debuggers. */
-    typedef xQueueRegistryItem QueueRegistryItem_t;
+    تعريفنوع x_کتار_Registry_توکی کتار_Registry_توکی_t;
 
 /* The queue registry is simply an array of QueueRegistryItem_t structures.
  * The pcQueueName member of a structure being NULL is indicative of the
@@ -172,9 +172,9 @@ typedef xQUEUE Queue_t;
 /* MISRA Ref 8.4.2 [Declaration shall be visible] */
 /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-84 */
 /* coverity[misra_c_2012_rule_8_4_violation] */
-    PRIVILEGED_DATA QueueRegistryItem_t xQueueRegistry[ configQUEUE_REGISTRY_SIZE ];
+    PRIVILEGED_معلومات کتار_Registry_توکی_t x_کتار_Registry[ config_کتار_REGISTRY_اندازه ];
 
-#endif /* configQUEUE_REGISTRY_SIZE */
+#د_که_پای /* configQUEUE_REGISTRY_SIZE */
 
 /*
  * Unlocks a queue locked by a call to prvLockQueue.  Locking a queue does not
@@ -184,65 +184,65 @@ typedef xQUEUE Queue_t;
  * to indicate that a task may require unblocking.  When the queue in unlocked
  * these lock counts are inspected, and the appropriate action taken.
  */
-static void prvUnlockQueue( Queue_t * const pxQueue ) PRIVILEGED_FUNCTION;
+ساكن فراغ prv_Unlock_کتار( کتار_t * ثابت px_کتار ) PRIVILEGED_FUNCTION;
 
 /*
  * Uses a critical section to determine if there is any data in a queue.
  *
  * @return pdTRUE if the queue contains no items, otherwise pdFALSE.
  */
-static BaseType_t prvIsQueueEmpty( const Queue_t * pxQueue ) PRIVILEGED_FUNCTION;
+ساكن بنسټ_Type_t prv_Is_کتار_تشه( ثابت کتار_t * px_کتار ) PRIVILEGED_FUNCTION;
 
 /*
  * Uses a critical section to determine if there is any space in a queue.
  *
  * @return pdTRUE if there is no space, otherwise pdFALSE;
  */
-static BaseType_t prvIsQueueFull( const Queue_t * pxQueue ) PRIVILEGED_FUNCTION;
+ساكن بنسټ_Type_t prv_Is_کتار_ډک( ثابت کتار_t * px_کتار ) PRIVILEGED_FUNCTION;
 
 /*
  * Copies an item into the queue, either at the front of the queue or the
  * back of the queue.
  */
-static BaseType_t prvCopyDataToQueue( Queue_t * const pxQueue,
-                                      const void * pvItemToQueue,
-                                      const BaseType_t xPosition ) PRIVILEGED_FUNCTION;
+ساكن بنسټ_Type_t prv_Copy_معلومات_منزل_کتار( کتار_t * ثابت px_کتار,
+                                      ثابت فراغ * pv_توکی_منزل_کتار,
+                                      ثابت بنسټ_Type_t xPosition ) PRIVILEGED_FUNCTION;
 
 /*
  * Copies an item out of a queue.
  */
-static void prvCopyDataFromQueue( Queue_t * const pxQueue,
-                                  void * const pvBuffer ) PRIVILEGED_FUNCTION;
+ساكن فراغ prv_Copy_معلومات_From_کتار( کتار_t * ثابت px_کتار,
+                                  فراغ * ثابت pv_بفر ) PRIVILEGED_FUNCTION;
 
-#if ( configUSE_QUEUE_SETS == 1 )
+#إذا ( config_USE_کتار_SETS == 1 )
 
 /*
  * Checks to see if a queue is a member of a queue set, and if so, notifies
  * the queue set that the queue contains data.
  */
-    static BaseType_t prvNotifyQueueSetContainer( const Queue_t * const pxQueue ) PRIVILEGED_FUNCTION;
-#endif
+    ساكن بنسټ_Type_t prv_Notify_کتار_سېټ_Container( ثابت کتار_t * ثابت px_کتار ) PRIVILEGED_FUNCTION;
+#د_که_پای
 
 /*
  * Called after a Queue_t structure has been allocated either statically or
  * dynamically to fill in the structure's members.
  */
-static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
-                                   const UBaseType_t uxItemSize,
-                                   uint8_t * pucQueueStorage,
-                                   const uint8_t ucQueueType,
-                                   Queue_t * pxNewQueue ) PRIVILEGED_FUNCTION;
+ساكن فراغ prv_Initialise_New_کتار( ثابت UBaseType_t ux_کتار_اوږدتیا,
+                                   ثابت UBaseType_t ux_توکی_اندازه,
+                                   uint8_t * puc_کتار_Storage,
+                                   ثابت uint8_t uc_کتار_Type,
+                                   کتار_t * px_New_کتار ) PRIVILEGED_FUNCTION;
 
 /*
  * Mutexes are a special type of queue.  When a mutex is created, first the
  * queue is created, then prvInitialiseMutex() is called to configure the queue
  * as a mutex.
  */
-#if ( configUSE_MUTEXES == 1 )
-    static void prvInitialiseMutex( Queue_t * pxNewQueue ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( configUSE_MUTEXES == 1 )
+    ساكن فراغ prvInitialiseMutex( کتار_t * px_New_کتار ) PRIVILEGED_FUNCTION;
+#د_که_پای
 
-#if ( configUSE_MUTEXES == 1 )
+#إذا ( configUSE_MUTEXES == 1 )
 
 /*
  * If a task waiting for a mutex causes the mutex holder to inherit a
@@ -251,24 +251,24 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
  * other tasks that are waiting for the same mutex.  This function returns
  * that priority.
  */
-    static UBaseType_t prvGetDisinheritPriorityAfterTimeout( const Queue_t * const pxQueue ) PRIVILEGED_FUNCTION;
-#endif
+    ساكن UBaseType_t prv_Get_Disinherit_لومړیتوب_After_Timeout( ثابت کتار_t * ثابت px_کتار ) PRIVILEGED_FUNCTION;
+#د_که_پای
 /*-----------------------------------------------------------*/
 
 /*
  * Macro to mark a queue as locked.  Locking a queue prevents an ISR from
  * accessing the queue event lists.
  */
-#define prvLockQueue( pxQueue )                            \
+#تعریف_کړه prv_قلف_کتار( px_کتار )                            \
     taskENTER_CRITICAL();                                  \
     {                                                      \
-        if( ( pxQueue )->cRxLock == queueUNLOCKED )        \
+        إذا( ( px_کتار )->c_Rx_قلف == کتار_UNLOCKED )        \
         {                                                  \
-            ( pxQueue )->cRxLock = queueLOCKED_UNMODIFIED; \
+            ( px_کتار )->c_Rx_قلف = کتار_LOCKED_UNMODIFIED; \
         }                                                  \
-        if( ( pxQueue )->cTxLock == queueUNLOCKED )        \
+        إذا( ( px_کتار )->c_Tx_قلف == کتار_UNLOCKED )        \
         {                                                  \
-            ( pxQueue )->cTxLock = queueLOCKED_UNMODIFIED; \
+            ( px_کتار )->c_Tx_قلف = کتار_LOCKED_UNMODIFIED; \
         }                                                  \
     }                                                      \
     taskEXIT_CRITICAL()
@@ -278,89 +278,89 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
  * capped at the number of tasks in the system as we cannot unblock more
  * tasks than the number of tasks in the system.
  */
-#define prvIncrementQueueTxLock( pxQueue, cTxLock )                           \
-    do {                                                                      \
-        const UBaseType_t uxNumberOfTasks = uxTaskGetNumberOfTasks();         \
-        if( ( UBaseType_t ) ( cTxLock ) < uxNumberOfTasks )                   \
+#تعریف_کړه prv_Increment_کتار_Tx_قلف( px_کتار, c_Tx_قلف )                           \
+    افعل {                                                                      \
+        ثابت UBaseType_t ux_شمېره_د_Tasks = ux_Task_Get_شمېره_د_Tasks();         \
+        إذا( ( UBaseType_t ) ( c_Tx_قلف ) < ux_شمېره_د_Tasks )                   \
         {                                                                     \
-            configASSERT( ( cTxLock ) != queueINT8_MAX );                     \
-            ( pxQueue )->cTxLock = ( int8_t ) ( ( cTxLock ) + ( int8_t ) 1 ); \
+            configASSERT( ( c_Tx_قلف ) != کتار_INT8_MAX );                     \
+            ( px_کتار )->c_Tx_قلف = ( int8_t ) ( ( c_Tx_قلف ) + ( int8_t ) 1 ); \
         }                                                                     \
-    } while( 0 )
+    } طالما( 0 )
 
 /*
  * Macro to increment cRxLock member of the queue data structure. It is
  * capped at the number of tasks in the system as we cannot unblock more
  * tasks than the number of tasks in the system.
  */
-#define prvIncrementQueueRxLock( pxQueue, cRxLock )                           \
-    do {                                                                      \
-        const UBaseType_t uxNumberOfTasks = uxTaskGetNumberOfTasks();         \
-        if( ( UBaseType_t ) ( cRxLock ) < uxNumberOfTasks )                   \
+#تعریف_کړه prv_Increment_کتار_Rx_قلف( px_کتار, c_Rx_قلف )                           \
+    افعل {                                                                      \
+        ثابت UBaseType_t ux_شمېره_د_Tasks = ux_Task_Get_شمېره_د_Tasks();         \
+        إذا( ( UBaseType_t ) ( c_Rx_قلف ) < ux_شمېره_د_Tasks )                   \
         {                                                                     \
-            configASSERT( ( cRxLock ) != queueINT8_MAX );                     \
-            ( pxQueue )->cRxLock = ( int8_t ) ( ( cRxLock ) + ( int8_t ) 1 ); \
+            configASSERT( ( c_Rx_قلف ) != کتار_INT8_MAX );                     \
+            ( px_کتار )->c_Rx_قلف = ( int8_t ) ( ( c_Rx_قلف ) + ( int8_t ) 1 ); \
         }                                                                     \
-    } while( 0 )
+    } طالما( 0 )
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueGenericReset( QueueHandle_t xQueue,
-                               BaseType_t xNewQueue )
+بنسټ_Type_t x_کتار_Generic_Reset( کتار_Handle_t x_کتار,
+                               بنسټ_Type_t x_New_کتار )
 {
-    BaseType_t xReturn = pdPASS;
-    Queue_t * const pxQueue = xQueue;
+    بنسټ_Type_t xReturn = pdPASS;
+    کتار_t * ثابت px_کتار = x_کتار;
 
-    traceENTER_xQueueGenericReset( xQueue, xNewQueue );
+    trace_ENTER_x_کتار_Generic_Reset( x_کتار, x_New_کتار );
 
-    configASSERT( pxQueue );
+    configASSERT( px_کتار );
 
-    if( ( pxQueue != NULL ) &&
-        ( pxQueue->uxLength >= 1U ) &&
+    إذا( ( px_کتار != عدم ) &&
+        ( px_کتار->ux_اوږدتیا >= 1U ) &&
         /* Check for multiplication overflow. */
-        ( ( SIZE_MAX / pxQueue->uxLength ) >= pxQueue->uxItemSize ) )
+        ( ( SIZE_MAX / px_کتار->ux_اوږدتیا ) >= px_کتار->ux_توکی_اندازه ) )
     {
         taskENTER_CRITICAL();
         {
-            pxQueue->u.xQueue.pcTail = pxQueue->pcHead + ( pxQueue->uxLength * pxQueue->uxItemSize );
-            pxQueue->uxMessagesWaiting = ( UBaseType_t ) 0U;
-            pxQueue->pcWriteTo = pxQueue->pcHead;
-            pxQueue->u.xQueue.pcReadFrom = pxQueue->pcHead + ( ( pxQueue->uxLength - 1U ) * pxQueue->uxItemSize );
-            pxQueue->cRxLock = queueUNLOCKED;
-            pxQueue->cTxLock = queueUNLOCKED;
+            px_کتار->u.x_کتار.pc_لکۍ = px_کتار->pc_سر + ( px_کتار->ux_اوږدتیا * px_کتار->ux_توکی_اندازه );
+            px_کتار->ux_Messages_انتظار = ( UBaseType_t ) 0U;
+            px_کتار->pc_Write_منزل = px_کتار->pc_سر;
+            px_کتار->u.x_کتار.pcReadFrom = px_کتار->pc_سر + ( ( px_کتار->ux_اوږدتیا - 1U ) * px_کتار->ux_توکی_اندازه );
+            px_کتار->c_Rx_قلف = کتار_UNLOCKED;
+            px_کتار->c_Tx_قلف = کتار_UNLOCKED;
 
-            if( xNewQueue == pdFALSE )
+            إذا( x_New_کتار == pdFALSE )
             {
                 /* If there are tasks blocked waiting to read from the queue, then
                  * the tasks will remain blocked as after this function exits the queue
                  * will still be empty.  If there are tasks blocked waiting to write to
                  * the queue, then one should be unblocked as after this function exits
                  * it will be possible to write to it. */
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
+                إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Send ) ) == pdFALSE )
                 {
-                    if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToSend ) ) != pdFALSE )
+                    إذا( xTaskRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Send ) ) != pdFALSE )
                     {
-                        queueYIELD_IF_USING_PREEMPTION();
+                        کتار_YIELD_IF_USING_PREEMPTION();
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            وإلا
             {
                 /* Ensure the event queues start in the correct state. */
-                vListInitialise( &( pxQueue->xTasksWaitingToSend ) );
-                vListInitialise( &( pxQueue->xTasksWaitingToReceive ) );
+                vListInitialise( &( px_کتار->x_Tasks_انتظار_منزل_Send ) );
+                vListInitialise( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) );
             }
         }
         taskEXIT_CRITICAL();
     }
-    else
+    وإلا
     {
         xReturn = pdFAIL;
     }
@@ -369,48 +369,48 @@ BaseType_t xQueueGenericReset( QueueHandle_t xQueue,
 
     /* A value is returned for calling semantic consistency with previous
      * versions. */
-    traceRETURN_xQueueGenericReset( xReturn );
+    trace_RETURN_x_کتار_Generic_Reset( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#إذا ( config_SUPPORT_STATIC_ویش == 1 )
 
-    QueueHandle_t xQueueGenericCreateStatic( const UBaseType_t uxQueueLength,
-                                             const UBaseType_t uxItemSize,
-                                             uint8_t * pucQueueStorage,
-                                             StaticQueue_t * pxStaticQueue,
-                                             const uint8_t ucQueueType )
+    کتار_Handle_t x_کتار_Generic_Create_Static( ثابت UBaseType_t ux_کتار_اوږدتیا,
+                                             ثابت UBaseType_t ux_توکی_اندازه,
+                                             uint8_t * puc_کتار_Storage,
+                                             Static_کتار_t * px_Static_کتار,
+                                             ثابت uint8_t uc_کتار_Type )
     {
-        Queue_t * pxNewQueue = NULL;
+        کتار_t * px_New_کتار = عدم;
 
-        traceENTER_xQueueGenericCreateStatic( uxQueueLength, uxItemSize, pucQueueStorage, pxStaticQueue, ucQueueType );
+        trace_ENTER_x_کتار_Generic_Create_Static( ux_کتار_اوږدتیا, ux_توکی_اندازه, puc_کتار_Storage, px_Static_کتار, uc_کتار_Type );
 
         /* The StaticQueue_t structure and the queue storage area must be
          * supplied. */
-        configASSERT( pxStaticQueue );
+        configASSERT( px_Static_کتار );
 
-        if( ( uxQueueLength > ( UBaseType_t ) 0 ) &&
-            ( pxStaticQueue != NULL ) &&
+        إذا( ( ux_کتار_اوږدتیا > ( UBaseType_t ) 0 ) &&
+            ( px_Static_کتار != عدم ) &&
 
             /* A queue storage area should be provided if the item size is not 0, and
              * should not be provided if the item size is 0. */
-            ( !( ( pucQueueStorage != NULL ) && ( uxItemSize == 0U ) ) ) &&
-            ( !( ( pucQueueStorage == NULL ) && ( uxItemSize != 0U ) ) ) )
+            ( !( ( puc_کتار_Storage != عدم ) && ( ux_توکی_اندازه == 0U ) ) ) &&
+            ( !( ( puc_کتار_Storage == عدم ) && ( ux_توکی_اندازه != 0U ) ) ) )
         {
-            #if ( configASSERT_DEFINED == 1 )
+            #إذا ( configASSERT_DEFINED == 1 )
             {
                 /* Sanity check that the size of the structure used to declare a
                  * variable of type StaticQueue_t or StaticSemaphore_t equals the size of
                  * the real queue and semaphore structures. */
-                volatile size_t xSize = sizeof( StaticQueue_t );
+                متطاير size_t x_اندازه = حجم( Static_کتار_t );
 
                 /* This assertion cannot be branch covered in unit tests */
-                configASSERT( xSize == sizeof( Queue_t ) ); /* LCOV_EXCL_BR_LINE */
-                ( void ) xSize;                             /* Prevent unused variable warning when configASSERT() is not defined. */
+                configASSERT( x_اندازه == حجم( کتار_t ) ); /* LCOV_EXCL_BR_LINE */
+                ( فراغ ) x_اندازه;                             /* Prevent unused variable warning when configASSERT() is not defined. */
             }
-            #endif /* configASSERT_DEFINED */
+            #د_که_پای /* configASSERT_DEFINED */
 
             /* The address of a statically allocated queue was passed in, use it.
              * The address of a statically allocated storage area was also passed in
@@ -418,284 +418,284 @@ BaseType_t xQueueGenericReset( QueueHandle_t xQueue,
             /* MISRA Ref 11.3.1 [Misaligned access] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-113 */
             /* coverity[misra_c_2012_rule_11_3_violation] */
-            pxNewQueue = ( Queue_t * ) pxStaticQueue;
+            px_New_کتار = ( کتار_t * ) px_Static_کتار;
 
-            #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+            #إذا ( config_SUPPORT_DYNAMIC_ویش == 1 )
             {
                 /* Queues can be allocated either statically or dynamically, so
                  * note this queue was allocated statically in case the queue is
                  * later deleted. */
-                pxNewQueue->ucStaticallyAllocated = pdTRUE;
+                px_New_کتار->ucStaticallyAllocated = pdTRUE;
             }
-            #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+            #د_که_پای /* configSUPPORT_DYNAMIC_ALLOCATION */
 
-            prvInitialiseNewQueue( uxQueueLength, uxItemSize, pucQueueStorage, ucQueueType, pxNewQueue );
+            prv_Initialise_New_کتار( ux_کتار_اوږدتیا, ux_توکی_اندازه, puc_کتار_Storage, uc_کتار_Type, px_New_کتار );
         }
-        else
+        وإلا
         {
-            configASSERT( pxNewQueue );
+            configASSERT( px_New_کتار );
             mtCOVERAGE_TEST_MARKER();
         }
 
-        traceRETURN_xQueueGenericCreateStatic( pxNewQueue );
+        trace_RETURN_x_کتار_Generic_Create_Static( px_New_کتار );
 
-        return pxNewQueue;
+        أرجع px_New_کتار;
     }
 
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#د_که_پای /* configSUPPORT_STATIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#إذا ( config_SUPPORT_STATIC_ویش == 1 )
 
-    BaseType_t xQueueGenericGetStaticBuffers( QueueHandle_t xQueue,
-                                              uint8_t ** ppucQueueStorage,
-                                              StaticQueue_t ** ppxStaticQueue )
+    بنسټ_Type_t x_کتار_Generic_Get_Static_Buffers( کتار_Handle_t x_کتار,
+                                              uint8_t ** ppuc_کتار_Storage,
+                                              Static_کتار_t ** ppx_Static_کتار )
     {
-        BaseType_t xReturn;
-        Queue_t * const pxQueue = xQueue;
+        بنسټ_Type_t xReturn;
+        کتار_t * ثابت px_کتار = x_کتار;
 
-        traceENTER_xQueueGenericGetStaticBuffers( xQueue, ppucQueueStorage, ppxStaticQueue );
+        trace_ENTER_x_کتار_Generic_Get_Static_Buffers( x_کتار, ppuc_کتار_Storage, ppx_Static_کتار );
 
-        configASSERT( pxQueue );
-        configASSERT( ppxStaticQueue );
+        configASSERT( px_کتار );
+        configASSERT( ppx_Static_کتار );
 
-        #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+        #إذا ( config_SUPPORT_DYNAMIC_ویش == 1 )
         {
             /* Check if the queue was statically allocated. */
-            if( pxQueue->ucStaticallyAllocated == ( uint8_t ) pdTRUE )
+            إذا( px_کتار->ucStaticallyAllocated == ( uint8_t ) pdTRUE )
             {
-                if( ppucQueueStorage != NULL )
+                إذا( ppuc_کتار_Storage != عدم )
                 {
-                    *ppucQueueStorage = ( uint8_t * ) pxQueue->pcHead;
+                    *ppuc_کتار_Storage = ( uint8_t * ) px_کتار->pc_سر;
                 }
 
                 /* MISRA Ref 11.3.1 [Misaligned access] */
                 /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-113 */
                 /* coverity[misra_c_2012_rule_11_3_violation] */
-                *ppxStaticQueue = ( StaticQueue_t * ) pxQueue;
+                *ppx_Static_کتار = ( Static_کتار_t * ) px_کتار;
                 xReturn = pdTRUE;
             }
-            else
+            وإلا
             {
                 xReturn = pdFALSE;
             }
         }
-        #else /* configSUPPORT_DYNAMIC_ALLOCATION */
+        #وإلا /* configSUPPORT_DYNAMIC_ALLOCATION */
         {
             /* Queue must have been statically allocated. */
-            if( ppucQueueStorage != NULL )
+            إذا( ppuc_کتار_Storage != عدم )
             {
-                *ppucQueueStorage = ( uint8_t * ) pxQueue->pcHead;
+                *ppuc_کتار_Storage = ( uint8_t * ) px_کتار->pc_سر;
             }
 
-            *ppxStaticQueue = ( StaticQueue_t * ) pxQueue;
+            *ppx_Static_کتار = ( Static_کتار_t * ) px_کتار;
             xReturn = pdTRUE;
         }
-        #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+        #د_که_پای /* configSUPPORT_DYNAMIC_ALLOCATION */
 
-        traceRETURN_xQueueGenericGetStaticBuffers( xReturn );
+        trace_RETURN_x_کتار_Generic_Get_Static_Buffers( xReturn );
 
-        return xReturn;
+        أرجع xReturn;
     }
 
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#د_که_پای /* configSUPPORT_STATIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+#إذا ( config_SUPPORT_DYNAMIC_ویش == 1 )
 
-    QueueHandle_t xQueueGenericCreate( const UBaseType_t uxQueueLength,
-                                       const UBaseType_t uxItemSize,
-                                       const uint8_t ucQueueType )
+    کتار_Handle_t x_کتار_Generic_Create( ثابت UBaseType_t ux_کتار_اوږدتیا,
+                                       ثابت UBaseType_t ux_توکی_اندازه,
+                                       ثابت uint8_t uc_کتار_Type )
     {
-        Queue_t * pxNewQueue = NULL;
-        size_t xQueueSizeInBytes;
-        uint8_t * pucQueueStorage;
+        کتار_t * px_New_کتار = عدم;
+        size_t x_کتار_اندازه_دننه_بایټونه;
+        uint8_t * puc_کتار_Storage;
 
-        traceENTER_xQueueGenericCreate( uxQueueLength, uxItemSize, ucQueueType );
+        trace_ENTER_x_کتار_Generic_Create( ux_کتار_اوږدتیا, ux_توکی_اندازه, uc_کتار_Type );
 
-        if( ( uxQueueLength > ( UBaseType_t ) 0 ) &&
+        إذا( ( ux_کتار_اوږدتیا > ( UBaseType_t ) 0 ) &&
             /* Check for multiplication overflow. */
-            ( ( SIZE_MAX / uxQueueLength ) >= uxItemSize ) &&
+            ( ( SIZE_MAX / ux_کتار_اوږدتیا ) >= ux_توکی_اندازه ) &&
             /* Check for addition overflow. */
-            ( ( UBaseType_t ) ( SIZE_MAX - sizeof( Queue_t ) ) >= ( uxQueueLength * uxItemSize ) ) )
+            ( ( UBaseType_t ) ( SIZE_MAX - حجم( کتار_t ) ) >= ( ux_کتار_اوږدتیا * ux_توکی_اندازه ) ) )
         {
             /* Allocate enough space to hold the maximum number of items that
              * can be in the queue at any time.  It is valid for uxItemSize to be
              * zero in the case the queue is used as a semaphore. */
-            xQueueSizeInBytes = ( size_t ) ( ( size_t ) uxQueueLength * ( size_t ) uxItemSize );
+            x_کتار_اندازه_دننه_بایټونه = ( size_t ) ( ( size_t ) ux_کتار_اوږدتیا * ( size_t ) ux_توکی_اندازه );
 
             /* MISRA Ref 11.5.1 [Malloc memory assignment] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
             /* coverity[misra_c_2012_rule_11_5_violation] */
-            pxNewQueue = ( Queue_t * ) pvPortMalloc( sizeof( Queue_t ) + xQueueSizeInBytes );
+            px_New_کتار = ( کتار_t * ) pv_پورټ_Malloc( حجم( کتار_t ) + x_کتار_اندازه_دننه_بایټونه );
 
-            if( pxNewQueue != NULL )
+            إذا( px_New_کتار != عدم )
             {
                 /* Jump past the queue structure to find the location of the queue
                  * storage area. */
-                pucQueueStorage = ( uint8_t * ) pxNewQueue;
-                pucQueueStorage += sizeof( Queue_t );
+                puc_کتار_Storage = ( uint8_t * ) px_New_کتار;
+                puc_کتار_Storage += حجم( کتار_t );
 
-                #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+                #إذا ( config_SUPPORT_STATIC_ویش == 1 )
                 {
                     /* Queues can be created either statically or dynamically, so
                      * note this task was created dynamically in case it is later
                      * deleted. */
-                    pxNewQueue->ucStaticallyAllocated = pdFALSE;
+                    px_New_کتار->ucStaticallyAllocated = pdFALSE;
                 }
-                #endif /* configSUPPORT_STATIC_ALLOCATION */
+                #د_که_پای /* configSUPPORT_STATIC_ALLOCATION */
 
-                prvInitialiseNewQueue( uxQueueLength, uxItemSize, pucQueueStorage, ucQueueType, pxNewQueue );
+                prv_Initialise_New_کتار( ux_کتار_اوږدتیا, ux_توکی_اندازه, puc_کتار_Storage, uc_کتار_Type, px_New_کتار );
             }
-            else
+            وإلا
             {
-                traceQUEUE_CREATE_FAILED( ucQueueType );
+                trace_کتار_CREATE_FAILED( uc_کتار_Type );
                 mtCOVERAGE_TEST_MARKER();
             }
         }
-        else
+        وإلا
         {
-            configASSERT( pxNewQueue );
+            configASSERT( px_New_کتار );
             mtCOVERAGE_TEST_MARKER();
         }
 
-        traceRETURN_xQueueGenericCreate( pxNewQueue );
+        trace_RETURN_x_کتار_Generic_Create( px_New_کتار );
 
-        return pxNewQueue;
+        أرجع px_New_کتار;
     }
 
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#د_که_پای /* configSUPPORT_STATIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
-                                   const UBaseType_t uxItemSize,
-                                   uint8_t * pucQueueStorage,
-                                   const uint8_t ucQueueType,
-                                   Queue_t * pxNewQueue )
+ساكن فراغ prv_Initialise_New_کتار( ثابت UBaseType_t ux_کتار_اوږدتیا,
+                                   ثابت UBaseType_t ux_توکی_اندازه,
+                                   uint8_t * puc_کتار_Storage,
+                                   ثابت uint8_t uc_کتار_Type,
+                                   کتار_t * px_New_کتار )
 {
     /* Remove compiler warnings about unused parameters should
      * configUSE_TRACE_FACILITY not be set to 1. */
-    ( void ) ucQueueType;
+    ( فراغ ) uc_کتار_Type;
 
-    if( uxItemSize == ( UBaseType_t ) 0 )
+    إذا( ux_توکی_اندازه == ( UBaseType_t ) 0 )
     {
         /* No RAM was allocated for the queue storage area, but PC head cannot
          * be set to NULL because NULL is used as a key to say the queue is used as
          * a mutex.  Therefore just set pcHead to point to the queue as a benign
          * value that is known to be within the memory map. */
-        pxNewQueue->pcHead = ( int8_t * ) pxNewQueue;
+        px_New_کتار->pc_سر = ( int8_t * ) px_New_کتار;
     }
-    else
+    وإلا
     {
         /* Set the head to the start of the queue storage area. */
-        pxNewQueue->pcHead = ( int8_t * ) pucQueueStorage;
+        px_New_کتار->pc_سر = ( int8_t * ) puc_کتار_Storage;
     }
 
     /* Initialise the queue members as described where the queue type is
      * defined. */
-    pxNewQueue->uxLength = uxQueueLength;
-    pxNewQueue->uxItemSize = uxItemSize;
-    ( void ) xQueueGenericReset( pxNewQueue, pdTRUE );
+    px_New_کتار->ux_اوږدتیا = ux_کتار_اوږدتیا;
+    px_New_کتار->ux_توکی_اندازه = ux_توکی_اندازه;
+    ( فراغ ) x_کتار_Generic_Reset( px_New_کتار, pdTRUE );
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
     {
-        pxNewQueue->ucQueueType = ucQueueType;
+        px_New_کتار->uc_کتار_Type = uc_کتار_Type;
     }
-    #endif /* configUSE_TRACE_FACILITY */
+    #د_که_پای /* configUSE_TRACE_FACILITY */
 
-    #if ( configUSE_QUEUE_SETS == 1 )
+    #إذا ( config_USE_کتار_SETS == 1 )
     {
-        pxNewQueue->pxQueueSetContainer = NULL;
+        px_New_کتار->px_کتار_سېټ_Container = عدم;
     }
-    #endif /* configUSE_QUEUE_SETS */
+    #د_که_پای /* configUSE_QUEUE_SETS */
 
-    traceQUEUE_CREATE( pxNewQueue );
+    trace_کتار_CREATE( px_New_کتار );
 }
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_MUTEXES == 1 )
+#إذا ( configUSE_MUTEXES == 1 )
 
-    static void prvInitialiseMutex( Queue_t * pxNewQueue )
+    ساكن فراغ prvInitialiseMutex( کتار_t * px_New_کتار )
     {
-        if( pxNewQueue != NULL )
+        إذا( px_New_کتار != عدم )
         {
             /* The queue create function will set all the queue structure members
             * correctly for a generic queue, but this function is creating a
             * mutex.  Overwrite those members that need to be set differently -
             * in particular the information required for priority inheritance. */
-            pxNewQueue->u.xSemaphore.xMutexHolder = NULL;
-            pxNewQueue->uxQueueType = queueQUEUE_IS_MUTEX;
+            px_New_کتار->u.xSemaphore.xMutexHolder = عدم;
+            px_New_کتار->ux_کتار_Type = کتار_کتار_IS_MUTEX;
 
             /* In case this is a recursive mutex. */
-            pxNewQueue->u.xSemaphore.uxRecursiveCallCount = 0;
+            px_New_کتار->u.xSemaphore.ux_Recursive_Call_شمېر = 0;
 
-            traceCREATE_MUTEX( pxNewQueue );
+            traceCREATE_MUTEX( px_New_کتار );
 
             /* Start with the semaphore in the expected state. */
-            ( void ) xQueueGenericSend( pxNewQueue, NULL, ( TickType_t ) 0U, queueSEND_TO_BACK );
+            ( فراغ ) x_کتار_Generic_Send( px_New_کتار, عدم, ( TickType_t ) 0U, کتار_SEND_منزل_شا );
         }
-        else
+        وإلا
         {
             traceCREATE_MUTEX_FAILED();
         }
     }
 
-#endif /* configUSE_MUTEXES */
+#د_که_پای /* configUSE_MUTEXES */
 /*-----------------------------------------------------------*/
 
-#if ( ( configUSE_MUTEXES == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+#إذا ( ( configUSE_MUTEXES == 1 ) && ( config_SUPPORT_DYNAMIC_ویش == 1 ) )
 
-    QueueHandle_t xQueueCreateMutex( const uint8_t ucQueueType )
+    کتار_Handle_t x_کتار_Create_Mutex( ثابت uint8_t uc_کتار_Type )
     {
-        QueueHandle_t xNewQueue;
-        const UBaseType_t uxMutexLength = ( UBaseType_t ) 1, uxMutexSize = ( UBaseType_t ) 0;
+        کتار_Handle_t x_New_کتار;
+        ثابت UBaseType_t ux_Mutex_اوږدتیا = ( UBaseType_t ) 1, ux_Mutex_اندازه = ( UBaseType_t ) 0;
 
-        traceENTER_xQueueCreateMutex( ucQueueType );
+        trace_ENTER_x_کتار_Create_Mutex( uc_کتار_Type );
 
-        xNewQueue = xQueueGenericCreate( uxMutexLength, uxMutexSize, ucQueueType );
-        prvInitialiseMutex( ( Queue_t * ) xNewQueue );
+        x_New_کتار = x_کتار_Generic_Create( ux_Mutex_اوږدتیا, ux_Mutex_اندازه, uc_کتار_Type );
+        prvInitialiseMutex( ( کتار_t * ) x_New_کتار );
 
-        traceRETURN_xQueueCreateMutex( xNewQueue );
+        trace_RETURN_x_کتار_Create_Mutex( x_New_کتار );
 
-        return xNewQueue;
+        أرجع x_New_کتار;
     }
 
-#endif /* configUSE_MUTEXES */
+#د_که_پای /* configUSE_MUTEXES */
 /*-----------------------------------------------------------*/
 
-#if ( ( configUSE_MUTEXES == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
+#إذا ( ( configUSE_MUTEXES == 1 ) && ( config_SUPPORT_STATIC_ویش == 1 ) )
 
-    QueueHandle_t xQueueCreateMutexStatic( const uint8_t ucQueueType,
-                                           StaticQueue_t * pxStaticQueue )
+    کتار_Handle_t x_کتار_Create_Mutex_Static( ثابت uint8_t uc_کتار_Type,
+                                           Static_کتار_t * px_Static_کتار )
     {
-        QueueHandle_t xNewQueue;
-        const UBaseType_t uxMutexLength = ( UBaseType_t ) 1, uxMutexSize = ( UBaseType_t ) 0;
+        کتار_Handle_t x_New_کتار;
+        ثابت UBaseType_t ux_Mutex_اوږدتیا = ( UBaseType_t ) 1, ux_Mutex_اندازه = ( UBaseType_t ) 0;
 
-        traceENTER_xQueueCreateMutexStatic( ucQueueType, pxStaticQueue );
+        trace_ENTER_x_کتار_Create_Mutex_Static( uc_کتار_Type, px_Static_کتار );
 
         /* Prevent compiler warnings about unused parameters if
          * configUSE_TRACE_FACILITY does not equal 1. */
-        ( void ) ucQueueType;
+        ( فراغ ) uc_کتار_Type;
 
-        xNewQueue = xQueueGenericCreateStatic( uxMutexLength, uxMutexSize, NULL, pxStaticQueue, ucQueueType );
-        prvInitialiseMutex( ( Queue_t * ) xNewQueue );
+        x_New_کتار = x_کتار_Generic_Create_Static( ux_Mutex_اوږدتیا, ux_Mutex_اندازه, عدم, px_Static_کتار, uc_کتار_Type );
+        prvInitialiseMutex( ( کتار_t * ) x_New_کتار );
 
-        traceRETURN_xQueueCreateMutexStatic( xNewQueue );
+        trace_RETURN_x_کتار_Create_Mutex_Static( x_New_کتار );
 
-        return xNewQueue;
+        أرجع x_New_کتار;
     }
 
-#endif /* configUSE_MUTEXES */
+#د_که_پای /* configUSE_MUTEXES */
 /*-----------------------------------------------------------*/
 
-#if ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
+#إذا ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
 
-    TaskHandle_t xQueueGetMutexHolder( QueueHandle_t xSemaphore )
+    TaskHandle_t x_کتار_Get_Mutex_Holder( کتار_Handle_t xSemaphore )
     {
         TaskHandle_t pxReturn;
-        Queue_t * const pxSemaphore = ( Queue_t * ) xSemaphore;
+        کتار_t * ثابت pxSemaphore = ( کتار_t * ) xSemaphore;
 
-        traceENTER_xQueueGetMutexHolder( xSemaphore );
+        trace_ENTER_x_کتار_Get_Mutex_Holder( xSemaphore );
 
         configASSERT( xSemaphore );
 
@@ -706,63 +706,63 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
          * following critical section exiting and the function returning. */
         taskENTER_CRITICAL();
         {
-            if( pxSemaphore->uxQueueType == queueQUEUE_IS_MUTEX )
+            إذا( pxSemaphore->ux_کتار_Type == کتار_کتار_IS_MUTEX )
             {
                 pxReturn = pxSemaphore->u.xSemaphore.xMutexHolder;
             }
-            else
+            وإلا
             {
-                pxReturn = NULL;
+                pxReturn = عدم;
             }
         }
         taskEXIT_CRITICAL();
 
-        traceRETURN_xQueueGetMutexHolder( pxReturn );
+        trace_RETURN_x_کتار_Get_Mutex_Holder( pxReturn );
 
-        return pxReturn;
+        أرجع pxReturn;
     }
 
-#endif /* if ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) ) */
+#د_که_پای /* if ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-#if ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
+#إذا ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
 
-    TaskHandle_t xQueueGetMutexHolderFromISR( QueueHandle_t xSemaphore )
+    TaskHandle_t x_کتار_Get_Mutex_Holder_From_ISR( کتار_Handle_t xSemaphore )
     {
         TaskHandle_t pxReturn;
 
-        traceENTER_xQueueGetMutexHolderFromISR( xSemaphore );
+        trace_ENTER_x_کتار_Get_Mutex_Holder_From_ISR( xSemaphore );
 
         configASSERT( xSemaphore );
 
         /* Mutexes cannot be used in interrupt service routines, so the mutex
          * holder should not change in an ISR, and therefore a critical section is
          * not required here. */
-        if( ( ( Queue_t * ) xSemaphore )->uxQueueType == queueQUEUE_IS_MUTEX )
+        إذا( ( ( کتار_t * ) xSemaphore )->ux_کتار_Type == کتار_کتار_IS_MUTEX )
         {
-            pxReturn = ( ( Queue_t * ) xSemaphore )->u.xSemaphore.xMutexHolder;
+            pxReturn = ( ( کتار_t * ) xSemaphore )->u.xSemaphore.xMutexHolder;
         }
-        else
+        وإلا
         {
-            pxReturn = NULL;
+            pxReturn = عدم;
         }
 
-        traceRETURN_xQueueGetMutexHolderFromISR( pxReturn );
+        trace_RETURN_x_کتار_Get_Mutex_Holder_From_ISR( pxReturn );
 
-        return pxReturn;
+        أرجع pxReturn;
     }
 
-#endif /* if ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) ) */
+#د_که_پای /* if ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_RECURSIVE_MUTEXES == 1 )
+#إذا ( configUSE_RECURSIVE_MUTEXES == 1 )
 
-    BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex )
+    بنسټ_Type_t x_کتار_Give_Mutex_Recursive( کتار_Handle_t xMutex )
     {
-        BaseType_t xReturn;
-        Queue_t * const pxMutex = ( Queue_t * ) xMutex;
+        بنسټ_Type_t xReturn;
+        کتار_t * ثابت pxMutex = ( کتار_t * ) xMutex;
 
-        traceENTER_xQueueGiveMutexRecursive( xMutex );
+        trace_ENTER_x_کتار_Give_Mutex_Recursive( xMutex );
 
         configASSERT( pxMutex );
 
@@ -772,7 +772,7 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
          * this is the only condition we are interested in it does not matter if
          * pxMutexHolder is accessed simultaneously by another task.  Therefore no
          * mutual exclusion is required to test the pxMutexHolder variable. */
-        if( pxMutex->u.xSemaphore.xMutexHolder == xTaskGetCurrentTaskHandle() )
+        إذا( pxMutex->u.xSemaphore.xMutexHolder == xTaskGetCurrentTaskHandle() )
         {
             traceGIVE_MUTEX_RECURSIVE( pxMutex );
 
@@ -781,23 +781,23 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
              * uxRecursiveCallCount is only modified by the mutex holder, and as
              * there can only be one, no mutual exclusion is required to modify the
              * uxRecursiveCallCount member. */
-            ( pxMutex->u.xSemaphore.uxRecursiveCallCount )--;
+            ( pxMutex->u.xSemaphore.ux_Recursive_Call_شمېر )--;
 
             /* Has the recursive call count unwound to 0? */
-            if( pxMutex->u.xSemaphore.uxRecursiveCallCount == ( UBaseType_t ) 0 )
+            إذا( pxMutex->u.xSemaphore.ux_Recursive_Call_شمېر == ( UBaseType_t ) 0 )
             {
                 /* Return the mutex.  This will automatically unblock any other
                  * task that might be waiting to access the mutex. */
-                ( void ) xQueueGenericSend( pxMutex, NULL, queueMUTEX_GIVE_BLOCK_TIME, queueSEND_TO_BACK );
+                ( فراغ ) x_کتار_Generic_Send( pxMutex, عدم, کتار_MUTEX_GIVE_بلاک_وخت, کتار_SEND_منزل_شا );
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
 
             xReturn = pdPASS;
         }
-        else
+        وإلا
         {
             /* The mutex cannot be given because the calling task is not the
              * holder. */
@@ -806,23 +806,23 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
             traceGIVE_MUTEX_RECURSIVE_FAILED( pxMutex );
         }
 
-        traceRETURN_xQueueGiveMutexRecursive( xReturn );
+        trace_RETURN_x_کتار_Give_Mutex_Recursive( xReturn );
 
-        return xReturn;
+        أرجع xReturn;
     }
 
-#endif /* configUSE_RECURSIVE_MUTEXES */
+#د_که_پای /* configUSE_RECURSIVE_MUTEXES */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_RECURSIVE_MUTEXES == 1 )
+#إذا ( configUSE_RECURSIVE_MUTEXES == 1 )
 
-    BaseType_t xQueueTakeMutexRecursive( QueueHandle_t xMutex,
-                                         TickType_t xTicksToWait )
+    بنسټ_Type_t x_کتار_Take_Mutex_Recursive( کتار_Handle_t xMutex,
+                                         TickType_t x_Ticks_منزل_Wait )
     {
-        BaseType_t xReturn;
-        Queue_t * const pxMutex = ( Queue_t * ) xMutex;
+        بنسټ_Type_t xReturn;
+        کتار_t * ثابت pxMutex = ( کتار_t * ) xMutex;
 
-        traceENTER_xQueueTakeMutexRecursive( xMutex, xTicksToWait );
+        trace_ENTER_x_کتار_Take_Mutex_Recursive( xMutex, x_Ticks_منزل_Wait );
 
         configASSERT( pxMutex );
 
@@ -831,136 +831,136 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
 
         traceTAKE_MUTEX_RECURSIVE( pxMutex );
 
-        if( pxMutex->u.xSemaphore.xMutexHolder == xTaskGetCurrentTaskHandle() )
+        إذا( pxMutex->u.xSemaphore.xMutexHolder == xTaskGetCurrentTaskHandle() )
         {
-            ( pxMutex->u.xSemaphore.uxRecursiveCallCount )++;
+            ( pxMutex->u.xSemaphore.ux_Recursive_Call_شمېر )++;
             xReturn = pdPASS;
         }
-        else
+        وإلا
         {
-            xReturn = xQueueSemaphoreTake( pxMutex, xTicksToWait );
+            xReturn = x_کتار_Semaphore_Take( pxMutex, x_Ticks_منزل_Wait );
 
             /* pdPASS will only be returned if the mutex was successfully
              * obtained.  The calling task may have entered the Blocked state
              * before reaching here. */
-            if( xReturn != pdFAIL )
+            إذا( xReturn != pdFAIL )
             {
-                ( pxMutex->u.xSemaphore.uxRecursiveCallCount )++;
+                ( pxMutex->u.xSemaphore.ux_Recursive_Call_شمېر )++;
             }
-            else
+            وإلا
             {
                 traceTAKE_MUTEX_RECURSIVE_FAILED( pxMutex );
             }
         }
 
-        traceRETURN_xQueueTakeMutexRecursive( xReturn );
+        trace_RETURN_x_کتار_Take_Mutex_Recursive( xReturn );
 
-        return xReturn;
+        أرجع xReturn;
     }
 
-#endif /* configUSE_RECURSIVE_MUTEXES */
+#د_که_پای /* configUSE_RECURSIVE_MUTEXES */
 /*-----------------------------------------------------------*/
 
-#if ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
+#إذا ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( config_SUPPORT_STATIC_ویش == 1 ) )
 
-    QueueHandle_t xQueueCreateCountingSemaphoreStatic( const UBaseType_t uxMaxCount,
-                                                       const UBaseType_t uxInitialCount,
-                                                       StaticQueue_t * pxStaticQueue )
+    کتار_Handle_t x_کتار_Create_Counting_Semaphore_Static( ثابت UBaseType_t ux_Max_شمېر,
+                                                       ثابت UBaseType_t ux_Initial_شمېر,
+                                                       Static_کتار_t * px_Static_کتار )
     {
-        QueueHandle_t xHandle = NULL;
+        کتار_Handle_t xHandle = عدم;
 
-        traceENTER_xQueueCreateCountingSemaphoreStatic( uxMaxCount, uxInitialCount, pxStaticQueue );
+        trace_ENTER_x_کتار_Create_Counting_Semaphore_Static( ux_Max_شمېر, ux_Initial_شمېر, px_Static_کتار );
 
-        if( ( uxMaxCount != 0U ) &&
-            ( uxInitialCount <= uxMaxCount ) )
+        إذا( ( ux_Max_شمېر != 0U ) &&
+            ( ux_Initial_شمېر <= ux_Max_شمېر ) )
         {
-            xHandle = xQueueGenericCreateStatic( uxMaxCount, queueSEMAPHORE_QUEUE_ITEM_LENGTH, NULL, pxStaticQueue, queueQUEUE_TYPE_COUNTING_SEMAPHORE );
+            xHandle = x_کتار_Generic_Create_Static( ux_Max_شمېر, کتار_SEMAPHORE_کتار_توکی_اوږدتیا, عدم, px_Static_کتار, کتار_کتار_TYPE_COUNTING_SEMAPHORE );
 
-            if( xHandle != NULL )
+            إذا( xHandle != عدم )
             {
-                ( ( Queue_t * ) xHandle )->uxMessagesWaiting = uxInitialCount;
+                ( ( کتار_t * ) xHandle )->ux_Messages_انتظار = ux_Initial_شمېر;
 
                 traceCREATE_COUNTING_SEMAPHORE();
             }
-            else
+            وإلا
             {
                 traceCREATE_COUNTING_SEMAPHORE_FAILED();
             }
         }
-        else
+        وإلا
         {
             configASSERT( xHandle );
             mtCOVERAGE_TEST_MARKER();
         }
 
-        traceRETURN_xQueueCreateCountingSemaphoreStatic( xHandle );
+        trace_RETURN_x_کتار_Create_Counting_Semaphore_Static( xHandle );
 
-        return xHandle;
+        أرجع xHandle;
     }
 
-#endif /* ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) ) */
+#د_که_پای /* ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-#if ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+#إذا ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( config_SUPPORT_DYNAMIC_ویش == 1 ) )
 
-    QueueHandle_t xQueueCreateCountingSemaphore( const UBaseType_t uxMaxCount,
-                                                 const UBaseType_t uxInitialCount )
+    کتار_Handle_t x_کتار_Create_Counting_Semaphore( ثابت UBaseType_t ux_Max_شمېر,
+                                                 ثابت UBaseType_t ux_Initial_شمېر )
     {
-        QueueHandle_t xHandle = NULL;
+        کتار_Handle_t xHandle = عدم;
 
-        traceENTER_xQueueCreateCountingSemaphore( uxMaxCount, uxInitialCount );
+        trace_ENTER_x_کتار_Create_Counting_Semaphore( ux_Max_شمېر, ux_Initial_شمېر );
 
-        if( ( uxMaxCount != 0U ) &&
-            ( uxInitialCount <= uxMaxCount ) )
+        إذا( ( ux_Max_شمېر != 0U ) &&
+            ( ux_Initial_شمېر <= ux_Max_شمېر ) )
         {
-            xHandle = xQueueGenericCreate( uxMaxCount, queueSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_COUNTING_SEMAPHORE );
+            xHandle = x_کتار_Generic_Create( ux_Max_شمېر, کتار_SEMAPHORE_کتار_توکی_اوږدتیا, کتار_کتار_TYPE_COUNTING_SEMAPHORE );
 
-            if( xHandle != NULL )
+            إذا( xHandle != عدم )
             {
-                ( ( Queue_t * ) xHandle )->uxMessagesWaiting = uxInitialCount;
+                ( ( کتار_t * ) xHandle )->ux_Messages_انتظار = ux_Initial_شمېر;
 
                 traceCREATE_COUNTING_SEMAPHORE();
             }
-            else
+            وإلا
             {
                 traceCREATE_COUNTING_SEMAPHORE_FAILED();
             }
         }
-        else
+        وإلا
         {
             configASSERT( xHandle );
             mtCOVERAGE_TEST_MARKER();
         }
 
-        traceRETURN_xQueueCreateCountingSemaphore( xHandle );
+        trace_RETURN_x_کتار_Create_Counting_Semaphore( xHandle );
 
-        return xHandle;
+        أرجع xHandle;
     }
 
-#endif /* ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) ) */
+#د_که_پای /* ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
-                              const void * const pvItemToQueue,
-                              TickType_t xTicksToWait,
-                              const BaseType_t xCopyPosition )
+بنسټ_Type_t x_کتار_Generic_Send( کتار_Handle_t x_کتار,
+                              ثابت فراغ * ثابت pv_توکی_منزل_کتار,
+                              TickType_t x_Ticks_منزل_Wait,
+                              ثابت بنسټ_Type_t xCopyPosition )
 {
-    BaseType_t xEntryTimeSet = pdFALSE, xYieldRequired;
-    TimeOut_t xTimeOut;
-    Queue_t * const pxQueue = xQueue;
+    بنسټ_Type_t x_ثبت_وخت_سېټ = pdFALSE, xYieldRequired;
+    وخت_بهر_t x_وخت_بهر_2;
+    کتار_t * ثابت px_کتار = x_کتار;
 
-    traceENTER_xQueueGenericSend( xQueue, pvItemToQueue, xTicksToWait, xCopyPosition );
+    trace_ENTER_x_کتار_Generic_Send( x_کتار, pv_توکی_منزل_کتار, x_Ticks_منزل_Wait, xCopyPosition );
 
-    configASSERT( pxQueue );
-    configASSERT( !( ( pvItemToQueue == NULL ) && ( pxQueue->uxItemSize != ( UBaseType_t ) 0U ) ) );
-    configASSERT( !( ( xCopyPosition == queueOVERWRITE ) && ( pxQueue->uxLength != 1 ) ) );
-    #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+    configASSERT( px_کتار );
+    configASSERT( !( ( pv_توکی_منزل_کتار == عدم ) && ( px_کتار->ux_توکی_اندازه != ( UBaseType_t ) 0U ) ) );
+    configASSERT( !( ( xCopyPosition == کتار_OVERWRITE ) && ( px_کتار->ux_اوږدتیا != 1 ) ) );
+    #إذا ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
     {
-        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( x_Ticks_منزل_Wait != 0 ) ) );
     }
-    #endif
+    #د_که_پای
 
-    for( ; ; )
+    لكل( ; ; )
     {
         taskENTER_CRITICAL();
         {
@@ -968,115 +968,115 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
              * highest priority task wanting to access the queue.  If the head item
              * in the queue is to be overwritten then it does not matter if the
              * queue is full. */
-            if( ( pxQueue->uxMessagesWaiting < pxQueue->uxLength ) || ( xCopyPosition == queueOVERWRITE ) )
+            إذا( ( px_کتار->ux_Messages_انتظار < px_کتار->ux_اوږدتیا ) || ( xCopyPosition == کتار_OVERWRITE ) )
             {
-                traceQUEUE_SEND( pxQueue );
+                trace_کتار_SEND( px_کتار );
 
-                #if ( configUSE_QUEUE_SETS == 1 )
+                #إذا ( config_USE_کتار_SETS == 1 )
                 {
-                    const UBaseType_t uxPreviousMessagesWaiting = pxQueue->uxMessagesWaiting;
+                    ثابت UBaseType_t ux_پخوانی_Messages_انتظار = px_کتار->ux_Messages_انتظار;
 
-                    xYieldRequired = prvCopyDataToQueue( pxQueue, pvItemToQueue, xCopyPosition );
+                    xYieldRequired = prv_Copy_معلومات_منزل_کتار( px_کتار, pv_توکی_منزل_کتار, xCopyPosition );
 
-                    if( pxQueue->pxQueueSetContainer != NULL )
+                    إذا( px_کتار->px_کتار_سېټ_Container != عدم )
                     {
-                        if( ( xCopyPosition == queueOVERWRITE ) && ( uxPreviousMessagesWaiting != ( UBaseType_t ) 0 ) )
+                        إذا( ( xCopyPosition == کتار_OVERWRITE ) && ( ux_پخوانی_Messages_انتظار != ( UBaseType_t ) 0 ) )
                         {
                             /* Do not notify the queue set as an existing item
                              * was overwritten in the queue so the number of items
                              * in the queue has not changed. */
                             mtCOVERAGE_TEST_MARKER();
                         }
-                        else if( prvNotifyQueueSetContainer( pxQueue ) != pdFALSE )
+                        وإلا إذا( prv_Notify_کتار_سېټ_Container( px_کتار ) != pdFALSE )
                         {
                             /* The queue is a member of a queue set, and posting
                              * to the queue set caused a higher priority task to
                              * unblock. A context switch is required. */
-                            queueYIELD_IF_USING_PREEMPTION();
+                            کتار_YIELD_IF_USING_PREEMPTION();
                         }
-                        else
+                        وإلا
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else
+                    وإلا
                     {
                         /* If there was a task waiting for data to arrive on the
                          * queue then unblock it now. */
-                        if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                        إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) == pdFALSE )
                         {
-                            if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                            إذا( xTaskRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) != pdFALSE )
                             {
                                 /* The unblocked task has a priority higher than
                                  * our own so yield immediately.  Yes it is ok to
                                  * do this from within the critical section - the
                                  * kernel takes care of that. */
-                                queueYIELD_IF_USING_PREEMPTION();
+                                کتار_YIELD_IF_USING_PREEMPTION();
                             }
-                            else
+                            وإلا
                             {
                                 mtCOVERAGE_TEST_MARKER();
                             }
                         }
-                        else if( xYieldRequired != pdFALSE )
+                        وإلا إذا( xYieldRequired != pdFALSE )
                         {
                             /* This path is a special case that will only get
                              * executed if the task was holding multiple mutexes
                              * and the mutexes were given back in an order that is
                              * different to that in which they were taken. */
-                            queueYIELD_IF_USING_PREEMPTION();
+                            کتار_YIELD_IF_USING_PREEMPTION();
                         }
-                        else
+                        وإلا
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
                 }
-                #else /* configUSE_QUEUE_SETS */
+                #وإلا /* configUSE_QUEUE_SETS */
                 {
-                    xYieldRequired = prvCopyDataToQueue( pxQueue, pvItemToQueue, xCopyPosition );
+                    xYieldRequired = prv_Copy_معلومات_منزل_کتار( px_کتار, pv_توکی_منزل_کتار, xCopyPosition );
 
                     /* If there was a task waiting for data to arrive on the
                      * queue then unblock it now. */
-                    if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                    إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) == pdFALSE )
                     {
-                        if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                        إذا( xTaskRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) != pdFALSE )
                         {
                             /* The unblocked task has a priority higher than
                              * our own so yield immediately.  Yes it is ok to do
                              * this from within the critical section - the kernel
                              * takes care of that. */
-                            queueYIELD_IF_USING_PREEMPTION();
+                            کتار_YIELD_IF_USING_PREEMPTION();
                         }
-                        else
+                        وإلا
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else if( xYieldRequired != pdFALSE )
+                    وإلا إذا( xYieldRequired != pdFALSE )
                     {
                         /* This path is a special case that will only get
                          * executed if the task was holding multiple mutexes and
                          * the mutexes were given back in an order that is
                          * different to that in which they were taken. */
-                        queueYIELD_IF_USING_PREEMPTION();
+                        کتار_YIELD_IF_USING_PREEMPTION();
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                #endif /* configUSE_QUEUE_SETS */
+                #د_که_پای /* configUSE_QUEUE_SETS */
 
                 taskEXIT_CRITICAL();
 
-                traceRETURN_xQueueGenericSend( pdPASS );
+                trace_RETURN_x_کتار_Generic_Send( pdPASS );
 
-                return pdPASS;
+                أرجع pdPASS;
             }
-            else
+            وإلا
             {
-                if( xTicksToWait == ( TickType_t ) 0 )
+                إذا( x_Ticks_منزل_Wait == ( TickType_t ) 0 )
                 {
                     /* The queue was full and no block time is specified (or
                      * the block time has expired) so leave now. */
@@ -1084,19 +1084,19 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
 
                     /* Return to the original privilege level before exiting
                      * the function. */
-                    traceQUEUE_SEND_FAILED( pxQueue );
-                    traceRETURN_xQueueGenericSend( errQUEUE_FULL );
+                    trace_کتار_SEND_FAILED( px_کتار );
+                    trace_RETURN_x_کتار_Generic_Send( err_کتار_ډک );
 
-                    return errQUEUE_FULL;
+                    أرجع err_کتار_ډک;
                 }
-                else if( xEntryTimeSet == pdFALSE )
+                وإلا إذا( x_ثبت_وخت_سېټ == pdFALSE )
                 {
                     /* The queue was full and a block time was specified so
                      * configure the timeout structure. */
-                    vTaskInternalSetTimeOutState( &xTimeOut );
-                    xEntryTimeSet = pdTRUE;
+                    v_Task_دننی_سېټ_وخت_بهر_State( &x_وخت_بهر_2 );
+                    x_ثبت_وخت_سېټ = pdTRUE;
                 }
-                else
+                وإلا
                 {
                     /* Entry time was already set. */
                     mtCOVERAGE_TEST_MARKER();
@@ -1109,69 +1109,69 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
          * now the critical section has been exited. */
 
         vTaskSuspendAll();
-        prvLockQueue( pxQueue );
+        prv_قلف_کتار( px_کتار );
 
         /* Update the timeout state to see if it has expired yet. */
-        if( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE )
+        إذا( x_Task_Check_For_وخت_بهر( &x_وخت_بهر_2, &x_Ticks_منزل_Wait ) == pdFALSE )
         {
-            if( prvIsQueueFull( pxQueue ) != pdFALSE )
+            إذا( prv_Is_کتار_ډک( px_کتار ) != pdFALSE )
             {
-                traceBLOCKING_ON_QUEUE_SEND( pxQueue );
-                vTaskPlaceOnEventList( &( pxQueue->xTasksWaitingToSend ), xTicksToWait );
+                trace_BLOCKING_ON_کتار_SEND( px_کتار );
+                v_Task_ځای_پرځای_کړه_On_Event_List( &( px_کتار->x_Tasks_انتظار_منزل_Send ), x_Ticks_منزل_Wait );
 
                 /* Unlocking the queue means queue events can effect the
                  * event list. It is possible that interrupts occurring now
                  * remove this task from the event list again - but as the
                  * scheduler is suspended the task will go onto the pending
                  * ready list instead of the actual ready list. */
-                prvUnlockQueue( pxQueue );
+                prv_Unlock_کتار( px_کتار );
 
                 /* Resuming the scheduler will move tasks from the pending
                  * ready list into the ready list - so it is feasible that this
                  * task is already in the ready list before it yields - in which
                  * case the yield will not cause a context switch unless there
                  * is also a higher priority task in the pending ready list. */
-                if( xTaskResumeAll() == pdFALSE )
+                إذا( xTaskResumeAll() == pdFALSE )
                 {
                     taskYIELD_WITHIN_API();
                 }
             }
-            else
+            وإلا
             {
                 /* Try again. */
-                prvUnlockQueue( pxQueue );
-                ( void ) xTaskResumeAll();
+                prv_Unlock_کتار( px_کتار );
+                ( فراغ ) xTaskResumeAll();
             }
         }
-        else
+        وإلا
         {
             /* The timeout has expired. */
-            prvUnlockQueue( pxQueue );
-            ( void ) xTaskResumeAll();
+            prv_Unlock_کتار( px_کتار );
+            ( فراغ ) xTaskResumeAll();
 
-            traceQUEUE_SEND_FAILED( pxQueue );
-            traceRETURN_xQueueGenericSend( errQUEUE_FULL );
+            trace_کتار_SEND_FAILED( px_کتار );
+            trace_RETURN_x_کتار_Generic_Send( err_کتار_ډک );
 
-            return errQUEUE_FULL;
+            أرجع err_کتار_ډک;
         }
     }
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueGenericSendFromISR( QueueHandle_t xQueue,
-                                     const void * const pvItemToQueue,
-                                     BaseType_t * const pxHigherPriorityTaskWoken,
-                                     const BaseType_t xCopyPosition )
+بنسټ_Type_t x_کتار_Generic_Send_From_ISR( کتار_Handle_t x_کتار,
+                                     ثابت فراغ * ثابت pv_توکی_منزل_کتار,
+                                     بنسټ_Type_t * ثابت px_Higher_لومړیتوب_Task_Woken,
+                                     ثابت بنسټ_Type_t xCopyPosition )
 {
-    BaseType_t xReturn;
-    UBaseType_t uxSavedInterruptStatus;
-    Queue_t * const pxQueue = xQueue;
+    بنسټ_Type_t xReturn;
+    UBaseType_t ux_Saved_مداخله_حالت;
+    کتار_t * ثابت px_کتار = x_کتار;
 
-    traceENTER_xQueueGenericSendFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken, xCopyPosition );
+    trace_ENTER_x_کتار_Generic_Send_From_ISR( x_کتار, pv_توکی_منزل_کتار, px_Higher_لومړیتوب_Task_Woken, xCopyPosition );
 
-    configASSERT( pxQueue );
-    configASSERT( !( ( pvItemToQueue == NULL ) && ( pxQueue->uxItemSize != ( UBaseType_t ) 0U ) ) );
-    configASSERT( !( ( xCopyPosition == queueOVERWRITE ) && ( pxQueue->uxLength != 1 ) ) );
+    configASSERT( px_کتار );
+    configASSERT( !( ( pv_توکی_منزل_کتار == عدم ) && ( px_کتار->ux_توکی_اندازه != ( UBaseType_t ) 0U ) ) );
+    configASSERT( !( ( xCopyPosition == کتار_OVERWRITE ) && ( px_کتار->ux_اوږدتیا != 1 ) ) );
 
     /* RTOS ports that support interrupt nesting have the concept of a maximum
      * system call (or maximum API call) interrupt priority.  Interrupts that are
@@ -1187,7 +1187,7 @@ BaseType_t xQueueGenericSendFromISR( QueueHandle_t xQueue,
      * safe API to ensure interrupt entry is as fast and as simple as possible.
      * More information (albeit Cortex-M specific) is provided on the following
      * link: https://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html */
-    portASSERT_IF_INTERRUPT_PRIORITY_INVALID();
+    پورټ_ASSERT_IF_مداخله_لومړیتوب_INVALID();
 
     /* Similar to xQueueGenericSend, except without blocking if there is no room
      * in the queue.  Also don't directly wake a task that was blocked on a queue
@@ -1197,147 +1197,147 @@ BaseType_t xQueueGenericSendFromISR( QueueHandle_t xQueue,
     /* MISRA Ref 4.7.1 [Return value shall be checked] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
     /* coverity[misra_c_2012_directive_4_7_violation] */
-    uxSavedInterruptStatus = ( UBaseType_t ) taskENTER_CRITICAL_FROM_ISR();
+    ux_Saved_مداخله_حالت = ( UBaseType_t ) taskENTER_CRITICAL_FROM_ISR();
     {
-        if( ( pxQueue->uxMessagesWaiting < pxQueue->uxLength ) || ( xCopyPosition == queueOVERWRITE ) )
+        إذا( ( px_کتار->ux_Messages_انتظار < px_کتار->ux_اوږدتیا ) || ( xCopyPosition == کتار_OVERWRITE ) )
         {
-            const int8_t cTxLock = pxQueue->cTxLock;
-            const UBaseType_t uxPreviousMessagesWaiting = pxQueue->uxMessagesWaiting;
+            ثابت int8_t c_Tx_قلف = px_کتار->c_Tx_قلف;
+            ثابت UBaseType_t ux_پخوانی_Messages_انتظار = px_کتار->ux_Messages_انتظار;
 
-            traceQUEUE_SEND_FROM_ISR( pxQueue );
+            trace_کتار_SEND_FROM_ISR( px_کتار );
 
             /* Semaphores use xQueueGiveFromISR(), so pxQueue will not be a
              *  semaphore or mutex.  That means prvCopyDataToQueue() cannot result
              *  in a task disinheriting a priority and prvCopyDataToQueue() can be
              *  called here even though the disinherit function does not check if
              *  the scheduler is suspended before accessing the ready lists. */
-            ( void ) prvCopyDataToQueue( pxQueue, pvItemToQueue, xCopyPosition );
+            ( فراغ ) prv_Copy_معلومات_منزل_کتار( px_کتار, pv_توکی_منزل_کتار, xCopyPosition );
 
             /* The event list is not altered if the queue is locked.  This will
              * be done when the queue is unlocked later. */
-            if( cTxLock == queueUNLOCKED )
+            إذا( c_Tx_قلف == کتار_UNLOCKED )
             {
-                #if ( configUSE_QUEUE_SETS == 1 )
+                #إذا ( config_USE_کتار_SETS == 1 )
                 {
-                    if( pxQueue->pxQueueSetContainer != NULL )
+                    إذا( px_کتار->px_کتار_سېټ_Container != عدم )
                     {
-                        if( ( xCopyPosition == queueOVERWRITE ) && ( uxPreviousMessagesWaiting != ( UBaseType_t ) 0 ) )
+                        إذا( ( xCopyPosition == کتار_OVERWRITE ) && ( ux_پخوانی_Messages_انتظار != ( UBaseType_t ) 0 ) )
                         {
                             /* Do not notify the queue set as an existing item
                              * was overwritten in the queue so the number of items
                              * in the queue has not changed. */
                             mtCOVERAGE_TEST_MARKER();
                         }
-                        else if( prvNotifyQueueSetContainer( pxQueue ) != pdFALSE )
+                        وإلا إذا( prv_Notify_کتار_سېټ_Container( px_کتار ) != pdFALSE )
                         {
                             /* The queue is a member of a queue set, and posting
                              * to the queue set caused a higher priority task to
                              * unblock.  A context switch is required. */
-                            if( pxHigherPriorityTaskWoken != NULL )
+                            إذا( px_Higher_لومړیتوب_Task_Woken != عدم )
                             {
-                                *pxHigherPriorityTaskWoken = pdTRUE;
+                                *px_Higher_لومړیتوب_Task_Woken = pdTRUE;
                             }
-                            else
+                            وإلا
                             {
                                 mtCOVERAGE_TEST_MARKER();
                             }
                         }
-                        else
+                        وإلا
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else
+                    وإلا
                     {
-                        if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                        إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) == pdFALSE )
                         {
-                            if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                            إذا( xTaskRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) != pdFALSE )
                             {
                                 /* The task waiting has a higher priority so
                                  *  record that a context switch is required. */
-                                if( pxHigherPriorityTaskWoken != NULL )
+                                إذا( px_Higher_لومړیتوب_Task_Woken != عدم )
                                 {
-                                    *pxHigherPriorityTaskWoken = pdTRUE;
+                                    *px_Higher_لومړیتوب_Task_Woken = pdTRUE;
                                 }
-                                else
+                                وإلا
                                 {
                                     mtCOVERAGE_TEST_MARKER();
                                 }
                             }
-                            else
+                            وإلا
                             {
                                 mtCOVERAGE_TEST_MARKER();
                             }
                         }
-                        else
+                        وإلا
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
                 }
-                #else /* configUSE_QUEUE_SETS */
+                #وإلا /* configUSE_QUEUE_SETS */
                 {
-                    if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                    إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) == pdFALSE )
                     {
-                        if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                        إذا( xTaskRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) != pdFALSE )
                         {
                             /* The task waiting has a higher priority so record that a
                              * context switch is required. */
-                            if( pxHigherPriorityTaskWoken != NULL )
+                            إذا( px_Higher_لومړیتوب_Task_Woken != عدم )
                             {
-                                *pxHigherPriorityTaskWoken = pdTRUE;
+                                *px_Higher_لومړیتوب_Task_Woken = pdTRUE;
                             }
-                            else
+                            وإلا
                             {
                                 mtCOVERAGE_TEST_MARKER();
                             }
                         }
-                        else
+                        وإلا
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
 
                     /* Not used in this path. */
-                    ( void ) uxPreviousMessagesWaiting;
+                    ( فراغ ) ux_پخوانی_Messages_انتظار;
                 }
-                #endif /* configUSE_QUEUE_SETS */
+                #د_که_پای /* configUSE_QUEUE_SETS */
             }
-            else
+            وإلا
             {
                 /* Increment the lock count so the task that unlocks the queue
                  * knows that data was posted while it was locked. */
-                prvIncrementQueueTxLock( pxQueue, cTxLock );
+                prv_Increment_کتار_Tx_قلف( px_کتار, c_Tx_قلف );
             }
 
             xReturn = pdPASS;
         }
-        else
+        وإلا
         {
-            traceQUEUE_SEND_FROM_ISR_FAILED( pxQueue );
-            xReturn = errQUEUE_FULL;
+            trace_کتار_SEND_FROM_ISR_FAILED( px_کتار );
+            xReturn = err_کتار_ډک;
         }
     }
-    taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );
+    taskEXIT_CRITICAL_FROM_ISR( ux_Saved_مداخله_حالت );
 
-    traceRETURN_xQueueGenericSendFromISR( xReturn );
+    trace_RETURN_x_کتار_Generic_Send_From_ISR( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue,
-                              BaseType_t * const pxHigherPriorityTaskWoken )
+بنسټ_Type_t x_کتار_Give_From_ISR( کتار_Handle_t x_کتار,
+                              بنسټ_Type_t * ثابت px_Higher_لومړیتوب_Task_Woken )
 {
-    BaseType_t xReturn;
-    UBaseType_t uxSavedInterruptStatus;
-    Queue_t * const pxQueue = xQueue;
+    بنسټ_Type_t xReturn;
+    UBaseType_t ux_Saved_مداخله_حالت;
+    کتار_t * ثابت px_کتار = x_کتار;
 
-    traceENTER_xQueueGiveFromISR( xQueue, pxHigherPriorityTaskWoken );
+    trace_ENTER_x_کتار_Give_From_ISR( x_کتار, px_Higher_لومړیتوب_Task_Woken );
 
     /* Similar to xQueueGenericSendFromISR() but used with semaphores where the
      * item size is 0.  Don't directly wake a task that was blocked on a queue
@@ -1345,16 +1345,16 @@ BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue,
      * not (i.e. has a task with a higher priority than us been woken by this
      * post). */
 
-    configASSERT( pxQueue );
+    configASSERT( px_کتار );
 
     /* xQueueGenericSendFromISR() should be used instead of xQueueGiveFromISR()
      * if the item size is not 0. */
-    configASSERT( pxQueue->uxItemSize == 0 );
+    configASSERT( px_کتار->ux_توکی_اندازه == 0 );
 
     /* Normally a mutex would not be given from an interrupt, especially if
      * there is a mutex holder, as priority inheritance makes no sense for an
      * interrupts, only tasks. */
-    configASSERT( !( ( pxQueue->uxQueueType == queueQUEUE_IS_MUTEX ) && ( pxQueue->u.xSemaphore.xMutexHolder != NULL ) ) );
+    configASSERT( !( ( px_کتار->ux_کتار_Type == کتار_کتار_IS_MUTEX ) && ( px_کتار->u.xSemaphore.xMutexHolder != عدم ) ) );
 
     /* RTOS ports that support interrupt nesting have the concept of a maximum
      * system call (or maximum API call) interrupt priority.  Interrupts that are
@@ -1370,23 +1370,23 @@ BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue,
      * safe API to ensure interrupt entry is as fast and as simple as possible.
      * More information (albeit Cortex-M specific) is provided on the following
      * link: https://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html */
-    portASSERT_IF_INTERRUPT_PRIORITY_INVALID();
+    پورټ_ASSERT_IF_مداخله_لومړیتوب_INVALID();
 
     /* MISRA Ref 4.7.1 [Return value shall be checked] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
     /* coverity[misra_c_2012_directive_4_7_violation] */
-    uxSavedInterruptStatus = ( UBaseType_t ) taskENTER_CRITICAL_FROM_ISR();
+    ux_Saved_مداخله_حالت = ( UBaseType_t ) taskENTER_CRITICAL_FROM_ISR();
     {
-        const UBaseType_t uxMessagesWaiting = pxQueue->uxMessagesWaiting;
+        ثابت UBaseType_t ux_Messages_انتظار = px_کتار->ux_Messages_انتظار;
 
         /* When the queue is used to implement a semaphore no data is ever
          * moved through the queue but it is still valid to see if the queue 'has
          * space'. */
-        if( uxMessagesWaiting < pxQueue->uxLength )
+        إذا( ux_Messages_انتظار < px_کتار->ux_اوږدتیا )
         {
-            const int8_t cTxLock = pxQueue->cTxLock;
+            ثابت int8_t c_Tx_قلف = px_کتار->c_Tx_قلف;
 
-            traceQUEUE_SEND_FROM_ISR( pxQueue );
+            trace_کتار_SEND_FROM_ISR( px_کتار );
 
             /* A task can only have an inherited priority if it is a mutex
              * holder - and if there is a mutex holder then the mutex cannot be
@@ -1394,200 +1394,200 @@ BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue,
              * can be assumed there is no mutex holder and no need to determine if
              * priority disinheritance is needed.  Simply increase the count of
              * messages (semaphores) available. */
-            pxQueue->uxMessagesWaiting = ( UBaseType_t ) ( uxMessagesWaiting + ( UBaseType_t ) 1 );
+            px_کتار->ux_Messages_انتظار = ( UBaseType_t ) ( ux_Messages_انتظار + ( UBaseType_t ) 1 );
 
             /* The event list is not altered if the queue is locked.  This will
              * be done when the queue is unlocked later. */
-            if( cTxLock == queueUNLOCKED )
+            إذا( c_Tx_قلف == کتار_UNLOCKED )
             {
-                #if ( configUSE_QUEUE_SETS == 1 )
+                #إذا ( config_USE_کتار_SETS == 1 )
                 {
-                    if( pxQueue->pxQueueSetContainer != NULL )
+                    إذا( px_کتار->px_کتار_سېټ_Container != عدم )
                     {
-                        if( prvNotifyQueueSetContainer( pxQueue ) != pdFALSE )
+                        إذا( prv_Notify_کتار_سېټ_Container( px_کتار ) != pdFALSE )
                         {
                             /* The semaphore is a member of a queue set, and
                              * posting to the queue set caused a higher priority
                              * task to unblock.  A context switch is required. */
-                            if( pxHigherPriorityTaskWoken != NULL )
+                            إذا( px_Higher_لومړیتوب_Task_Woken != عدم )
                             {
-                                *pxHigherPriorityTaskWoken = pdTRUE;
+                                *px_Higher_لومړیتوب_Task_Woken = pdTRUE;
                             }
-                            else
+                            وإلا
                             {
                                 mtCOVERAGE_TEST_MARKER();
                             }
                         }
-                        else
+                        وإلا
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else
+                    وإلا
                     {
-                        if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                        إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) == pdFALSE )
                         {
-                            if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                            إذا( xTaskRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) != pdFALSE )
                             {
                                 /* The task waiting has a higher priority so
                                  *  record that a context switch is required. */
-                                if( pxHigherPriorityTaskWoken != NULL )
+                                إذا( px_Higher_لومړیتوب_Task_Woken != عدم )
                                 {
-                                    *pxHigherPriorityTaskWoken = pdTRUE;
+                                    *px_Higher_لومړیتوب_Task_Woken = pdTRUE;
                                 }
-                                else
+                                وإلا
                                 {
                                     mtCOVERAGE_TEST_MARKER();
                                 }
                             }
-                            else
+                            وإلا
                             {
                                 mtCOVERAGE_TEST_MARKER();
                             }
                         }
-                        else
+                        وإلا
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
                 }
-                #else /* configUSE_QUEUE_SETS */
+                #وإلا /* configUSE_QUEUE_SETS */
                 {
-                    if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                    إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) == pdFALSE )
                     {
-                        if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                        إذا( xTaskRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) != pdFALSE )
                         {
                             /* The task waiting has a higher priority so record that a
                              * context switch is required. */
-                            if( pxHigherPriorityTaskWoken != NULL )
+                            إذا( px_Higher_لومړیتوب_Task_Woken != عدم )
                             {
-                                *pxHigherPriorityTaskWoken = pdTRUE;
+                                *px_Higher_لومړیتوب_Task_Woken = pdTRUE;
                             }
-                            else
+                            وإلا
                             {
                                 mtCOVERAGE_TEST_MARKER();
                             }
                         }
-                        else
+                        وإلا
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                #endif /* configUSE_QUEUE_SETS */
+                #د_که_پای /* configUSE_QUEUE_SETS */
             }
-            else
+            وإلا
             {
                 /* Increment the lock count so the task that unlocks the queue
                  * knows that data was posted while it was locked. */
-                prvIncrementQueueTxLock( pxQueue, cTxLock );
+                prv_Increment_کتار_Tx_قلف( px_کتار, c_Tx_قلف );
             }
 
             xReturn = pdPASS;
         }
-        else
+        وإلا
         {
-            traceQUEUE_SEND_FROM_ISR_FAILED( pxQueue );
-            xReturn = errQUEUE_FULL;
+            trace_کتار_SEND_FROM_ISR_FAILED( px_کتار );
+            xReturn = err_کتار_ډک;
         }
     }
-    taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );
+    taskEXIT_CRITICAL_FROM_ISR( ux_Saved_مداخله_حالت );
 
-    traceRETURN_xQueueGiveFromISR( xReturn );
+    trace_RETURN_x_کتار_Give_From_ISR( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueReceive( QueueHandle_t xQueue,
-                          void * const pvBuffer,
-                          TickType_t xTicksToWait )
+بنسټ_Type_t x_کتار_Receive( کتار_Handle_t x_کتار,
+                          فراغ * ثابت pv_بفر,
+                          TickType_t x_Ticks_منزل_Wait )
 {
-    BaseType_t xEntryTimeSet = pdFALSE;
-    TimeOut_t xTimeOut;
-    Queue_t * const pxQueue = xQueue;
+    بنسټ_Type_t x_ثبت_وخت_سېټ = pdFALSE;
+    وخت_بهر_t x_وخت_بهر_2;
+    کتار_t * ثابت px_کتار = x_کتار;
 
-    traceENTER_xQueueReceive( xQueue, pvBuffer, xTicksToWait );
+    trace_ENTER_x_کتار_Receive( x_کتار, pv_بفر, x_Ticks_منزل_Wait );
 
     /* Check the pointer is not NULL. */
-    configASSERT( ( pxQueue ) );
+    configASSERT( ( px_کتار ) );
 
     /* The buffer into which data is received can only be NULL if the data size
      * is zero (so no data is copied into the buffer). */
-    configASSERT( !( ( ( pvBuffer ) == NULL ) && ( ( pxQueue )->uxItemSize != ( UBaseType_t ) 0U ) ) );
+    configASSERT( !( ( ( pv_بفر ) == عدم ) && ( ( px_کتار )->ux_توکی_اندازه != ( UBaseType_t ) 0U ) ) );
 
     /* Cannot block if the scheduler is suspended. */
-    #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+    #إذا ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
     {
-        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( x_Ticks_منزل_Wait != 0 ) ) );
     }
-    #endif
+    #د_که_پای
 
-    for( ; ; )
+    لكل( ; ; )
     {
         taskENTER_CRITICAL();
         {
-            const UBaseType_t uxMessagesWaiting = pxQueue->uxMessagesWaiting;
+            ثابت UBaseType_t ux_Messages_انتظار = px_کتار->ux_Messages_انتظار;
 
             /* Is there data in the queue now?  To be running the calling task
              * must be the highest priority task wanting to access the queue. */
-            if( uxMessagesWaiting > ( UBaseType_t ) 0 )
+            إذا( ux_Messages_انتظار > ( UBaseType_t ) 0 )
             {
                 /* Data available, remove one item. */
-                prvCopyDataFromQueue( pxQueue, pvBuffer );
-                traceQUEUE_RECEIVE( pxQueue );
-                pxQueue->uxMessagesWaiting = ( UBaseType_t ) ( uxMessagesWaiting - ( UBaseType_t ) 1 );
+                prv_Copy_معلومات_From_کتار( px_کتار, pv_بفر );
+                trace_کتار_RECEIVE( px_کتار );
+                px_کتار->ux_Messages_انتظار = ( UBaseType_t ) ( ux_Messages_انتظار - ( UBaseType_t ) 1 );
 
                 /* There is now space in the queue, were any tasks waiting to
                  * post to the queue?  If so, unblock the highest priority waiting
                  * task. */
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
+                إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Send ) ) == pdFALSE )
                 {
-                    if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToSend ) ) != pdFALSE )
+                    إذا( xTaskRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Send ) ) != pdFALSE )
                     {
-                        queueYIELD_IF_USING_PREEMPTION();
+                        کتار_YIELD_IF_USING_PREEMPTION();
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
 
                 taskEXIT_CRITICAL();
 
-                traceRETURN_xQueueReceive( pdPASS );
+                trace_RETURN_x_کتار_Receive( pdPASS );
 
-                return pdPASS;
+                أرجع pdPASS;
             }
-            else
+            وإلا
             {
-                if( xTicksToWait == ( TickType_t ) 0 )
+                إذا( x_Ticks_منزل_Wait == ( TickType_t ) 0 )
                 {
                     /* The queue was empty and no block time is specified (or
                      * the block time has expired) so leave now. */
                     taskEXIT_CRITICAL();
 
-                    traceQUEUE_RECEIVE_FAILED( pxQueue );
-                    traceRETURN_xQueueReceive( errQUEUE_EMPTY );
+                    trace_کتار_RECEIVE_FAILED( px_کتار );
+                    trace_RETURN_x_کتار_Receive( err_کتار_تشه );
 
-                    return errQUEUE_EMPTY;
+                    أرجع err_کتار_تشه;
                 }
-                else if( xEntryTimeSet == pdFALSE )
+                وإلا إذا( x_ثبت_وخت_سېټ == pdFALSE )
                 {
                     /* The queue was empty and a block time was specified so
                      * configure the timeout structure. */
-                    vTaskInternalSetTimeOutState( &xTimeOut );
-                    xEntryTimeSet = pdTRUE;
+                    v_Task_دننی_سېټ_وخت_بهر_State( &x_وخت_بهر_2 );
+                    x_ثبت_وخت_سېټ = pdTRUE;
                 }
-                else
+                وإلا
                 {
                     /* Entry time was already set. */
                     mtCOVERAGE_TEST_MARKER();
@@ -1600,51 +1600,51 @@ BaseType_t xQueueReceive( QueueHandle_t xQueue,
          * now the critical section has been exited. */
 
         vTaskSuspendAll();
-        prvLockQueue( pxQueue );
+        prv_قلف_کتار( px_کتار );
 
         /* Update the timeout state to see if it has expired yet. */
-        if( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE )
+        إذا( x_Task_Check_For_وخت_بهر( &x_وخت_بهر_2, &x_Ticks_منزل_Wait ) == pdFALSE )
         {
             /* The timeout has not expired.  If the queue is still empty place
              * the task on the list of tasks waiting to receive from the queue. */
-            if( prvIsQueueEmpty( pxQueue ) != pdFALSE )
+            إذا( prv_Is_کتار_تشه( px_کتار ) != pdFALSE )
             {
-                traceBLOCKING_ON_QUEUE_RECEIVE( pxQueue );
-                vTaskPlaceOnEventList( &( pxQueue->xTasksWaitingToReceive ), xTicksToWait );
-                prvUnlockQueue( pxQueue );
+                trace_BLOCKING_ON_کتار_RECEIVE( px_کتار );
+                v_Task_ځای_پرځای_کړه_On_Event_List( &( px_کتار->x_Tasks_انتظار_منزل_Receive ), x_Ticks_منزل_Wait );
+                prv_Unlock_کتار( px_کتار );
 
-                if( xTaskResumeAll() == pdFALSE )
+                إذا( xTaskResumeAll() == pdFALSE )
                 {
                     taskYIELD_WITHIN_API();
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            وإلا
             {
                 /* The queue contains data again.  Loop back to try and read the
                  * data. */
-                prvUnlockQueue( pxQueue );
-                ( void ) xTaskResumeAll();
+                prv_Unlock_کتار( px_کتار );
+                ( فراغ ) xTaskResumeAll();
             }
         }
-        else
+        وإلا
         {
             /* Timed out.  If there is no data in the queue exit, otherwise loop
              * back and attempt to read the data. */
-            prvUnlockQueue( pxQueue );
-            ( void ) xTaskResumeAll();
+            prv_Unlock_کتار( px_کتار );
+            ( فراغ ) xTaskResumeAll();
 
-            if( prvIsQueueEmpty( pxQueue ) != pdFALSE )
+            إذا( prv_Is_کتار_تشه( px_کتار ) != pdFALSE )
             {
-                traceQUEUE_RECEIVE_FAILED( pxQueue );
-                traceRETURN_xQueueReceive( errQUEUE_EMPTY );
+                trace_کتار_RECEIVE_FAILED( px_کتار );
+                trace_RETURN_x_کتار_Receive( err_کتار_تشه );
 
-                return errQUEUE_EMPTY;
+                أرجع err_کتار_تشه;
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
@@ -1653,111 +1653,111 @@ BaseType_t xQueueReceive( QueueHandle_t xQueue,
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueSemaphoreTake( QueueHandle_t xQueue,
-                                TickType_t xTicksToWait )
+بنسټ_Type_t x_کتار_Semaphore_Take( کتار_Handle_t x_کتار,
+                                TickType_t x_Ticks_منزل_Wait )
 {
-    BaseType_t xEntryTimeSet = pdFALSE;
-    TimeOut_t xTimeOut;
-    Queue_t * const pxQueue = xQueue;
+    بنسټ_Type_t x_ثبت_وخت_سېټ = pdFALSE;
+    وخت_بهر_t x_وخت_بهر_2;
+    کتار_t * ثابت px_کتار = x_کتار;
 
-    #if ( configUSE_MUTEXES == 1 )
-        BaseType_t xInheritanceOccurred = pdFALSE;
-    #endif
+    #إذا ( configUSE_MUTEXES == 1 )
+        بنسټ_Type_t xInheritanceOccurred = pdFALSE;
+    #د_که_پای
 
-    traceENTER_xQueueSemaphoreTake( xQueue, xTicksToWait );
+    trace_ENTER_x_کتار_Semaphore_Take( x_کتار, x_Ticks_منزل_Wait );
 
     /* Check the queue pointer is not NULL. */
-    configASSERT( ( pxQueue ) );
+    configASSERT( ( px_کتار ) );
 
     /* Check this really is a semaphore, in which case the item size will be
      * 0. */
-    configASSERT( pxQueue->uxItemSize == 0 );
+    configASSERT( px_کتار->ux_توکی_اندازه == 0 );
 
     /* Cannot block if the scheduler is suspended. */
-    #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+    #إذا ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
     {
-        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( x_Ticks_منزل_Wait != 0 ) ) );
     }
-    #endif
+    #د_که_پای
 
-    for( ; ; )
+    لكل( ; ; )
     {
         taskENTER_CRITICAL();
         {
             /* Semaphores are queues with an item size of 0, and where the
              * number of messages in the queue is the semaphore's count value. */
-            const UBaseType_t uxSemaphoreCount = pxQueue->uxMessagesWaiting;
+            ثابت UBaseType_t ux_Semaphore_شمېر = px_کتار->ux_Messages_انتظار;
 
             /* Is there data in the queue now?  To be running the calling task
              * must be the highest priority task wanting to access the queue. */
-            if( uxSemaphoreCount > ( UBaseType_t ) 0 )
+            إذا( ux_Semaphore_شمېر > ( UBaseType_t ) 0 )
             {
-                traceQUEUE_RECEIVE( pxQueue );
+                trace_کتار_RECEIVE( px_کتار );
 
                 /* Semaphores are queues with a data size of zero and where the
                  * messages waiting is the semaphore's count.  Reduce the count. */
-                pxQueue->uxMessagesWaiting = ( UBaseType_t ) ( uxSemaphoreCount - ( UBaseType_t ) 1 );
+                px_کتار->ux_Messages_انتظار = ( UBaseType_t ) ( ux_Semaphore_شمېر - ( UBaseType_t ) 1 );
 
-                #if ( configUSE_MUTEXES == 1 )
+                #إذا ( configUSE_MUTEXES == 1 )
                 {
-                    if( pxQueue->uxQueueType == queueQUEUE_IS_MUTEX )
+                    إذا( px_کتار->ux_کتار_Type == کتار_کتار_IS_MUTEX )
                     {
                         /* Record the information required to implement
                          * priority inheritance should it become necessary. */
-                        pxQueue->u.xSemaphore.xMutexHolder = pvTaskIncrementMutexHeldCount();
+                        px_کتار->u.xSemaphore.xMutexHolder = pv_Task_Increment_Mutex_Held_شمېر();
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                #endif /* configUSE_MUTEXES */
+                #د_که_پای /* configUSE_MUTEXES */
 
                 /* Check to see if other tasks are blocked waiting to give the
                  * semaphore, and if so, unblock the highest priority such task. */
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
+                إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Send ) ) == pdFALSE )
                 {
-                    if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToSend ) ) != pdFALSE )
+                    إذا( xTaskRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Send ) ) != pdFALSE )
                     {
-                        queueYIELD_IF_USING_PREEMPTION();
+                        کتار_YIELD_IF_USING_PREEMPTION();
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
 
                 taskEXIT_CRITICAL();
 
-                traceRETURN_xQueueSemaphoreTake( pdPASS );
+                trace_RETURN_x_کتار_Semaphore_Take( pdPASS );
 
-                return pdPASS;
+                أرجع pdPASS;
             }
-            else
+            وإلا
             {
-                if( xTicksToWait == ( TickType_t ) 0 )
+                إذا( x_Ticks_منزل_Wait == ( TickType_t ) 0 )
                 {
                     /* The semaphore count was 0 and no block time is specified
                      * (or the block time has expired) so exit now. */
                     taskEXIT_CRITICAL();
 
-                    traceQUEUE_RECEIVE_FAILED( pxQueue );
-                    traceRETURN_xQueueSemaphoreTake( errQUEUE_EMPTY );
+                    trace_کتار_RECEIVE_FAILED( px_کتار );
+                    trace_RETURN_x_کتار_Semaphore_Take( err_کتار_تشه );
 
-                    return errQUEUE_EMPTY;
+                    أرجع err_کتار_تشه;
                 }
-                else if( xEntryTimeSet == pdFALSE )
+                وإلا إذا( x_ثبت_وخت_سېټ == pdFALSE )
                 {
                     /* The semaphore count was 0 and a block time was specified
                      * so configure the timeout structure ready to block. */
-                    vTaskInternalSetTimeOutState( &xTimeOut );
-                    xEntryTimeSet = pdTRUE;
+                    v_Task_دننی_سېټ_وخت_بهر_State( &x_وخت_بهر_2 );
+                    x_ثبت_وخت_سېټ = pdTRUE;
                 }
-                else
+                وإلا
                 {
                     /* Entry time was already set. */
                     mtCOVERAGE_TEST_MARKER();
@@ -1770,85 +1770,85 @@ BaseType_t xQueueSemaphoreTake( QueueHandle_t xQueue,
          * now the critical section has been exited. */
 
         vTaskSuspendAll();
-        prvLockQueue( pxQueue );
+        prv_قلف_کتار( px_کتار );
 
         /* Update the timeout state to see if it has expired yet. */
-        if( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE )
+        إذا( x_Task_Check_For_وخت_بهر( &x_وخت_بهر_2, &x_Ticks_منزل_Wait ) == pdFALSE )
         {
             /* A block time is specified and not expired.  If the semaphore
              * count is 0 then enter the Blocked state to wait for a semaphore to
              * become available.  As semaphores are implemented with queues the
              * queue being empty is equivalent to the semaphore count being 0. */
-            if( prvIsQueueEmpty( pxQueue ) != pdFALSE )
+            إذا( prv_Is_کتار_تشه( px_کتار ) != pdFALSE )
             {
-                traceBLOCKING_ON_QUEUE_RECEIVE( pxQueue );
+                trace_BLOCKING_ON_کتار_RECEIVE( px_کتار );
 
-                #if ( configUSE_MUTEXES == 1 )
+                #إذا ( configUSE_MUTEXES == 1 )
                 {
-                    if( pxQueue->uxQueueType == queueQUEUE_IS_MUTEX )
+                    إذا( px_کتار->ux_کتار_Type == کتار_کتار_IS_MUTEX )
                     {
                         taskENTER_CRITICAL();
                         {
-                            xInheritanceOccurred = xTaskPriorityInherit( pxQueue->u.xSemaphore.xMutexHolder );
+                            xInheritanceOccurred = x_Task_لومړیتوب_Inherit( px_کتار->u.xSemaphore.xMutexHolder );
                         }
                         taskEXIT_CRITICAL();
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                #endif /* if ( configUSE_MUTEXES == 1 ) */
+                #د_که_پای /* if ( configUSE_MUTEXES == 1 ) */
 
-                vTaskPlaceOnEventList( &( pxQueue->xTasksWaitingToReceive ), xTicksToWait );
-                prvUnlockQueue( pxQueue );
+                v_Task_ځای_پرځای_کړه_On_Event_List( &( px_کتار->x_Tasks_انتظار_منزل_Receive ), x_Ticks_منزل_Wait );
+                prv_Unlock_کتار( px_کتار );
 
-                if( xTaskResumeAll() == pdFALSE )
+                إذا( xTaskResumeAll() == pdFALSE )
                 {
                     taskYIELD_WITHIN_API();
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            وإلا
             {
                 /* There was no timeout and the semaphore count was not 0, so
                  * attempt to take the semaphore again. */
-                prvUnlockQueue( pxQueue );
-                ( void ) xTaskResumeAll();
+                prv_Unlock_کتار( px_کتار );
+                ( فراغ ) xTaskResumeAll();
             }
         }
-        else
+        وإلا
         {
             /* Timed out. */
-            prvUnlockQueue( pxQueue );
-            ( void ) xTaskResumeAll();
+            prv_Unlock_کتار( px_کتار );
+            ( فراغ ) xTaskResumeAll();
 
             /* If the semaphore count is 0 exit now as the timeout has
              * expired.  Otherwise return to attempt to take the semaphore that is
              * known to be available.  As semaphores are implemented by queues the
              * queue being empty is equivalent to the semaphore count being 0. */
-            if( prvIsQueueEmpty( pxQueue ) != pdFALSE )
+            إذا( prv_Is_کتار_تشه( px_کتار ) != pdFALSE )
             {
-                #if ( configUSE_MUTEXES == 1 )
+                #إذا ( configUSE_MUTEXES == 1 )
                 {
                     /* xInheritanceOccurred could only have be set if
                      * pxQueue->uxQueueType == queueQUEUE_IS_MUTEX so no need to
                      * test the mutex type again to check it is actually a mutex. */
-                    if( xInheritanceOccurred != pdFALSE )
+                    إذا( xInheritanceOccurred != pdFALSE )
                     {
                         taskENTER_CRITICAL();
                         {
-                            UBaseType_t uxHighestWaitingPriority;
+                            UBaseType_t ux_Highest_انتظار_لومړیتوب;
 
                             /* This task blocking on the mutex caused another
                              * task to inherit this task's priority.  Now this task
                              * has timed out the priority should be disinherited
                              * again, but only as low as the next highest priority
                              * task that is waiting for the same mutex. */
-                            uxHighestWaitingPriority = prvGetDisinheritPriorityAfterTimeout( pxQueue );
+                            ux_Highest_انتظار_لومړیتوب = prv_Get_Disinherit_لومړیتوب_After_Timeout( px_کتار );
 
                             /* vTaskPriorityDisinheritAfterTimeout uses the uxHighestWaitingPriority
                              * parameter to index pxReadyTasksLists when adding the task holding
@@ -1857,19 +1857,19 @@ BaseType_t xQueueSemaphoreTake( QueueHandle_t xQueue,
                              * uxHighestWaitingPriority, as returned by prvGetDisinheritPriorityAfterTimeout,
                              * is capped at ( configMAX_PRIORITIES - 1 ). */
                             /* coverity[overrun] */
-                            vTaskPriorityDisinheritAfterTimeout( pxQueue->u.xSemaphore.xMutexHolder, uxHighestWaitingPriority );
+                            v_Task_لومړیتوب_Disinherit_After_Timeout( px_کتار->u.xSemaphore.xMutexHolder, ux_Highest_انتظار_لومړیتوب );
                         }
                         taskEXIT_CRITICAL();
                     }
                 }
-                #endif /* configUSE_MUTEXES */
+                #د_که_پای /* configUSE_MUTEXES */
 
-                traceQUEUE_RECEIVE_FAILED( pxQueue );
-                traceRETURN_xQueueSemaphoreTake( errQUEUE_EMPTY );
+                trace_کتار_RECEIVE_FAILED( px_کتار );
+                trace_RETURN_x_کتار_Semaphore_Take( err_کتار_تشه );
 
-                return errQUEUE_EMPTY;
+                أرجع err_کتار_تشه;
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
@@ -1878,99 +1878,99 @@ BaseType_t xQueueSemaphoreTake( QueueHandle_t xQueue,
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueuePeek( QueueHandle_t xQueue,
-                       void * const pvBuffer,
-                       TickType_t xTicksToWait )
+بنسټ_Type_t x_کتار_Peek( کتار_Handle_t x_کتار,
+                       فراغ * ثابت pv_بفر,
+                       TickType_t x_Ticks_منزل_Wait )
 {
-    BaseType_t xEntryTimeSet = pdFALSE;
-    TimeOut_t xTimeOut;
+    بنسټ_Type_t x_ثبت_وخت_سېټ = pdFALSE;
+    وخت_بهر_t x_وخت_بهر_2;
     int8_t * pcOriginalReadPosition;
-    Queue_t * const pxQueue = xQueue;
+    کتار_t * ثابت px_کتار = x_کتار;
 
-    traceENTER_xQueuePeek( xQueue, pvBuffer, xTicksToWait );
+    trace_ENTER_x_کتار_Peek( x_کتار, pv_بفر, x_Ticks_منزل_Wait );
 
     /* Check the pointer is not NULL. */
-    configASSERT( ( pxQueue ) );
+    configASSERT( ( px_کتار ) );
 
     /* The buffer into which data is received can only be NULL if the data size
      * is zero (so no data is copied into the buffer. */
-    configASSERT( !( ( ( pvBuffer ) == NULL ) && ( ( pxQueue )->uxItemSize != ( UBaseType_t ) 0U ) ) );
+    configASSERT( !( ( ( pv_بفر ) == عدم ) && ( ( px_کتار )->ux_توکی_اندازه != ( UBaseType_t ) 0U ) ) );
 
     /* Cannot block if the scheduler is suspended. */
-    #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+    #إذا ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
     {
-        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+        configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( x_Ticks_منزل_Wait != 0 ) ) );
     }
-    #endif
+    #د_که_پای
 
-    for( ; ; )
+    لكل( ; ; )
     {
         taskENTER_CRITICAL();
         {
-            const UBaseType_t uxMessagesWaiting = pxQueue->uxMessagesWaiting;
+            ثابت UBaseType_t ux_Messages_انتظار = px_کتار->ux_Messages_انتظار;
 
             /* Is there data in the queue now?  To be running the calling task
              * must be the highest priority task wanting to access the queue. */
-            if( uxMessagesWaiting > ( UBaseType_t ) 0 )
+            إذا( ux_Messages_انتظار > ( UBaseType_t ) 0 )
             {
                 /* Remember the read position so it can be reset after the data
                  * is read from the queue as this function is only peeking the
                  * data, not removing it. */
-                pcOriginalReadPosition = pxQueue->u.xQueue.pcReadFrom;
+                pcOriginalReadPosition = px_کتار->u.x_کتار.pcReadFrom;
 
-                prvCopyDataFromQueue( pxQueue, pvBuffer );
-                traceQUEUE_PEEK( pxQueue );
+                prv_Copy_معلومات_From_کتار( px_کتار, pv_بفر );
+                trace_کتار_PEEK( px_کتار );
 
                 /* The data is not being removed, so reset the read pointer. */
-                pxQueue->u.xQueue.pcReadFrom = pcOriginalReadPosition;
+                px_کتار->u.x_کتار.pcReadFrom = pcOriginalReadPosition;
 
                 /* The data is being left in the queue, so see if there are
                  * any other tasks waiting for the data. */
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) == pdFALSE )
                 {
-                    if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                    إذا( xTaskRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) != pdFALSE )
                     {
                         /* The task waiting has a higher priority than this task. */
-                        queueYIELD_IF_USING_PREEMPTION();
+                        کتار_YIELD_IF_USING_PREEMPTION();
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
 
                 taskEXIT_CRITICAL();
 
-                traceRETURN_xQueuePeek( pdPASS );
+                trace_RETURN_x_کتار_Peek( pdPASS );
 
-                return pdPASS;
+                أرجع pdPASS;
             }
-            else
+            وإلا
             {
-                if( xTicksToWait == ( TickType_t ) 0 )
+                إذا( x_Ticks_منزل_Wait == ( TickType_t ) 0 )
                 {
                     /* The queue was empty and no block time is specified (or
                      * the block time has expired) so leave now. */
                     taskEXIT_CRITICAL();
 
-                    traceQUEUE_PEEK_FAILED( pxQueue );
-                    traceRETURN_xQueuePeek( errQUEUE_EMPTY );
+                    trace_کتار_PEEK_FAILED( px_کتار );
+                    trace_RETURN_x_کتار_Peek( err_کتار_تشه );
 
-                    return errQUEUE_EMPTY;
+                    أرجع err_کتار_تشه;
                 }
-                else if( xEntryTimeSet == pdFALSE )
+                وإلا إذا( x_ثبت_وخت_سېټ == pdFALSE )
                 {
                     /* The queue was empty and a block time was specified so
                      * configure the timeout structure ready to enter the blocked
                      * state. */
-                    vTaskInternalSetTimeOutState( &xTimeOut );
-                    xEntryTimeSet = pdTRUE;
+                    v_Task_دننی_سېټ_وخت_بهر_State( &x_وخت_بهر_2 );
+                    x_ثبت_وخت_سېټ = pdTRUE;
                 }
-                else
+                وإلا
                 {
                     /* Entry time was already set. */
                     mtCOVERAGE_TEST_MARKER();
@@ -1983,51 +1983,51 @@ BaseType_t xQueuePeek( QueueHandle_t xQueue,
          * now that the critical section has been exited. */
 
         vTaskSuspendAll();
-        prvLockQueue( pxQueue );
+        prv_قلف_کتار( px_کتار );
 
         /* Update the timeout state to see if it has expired yet. */
-        if( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE )
+        إذا( x_Task_Check_For_وخت_بهر( &x_وخت_بهر_2, &x_Ticks_منزل_Wait ) == pdFALSE )
         {
             /* Timeout has not expired yet, check to see if there is data in the
             * queue now, and if not enter the Blocked state to wait for data. */
-            if( prvIsQueueEmpty( pxQueue ) != pdFALSE )
+            إذا( prv_Is_کتار_تشه( px_کتار ) != pdFALSE )
             {
-                traceBLOCKING_ON_QUEUE_PEEK( pxQueue );
-                vTaskPlaceOnEventList( &( pxQueue->xTasksWaitingToReceive ), xTicksToWait );
-                prvUnlockQueue( pxQueue );
+                trace_BLOCKING_ON_کتار_PEEK( px_کتار );
+                v_Task_ځای_پرځای_کړه_On_Event_List( &( px_کتار->x_Tasks_انتظار_منزل_Receive ), x_Ticks_منزل_Wait );
+                prv_Unlock_کتار( px_کتار );
 
-                if( xTaskResumeAll() == pdFALSE )
+                إذا( xTaskResumeAll() == pdFALSE )
                 {
                     taskYIELD_WITHIN_API();
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            وإلا
             {
                 /* There is data in the queue now, so don't enter the blocked
                  * state, instead return to try and obtain the data. */
-                prvUnlockQueue( pxQueue );
-                ( void ) xTaskResumeAll();
+                prv_Unlock_کتار( px_کتار );
+                ( فراغ ) xTaskResumeAll();
             }
         }
-        else
+        وإلا
         {
             /* The timeout has expired.  If there is still no data in the queue
              * exit, otherwise go back and try to read the data again. */
-            prvUnlockQueue( pxQueue );
-            ( void ) xTaskResumeAll();
+            prv_Unlock_کتار( px_کتار );
+            ( فراغ ) xTaskResumeAll();
 
-            if( prvIsQueueEmpty( pxQueue ) != pdFALSE )
+            إذا( prv_Is_کتار_تشه( px_کتار ) != pdFALSE )
             {
-                traceQUEUE_PEEK_FAILED( pxQueue );
-                traceRETURN_xQueuePeek( errQUEUE_EMPTY );
+                trace_کتار_PEEK_FAILED( px_کتار );
+                trace_RETURN_x_کتار_Peek( err_کتار_تشه );
 
-                return errQUEUE_EMPTY;
+                أرجع err_کتار_تشه;
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
@@ -2036,18 +2036,18 @@ BaseType_t xQueuePeek( QueueHandle_t xQueue,
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueReceiveFromISR( QueueHandle_t xQueue,
-                                 void * const pvBuffer,
-                                 BaseType_t * const pxHigherPriorityTaskWoken )
+بنسټ_Type_t x_کتار_Receive_From_ISR( کتار_Handle_t x_کتار,
+                                 فراغ * ثابت pv_بفر,
+                                 بنسټ_Type_t * ثابت px_Higher_لومړیتوب_Task_Woken )
 {
-    BaseType_t xReturn;
-    UBaseType_t uxSavedInterruptStatus;
-    Queue_t * const pxQueue = xQueue;
+    بنسټ_Type_t xReturn;
+    UBaseType_t ux_Saved_مداخله_حالت;
+    کتار_t * ثابت px_کتار = x_کتار;
 
-    traceENTER_xQueueReceiveFromISR( xQueue, pvBuffer, pxHigherPriorityTaskWoken );
+    trace_ENTER_x_کتار_Receive_From_ISR( x_کتار, pv_بفر, px_Higher_لومړیتوب_Task_Woken );
 
-    configASSERT( pxQueue );
-    configASSERT( !( ( pvBuffer == NULL ) && ( pxQueue->uxItemSize != ( UBaseType_t ) 0U ) ) );
+    configASSERT( px_کتار );
+    configASSERT( !( ( pv_بفر == عدم ) && ( px_کتار->ux_توکی_اندازه != ( UBaseType_t ) 0U ) ) );
 
     /* RTOS ports that support interrupt nesting have the concept of a maximum
      * system call (or maximum API call) interrupt priority.  Interrupts that are
@@ -2063,92 +2063,92 @@ BaseType_t xQueueReceiveFromISR( QueueHandle_t xQueue,
      * safe API to ensure interrupt entry is as fast and as simple as possible.
      * More information (albeit Cortex-M specific) is provided on the following
      * link: https://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html */
-    portASSERT_IF_INTERRUPT_PRIORITY_INVALID();
+    پورټ_ASSERT_IF_مداخله_لومړیتوب_INVALID();
 
     /* MISRA Ref 4.7.1 [Return value shall be checked] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
     /* coverity[misra_c_2012_directive_4_7_violation] */
-    uxSavedInterruptStatus = ( UBaseType_t ) taskENTER_CRITICAL_FROM_ISR();
+    ux_Saved_مداخله_حالت = ( UBaseType_t ) taskENTER_CRITICAL_FROM_ISR();
     {
-        const UBaseType_t uxMessagesWaiting = pxQueue->uxMessagesWaiting;
+        ثابت UBaseType_t ux_Messages_انتظار = px_کتار->ux_Messages_انتظار;
 
         /* Cannot block in an ISR, so check there is data available. */
-        if( uxMessagesWaiting > ( UBaseType_t ) 0 )
+        إذا( ux_Messages_انتظار > ( UBaseType_t ) 0 )
         {
-            const int8_t cRxLock = pxQueue->cRxLock;
+            ثابت int8_t c_Rx_قلف = px_کتار->c_Rx_قلف;
 
-            traceQUEUE_RECEIVE_FROM_ISR( pxQueue );
+            trace_کتار_RECEIVE_FROM_ISR( px_کتار );
 
-            prvCopyDataFromQueue( pxQueue, pvBuffer );
-            pxQueue->uxMessagesWaiting = ( UBaseType_t ) ( uxMessagesWaiting - ( UBaseType_t ) 1 );
+            prv_Copy_معلومات_From_کتار( px_کتار, pv_بفر );
+            px_کتار->ux_Messages_انتظار = ( UBaseType_t ) ( ux_Messages_انتظار - ( UBaseType_t ) 1 );
 
             /* If the queue is locked the event list will not be modified.
              * Instead update the lock count so the task that unlocks the queue
              * will know that an ISR has removed data while the queue was
              * locked. */
-            if( cRxLock == queueUNLOCKED )
+            إذا( c_Rx_قلف == کتار_UNLOCKED )
             {
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
+                إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Send ) ) == pdFALSE )
                 {
-                    if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToSend ) ) != pdFALSE )
+                    إذا( xTaskRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Send ) ) != pdFALSE )
                     {
                         /* The task waiting has a higher priority than us so
                          * force a context switch. */
-                        if( pxHigherPriorityTaskWoken != NULL )
+                        إذا( px_Higher_لومړیتوب_Task_Woken != عدم )
                         {
-                            *pxHigherPriorityTaskWoken = pdTRUE;
+                            *px_Higher_لومړیتوب_Task_Woken = pdTRUE;
                         }
-                        else
+                        وإلا
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            وإلا
             {
                 /* Increment the lock count so the task that unlocks the queue
                  * knows that data was removed while it was locked. */
-                prvIncrementQueueRxLock( pxQueue, cRxLock );
+                prv_Increment_کتار_Rx_قلف( px_کتار, c_Rx_قلف );
             }
 
             xReturn = pdPASS;
         }
-        else
+        وإلا
         {
             xReturn = pdFAIL;
-            traceQUEUE_RECEIVE_FROM_ISR_FAILED( pxQueue );
+            trace_کتار_RECEIVE_FROM_ISR_FAILED( px_کتار );
         }
     }
-    taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );
+    taskEXIT_CRITICAL_FROM_ISR( ux_Saved_مداخله_حالت );
 
-    traceRETURN_xQueueReceiveFromISR( xReturn );
+    trace_RETURN_x_کتار_Receive_From_ISR( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue,
-                              void * const pvBuffer )
+بنسټ_Type_t x_کتار_Peek_From_ISR( کتار_Handle_t x_کتار,
+                              فراغ * ثابت pv_بفر )
 {
-    BaseType_t xReturn;
-    UBaseType_t uxSavedInterruptStatus;
+    بنسټ_Type_t xReturn;
+    UBaseType_t ux_Saved_مداخله_حالت;
     int8_t * pcOriginalReadPosition;
-    Queue_t * const pxQueue = xQueue;
+    کتار_t * ثابت px_کتار = x_کتار;
 
-    traceENTER_xQueuePeekFromISR( xQueue, pvBuffer );
+    trace_ENTER_x_کتار_Peek_From_ISR( x_کتار, pv_بفر );
 
-    configASSERT( pxQueue );
-    configASSERT( !( ( pvBuffer == NULL ) && ( pxQueue->uxItemSize != ( UBaseType_t ) 0U ) ) );
-    configASSERT( pxQueue->uxItemSize != 0 ); /* Can't peek a semaphore. */
+    configASSERT( px_کتار );
+    configASSERT( !( ( pv_بفر == عدم ) && ( px_کتار->ux_توکی_اندازه != ( UBaseType_t ) 0U ) ) );
+    configASSERT( px_کتار->ux_توکی_اندازه != 0 ); /* Can't peek a semaphore. */
 
     /* RTOS ports that support interrupt nesting have the concept of a maximum
      * system call (or maximum API call) interrupt priority.  Interrupts that are
@@ -2164,211 +2164,211 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue,
      * safe API to ensure interrupt entry is as fast and as simple as possible.
      * More information (albeit Cortex-M specific) is provided on the following
      * link: https://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html */
-    portASSERT_IF_INTERRUPT_PRIORITY_INVALID();
+    پورټ_ASSERT_IF_مداخله_لومړیتوب_INVALID();
 
     /* MISRA Ref 4.7.1 [Return value shall be checked] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
     /* coverity[misra_c_2012_directive_4_7_violation] */
-    uxSavedInterruptStatus = ( UBaseType_t ) taskENTER_CRITICAL_FROM_ISR();
+    ux_Saved_مداخله_حالت = ( UBaseType_t ) taskENTER_CRITICAL_FROM_ISR();
     {
         /* Cannot block in an ISR, so check there is data available. */
-        if( pxQueue->uxMessagesWaiting > ( UBaseType_t ) 0 )
+        إذا( px_کتار->ux_Messages_انتظار > ( UBaseType_t ) 0 )
         {
-            traceQUEUE_PEEK_FROM_ISR( pxQueue );
+            trace_کتار_PEEK_FROM_ISR( px_کتار );
 
             /* Remember the read position so it can be reset as nothing is
              * actually being removed from the queue. */
-            pcOriginalReadPosition = pxQueue->u.xQueue.pcReadFrom;
-            prvCopyDataFromQueue( pxQueue, pvBuffer );
-            pxQueue->u.xQueue.pcReadFrom = pcOriginalReadPosition;
+            pcOriginalReadPosition = px_کتار->u.x_کتار.pcReadFrom;
+            prv_Copy_معلومات_From_کتار( px_کتار, pv_بفر );
+            px_کتار->u.x_کتار.pcReadFrom = pcOriginalReadPosition;
 
             xReturn = pdPASS;
         }
-        else
+        وإلا
         {
             xReturn = pdFAIL;
-            traceQUEUE_PEEK_FROM_ISR_FAILED( pxQueue );
+            trace_کتار_PEEK_FROM_ISR_FAILED( px_کتار );
         }
     }
-    taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );
+    taskEXIT_CRITICAL_FROM_ISR( ux_Saved_مداخله_حالت );
 
-    traceRETURN_xQueuePeekFromISR( xReturn );
+    trace_RETURN_x_کتار_Peek_From_ISR( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-UBaseType_t uxQueueMessagesWaiting( const QueueHandle_t xQueue )
+UBaseType_t ux_کتار_Messages_انتظار( ثابت کتار_Handle_t x_کتار )
 {
     UBaseType_t uxReturn;
 
-    traceENTER_uxQueueMessagesWaiting( xQueue );
+    trace_ENTER_ux_کتار_Messages_انتظار( x_کتار );
 
-    configASSERT( xQueue );
+    configASSERT( x_کتار );
 
     taskENTER_CRITICAL();
     {
-        uxReturn = ( ( Queue_t * ) xQueue )->uxMessagesWaiting;
+        uxReturn = ( ( کتار_t * ) x_کتار )->ux_Messages_انتظار;
     }
     taskEXIT_CRITICAL();
 
-    traceRETURN_uxQueueMessagesWaiting( uxReturn );
+    trace_RETURN_ux_کتار_Messages_انتظار( uxReturn );
 
-    return uxReturn;
+    أرجع uxReturn;
 }
 /*-----------------------------------------------------------*/
 
-UBaseType_t uxQueueSpacesAvailable( const QueueHandle_t xQueue )
+UBaseType_t ux_کتار_Spaces_شته( ثابت کتار_Handle_t x_کتار )
 {
     UBaseType_t uxReturn;
-    Queue_t * const pxQueue = xQueue;
+    کتار_t * ثابت px_کتار = x_کتار;
 
-    traceENTER_uxQueueSpacesAvailable( xQueue );
+    trace_ENTER_ux_کتار_Spaces_شته( x_کتار );
 
-    configASSERT( pxQueue );
+    configASSERT( px_کتار );
 
     taskENTER_CRITICAL();
     {
-        uxReturn = ( UBaseType_t ) ( pxQueue->uxLength - pxQueue->uxMessagesWaiting );
+        uxReturn = ( UBaseType_t ) ( px_کتار->ux_اوږدتیا - px_کتار->ux_Messages_انتظار );
     }
     taskEXIT_CRITICAL();
 
-    traceRETURN_uxQueueSpacesAvailable( uxReturn );
+    trace_RETURN_ux_کتار_Spaces_شته( uxReturn );
 
-    return uxReturn;
+    أرجع uxReturn;
 }
 /*-----------------------------------------------------------*/
 
-UBaseType_t uxQueueMessagesWaitingFromISR( const QueueHandle_t xQueue )
+UBaseType_t ux_کتار_Messages_انتظار_From_ISR( ثابت کتار_Handle_t x_کتار )
 {
     UBaseType_t uxReturn;
-    Queue_t * const pxQueue = xQueue;
+    کتار_t * ثابت px_کتار = x_کتار;
 
-    traceENTER_uxQueueMessagesWaitingFromISR( xQueue );
+    trace_ENTER_ux_کتار_Messages_انتظار_From_ISR( x_کتار );
 
-    configASSERT( pxQueue );
-    uxReturn = pxQueue->uxMessagesWaiting;
+    configASSERT( px_کتار );
+    uxReturn = px_کتار->ux_Messages_انتظار;
 
-    traceRETURN_uxQueueMessagesWaitingFromISR( uxReturn );
+    trace_RETURN_ux_کتار_Messages_انتظار_From_ISR( uxReturn );
 
-    return uxReturn;
+    أرجع uxReturn;
 }
 /*-----------------------------------------------------------*/
 
-void vQueueDelete( QueueHandle_t xQueue )
+فراغ v_کتار_Delete( کتار_Handle_t x_کتار )
 {
-    Queue_t * const pxQueue = xQueue;
+    کتار_t * ثابت px_کتار = x_کتار;
 
-    traceENTER_vQueueDelete( xQueue );
+    trace_ENTER_v_کتار_Delete( x_کتار );
 
-    configASSERT( pxQueue );
-    traceQUEUE_DELETE( pxQueue );
+    configASSERT( px_کتار );
+    trace_کتار_DELETE( px_کتار );
 
-    #if ( configQUEUE_REGISTRY_SIZE > 0 )
+    #إذا ( config_کتار_REGISTRY_اندازه > 0 )
     {
-        vQueueUnregisterQueue( pxQueue );
+        v_کتار_Unregister_کتار( px_کتار );
     }
-    #endif
+    #د_که_پای
 
-    #if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 0 ) )
+    #إذا ( ( config_SUPPORT_DYNAMIC_ویش == 1 ) && ( config_SUPPORT_STATIC_ویش == 0 ) )
     {
         /* The queue can only have been allocated dynamically - free it
          * again. */
-        vPortFree( pxQueue );
+        v_پورټ_Free( px_کتار );
     }
-    #elif ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
+    #وإلاإذا ( ( config_SUPPORT_DYNAMIC_ویش == 1 ) && ( config_SUPPORT_STATIC_ویش == 1 ) )
     {
         /* The queue could have been allocated statically or dynamically, so
          * check before attempting to free the memory. */
-        if( pxQueue->ucStaticallyAllocated == ( uint8_t ) pdFALSE )
+        إذا( px_کتار->ucStaticallyAllocated == ( uint8_t ) pdFALSE )
         {
-            vPortFree( pxQueue );
+            v_پورټ_Free( px_کتار );
         }
-        else
+        وإلا
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    #else /* if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 0 ) ) */
+    #وإلا /* if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 0 ) ) */
     {
         /* The queue must have been statically allocated, so is not going to be
          * deleted.  Avoid compiler warnings about the unused parameter. */
-        ( void ) pxQueue;
+        ( فراغ ) px_کتار;
     }
-    #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+    #د_که_پای /* configSUPPORT_DYNAMIC_ALLOCATION */
 
-    traceRETURN_vQueueDelete();
+    trace_RETURN_v_کتار_Delete();
 }
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_TRACE_FACILITY == 1 )
+#إذا ( configUSE_TRACE_FACILITY == 1 )
 
-    UBaseType_t uxQueueGetQueueNumber( QueueHandle_t xQueue )
+    UBaseType_t ux_کتار_Get_کتار_شمېره( کتار_Handle_t x_کتار )
     {
-        traceENTER_uxQueueGetQueueNumber( xQueue );
+        trace_ENTER_ux_کتار_Get_کتار_شمېره( x_کتار );
 
-        traceRETURN_uxQueueGetQueueNumber( ( ( Queue_t * ) xQueue )->uxQueueNumber );
+        trace_RETURN_ux_کتار_Get_کتار_شمېره( ( ( کتار_t * ) x_کتار )->ux_کتار_شمېره );
 
-        return ( ( Queue_t * ) xQueue )->uxQueueNumber;
+        أرجع ( ( کتار_t * ) x_کتار )->ux_کتار_شمېره;
     }
 
-#endif /* configUSE_TRACE_FACILITY */
+#د_که_پای /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_TRACE_FACILITY == 1 )
+#إذا ( configUSE_TRACE_FACILITY == 1 )
 
-    void vQueueSetQueueNumber( QueueHandle_t xQueue,
-                               UBaseType_t uxQueueNumber )
+    فراغ v_کتار_سېټ_کتار_شمېره( کتار_Handle_t x_کتار,
+                               UBaseType_t ux_کتار_شمېره )
     {
-        traceENTER_vQueueSetQueueNumber( xQueue, uxQueueNumber );
+        trace_ENTER_v_کتار_سېټ_کتار_شمېره( x_کتار, ux_کتار_شمېره );
 
-        ( ( Queue_t * ) xQueue )->uxQueueNumber = uxQueueNumber;
+        ( ( کتار_t * ) x_کتار )->ux_کتار_شمېره = ux_کتار_شمېره;
 
-        traceRETURN_vQueueSetQueueNumber();
+        trace_RETURN_v_کتار_سېټ_کتار_شمېره();
     }
 
-#endif /* configUSE_TRACE_FACILITY */
+#د_که_پای /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_TRACE_FACILITY == 1 )
+#إذا ( configUSE_TRACE_FACILITY == 1 )
 
-    uint8_t ucQueueGetQueueType( QueueHandle_t xQueue )
+    uint8_t uc_کتار_Get_کتار_Type( کتار_Handle_t x_کتار )
     {
-        traceENTER_ucQueueGetQueueType( xQueue );
+        trace_ENTER_uc_کتار_Get_کتار_Type( x_کتار );
 
-        traceRETURN_ucQueueGetQueueType( ( ( Queue_t * ) xQueue )->ucQueueType );
+        trace_RETURN_uc_کتار_Get_کتار_Type( ( ( کتار_t * ) x_کتار )->uc_کتار_Type );
 
-        return ( ( Queue_t * ) xQueue )->ucQueueType;
+        أرجع ( ( کتار_t * ) x_کتار )->uc_کتار_Type;
     }
 
-#endif /* configUSE_TRACE_FACILITY */
+#د_که_پای /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
-UBaseType_t uxQueueGetQueueItemSize( QueueHandle_t xQueue ) /* PRIVILEGED_FUNCTION */
+UBaseType_t ux_کتار_Get_کتار_توکی_اندازه( کتار_Handle_t x_کتار ) /* PRIVILEGED_FUNCTION */
 {
-    traceENTER_uxQueueGetQueueItemSize( xQueue );
+    trace_ENTER_ux_کتار_Get_کتار_توکی_اندازه( x_کتار );
 
-    traceRETURN_uxQueueGetQueueItemSize( ( ( Queue_t * ) xQueue )->uxItemSize );
+    trace_RETURN_ux_کتار_Get_کتار_توکی_اندازه( ( ( کتار_t * ) x_کتار )->ux_توکی_اندازه );
 
-    return ( ( Queue_t * ) xQueue )->uxItemSize;
+    أرجع ( ( کتار_t * ) x_کتار )->ux_توکی_اندازه;
 }
 /*-----------------------------------------------------------*/
 
-UBaseType_t uxQueueGetQueueLength( QueueHandle_t xQueue ) /* PRIVILEGED_FUNCTION */
+UBaseType_t ux_کتار_Get_کتار_اوږدتیا( کتار_Handle_t x_کتار ) /* PRIVILEGED_FUNCTION */
 {
-    traceENTER_uxQueueGetQueueLength( xQueue );
+    trace_ENTER_ux_کتار_Get_کتار_اوږدتیا( x_کتار );
 
-    traceRETURN_uxQueueGetQueueLength( ( ( Queue_t * ) xQueue )->uxLength );
+    trace_RETURN_ux_کتار_Get_کتار_اوږدتیا( ( ( کتار_t * ) x_کتار )->ux_اوږدتیا );
 
-    return ( ( Queue_t * ) xQueue )->uxLength;
+    أرجع ( ( کتار_t * ) x_کتار )->ux_اوږدتیا;
 }
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_MUTEXES == 1 )
+#إذا ( configUSE_MUTEXES == 1 )
 
-    static UBaseType_t prvGetDisinheritPriorityAfterTimeout( const Queue_t * const pxQueue )
+    ساكن UBaseType_t prv_Get_Disinherit_لومړیتوب_After_Timeout( ثابت کتار_t * ثابت px_کتار )
     {
-        UBaseType_t uxHighestPriorityOfWaitingTasks;
+        UBaseType_t ux_Highest_لومړیتوب_د_انتظار_Tasks;
 
         /* If a task waiting for a mutex causes the mutex holder to inherit a
          * priority, but the waiting task times out, then the holder should
@@ -2376,126 +2376,126 @@ UBaseType_t uxQueueGetQueueLength( QueueHandle_t xQueue ) /* PRIVILEGED_FUNCTION
          * other tasks that are waiting for the same mutex.  For this purpose,
          * return the priority of the highest priority task that is waiting for the
          * mutex. */
-        if( listCURRENT_LIST_LENGTH( &( pxQueue->xTasksWaitingToReceive ) ) > 0U )
+        إذا( list_CURRENT_LIST_اوږدتیا( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) > 0U )
         {
-            uxHighestPriorityOfWaitingTasks = ( UBaseType_t ) ( ( UBaseType_t ) configMAX_PRIORITIES - ( UBaseType_t ) listGET_ITEM_VALUE_OF_HEAD_ENTRY( &( pxQueue->xTasksWaitingToReceive ) ) );
+            ux_Highest_لومړیتوب_د_انتظار_Tasks = ( UBaseType_t ) ( ( UBaseType_t ) configMAX_PRIORITIES - ( UBaseType_t ) list_GET_توکی_ارزښت_د_سر_ثبت( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) );
         }
-        else
+        وإلا
         {
-            uxHighestPriorityOfWaitingTasks = tskIDLE_PRIORITY;
+            ux_Highest_لومړیتوب_د_انتظار_Tasks = tsk_IDLE_لومړیتوب;
         }
 
-        return uxHighestPriorityOfWaitingTasks;
+        أرجع ux_Highest_لومړیتوب_د_انتظار_Tasks;
     }
 
-#endif /* configUSE_MUTEXES */
+#د_که_پای /* configUSE_MUTEXES */
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvCopyDataToQueue( Queue_t * const pxQueue,
-                                      const void * pvItemToQueue,
-                                      const BaseType_t xPosition )
+ساكن بنسټ_Type_t prv_Copy_معلومات_منزل_کتار( کتار_t * ثابت px_کتار,
+                                      ثابت فراغ * pv_توکی_منزل_کتار,
+                                      ثابت بنسټ_Type_t xPosition )
 {
-    BaseType_t xReturn = pdFALSE;
-    UBaseType_t uxMessagesWaiting;
+    بنسټ_Type_t xReturn = pdFALSE;
+    UBaseType_t ux_Messages_انتظار;
 
     /* This function is called from a critical section. */
 
-    uxMessagesWaiting = pxQueue->uxMessagesWaiting;
+    ux_Messages_انتظار = px_کتار->ux_Messages_انتظار;
 
-    if( pxQueue->uxItemSize == ( UBaseType_t ) 0 )
+    إذا( px_کتار->ux_توکی_اندازه == ( UBaseType_t ) 0 )
     {
-        #if ( configUSE_MUTEXES == 1 )
+        #إذا ( configUSE_MUTEXES == 1 )
         {
-            if( pxQueue->uxQueueType == queueQUEUE_IS_MUTEX )
+            إذا( px_کتار->ux_کتار_Type == کتار_کتار_IS_MUTEX )
             {
                 /* The mutex is no longer being held. */
-                xReturn = xTaskPriorityDisinherit( pxQueue->u.xSemaphore.xMutexHolder );
-                pxQueue->u.xSemaphore.xMutexHolder = NULL;
+                xReturn = x_Task_لومړیتوب_Disinherit( px_کتار->u.xSemaphore.xMutexHolder );
+                px_کتار->u.xSemaphore.xMutexHolder = عدم;
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
-        #endif /* configUSE_MUTEXES */
+        #د_که_پای /* configUSE_MUTEXES */
     }
-    else if( xPosition == queueSEND_TO_BACK )
+    وإلا إذا( xPosition == کتار_SEND_منزل_شا )
     {
-        ( void ) memcpy( ( void * ) pxQueue->pcWriteTo, pvItemToQueue, ( size_t ) pxQueue->uxItemSize );
-        pxQueue->pcWriteTo += pxQueue->uxItemSize;
+        ( فراغ ) حافظه_نقل( ( فراغ * ) px_کتار->pc_Write_منزل, pv_توکی_منزل_کتار, ( size_t ) px_کتار->ux_توکی_اندازه );
+        px_کتار->pc_Write_منزل += px_کتار->ux_توکی_اندازه;
 
-        if( pxQueue->pcWriteTo >= pxQueue->u.xQueue.pcTail )
+        إذا( px_کتار->pc_Write_منزل >= px_کتار->u.x_کتار.pc_لکۍ )
         {
-            pxQueue->pcWriteTo = pxQueue->pcHead;
+            px_کتار->pc_Write_منزل = px_کتار->pc_سر;
         }
-        else
+        وإلا
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    وإلا
     {
-        ( void ) memcpy( ( void * ) pxQueue->u.xQueue.pcReadFrom, pvItemToQueue, ( size_t ) pxQueue->uxItemSize );
-        pxQueue->u.xQueue.pcReadFrom -= pxQueue->uxItemSize;
+        ( فراغ ) حافظه_نقل( ( فراغ * ) px_کتار->u.x_کتار.pcReadFrom, pv_توکی_منزل_کتار, ( size_t ) px_کتار->ux_توکی_اندازه );
+        px_کتار->u.x_کتار.pcReadFrom -= px_کتار->ux_توکی_اندازه;
 
-        if( pxQueue->u.xQueue.pcReadFrom < pxQueue->pcHead )
+        إذا( px_کتار->u.x_کتار.pcReadFrom < px_کتار->pc_سر )
         {
-            pxQueue->u.xQueue.pcReadFrom = ( pxQueue->u.xQueue.pcTail - pxQueue->uxItemSize );
+            px_کتار->u.x_کتار.pcReadFrom = ( px_کتار->u.x_کتار.pc_لکۍ - px_کتار->ux_توکی_اندازه );
         }
-        else
+        وإلا
         {
             mtCOVERAGE_TEST_MARKER();
         }
 
-        if( xPosition == queueOVERWRITE )
+        إذا( xPosition == کتار_OVERWRITE )
         {
-            if( uxMessagesWaiting > ( UBaseType_t ) 0 )
+            إذا( ux_Messages_انتظار > ( UBaseType_t ) 0 )
             {
                 /* An item is not being added but overwritten, so subtract
                  * one from the recorded number of items in the queue so when
                  * one is added again below the number of recorded items remains
                  * correct. */
-                --uxMessagesWaiting;
+                --ux_Messages_انتظار;
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
-        else
+        وإلا
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
 
-    pxQueue->uxMessagesWaiting = ( UBaseType_t ) ( uxMessagesWaiting + ( UBaseType_t ) 1 );
+    px_کتار->ux_Messages_انتظار = ( UBaseType_t ) ( ux_Messages_انتظار + ( UBaseType_t ) 1 );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-static void prvCopyDataFromQueue( Queue_t * const pxQueue,
-                                  void * const pvBuffer )
+ساكن فراغ prv_Copy_معلومات_From_کتار( کتار_t * ثابت px_کتار,
+                                  فراغ * ثابت pv_بفر )
 {
-    if( pxQueue->uxItemSize != ( UBaseType_t ) 0 )
+    إذا( px_کتار->ux_توکی_اندازه != ( UBaseType_t ) 0 )
     {
-        pxQueue->u.xQueue.pcReadFrom += pxQueue->uxItemSize;
+        px_کتار->u.x_کتار.pcReadFrom += px_کتار->ux_توکی_اندازه;
 
-        if( pxQueue->u.xQueue.pcReadFrom >= pxQueue->u.xQueue.pcTail )
+        إذا( px_کتار->u.x_کتار.pcReadFrom >= px_کتار->u.x_کتار.pc_لکۍ )
         {
-            pxQueue->u.xQueue.pcReadFrom = pxQueue->pcHead;
+            px_کتار->u.x_کتار.pcReadFrom = px_کتار->pc_سر;
         }
-        else
+        وإلا
         {
             mtCOVERAGE_TEST_MARKER();
         }
 
-        ( void ) memcpy( ( void * ) pvBuffer, ( void * ) pxQueue->u.xQueue.pcReadFrom, ( size_t ) pxQueue->uxItemSize );
+        ( فراغ ) حافظه_نقل( ( فراغ * ) pv_بفر, ( فراغ * ) px_کتار->u.x_کتار.pcReadFrom, ( size_t ) px_کتار->ux_توکی_اندازه );
     }
 }
 /*-----------------------------------------------------------*/
 
-static void prvUnlockQueue( Queue_t * const pxQueue )
+ساكن فراغ prv_Unlock_کتار( کتار_t * ثابت px_کتار )
 {
     /* THIS FUNCTION MUST BE CALLED WITH THE SCHEDULER SUSPENDED. */
 
@@ -2505,641 +2505,641 @@ static void prvUnlockQueue( Queue_t * const pxQueue )
      * updated. */
     taskENTER_CRITICAL();
     {
-        int8_t cTxLock = pxQueue->cTxLock;
+        int8_t c_Tx_قلف = px_کتار->c_Tx_قلف;
 
         /* See if data was added to the queue while it was locked. */
-        while( cTxLock > queueLOCKED_UNMODIFIED )
+        طالما( c_Tx_قلف > کتار_LOCKED_UNMODIFIED )
         {
             /* Data was posted while the queue was locked.  Are any tasks
              * blocked waiting for data to become available? */
-            #if ( configUSE_QUEUE_SETS == 1 )
+            #إذا ( config_USE_کتار_SETS == 1 )
             {
-                if( pxQueue->pxQueueSetContainer != NULL )
+                إذا( px_کتار->px_کتار_سېټ_Container != عدم )
                 {
-                    if( prvNotifyQueueSetContainer( pxQueue ) != pdFALSE )
+                    إذا( prv_Notify_کتار_سېټ_Container( px_کتار ) != pdFALSE )
                     {
                         /* The queue is a member of a queue set, and posting to
                          * the queue set caused a higher priority task to unblock.
                          * A context switch is required. */
                         vTaskMissedYield();
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                وإلا
                 {
                     /* Tasks that are removed from the event list will get
                      * added to the pending ready list as the scheduler is still
                      * suspended. */
-                    if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                    إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) == pdFALSE )
                     {
-                        if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                        إذا( xTaskRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) != pdFALSE )
                         {
                             /* The task waiting has a higher priority so record that a
                              * context switch is required. */
                             vTaskMissedYield();
                         }
-                        else
+                        وإلا
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else
+                    وإلا
                     {
-                        break;
+                        اكسر;
                     }
                 }
             }
-            #else /* configUSE_QUEUE_SETS */
+            #وإلا /* configUSE_QUEUE_SETS */
             {
                 /* Tasks that are removed from the event list will get added to
                  * the pending ready list as the scheduler is still suspended. */
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) == pdFALSE )
                 {
-                    if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                    إذا( xTaskRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) != pdFALSE )
                     {
                         /* The task waiting has a higher priority so record that
                          * a context switch is required. */
                         vTaskMissedYield();
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                وإلا
                 {
-                    break;
+                    اكسر;
                 }
             }
-            #endif /* configUSE_QUEUE_SETS */
+            #د_که_پای /* configUSE_QUEUE_SETS */
 
-            --cTxLock;
+            --c_Tx_قلف;
         }
 
-        pxQueue->cTxLock = queueUNLOCKED;
+        px_کتار->c_Tx_قلف = کتار_UNLOCKED;
     }
     taskEXIT_CRITICAL();
 
     /* Do the same for the Rx lock. */
     taskENTER_CRITICAL();
     {
-        int8_t cRxLock = pxQueue->cRxLock;
+        int8_t c_Rx_قلف = px_کتار->c_Rx_قلف;
 
-        while( cRxLock > queueLOCKED_UNMODIFIED )
+        طالما( c_Rx_قلف > کتار_LOCKED_UNMODIFIED )
         {
-            if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
+            إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Send ) ) == pdFALSE )
             {
-                if( xTaskRemoveFromEventList( &( pxQueue->xTasksWaitingToSend ) ) != pdFALSE )
+                إذا( xTaskRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Send ) ) != pdFALSE )
                 {
                     vTaskMissedYield();
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
 
-                --cRxLock;
+                --c_Rx_قلف;
             }
-            else
+            وإلا
             {
-                break;
+                اكسر;
             }
         }
 
-        pxQueue->cRxLock = queueUNLOCKED;
+        px_کتار->c_Rx_قلف = کتار_UNLOCKED;
     }
     taskEXIT_CRITICAL();
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvIsQueueEmpty( const Queue_t * pxQueue )
+ساكن بنسټ_Type_t prv_Is_کتار_تشه( ثابت کتار_t * px_کتار )
 {
-    BaseType_t xReturn;
+    بنسټ_Type_t xReturn;
 
     taskENTER_CRITICAL();
     {
-        if( pxQueue->uxMessagesWaiting == ( UBaseType_t ) 0 )
+        إذا( px_کتار->ux_Messages_انتظار == ( UBaseType_t ) 0 )
         {
             xReturn = pdTRUE;
         }
-        else
+        وإلا
         {
             xReturn = pdFALSE;
         }
     }
     taskEXIT_CRITICAL();
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueIsQueueEmptyFromISR( const QueueHandle_t xQueue )
+بنسټ_Type_t x_کتار_Is_کتار_تشه_From_ISR( ثابت کتار_Handle_t x_کتار )
 {
-    BaseType_t xReturn;
-    Queue_t * const pxQueue = xQueue;
+    بنسټ_Type_t xReturn;
+    کتار_t * ثابت px_کتار = x_کتار;
 
-    traceENTER_xQueueIsQueueEmptyFromISR( xQueue );
+    trace_ENTER_x_کتار_Is_کتار_تشه_From_ISR( x_کتار );
 
-    configASSERT( pxQueue );
+    configASSERT( px_کتار );
 
-    if( pxQueue->uxMessagesWaiting == ( UBaseType_t ) 0 )
+    إذا( px_کتار->ux_Messages_انتظار == ( UBaseType_t ) 0 )
     {
         xReturn = pdTRUE;
     }
-    else
+    وإلا
     {
         xReturn = pdFALSE;
     }
 
-    traceRETURN_xQueueIsQueueEmptyFromISR( xReturn );
+    trace_RETURN_x_کتار_Is_کتار_تشه_From_ISR( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvIsQueueFull( const Queue_t * pxQueue )
+ساكن بنسټ_Type_t prv_Is_کتار_ډک( ثابت کتار_t * px_کتار )
 {
-    BaseType_t xReturn;
+    بنسټ_Type_t xReturn;
 
     taskENTER_CRITICAL();
     {
-        if( pxQueue->uxMessagesWaiting == pxQueue->uxLength )
+        إذا( px_کتار->ux_Messages_انتظار == px_کتار->ux_اوږدتیا )
         {
             xReturn = pdTRUE;
         }
-        else
+        وإلا
         {
             xReturn = pdFALSE;
         }
     }
     taskEXIT_CRITICAL();
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue )
+بنسټ_Type_t x_کتار_Is_کتار_ډک_From_ISR( ثابت کتار_Handle_t x_کتار )
 {
-    BaseType_t xReturn;
-    Queue_t * const pxQueue = xQueue;
+    بنسټ_Type_t xReturn;
+    کتار_t * ثابت px_کتار = x_کتار;
 
-    traceENTER_xQueueIsQueueFullFromISR( xQueue );
+    trace_ENTER_x_کتار_Is_کتار_ډک_From_ISR( x_کتار );
 
-    configASSERT( pxQueue );
+    configASSERT( px_کتار );
 
-    if( pxQueue->uxMessagesWaiting == pxQueue->uxLength )
+    إذا( px_کتار->ux_Messages_انتظار == px_کتار->ux_اوږدتیا )
     {
         xReturn = pdTRUE;
     }
-    else
+    وإلا
     {
         xReturn = pdFALSE;
     }
 
-    traceRETURN_xQueueIsQueueFullFromISR( xReturn );
+    trace_RETURN_x_کتار_Is_کتار_ډک_From_ISR( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_CO_ROUTINES == 1 )
+#إذا ( configUSE_CO_ROUTINES == 1 )
 
-    BaseType_t xQueueCRSend( QueueHandle_t xQueue,
-                             const void * pvItemToQueue,
-                             TickType_t xTicksToWait )
+    بنسټ_Type_t x_کتار_CRSend( کتار_Handle_t x_کتار,
+                             ثابت فراغ * pv_توکی_منزل_کتار,
+                             TickType_t x_Ticks_منزل_Wait )
     {
-        BaseType_t xReturn;
-        Queue_t * const pxQueue = xQueue;
+        بنسټ_Type_t xReturn;
+        کتار_t * ثابت px_کتار = x_کتار;
 
-        traceENTER_xQueueCRSend( xQueue, pvItemToQueue, xTicksToWait );
+        trace_ENTER_x_کتار_CRSend( x_کتار, pv_توکی_منزل_کتار, x_Ticks_منزل_Wait );
 
         /* If the queue is already full we may have to block.  A critical section
          * is required to prevent an interrupt removing something from the queue
          * between the check to see if the queue is full and blocking on the queue. */
-        portDISABLE_INTERRUPTS();
+        پورټ_DISABLE_INTERRUPTS();
         {
-            if( prvIsQueueFull( pxQueue ) != pdFALSE )
+            إذا( prv_Is_کتار_ډک( px_کتار ) != pdFALSE )
             {
                 /* The queue is full - do we want to block or just leave without
                  * posting? */
-                if( xTicksToWait > ( TickType_t ) 0 )
+                إذا( x_Ticks_منزل_Wait > ( TickType_t ) 0 )
                 {
                     /* As this is called from a coroutine we cannot block directly, but
                      * return indicating that we need to block. */
-                    vCoRoutineAddToDelayedList( xTicksToWait, &( pxQueue->xTasksWaitingToSend ) );
-                    portENABLE_INTERRUPTS();
-                    return errQUEUE_BLOCKED;
+                    v_Co_Routine_جمع_کړه_منزل_Delayed_List( x_Ticks_منزل_Wait, &( px_کتار->x_Tasks_انتظار_منزل_Send ) );
+                    پورټ_ENABLE_INTERRUPTS();
+                    أرجع err_کتار_BLOCKED;
                 }
-                else
+                وإلا
                 {
-                    portENABLE_INTERRUPTS();
-                    return errQUEUE_FULL;
+                    پورټ_ENABLE_INTERRUPTS();
+                    أرجع err_کتار_ډک;
                 }
             }
         }
-        portENABLE_INTERRUPTS();
+        پورټ_ENABLE_INTERRUPTS();
 
-        portDISABLE_INTERRUPTS();
+        پورټ_DISABLE_INTERRUPTS();
         {
-            if( pxQueue->uxMessagesWaiting < pxQueue->uxLength )
+            إذا( px_کتار->ux_Messages_انتظار < px_کتار->ux_اوږدتیا )
             {
                 /* There is room in the queue, copy the data into the queue. */
-                prvCopyDataToQueue( pxQueue, pvItemToQueue, queueSEND_TO_BACK );
+                prv_Copy_معلومات_منزل_کتار( px_کتار, pv_توکی_منزل_کتار, کتار_SEND_منزل_شا );
                 xReturn = pdPASS;
 
                 /* Were any co-routines waiting for data to become available? */
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) == pdFALSE )
                 {
                     /* In this instance the co-routine could be placed directly
                      * into the ready list as we are within a critical section.
                      * Instead the same pending ready list mechanism is used as if
                      * the event were caused from within an interrupt. */
-                    if( xCoRoutineRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                    إذا( xCoRoutineRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) != pdFALSE )
                     {
                         /* The co-routine waiting has a higher priority so record
                          * that a yield might be appropriate. */
-                        xReturn = errQUEUE_YIELD;
+                        xReturn = err_کتار_YIELD;
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            وإلا
             {
-                xReturn = errQUEUE_FULL;
+                xReturn = err_کتار_ډک;
             }
         }
-        portENABLE_INTERRUPTS();
+        پورټ_ENABLE_INTERRUPTS();
 
-        traceRETURN_xQueueCRSend( xReturn );
+        trace_RETURN_x_کتار_CRSend( xReturn );
 
-        return xReturn;
+        أرجع xReturn;
     }
 
-#endif /* configUSE_CO_ROUTINES */
+#د_که_پای /* configUSE_CO_ROUTINES */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_CO_ROUTINES == 1 )
+#إذا ( configUSE_CO_ROUTINES == 1 )
 
-    BaseType_t xQueueCRReceive( QueueHandle_t xQueue,
-                                void * pvBuffer,
-                                TickType_t xTicksToWait )
+    بنسټ_Type_t x_کتار_CRReceive( کتار_Handle_t x_کتار,
+                                فراغ * pv_بفر,
+                                TickType_t x_Ticks_منزل_Wait )
     {
-        BaseType_t xReturn;
-        Queue_t * const pxQueue = xQueue;
+        بنسټ_Type_t xReturn;
+        کتار_t * ثابت px_کتار = x_کتار;
 
-        traceENTER_xQueueCRReceive( xQueue, pvBuffer, xTicksToWait );
+        trace_ENTER_x_کتار_CRReceive( x_کتار, pv_بفر, x_Ticks_منزل_Wait );
 
         /* If the queue is already empty we may have to block.  A critical section
          * is required to prevent an interrupt adding something to the queue
          * between the check to see if the queue is empty and blocking on the queue. */
-        portDISABLE_INTERRUPTS();
+        پورټ_DISABLE_INTERRUPTS();
         {
-            if( pxQueue->uxMessagesWaiting == ( UBaseType_t ) 0 )
+            إذا( px_کتار->ux_Messages_انتظار == ( UBaseType_t ) 0 )
             {
                 /* There are no messages in the queue, do we want to block or just
                  * leave with nothing? */
-                if( xTicksToWait > ( TickType_t ) 0 )
+                إذا( x_Ticks_منزل_Wait > ( TickType_t ) 0 )
                 {
                     /* As this is a co-routine we cannot block directly, but return
                      * indicating that we need to block. */
-                    vCoRoutineAddToDelayedList( xTicksToWait, &( pxQueue->xTasksWaitingToReceive ) );
-                    portENABLE_INTERRUPTS();
-                    return errQUEUE_BLOCKED;
+                    v_Co_Routine_جمع_کړه_منزل_Delayed_List( x_Ticks_منزل_Wait, &( px_کتار->x_Tasks_انتظار_منزل_Receive ) );
+                    پورټ_ENABLE_INTERRUPTS();
+                    أرجع err_کتار_BLOCKED;
                 }
-                else
+                وإلا
                 {
-                    portENABLE_INTERRUPTS();
-                    return errQUEUE_FULL;
+                    پورټ_ENABLE_INTERRUPTS();
+                    أرجع err_کتار_ډک;
                 }
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
-        portENABLE_INTERRUPTS();
+        پورټ_ENABLE_INTERRUPTS();
 
-        portDISABLE_INTERRUPTS();
+        پورټ_DISABLE_INTERRUPTS();
         {
-            if( pxQueue->uxMessagesWaiting > ( UBaseType_t ) 0 )
+            إذا( px_کتار->ux_Messages_انتظار > ( UBaseType_t ) 0 )
             {
                 /* Data is available from the queue. */
-                pxQueue->u.xQueue.pcReadFrom += pxQueue->uxItemSize;
+                px_کتار->u.x_کتار.pcReadFrom += px_کتار->ux_توکی_اندازه;
 
-                if( pxQueue->u.xQueue.pcReadFrom >= pxQueue->u.xQueue.pcTail )
+                إذا( px_کتار->u.x_کتار.pcReadFrom >= px_کتار->u.x_کتار.pc_لکۍ )
                 {
-                    pxQueue->u.xQueue.pcReadFrom = pxQueue->pcHead;
+                    px_کتار->u.x_کتار.pcReadFrom = px_کتار->pc_سر;
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
 
-                --( pxQueue->uxMessagesWaiting );
-                ( void ) memcpy( ( void * ) pvBuffer, ( void * ) pxQueue->u.xQueue.pcReadFrom, ( unsigned ) pxQueue->uxItemSize );
+                --( px_کتار->ux_Messages_انتظار );
+                ( فراغ ) حافظه_نقل( ( فراغ * ) pv_بفر, ( فراغ * ) px_کتار->u.x_کتار.pcReadFrom, ( بینښه ) px_کتار->ux_توکی_اندازه );
 
                 xReturn = pdPASS;
 
                 /* Were any co-routines waiting for space to become available? */
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
+                إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Send ) ) == pdFALSE )
                 {
                     /* In this instance the co-routine could be placed directly
                      * into the ready list as we are within a critical section.
                      * Instead the same pending ready list mechanism is used as if
                      * the event were caused from within an interrupt. */
-                    if( xCoRoutineRemoveFromEventList( &( pxQueue->xTasksWaitingToSend ) ) != pdFALSE )
+                    إذا( xCoRoutineRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Send ) ) != pdFALSE )
                     {
-                        xReturn = errQUEUE_YIELD;
+                        xReturn = err_کتار_YIELD;
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            وإلا
             {
                 xReturn = pdFAIL;
             }
         }
-        portENABLE_INTERRUPTS();
+        پورټ_ENABLE_INTERRUPTS();
 
-        traceRETURN_xQueueCRReceive( xReturn );
+        trace_RETURN_x_کتار_CRReceive( xReturn );
 
-        return xReturn;
+        أرجع xReturn;
     }
 
-#endif /* configUSE_CO_ROUTINES */
+#د_که_پای /* configUSE_CO_ROUTINES */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_CO_ROUTINES == 1 )
+#إذا ( configUSE_CO_ROUTINES == 1 )
 
-    BaseType_t xQueueCRSendFromISR( QueueHandle_t xQueue,
-                                    const void * pvItemToQueue,
-                                    BaseType_t xCoRoutinePreviouslyWoken )
+    بنسټ_Type_t x_کتار_CRSend_From_ISR( کتار_Handle_t x_کتار,
+                                    ثابت فراغ * pv_توکی_منزل_کتار,
+                                    بنسټ_Type_t xCoRoutinePreviouslyWoken )
     {
-        Queue_t * const pxQueue = xQueue;
+        کتار_t * ثابت px_کتار = x_کتار;
 
-        traceENTER_xQueueCRSendFromISR( xQueue, pvItemToQueue, xCoRoutinePreviouslyWoken );
+        trace_ENTER_x_کتار_CRSend_From_ISR( x_کتار, pv_توکی_منزل_کتار, xCoRoutinePreviouslyWoken );
 
         /* Cannot block within an ISR so if there is no space on the queue then
          * exit without doing anything. */
-        if( pxQueue->uxMessagesWaiting < pxQueue->uxLength )
+        إذا( px_کتار->ux_Messages_انتظار < px_کتار->ux_اوږدتیا )
         {
-            prvCopyDataToQueue( pxQueue, pvItemToQueue, queueSEND_TO_BACK );
+            prv_Copy_معلومات_منزل_کتار( px_کتار, pv_توکی_منزل_کتار, کتار_SEND_منزل_شا );
 
             /* We only want to wake one co-routine per ISR, so check that a
              * co-routine has not already been woken. */
-            if( xCoRoutinePreviouslyWoken == pdFALSE )
+            إذا( xCoRoutinePreviouslyWoken == pdFALSE )
             {
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
+                إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) == pdFALSE )
                 {
-                    if( xCoRoutineRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
+                    إذا( xCoRoutineRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Receive ) ) != pdFALSE )
                     {
-                        return pdTRUE;
+                        أرجع pdTRUE;
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
-        else
+        وإلا
         {
             mtCOVERAGE_TEST_MARKER();
         }
 
-        traceRETURN_xQueueCRSendFromISR( xCoRoutinePreviouslyWoken );
+        trace_RETURN_x_کتار_CRSend_From_ISR( xCoRoutinePreviouslyWoken );
 
-        return xCoRoutinePreviouslyWoken;
+        أرجع xCoRoutinePreviouslyWoken;
     }
 
-#endif /* configUSE_CO_ROUTINES */
+#د_که_پای /* configUSE_CO_ROUTINES */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_CO_ROUTINES == 1 )
+#إذا ( configUSE_CO_ROUTINES == 1 )
 
-    BaseType_t xQueueCRReceiveFromISR( QueueHandle_t xQueue,
-                                       void * pvBuffer,
-                                       BaseType_t * pxCoRoutineWoken )
+    بنسټ_Type_t x_کتار_CRReceive_From_ISR( کتار_Handle_t x_کتار,
+                                       فراغ * pv_بفر,
+                                       بنسټ_Type_t * pxCoRoutineWoken )
     {
-        BaseType_t xReturn;
-        Queue_t * const pxQueue = xQueue;
+        بنسټ_Type_t xReturn;
+        کتار_t * ثابت px_کتار = x_کتار;
 
-        traceENTER_xQueueCRReceiveFromISR( xQueue, pvBuffer, pxCoRoutineWoken );
+        trace_ENTER_x_کتار_CRReceive_From_ISR( x_کتار, pv_بفر, pxCoRoutineWoken );
 
         /* We cannot block from an ISR, so check there is data available. If
          * not then just leave without doing anything. */
-        if( pxQueue->uxMessagesWaiting > ( UBaseType_t ) 0 )
+        إذا( px_کتار->ux_Messages_انتظار > ( UBaseType_t ) 0 )
         {
             /* Copy the data from the queue. */
-            pxQueue->u.xQueue.pcReadFrom += pxQueue->uxItemSize;
+            px_کتار->u.x_کتار.pcReadFrom += px_کتار->ux_توکی_اندازه;
 
-            if( pxQueue->u.xQueue.pcReadFrom >= pxQueue->u.xQueue.pcTail )
+            إذا( px_کتار->u.x_کتار.pcReadFrom >= px_کتار->u.x_کتار.pc_لکۍ )
             {
-                pxQueue->u.xQueue.pcReadFrom = pxQueue->pcHead;
+                px_کتار->u.x_کتار.pcReadFrom = px_کتار->pc_سر;
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
 
-            --( pxQueue->uxMessagesWaiting );
-            ( void ) memcpy( ( void * ) pvBuffer, ( void * ) pxQueue->u.xQueue.pcReadFrom, ( unsigned ) pxQueue->uxItemSize );
+            --( px_کتار->ux_Messages_انتظار );
+            ( فراغ ) حافظه_نقل( ( فراغ * ) pv_بفر, ( فراغ * ) px_کتار->u.x_کتار.pcReadFrom, ( بینښه ) px_کتار->ux_توکی_اندازه );
 
-            if( ( *pxCoRoutineWoken ) == pdFALSE )
+            إذا( ( *pxCoRoutineWoken ) == pdFALSE )
             {
-                if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
+                إذا( list_LIST_IS_تشه( &( px_کتار->x_Tasks_انتظار_منزل_Send ) ) == pdFALSE )
                 {
-                    if( xCoRoutineRemoveFromEventList( &( pxQueue->xTasksWaitingToSend ) ) != pdFALSE )
+                    إذا( xCoRoutineRemoveFromEventList( &( px_کتار->x_Tasks_انتظار_منزل_Send ) ) != pdFALSE )
                     {
                         *pxCoRoutineWoken = pdTRUE;
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
 
             xReturn = pdPASS;
         }
-        else
+        وإلا
         {
             xReturn = pdFAIL;
         }
 
-        traceRETURN_xQueueCRReceiveFromISR( xReturn );
+        trace_RETURN_x_کتار_CRReceive_From_ISR( xReturn );
 
-        return xReturn;
+        أرجع xReturn;
     }
 
-#endif /* configUSE_CO_ROUTINES */
+#د_که_پای /* configUSE_CO_ROUTINES */
 /*-----------------------------------------------------------*/
 
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
+#إذا ( config_کتار_REGISTRY_اندازه > 0 )
 
-    void vQueueAddToRegistry( QueueHandle_t xQueue,
-                              const char * pcQueueName )
+    فراغ v_کتار_جمع_کړه_منزل_Registry( کتار_Handle_t x_کتار,
+                              ثابت حرف * pc_کتار_Name )
     {
         UBaseType_t ux;
-        QueueRegistryItem_t * pxEntryToWrite = NULL;
+        کتار_Registry_توکی_t * px_ثبت_منزل_Write = عدم;
 
-        traceENTER_vQueueAddToRegistry( xQueue, pcQueueName );
+        trace_ENTER_v_کتار_جمع_کړه_منزل_Registry( x_کتار, pc_کتار_Name );
 
-        configASSERT( xQueue );
+        configASSERT( x_کتار );
 
-        if( pcQueueName != NULL )
+        إذا( pc_کتار_Name != عدم )
         {
             /* See if there is an empty space in the registry.  A NULL name denotes
              * a free slot. */
-            for( ux = ( UBaseType_t ) 0U; ux < ( UBaseType_t ) configQUEUE_REGISTRY_SIZE; ux++ )
+            لكل( ux = ( UBaseType_t ) 0U; ux < ( UBaseType_t ) config_کتار_REGISTRY_اندازه; ux++ )
             {
                 /* Replace an existing entry if the queue is already in the registry. */
-                if( xQueue == xQueueRegistry[ ux ].xHandle )
+                إذا( x_کتار == x_کتار_Registry[ ux ].xHandle )
                 {
-                    pxEntryToWrite = &( xQueueRegistry[ ux ] );
-                    break;
+                    px_ثبت_منزل_Write = &( x_کتار_Registry[ ux ] );
+                    اكسر;
                 }
                 /* Otherwise, store in the next empty location */
-                else if( ( pxEntryToWrite == NULL ) && ( xQueueRegistry[ ux ].pcQueueName == NULL ) )
+                وإلا إذا( ( px_ثبت_منزل_Write == عدم ) && ( x_کتار_Registry[ ux ].pc_کتار_Name == عدم ) )
                 {
-                    pxEntryToWrite = &( xQueueRegistry[ ux ] );
+                    px_ثبت_منزل_Write = &( x_کتار_Registry[ ux ] );
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
         }
 
-        if( pxEntryToWrite != NULL )
+        إذا( px_ثبت_منزل_Write != عدم )
         {
             /* Store the information on this queue. */
-            pxEntryToWrite->pcQueueName = pcQueueName;
-            pxEntryToWrite->xHandle = xQueue;
+            px_ثبت_منزل_Write->pc_کتار_Name = pc_کتار_Name;
+            px_ثبت_منزل_Write->xHandle = x_کتار;
 
-            traceQUEUE_REGISTRY_ADD( xQueue, pcQueueName );
+            trace_کتار_REGISTRY_جمع_کړه( x_کتار, pc_کتار_Name );
         }
 
-        traceRETURN_vQueueAddToRegistry();
+        trace_RETURN_v_کتار_جمع_کړه_منزل_Registry();
     }
 
-#endif /* configQUEUE_REGISTRY_SIZE */
+#د_که_پای /* configQUEUE_REGISTRY_SIZE */
 /*-----------------------------------------------------------*/
 
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
+#إذا ( config_کتار_REGISTRY_اندازه > 0 )
 
-    const char * pcQueueGetName( QueueHandle_t xQueue )
+    ثابت حرف * pc_کتار_Get_Name( کتار_Handle_t x_کتار )
     {
         UBaseType_t ux;
-        const char * pcReturn = NULL;
+        ثابت حرف * pcReturn = عدم;
 
-        traceENTER_pcQueueGetName( xQueue );
+        trace_ENTER_pc_کتار_Get_Name( x_کتار );
 
-        configASSERT( xQueue );
+        configASSERT( x_کتار );
 
         /* Note there is nothing here to protect against another task adding or
          * removing entries from the registry while it is being searched. */
 
-        for( ux = ( UBaseType_t ) 0U; ux < ( UBaseType_t ) configQUEUE_REGISTRY_SIZE; ux++ )
+        لكل( ux = ( UBaseType_t ) 0U; ux < ( UBaseType_t ) config_کتار_REGISTRY_اندازه; ux++ )
         {
-            if( xQueueRegistry[ ux ].xHandle == xQueue )
+            إذا( x_کتار_Registry[ ux ].xHandle == x_کتار )
             {
-                pcReturn = xQueueRegistry[ ux ].pcQueueName;
-                break;
+                pcReturn = x_کتار_Registry[ ux ].pc_کتار_Name;
+                اكسر;
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
 
-        traceRETURN_pcQueueGetName( pcReturn );
+        trace_RETURN_pc_کتار_Get_Name( pcReturn );
 
-        return pcReturn;
+        أرجع pcReturn;
     }
 
-#endif /* configQUEUE_REGISTRY_SIZE */
+#د_که_پای /* configQUEUE_REGISTRY_SIZE */
 /*-----------------------------------------------------------*/
 
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
+#إذا ( config_کتار_REGISTRY_اندازه > 0 )
 
-    void vQueueUnregisterQueue( QueueHandle_t xQueue )
+    فراغ v_کتار_Unregister_کتار( کتار_Handle_t x_کتار )
     {
         UBaseType_t ux;
 
-        traceENTER_vQueueUnregisterQueue( xQueue );
+        trace_ENTER_v_کتار_Unregister_کتار( x_کتار );
 
-        configASSERT( xQueue );
+        configASSERT( x_کتار );
 
         /* See if the handle of the queue being unregistered in actually in the
          * registry. */
-        for( ux = ( UBaseType_t ) 0U; ux < ( UBaseType_t ) configQUEUE_REGISTRY_SIZE; ux++ )
+        لكل( ux = ( UBaseType_t ) 0U; ux < ( UBaseType_t ) config_کتار_REGISTRY_اندازه; ux++ )
         {
-            if( xQueueRegistry[ ux ].xHandle == xQueue )
+            إذا( x_کتار_Registry[ ux ].xHandle == x_کتار )
             {
                 /* Set the name to NULL to show that this slot if free again. */
-                xQueueRegistry[ ux ].pcQueueName = NULL;
+                x_کتار_Registry[ ux ].pc_کتار_Name = عدم;
 
                 /* Set the handle to NULL to ensure the same queue handle cannot
                  * appear in the registry twice if it is added, removed, then
                  * added again. */
-                xQueueRegistry[ ux ].xHandle = ( QueueHandle_t ) 0;
-                break;
+                x_کتار_Registry[ ux ].xHandle = ( کتار_Handle_t ) 0;
+                اكسر;
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
 
-        traceRETURN_vQueueUnregisterQueue();
+        trace_RETURN_v_کتار_Unregister_کتار();
     }
 
-#endif /* configQUEUE_REGISTRY_SIZE */
+#د_که_پای /* configQUEUE_REGISTRY_SIZE */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_TIMERS == 1 )
+#إذا ( configUSE_TIMERS == 1 )
 
-    void vQueueWaitForMessageRestricted( QueueHandle_t xQueue,
-                                         TickType_t xTicksToWait,
-                                         const BaseType_t xWaitIndefinitely )
+    فراغ v_کتار_Wait_For_پیغام_Restricted( کتار_Handle_t x_کتار,
+                                         TickType_t x_Ticks_منزل_Wait,
+                                         ثابت بنسټ_Type_t xWaitIndefinitely )
     {
-        Queue_t * const pxQueue = xQueue;
+        کتار_t * ثابت px_کتار = x_کتار;
 
-        traceENTER_vQueueWaitForMessageRestricted( xQueue, xTicksToWait, xWaitIndefinitely );
+        trace_ENTER_v_کتار_Wait_For_پیغام_Restricted( x_کتار, x_Ticks_منزل_Wait, xWaitIndefinitely );
 
         /* This function should not be called by application code hence the
          * 'Restricted' in its name.  It is not part of the public API.  It is
@@ -3155,214 +3155,214 @@ BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue )
          *  time a yield will be performed.  If an item is added to the queue while
          *  the queue is locked, and the calling task blocks on the queue, then the
          *  calling task will be immediately unblocked when the queue is unlocked. */
-        prvLockQueue( pxQueue );
+        prv_قلف_کتار( px_کتار );
 
-        if( pxQueue->uxMessagesWaiting == ( UBaseType_t ) 0U )
+        إذا( px_کتار->ux_Messages_انتظار == ( UBaseType_t ) 0U )
         {
             /* There is nothing in the queue, block for the specified period. */
-            vTaskPlaceOnEventListRestricted( &( pxQueue->xTasksWaitingToReceive ), xTicksToWait, xWaitIndefinitely );
+            v_Task_ځای_پرځای_کړه_On_Event_List_Restricted( &( px_کتار->x_Tasks_انتظار_منزل_Receive ), x_Ticks_منزل_Wait, xWaitIndefinitely );
         }
-        else
+        وإلا
         {
             mtCOVERAGE_TEST_MARKER();
         }
 
-        prvUnlockQueue( pxQueue );
+        prv_Unlock_کتار( px_کتار );
 
-        traceRETURN_vQueueWaitForMessageRestricted();
+        trace_RETURN_v_کتار_Wait_For_پیغام_Restricted();
     }
 
-#endif /* configUSE_TIMERS */
+#د_که_پای /* configUSE_TIMERS */
 /*-----------------------------------------------------------*/
 
-#if ( ( configUSE_QUEUE_SETS == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+#إذا ( ( config_USE_کتار_SETS == 1 ) && ( config_SUPPORT_DYNAMIC_ویش == 1 ) )
 
-    QueueSetHandle_t xQueueCreateSet( const UBaseType_t uxEventQueueLength )
+    کتار_سېټ_Handle_t x_کتار_Create_سېټ( ثابت UBaseType_t ux_Event_کتار_اوږدتیا )
     {
-        QueueSetHandle_t pxQueue;
+        کتار_سېټ_Handle_t px_کتار;
 
-        traceENTER_xQueueCreateSet( uxEventQueueLength );
+        trace_ENTER_x_کتار_Create_سېټ( ux_Event_کتار_اوږدتیا );
 
-        pxQueue = xQueueGenericCreate( uxEventQueueLength, ( UBaseType_t ) sizeof( Queue_t * ), queueQUEUE_TYPE_SET );
+        px_کتار = x_کتار_Generic_Create( ux_Event_کتار_اوږدتیا, ( UBaseType_t ) حجم( کتار_t * ), کتار_کتار_TYPE_سېټ );
 
-        traceRETURN_xQueueCreateSet( pxQueue );
+        trace_RETURN_x_کتار_Create_سېټ( px_کتار );
 
-        return pxQueue;
+        أرجع px_کتار;
     }
 
-#endif /* configUSE_QUEUE_SETS */
+#د_که_پای /* configUSE_QUEUE_SETS */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_QUEUE_SETS == 1 )
+#إذا ( config_USE_کتار_SETS == 1 )
 
-    BaseType_t xQueueAddToSet( QueueSetMemberHandle_t xQueueOrSemaphore,
-                               QueueSetHandle_t xQueueSet )
+    بنسټ_Type_t x_کتار_جمع_کړه_منزل_سېټ( کتار_سېټ_Member_Handle_t x_کتار_Or_Semaphore,
+                               کتار_سېټ_Handle_t x_کتار_سېټ )
     {
-        BaseType_t xReturn;
+        بنسټ_Type_t xReturn;
 
-        traceENTER_xQueueAddToSet( xQueueOrSemaphore, xQueueSet );
+        trace_ENTER_x_کتار_جمع_کړه_منزل_سېټ( x_کتار_Or_Semaphore, x_کتار_سېټ );
 
         taskENTER_CRITICAL();
         {
-            if( ( ( Queue_t * ) xQueueOrSemaphore )->pxQueueSetContainer != NULL )
+            إذا( ( ( کتار_t * ) x_کتار_Or_Semaphore )->px_کتار_سېټ_Container != عدم )
             {
                 /* Cannot add a queue/semaphore to more than one queue set. */
                 xReturn = pdFAIL;
             }
-            else if( ( ( Queue_t * ) xQueueOrSemaphore )->uxMessagesWaiting != ( UBaseType_t ) 0 )
+            وإلا إذا( ( ( کتار_t * ) x_کتار_Or_Semaphore )->ux_Messages_انتظار != ( UBaseType_t ) 0 )
             {
                 /* Cannot add a queue/semaphore to a queue set if there are already
                  * items in the queue/semaphore. */
                 xReturn = pdFAIL;
             }
-            else
+            وإلا
             {
-                ( ( Queue_t * ) xQueueOrSemaphore )->pxQueueSetContainer = xQueueSet;
+                ( ( کتار_t * ) x_کتار_Or_Semaphore )->px_کتار_سېټ_Container = x_کتار_سېټ;
                 xReturn = pdPASS;
             }
         }
         taskEXIT_CRITICAL();
 
-        traceRETURN_xQueueAddToSet( xReturn );
+        trace_RETURN_x_کتار_جمع_کړه_منزل_سېټ( xReturn );
 
-        return xReturn;
+        أرجع xReturn;
     }
 
-#endif /* configUSE_QUEUE_SETS */
+#د_که_پای /* configUSE_QUEUE_SETS */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_QUEUE_SETS == 1 )
+#إذا ( config_USE_کتار_SETS == 1 )
 
-    BaseType_t xQueueRemoveFromSet( QueueSetMemberHandle_t xQueueOrSemaphore,
-                                    QueueSetHandle_t xQueueSet )
+    بنسټ_Type_t x_کتار_Remove_From_سېټ( کتار_سېټ_Member_Handle_t x_کتار_Or_Semaphore,
+                                    کتار_سېټ_Handle_t x_کتار_سېټ )
     {
-        BaseType_t xReturn;
-        Queue_t * const pxQueueOrSemaphore = ( Queue_t * ) xQueueOrSemaphore;
+        بنسټ_Type_t xReturn;
+        کتار_t * ثابت px_کتار_Or_Semaphore = ( کتار_t * ) x_کتار_Or_Semaphore;
 
-        traceENTER_xQueueRemoveFromSet( xQueueOrSemaphore, xQueueSet );
+        trace_ENTER_x_کتار_Remove_From_سېټ( x_کتار_Or_Semaphore, x_کتار_سېټ );
 
-        if( pxQueueOrSemaphore->pxQueueSetContainer != xQueueSet )
+        إذا( px_کتار_Or_Semaphore->px_کتار_سېټ_Container != x_کتار_سېټ )
         {
             /* The queue was not a member of the set. */
             xReturn = pdFAIL;
         }
-        else if( pxQueueOrSemaphore->uxMessagesWaiting != ( UBaseType_t ) 0 )
+        وإلا إذا( px_کتار_Or_Semaphore->ux_Messages_انتظار != ( UBaseType_t ) 0 )
         {
             /* It is dangerous to remove a queue from a set when the queue is
              * not empty because the queue set will still hold pending events for
              * the queue. */
             xReturn = pdFAIL;
         }
-        else
+        وإلا
         {
             taskENTER_CRITICAL();
             {
                 /* The queue is no longer contained in the set. */
-                pxQueueOrSemaphore->pxQueueSetContainer = NULL;
+                px_کتار_Or_Semaphore->px_کتار_سېټ_Container = عدم;
             }
             taskEXIT_CRITICAL();
             xReturn = pdPASS;
         }
 
-        traceRETURN_xQueueRemoveFromSet( xReturn );
+        trace_RETURN_x_کتار_Remove_From_سېټ( xReturn );
 
-        return xReturn;
+        أرجع xReturn;
     }
 
-#endif /* configUSE_QUEUE_SETS */
+#د_که_پای /* configUSE_QUEUE_SETS */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_QUEUE_SETS == 1 )
+#إذا ( config_USE_کتار_SETS == 1 )
 
-    QueueSetMemberHandle_t xQueueSelectFromSet( QueueSetHandle_t xQueueSet,
-                                                TickType_t const xTicksToWait )
+    کتار_سېټ_Member_Handle_t x_کتار_Select_From_سېټ( کتار_سېټ_Handle_t x_کتار_سېټ,
+                                                TickType_t ثابت x_Ticks_منزل_Wait )
     {
-        QueueSetMemberHandle_t xReturn = NULL;
+        کتار_سېټ_Member_Handle_t xReturn = عدم;
 
-        traceENTER_xQueueSelectFromSet( xQueueSet, xTicksToWait );
+        trace_ENTER_x_کتار_Select_From_سېټ( x_کتار_سېټ, x_Ticks_منزل_Wait );
 
-        ( void ) xQueueReceive( ( QueueHandle_t ) xQueueSet, &xReturn, xTicksToWait );
+        ( فراغ ) x_کتار_Receive( ( کتار_Handle_t ) x_کتار_سېټ, &xReturn, x_Ticks_منزل_Wait );
 
-        traceRETURN_xQueueSelectFromSet( xReturn );
+        trace_RETURN_x_کتار_Select_From_سېټ( xReturn );
 
-        return xReturn;
+        أرجع xReturn;
     }
 
-#endif /* configUSE_QUEUE_SETS */
+#د_که_پای /* configUSE_QUEUE_SETS */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_QUEUE_SETS == 1 )
+#إذا ( config_USE_کتار_SETS == 1 )
 
-    QueueSetMemberHandle_t xQueueSelectFromSetFromISR( QueueSetHandle_t xQueueSet )
+    کتار_سېټ_Member_Handle_t x_کتار_Select_From_سېټ_From_ISR( کتار_سېټ_Handle_t x_کتار_سېټ )
     {
-        QueueSetMemberHandle_t xReturn = NULL;
+        کتار_سېټ_Member_Handle_t xReturn = عدم;
 
-        traceENTER_xQueueSelectFromSetFromISR( xQueueSet );
+        trace_ENTER_x_کتار_Select_From_سېټ_From_ISR( x_کتار_سېټ );
 
-        ( void ) xQueueReceiveFromISR( ( QueueHandle_t ) xQueueSet, &xReturn, NULL );
+        ( فراغ ) x_کتار_Receive_From_ISR( ( کتار_Handle_t ) x_کتار_سېټ, &xReturn, عدم );
 
-        traceRETURN_xQueueSelectFromSetFromISR( xReturn );
+        trace_RETURN_x_کتار_Select_From_سېټ_From_ISR( xReturn );
 
-        return xReturn;
+        أرجع xReturn;
     }
 
-#endif /* configUSE_QUEUE_SETS */
+#د_که_پای /* configUSE_QUEUE_SETS */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_QUEUE_SETS == 1 )
+#إذا ( config_USE_کتار_SETS == 1 )
 
-    static BaseType_t prvNotifyQueueSetContainer( const Queue_t * const pxQueue )
+    ساكن بنسټ_Type_t prv_Notify_کتار_سېټ_Container( ثابت کتار_t * ثابت px_کتار )
     {
-        Queue_t * pxQueueSetContainer = pxQueue->pxQueueSetContainer;
-        BaseType_t xReturn = pdFALSE;
+        کتار_t * px_کتار_سېټ_Container = px_کتار->px_کتار_سېټ_Container;
+        بنسټ_Type_t xReturn = pdFALSE;
 
         /* This function must be called form a critical section. */
 
         /* The following line is not reachable in unit tests because every call
          * to prvNotifyQueueSetContainer is preceded by a check that
          * pxQueueSetContainer != NULL */
-        configASSERT( pxQueueSetContainer ); /* LCOV_EXCL_BR_LINE */
-        configASSERT( pxQueueSetContainer->uxMessagesWaiting < pxQueueSetContainer->uxLength );
+        configASSERT( px_کتار_سېټ_Container ); /* LCOV_EXCL_BR_LINE */
+        configASSERT( px_کتار_سېټ_Container->ux_Messages_انتظار < px_کتار_سېټ_Container->ux_اوږدتیا );
 
-        if( pxQueueSetContainer->uxMessagesWaiting < pxQueueSetContainer->uxLength )
+        إذا( px_کتار_سېټ_Container->ux_Messages_انتظار < px_کتار_سېټ_Container->ux_اوږدتیا )
         {
-            const int8_t cTxLock = pxQueueSetContainer->cTxLock;
+            ثابت int8_t c_Tx_قلف = px_کتار_سېټ_Container->c_Tx_قلف;
 
-            traceQUEUE_SET_SEND( pxQueueSetContainer );
+            trace_کتار_سېټ_SEND( px_کتار_سېټ_Container );
 
             /* The data copied is the handle of the queue that contains data. */
-            xReturn = prvCopyDataToQueue( pxQueueSetContainer, &pxQueue, queueSEND_TO_BACK );
+            xReturn = prv_Copy_معلومات_منزل_کتار( px_کتار_سېټ_Container, &px_کتار, کتار_SEND_منزل_شا );
 
-            if( cTxLock == queueUNLOCKED )
+            إذا( c_Tx_قلف == کتار_UNLOCKED )
             {
-                if( listLIST_IS_EMPTY( &( pxQueueSetContainer->xTasksWaitingToReceive ) ) == pdFALSE )
+                إذا( list_LIST_IS_تشه( &( px_کتار_سېټ_Container->x_Tasks_انتظار_منزل_Receive ) ) == pdFALSE )
                 {
-                    if( xTaskRemoveFromEventList( &( pxQueueSetContainer->xTasksWaitingToReceive ) ) != pdFALSE )
+                    إذا( xTaskRemoveFromEventList( &( px_کتار_سېټ_Container->x_Tasks_انتظار_منزل_Receive ) ) != pdFALSE )
                     {
                         /* The task waiting has a higher priority. */
                         xReturn = pdTRUE;
                     }
-                    else
+                    وإلا
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else
+                وإلا
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else
+            وإلا
             {
-                prvIncrementQueueTxLock( pxQueueSetContainer, cTxLock );
+                prv_Increment_کتار_Tx_قلف( px_کتار_سېټ_Container, c_Tx_قلف );
             }
         }
-        else
+        وإلا
         {
             mtCOVERAGE_TEST_MARKER();
         }
 
-        return xReturn;
+        أرجع xReturn;
     }
 
-#endif /* configUSE_QUEUE_SETS */
+#د_که_پای /* configUSE_QUEUE_SETS */

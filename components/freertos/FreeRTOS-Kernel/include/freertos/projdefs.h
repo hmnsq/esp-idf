@@ -30,105 +30,105 @@
  *
  */
 
-#ifndef PROJDEFS_H
-#define PROJDEFS_H
+#که_نه_تعریف_شوی PROJDEFS_H
+#تعریف_کړه PROJDEFS_H
 
 /*
  * Defines the prototype to which task functions must conform.  Defined in this
  * file to ensure the type is known before portable.h is included.
  */
-typedef void (* TaskFunction_t)( void * );
+تعريفنوع فراغ (* TaskFunction_t)( فراغ * );
 
 /* Converts a time in milliseconds to a time in ticks.  This macro can be
  * overridden by a macro of the same name defined in FreeRTOSConfig.h in case the
  * definition here is not suitable for your application. */
-#ifndef pdMS_TO_TICKS
-    #define pdMS_TO_TICKS( xTimeInMs )    ( ( TickType_t ) ( ( ( uint64_t ) ( xTimeInMs ) * ( uint64_t ) configTICK_RATE_HZ ) / ( uint64_t ) 1000U ) )
-#endif
+#که_نه_تعریف_شوی pd_MS_منزل_TICKS
+    #تعریف_کړه pd_MS_منزل_TICKS( x_وخت_دننه_Ms )    ( ( TickType_t ) ( ( ( uint64_t ) ( x_وخت_دننه_Ms ) * ( uint64_t ) config_TICK_شرح_HZ ) / ( uint64_t ) 1000U ) )
+#د_که_پای
 
 /* Converts a time in ticks to milliseconds. This macro can be
  * overridden by a macro of the same name defined in FreeRTOSConfig.h in case the
  * definition here is not suitable for your application.
  */
-#ifndef pdTICKS_TO_MS
-    #define pdTICKS_TO_MS( xTicks )    ( ( TickType_t ) ( ( uint64_t ) ( xTicks ) * 1000 / configTICK_RATE_HZ ) )
-#endif
+#که_نه_تعریف_شوی pd_TICKS_منزل_MS
+    #تعریف_کړه pd_TICKS_منزل_MS( xTicks )    ( ( TickType_t ) ( ( uint64_t ) ( xTicks ) * 1000 / config_TICK_شرح_HZ ) )
+#د_که_پای
 
-#define pdFALSE                                  ( ( BaseType_t ) 0 )
-#define pdTRUE                                   ( ( BaseType_t ) 1 )
+#تعریف_کړه pdFALSE                                  ( ( بنسټ_Type_t ) 0 )
+#تعریف_کړه pdTRUE                                   ( ( بنسټ_Type_t ) 1 )
 
-#define pdPASS                                   ( pdTRUE )
-#define pdFAIL                                   ( pdFALSE )
-#define errQUEUE_EMPTY                           ( ( BaseType_t ) 0 )
-#define errQUEUE_FULL                            ( ( BaseType_t ) 0 )
+#تعریف_کړه pdPASS                                   ( pdTRUE )
+#تعریف_کړه pdFAIL                                   ( pdFALSE )
+#تعریف_کړه err_کتار_تشه                           ( ( بنسټ_Type_t ) 0 )
+#تعریف_کړه err_کتار_ډک                            ( ( بنسټ_Type_t ) 0 )
 
 /* FreeRTOS error definitions. */
-#define errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY    ( -1 )
-#define errQUEUE_BLOCKED                         ( -4 )
-#define errQUEUE_YIELD                           ( -5 )
+#تعریف_کړه err_COULD_NOT_ALLOCATE_REQUIRED_حافظه    ( -1 )
+#تعریف_کړه err_کتار_BLOCKED                         ( -4 )
+#تعریف_کړه err_کتار_YIELD                           ( -5 )
 
 /* Macros used for basic data corruption checks. */
-#ifndef configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES
-    #define configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES    0
-#endif
+#که_نه_تعریف_شوی config_USE_LIST_معلومات_INTEGRITY_CHECK_بایټونه
+    #تعریف_کړه config_USE_LIST_معلومات_INTEGRITY_CHECK_بایټونه    0
+#د_که_پای
 
-#if ( configUSE_16_BIT_TICKS == 1 )
-    #define pdINTEGRITY_CHECK_VALUE    0x5a5a
-#else
-    #define pdINTEGRITY_CHECK_VALUE    0x5a5a5a5aUL
-#endif
+#إذا ( config_USE_16_بټ_TICKS == 1 )
+    #تعریف_کړه pd_INTEGRITY_CHECK_ارزښت    0x5a5a
+#وإلا
+    #تعریف_کړه pd_INTEGRITY_CHECK_ارزښت    0x5a5a5a5aUL
+#د_که_پای
 
 /* The following errno values are used by FreeRTOS+ components, not FreeRTOS
  * itself. */
-#define pdFREERTOS_ERRNO_NONE             0   /* No errors */
-#define pdFREERTOS_ERRNO_ENOENT           2   /* No such file or directory */
-#define pdFREERTOS_ERRNO_EINTR            4   /* Interrupted system call */
-#define pdFREERTOS_ERRNO_EIO              5   /* I/O error */
-#define pdFREERTOS_ERRNO_ENXIO            6   /* No such device or address */
-#define pdFREERTOS_ERRNO_EBADF            9   /* Bad file number */
-#define pdFREERTOS_ERRNO_EAGAIN           11  /* No more processes */
-#define pdFREERTOS_ERRNO_EWOULDBLOCK      11  /* Operation would block */
-#define pdFREERTOS_ERRNO_ENOMEM           12  /* Not enough memory */
-#define pdFREERTOS_ERRNO_EACCES           13  /* Permission denied */
-#define pdFREERTOS_ERRNO_EFAULT           14  /* Bad address */
-#define pdFREERTOS_ERRNO_EBUSY            16  /* Mount device busy */
-#define pdFREERTOS_ERRNO_EEXIST           17  /* File exists */
-#define pdFREERTOS_ERRNO_EXDEV            18  /* Cross-device link */
-#define pdFREERTOS_ERRNO_ENODEV           19  /* No such device */
-#define pdFREERTOS_ERRNO_ENOTDIR          20  /* Not a directory */
-#define pdFREERTOS_ERRNO_EISDIR           21  /* Is a directory */
-#define pdFREERTOS_ERRNO_EINVAL           22  /* Invalid argument */
-#define pdFREERTOS_ERRNO_ENOSPC           28  /* No space left on device */
-#define pdFREERTOS_ERRNO_ESPIPE           29  /* Illegal seek */
-#define pdFREERTOS_ERRNO_EROFS            30  /* Read only file system */
-#define pdFREERTOS_ERRNO_EUNATCH          42  /* Protocol driver not attached */
-#define pdFREERTOS_ERRNO_EBADE            50  /* Invalid exchange */
-#define pdFREERTOS_ERRNO_EFTYPE           79  /* Inappropriate file type or format */
-#define pdFREERTOS_ERRNO_ENMFILE          89  /* No more files */
-#define pdFREERTOS_ERRNO_ENOTEMPTY        90  /* Directory not empty */
-#define pdFREERTOS_ERRNO_ENAMETOOLONG     91  /* File or path name too long */
-#define pdFREERTOS_ERRNO_EOPNOTSUPP       95  /* Operation not supported on transport endpoint */
-#define pdFREERTOS_ERRNO_ENOBUFS          105 /* No buffer space available */
-#define pdFREERTOS_ERRNO_ENOPROTOOPT      109 /* Protocol not available */
-#define pdFREERTOS_ERRNO_EADDRINUSE       112 /* Address already in use */
-#define pdFREERTOS_ERRNO_ETIMEDOUT        116 /* Connection timed out */
-#define pdFREERTOS_ERRNO_EINPROGRESS      119 /* Connection already in progress */
-#define pdFREERTOS_ERRNO_EALREADY         120 /* Socket already connected */
-#define pdFREERTOS_ERRNO_EADDRNOTAVAIL    125 /* Address not available */
-#define pdFREERTOS_ERRNO_EISCONN          127 /* Socket is already connected */
-#define pdFREERTOS_ERRNO_ENOTCONN         128 /* Socket is not connected */
-#define pdFREERTOS_ERRNO_ENOMEDIUM        135 /* No medium inserted */
-#define pdFREERTOS_ERRNO_EILSEQ           138 /* An invalid UTF-16 sequence was encountered. */
-#define pdFREERTOS_ERRNO_ECANCELED        140 /* Operation canceled. */
+#تعریف_کړه pdFREERTOS_ERRNO_NONE             0   /* No errors */
+#تعریف_کړه pdFREERTOS_ERRNO_ENOENT           2   /* No such file or directory */
+#تعریف_کړه pdFREERTOS_ERRNO_EINTR            4   /* Interrupted system call */
+#تعریف_کړه pdFREERTOS_ERRNO_EIO              5   /* I/O error */
+#تعریف_کړه pdFREERTOS_ERRNO_ENXIO            6   /* No such device or address */
+#تعریف_کړه pdFREERTOS_ERRNO_EBADF            9   /* Bad file number */
+#تعریف_کړه pdFREERTOS_ERRNO_EAGAIN           11  /* No more processes */
+#تعریف_کړه pdFREERTOS_ERRNO_EWOULDBLOCK      11  /* Operation would block */
+#تعریف_کړه pdFREERTOS_ERRNO_ENOMEM           12  /* Not enough memory */
+#تعریف_کړه pdFREERTOS_ERRNO_EACCES           13  /* Permission denied */
+#تعریف_کړه pdFREERTOS_ERRNO_EFAULT           14  /* Bad address */
+#تعریف_کړه pdFREERTOS_ERRNO_EBUSY            16  /* Mount device busy */
+#تعریف_کړه pdFREERTOS_ERRNO_EEXIST           17  /* File exists */
+#تعریف_کړه pdFREERTOS_ERRNO_EXDEV            18  /* Cross-device link */
+#تعریف_کړه pdFREERTOS_ERRNO_ENODEV           19  /* No such device */
+#تعریف_کړه pdFREERTOS_ERRNO_ENOTDIR          20  /* Not a directory */
+#تعریف_کړه pdFREERTOS_ERRNO_EISDIR           21  /* Is a directory */
+#تعریف_کړه pdFREERTOS_ERRNO_EINVAL           22  /* Invalid argument */
+#تعریف_کړه pdFREERTOS_ERRNO_ENOSPC           28  /* No space left on device */
+#تعریف_کړه pdFREERTOS_ERRNO_ESPIPE           29  /* Illegal seek */
+#تعریف_کړه pdFREERTOS_ERRNO_EROFS            30  /* Read only file system */
+#تعریف_کړه pdFREERTOS_ERRNO_EUNATCH          42  /* Protocol driver not attached */
+#تعریف_کړه pdFREERTOS_ERRNO_EBADE            50  /* Invalid exchange */
+#تعریف_کړه pdFREERTOS_ERRNO_EFTYPE           79  /* Inappropriate file type or format */
+#تعریف_کړه pdFREERTOS_ERRNO_ENMFILE          89  /* No more files */
+#تعریف_کړه pdFREERTOS_ERRNO_ENOTEMPTY        90  /* Directory not empty */
+#تعریف_کړه pdFREERTOS_ERRNO_ENAMETOOLONG     91  /* File or path name too long */
+#تعریف_کړه pdFREERTOS_ERRNO_EOPNOTSUPP       95  /* Operation not supported on transport endpoint */
+#تعریف_کړه pdFREERTOS_ERRNO_ENOBUFS          105 /* No buffer space available */
+#تعریف_کړه pdFREERTOS_ERRNO_ENOPROTOOPT      109 /* Protocol not available */
+#تعریف_کړه pdFREERTOS_ERRNO_EADDRINUSE       112 /* Address already in use */
+#تعریف_کړه pdFREERTOS_ERRNO_ETIMEDOUT        116 /* Connection timed out */
+#تعریف_کړه pdFREERTOS_ERRNO_EINPROGRESS      119 /* Connection already in progress */
+#تعریف_کړه pdFREERTOS_ERRNO_EALREADY         120 /* Socket already connected */
+#تعریف_کړه pdFREERTOS_ERRNO_EADDRNOTAVAIL    125 /* Address not available */
+#تعریف_کړه pdFREERTOS_ERRNO_EISCONN          127 /* Socket is already connected */
+#تعریف_کړه pdFREERTOS_ERRNO_ENOTCONN         128 /* Socket is not connected */
+#تعریف_کړه pdFREERTOS_ERRNO_ENOMEDIUM        135 /* No medium inserted */
+#تعریف_کړه pdFREERTOS_ERRNO_EILSEQ           138 /* An invalid UTF-16 sequence was encountered. */
+#تعریف_کړه pdFREERTOS_ERRNO_ECANCELED        140 /* Operation canceled. */
 
 /* The following endian values are used by FreeRTOS+ components, not FreeRTOS
  * itself. */
-#define pdFREERTOS_LITTLE_ENDIAN          0
-#define pdFREERTOS_BIG_ENDIAN             1
+#تعریف_کړه pdFREERTOS_LITTLE_ENDIAN          0
+#تعریف_کړه pdFREERTOS_BIG_ENDIAN             1
 
 /* Re-defining endian values for generic naming. */
-#define pdLITTLE_ENDIAN                   pdFREERTOS_LITTLE_ENDIAN
-#define pdBIG_ENDIAN                      pdFREERTOS_BIG_ENDIAN
+#تعریف_کړه pdLITTLE_ENDIAN                   pdFREERTOS_LITTLE_ENDIAN
+#تعریف_کړه pdBIG_ENDIAN                      pdFREERTOS_BIG_ENDIAN
 
 
-#endif /* PROJDEFS_H */
+#د_که_پای /* PROJDEFS_H */

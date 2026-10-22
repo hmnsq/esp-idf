@@ -30,8 +30,8 @@
  *
  */
 
-#ifndef DEPRECATED_DEFINITIONS_H
-#define DEPRECATED_DEFINITIONS_H
+#که_نه_تعریف_شوی DEPRECATED_DEFINITIONS_H
+#تعریف_کړه DEPRECATED_DEFINITIONS_H
 
 
 /* Each FreeRTOS port has a unique portmacro.h header file.  Originally a
@@ -43,243 +43,243 @@
  * definitions below remain in the code for backward compatibility only.  New
  * projects should not use them. */
 
-#ifdef OPEN_WATCOM_INDUSTRIAL_PC_PORT
-    #include "..\..\Source\portable\owatcom\16bitdos\pc\portmacro.h"
-    typedef void ( __interrupt __far * pxISR )();
-#endif
+#که_تعریف_شوی OPEN_WATCOM_INDUSTRIAL_PC_پورټ
+    #ضمن "..\..\Source\portable\owatcom\16bitdos\pc\portmacro.h"
+    تعريفنوع فراغ ( __interrupt __far * pxISR )();
+#د_که_پای
 
-#ifdef OPEN_WATCOM_FLASH_LITE_186_PORT
-    #include "..\..\Source\portable\owatcom\16bitdos\flsh186\portmacro.h"
-    typedef void ( __interrupt __far * pxISR )();
-#endif
+#که_تعریف_شوی OPEN_WATCOM_FLASH_LITE_186_پورټ
+    #ضمن "..\..\Source\portable\owatcom\16bitdos\flsh186\portmacro.h"
+    تعريفنوع فراغ ( __interrupt __far * pxISR )();
+#د_که_پای
 
-#ifdef GCC_MEGA_AVR
-    #include "../portable/GCC/ATMega323/portmacro.h"
-#endif
+#که_تعریف_شوی GCC_MEGA_AVR
+    #ضمن "../portable/GCC/ATMega323/portmacro.h"
+#د_که_پای
 
-#ifdef IAR_MEGA_AVR
-    #include "../portable/IAR/ATMega323/portmacro.h"
-#endif
+#که_تعریف_شوی IAR_MEGA_AVR
+    #ضمن "../portable/IAR/ATMega323/portmacro.h"
+#د_که_پای
 
-#ifdef MPLAB_PIC24_PORT
-    #include "../../Source/portable/MPLAB/PIC24_dsPIC/portmacro.h"
-#endif
+#که_تعریف_شوی MPLAB_PIC24_پورټ
+    #ضمن "../../Source/portable/MPLAB/PIC24_dsPIC/portmacro.h"
+#د_که_پای
 
-#ifdef MPLAB_DSPIC_PORT
-    #include "../../Source/portable/MPLAB/PIC24_dsPIC/portmacro.h"
-#endif
+#که_تعریف_شوی MPLAB_DSPIC_پورټ
+    #ضمن "../../Source/portable/MPLAB/PIC24_dsPIC/portmacro.h"
+#د_که_پای
 
-#ifdef MPLAB_PIC18F_PORT
-    #include "../../Source/portable/MPLAB/PIC18F/portmacro.h"
-#endif
+#که_تعریف_شوی MPLAB_PIC18_F_پورټ
+    #ضمن "../../Source/portable/MPLAB/PIC18F/portmacro.h"
+#د_که_پای
 
-#ifdef MPLAB_PIC32MX_PORT
-    #include "../../Source/portable/MPLAB/PIC32MX/portmacro.h"
-#endif
+#که_تعریف_شوی MPLAB_PIC32_MX_پورټ
+    #ضمن "../../Source/portable/MPLAB/PIC32MX/portmacro.h"
+#د_که_پای
 
-#ifdef _FEDPICC
-    #include "libFreeRTOS/Include/portmacro.h"
-#endif
+#که_تعریف_شوی _FEDPICC
+    #ضمن "libFreeRTOS/Include/portmacro.h"
+#د_که_پای
 
-#ifdef SDCC_CYGNAL
-    #include "../../Source/portable/SDCC/Cygnal/portmacro.h"
-#endif
+#که_تعریف_شوی SDCC_CYGNAL
+    #ضمن "../../Source/portable/SDCC/Cygnal/portmacro.h"
+#د_که_پای
 
-#ifdef GCC_ARM7
-    #include "../../Source/portable/GCC/ARM7_LPC2000/portmacro.h"
-#endif
+#که_تعریف_شوی GCC_ARM7
+    #ضمن "../../Source/portable/GCC/ARM7_LPC2000/portmacro.h"
+#د_که_پای
 
-#ifdef GCC_ARM7_ECLIPSE
-    #include "portmacro.h"
-#endif
+#که_تعریف_شوی GCC_ARM7_ECLIPSE
+    #ضمن "portmacro.h"
+#د_که_پای
 
-#ifdef ROWLEY_LPC23xx
-    #include "../../Source/portable/GCC/ARM7_LPC23xx/portmacro.h"
-#endif
+#که_تعریف_شوی ROWLEY_LPC23xx
+    #ضمن "../../Source/portable/GCC/ARM7_LPC23xx/portmacro.h"
+#د_که_پای
 
-#ifdef IAR_MSP430
-    #include "..\..\Source\portable\IAR\MSP430\portmacro.h"
-#endif
+#که_تعریف_شوی IAR_MSP430
+    #ضمن "..\..\Source\portable\IAR\MSP430\portmacro.h"
+#د_که_پای
 
-#ifdef GCC_MSP430
-    #include "../../Source/portable/GCC/MSP430F449/portmacro.h"
-#endif
+#که_تعریف_شوی GCC_MSP430
+    #ضمن "../../Source/portable/GCC/MSP430F449/portmacro.h"
+#د_که_پای
 
-#ifdef ROWLEY_MSP430
-    #include "../../Source/portable/Rowley/MSP430F449/portmacro.h"
-#endif
+#که_تعریف_شوی ROWLEY_MSP430
+    #ضمن "../../Source/portable/Rowley/MSP430F449/portmacro.h"
+#د_که_پای
 
-#ifdef ARM7_LPC21xx_KEIL_RVDS
-    #include "..\..\Source\portable\RVDS\ARM7_LPC21xx\portmacro.h"
-#endif
+#که_تعریف_شوی ARM7_LPC21xx_KEIL_RVDS
+    #ضمن "..\..\Source\portable\RVDS\ARM7_LPC21xx\portmacro.h"
+#د_که_پای
 
-#ifdef SAM7_GCC
-    #include "../../Source/portable/GCC/ARM7_AT91SAM7S/portmacro.h"
-#endif
+#که_تعریف_شوی SAM7_GCC
+    #ضمن "../../Source/portable/GCC/ARM7_AT91SAM7S/portmacro.h"
+#د_که_پای
 
-#ifdef SAM7_IAR
-    #include "..\..\Source\portable\IAR\AtmelSAM7S64\portmacro.h"
-#endif
+#که_تعریف_شوی SAM7_IAR
+    #ضمن "..\..\Source\portable\IAR\AtmelSAM7S64\portmacro.h"
+#د_که_پای
 
-#ifdef SAM9XE_IAR
-    #include "..\..\Source\portable\IAR\AtmelSAM9XE\portmacro.h"
-#endif
+#که_تعریف_شوی SAM9XE_IAR
+    #ضمن "..\..\Source\portable\IAR\AtmelSAM9XE\portmacro.h"
+#د_که_پای
 
-#ifdef LPC2000_IAR
-    #include "..\..\Source\portable\IAR\LPC2000\portmacro.h"
-#endif
+#که_تعریف_شوی LPC2000_IAR
+    #ضمن "..\..\Source\portable\IAR\LPC2000\portmacro.h"
+#د_که_پای
 
-#ifdef STR71X_IAR
-    #include "..\..\Source\portable\IAR\STR71x\portmacro.h"
-#endif
+#که_تعریف_شوی STR71X_IAR
+    #ضمن "..\..\Source\portable\IAR\STR71x\portmacro.h"
+#د_که_پای
 
-#ifdef STR75X_IAR
-    #include "..\..\Source\portable\IAR\STR75x\portmacro.h"
-#endif
+#که_تعریف_شوی STR75X_IAR
+    #ضمن "..\..\Source\portable\IAR\STR75x\portmacro.h"
+#د_که_پای
 
-#ifdef STR75X_GCC
-    #include "..\..\Source\portable\GCC\STR75x\portmacro.h"
-#endif
+#که_تعریف_شوی STR75X_GCC
+    #ضمن "..\..\Source\portable\GCC\STR75x\portmacro.h"
+#د_که_پای
 
-#ifdef STR91X_IAR
-    #include "..\..\Source\portable\IAR\STR91x\portmacro.h"
-#endif
+#که_تعریف_شوی STR91X_IAR
+    #ضمن "..\..\Source\portable\IAR\STR91x\portmacro.h"
+#د_که_پای
 
-#ifdef GCC_H8S
-    #include "../../Source/portable/GCC/H8S2329/portmacro.h"
-#endif
+#که_تعریف_شوی GCC_H8S
+    #ضمن "../../Source/portable/GCC/H8S2329/portmacro.h"
+#د_که_پای
 
-#ifdef GCC_AT91FR40008
-    #include "../../Source/portable/GCC/ARM7_AT91FR40008/portmacro.h"
-#endif
+#که_تعریف_شوی GCC_AT91FR40008
+    #ضمن "../../Source/portable/GCC/ARM7_AT91FR40008/portmacro.h"
+#د_که_پای
 
-#ifdef RVDS_ARMCM3_LM3S102
-    #include "../../Source/portable/RVDS/ARM_CM3/portmacro.h"
-#endif
+#که_تعریف_شوی RVDS_ARMCM3_LM3S102
+    #ضمن "../../Source/portable/RVDS/ARM_CM3/portmacro.h"
+#د_که_پای
 
-#ifdef GCC_ARMCM3_LM3S102
-    #include "../../Source/portable/GCC/ARM_CM3/portmacro.h"
-#endif
+#که_تعریف_شوی GCC_ARMCM3_LM3S102
+    #ضمن "../../Source/portable/GCC/ARM_CM3/portmacro.h"
+#د_که_پای
 
-#ifdef GCC_ARMCM3
-    #include "../../Source/portable/GCC/ARM_CM3/portmacro.h"
-#endif
+#که_تعریف_شوی GCC_ARMCM3
+    #ضمن "../../Source/portable/GCC/ARM_CM3/portmacro.h"
+#د_که_پای
 
-#ifdef IAR_ARM_CM3
-    #include "../../Source/portable/IAR/ARM_CM3/portmacro.h"
-#endif
+#که_تعریف_شوی IAR_ARM_CM3
+    #ضمن "../../Source/portable/IAR/ARM_CM3/portmacro.h"
+#د_که_پای
 
-#ifdef IAR_ARMCM3_LM
-    #include "../../Source/portable/IAR/ARM_CM3/portmacro.h"
-#endif
+#که_تعریف_شوی IAR_ARMCM3_LM
+    #ضمن "../../Source/portable/IAR/ARM_CM3/portmacro.h"
+#د_که_پای
 
-#ifdef HCS12_CODE_WARRIOR
-    #include "../../Source/portable/CodeWarrior/HCS12/portmacro.h"
-#endif
+#که_تعریف_شوی HCS12_کوډ_WARRIOR
+    #ضمن "../../Source/portable/CodeWarrior/HCS12/portmacro.h"
+#د_که_پای
 
-#ifdef MICROBLAZE_GCC
-    #include "../../Source/portable/GCC/MicroBlaze/portmacro.h"
-#endif
+#که_تعریف_شوی MICROBLAZE_GCC
+    #ضمن "../../Source/portable/GCC/MicroBlaze/portmacro.h"
+#د_که_پای
 
-#ifdef TERN_EE
-    #include "..\..\Source\portable\Paradigm\Tern_EE\small\portmacro.h"
-#endif
+#که_تعریف_شوی TERN_EE
+    #ضمن "..\..\Source\portable\Paradigm\Tern_EE\small\portmacro.h"
+#د_که_پای
 
-#ifdef GCC_HCS12
-    #include "../../Source/portable/GCC/HCS12/portmacro.h"
-#endif
+#که_تعریف_شوی GCC_HCS12
+    #ضمن "../../Source/portable/GCC/HCS12/portmacro.h"
+#د_که_پای
 
-#ifdef GCC_MCF5235
-    #include "../../Source/portable/GCC/MCF5235/portmacro.h"
-#endif
+#که_تعریف_شوی GCC_MCF5235
+    #ضمن "../../Source/portable/GCC/MCF5235/portmacro.h"
+#د_که_پای
 
-#ifdef COLDFIRE_V2_GCC
-    #include "../../../Source/portable/GCC/ColdFire_V2/portmacro.h"
-#endif
+#که_تعریف_شوی COLDFIRE_V2_GCC
+    #ضمن "../../../Source/portable/GCC/ColdFire_V2/portmacro.h"
+#د_که_پای
 
-#ifdef COLDFIRE_V2_CODEWARRIOR
-    #include "../../Source/portable/CodeWarrior/ColdFire_V2/portmacro.h"
-#endif
+#که_تعریف_شوی COLDFIRE_V2_CODEWARRIOR
+    #ضمن "../../Source/portable/CodeWarrior/ColdFire_V2/portmacro.h"
+#د_که_پای
 
-#ifdef GCC_PPC405
-    #include "../../Source/portable/GCC/PPC405_Xilinx/portmacro.h"
-#endif
+#که_تعریف_شوی GCC_PPC405
+    #ضمن "../../Source/portable/GCC/PPC405_Xilinx/portmacro.h"
+#د_که_پای
 
-#ifdef GCC_PPC440
-    #include "../../Source/portable/GCC/PPC440_Xilinx/portmacro.h"
-#endif
+#که_تعریف_شوی GCC_PPC440
+    #ضمن "../../Source/portable/GCC/PPC440_Xilinx/portmacro.h"
+#د_که_پای
 
-#ifdef _16FX_SOFTUNE
-    #include "..\..\Source\portable\Softune\MB96340\portmacro.h"
-#endif
+#که_تعریف_شوی _16FX_SOFTUNE
+    #ضمن "..\..\Source\portable\Softune\MB96340\portmacro.h"
+#د_که_پای
 
-#ifdef BCC_INDUSTRIAL_PC_PORT
-
-/* A short file name has to be used in place of the normal
- * FreeRTOSConfig.h when using the Borland compiler. */
-    #include "frconfig.h"
-    #include "..\portable\BCC\16BitDOS\PC\prtmacro.h"
-    typedef void ( __interrupt __far * pxISR )();
-#endif
-
-#ifdef BCC_FLASH_LITE_186_PORT
+#که_تعریف_شوی BCC_INDUSTRIAL_PC_پورټ
 
 /* A short file name has to be used in place of the normal
  * FreeRTOSConfig.h when using the Borland compiler. */
-    #include "frconfig.h"
-    #include "..\portable\BCC\16BitDOS\flsh186\prtmacro.h"
-    typedef void ( __interrupt __far * pxISR )();
-#endif
+    #ضمن "frconfig.h"
+    #ضمن "..\portable\BCC\16BitDOS\PC\prtmacro.h"
+    تعريفنوع فراغ ( __interrupt __far * pxISR )();
+#د_که_پای
 
-#ifdef __GNUC__
-    #ifdef __AVR32_AVR32A__
-        #include "portmacro.h"
-    #endif
-#endif
+#که_تعریف_شوی BCC_FLASH_LITE_186_پورټ
 
-#ifdef __ICCAVR32__
-    #ifdef __CORE__
-        #if __CORE__ == __AVR32A__
-            #include "portmacro.h"
-        #endif
-    #endif
-#endif
+/* A short file name has to be used in place of the normal
+ * FreeRTOSConfig.h when using the Borland compiler. */
+    #ضمن "frconfig.h"
+    #ضمن "..\portable\BCC\16BitDOS\flsh186\prtmacro.h"
+    تعريفنوع فراغ ( __interrupt __far * pxISR )();
+#د_که_پای
 
-#ifdef __91467D
-    #include "portmacro.h"
-#endif
+#که_تعریف_شوی __GNUC__
+    #که_تعریف_شوی __AVR32_AVR32A__
+        #ضمن "portmacro.h"
+    #د_که_پای
+#د_که_پای
 
-#ifdef __96340
-    #include "portmacro.h"
-#endif
+#که_تعریف_شوی __ICCAVR32__
+    #که_تعریف_شوی __CORE__
+        #إذا __CORE__ == __AVR32A__
+            #ضمن "portmacro.h"
+        #د_که_پای
+    #د_که_پای
+#د_که_پای
+
+#که_تعریف_شوی __91467D
+    #ضمن "portmacro.h"
+#د_که_پای
+
+#که_تعریف_شوی __96340
+    #ضمن "portmacro.h"
+#د_که_پای
 
 
-#ifdef __IAR_V850ES_Fx3__
-    #include "../../Source/portable/IAR/V850ES/portmacro.h"
-#endif
+#که_تعریف_شوی __IAR_V850ES_Fx3__
+    #ضمن "../../Source/portable/IAR/V850ES/portmacro.h"
+#د_که_پای
 
-#ifdef __IAR_V850ES_Jx3__
-    #include "../../Source/portable/IAR/V850ES/portmacro.h"
-#endif
+#که_تعریف_شوی __IAR_V850ES_Jx3__
+    #ضمن "../../Source/portable/IAR/V850ES/portmacro.h"
+#د_که_پای
 
-#ifdef __IAR_V850ES_Jx3_L__
-    #include "../../Source/portable/IAR/V850ES/portmacro.h"
-#endif
+#که_تعریف_شوی __IAR_V850ES_Jx3_L__
+    #ضمن "../../Source/portable/IAR/V850ES/portmacro.h"
+#د_که_پای
 
-#ifdef __IAR_V850ES_Jx2__
-    #include "../../Source/portable/IAR/V850ES/portmacro.h"
-#endif
+#که_تعریف_شوی __IAR_V850ES_Jx2__
+    #ضمن "../../Source/portable/IAR/V850ES/portmacro.h"
+#د_که_پای
 
-#ifdef __IAR_V850ES_Hx2__
-    #include "../../Source/portable/IAR/V850ES/portmacro.h"
-#endif
+#که_تعریف_شوی __IAR_V850ES_Hx2__
+    #ضمن "../../Source/portable/IAR/V850ES/portmacro.h"
+#د_که_پای
 
-#ifdef __IAR_78K0R_Kx3__
-    #include "../../Source/portable/IAR/78K0R/portmacro.h"
-#endif
+#که_تعریف_شوی __IAR_78K0R_Kx3__
+    #ضمن "../../Source/portable/IAR/78K0R/portmacro.h"
+#د_که_پای
 
-#ifdef __IAR_78K0R_Kx3L__
-    #include "../../Source/portable/IAR/78K0R/portmacro.h"
-#endif
+#که_تعریف_شوی __IAR_78K0R_Kx3L__
+    #ضمن "../../Source/portable/IAR/78K0R/portmacro.h"
+#د_که_پای
 
-#endif /* DEPRECATED_DEFINITIONS_H */
+#د_که_پای /* DEPRECATED_DEFINITIONS_H */

@@ -31,20 +31,20 @@
  *
  */
 
-#pragma once
+#لارښوونه once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#که_تعریف_شوی __cplusplus
+خارجي "C" {
+#د_که_پای
 
-#include <stdbool.h>
-#include <time.h>
+#ضمن <stdbool.h>
+#ضمن <time.h>
 
 /**
  * @brief
  *
  */
-typedef struct event
+تعريفنوع بنية event
 {
     pthread_mutex_t mutex;
     pthread_cond_t cond;
@@ -57,14 +57,14 @@ typedef struct event
  *
  * @return event_t*
  */
-event_t *event_create(void);
+event_t *event_create(فراغ);
 
 /**
  * @brief
  *
  * @param ev
  */
-void event_delete(event_t *ev);
+فراغ event_delete(event_t *ev);
 
 /**
  * @brief
@@ -90,15 +90,15 @@ bool event_wait_timed(event_t *ev, time_t ms);
  *
  * @param ev
  */
-void event_signal(event_t *ev);
+فراغ event_signal(event_t *ev);
 
 /**
  * @brief Discard a pending signal that was never consumed by a wait
  *
  * @param ev
  */
-void event_clear(event_t *ev);
+فراغ event_clear(event_t *ev);
 
-#ifdef __cplusplus
+#که_تعریف_شوی __cplusplus
 }
-#endif
+#د_که_پای

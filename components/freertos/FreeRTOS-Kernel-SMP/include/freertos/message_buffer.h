@@ -64,20 +64,20 @@
  * of the message).
  */
 
-#ifndef FREERTOS_MESSAGE_BUFFER_H
-#define FREERTOS_MESSAGE_BUFFER_H
+#که_نه_تعریف_شوی FREERTOS_پیغام_بفر_H
+#تعریف_کړه FREERTOS_پیغام_بفر_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h must appear in source files before include message_buffer.h"
-#endif
+#که_نه_تعریف_شوی INC_FREERTOS_H
+    #تېروتنه "include FreeRTOS.h must appear in source files before include message_buffer.h"
+#د_که_پای
 
 /* Message buffers are built onto of stream buffers. */
-#include "stream_buffer.h"
+#ضمن "stream_buffer.h"
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
-    extern "C" {
-#endif
+#إذا defined( __cplusplus )
+    خارجي "C" {
+#د_که_پای
 /* *INDENT-ON* */
 
 /**
@@ -87,7 +87,7 @@
  * etc. Message buffer is essentially built as a stream buffer hence its handle
  * is also set to same type as a stream buffer handle.
  */
-typedef StreamBufferHandle_t MessageBufferHandle_t;
+تعريفنوع بهیر_بفر_Handle_t پیغام_بفر_Handle_t;
 
 /*-----------------------------------------------------------*/
 
@@ -161,13 +161,13 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferCreate xMessageBufferCreate
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferCreate( xBufferSizeBytes ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( size_t ) 0, sbTYPE_MESSAGE_BUFFER, NULL, NULL )
+#تعریف_کړه x_پیغام_بفر_Create( x_بفر_اندازه_بایټونه ) \
+    x_بهیر_بفر_Generic_Create( ( x_بفر_اندازه_بایټونه ), ( size_t ) 0, sb_TYPE_پیغام_بفر, عدم, عدم )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-    #define xMessageBufferCreateWithCallback( xBufferSizeBytes, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( size_t ) 0, sbTYPE_MESSAGE_BUFFER, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
-#endif
+#إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #تعریف_کړه x_پیغام_بفر_Create_With_Callback( x_بفر_اندازه_بایټونه, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
+    x_بهیر_بفر_Generic_Create( ( x_بفر_اندازه_بایټونه ), ( size_t ) 0, sb_TYPE_پیغام_بفر, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
+#د_که_پای
 
 /**
  * message_buffer.h
@@ -246,13 +246,13 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferCreateStatic xMessageBufferCreateStatic
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferCreateStatic( xBufferSizeBytes, pucMessageBufferStorageArea, pxStaticMessageBuffer ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), 0, sbTYPE_MESSAGE_BUFFER, ( pucMessageBufferStorageArea ), ( pxStaticMessageBuffer ), NULL, NULL )
+#تعریف_کړه x_پیغام_بفر_Create_Static( x_بفر_اندازه_بایټونه, puc_پیغام_بفر_Storage_Area, px_Static_پیغام_بفر ) \
+    x_بهیر_بفر_Generic_Create_Static( ( x_بفر_اندازه_بایټونه ), 0, sb_TYPE_پیغام_بفر, ( puc_پیغام_بفر_Storage_Area ), ( px_Static_پیغام_بفر ), عدم, عدم )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-    #define xMessageBufferCreateStaticWithCallback( xBufferSizeBytes, pucMessageBufferStorageArea, pxStaticMessageBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), 0, sbTYPE_MESSAGE_BUFFER, ( pucMessageBufferStorageArea ), ( pxStaticMessageBuffer ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
-#endif
+#إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #تعریف_کړه x_پیغام_بفر_Create_Static_With_Callback( x_بفر_اندازه_بایټونه, puc_پیغام_بفر_Storage_Area, px_Static_پیغام_بفر, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
+    x_بهیر_بفر_Generic_Create_Static( ( x_بفر_اندازه_بایټونه ), 0, sb_TYPE_پیغام_بفر, ( puc_پیغام_بفر_Storage_Area ), ( px_Static_پیغام_بفر ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
+#د_که_پای
 
 /**
  * message_buffer.h
@@ -283,10 +283,10 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferGetStaticBuffers xMessageBufferGetStaticBuffers
  * \ingroup MessageBufferManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xMessageBufferGetStaticBuffers( xMessageBuffer, ppucMessageBufferStorageArea, ppxStaticMessageBuffer ) \
-    xStreamBufferGetStaticBuffers( ( xMessageBuffer ), ( ppucMessageBufferStorageArea ), ( ppxStaticMessageBuffer ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#إذا ( config_SUPPORT_STATIC_ویش == 1 )
+    #تعریف_کړه x_پیغام_بفر_Get_Static_Buffers( x_پیغام_بفر, ppuc_پیغام_بفر_Storage_Area, ppx_Static_پیغام_بفر ) \
+    x_بهیر_بفر_Get_Static_Buffers( ( x_پیغام_بفر ), ( ppuc_پیغام_بفر_Storage_Area ), ( ppx_Static_پیغام_بفر ) )
+#د_که_پای /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  * message_buffer.h
@@ -388,8 +388,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferSend xMessageBufferSend
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferSend( xMessageBuffer, pvTxData, xDataLengthBytes, xTicksToWait ) \
-    xStreamBufferSend( ( xMessageBuffer ), ( pvTxData ), ( xDataLengthBytes ), ( xTicksToWait ) )
+#تعریف_کړه x_پیغام_بفر_Send( x_پیغام_بفر, pv_Tx_معلومات, x_معلومات_اوږدتیا_بایټونه, x_Ticks_منزل_Wait ) \
+    x_بهیر_بفر_Send( ( x_پیغام_بفر ), ( pv_Tx_معلومات ), ( x_معلومات_اوږدتیا_بایټونه ), ( x_Ticks_منزل_Wait ) )
 
 /**
  * message_buffer.h
@@ -496,8 +496,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferSendFromISR xMessageBufferSendFromISR
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferSendFromISR( xMessageBuffer, pvTxData, xDataLengthBytes, pxHigherPriorityTaskWoken ) \
-    xStreamBufferSendFromISR( ( xMessageBuffer ), ( pvTxData ), ( xDataLengthBytes ), ( pxHigherPriorityTaskWoken ) )
+#تعریف_کړه x_پیغام_بفر_Send_From_ISR( x_پیغام_بفر, pv_Tx_معلومات, x_معلومات_اوږدتیا_بایټونه, px_Higher_لومړیتوب_Task_Woken ) \
+    x_بهیر_بفر_Send_From_ISR( ( x_پیغام_بفر ), ( pv_Tx_معلومات ), ( x_معلومات_اوږدتیا_بایټونه ), ( px_Higher_لومړیتوب_Task_Woken ) )
 
 /**
  * message_buffer.h
@@ -588,8 +588,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferReceive xMessageBufferReceive
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferReceive( xMessageBuffer, pvRxData, xBufferLengthBytes, xTicksToWait ) \
-    xStreamBufferReceive( ( xMessageBuffer ), ( pvRxData ), ( xBufferLengthBytes ), ( xTicksToWait ) )
+#تعریف_کړه x_پیغام_بفر_Receive( x_پیغام_بفر, pv_Rx_معلومات, x_بفر_اوږدتیا_بایټونه, x_Ticks_منزل_Wait ) \
+    x_بهیر_بفر_Receive( ( x_پیغام_بفر ), ( pv_Rx_معلومات ), ( x_بفر_اوږدتیا_بایټونه ), ( x_Ticks_منزل_Wait ) )
 
 
 /**
@@ -693,8 +693,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferReceiveFromISR xMessageBufferReceiveFromISR
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferReceiveFromISR( xMessageBuffer, pvRxData, xBufferLengthBytes, pxHigherPriorityTaskWoken ) \
-    xStreamBufferReceiveFromISR( ( xMessageBuffer ), ( pvRxData ), ( xBufferLengthBytes ), ( pxHigherPriorityTaskWoken ) )
+#تعریف_کړه x_پیغام_بفر_Receive_From_ISR( x_پیغام_بفر, pv_Rx_معلومات, x_بفر_اوږدتیا_بایټونه, px_Higher_لومړیتوب_Task_Woken ) \
+    x_بهیر_بفر_Receive_From_ISR( ( x_پیغام_بفر ), ( pv_Rx_معلومات ), ( x_بفر_اوږدتیا_بایټونه ), ( px_Higher_لومړیتوب_Task_Woken ) )
 
 /**
  * message_buffer.h
@@ -717,8 +717,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * @param xMessageBuffer The handle of the message buffer to be deleted.
  *
  */
-#define vMessageBufferDelete( xMessageBuffer ) \
-    vStreamBufferDelete( xMessageBuffer )
+#تعریف_کړه v_پیغام_بفر_Delete( x_پیغام_بفر ) \
+    v_بهیر_بفر_Delete( x_پیغام_بفر )
 
 /**
  * message_buffer.h
@@ -738,8 +738,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * @return If the message buffer referenced by xMessageBuffer is full then
  * pdTRUE is returned.  Otherwise pdFALSE is returned.
  */
-#define xMessageBufferIsFull( xMessageBuffer ) \
-    xStreamBufferIsFull( xMessageBuffer )
+#تعریف_کړه x_پیغام_بفر_Is_ډک( x_پیغام_بفر ) \
+    x_بهیر_بفر_Is_ډک( x_پیغام_بفر )
 
 /**
  * message_buffer.h
@@ -758,8 +758,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * pdTRUE is returned.  Otherwise pdFALSE is returned.
  *
  */
-#define xMessageBufferIsEmpty( xMessageBuffer ) \
-    xStreamBufferIsEmpty( xMessageBuffer )
+#تعریف_کړه x_پیغام_بفر_Is_تشه( x_پیغام_بفر ) \
+    x_بهیر_بفر_Is_تشه( x_پیغام_بفر )
 
 /**
  * message_buffer.h
@@ -789,8 +789,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferReset xMessageBufferReset
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferReset( xMessageBuffer ) \
-    xStreamBufferReset( xMessageBuffer )
+#تعریف_کړه x_پیغام_بفر_Reset( x_پیغام_بفر ) \
+    x_بهیر_بفر_Reset( x_پیغام_بفر )
 
 
 /**
@@ -822,8 +822,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferResetFromISR xMessageBufferResetFromISR
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferResetFromISR( xMessageBuffer ) \
-    xStreamBufferResetFromISR( xMessageBuffer )
+#تعریف_کړه x_پیغام_بفر_Reset_From_ISR( x_پیغام_بفر ) \
+    x_بهیر_بفر_Reset_From_ISR( x_پیغام_بفر )
 
 /**
  * message_buffer.h
@@ -847,10 +847,10 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferSpaceAvailable xMessageBufferSpaceAvailable
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferSpaceAvailable( xMessageBuffer ) \
-    xStreamBufferSpacesAvailable( xMessageBuffer )
-#define xMessageBufferSpacesAvailable( xMessageBuffer ) \
-    xStreamBufferSpacesAvailable( xMessageBuffer ) /* Corrects typo in original macro name. */
+#تعریف_کړه x_پیغام_بفر_Space_شته( x_پیغام_بفر ) \
+    x_بهیر_بفر_Spaces_شته( x_پیغام_بفر )
+#تعریف_کړه x_پیغام_بفر_Spaces_شته( x_پیغام_بفر ) \
+    x_بهیر_بفر_Spaces_شته( x_پیغام_بفر ) /* Corrects typo in original macro name. */
 
 /**
  * message_buffer.h
@@ -872,8 +872,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferNextLengthBytes xMessageBufferNextLengthBytes
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferNextLengthBytes( xMessageBuffer ) \
-    xStreamBufferNextMessageLengthBytes( xMessageBuffer )
+#تعریف_کړه x_پیغام_بفر_بل_اوږدتیا_بایټونه( x_پیغام_بفر ) \
+    x_بهیر_بفر_بل_پیغام_اوږدتیا_بایټونه( x_پیغام_بفر )
 
 /**
  * message_buffer.h
@@ -915,8 +915,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferSendCompletedFromISR xMessageBufferSendCompletedFromISR
  * \ingroup StreamBufferManagement
  */
-#define xMessageBufferSendCompletedFromISR( xMessageBuffer, pxHigherPriorityTaskWoken ) \
-    xStreamBufferSendCompletedFromISR( ( xMessageBuffer ), ( pxHigherPriorityTaskWoken ) )
+#تعریف_کړه x_پیغام_بفر_Send_Completed_From_ISR( x_پیغام_بفر, px_Higher_لومړیتوب_Task_Woken ) \
+    x_بهیر_بفر_Send_Completed_From_ISR( ( x_پیغام_بفر ), ( px_Higher_لومړیتوب_Task_Woken ) )
 
 /**
  * message_buffer.h
@@ -959,13 +959,13 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferReceiveCompletedFromISR xMessageBufferReceiveCompletedFromISR
  * \ingroup StreamBufferManagement
  */
-#define xMessageBufferReceiveCompletedFromISR( xMessageBuffer, pxHigherPriorityTaskWoken ) \
-    xStreamBufferReceiveCompletedFromISR( ( xMessageBuffer ), ( pxHigherPriorityTaskWoken ) )
+#تعریف_کړه x_پیغام_بفر_Receive_Completed_From_ISR( x_پیغام_بفر, px_Higher_لومړیتوب_Task_Woken ) \
+    x_بهیر_بفر_Receive_Completed_From_ISR( ( x_پیغام_بفر ), ( px_Higher_لومړیتوب_Task_Woken ) )
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
+#إذا defined( __cplusplus )
     } /* extern "C" */
-#endif
+#د_که_پای
 /* *INDENT-ON* */
 
-#endif /* !defined( FREERTOS_MESSAGE_BUFFER_H ) */
+#د_که_پای /* !defined( FREERTOS_MESSAGE_BUFFER_H ) */

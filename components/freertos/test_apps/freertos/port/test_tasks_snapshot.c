@@ -4,83 +4,83 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <stdio.h>
-#include <stdbool.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/freertos_debug.h"
-#include "esp_cpu.h"
-#include "esp_rom_sys.h"
-#include "unity.h"
-#include "sdkconfig.h"
+#ضمن "sdkconfig.h"
+#ضمن <stdio.h>
+#ضمن <stdbool.h>
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
+#ضمن "freertos/freertos_debug.h"
+#ضمن "esp_cpu.h"
+#ضمن "esp_rom_sys.h"
+#ضمن "unity.h"
+#ضمن "sdkconfig.h"
 
-#define TEST_MAX_TASKS_NUM      32
-#define NUM_TASKS_PER_LIST      2
-#define TASK_PRIORITY           (configMAX_PRIORITIES - 2)
+#تعریف_کړه TEST_MAX_TASKS_عدد      32
+#تعریف_کړه عدد_TASKS_فی_LIST      2
+#تعریف_کړه TASK_لومړیتوب           (configMAX_PRIORITIES - 2)
 
-static volatile bool start_ready_flag = false;
-static volatile bool start_resp_flag = false;
-static volatile bool stop_flag = false;
+ساكن متطاير bool پیل_ready_flag = false;
+ساكن متطاير bool پیل_resp_flag = false;
+ساكن متطاير bool stop_flag = false;
 
-static void ready_task(void *arg)
+ساكن فراغ ready_task(فراغ *arg)
 {
-    while (1) {
-#if !CONFIG_FREERTOS_UNICORE
+    طالما (1) {
+#إذا !CONFIG_FREERTOS_UNICORE
         taskDISABLE_INTERRUPTS();
         /*
         The main task (on core 0) has a higher priority than this task. Thus, by the time this flag is set, this task
         is guaranteed to running on core 1.
         */
-        if (start_ready_flag) {   // Is the test starting?
-            start_resp_flag = true;   // Indicate we are ready to start
-            while (!stop_flag) {
+        إذا (پیل_ready_flag) {   // Is the test starting?
+            پیل_resp_flag = true;   // Indicate we are ready to start
+            طالما (!stop_flag) {
                 ;   // Wait until test completes
             }
 
             // Reset the flags
-            start_ready_flag = false;
-            start_resp_flag = false;
+            پیل_ready_flag = false;
+            پیل_resp_flag = false;
             stop_flag = false;
         }
         taskENABLE_INTERRUPTS();
         // Short non-blocking delay to allow INT WDT to feed
         esp_rom_delay_us(1000);
-#endif // !CONFIG_FREERTOS_UNICORE
+#د_که_پای // !CONFIG_FREERTOS_UNICORE
     }
 }
 
-static void blocked_task(void *arg)
+ساكن فراغ blocked_task(فراغ *arg)
 {
     // Delay for portMAX_DELAY - 1 as not to go on the suspended list
-    vTaskDelay(portMAX_DELAY - 1);
+    vTaskDelay(پورټ_MAX_DELAY - 1);
 }
 
-static void suspended_task(void *arg)
+ساكن فراغ suspended_task(فراغ *arg)
 {
-    vTaskSuspend(NULL);
+    vTaskSuspend(عدم);
 }
 
-static void setup(TaskHandle_t *task_list, int *num_tasks_ret, UBaseType_t *old_priority_ret)
+ساكن فراغ تیاری(TaskHandle_t *task_list, صحيح *عدد_tasks_ret, UBaseType_t *old_لومړیتوب_ret)
 {
     // Raise our priority so that we aren't preempted
-    *old_priority_ret = uxTaskPriorityGet(NULL);
-    vTaskPrioritySet(NULL, configMAX_PRIORITIES - 1);
+    *old_لومړیتوب_ret = ux_Task_لومړیتوب_Get(عدم);
+    v_Task_لومړیتوب_سېټ(عدم, configMAX_PRIORITIES - 1);
 
     // Create tasks
-    int num_tasks = 0;
-    for (int i = 0; i < NUM_TASKS_PER_LIST; i++) {
+    صحيح عدد_tasks = 0;
+    لكل (صحيح i = 0; i < عدد_TASKS_فی_LIST; i++) {
         //Ready task
-        xTaskCreate(ready_task, "ready", 1024, NULL, TASK_PRIORITY, &(task_list[num_tasks]));
-        num_tasks++;
+        xTaskCreate(ready_task, "ready", 1024, عدم, TASK_لومړیتوب, &(task_list[عدد_tasks]));
+        عدد_tasks++;
         //Blocked task
-        xTaskCreate(blocked_task, "blkd", 1024, NULL, TASK_PRIORITY, &(task_list[num_tasks]));
-        num_tasks++;
+        xTaskCreate(blocked_task, "blkd", 1024, عدم, TASK_لومړیتوب, &(task_list[عدد_tasks]));
+        عدد_tasks++;
         //Suspended task
-        xTaskCreate(suspended_task, "susp", 1024, NULL, TASK_PRIORITY, &(task_list[num_tasks]));
-        num_tasks++;
+        xTaskCreate(suspended_task, "susp", 1024, عدم, TASK_لومړیتوب, &(task_list[عدد_tasks]));
+        عدد_tasks++;
     }
-    *num_tasks_ret = num_tasks;
+    *عدد_tasks_ret = عدد_tasks;
     // Short delay to allow tasks to spin up
     vTaskDelay(10);
 
@@ -96,44 +96,44 @@ static void setup(TaskHandle_t *task_list, int *num_tasks_ret, UBaseType_t *old_
     */
     // Disable interrupts so that the current core isn't preempted.
     taskDISABLE_INTERRUPTS();
-#if !CONFIG_FREERTOS_UNICORE
+#إذا !CONFIG_FREERTOS_UNICORE
     // For SMP, we need to do a 2-way handshake to ensure the other core spins with interrupts disabled.
-    start_ready_flag = true;
-    while (!start_resp_flag) {
+    پیل_ready_flag = true;
+    طالما (!پیل_resp_flag) {
         ;
     }
-#endif // !CONFIG_FREERTOS_UNICORE
+#د_که_پای // !CONFIG_FREERTOS_UNICORE
 }
 
-static void check_snapshots(TaskHandle_t *task_list, int num_tasks, TaskSnapshot_t *task_snapshots, UBaseType_t num_snapshots)
+ساكن فراغ check_snapshots(TaskHandle_t *task_list, صحيح عدد_tasks, TaskSnapshot_t *task_snapshots, UBaseType_t عدد_snapshots)
 {
     // Check task snapshots. Every created task should be found in the task snapshot
-    for (int i = 0; i < num_tasks; i++) {
-        bool found = false;
-        for (int j = 0; j < num_snapshots; j++) {
-            if (task_list[i] == (TaskHandle_t)task_snapshots[j].pxTCB) {
-                found = true;
-                break;
+    لكل (صحيح i = 0; i < عدد_tasks; i++) {
+        bool وموندل = false;
+        لكل (صحيح j = 0; j < عدد_snapshots; j++) {
+            إذا (task_list[i] == (TaskHandle_t)task_snapshots[j].pxTCB) {
+                وموندل = true;
+                اكسر;
             }
         }
-        TEST_ASSERT(found);
+        TEST_ASSERT(وموندل);
     }
 }
 
-static void teardown(TaskHandle_t *task_list, int num_tasks, UBaseType_t old_priority)
+ساكن فراغ teardown(TaskHandle_t *task_list, صحيح عدد_tasks, UBaseType_t old_لومړیتوب)
 {
-#if !CONFIG_FREERTOS_UNICORE
+#إذا !CONFIG_FREERTOS_UNICORE
     // Signal to the other core that it can exit the loop
     stop_flag = true;
-#endif // !CONFIG_FREERTOS_UNICORE
+#د_که_پای // !CONFIG_FREERTOS_UNICORE
     // Re-enable interrupts on the current core.
     taskENABLE_INTERRUPTS();
 
-    for (int i = 0; i < num_tasks; i++) {
+    لكل (صحيح i = 0; i < عدد_tasks; i++) {
         vTaskDelete(task_list[i]);
     }
     // Restore priority
-    vTaskPrioritySet(NULL, old_priority);
+    v_Task_لومړیتوب_سېټ(عدم, old_لومړیتوب);
     // Short delay to allow tasks to clean up
     vTaskDelay(10);
 }
@@ -143,20 +143,20 @@ TEST_CASE("Task snapshot: Get all", "[freertos]")
     // Short delay to allow both cores to spin up
     vTaskDelay(10);
 
-    TaskHandle_t task_list[TEST_MAX_TASKS_NUM];
-    int num_tasks;
-    UBaseType_t old_priority;
-    setup(task_list, &num_tasks, &old_priority);
+    TaskHandle_t task_list[TEST_MAX_TASKS_عدد];
+    صحيح عدد_tasks;
+    UBaseType_t old_لومړیتوب;
+    تیاری(task_list, &عدد_tasks, &old_لومړیتوب);
 
     // Get task snapshots using uxTaskGetSnapshotAll()
-    TaskSnapshot_t task_snapshots[TEST_MAX_TASKS_NUM];
-    UBaseType_t tcb_size;
-    UBaseType_t num_snapshots;
-    num_snapshots = uxTaskGetSnapshotAll(task_snapshots, TEST_MAX_TASKS_NUM, &tcb_size);
-    TEST_ASSERT_LESS_OR_EQUAL(TEST_MAX_TASKS_NUM, num_snapshots);
+    TaskSnapshot_t task_snapshots[TEST_MAX_TASKS_عدد];
+    UBaseType_t tcb_اندازه;
+    UBaseType_t عدد_snapshots;
+    عدد_snapshots = uxTaskGetSnapshotAll(task_snapshots, TEST_MAX_TASKS_عدد, &tcb_اندازه);
+    TEST_ASSERT_LESS_OR_EQUAL(TEST_MAX_TASKS_عدد, عدد_snapshots);
 
-    check_snapshots(task_list, num_tasks, task_snapshots, num_snapshots);
-    teardown(task_list, num_tasks, old_priority);
+    check_snapshots(task_list, عدد_tasks, task_snapshots, عدد_snapshots);
+    teardown(task_list, عدد_tasks, old_لومړیتوب);
 }
 
 TEST_CASE("Task snapshot: Iterate", "[freertos]")
@@ -164,25 +164,25 @@ TEST_CASE("Task snapshot: Iterate", "[freertos]")
     // Short delay to allow both cores to spin up
     vTaskDelay(10);
 
-    TaskHandle_t task_list[TEST_MAX_TASKS_NUM];
-    int num_tasks;
-    UBaseType_t old_priority;
-    setup(task_list, &num_tasks, &old_priority);
+    TaskHandle_t task_list[TEST_MAX_TASKS_عدد];
+    صحيح عدد_tasks;
+    UBaseType_t old_لومړیتوب;
+    تیاری(task_list, &عدد_tasks, &old_لومړیتوب);
 
     // Get task snapshots using xTaskGetNext() and vTaskGetSnapshot()
-    TaskSnapshot_t task_snapshots[TEST_MAX_TASKS_NUM];
-    UBaseType_t num_snapshots = 0;
+    TaskSnapshot_t task_snapshots[TEST_MAX_TASKS_عدد];
+    UBaseType_t عدد_snapshots = 0;
     TaskIterator_t task_iterator = {0};
-    while (xTaskGetNext(&task_iterator) != -1) {
-        if (task_iterator.pxTaskHandle != NULL) {
+    طالما (x_Task_Get_بل(&task_iterator) != -1) {
+        إذا (task_iterator.pxTaskHandle != عدم) {
             // Get the task's snapshot
-            BaseType_t Result = vTaskGetSnapshot(task_iterator.pxTaskHandle, &task_snapshots[num_snapshots]);
-            TEST_ASSERT_EQUAL(pdTRUE, Result);
-            num_snapshots++;
+            بنسټ_Type_t پایله_2 = vTaskGetSnapshot(task_iterator.pxTaskHandle, &task_snapshots[عدد_snapshots]);
+            TEST_ASSERT_EQUAL(pdTRUE, پایله_2);
+            عدد_snapshots++;
         }
     }
-    TEST_ASSERT_LESS_OR_EQUAL(TEST_MAX_TASKS_NUM, num_snapshots);
+    TEST_ASSERT_LESS_OR_EQUAL(TEST_MAX_TASKS_عدد, عدد_snapshots);
 
-    check_snapshots(task_list, num_tasks, task_snapshots, num_snapshots);
-    teardown(task_list, num_tasks, old_priority);
+    check_snapshots(task_list, عدد_tasks, task_snapshots, عدد_snapshots);
+    teardown(task_list, عدد_tasks, old_لومړیتوب);
 }

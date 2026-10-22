@@ -4,15 +4,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <stddef.h>
-#include <assert.h>
-#include "esp_task.h"
-#include "esp_log.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/portmacro.h"
-#include "esp_private/esp_sys_event_internal.h"
+#ضمن "sdkconfig.h"
+#ضمن <stddef.h>
+#ضمن <assert.h>
+#ضمن "esp_task.h"
+#ضمن "esp_log.h"
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
+#ضمن "freertos/portmacro.h"
+#ضمن "esp_private/esp_sys_event_internal.h"
 
 /* ------------------------------------------------- App/OS Startup ----------------------------------------------------
  * - Functions related to application and FreeRTOS startup
@@ -34,33 +34,33 @@
 For now, AMP is not supported (i.e., running FreeRTOS on one core and a bare metal/other OS on the other). Therefore,
 CONFIG_FREERTOS_UNICORE and CONFIG_ESP_SYSTEM_SINGLE_CORE_MODE should be identical. We add a check for this here.
 */
-#if CONFIG_FREERTOS_UNICORE != CONFIG_ESP_SYSTEM_SINGLE_CORE_MODE
-#error "AMP not supported. FreeRTOS number of cores and system number of cores must be identical"
-#endif
+#إذا CONFIG_FREERTOS_UNICORE != CONFIG_ESP_SYSTEM_SINGLE_CORE_ډېرپېښ
+#تېروتنه "AMP not supported. FreeRTOS number of cores and system number of cores must be identical"
+#د_که_پای
 
 // -------------------- Declarations -----------------------
 
-static void main_task(void* args);
-ESP_LOG_ATTR_TAG(APP_START_TAG, "app_start");
+ساكن فراغ main_task(فراغ* دلیلونه);
+ESP_LOG_ATTR_نښان(APP_پیل_نښان, "app_start");
 
-static void run_app_startup_event(esp_sys_event_id_t id)
+ساكن فراغ پرلپسې_app_startup_event(esp_sys_event_id_t id)
 {
     ESP_SYS_EVENT_FOREACH(handler, id) {
-        ESP_ERROR_CHECK(handler->handler(NULL, NULL));
+        ESP_ERROR_CHECK(handler->handler(عدم, عدم));
     }
 }
 
 // ------------------ CPU0 App Startup ---------------------
 
-void esp_startup_start_app(void)
+فراغ esp_startup_پیل_app(فراغ)
 {
-    run_app_startup_event(ESP_SYS_EVENT_PRE_SCHEDULER);
+    پرلپسې_app_startup_event(ESP_SYS_EVENT_PRE_SCHEDULER);
 
-    BaseType_t res = xTaskCreatePinnedToCore(main_task, "main",
-                                             ESP_TASK_MAIN_STACK, NULL,
-                                             ESP_TASK_MAIN_PRIO, NULL, ESP_TASK_MAIN_CORE);
-    assert(res == pdTRUE);
-    (void)res;
+    بنسټ_Type_t res = x_Task_Create_Pinned_منزل_Core(main_task, "main",
+                                             ESP_TASK_MAIN_ډېری, عدم,
+                                             ESP_TASK_MAIN_PRIO, عدم, ESP_TASK_MAIN_CORE);
+    أكد(res == pdTRUE);
+    (فراغ)res;
 
     /*
     If a particular FreeRTOS port has port/arch specific OS startup behavior, they can implement a function of type
@@ -70,45 +70,45 @@ void esp_startup_start_app(void)
     Deprecated: Register a PRE_SCHEDULER handler with priority 999 to preserve this ordering.
     */
     // TODO: IDF-16135
-    void __attribute__((weak, deprecated("port_start_app_hook is deprecated and will be removed in IDF 7.0. Use ESP_PRE_SCHEDULER_HANDLER_REGISTER instead.")))
-    port_start_app_hook(void);
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-    if (port_start_app_hook != NULL) {
-        ESP_EARLY_LOGW(APP_START_TAG,
+    فراغ __attribute__((weak, deprecated("port_start_app_hook is deprecated and will be removed in IDF 7.0. Use ESP_PRE_SCHEDULER_HANDLER_REGISTER instead.")))
+    پورټ_پیل_app_hook(فراغ);
+#لارښوونه GCC diagnostic ټېل
+#لارښوونه GCC diagnostic ignored "-Wdeprecated-declarations"
+    إذا (پورټ_پیل_app_hook != عدم) {
+        ESP_EARLY_LOGW(APP_پیل_نښان,
                        "port_start_app_hook is deprecated and will be removed in IDF 7.0. "
                        "Use ESP_PRE_SCHEDULER_HANDLER_REGISTER instead.");
-        port_start_app_hook();
+        پورټ_پیل_app_hook();
     }
-#pragma GCC diagnostic pop
+#لارښوونه GCC diagnostic راوباسه
 
-    ESP_EARLY_LOGD(APP_START_TAG, "Starting scheduler on CPU0");
-    vTaskStartScheduler();
+    ESP_EARLY_LOGD(APP_پیل_نښان, "Starting scheduler on CPU0");
+    v_Task_پیل_Scheduler();
 }
 
 // --------------- CPU[1:N-1] App Startup ------------------
 
-#if !CONFIG_FREERTOS_UNICORE
-void esp_startup_start_app_other_cores(void)
+#إذا !CONFIG_FREERTOS_UNICORE
+فراغ esp_startup_پیل_app_other_cores(فراغ)
 {
     // For now, we only support up to two core: 0 and 1.
-    if (xPortGetCoreID() >= 2) {
+    إذا (x_پورټ_Get_Core_ID() >= 2) {
         abort();
     }
 
     // Wait for CPU0 to start FreeRTOS before progressing
-    extern volatile unsigned port_xSchedulerRunning[CONFIG_FREERTOS_NUMBER_OF_CORES];
-    while (port_xSchedulerRunning[0] == 0) {
+    خارجي متطاير بینښه پورټ_x_Scheduler_Running[CONFIG_FREERTOS_شمېره_د_CORES];
+    طالما (پورټ_x_Scheduler_Running[0] == 0) {
         ;
     }
 
-    run_app_startup_event(ESP_SYS_EVENT_PRE_SCHEDULER);
+    پرلپسې_app_startup_event(ESP_SYS_EVENT_PRE_SCHEDULER);
 
-    ESP_EARLY_LOGD(APP_START_TAG, "Starting scheduler on CPU%d", xPortGetCoreID());
-    xPortStartScheduler();
+    ESP_EARLY_LOGD(APP_پیل_نښان, "Starting scheduler on CPU%d", x_پورټ_Get_Core_ID());
+    x_پورټ_پیل_Scheduler();
     abort(); // Only get to here if FreeRTOS somehow very broken
 }
-#endif // !CONFIG_FREERTOS_UNICORE
+#د_که_پای // !CONFIG_FREERTOS_UNICORE
 
 /* ---------------------------------------------------- Main Task ------------------------------------------------------
  * - main_task is a daemon task created by CPU0 before it starts FreeRTOS
@@ -118,40 +118,40 @@ void esp_startup_start_app_other_cores(void)
  * - main_task will self delete if app_main returns
  * ------------------------------------------------------------------------------------------------------------------ */
 
-ESP_LOG_ATTR_TAG(MAIN_TAG, "main_task");
+ESP_LOG_ATTR_نښان(MAIN_نښان, "main_task");
 
 /* This function has to guarantee that all CPUs have finished the FreeRTOS initialization
 * and the startup stack is not in use.
 */
-static void wait_for_all_cores_ready(void)
+ساكن فراغ wait_for_all_cores_ready(فراغ)
 {
-#if !CONFIG_FREERTOS_UNICORE
-    extern volatile unsigned port_uxCoreStartupDone[CONFIG_FREERTOS_NUMBER_OF_CORES];
+#إذا !CONFIG_FREERTOS_UNICORE
+    خارجي متطاير بینښه پورټ_ux_Core_Startup_بشپړ[CONFIG_FREERTOS_شمېره_د_CORES];
     bool all_cpus_has_been_started;
-    do {
+    افعل {
         all_cpus_has_been_started = true;
-        for (int cpu = 0; cpu < CONFIG_FREERTOS_NUMBER_OF_CORES; cpu++) {
-            all_cpus_has_been_started &= port_uxCoreStartupDone[cpu] != 0;
+        لكل (صحيح cpu = 0; cpu < CONFIG_FREERTOS_شمېره_د_CORES; cpu++) {
+            all_cpus_has_been_started &= پورټ_ux_Core_Startup_بشپړ[cpu] != 0;
         }
-    } while (!all_cpus_has_been_started);
-#endif // !CONFIG_FREERTOS_UNICORE
+    } طالما (!all_cpus_has_been_started);
+#د_که_پای // !CONFIG_FREERTOS_UNICORE
 }
 
-static void main_task(void* args)
+ساكن فراغ main_task(فراغ* دلیلونه)
 {
-    ESP_LOGI(MAIN_TAG, "Started on CPU%d", (int)xPortGetCoreID());
+    ESP_LOGI(MAIN_نښان, "Started on CPU%d", (صحيح)x_پورټ_Get_Core_ID());
 
     wait_for_all_cores_ready();
 
-    run_app_startup_event(ESP_SYS_EVENT_PRE_APP_MAIN);
+    پرلپسې_app_startup_event(ESP_SYS_EVENT_PRE_APP_MAIN);
 
     /*
     Note: Be careful when changing the "Calling app_main()" log below as multiple pytest scripts expect this log as a
     start-of-application marker.
     */
-    ESP_LOGI(MAIN_TAG, "Calling app_main()");
-    extern void app_main(void);
+    ESP_LOGI(MAIN_نښان, "Calling app_main()");
+    خارجي فراغ app_main(فراغ);
     app_main();
-    ESP_LOGI(MAIN_TAG, "Returned from app_main()");
-    vTaskDelete(NULL);
+    ESP_LOGI(MAIN_نښان, "Returned from app_main()");
+    vTaskDelete(عدم);
 }

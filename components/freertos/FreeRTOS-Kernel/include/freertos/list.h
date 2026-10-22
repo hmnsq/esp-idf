@@ -59,12 +59,12 @@
  */
 
 
-#ifndef LIST_H
-#define LIST_H
+#که_نه_تعریف_شوی LIST_H
+#تعریف_کړه LIST_H
 
-#ifndef INC_FREERTOS_H
-    #error "FreeRTOS.h must be included before list.h"
-#endif
+#که_نه_تعریف_شوی INC_FREERTOS_H
+    #تېروتنه "FreeRTOS.h must be included before list.h"
+#د_که_پای
 
 /*
  * The list structure members are modified from within interrupts, and therefore
@@ -94,14 +94,14 @@
  * FreeRTOSConfig.h (without the quotes):
  * "#define configLIST_VOLATILE volatile"
  */
-#ifndef configLIST_VOLATILE
-    #define configLIST_VOLATILE
-#endif /* configSUPPORT_CROSS_MODULE_OPTIMISATION */
+#که_نه_تعریف_شوی configLIST_VOLATILE
+    #تعریف_کړه configLIST_VOLATILE
+#د_که_پای /* configSUPPORT_CROSS_MODULE_OPTIMISATION */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#که_تعریف_شوی __cplusplus
+    خارجي "C" {
+#د_که_پای
 /* *INDENT-ON* */
 
 /* Macros that can be used to place known values within the list structures,
@@ -109,77 +109,77 @@
  * the application.   These may catch the list data structures being overwritten in
  * memory.  They will not catch data errors caused by incorrect configuration or
  * use of FreeRTOS.*/
-#if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 )
+#إذا ( config_USE_LIST_معلومات_INTEGRITY_CHECK_بایټونه == 0 )
     /* Define the macros to do nothing. */
-    #define listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE
-    #define listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE
-    #define listFIRST_LIST_INTEGRITY_CHECK_VALUE
-    #define listSECOND_LIST_INTEGRITY_CHECK_VALUE
-    #define listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem )
-    #define listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem )
-    #define listSET_LIST_INTEGRITY_CHECK_1_VALUE( pxList )
-    #define listSET_LIST_INTEGRITY_CHECK_2_VALUE( pxList )
-    #define listTEST_LIST_ITEM_INTEGRITY( pxItem )
-    #define listTEST_LIST_INTEGRITY( pxList )
-#else /* if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 ) */
+    #تعریف_کړه list_لومړی_LIST_توکی_INTEGRITY_CHECK_ارزښت
+    #تعریف_کړه list_دوهم_LIST_توکی_INTEGRITY_CHECK_ارزښت
+    #تعریف_کړه list_لومړی_LIST_INTEGRITY_CHECK_ارزښت
+    #تعریف_کړه list_دوهم_LIST_INTEGRITY_CHECK_ارزښت
+    #تعریف_کړه list_سېټ_لومړی_LIST_توکی_INTEGRITY_CHECK_ارزښت( px_توکی )
+    #تعریف_کړه list_سېټ_دوهم_LIST_توکی_INTEGRITY_CHECK_ارزښت( px_توکی )
+    #تعریف_کړه list_سېټ_LIST_INTEGRITY_CHECK_1_ارزښت( pxList )
+    #تعریف_کړه list_سېټ_LIST_INTEGRITY_CHECK_2_ارزښت( pxList )
+    #تعریف_کړه list_TEST_LIST_توکی_INTEGRITY( px_توکی )
+    #تعریف_کړه listTEST_LIST_INTEGRITY( pxList )
+#وإلا /* if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 ) */
     /* Define macros that add new members into the list structures. */
-    #define listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE     TickType_t xListItemIntegrityValue1;
-    #define listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE    TickType_t xListItemIntegrityValue2;
-    #define listFIRST_LIST_INTEGRITY_CHECK_VALUE          TickType_t xListIntegrityValue1;
-    #define listSECOND_LIST_INTEGRITY_CHECK_VALUE         TickType_t xListIntegrityValue2;
+    #تعریف_کړه list_لومړی_LIST_توکی_INTEGRITY_CHECK_ارزښت     TickType_t x_List_توکی_Integrity_Value1;
+    #تعریف_کړه list_دوهم_LIST_توکی_INTEGRITY_CHECK_ارزښت    TickType_t x_List_توکی_Integrity_Value2;
+    #تعریف_کړه list_لومړی_LIST_INTEGRITY_CHECK_ارزښت          TickType_t xListIntegrityValue1;
+    #تعریف_کړه list_دوهم_LIST_INTEGRITY_CHECK_ارزښت         TickType_t xListIntegrityValue2;
 
 /* Define macros that set the new structure members to known values. */
-    #define listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem )     ( pxItem )->xListItemIntegrityValue1 = pdINTEGRITY_CHECK_VALUE
-    #define listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem )    ( pxItem )->xListItemIntegrityValue2 = pdINTEGRITY_CHECK_VALUE
-    #define listSET_LIST_INTEGRITY_CHECK_1_VALUE( pxList )              ( pxList )->xListIntegrityValue1 = pdINTEGRITY_CHECK_VALUE
-    #define listSET_LIST_INTEGRITY_CHECK_2_VALUE( pxList )              ( pxList )->xListIntegrityValue2 = pdINTEGRITY_CHECK_VALUE
+    #تعریف_کړه list_سېټ_لومړی_LIST_توکی_INTEGRITY_CHECK_ارزښت( px_توکی )     ( px_توکی )->x_List_توکی_Integrity_Value1 = pd_INTEGRITY_CHECK_ارزښت
+    #تعریف_کړه list_سېټ_دوهم_LIST_توکی_INTEGRITY_CHECK_ارزښت( px_توکی )    ( px_توکی )->x_List_توکی_Integrity_Value2 = pd_INTEGRITY_CHECK_ارزښت
+    #تعریف_کړه list_سېټ_LIST_INTEGRITY_CHECK_1_ارزښت( pxList )              ( pxList )->xListIntegrityValue1 = pd_INTEGRITY_CHECK_ارزښت
+    #تعریف_کړه list_سېټ_LIST_INTEGRITY_CHECK_2_ارزښت( pxList )              ( pxList )->xListIntegrityValue2 = pd_INTEGRITY_CHECK_ارزښت
 
 /* Define macros that will assert if one of the structure members does not
  * contain its expected value. */
-    #define listTEST_LIST_ITEM_INTEGRITY( pxItem )                      configASSERT( ( ( pxItem )->xListItemIntegrityValue1 == pdINTEGRITY_CHECK_VALUE ) && ( ( pxItem )->xListItemIntegrityValue2 == pdINTEGRITY_CHECK_VALUE ) )
-    #define listTEST_LIST_INTEGRITY( pxList )                           configASSERT( ( ( pxList )->xListIntegrityValue1 == pdINTEGRITY_CHECK_VALUE ) && ( ( pxList )->xListIntegrityValue2 == pdINTEGRITY_CHECK_VALUE ) )
-#endif /* configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES */
+    #تعریف_کړه list_TEST_LIST_توکی_INTEGRITY( px_توکی )                      configASSERT( ( ( px_توکی )->x_List_توکی_Integrity_Value1 == pd_INTEGRITY_CHECK_ارزښت ) && ( ( px_توکی )->x_List_توکی_Integrity_Value2 == pd_INTEGRITY_CHECK_ارزښت ) )
+    #تعریف_کړه listTEST_LIST_INTEGRITY( pxList )                           configASSERT( ( ( pxList )->xListIntegrityValue1 == pd_INTEGRITY_CHECK_ارزښت ) && ( ( pxList )->xListIntegrityValue2 == pd_INTEGRITY_CHECK_ارزښت ) )
+#د_که_پای /* configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES */
 
 
 /*
  * Definition of the only type of object that a list can contain.
  */
-struct xLIST;
-struct xLIST_ITEM
+بنية xLIST;
+بنية x_LIST_توکی
 {
-    listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE           /*< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    configLIST_VOLATILE TickType_t xItemValue;          /*< The value being listed.  In most cases this is used to sort the list in ascending order. */
-    struct xLIST_ITEM * configLIST_VOLATILE pxNext;     /*< Pointer to the next ListItem_t in the list. */
-    struct xLIST_ITEM * configLIST_VOLATILE pxPrevious; /*< Pointer to the previous ListItem_t in the list. */
-    void * pvOwner;                                     /*< Pointer to the object (normally a TCB) that contains the list item.  There is therefore a two way link between the object containing the list item and the list item itself. */
-    struct xLIST * configLIST_VOLATILE pxContainer;     /*< Pointer to the list in which this list item is placed (if any). */
-    listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE          /*< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
+    list_لومړی_LIST_توکی_INTEGRITY_CHECK_ارزښت           /*< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
+    configLIST_VOLATILE TickType_t x_توکی_ارزښت;          /*< The value being listed.  In most cases this is used to sort the list in ascending order. */
+    بنية x_LIST_توکی * configLIST_VOLATILE px_بل;     /*< Pointer to the next ListItem_t in the list. */
+    بنية x_LIST_توکی * configLIST_VOLATILE px_پخوانی; /*< Pointer to the previous ListItem_t in the list. */
+    فراغ * pvOwner;                                     /*< Pointer to the object (normally a TCB) that contains the list item.  There is therefore a two way link between the object containing the list item and the list item itself. */
+    بنية xLIST * configLIST_VOLATILE pxContainer;     /*< Pointer to the list in which this list item is placed (if any). */
+    list_دوهم_LIST_توکی_INTEGRITY_CHECK_ارزښت          /*< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
 };
-typedef struct xLIST_ITEM ListItem_t;                   /* For some reason lint wants this as two separate definitions. */
+تعريفنوع بنية x_LIST_توکی List_توکی_t;                   /* For some reason lint wants this as two separate definitions. */
 
-#if ( configUSE_MINI_LIST_ITEM == 1 )
-    struct xMINI_LIST_ITEM
+#إذا ( config_USE_MINI_LIST_توکی == 1 )
+    بنية x_MINI_LIST_توکی
     {
-        listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE /*< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-        configLIST_VOLATILE TickType_t xItemValue;
-        struct xLIST_ITEM * configLIST_VOLATILE pxNext;
-        struct xLIST_ITEM * configLIST_VOLATILE pxPrevious;
+        list_لومړی_LIST_توکی_INTEGRITY_CHECK_ارزښت /*< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
+        configLIST_VOLATILE TickType_t x_توکی_ارزښت;
+        بنية x_LIST_توکی * configLIST_VOLATILE px_بل;
+        بنية x_LIST_توکی * configLIST_VOLATILE px_پخوانی;
     };
-    typedef struct xMINI_LIST_ITEM MiniListItem_t;
-#else
-    typedef struct xLIST_ITEM      MiniListItem_t;
-#endif
+    تعريفنوع بنية x_MINI_LIST_توکی Mini_List_توکی_t;
+#وإلا
+    تعريفنوع بنية x_LIST_توکی      Mini_List_توکی_t;
+#د_که_پای
 
 /*
  * Definition of the type of queue used by the scheduler.
  */
-typedef struct xLIST
+تعريفنوع بنية xLIST
 {
-    listFIRST_LIST_INTEGRITY_CHECK_VALUE      /*< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    volatile UBaseType_t uxNumberOfItems;
-    ListItem_t * configLIST_VOLATILE pxIndex; /*< Used to walk through the list.  Points to the last item returned by a call to listGET_OWNER_OF_NEXT_ENTRY (). */
-    MiniListItem_t xListEnd;                  /*< List item that contains the maximum possible item value meaning it is always at the end of the list and is therefore used as a marker. */
-    listSECOND_LIST_INTEGRITY_CHECK_VALUE     /*< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
+    list_لومړی_LIST_INTEGRITY_CHECK_ارزښت      /*< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
+    متطاير UBaseType_t ux_شمېره_د_توکي;
+    List_توکی_t * configLIST_VOLATILE px_شاخص; /*< Used to walk through the list.  Points to the last item returned by a call to listGET_OWNER_OF_NEXT_ENTRY (). */
+    Mini_List_توکی_t x_List_پای_ټکی;                  /*< List item that contains the maximum possible item value meaning it is always at the end of the list and is therefore used as a marker. */
+    list_دوهم_LIST_INTEGRITY_CHECK_ارزښت     /*< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
 } List_t;
 
 /*
@@ -189,7 +189,7 @@ typedef struct xLIST
  * \page listSET_LIST_ITEM_OWNER listSET_LIST_ITEM_OWNER
  * \ingroup LinkedList
  */
-#define listSET_LIST_ITEM_OWNER( pxListItem, pxOwner )    ( ( pxListItem )->pvOwner = ( void * ) ( pxOwner ) )
+#تعریف_کړه list_سېټ_LIST_توکی_OWNER( px_List_توکی, pxOwner )    ( ( px_List_توکی )->pvOwner = ( فراغ * ) ( pxOwner ) )
 
 /*
  * Access macro to get the owner of a list item.  The owner of a list item
@@ -198,7 +198,7 @@ typedef struct xLIST
  * \page listGET_LIST_ITEM_OWNER listSET_LIST_ITEM_OWNER
  * \ingroup LinkedList
  */
-#define listGET_LIST_ITEM_OWNER( pxListItem )             ( ( pxListItem )->pvOwner )
+#تعریف_کړه list_GET_LIST_توکی_OWNER( px_List_توکی )             ( ( px_List_توکی )->pvOwner )
 
 /*
  * Access macro to set the value of the list item.  In most cases the value is
@@ -207,7 +207,7 @@ typedef struct xLIST
  * \page listSET_LIST_ITEM_VALUE listSET_LIST_ITEM_VALUE
  * \ingroup LinkedList
  */
-#define listSET_LIST_ITEM_VALUE( pxListItem, xValue )     ( ( pxListItem )->xItemValue = ( xValue ) )
+#تعریف_کړه list_سېټ_LIST_توکی_ارزښت( px_List_توکی, x_ارزښت )     ( ( px_List_توکی )->x_توکی_ارزښت = ( x_ارزښت ) )
 
 /*
  * Access macro to retrieve the value of the list item.  The value can
@@ -217,7 +217,7 @@ typedef struct xLIST
  * \page listGET_LIST_ITEM_VALUE listGET_LIST_ITEM_VALUE
  * \ingroup LinkedList
  */
-#define listGET_LIST_ITEM_VALUE( pxListItem )             ( ( pxListItem )->xItemValue )
+#تعریف_کړه list_GET_LIST_توکی_ارزښت( px_List_توکی )             ( ( px_List_توکی )->x_توکی_ارزښت )
 
 /*
  * Access macro to retrieve the value of the list item at the head of a given
@@ -226,7 +226,7 @@ typedef struct xLIST
  * \page listGET_LIST_ITEM_VALUE listGET_LIST_ITEM_VALUE
  * \ingroup LinkedList
  */
-#define listGET_ITEM_VALUE_OF_HEAD_ENTRY( pxList )        ( ( ( pxList )->xListEnd ).pxNext->xItemValue )
+#تعریف_کړه list_GET_توکی_ارزښت_د_سر_ثبت( pxList )        ( ( ( pxList )->x_List_پای_ټکی ).px_بل->x_توکی_ارزښت )
 
 /*
  * Return the list item at the head of the list.
@@ -234,7 +234,7 @@ typedef struct xLIST
  * \page listGET_HEAD_ENTRY listGET_HEAD_ENTRY
  * \ingroup LinkedList
  */
-#define listGET_HEAD_ENTRY( pxList )                      ( ( ( pxList )->xListEnd ).pxNext )
+#تعریف_کړه list_GET_سر_ثبت( pxList )                      ( ( ( pxList )->x_List_پای_ټکی ).px_بل )
 
 /*
  * Return the next list item.
@@ -242,7 +242,7 @@ typedef struct xLIST
  * \page listGET_NEXT listGET_NEXT
  * \ingroup LinkedList
  */
-#define listGET_NEXT( pxListItem )                        ( ( pxListItem )->pxNext )
+#تعریف_کړه list_GET_بل( px_List_توکی )                        ( ( px_List_توکی )->px_بل )
 
 /*
  * Return the list item that marks the end of the list
@@ -250,7 +250,7 @@ typedef struct xLIST
  * \page listGET_END_MARKER listGET_END_MARKER
  * \ingroup LinkedList
  */
-#define listGET_END_MARKER( pxList )                      ( ( ListItem_t const * ) ( &( ( pxList )->xListEnd ) ) )
+#تعریف_کړه list_GET_پای_ټکی_MARKER( pxList )                      ( ( List_توکی_t ثابت * ) ( &( ( pxList )->x_List_پای_ټکی ) ) )
 
 /*
  * Access macro to determine if a list contains any items.  The macro will
@@ -259,12 +259,12 @@ typedef struct xLIST
  * \page listLIST_IS_EMPTY listLIST_IS_EMPTY
  * \ingroup LinkedList
  */
-#define listLIST_IS_EMPTY( pxList )                       ( ( ( pxList )->uxNumberOfItems == ( UBaseType_t ) 0 ) ? pdTRUE : pdFALSE )
+#تعریف_کړه list_LIST_IS_تشه( pxList )                       ( ( ( pxList )->ux_شمېره_د_توکي == ( UBaseType_t ) 0 ) ? pdTRUE : pdFALSE )
 
 /*
  * Access macro to return the number of items in the list.
  */
-#define listCURRENT_LIST_LENGTH( pxList )                 ( ( pxList )->uxNumberOfItems )
+#تعریف_کړه list_CURRENT_LIST_اوږدتیا( pxList )                 ( ( pxList )->ux_شمېره_د_توکي )
 
 /*
  * Access function to obtain the owner of the next entry in a list.
@@ -286,17 +286,17 @@ typedef struct xLIST
  * \page listGET_OWNER_OF_NEXT_ENTRY listGET_OWNER_OF_NEXT_ENTRY
  * \ingroup LinkedList
  */
-#define listGET_OWNER_OF_NEXT_ENTRY( pxTCB, pxList )                                           \
+#تعریف_کړه list_GET_OWNER_د_بل_ثبت( pxTCB, pxList )                                           \
     {                                                                                          \
-        List_t * const pxConstList = ( pxList );                                               \
+        List_t * ثابت pxConstList = ( pxList );                                               \
         /* Increment the index to the next item and return the item, ensuring */               \
         /* we don't return the marker used at the end of the list.  */                         \
-        ( pxConstList )->pxIndex = ( pxConstList )->pxIndex->pxNext;                           \
-        if( ( void * ) ( pxConstList )->pxIndex == ( void * ) &( ( pxConstList )->xListEnd ) ) \
+        ( pxConstList )->px_شاخص = ( pxConstList )->px_شاخص->px_بل;                           \
+        إذا( ( فراغ * ) ( pxConstList )->px_شاخص == ( فراغ * ) &( ( pxConstList )->x_List_پای_ټکی ) ) \
         {                                                                                      \
-            ( pxConstList )->pxIndex = ( pxConstList )->pxIndex->pxNext;                       \
+            ( pxConstList )->px_شاخص = ( pxConstList )->px_شاخص->px_بل;                       \
         }                                                                                      \
-        ( pxTCB ) = ( pxConstList )->pxIndex->pvOwner;                                         \
+        ( pxTCB ) = ( pxConstList )->px_شاخص->pvOwner;                                         \
     }
 
 /*
@@ -315,22 +315,22 @@ typedef struct xLIST
  * \page listREMOVE_ITEM listREMOVE_ITEM
  * \ingroup LinkedList
  */
-#define listREMOVE_ITEM( pxItemToRemove ) \
+#تعریف_کړه list_REMOVE_توکی( px_توکی_منزل_Remove ) \
     {                                     \
         /* The list item knows which list it is in.  Obtain the list from the list \
          * item. */                                                              \
-        List_t * const pxList = ( pxItemToRemove )->pxContainer;                 \
+        List_t * ثابت pxList = ( px_توکی_منزل_Remove )->pxContainer;                 \
                                                                                  \
-        ( pxItemToRemove )->pxNext->pxPrevious = ( pxItemToRemove )->pxPrevious; \
-        ( pxItemToRemove )->pxPrevious->pxNext = ( pxItemToRemove )->pxNext;     \
+        ( px_توکی_منزل_Remove )->px_بل->px_پخوانی = ( px_توکی_منزل_Remove )->px_پخوانی; \
+        ( px_توکی_منزل_Remove )->px_پخوانی->px_بل = ( px_توکی_منزل_Remove )->px_بل;     \
         /* Make sure the index is left pointing to a valid item. */              \
-        if( pxList->pxIndex == ( pxItemToRemove ) )                              \
+        إذا( pxList->px_شاخص == ( px_توکی_منزل_Remove ) )                              \
         {                                                                        \
-            pxList->pxIndex = ( pxItemToRemove )->pxPrevious;                    \
+            pxList->px_شاخص = ( px_توکی_منزل_Remove )->px_پخوانی;                    \
         }                                                                        \
                                                                                  \
-        ( pxItemToRemove )->pxContainer = NULL;                                  \
-        ( pxList->uxNumberOfItems )--;                                           \
+        ( px_توکی_منزل_Remove )->pxContainer = عدم;                                  \
+        ( pxList->ux_شمېره_د_توکي )--;                                           \
     }
 
 /*
@@ -355,29 +355,29 @@ typedef struct xLIST
  * \page listINSERT_END listINSERT_END
  * \ingroup LinkedList
  */
-#define listINSERT_END( pxList, pxNewListItem )           \
+#تعریف_کړه list_ورننباسه_پای_ټکی( pxList, px_New_List_توکی )           \
     {                                                     \
-        ListItem_t * const pxIndex = ( pxList )->pxIndex; \
+        List_توکی_t * ثابت px_شاخص = ( pxList )->px_شاخص; \
                                                           \
         /* Only effective when configASSERT() is also defined, these tests may catch \
          * the list data structures being overwritten in memory.  They will not catch \
          * data errors caused by incorrect configuration or use of FreeRTOS. */ \
         listTEST_LIST_INTEGRITY( ( pxList ) );                                  \
-        listTEST_LIST_ITEM_INTEGRITY( ( pxNewListItem ) );                      \
+        list_TEST_LIST_توکی_INTEGRITY( ( px_New_List_توکی ) );                      \
                                                                                 \
         /* Insert a new list item into ( pxList ), but rather than sort the list, \
          * makes the new list item the last item to be removed by a call to \
          * listGET_OWNER_OF_NEXT_ENTRY(). */                 \
-        ( pxNewListItem )->pxNext = pxIndex;                 \
-        ( pxNewListItem )->pxPrevious = pxIndex->pxPrevious; \
+        ( px_New_List_توکی )->px_بل = px_شاخص;                 \
+        ( px_New_List_توکی )->px_پخوانی = px_شاخص->px_پخوانی; \
                                                              \
-        pxIndex->pxPrevious->pxNext = ( pxNewListItem );     \
-        pxIndex->pxPrevious = ( pxNewListItem );             \
+        px_شاخص->px_پخوانی->px_بل = ( px_New_List_توکی );     \
+        px_شاخص->px_پخوانی = ( px_New_List_توکی );             \
                                                              \
         /* Remember which list the item is in. */            \
-        ( pxNewListItem )->pxContainer = ( pxList );         \
+        ( px_New_List_توکی )->pxContainer = ( pxList );         \
                                                              \
-        ( ( pxList )->uxNumberOfItems )++;                   \
+        ( ( pxList )->ux_شمېره_د_توکي )++;                   \
     }
 
 /*
@@ -396,7 +396,7 @@ typedef struct xLIST
  * \page listGET_OWNER_OF_HEAD_ENTRY listGET_OWNER_OF_HEAD_ENTRY
  * \ingroup LinkedList
  */
-#define listGET_OWNER_OF_HEAD_ENTRY( pxList )            ( ( &( ( pxList )->xListEnd ) )->pxNext->pvOwner )
+#تعریف_کړه list_GET_OWNER_د_سر_ثبت( pxList )            ( ( &( ( pxList )->x_List_پای_ټکی ) )->px_بل->pvOwner )
 
 /*
  * Check to see if a list item is within a list.  The list item maintains a
@@ -407,7 +407,7 @@ typedef struct xLIST
  * @param pxListItem The list item we want to know if is in the list.
  * @return pdTRUE if the list item is in the list, otherwise pdFALSE.
  */
-#define listIS_CONTAINED_WITHIN( pxList, pxListItem )    ( ( ( pxListItem )->pxContainer == ( pxList ) ) ? ( pdTRUE ) : ( pdFALSE ) )
+#تعریف_کړه listIS_CONTAINED_WITHIN( pxList, px_List_توکی )    ( ( ( px_List_توکی )->pxContainer == ( pxList ) ) ? ( pdTRUE ) : ( pdFALSE ) )
 
 /*
  * Return the list a list item is contained within (referenced from).
@@ -415,14 +415,14 @@ typedef struct xLIST
  * @param pxListItem The list item being queried.
  * @return A pointer to the List_t object that references the pxListItem
  */
-#define listLIST_ITEM_CONTAINER( pxListItem )            ( ( pxListItem )->pxContainer )
+#تعریف_کړه list_LIST_توکی_CONTAINER( px_List_توکی )            ( ( px_List_توکی )->pxContainer )
 
 /*
  * This provides a crude means of knowing if a list has been initialised, as
  * pxList->xListEnd.xItemValue is set to portMAX_DELAY by the vListInitialise()
  * function.
  */
-#define listLIST_IS_INITIALISED( pxList )                ( ( pxList )->xListEnd.xItemValue == portMAX_DELAY )
+#تعریف_کړه listLIST_IS_INITIALISED( pxList )                ( ( pxList )->x_List_پای_ټکی.x_توکی_ارزښت == پورټ_MAX_DELAY )
 
 /*
  * Must be called before a list is used!  This initialises all the members
@@ -434,7 +434,7 @@ typedef struct xLIST
  * \page vListInitialise vListInitialise
  * \ingroup LinkedList
  */
-void vListInitialise( List_t * const pxList ) PRIVILEGED_FUNCTION;
+فراغ vListInitialise( List_t * ثابت pxList ) PRIVILEGED_FUNCTION;
 
 /*
  * Must be called before a list item is used.  This sets the list container to
@@ -445,7 +445,7 @@ void vListInitialise( List_t * const pxList ) PRIVILEGED_FUNCTION;
  * \page vListInitialiseItem vListInitialiseItem
  * \ingroup LinkedList
  */
-void vListInitialiseItem( ListItem_t * const pxItem ) PRIVILEGED_FUNCTION;
+فراغ v_List_Initialise_توکی( List_توکی_t * ثابت px_توکی ) PRIVILEGED_FUNCTION;
 
 /*
  * Insert a list item into a list.  The item will be inserted into the list in
@@ -458,8 +458,8 @@ void vListInitialiseItem( ListItem_t * const pxItem ) PRIVILEGED_FUNCTION;
  * \page vListInsert vListInsert
  * \ingroup LinkedList
  */
-void vListInsert( List_t * const pxList,
-                  ListItem_t * const pxNewListItem ) PRIVILEGED_FUNCTION;
+فراغ v_List_ورننباسه( List_t * ثابت pxList,
+                  List_توکی_t * ثابت px_New_List_توکی ) PRIVILEGED_FUNCTION;
 
 /*
  * Insert a list item into a list.  The item will be inserted in a position
@@ -480,8 +480,8 @@ void vListInsert( List_t * const pxList,
  * \page vListInsertEnd vListInsertEnd
  * \ingroup LinkedList
  */
-void vListInsertEnd( List_t * const pxList,
-                     ListItem_t * const pxNewListItem ) PRIVILEGED_FUNCTION;
+فراغ v_List_ورننباسه_پای_ټکی( List_t * ثابت pxList,
+                     List_توکی_t * ثابت px_New_List_توکی ) PRIVILEGED_FUNCTION;
 
 /*
  * Remove an item from a list.  The list item has a pointer to the list that
@@ -496,12 +496,12 @@ void vListInsertEnd( List_t * const pxList,
  * \page uxListRemove uxListRemove
  * \ingroup LinkedList
  */
-UBaseType_t uxListRemove( ListItem_t * const pxItemToRemove ) PRIVILEGED_FUNCTION;
+UBaseType_t uxListRemove( List_توکی_t * ثابت px_توکی_منزل_Remove ) PRIVILEGED_FUNCTION;
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#که_تعریف_شوی __cplusplus
     }
-#endif
+#د_که_پای
 /* *INDENT-ON* */
 
-#endif /* ifndef LIST_H */
+#د_که_پای /* ifndef LIST_H */

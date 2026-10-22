@@ -31,234 +31,234 @@
  */
 
 /* Standard includes. */
-#include <string.h>
+#ضمن <string.h>
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
  * task.h is included from an application file. */
-#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#تعریف_کړه MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /* FreeRTOS includes. */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "stream_buffer.h"
+#ضمن "FreeRTOS.h"
+#ضمن "task.h"
+#ضمن "stream_buffer.h"
 
-#if ( configUSE_TASK_NOTIFICATIONS != 1 )
-    #error configUSE_TASK_NOTIFICATIONS must be set to 1 to build stream_buffer.c
-#endif
+#إذا ( configUSE_TASK_NOTIFICATIONS != 1 )
+    #تېروتنه configUSE_TASK_NOTIFICATIONS must be سېټ منزل 1 منزل build بهیر_بفر.c
+#د_که_پای
 
-#if ( INCLUDE_xTaskGetCurrentTaskHandle != 1 )
-    #error INCLUDE_xTaskGetCurrentTaskHandle must be set to 1 to build stream_buffer.c
-#endif
+#إذا ( INCLUDE_xTaskGetCurrentTaskHandle != 1 )
+    #تېروتنه INCLUDE_xTaskGetCurrentTaskHandle must be سېټ منزل 1 منزل build بهیر_بفر.c
+#د_که_پای
 
 /* The MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined
  * for the header files above, but not in this file, in order to generate the
  * correct privileged Vs unprivileged linkage and placement. */
-#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#تعریف_لغوه MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /* This entire source file will be skipped if the application is not configured
  * to include stream buffer functionality. This #if is closed at the very bottom
  * of this file. If you want to include stream buffers then ensure
  * configUSE_STREAM_BUFFERS is set to 1 in FreeRTOSConfig.h. */
-#if ( configUSE_STREAM_BUFFERS == 1 )
+#إذا ( config_USE_بهیر_BUFFERS == 1 )
 
 /* If the user has not provided application specific Rx notification macros,
  * or #defined the notification macros away, then provide default implementations
  * that uses task notifications. */
-    #ifndef sbRECEIVE_COMPLETED
-        #define sbRECEIVE_COMPLETED( pxStreamBuffer )                                 \
-    do                                                                                \
+    #که_نه_تعریف_شوی sbRECEIVE_COMPLETED
+        #تعریف_کړه sbRECEIVE_COMPLETED( px_بهیر_بفر )                                 \
+    افعل                                                                                \
     {                                                                                 \
         vTaskSuspendAll();                                                            \
         {                                                                             \
-            if( ( pxStreamBuffer )->xTaskWaitingToSend != NULL )                      \
+            إذا( ( px_بهیر_بفر )->x_Task_انتظار_منزل_Send != عدم )                      \
             {                                                                         \
-                ( void ) xTaskNotifyIndexed( ( pxStreamBuffer )->xTaskWaitingToSend,  \
-                                             ( pxStreamBuffer )->uxNotificationIndex, \
+                ( فراغ ) x_Task_Notify_شاخصي( ( px_بهیر_بفر )->x_Task_انتظار_منزل_Send,  \
+                                             ( px_بهیر_بفر )->ux_Notification_شاخص, \
                                              ( uint32_t ) 0,                          \
                                              eNoAction );                             \
-                ( pxStreamBuffer )->xTaskWaitingToSend = NULL;                        \
+                ( px_بهیر_بفر )->x_Task_انتظار_منزل_Send = عدم;                        \
             }                                                                         \
         }                                                                             \
-        ( void ) xTaskResumeAll();                                                    \
-    } while( 0 )
-    #endif /* sbRECEIVE_COMPLETED */
+        ( فراغ ) xTaskResumeAll();                                                    \
+    } طالما( 0 )
+    #د_که_پای /* sbRECEIVE_COMPLETED */
 
 /* If user has provided a per-instance receive complete callback, then
  * invoke the callback else use the receive complete macro which is provided by default for all instances.
  */
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-        #define prvRECEIVE_COMPLETED( pxStreamBuffer )                                           \
-    do {                                                                                         \
-        if( ( pxStreamBuffer )->pxReceiveCompletedCallback != NULL )                             \
+    #إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+        #تعریف_کړه prvRECEIVE_COMPLETED( px_بهیر_بفر )                                           \
+    افعل {                                                                                         \
+        إذا( ( px_بهیر_بفر )->pxReceiveCompletedCallback != عدم )                             \
         {                                                                                        \
-            ( pxStreamBuffer )->pxReceiveCompletedCallback( ( pxStreamBuffer ), pdFALSE, NULL ); \
+            ( px_بهیر_بفر )->pxReceiveCompletedCallback( ( px_بهیر_بفر ), pdFALSE, عدم ); \
         }                                                                                        \
-        else                                                                                     \
+        وإلا                                                                                     \
         {                                                                                        \
-            sbRECEIVE_COMPLETED( ( pxStreamBuffer ) );                                           \
+            sbRECEIVE_COMPLETED( ( px_بهیر_بفر ) );                                           \
         }                                                                                        \
-    } while( 0 )
-    #else /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
-        #define prvRECEIVE_COMPLETED( pxStreamBuffer )    sbRECEIVE_COMPLETED( ( pxStreamBuffer ) )
-    #endif /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+    } طالما( 0 )
+    #وإلا /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+        #تعریف_کړه prvRECEIVE_COMPLETED( px_بهیر_بفر )    sbRECEIVE_COMPLETED( ( px_بهیر_بفر ) )
+    #د_که_پای /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
 
-    #ifndef sbRECEIVE_COMPLETED_FROM_ISR
-        #define sbRECEIVE_COMPLETED_FROM_ISR( pxStreamBuffer,                                \
-                                              pxHigherPriorityTaskWoken )                    \
-    do {                                                                                     \
-        UBaseType_t uxSavedInterruptStatus;                                                  \
+    #که_نه_تعریف_شوی sbRECEIVE_COMPLETED_FROM_ISR
+        #تعریف_کړه sbRECEIVE_COMPLETED_FROM_ISR( px_بهیر_بفر,                                \
+                                              px_Higher_لومړیتوب_Task_Woken )                    \
+    افعل {                                                                                     \
+        UBaseType_t ux_Saved_مداخله_حالت;                                                  \
                                                                                              \
-        uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();                              \
+        ux_Saved_مداخله_حالت = taskENTER_CRITICAL_FROM_ISR();                              \
         {                                                                                    \
-            if( ( pxStreamBuffer )->xTaskWaitingToSend != NULL )                             \
+            إذا( ( px_بهیر_بفر )->x_Task_انتظار_منزل_Send != عدم )                             \
             {                                                                                \
-                ( void ) xTaskNotifyIndexedFromISR( ( pxStreamBuffer )->xTaskWaitingToSend,  \
-                                                    ( pxStreamBuffer )->uxNotificationIndex, \
+                ( فراغ ) x_Task_Notify_شاخصي_From_ISR( ( px_بهیر_بفر )->x_Task_انتظار_منزل_Send,  \
+                                                    ( px_بهیر_بفر )->ux_Notification_شاخص, \
                                                     ( uint32_t ) 0,                          \
                                                     eNoAction,                               \
-                                                    ( pxHigherPriorityTaskWoken ) );         \
-                ( pxStreamBuffer )->xTaskWaitingToSend = NULL;                               \
+                                                    ( px_Higher_لومړیتوب_Task_Woken ) );         \
+                ( px_بهیر_بفر )->x_Task_انتظار_منزل_Send = عدم;                               \
             }                                                                                \
         }                                                                                    \
-        taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );                                \
-    } while( 0 )
-    #endif /* sbRECEIVE_COMPLETED_FROM_ISR */
+        taskEXIT_CRITICAL_FROM_ISR( ux_Saved_مداخله_حالت );                                \
+    } طالما( 0 )
+    #د_که_پای /* sbRECEIVE_COMPLETED_FROM_ISR */
 
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-        #define prvRECEIVE_COMPLETED_FROM_ISR( pxStreamBuffer,                                                           \
-                                               pxHigherPriorityTaskWoken )                                               \
-    do {                                                                                                                 \
-        if( ( pxStreamBuffer )->pxReceiveCompletedCallback != NULL )                                                     \
+    #إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+        #تعریف_کړه prvRECEIVE_COMPLETED_FROM_ISR( px_بهیر_بفر,                                                           \
+                                               px_Higher_لومړیتوب_Task_Woken )                                               \
+    افعل {                                                                                                                 \
+        إذا( ( px_بهیر_بفر )->pxReceiveCompletedCallback != عدم )                                                     \
         {                                                                                                                \
-            ( pxStreamBuffer )->pxReceiveCompletedCallback( ( pxStreamBuffer ), pdTRUE, ( pxHigherPriorityTaskWoken ) ); \
+            ( px_بهیر_بفر )->pxReceiveCompletedCallback( ( px_بهیر_بفر ), pdTRUE, ( px_Higher_لومړیتوب_Task_Woken ) ); \
         }                                                                                                                \
-        else                                                                                                             \
+        وإلا                                                                                                             \
         {                                                                                                                \
-            sbRECEIVE_COMPLETED_FROM_ISR( ( pxStreamBuffer ), ( pxHigherPriorityTaskWoken ) );                           \
+            sbRECEIVE_COMPLETED_FROM_ISR( ( px_بهیر_بفر ), ( px_Higher_لومړیتوب_Task_Woken ) );                           \
         }                                                                                                                \
-    } while( 0 )
-    #else /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
-        #define prvRECEIVE_COMPLETED_FROM_ISR( pxStreamBuffer, pxHigherPriorityTaskWoken ) \
-    sbRECEIVE_COMPLETED_FROM_ISR( ( pxStreamBuffer ), ( pxHigherPriorityTaskWoken ) )
-    #endif /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+    } طالما( 0 )
+    #وإلا /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+        #تعریف_کړه prvRECEIVE_COMPLETED_FROM_ISR( px_بهیر_بفر, px_Higher_لومړیتوب_Task_Woken ) \
+    sbRECEIVE_COMPLETED_FROM_ISR( ( px_بهیر_بفر ), ( px_Higher_لومړیتوب_Task_Woken ) )
+    #د_که_پای /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
 
 /* If the user has not provided an application specific Tx notification macro,
  * or #defined the notification macro away, then provide a default
  * implementation that uses task notifications.
  */
-    #ifndef sbSEND_COMPLETED
-        #define sbSEND_COMPLETED( pxStreamBuffer )                                  \
+    #که_نه_تعریف_شوی sbSEND_COMPLETED
+        #تعریف_کړه sbSEND_COMPLETED( px_بهیر_بفر )                                  \
     vTaskSuspendAll();                                                              \
     {                                                                               \
-        if( ( pxStreamBuffer )->xTaskWaitingToReceive != NULL )                     \
+        إذا( ( px_بهیر_بفر )->x_Task_انتظار_منزل_Receive != عدم )                     \
         {                                                                           \
-            ( void ) xTaskNotifyIndexed( ( pxStreamBuffer )->xTaskWaitingToReceive, \
-                                         ( pxStreamBuffer )->uxNotificationIndex,   \
+            ( فراغ ) x_Task_Notify_شاخصي( ( px_بهیر_بفر )->x_Task_انتظار_منزل_Receive, \
+                                         ( px_بهیر_بفر )->ux_Notification_شاخص,   \
                                          ( uint32_t ) 0,                            \
                                          eNoAction );                               \
-            ( pxStreamBuffer )->xTaskWaitingToReceive = NULL;                       \
+            ( px_بهیر_بفر )->x_Task_انتظار_منزل_Receive = عدم;                       \
         }                                                                           \
     }                                                                               \
-    ( void ) xTaskResumeAll()
-    #endif /* sbSEND_COMPLETED */
+    ( فراغ ) xTaskResumeAll()
+    #د_که_پای /* sbSEND_COMPLETED */
 
 /* If user has provided a per-instance send completed callback, then
  * invoke the callback else use the send complete macro which is provided by default for all instances.
  */
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-        #define prvSEND_COMPLETED( pxStreamBuffer )                                           \
-    do {                                                                                      \
-        if( ( pxStreamBuffer )->pxSendCompletedCallback != NULL )                             \
+    #إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+        #تعریف_کړه prvSEND_COMPLETED( px_بهیر_بفر )                                           \
+    افعل {                                                                                      \
+        إذا( ( px_بهیر_بفر )->pxSendCompletedCallback != عدم )                             \
         {                                                                                     \
-            ( pxStreamBuffer )->pxSendCompletedCallback( ( pxStreamBuffer ), pdFALSE, NULL ); \
+            ( px_بهیر_بفر )->pxSendCompletedCallback( ( px_بهیر_بفر ), pdFALSE, عدم ); \
         }                                                                                     \
-        else                                                                                  \
+        وإلا                                                                                  \
         {                                                                                     \
-            sbSEND_COMPLETED( ( pxStreamBuffer ) );                                           \
+            sbSEND_COMPLETED( ( px_بهیر_بفر ) );                                           \
         }                                                                                     \
-    } while( 0 )
-    #else /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
-        #define prvSEND_COMPLETED( pxStreamBuffer )    sbSEND_COMPLETED( ( pxStreamBuffer ) )
-    #endif /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+    } طالما( 0 )
+    #وإلا /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+        #تعریف_کړه prvSEND_COMPLETED( px_بهیر_بفر )    sbSEND_COMPLETED( ( px_بهیر_بفر ) )
+    #د_که_پای /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
 
 
-    #ifndef sbSEND_COMPLETE_FROM_ISR
-        #define sbSEND_COMPLETE_FROM_ISR( pxStreamBuffer, pxHigherPriorityTaskWoken )          \
-    do {                                                                                       \
-        UBaseType_t uxSavedInterruptStatus;                                                    \
+    #که_نه_تعریف_شوی sbSEND_COMPLETE_FROM_ISR
+        #تعریف_کړه sbSEND_COMPLETE_FROM_ISR( px_بهیر_بفر, px_Higher_لومړیتوب_Task_Woken )          \
+    افعل {                                                                                       \
+        UBaseType_t ux_Saved_مداخله_حالت;                                                    \
                                                                                                \
-        uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();                                \
+        ux_Saved_مداخله_حالت = taskENTER_CRITICAL_FROM_ISR();                                \
         {                                                                                      \
-            if( ( pxStreamBuffer )->xTaskWaitingToReceive != NULL )                            \
+            إذا( ( px_بهیر_بفر )->x_Task_انتظار_منزل_Receive != عدم )                            \
             {                                                                                  \
-                ( void ) xTaskNotifyIndexedFromISR( ( pxStreamBuffer )->xTaskWaitingToReceive, \
-                                                    ( pxStreamBuffer )->uxNotificationIndex,   \
+                ( فراغ ) x_Task_Notify_شاخصي_From_ISR( ( px_بهیر_بفر )->x_Task_انتظار_منزل_Receive, \
+                                                    ( px_بهیر_بفر )->ux_Notification_شاخص,   \
                                                     ( uint32_t ) 0,                            \
                                                     eNoAction,                                 \
-                                                    ( pxHigherPriorityTaskWoken ) );           \
-                ( pxStreamBuffer )->xTaskWaitingToReceive = NULL;                              \
+                                                    ( px_Higher_لومړیتوب_Task_Woken ) );           \
+                ( px_بهیر_بفر )->x_Task_انتظار_منزل_Receive = عدم;                              \
             }                                                                                  \
         }                                                                                      \
-        taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );                                  \
-    } while( 0 )
-    #endif /* sbSEND_COMPLETE_FROM_ISR */
+        taskEXIT_CRITICAL_FROM_ISR( ux_Saved_مداخله_حالت );                                  \
+    } طالما( 0 )
+    #د_که_پای /* sbSEND_COMPLETE_FROM_ISR */
 
 
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-        #define prvSEND_COMPLETE_FROM_ISR( pxStreamBuffer, pxHigherPriorityTaskWoken )                                \
-    do {                                                                                                              \
-        if( ( pxStreamBuffer )->pxSendCompletedCallback != NULL )                                                     \
+    #إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+        #تعریف_کړه prvSEND_COMPLETE_FROM_ISR( px_بهیر_بفر, px_Higher_لومړیتوب_Task_Woken )                                \
+    افعل {                                                                                                              \
+        إذا( ( px_بهیر_بفر )->pxSendCompletedCallback != عدم )                                                     \
         {                                                                                                             \
-            ( pxStreamBuffer )->pxSendCompletedCallback( ( pxStreamBuffer ), pdTRUE, ( pxHigherPriorityTaskWoken ) ); \
+            ( px_بهیر_بفر )->pxSendCompletedCallback( ( px_بهیر_بفر ), pdTRUE, ( px_Higher_لومړیتوب_Task_Woken ) ); \
         }                                                                                                             \
-        else                                                                                                          \
+        وإلا                                                                                                          \
         {                                                                                                             \
-            sbSEND_COMPLETE_FROM_ISR( ( pxStreamBuffer ), ( pxHigherPriorityTaskWoken ) );                            \
+            sbSEND_COMPLETE_FROM_ISR( ( px_بهیر_بفر ), ( px_Higher_لومړیتوب_Task_Woken ) );                            \
         }                                                                                                             \
-    } while( 0 )
-    #else /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
-        #define prvSEND_COMPLETE_FROM_ISR( pxStreamBuffer, pxHigherPriorityTaskWoken ) \
-    sbSEND_COMPLETE_FROM_ISR( ( pxStreamBuffer ), ( pxHigherPriorityTaskWoken ) )
-    #endif /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+    } طالما( 0 )
+    #وإلا /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+        #تعریف_کړه prvSEND_COMPLETE_FROM_ISR( px_بهیر_بفر, px_Higher_لومړیتوب_Task_Woken ) \
+    sbSEND_COMPLETE_FROM_ISR( ( px_بهیر_بفر ), ( px_Higher_لومړیتوب_Task_Woken ) )
+    #د_که_پای /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
 
 /* The number of bytes used to hold the length of a message in the buffer. */
-    #define sbBYTES_TO_STORE_MESSAGE_LENGTH    ( sizeof( configMESSAGE_BUFFER_LENGTH_TYPE ) )
+    #تعریف_کړه sb_بایټونه_منزل_STORE_پیغام_اوږدتیا    ( حجم( config_پیغام_بفر_اوږدتیا_TYPE ) )
 
 /* Bits stored in the ucFlags field of the stream buffer. */
-    #define sbFLAGS_IS_MESSAGE_BUFFER          ( ( uint8_t ) 1 ) /* Set if the stream buffer was created as a message buffer, in which case it holds discrete messages rather than a stream. */
-    #define sbFLAGS_IS_STATICALLY_ALLOCATED    ( ( uint8_t ) 2 ) /* Set if the stream buffer was created using statically allocated memory. */
-    #define sbFLAGS_IS_BATCHING_BUFFER         ( ( uint8_t ) 4 ) /* Set if the stream buffer was created as a batching buffer, meaning the receiver task will only unblock when the trigger level exceededs. */
+    #تعریف_کړه sb_FLAGS_IS_پیغام_بفر          ( ( uint8_t ) 1 ) /* Set if the stream buffer was created as a message buffer, in which case it holds discrete messages rather than a stream. */
+    #تعریف_کړه sbFLAGS_IS_STATICALLY_ALLOCATED    ( ( uint8_t ) 2 ) /* Set if the stream buffer was created using statically allocated memory. */
+    #تعریف_کړه sb_FLAGS_IS_BATCHING_بفر         ( ( uint8_t ) 4 ) /* Set if the stream buffer was created as a batching buffer, meaning the receiver task will only unblock when the trigger level exceededs. */
 
 /*-----------------------------------------------------------*/
 
 /* Structure that hold state information on the buffer. */
-typedef struct StreamBufferDef_t
+تعريفنوع بنية بهیر_بفر_Def_t
 {
-    volatile size_t xTail;                       /* Index to the next item to read within the buffer. */
-    volatile size_t xHead;                       /* Index to the next item to write within the buffer. */
-    size_t xLength;                              /* The length of the buffer pointed to by pucBuffer. */
-    size_t xTriggerLevelBytes;                   /* The number of bytes that must be in the stream buffer before a task that is waiting for data is unblocked. */
-    volatile TaskHandle_t xTaskWaitingToReceive; /* Holds the handle of a task waiting for data, or NULL if no tasks are waiting. */
-    volatile TaskHandle_t xTaskWaitingToSend;    /* Holds the handle of a task waiting to send data to a message buffer that is full. */
-    uint8_t * pucBuffer;                         /* Points to the buffer itself - that is - the RAM that stores the data passed through the buffer. */
+    متطاير size_t x_لکۍ;                       /* Index to the next item to read within the buffer. */
+    متطاير size_t x_سر;                       /* Index to the next item to write within the buffer. */
+    size_t x_اوږدتیا;                              /* The length of the buffer pointed to by pucBuffer. */
+    size_t x_Trigger_Level_بایټونه;                   /* The number of bytes that must be in the stream buffer before a task that is waiting for data is unblocked. */
+    متطاير TaskHandle_t x_Task_انتظار_منزل_Receive; /* Holds the handle of a task waiting for data, or NULL if no tasks are waiting. */
+    متطاير TaskHandle_t x_Task_انتظار_منزل_Send;    /* Holds the handle of a task waiting to send data to a message buffer that is full. */
+    uint8_t * puc_بفر;                         /* Points to the buffer itself - that is - the RAM that stores the data passed through the buffer. */
     uint8_t ucFlags;
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
-        UBaseType_t uxStreamBufferNumber; /* Used for tracing purposes. */
-    #endif
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
+        UBaseType_t ux_بهیر_بفر_شمېره; /* Used for tracing purposes. */
+    #د_که_پای
 
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-        StreamBufferCallbackFunction_t pxSendCompletedCallback;    /* Optional callback called on send complete. sbSEND_COMPLETED is called if this is NULL. */
-        StreamBufferCallbackFunction_t pxReceiveCompletedCallback; /* Optional callback called on receive complete.  sbRECEIVE_COMPLETED is called if this is NULL. */
-    #endif
-    UBaseType_t uxNotificationIndex;                               /* The index we are using for notification, by default tskDEFAULT_INDEX_TO_NOTIFY. */
-} StreamBuffer_t;
+    #إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+        بهیر_بفر_Callback_Function_t pxSendCompletedCallback;    /* Optional callback called on send complete. sbSEND_COMPLETED is called if this is NULL. */
+        بهیر_بفر_Callback_Function_t pxReceiveCompletedCallback; /* Optional callback called on receive complete.  sbRECEIVE_COMPLETED is called if this is NULL. */
+    #د_که_پای
+    UBaseType_t ux_Notification_شاخص;                               /* The index we are using for notification, by default tskDEFAULT_INDEX_TO_NOTIFY. */
+} بهیر_بفر_t;
 
 /*
  * The number of bytes available to be read from the buffer.
  */
-static size_t prvBytesInBuffer( const StreamBuffer_t * const pxStreamBuffer ) PRIVILEGED_FUNCTION;
+ساكن size_t prv_بایټونه_دننه_بفر( ثابت بهیر_بفر_t * ثابت px_بهیر_بفر ) PRIVILEGED_FUNCTION;
 
 /*
  * Add xCount bytes from pucData into the pxStreamBuffer's data storage area.
@@ -271,10 +271,10 @@ static size_t prvBytesInBuffer( const StreamBuffer_t * const pxStreamBuffer ) PR
  * To mark the write as complete, manually set the buffer's xHead field with the
  * returned xHead from this function.
  */
-static size_t prvWriteBytesToBuffer( StreamBuffer_t * const pxStreamBuffer,
-                                     const uint8_t * pucData,
-                                     size_t xCount,
-                                     size_t xHead ) PRIVILEGED_FUNCTION;
+ساكن size_t prv_Write_بایټونه_منزل_بفر( بهیر_بفر_t * ثابت px_بهیر_بفر,
+                                     ثابت uint8_t * puc_معلومات,
+                                     size_t x_شمېر,
+                                     size_t x_سر ) PRIVILEGED_FUNCTION;
 
 /*
  * If the stream buffer is being used as a message buffer, then reads an entire
@@ -283,10 +283,10 @@ static size_t prvWriteBytesToBuffer( StreamBuffer_t * const pxStreamBuffer,
  * prvReadBytesFromBuffer() is called to actually extract the bytes from the
  * buffer's data storage area.
  */
-static size_t prvReadMessageFromBuffer( StreamBuffer_t * pxStreamBuffer,
-                                        void * pvRxData,
-                                        size_t xBufferLengthBytes,
-                                        size_t xBytesAvailable ) PRIVILEGED_FUNCTION;
+ساكن size_t prv_Read_پیغام_From_بفر( بهیر_بفر_t * px_بهیر_بفر,
+                                        فراغ * pv_Rx_معلومات,
+                                        size_t x_بفر_اوږدتیا_بایټونه,
+                                        size_t x_بایټونه_شته ) PRIVILEGED_FUNCTION;
 
 /*
  * If the stream buffer is being used as a message buffer, then writes an entire
@@ -295,9 +295,9 @@ static size_t prvReadMessageFromBuffer( StreamBuffer_t * pxStreamBuffer,
  * prvWriteBytestoBuffer() is called to actually send the bytes to the buffer's
  * data storage area.
  */
-static size_t prvWriteMessageToBuffer( StreamBuffer_t * const pxStreamBuffer,
-                                       const void * pvTxData,
-                                       size_t xDataLengthBytes,
+ساكن size_t prv_Write_پیغام_منزل_بفر( بهیر_بفر_t * ثابت px_بهیر_بفر,
+                                       ثابت فراغ * pv_Tx_معلومات,
+                                       size_t x_معلومات_اوږدتیا_بایټونه,
                                        size_t xSpace,
                                        size_t xRequiredSpace ) PRIVILEGED_FUNCTION;
 
@@ -313,66 +313,66 @@ static size_t prvWriteMessageToBuffer( StreamBuffer_t * const pxStreamBuffer,
  * To mark the read as complete, manually set the buffer's xTail field with the
  * returned xTail from this function.
  */
-static size_t prvReadBytesFromBuffer( StreamBuffer_t * pxStreamBuffer,
-                                      uint8_t * pucData,
-                                      size_t xCount,
-                                      size_t xTail ) PRIVILEGED_FUNCTION;
+ساكن size_t prv_Read_بایټونه_From_بفر( بهیر_بفر_t * px_بهیر_بفر,
+                                      uint8_t * puc_معلومات,
+                                      size_t x_شمېر,
+                                      size_t x_لکۍ ) PRIVILEGED_FUNCTION;
 
 /*
  * Called by both pxStreamBufferCreate() and pxStreamBufferCreateStatic() to
  * initialise the members of the newly created stream buffer structure.
  */
-static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
-                                          uint8_t * const pucBuffer,
-                                          size_t xBufferSizeBytes,
-                                          size_t xTriggerLevelBytes,
+ساكن فراغ prv_Initialise_New_بهیر_بفر( بهیر_بفر_t * ثابت px_بهیر_بفر,
+                                          uint8_t * ثابت puc_بفر,
+                                          size_t x_بفر_اندازه_بایټونه,
+                                          size_t x_Trigger_Level_بایټونه,
                                           uint8_t ucFlags,
-                                          StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                          StreamBufferCallbackFunction_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
+                                          بهیر_بفر_Callback_Function_t pxSendCompletedCallback,
+                                          بهیر_بفر_Callback_Function_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
 
 /*-----------------------------------------------------------*/
-    #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    StreamBufferHandle_t xStreamBufferGenericCreate( size_t xBufferSizeBytes,
-                                                     size_t xTriggerLevelBytes,
-                                                     BaseType_t xStreamBufferType,
-                                                     StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                                     StreamBufferCallbackFunction_t pxReceiveCompletedCallback )
+    #إذا ( config_SUPPORT_DYNAMIC_ویش == 1 )
+    بهیر_بفر_Handle_t x_بهیر_بفر_Generic_Create( size_t x_بفر_اندازه_بایټونه,
+                                                     size_t x_Trigger_Level_بایټونه,
+                                                     بنسټ_Type_t x_بهیر_بفر_Type,
+                                                     بهیر_بفر_Callback_Function_t pxSendCompletedCallback,
+                                                     بهیر_بفر_Callback_Function_t pxReceiveCompletedCallback )
     {
-        void * pvAllocatedMemory;
+        فراغ * pv_Allocated_حافظه;
         uint8_t ucFlags;
 
-        traceENTER_xStreamBufferGenericCreate( xBufferSizeBytes, xTriggerLevelBytes, xStreamBufferType, pxSendCompletedCallback, pxReceiveCompletedCallback );
+        trace_ENTER_x_بهیر_بفر_Generic_Create( x_بفر_اندازه_بایټونه, x_Trigger_Level_بایټونه, x_بهیر_بفر_Type, pxSendCompletedCallback, pxReceiveCompletedCallback );
 
         /* In case the stream buffer is going to be used as a message buffer
          * (that is, it will hold discrete messages with a little meta data that
          * says how big the next message is) check the buffer will be large enough
          * to hold at least one message. */
-        if( xStreamBufferType == sbTYPE_MESSAGE_BUFFER )
+        إذا( x_بهیر_بفر_Type == sb_TYPE_پیغام_بفر )
         {
             /* Is a message buffer but not statically allocated. */
-            ucFlags = sbFLAGS_IS_MESSAGE_BUFFER;
-            configASSERT( xBufferSizeBytes > sbBYTES_TO_STORE_MESSAGE_LENGTH );
+            ucFlags = sb_FLAGS_IS_پیغام_بفر;
+            configASSERT( x_بفر_اندازه_بایټونه > sb_بایټونه_منزل_STORE_پیغام_اوږدتیا );
         }
-        else if( xStreamBufferType == sbTYPE_STREAM_BATCHING_BUFFER )
+        وإلا إذا( x_بهیر_بفر_Type == sb_TYPE_بهیر_BATCHING_بفر )
         {
             /* Is a batching buffer but not statically allocated. */
-            ucFlags = sbFLAGS_IS_BATCHING_BUFFER;
-            configASSERT( xBufferSizeBytes > 0 );
+            ucFlags = sb_FLAGS_IS_BATCHING_بفر;
+            configASSERT( x_بفر_اندازه_بایټونه > 0 );
         }
-        else
+        وإلا
         {
             /* Not a message buffer and not statically allocated. */
             ucFlags = 0;
-            configASSERT( xBufferSizeBytes > 0 );
+            configASSERT( x_بفر_اندازه_بایټونه > 0 );
         }
 
-        configASSERT( xTriggerLevelBytes <= xBufferSizeBytes );
+        configASSERT( x_Trigger_Level_بایټونه <= x_بفر_اندازه_بایټونه );
 
         /* A trigger level of 0 would cause a waiting task to unblock even when
          * the buffer was empty. */
-        if( xTriggerLevelBytes == ( size_t ) 0 )
+        إذا( x_Trigger_Level_بایټونه == ( size_t ) 0 )
         {
-            xTriggerLevelBytes = ( size_t ) 1;
+            x_Trigger_Level_بایټونه = ( size_t ) 1;
         }
 
         /* A stream buffer requires a StreamBuffer_t structure and a buffer.
@@ -383,77 +383,77 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
          * this is a quirk of the implementation that means otherwise the free
          * space would be reported as one byte smaller than would be logically
          * expected. */
-        if( xBufferSizeBytes < ( xBufferSizeBytes + 1U + sizeof( StreamBuffer_t ) ) )
+        إذا( x_بفر_اندازه_بایټونه < ( x_بفر_اندازه_بایټونه + 1U + حجم( بهیر_بفر_t ) ) )
         {
-            xBufferSizeBytes++;
-            pvAllocatedMemory = pvPortMalloc( xBufferSizeBytes + sizeof( StreamBuffer_t ) );
+            x_بفر_اندازه_بایټونه++;
+            pv_Allocated_حافظه = pv_پورټ_Malloc( x_بفر_اندازه_بایټونه + حجم( بهیر_بفر_t ) );
         }
-        else
+        وإلا
         {
-            pvAllocatedMemory = NULL;
+            pv_Allocated_حافظه = عدم;
         }
 
-        if( pvAllocatedMemory != NULL )
+        إذا( pv_Allocated_حافظه != عدم )
         {
             /* MISRA Ref 11.5.1 [Malloc memory assignment] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
             /* coverity[misra_c_2012_rule_11_5_violation] */
-            prvInitialiseNewStreamBuffer( ( StreamBuffer_t * ) pvAllocatedMemory,                         /* Structure at the start of the allocated memory. */
+            prv_Initialise_New_بهیر_بفر( ( بهیر_بفر_t * ) pv_Allocated_حافظه,                         /* Structure at the start of the allocated memory. */
                                                                                                           /* MISRA Ref 11.5.1 [Malloc memory assignment] */
                                                                                                           /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
                                                                                                           /* coverity[misra_c_2012_rule_11_5_violation] */
-                                          ( ( uint8_t * ) pvAllocatedMemory ) + sizeof( StreamBuffer_t ), /* Storage area follows. */
-                                          xBufferSizeBytes,
-                                          xTriggerLevelBytes,
+                                          ( ( uint8_t * ) pv_Allocated_حافظه ) + حجم( بهیر_بفر_t ), /* Storage area follows. */
+                                          x_بفر_اندازه_بایټونه,
+                                          x_Trigger_Level_بایټونه,
                                           ucFlags,
                                           pxSendCompletedCallback,
                                           pxReceiveCompletedCallback );
 
-            traceSTREAM_BUFFER_CREATE( ( ( StreamBuffer_t * ) pvAllocatedMemory ), xStreamBufferType );
+            trace_بهیر_بفر_CREATE( ( ( بهیر_بفر_t * ) pv_Allocated_حافظه ), x_بهیر_بفر_Type );
         }
-        else
+        وإلا
         {
-            traceSTREAM_BUFFER_CREATE_FAILED( xStreamBufferType );
+            trace_بهیر_بفر_CREATE_FAILED( x_بهیر_بفر_Type );
         }
 
-        traceRETURN_xStreamBufferGenericCreate( pvAllocatedMemory );
+        trace_RETURN_x_بهیر_بفر_Generic_Create( pv_Allocated_حافظه );
 
         /* MISRA Ref 11.5.1 [Malloc memory assignment] */
         /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
         /* coverity[misra_c_2012_rule_11_5_violation] */
-        return ( StreamBufferHandle_t ) pvAllocatedMemory;
+        أرجع ( بهیر_بفر_Handle_t ) pv_Allocated_حافظه;
     }
-    #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+    #د_که_پای /* configSUPPORT_DYNAMIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-    #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+    #إذا ( config_SUPPORT_STATIC_ویش == 1 )
 
-    StreamBufferHandle_t xStreamBufferGenericCreateStatic( size_t xBufferSizeBytes,
-                                                           size_t xTriggerLevelBytes,
-                                                           BaseType_t xStreamBufferType,
-                                                           uint8_t * const pucStreamBufferStorageArea,
-                                                           StaticStreamBuffer_t * const pxStaticStreamBuffer,
-                                                           StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                                           StreamBufferCallbackFunction_t pxReceiveCompletedCallback )
+    بهیر_بفر_Handle_t x_بهیر_بفر_Generic_Create_Static( size_t x_بفر_اندازه_بایټونه,
+                                                           size_t x_Trigger_Level_بایټونه,
+                                                           بنسټ_Type_t x_بهیر_بفر_Type,
+                                                           uint8_t * ثابت puc_بهیر_بفر_Storage_Area,
+                                                           Static_بهیر_بفر_t * ثابت px_Static_بهیر_بفر,
+                                                           بهیر_بفر_Callback_Function_t pxSendCompletedCallback,
+                                                           بهیر_بفر_Callback_Function_t pxReceiveCompletedCallback )
     {
         /* MISRA Ref 11.3.1 [Misaligned access] */
         /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-113 */
         /* coverity[misra_c_2012_rule_11_3_violation] */
-        StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) pxStaticStreamBuffer;
-        StreamBufferHandle_t xReturn;
+        بهیر_بفر_t * ثابت px_بهیر_بفر = ( بهیر_بفر_t * ) px_Static_بهیر_بفر;
+        بهیر_بفر_Handle_t xReturn;
         uint8_t ucFlags;
 
-        traceENTER_xStreamBufferGenericCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, xStreamBufferType, pucStreamBufferStorageArea, pxStaticStreamBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback );
+        trace_ENTER_x_بهیر_بفر_Generic_Create_Static( x_بفر_اندازه_بایټونه, x_Trigger_Level_بایټونه, x_بهیر_بفر_Type, puc_بهیر_بفر_Storage_Area, px_Static_بهیر_بفر, pxSendCompletedCallback, pxReceiveCompletedCallback );
 
-        configASSERT( pucStreamBufferStorageArea );
-        configASSERT( pxStaticStreamBuffer );
-        configASSERT( xTriggerLevelBytes <= xBufferSizeBytes );
+        configASSERT( puc_بهیر_بفر_Storage_Area );
+        configASSERT( px_Static_بهیر_بفر );
+        configASSERT( x_Trigger_Level_بایټونه <= x_بفر_اندازه_بایټونه );
 
         /* A trigger level of 0 would cause a waiting task to unblock even when
          * the buffer was empty. */
-        if( xTriggerLevelBytes == ( size_t ) 0 )
+        إذا( x_Trigger_Level_بایټونه == ( size_t ) 0 )
         {
-            xTriggerLevelBytes = ( size_t ) 1;
+            x_Trigger_Level_بایټونه = ( size_t ) 1;
         }
 
         /* In case the stream buffer is going to be used as a message buffer
@@ -461,639 +461,639 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
          * says how big the next message is) check the buffer will be large enough
          * to hold at least one message. */
 
-        if( xStreamBufferType == sbTYPE_MESSAGE_BUFFER )
+        إذا( x_بهیر_بفر_Type == sb_TYPE_پیغام_بفر )
         {
             /* Statically allocated message buffer. */
-            ucFlags = sbFLAGS_IS_MESSAGE_BUFFER | sbFLAGS_IS_STATICALLY_ALLOCATED;
-            configASSERT( xBufferSizeBytes > sbBYTES_TO_STORE_MESSAGE_LENGTH );
+            ucFlags = sb_FLAGS_IS_پیغام_بفر | sbFLAGS_IS_STATICALLY_ALLOCATED;
+            configASSERT( x_بفر_اندازه_بایټونه > sb_بایټونه_منزل_STORE_پیغام_اوږدتیا );
         }
-        else if( xStreamBufferType == sbTYPE_STREAM_BATCHING_BUFFER )
+        وإلا إذا( x_بهیر_بفر_Type == sb_TYPE_بهیر_BATCHING_بفر )
         {
             /* Statically allocated batching buffer. */
-            ucFlags = sbFLAGS_IS_BATCHING_BUFFER | sbFLAGS_IS_STATICALLY_ALLOCATED;
-            configASSERT( xBufferSizeBytes > 0 );
+            ucFlags = sb_FLAGS_IS_BATCHING_بفر | sbFLAGS_IS_STATICALLY_ALLOCATED;
+            configASSERT( x_بفر_اندازه_بایټونه > 0 );
         }
-        else
+        وإلا
         {
             /* Statically allocated stream buffer. */
             ucFlags = sbFLAGS_IS_STATICALLY_ALLOCATED;
         }
 
-        #if ( configASSERT_DEFINED == 1 )
+        #إذا ( configASSERT_DEFINED == 1 )
         {
             /* Sanity check that the size of the structure used to declare a
              * variable of type StaticStreamBuffer_t equals the size of the real
              * message buffer structure. */
-            volatile size_t xSize = sizeof( StaticStreamBuffer_t );
-            configASSERT( xSize == sizeof( StreamBuffer_t ) );
+            متطاير size_t x_اندازه = حجم( Static_بهیر_بفر_t );
+            configASSERT( x_اندازه == حجم( بهیر_بفر_t ) );
         }
-        #endif /* configASSERT_DEFINED */
+        #د_که_پای /* configASSERT_DEFINED */
 
-        if( ( pucStreamBufferStorageArea != NULL ) && ( pxStaticStreamBuffer != NULL ) )
+        إذا( ( puc_بهیر_بفر_Storage_Area != عدم ) && ( px_Static_بهیر_بفر != عدم ) )
         {
-            prvInitialiseNewStreamBuffer( pxStreamBuffer,
-                                          pucStreamBufferStorageArea,
-                                          xBufferSizeBytes,
-                                          xTriggerLevelBytes,
+            prv_Initialise_New_بهیر_بفر( px_بهیر_بفر,
+                                          puc_بهیر_بفر_Storage_Area,
+                                          x_بفر_اندازه_بایټونه,
+                                          x_Trigger_Level_بایټونه,
                                           ucFlags,
                                           pxSendCompletedCallback,
                                           pxReceiveCompletedCallback );
 
             /* Remember this was statically allocated in case it is ever deleted
              * again. */
-            pxStreamBuffer->ucFlags |= sbFLAGS_IS_STATICALLY_ALLOCATED;
+            px_بهیر_بفر->ucFlags |= sbFLAGS_IS_STATICALLY_ALLOCATED;
 
-            traceSTREAM_BUFFER_CREATE( pxStreamBuffer, xStreamBufferType );
+            trace_بهیر_بفر_CREATE( px_بهیر_بفر, x_بهیر_بفر_Type );
 
             /* MISRA Ref 11.3.1 [Misaligned access] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-113 */
             /* coverity[misra_c_2012_rule_11_3_violation] */
-            xReturn = ( StreamBufferHandle_t ) pxStaticStreamBuffer;
+            xReturn = ( بهیر_بفر_Handle_t ) px_Static_بهیر_بفر;
         }
-        else
+        وإلا
         {
-            xReturn = NULL;
-            traceSTREAM_BUFFER_CREATE_STATIC_FAILED( xReturn, xStreamBufferType );
+            xReturn = عدم;
+            trace_بهیر_بفر_CREATE_STATIC_FAILED( xReturn, x_بهیر_بفر_Type );
         }
 
-        traceRETURN_xStreamBufferGenericCreateStatic( xReturn );
+        trace_RETURN_x_بهیر_بفر_Generic_Create_Static( xReturn );
 
-        return xReturn;
+        أرجع xReturn;
     }
-    #endif /* ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+    #د_که_پای /* ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*-----------------------------------------------------------*/
 
-    #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    BaseType_t xStreamBufferGetStaticBuffers( StreamBufferHandle_t xStreamBuffer,
-                                              uint8_t ** ppucStreamBufferStorageArea,
-                                              StaticStreamBuffer_t ** ppxStaticStreamBuffer )
+    #إذا ( config_SUPPORT_STATIC_ویش == 1 )
+    بنسټ_Type_t x_بهیر_بفر_Get_Static_Buffers( بهیر_بفر_Handle_t x_بهیر_بفر,
+                                              uint8_t ** ppuc_بهیر_بفر_Storage_Area,
+                                              Static_بهیر_بفر_t ** ppx_Static_بهیر_بفر )
     {
-        BaseType_t xReturn;
-        StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
+        بنسټ_Type_t xReturn;
+        بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
 
-        traceENTER_xStreamBufferGetStaticBuffers( xStreamBuffer, ppucStreamBufferStorageArea, ppxStaticStreamBuffer );
+        trace_ENTER_x_بهیر_بفر_Get_Static_Buffers( x_بهیر_بفر, ppuc_بهیر_بفر_Storage_Area, ppx_Static_بهیر_بفر );
 
-        configASSERT( pxStreamBuffer );
-        configASSERT( ppucStreamBufferStorageArea );
-        configASSERT( ppxStaticStreamBuffer );
+        configASSERT( px_بهیر_بفر );
+        configASSERT( ppuc_بهیر_بفر_Storage_Area );
+        configASSERT( ppx_Static_بهیر_بفر );
 
-        if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_STATICALLY_ALLOCATED ) != ( uint8_t ) 0 )
+        إذا( ( px_بهیر_بفر->ucFlags & sbFLAGS_IS_STATICALLY_ALLOCATED ) != ( uint8_t ) 0 )
         {
-            *ppucStreamBufferStorageArea = pxStreamBuffer->pucBuffer;
+            *ppuc_بهیر_بفر_Storage_Area = px_بهیر_بفر->puc_بفر;
             /* MISRA Ref 11.3.1 [Misaligned access] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-113 */
             /* coverity[misra_c_2012_rule_11_3_violation] */
-            *ppxStaticStreamBuffer = ( StaticStreamBuffer_t * ) pxStreamBuffer;
+            *ppx_Static_بهیر_بفر = ( Static_بهیر_بفر_t * ) px_بهیر_بفر;
             xReturn = pdTRUE;
         }
-        else
+        وإلا
         {
             xReturn = pdFALSE;
         }
 
-        traceRETURN_xStreamBufferGetStaticBuffers( xReturn );
+        trace_RETURN_x_بهیر_بفر_Get_Static_Buffers( xReturn );
 
-        return xReturn;
+        أرجع xReturn;
     }
-    #endif /* configSUPPORT_STATIC_ALLOCATION */
+    #د_که_پای /* configSUPPORT_STATIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-void vStreamBufferDelete( StreamBufferHandle_t xStreamBuffer )
+فراغ v_بهیر_بفر_Delete( بهیر_بفر_Handle_t x_بهیر_بفر )
 {
-    StreamBuffer_t * pxStreamBuffer = xStreamBuffer;
+    بهیر_بفر_t * px_بهیر_بفر = x_بهیر_بفر;
 
-    traceENTER_vStreamBufferDelete( xStreamBuffer );
+    trace_ENTER_v_بهیر_بفر_Delete( x_بهیر_بفر );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_بهیر_بفر );
 
-    traceSTREAM_BUFFER_DELETE( xStreamBuffer );
+    trace_بهیر_بفر_DELETE( x_بهیر_بفر );
 
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_STATICALLY_ALLOCATED ) == ( uint8_t ) pdFALSE )
+    إذا( ( px_بهیر_بفر->ucFlags & sbFLAGS_IS_STATICALLY_ALLOCATED ) == ( uint8_t ) pdFALSE )
     {
-        #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+        #إذا ( config_SUPPORT_DYNAMIC_ویش == 1 )
         {
             /* Both the structure and the buffer were allocated using a single call
             * to pvPortMalloc(), hence only one call to vPortFree() is required. */
-            vPortFree( ( void * ) pxStreamBuffer );
+            v_پورټ_Free( ( فراغ * ) px_بهیر_بفر );
         }
-        #else
+        #وإلا
         {
             /* Should not be possible to get here, ucFlags must be corrupt.
              * Force an assert. */
-            configASSERT( xStreamBuffer == ( StreamBufferHandle_t ) ~0 );
+            configASSERT( x_بهیر_بفر == ( بهیر_بفر_Handle_t ) ~0 );
         }
-        #endif
+        #د_که_پای
     }
-    else
+    وإلا
     {
         /* The structure and buffer were not allocated dynamically and cannot be
          * freed - just scrub the structure so future use will assert. */
-        ( void ) memset( pxStreamBuffer, 0x00, sizeof( StreamBuffer_t ) );
+        ( فراغ ) memset( px_بهیر_بفر, 0x00, حجم( بهیر_بفر_t ) );
     }
 
-    traceRETURN_vStreamBufferDelete();
+    trace_RETURN_v_بهیر_بفر_Delete();
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xStreamBufferReset( StreamBufferHandle_t xStreamBuffer )
+بنسټ_Type_t x_بهیر_بفر_Reset( بهیر_بفر_Handle_t x_بهیر_بفر )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    BaseType_t xReturn = pdFAIL;
-    StreamBufferCallbackFunction_t pxSendCallback = NULL, pxReceiveCallback = NULL;
+    بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
+    بنسټ_Type_t xReturn = pdFAIL;
+    بهیر_بفر_Callback_Function_t pxSendCallback = عدم, pxReceiveCallback = عدم;
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
-        UBaseType_t uxStreamBufferNumber;
-    #endif
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
+        UBaseType_t ux_بهیر_بفر_شمېره;
+    #د_که_پای
 
-    traceENTER_xStreamBufferReset( xStreamBuffer );
+    trace_ENTER_x_بهیر_بفر_Reset( x_بهیر_بفر );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_بهیر_بفر );
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
     {
         /* Store the stream buffer number so it can be restored after the
          * reset. */
-        uxStreamBufferNumber = pxStreamBuffer->uxStreamBufferNumber;
+        ux_بهیر_بفر_شمېره = px_بهیر_بفر->ux_بهیر_بفر_شمېره;
     }
-    #endif
+    #د_که_پای
 
     /* Can only reset a message buffer if there are no tasks blocked on it. */
     taskENTER_CRITICAL();
     {
-        if( ( pxStreamBuffer->xTaskWaitingToReceive == NULL ) && ( pxStreamBuffer->xTaskWaitingToSend == NULL ) )
+        إذا( ( px_بهیر_بفر->x_Task_انتظار_منزل_Receive == عدم ) && ( px_بهیر_بفر->x_Task_انتظار_منزل_Send == عدم ) )
         {
-            #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+            #إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
             {
-                pxSendCallback = pxStreamBuffer->pxSendCompletedCallback;
-                pxReceiveCallback = pxStreamBuffer->pxReceiveCompletedCallback;
+                pxSendCallback = px_بهیر_بفر->pxSendCompletedCallback;
+                pxReceiveCallback = px_بهیر_بفر->pxReceiveCompletedCallback;
             }
-            #endif
+            #د_که_پای
 
-            prvInitialiseNewStreamBuffer( pxStreamBuffer,
-                                          pxStreamBuffer->pucBuffer,
-                                          pxStreamBuffer->xLength,
-                                          pxStreamBuffer->xTriggerLevelBytes,
-                                          pxStreamBuffer->ucFlags,
+            prv_Initialise_New_بهیر_بفر( px_بهیر_بفر,
+                                          px_بهیر_بفر->puc_بفر,
+                                          px_بهیر_بفر->x_اوږدتیا,
+                                          px_بهیر_بفر->x_Trigger_Level_بایټونه,
+                                          px_بهیر_بفر->ucFlags,
                                           pxSendCallback,
                                           pxReceiveCallback );
 
-            #if ( configUSE_TRACE_FACILITY == 1 )
+            #إذا ( configUSE_TRACE_FACILITY == 1 )
             {
-                pxStreamBuffer->uxStreamBufferNumber = uxStreamBufferNumber;
+                px_بهیر_بفر->ux_بهیر_بفر_شمېره = ux_بهیر_بفر_شمېره;
             }
-            #endif
+            #د_که_پای
 
-            traceSTREAM_BUFFER_RESET( xStreamBuffer );
+            trace_بهیر_بفر_RESET( x_بهیر_بفر );
 
             xReturn = pdPASS;
         }
     }
     taskEXIT_CRITICAL();
 
-    traceRETURN_xStreamBufferReset( xReturn );
+    trace_RETURN_x_بهیر_بفر_Reset( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xStreamBufferResetFromISR( StreamBufferHandle_t xStreamBuffer )
+بنسټ_Type_t x_بهیر_بفر_Reset_From_ISR( بهیر_بفر_Handle_t x_بهیر_بفر )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    BaseType_t xReturn = pdFAIL;
-    StreamBufferCallbackFunction_t pxSendCallback = NULL, pxReceiveCallback = NULL;
-    UBaseType_t uxSavedInterruptStatus;
+    بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
+    بنسټ_Type_t xReturn = pdFAIL;
+    بهیر_بفر_Callback_Function_t pxSendCallback = عدم, pxReceiveCallback = عدم;
+    UBaseType_t ux_Saved_مداخله_حالت;
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
-        UBaseType_t uxStreamBufferNumber;
-    #endif
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
+        UBaseType_t ux_بهیر_بفر_شمېره;
+    #د_که_پای
 
-    traceENTER_xStreamBufferResetFromISR( xStreamBuffer );
+    trace_ENTER_x_بهیر_بفر_Reset_From_ISR( x_بهیر_بفر );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_بهیر_بفر );
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
     {
         /* Store the stream buffer number so it can be restored after the
          * reset. */
-        uxStreamBufferNumber = pxStreamBuffer->uxStreamBufferNumber;
+        ux_بهیر_بفر_شمېره = px_بهیر_بفر->ux_بهیر_بفر_شمېره;
     }
-    #endif
+    #د_که_پای
 
     /* Can only reset a message buffer if there are no tasks blocked on it. */
     /* MISRA Ref 4.7.1 [Return value shall be checked] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
     /* coverity[misra_c_2012_directive_4_7_violation] */
-    uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();
+    ux_Saved_مداخله_حالت = taskENTER_CRITICAL_FROM_ISR();
     {
-        if( ( pxStreamBuffer->xTaskWaitingToReceive == NULL ) && ( pxStreamBuffer->xTaskWaitingToSend == NULL ) )
+        إذا( ( px_بهیر_بفر->x_Task_انتظار_منزل_Receive == عدم ) && ( px_بهیر_بفر->x_Task_انتظار_منزل_Send == عدم ) )
         {
-            #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+            #إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
             {
-                pxSendCallback = pxStreamBuffer->pxSendCompletedCallback;
-                pxReceiveCallback = pxStreamBuffer->pxReceiveCompletedCallback;
+                pxSendCallback = px_بهیر_بفر->pxSendCompletedCallback;
+                pxReceiveCallback = px_بهیر_بفر->pxReceiveCompletedCallback;
             }
-            #endif
+            #د_که_پای
 
-            prvInitialiseNewStreamBuffer( pxStreamBuffer,
-                                          pxStreamBuffer->pucBuffer,
-                                          pxStreamBuffer->xLength,
-                                          pxStreamBuffer->xTriggerLevelBytes,
-                                          pxStreamBuffer->ucFlags,
+            prv_Initialise_New_بهیر_بفر( px_بهیر_بفر,
+                                          px_بهیر_بفر->puc_بفر,
+                                          px_بهیر_بفر->x_اوږدتیا,
+                                          px_بهیر_بفر->x_Trigger_Level_بایټونه,
+                                          px_بهیر_بفر->ucFlags,
                                           pxSendCallback,
                                           pxReceiveCallback );
 
-            #if ( configUSE_TRACE_FACILITY == 1 )
+            #إذا ( configUSE_TRACE_FACILITY == 1 )
             {
-                pxStreamBuffer->uxStreamBufferNumber = uxStreamBufferNumber;
+                px_بهیر_بفر->ux_بهیر_بفر_شمېره = ux_بهیر_بفر_شمېره;
             }
-            #endif
+            #د_که_پای
 
-            traceSTREAM_BUFFER_RESET_FROM_ISR( xStreamBuffer );
+            trace_بهیر_بفر_RESET_FROM_ISR( x_بهیر_بفر );
 
             xReturn = pdPASS;
         }
     }
-    taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );
+    taskEXIT_CRITICAL_FROM_ISR( ux_Saved_مداخله_حالت );
 
-    traceRETURN_xStreamBufferResetFromISR( xReturn );
+    trace_RETURN_x_بهیر_بفر_Reset_From_ISR( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xStreamBufferSetTriggerLevel( StreamBufferHandle_t xStreamBuffer,
+بنسټ_Type_t x_بهیر_بفر_سېټ_Trigger_Level( بهیر_بفر_Handle_t x_بهیر_بفر,
                                          size_t xTriggerLevel )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    BaseType_t xReturn;
+    بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
+    بنسټ_Type_t xReturn;
 
-    traceENTER_xStreamBufferSetTriggerLevel( xStreamBuffer, xTriggerLevel );
+    trace_ENTER_x_بهیر_بفر_سېټ_Trigger_Level( x_بهیر_بفر, xTriggerLevel );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_بهیر_بفر );
 
     /* It is not valid for the trigger level to be 0. */
-    if( xTriggerLevel == ( size_t ) 0 )
+    إذا( xTriggerLevel == ( size_t ) 0 )
     {
         xTriggerLevel = ( size_t ) 1;
     }
 
     /* The trigger level is the number of bytes that must be in the stream
      * buffer before a task that is waiting for data is unblocked. */
-    if( xTriggerLevel < pxStreamBuffer->xLength )
+    إذا( xTriggerLevel < px_بهیر_بفر->x_اوږدتیا )
     {
-        pxStreamBuffer->xTriggerLevelBytes = xTriggerLevel;
+        px_بهیر_بفر->x_Trigger_Level_بایټونه = xTriggerLevel;
         xReturn = pdPASS;
     }
-    else
+    وإلا
     {
         xReturn = pdFALSE;
     }
 
-    traceRETURN_xStreamBufferSetTriggerLevel( xReturn );
+    trace_RETURN_x_بهیر_بفر_سېټ_Trigger_Level( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer )
+size_t x_بهیر_بفر_Spaces_شته( بهیر_بفر_Handle_t x_بهیر_بفر )
 {
-    const StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
+    ثابت بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
     size_t xSpace;
-    size_t xOriginalTail;
+    size_t x_Original_لکۍ;
 
-    traceENTER_xStreamBufferSpacesAvailable( xStreamBuffer );
+    trace_ENTER_x_بهیر_بفر_Spaces_شته( x_بهیر_بفر );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_بهیر_بفر );
 
     /* The code below reads xTail and then xHead.  This is safe if the stream
      * buffer is updated once between the two reads - but not if the stream buffer
      * is updated more than once between the two reads - hence the loop. */
-    do
+    افعل
     {
-        xOriginalTail = pxStreamBuffer->xTail;
-        xSpace = pxStreamBuffer->xLength + pxStreamBuffer->xTail;
-        xSpace -= pxStreamBuffer->xHead;
-    } while( xOriginalTail != pxStreamBuffer->xTail );
+        x_Original_لکۍ = px_بهیر_بفر->x_لکۍ;
+        xSpace = px_بهیر_بفر->x_اوږدتیا + px_بهیر_بفر->x_لکۍ;
+        xSpace -= px_بهیر_بفر->x_سر;
+    } طالما( x_Original_لکۍ != px_بهیر_بفر->x_لکۍ );
 
     xSpace -= ( size_t ) 1;
 
-    if( xSpace >= pxStreamBuffer->xLength )
+    إذا( xSpace >= px_بهیر_بفر->x_اوږدتیا )
     {
-        xSpace -= pxStreamBuffer->xLength;
+        xSpace -= px_بهیر_بفر->x_اوږدتیا;
     }
-    else
+    وإلا
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    traceRETURN_xStreamBufferSpacesAvailable( xSpace );
+    trace_RETURN_x_بهیر_بفر_Spaces_شته( xSpace );
 
-    return xSpace;
+    أرجع xSpace;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer )
+size_t x_بهیر_بفر_بایټونه_شته( بهیر_بفر_Handle_t x_بهیر_بفر )
 {
-    const StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
+    ثابت بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
     size_t xReturn;
 
-    traceENTER_xStreamBufferBytesAvailable( xStreamBuffer );
+    trace_ENTER_x_بهیر_بفر_بایټونه_شته( x_بهیر_بفر );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_بهیر_بفر );
 
-    xReturn = prvBytesInBuffer( pxStreamBuffer );
+    xReturn = prv_بایټونه_دننه_بفر( px_بهیر_بفر );
 
-    traceRETURN_xStreamBufferBytesAvailable( xReturn );
+    trace_RETURN_x_بهیر_بفر_بایټونه_شته( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
-                          const void * pvTxData,
-                          size_t xDataLengthBytes,
-                          TickType_t xTicksToWait )
+size_t x_بهیر_بفر_Send( بهیر_بفر_Handle_t x_بهیر_بفر,
+                          ثابت فراغ * pv_Tx_معلومات,
+                          size_t x_معلومات_اوږدتیا_بایټونه,
+                          TickType_t x_Ticks_منزل_Wait )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
+    بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
     size_t xReturn, xSpace = 0;
-    size_t xRequiredSpace = xDataLengthBytes;
-    TimeOut_t xTimeOut;
+    size_t xRequiredSpace = x_معلومات_اوږدتیا_بایټونه;
+    وخت_بهر_t x_وخت_بهر_2;
     size_t xMaxReportedSpace = 0;
 
-    traceENTER_xStreamBufferSend( xStreamBuffer, pvTxData, xDataLengthBytes, xTicksToWait );
+    trace_ENTER_x_بهیر_بفر_Send( x_بهیر_بفر, pv_Tx_معلومات, x_معلومات_اوږدتیا_بایټونه, x_Ticks_منزل_Wait );
 
-    configASSERT( pvTxData );
-    configASSERT( pxStreamBuffer );
+    configASSERT( pv_Tx_معلومات );
+    configASSERT( px_بهیر_بفر );
 
     /* The maximum amount of space a stream buffer will ever report is its length
      * minus 1. */
-    xMaxReportedSpace = pxStreamBuffer->xLength - ( size_t ) 1;
+    xMaxReportedSpace = px_بهیر_بفر->x_اوږدتیا - ( size_t ) 1;
 
     /* This send function is used to write to both message buffers and stream
      * buffers.  If this is a message buffer then the space needed must be
      * increased by the amount of bytes needed to store the length of the
      * message. */
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) != ( uint8_t ) 0 )
+    إذا( ( px_بهیر_بفر->ucFlags & sb_FLAGS_IS_پیغام_بفر ) != ( uint8_t ) 0 )
     {
-        xRequiredSpace += sbBYTES_TO_STORE_MESSAGE_LENGTH;
+        xRequiredSpace += sb_بایټونه_منزل_STORE_پیغام_اوږدتیا;
 
         /* Overflow? */
-        configASSERT( xRequiredSpace > xDataLengthBytes );
+        configASSERT( xRequiredSpace > x_معلومات_اوږدتیا_بایټونه );
 
         /* If this is a message buffer then it must be possible to write the
          * whole message. */
-        if( xRequiredSpace > xMaxReportedSpace )
+        إذا( xRequiredSpace > xMaxReportedSpace )
         {
             /* The message would not fit even if the entire buffer was empty,
              * so don't wait for space. */
-            xTicksToWait = ( TickType_t ) 0;
+            x_Ticks_منزل_Wait = ( TickType_t ) 0;
         }
-        else
+        وإلا
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    وإلا
     {
         /* If this is a stream buffer then it is acceptable to write only part
          * of the message to the buffer.  Cap the length to the total length of
          * the buffer. */
-        if( xRequiredSpace > xMaxReportedSpace )
+        إذا( xRequiredSpace > xMaxReportedSpace )
         {
             xRequiredSpace = xMaxReportedSpace;
         }
-        else
+        وإلا
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
 
-    if( xTicksToWait != ( TickType_t ) 0 )
+    إذا( x_Ticks_منزل_Wait != ( TickType_t ) 0 )
     {
-        vTaskSetTimeOutState( &xTimeOut );
+        v_Task_سېټ_وخت_بهر_State( &x_وخت_بهر_2 );
 
-        do
+        افعل
         {
             /* Wait until the required number of bytes are free in the message
              * buffer. */
             taskENTER_CRITICAL();
             {
-                xSpace = xStreamBufferSpacesAvailable( pxStreamBuffer );
+                xSpace = x_بهیر_بفر_Spaces_شته( px_بهیر_بفر );
 
-                if( xSpace < xRequiredSpace )
+                إذا( xSpace < xRequiredSpace )
                 {
                     /* Clear notification state as going to wait for space. */
-                    ( void ) xTaskNotifyStateClearIndexed( NULL, pxStreamBuffer->uxNotificationIndex );
+                    ( فراغ ) x_Task_Notify_State_Clear_شاخصي( عدم, px_بهیر_بفر->ux_Notification_شاخص );
 
                     /* Should only be one writer. */
-                    configASSERT( pxStreamBuffer->xTaskWaitingToSend == NULL );
-                    pxStreamBuffer->xTaskWaitingToSend = xTaskGetCurrentTaskHandle();
+                    configASSERT( px_بهیر_بفر->x_Task_انتظار_منزل_Send == عدم );
+                    px_بهیر_بفر->x_Task_انتظار_منزل_Send = xTaskGetCurrentTaskHandle();
                 }
-                else
+                وإلا
                 {
                     taskEXIT_CRITICAL();
-                    break;
+                    اكسر;
                 }
             }
             taskEXIT_CRITICAL();
 
-            traceBLOCKING_ON_STREAM_BUFFER_SEND( xStreamBuffer );
-            ( void ) xTaskNotifyWaitIndexed( pxStreamBuffer->uxNotificationIndex, ( uint32_t ) 0, ( uint32_t ) 0, NULL, xTicksToWait );
-            pxStreamBuffer->xTaskWaitingToSend = NULL;
-        } while( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE );
+            trace_BLOCKING_ON_بهیر_بفر_SEND( x_بهیر_بفر );
+            ( فراغ ) x_Task_Notify_Wait_شاخصي( px_بهیر_بفر->ux_Notification_شاخص, ( uint32_t ) 0, ( uint32_t ) 0, عدم, x_Ticks_منزل_Wait );
+            px_بهیر_بفر->x_Task_انتظار_منزل_Send = عدم;
+        } طالما( x_Task_Check_For_وخت_بهر( &x_وخت_بهر_2, &x_Ticks_منزل_Wait ) == pdFALSE );
     }
-    else
+    وإلا
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    if( xSpace == ( size_t ) 0 )
+    إذا( xSpace == ( size_t ) 0 )
     {
-        xSpace = xStreamBufferSpacesAvailable( pxStreamBuffer );
+        xSpace = x_بهیر_بفر_Spaces_شته( px_بهیر_بفر );
     }
-    else
+    وإلا
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    xReturn = prvWriteMessageToBuffer( pxStreamBuffer, pvTxData, xDataLengthBytes, xSpace, xRequiredSpace );
+    xReturn = prv_Write_پیغام_منزل_بفر( px_بهیر_بفر, pv_Tx_معلومات, x_معلومات_اوږدتیا_بایټونه, xSpace, xRequiredSpace );
 
-    if( xReturn > ( size_t ) 0 )
+    إذا( xReturn > ( size_t ) 0 )
     {
-        traceSTREAM_BUFFER_SEND( xStreamBuffer, xReturn );
+        trace_بهیر_بفر_SEND( x_بهیر_بفر, xReturn );
 
         /* Was a task waiting for the data? */
-        if( prvBytesInBuffer( pxStreamBuffer ) >= pxStreamBuffer->xTriggerLevelBytes )
+        إذا( prv_بایټونه_دننه_بفر( px_بهیر_بفر ) >= px_بهیر_بفر->x_Trigger_Level_بایټونه )
         {
-            prvSEND_COMPLETED( pxStreamBuffer );
+            prvSEND_COMPLETED( px_بهیر_بفر );
         }
-        else
+        وإلا
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    وإلا
     {
         mtCOVERAGE_TEST_MARKER();
-        traceSTREAM_BUFFER_SEND_FAILED( xStreamBuffer );
+        trace_بهیر_بفر_SEND_FAILED( x_بهیر_بفر );
     }
 
-    traceRETURN_xStreamBufferSend( xReturn );
+    trace_RETURN_x_بهیر_بفر_Send( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
-                                 const void * pvTxData,
-                                 size_t xDataLengthBytes,
-                                 BaseType_t * const pxHigherPriorityTaskWoken )
+size_t x_بهیر_بفر_Send_From_ISR( بهیر_بفر_Handle_t x_بهیر_بفر,
+                                 ثابت فراغ * pv_Tx_معلومات,
+                                 size_t x_معلومات_اوږدتیا_بایټونه,
+                                 بنسټ_Type_t * ثابت px_Higher_لومړیتوب_Task_Woken )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
+    بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
     size_t xReturn, xSpace;
-    size_t xRequiredSpace = xDataLengthBytes;
+    size_t xRequiredSpace = x_معلومات_اوږدتیا_بایټونه;
 
-    traceENTER_xStreamBufferSendFromISR( xStreamBuffer, pvTxData, xDataLengthBytes, pxHigherPriorityTaskWoken );
+    trace_ENTER_x_بهیر_بفر_Send_From_ISR( x_بهیر_بفر, pv_Tx_معلومات, x_معلومات_اوږدتیا_بایټونه, px_Higher_لومړیتوب_Task_Woken );
 
-    configASSERT( pvTxData );
-    configASSERT( pxStreamBuffer );
+    configASSERT( pv_Tx_معلومات );
+    configASSERT( px_بهیر_بفر );
 
     /* This send function is used to write to both message buffers and stream
      * buffers.  If this is a message buffer then the space needed must be
      * increased by the amount of bytes needed to store the length of the
      * message. */
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) != ( uint8_t ) 0 )
+    إذا( ( px_بهیر_بفر->ucFlags & sb_FLAGS_IS_پیغام_بفر ) != ( uint8_t ) 0 )
     {
-        xRequiredSpace += sbBYTES_TO_STORE_MESSAGE_LENGTH;
+        xRequiredSpace += sb_بایټونه_منزل_STORE_پیغام_اوږدتیا;
     }
-    else
+    وإلا
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    xSpace = xStreamBufferSpacesAvailable( pxStreamBuffer );
-    xReturn = prvWriteMessageToBuffer( pxStreamBuffer, pvTxData, xDataLengthBytes, xSpace, xRequiredSpace );
+    xSpace = x_بهیر_بفر_Spaces_شته( px_بهیر_بفر );
+    xReturn = prv_Write_پیغام_منزل_بفر( px_بهیر_بفر, pv_Tx_معلومات, x_معلومات_اوږدتیا_بایټونه, xSpace, xRequiredSpace );
 
-    if( xReturn > ( size_t ) 0 )
+    إذا( xReturn > ( size_t ) 0 )
     {
         /* Was a task waiting for the data? */
-        if( prvBytesInBuffer( pxStreamBuffer ) >= pxStreamBuffer->xTriggerLevelBytes )
+        إذا( prv_بایټونه_دننه_بفر( px_بهیر_بفر ) >= px_بهیر_بفر->x_Trigger_Level_بایټونه )
         {
             /* MISRA Ref 4.7.1 [Return value shall be checked] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
             /* coverity[misra_c_2012_directive_4_7_violation] */
-            prvSEND_COMPLETE_FROM_ISR( pxStreamBuffer, pxHigherPriorityTaskWoken );
+            prvSEND_COMPLETE_FROM_ISR( px_بهیر_بفر, px_Higher_لومړیتوب_Task_Woken );
         }
-        else
+        وإلا
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    وإلا
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    traceSTREAM_BUFFER_SEND_FROM_ISR( xStreamBuffer, xReturn );
-    traceRETURN_xStreamBufferSendFromISR( xReturn );
+    trace_بهیر_بفر_SEND_FROM_ISR( x_بهیر_بفر, xReturn );
+    trace_RETURN_x_بهیر_بفر_Send_From_ISR( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-static size_t prvWriteMessageToBuffer( StreamBuffer_t * const pxStreamBuffer,
-                                       const void * pvTxData,
-                                       size_t xDataLengthBytes,
+ساكن size_t prv_Write_پیغام_منزل_بفر( بهیر_بفر_t * ثابت px_بهیر_بفر,
+                                       ثابت فراغ * pv_Tx_معلومات,
+                                       size_t x_معلومات_اوږدتیا_بایټونه,
                                        size_t xSpace,
                                        size_t xRequiredSpace )
 {
-    size_t xNextHead = pxStreamBuffer->xHead;
-    configMESSAGE_BUFFER_LENGTH_TYPE xMessageLength;
+    size_t x_بل_سر = px_بهیر_بفر->x_سر;
+    config_پیغام_بفر_اوږدتیا_TYPE x_پیغام_اوږدتیا;
 
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) != ( uint8_t ) 0 )
+    إذا( ( px_بهیر_بفر->ucFlags & sb_FLAGS_IS_پیغام_بفر ) != ( uint8_t ) 0 )
     {
         /* This is a message buffer, as opposed to a stream buffer. */
 
         /* Convert xDataLengthBytes to the message length type. */
-        xMessageLength = ( configMESSAGE_BUFFER_LENGTH_TYPE ) xDataLengthBytes;
+        x_پیغام_اوږدتیا = ( config_پیغام_بفر_اوږدتیا_TYPE ) x_معلومات_اوږدتیا_بایټونه;
 
         /* Ensure the data length given fits within configMESSAGE_BUFFER_LENGTH_TYPE. */
-        configASSERT( ( size_t ) xMessageLength == xDataLengthBytes );
+        configASSERT( ( size_t ) x_پیغام_اوږدتیا == x_معلومات_اوږدتیا_بایټونه );
 
-        if( xSpace >= xRequiredSpace )
+        إذا( xSpace >= xRequiredSpace )
         {
             /* There is enough space to write both the message length and the message
              * itself into the buffer.  Start by writing the length of the data, the data
              * itself will be written later in this function. */
-            xNextHead = prvWriteBytesToBuffer( pxStreamBuffer, ( const uint8_t * ) &( xMessageLength ), sbBYTES_TO_STORE_MESSAGE_LENGTH, xNextHead );
+            x_بل_سر = prv_Write_بایټونه_منزل_بفر( px_بهیر_بفر, ( ثابت uint8_t * ) &( x_پیغام_اوږدتیا ), sb_بایټونه_منزل_STORE_پیغام_اوږدتیا, x_بل_سر );
         }
-        else
+        وإلا
         {
             /* Not enough space, so do not write data to the buffer. */
-            xDataLengthBytes = 0;
+            x_معلومات_اوږدتیا_بایټونه = 0;
         }
     }
-    else
+    وإلا
     {
         /* This is a stream buffer, as opposed to a message buffer, so writing a
          * stream of bytes rather than discrete messages.  Plan to write as many
          * bytes as possible. */
-        xDataLengthBytes = configMIN( xDataLengthBytes, xSpace );
+        x_معلومات_اوږدتیا_بایټونه = configMIN( x_معلومات_اوږدتیا_بایټونه, xSpace );
     }
 
-    if( xDataLengthBytes != ( size_t ) 0 )
+    إذا( x_معلومات_اوږدتیا_بایټونه != ( size_t ) 0 )
     {
         /* Write the data to the buffer. */
         /* MISRA Ref 11.5.5 [Void pointer assignment] */
         /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
         /* coverity[misra_c_2012_rule_11_5_violation] */
-        pxStreamBuffer->xHead = prvWriteBytesToBuffer( pxStreamBuffer, ( const uint8_t * ) pvTxData, xDataLengthBytes, xNextHead );
+        px_بهیر_بفر->x_سر = prv_Write_بایټونه_منزل_بفر( px_بهیر_بفر, ( ثابت uint8_t * ) pv_Tx_معلومات, x_معلومات_اوږدتیا_بایټونه, x_بل_سر );
     }
 
-    return xDataLengthBytes;
+    أرجع x_معلومات_اوږدتیا_بایټونه;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
-                             void * pvRxData,
-                             size_t xBufferLengthBytes,
-                             TickType_t xTicksToWait )
+size_t x_بهیر_بفر_Receive( بهیر_بفر_Handle_t x_بهیر_بفر,
+                             فراغ * pv_Rx_معلومات,
+                             size_t x_بفر_اوږدتیا_بایټونه,
+                             TickType_t x_Ticks_منزل_Wait )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    size_t xReceivedLength = 0, xBytesAvailable, xBytesToStoreMessageLength;
+    بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
+    size_t x_Received_اوږدتیا = 0, x_بایټونه_شته, x_بایټونه_منزل_Store_پیغام_اوږدتیا;
 
-    traceENTER_xStreamBufferReceive( xStreamBuffer, pvRxData, xBufferLengthBytes, xTicksToWait );
+    trace_ENTER_x_بهیر_بفر_Receive( x_بهیر_بفر, pv_Rx_معلومات, x_بفر_اوږدتیا_بایټونه, x_Ticks_منزل_Wait );
 
-    configASSERT( pvRxData );
-    configASSERT( pxStreamBuffer );
+    configASSERT( pv_Rx_معلومات );
+    configASSERT( px_بهیر_بفر );
 
     /* This receive function is used by both message buffers, which store
      * discrete messages, and stream buffers, which store a continuous stream of
      * bytes.  Discrete messages include an additional
      * sbBYTES_TO_STORE_MESSAGE_LENGTH bytes that hold the length of the
      * message. */
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) != ( uint8_t ) 0 )
+    إذا( ( px_بهیر_بفر->ucFlags & sb_FLAGS_IS_پیغام_بفر ) != ( uint8_t ) 0 )
     {
-        xBytesToStoreMessageLength = sbBYTES_TO_STORE_MESSAGE_LENGTH;
+        x_بایټونه_منزل_Store_پیغام_اوږدتیا = sb_بایټونه_منزل_STORE_پیغام_اوږدتیا;
     }
-    else if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_BATCHING_BUFFER ) != ( uint8_t ) 0 )
+    وإلا إذا( ( px_بهیر_بفر->ucFlags & sb_FLAGS_IS_BATCHING_بفر ) != ( uint8_t ) 0 )
     {
         /* Force task to block if the batching buffer contains less bytes than
          * the trigger level. */
-        xBytesToStoreMessageLength = pxStreamBuffer->xTriggerLevelBytes;
+        x_بایټونه_منزل_Store_پیغام_اوږدتیا = px_بهیر_بفر->x_Trigger_Level_بایټونه;
     }
-    else
+    وإلا
     {
-        xBytesToStoreMessageLength = 0;
+        x_بایټونه_منزل_Store_پیغام_اوږدتیا = 0;
     }
 
-    if( xTicksToWait != ( TickType_t ) 0 )
+    إذا( x_Ticks_منزل_Wait != ( TickType_t ) 0 )
     {
         /* Checking if there is data and clearing the notification state must be
          * performed atomically. */
         taskENTER_CRITICAL();
         {
-            xBytesAvailable = prvBytesInBuffer( pxStreamBuffer );
+            x_بایټونه_شته = prv_بایټونه_دننه_بفر( px_بهیر_بفر );
 
             /* If this function was invoked by a message buffer read then
              * xBytesToStoreMessageLength holds the number of bytes used to hold
@@ -1102,40 +1102,40 @@ size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
              * be 0. If this function was invoked by a stream batch buffer read
              * then xBytesToStoreMessageLength will be xTriggerLevelBytes value
              * for the buffer.*/
-            if( xBytesAvailable <= xBytesToStoreMessageLength )
+            إذا( x_بایټونه_شته <= x_بایټونه_منزل_Store_پیغام_اوږدتیا )
             {
                 /* Clear notification state as going to wait for data. */
-                ( void ) xTaskNotifyStateClearIndexed( NULL, pxStreamBuffer->uxNotificationIndex );
+                ( فراغ ) x_Task_Notify_State_Clear_شاخصي( عدم, px_بهیر_بفر->ux_Notification_شاخص );
 
                 /* Should only be one reader. */
-                configASSERT( pxStreamBuffer->xTaskWaitingToReceive == NULL );
-                pxStreamBuffer->xTaskWaitingToReceive = xTaskGetCurrentTaskHandle();
+                configASSERT( px_بهیر_بفر->x_Task_انتظار_منزل_Receive == عدم );
+                px_بهیر_بفر->x_Task_انتظار_منزل_Receive = xTaskGetCurrentTaskHandle();
             }
-            else
+            وإلا
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
         taskEXIT_CRITICAL();
 
-        if( xBytesAvailable <= xBytesToStoreMessageLength )
+        إذا( x_بایټونه_شته <= x_بایټونه_منزل_Store_پیغام_اوږدتیا )
         {
             /* Wait for data to be available. */
-            traceBLOCKING_ON_STREAM_BUFFER_RECEIVE( xStreamBuffer );
-            ( void ) xTaskNotifyWaitIndexed( pxStreamBuffer->uxNotificationIndex, ( uint32_t ) 0, ( uint32_t ) 0, NULL, xTicksToWait );
-            pxStreamBuffer->xTaskWaitingToReceive = NULL;
+            trace_BLOCKING_ON_بهیر_بفر_RECEIVE( x_بهیر_بفر );
+            ( فراغ ) x_Task_Notify_Wait_شاخصي( px_بهیر_بفر->ux_Notification_شاخص, ( uint32_t ) 0, ( uint32_t ) 0, عدم, x_Ticks_منزل_Wait );
+            px_بهیر_بفر->x_Task_انتظار_منزل_Receive = عدم;
 
             /* Recheck the data available after blocking. */
-            xBytesAvailable = prvBytesInBuffer( pxStreamBuffer );
+            x_بایټونه_شته = prv_بایټونه_دننه_بفر( px_بهیر_بفر );
         }
-        else
+        وإلا
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    وإلا
     {
-        xBytesAvailable = prvBytesInBuffer( pxStreamBuffer );
+        x_بایټونه_شته = prv_بایټونه_دننه_بفر( px_بهیر_بفر );
     }
 
     /* Whether receiving a discrete message (where xBytesToStoreMessageLength
@@ -1143,580 +1143,580 @@ size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
      * bytes (where xBytesToStoreMessageLength is zero), the number of bytes
      * available must be greater than xBytesToStoreMessageLength to be able to
      * read bytes from the buffer. */
-    if( xBytesAvailable > xBytesToStoreMessageLength )
+    إذا( x_بایټونه_شته > x_بایټونه_منزل_Store_پیغام_اوږدتیا )
     {
-        xReceivedLength = prvReadMessageFromBuffer( pxStreamBuffer, pvRxData, xBufferLengthBytes, xBytesAvailable );
+        x_Received_اوږدتیا = prv_Read_پیغام_From_بفر( px_بهیر_بفر, pv_Rx_معلومات, x_بفر_اوږدتیا_بایټونه, x_بایټونه_شته );
 
         /* Was a task waiting for space in the buffer? */
-        if( xReceivedLength != ( size_t ) 0 )
+        إذا( x_Received_اوږدتیا != ( size_t ) 0 )
         {
-            traceSTREAM_BUFFER_RECEIVE( xStreamBuffer, xReceivedLength );
-            prvRECEIVE_COMPLETED( xStreamBuffer );
+            trace_بهیر_بفر_RECEIVE( x_بهیر_بفر, x_Received_اوږدتیا );
+            prvRECEIVE_COMPLETED( x_بهیر_بفر );
         }
-        else
+        وإلا
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    وإلا
     {
-        traceSTREAM_BUFFER_RECEIVE_FAILED( xStreamBuffer );
+        trace_بهیر_بفر_RECEIVE_FAILED( x_بهیر_بفر );
         mtCOVERAGE_TEST_MARKER();
     }
 
-    traceRETURN_xStreamBufferReceive( xReceivedLength );
+    trace_RETURN_x_بهیر_بفر_Receive( x_Received_اوږدتیا );
 
-    return xReceivedLength;
+    أرجع x_Received_اوږدتیا;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferNextMessageLengthBytes( StreamBufferHandle_t xStreamBuffer )
+size_t x_بهیر_بفر_بل_پیغام_اوږدتیا_بایټونه( بهیر_بفر_Handle_t x_بهیر_بفر )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    size_t xReturn, xBytesAvailable;
-    configMESSAGE_BUFFER_LENGTH_TYPE xTempReturn;
+    بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
+    size_t xReturn, x_بایټونه_شته;
+    config_پیغام_بفر_اوږدتیا_TYPE x_لنډمهاله_Return;
 
-    traceENTER_xStreamBufferNextMessageLengthBytes( xStreamBuffer );
+    trace_ENTER_x_بهیر_بفر_بل_پیغام_اوږدتیا_بایټونه( x_بهیر_بفر );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_بهیر_بفر );
 
     /* Ensure the stream buffer is being used as a message buffer. */
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) != ( uint8_t ) 0 )
+    إذا( ( px_بهیر_بفر->ucFlags & sb_FLAGS_IS_پیغام_بفر ) != ( uint8_t ) 0 )
     {
-        xBytesAvailable = prvBytesInBuffer( pxStreamBuffer );
+        x_بایټونه_شته = prv_بایټونه_دننه_بفر( px_بهیر_بفر );
 
-        if( xBytesAvailable > sbBYTES_TO_STORE_MESSAGE_LENGTH )
+        إذا( x_بایټونه_شته > sb_بایټونه_منزل_STORE_پیغام_اوږدتیا )
         {
             /* The number of bytes available is greater than the number of bytes
              * required to hold the length of the next message, so another message
              * is available. */
-            ( void ) prvReadBytesFromBuffer( pxStreamBuffer, ( uint8_t * ) &xTempReturn, sbBYTES_TO_STORE_MESSAGE_LENGTH, pxStreamBuffer->xTail );
-            xReturn = ( size_t ) xTempReturn;
+            ( فراغ ) prv_Read_بایټونه_From_بفر( px_بهیر_بفر, ( uint8_t * ) &x_لنډمهاله_Return, sb_بایټونه_منزل_STORE_پیغام_اوږدتیا, px_بهیر_بفر->x_لکۍ );
+            xReturn = ( size_t ) x_لنډمهاله_Return;
         }
-        else
+        وإلا
         {
             /* The minimum amount of bytes in a message buffer is
              * ( sbBYTES_TO_STORE_MESSAGE_LENGTH + 1 ), so if xBytesAvailable is
              * less than sbBYTES_TO_STORE_MESSAGE_LENGTH the only other valid
              * value is 0. */
-            configASSERT( xBytesAvailable == 0 );
+            configASSERT( x_بایټونه_شته == 0 );
             xReturn = 0;
         }
     }
-    else
+    وإلا
     {
         xReturn = 0;
     }
 
-    traceRETURN_xStreamBufferNextMessageLengthBytes( xReturn );
+    trace_RETURN_x_بهیر_بفر_بل_پیغام_اوږدتیا_بایټونه( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
-                                    void * pvRxData,
-                                    size_t xBufferLengthBytes,
-                                    BaseType_t * const pxHigherPriorityTaskWoken )
+size_t x_بهیر_بفر_Receive_From_ISR( بهیر_بفر_Handle_t x_بهیر_بفر,
+                                    فراغ * pv_Rx_معلومات,
+                                    size_t x_بفر_اوږدتیا_بایټونه,
+                                    بنسټ_Type_t * ثابت px_Higher_لومړیتوب_Task_Woken )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    size_t xReceivedLength = 0, xBytesAvailable, xBytesToStoreMessageLength;
+    بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
+    size_t x_Received_اوږدتیا = 0, x_بایټونه_شته, x_بایټونه_منزل_Store_پیغام_اوږدتیا;
 
-    traceENTER_xStreamBufferReceiveFromISR( xStreamBuffer, pvRxData, xBufferLengthBytes, pxHigherPriorityTaskWoken );
+    trace_ENTER_x_بهیر_بفر_Receive_From_ISR( x_بهیر_بفر, pv_Rx_معلومات, x_بفر_اوږدتیا_بایټونه, px_Higher_لومړیتوب_Task_Woken );
 
-    configASSERT( pvRxData );
-    configASSERT( pxStreamBuffer );
+    configASSERT( pv_Rx_معلومات );
+    configASSERT( px_بهیر_بفر );
 
     /* This receive function is used by both message buffers, which store
      * discrete messages, and stream buffers, which store a continuous stream of
      * bytes.  Discrete messages include an additional
      * sbBYTES_TO_STORE_MESSAGE_LENGTH bytes that hold the length of the
      * message. */
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) != ( uint8_t ) 0 )
+    إذا( ( px_بهیر_بفر->ucFlags & sb_FLAGS_IS_پیغام_بفر ) != ( uint8_t ) 0 )
     {
-        xBytesToStoreMessageLength = sbBYTES_TO_STORE_MESSAGE_LENGTH;
+        x_بایټونه_منزل_Store_پیغام_اوږدتیا = sb_بایټونه_منزل_STORE_پیغام_اوږدتیا;
     }
-    else
+    وإلا
     {
-        xBytesToStoreMessageLength = 0;
+        x_بایټونه_منزل_Store_پیغام_اوږدتیا = 0;
     }
 
-    xBytesAvailable = prvBytesInBuffer( pxStreamBuffer );
+    x_بایټونه_شته = prv_بایټونه_دننه_بفر( px_بهیر_بفر );
 
     /* Whether receiving a discrete message (where xBytesToStoreMessageLength
      * holds the number of bytes used to store the message length) or a stream of
      * bytes (where xBytesToStoreMessageLength is zero), the number of bytes
      * available must be greater than xBytesToStoreMessageLength to be able to
      * read bytes from the buffer. */
-    if( xBytesAvailable > xBytesToStoreMessageLength )
+    إذا( x_بایټونه_شته > x_بایټونه_منزل_Store_پیغام_اوږدتیا )
     {
-        xReceivedLength = prvReadMessageFromBuffer( pxStreamBuffer, pvRxData, xBufferLengthBytes, xBytesAvailable );
+        x_Received_اوږدتیا = prv_Read_پیغام_From_بفر( px_بهیر_بفر, pv_Rx_معلومات, x_بفر_اوږدتیا_بایټونه, x_بایټونه_شته );
 
         /* Was a task waiting for space in the buffer? */
-        if( xReceivedLength != ( size_t ) 0 )
+        إذا( x_Received_اوږدتیا != ( size_t ) 0 )
         {
             /* MISRA Ref 4.7.1 [Return value shall be checked] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
             /* coverity[misra_c_2012_directive_4_7_violation] */
-            prvRECEIVE_COMPLETED_FROM_ISR( pxStreamBuffer, pxHigherPriorityTaskWoken );
+            prvRECEIVE_COMPLETED_FROM_ISR( px_بهیر_بفر, px_Higher_لومړیتوب_Task_Woken );
         }
-        else
+        وإلا
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    وإلا
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    traceSTREAM_BUFFER_RECEIVE_FROM_ISR( xStreamBuffer, xReceivedLength );
-    traceRETURN_xStreamBufferReceiveFromISR( xReceivedLength );
+    trace_بهیر_بفر_RECEIVE_FROM_ISR( x_بهیر_بفر, x_Received_اوږدتیا );
+    trace_RETURN_x_بهیر_بفر_Receive_From_ISR( x_Received_اوږدتیا );
 
-    return xReceivedLength;
+    أرجع x_Received_اوږدتیا;
 }
 /*-----------------------------------------------------------*/
 
-static size_t prvReadMessageFromBuffer( StreamBuffer_t * pxStreamBuffer,
-                                        void * pvRxData,
-                                        size_t xBufferLengthBytes,
-                                        size_t xBytesAvailable )
+ساكن size_t prv_Read_پیغام_From_بفر( بهیر_بفر_t * px_بهیر_بفر,
+                                        فراغ * pv_Rx_معلومات,
+                                        size_t x_بفر_اوږدتیا_بایټونه,
+                                        size_t x_بایټونه_شته )
 {
-    size_t xCount, xNextMessageLength;
-    configMESSAGE_BUFFER_LENGTH_TYPE xTempNextMessageLength;
-    size_t xNextTail = pxStreamBuffer->xTail;
+    size_t x_شمېر, x_بل_پیغام_اوږدتیا;
+    config_پیغام_بفر_اوږدتیا_TYPE x_لنډمهاله_بل_پیغام_اوږدتیا;
+    size_t x_بل_لکۍ = px_بهیر_بفر->x_لکۍ;
 
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) != ( uint8_t ) 0 )
+    إذا( ( px_بهیر_بفر->ucFlags & sb_FLAGS_IS_پیغام_بفر ) != ( uint8_t ) 0 )
     {
         /* A discrete message is being received.  First receive the length
          * of the message. */
-        xNextTail = prvReadBytesFromBuffer( pxStreamBuffer, ( uint8_t * ) &xTempNextMessageLength, sbBYTES_TO_STORE_MESSAGE_LENGTH, xNextTail );
-        xNextMessageLength = ( size_t ) xTempNextMessageLength;
+        x_بل_لکۍ = prv_Read_بایټونه_From_بفر( px_بهیر_بفر, ( uint8_t * ) &x_لنډمهاله_بل_پیغام_اوږدتیا, sb_بایټونه_منزل_STORE_پیغام_اوږدتیا, x_بل_لکۍ );
+        x_بل_پیغام_اوږدتیا = ( size_t ) x_لنډمهاله_بل_پیغام_اوږدتیا;
 
         /* Reduce the number of bytes available by the number of bytes just
          * read out. */
-        xBytesAvailable -= sbBYTES_TO_STORE_MESSAGE_LENGTH;
+        x_بایټونه_شته -= sb_بایټونه_منزل_STORE_پیغام_اوږدتیا;
 
         /* Check there is enough space in the buffer provided by the
          * user. */
-        if( xNextMessageLength > xBufferLengthBytes )
+        إذا( x_بل_پیغام_اوږدتیا > x_بفر_اوږدتیا_بایټونه )
         {
             /* The user has provided insufficient space to read the message. */
-            xNextMessageLength = 0;
+            x_بل_پیغام_اوږدتیا = 0;
         }
-        else
+        وإلا
         {
             mtCOVERAGE_TEST_MARKER();
         }
     }
-    else
+    وإلا
     {
         /* A stream of bytes is being received (as opposed to a discrete
          * message), so read as many bytes as possible. */
-        xNextMessageLength = xBufferLengthBytes;
+        x_بل_پیغام_اوږدتیا = x_بفر_اوږدتیا_بایټونه;
     }
 
     /* Use the minimum of the wanted bytes and the available bytes. */
-    xCount = configMIN( xNextMessageLength, xBytesAvailable );
+    x_شمېر = configMIN( x_بل_پیغام_اوږدتیا, x_بایټونه_شته );
 
-    if( xCount != ( size_t ) 0 )
+    إذا( x_شمېر != ( size_t ) 0 )
     {
         /* Read the actual data and update the tail to mark the data as officially consumed. */
         /* MISRA Ref 11.5.5 [Void pointer assignment] */
         /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
         /* coverity[misra_c_2012_rule_11_5_violation] */
-        pxStreamBuffer->xTail = prvReadBytesFromBuffer( pxStreamBuffer, ( uint8_t * ) pvRxData, xCount, xNextTail );
+        px_بهیر_بفر->x_لکۍ = prv_Read_بایټونه_From_بفر( px_بهیر_بفر, ( uint8_t * ) pv_Rx_معلومات, x_شمېر, x_بل_لکۍ );
     }
 
-    return xCount;
+    أرجع x_شمېر;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xStreamBufferIsEmpty( StreamBufferHandle_t xStreamBuffer )
+بنسټ_Type_t x_بهیر_بفر_Is_تشه( بهیر_بفر_Handle_t x_بهیر_بفر )
 {
-    const StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    BaseType_t xReturn;
-    size_t xTail;
+    ثابت بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
+    بنسټ_Type_t xReturn;
+    size_t x_لکۍ;
 
-    traceENTER_xStreamBufferIsEmpty( xStreamBuffer );
+    trace_ENTER_x_بهیر_بفر_Is_تشه( x_بهیر_بفر );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_بهیر_بفر );
 
     /* True if no bytes are available. */
-    xTail = pxStreamBuffer->xTail;
+    x_لکۍ = px_بهیر_بفر->x_لکۍ;
 
-    if( pxStreamBuffer->xHead == xTail )
+    إذا( px_بهیر_بفر->x_سر == x_لکۍ )
     {
         xReturn = pdTRUE;
     }
-    else
+    وإلا
     {
         xReturn = pdFALSE;
     }
 
-    traceRETURN_xStreamBufferIsEmpty( xReturn );
+    trace_RETURN_x_بهیر_بفر_Is_تشه( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xStreamBufferIsFull( StreamBufferHandle_t xStreamBuffer )
+بنسټ_Type_t x_بهیر_بفر_Is_ډک( بهیر_بفر_Handle_t x_بهیر_بفر )
 {
-    BaseType_t xReturn;
-    size_t xBytesToStoreMessageLength;
-    const StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
+    بنسټ_Type_t xReturn;
+    size_t x_بایټونه_منزل_Store_پیغام_اوږدتیا;
+    ثابت بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
 
-    traceENTER_xStreamBufferIsFull( xStreamBuffer );
+    trace_ENTER_x_بهیر_بفر_Is_ډک( x_بهیر_بفر );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_بهیر_بفر );
 
     /* This generic version of the receive function is used by both message
      * buffers, which store discrete messages, and stream buffers, which store a
      * continuous stream of bytes.  Discrete messages include an additional
      * sbBYTES_TO_STORE_MESSAGE_LENGTH bytes that hold the length of the message. */
-    if( ( pxStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) != ( uint8_t ) 0 )
+    إذا( ( px_بهیر_بفر->ucFlags & sb_FLAGS_IS_پیغام_بفر ) != ( uint8_t ) 0 )
     {
-        xBytesToStoreMessageLength = sbBYTES_TO_STORE_MESSAGE_LENGTH;
+        x_بایټونه_منزل_Store_پیغام_اوږدتیا = sb_بایټونه_منزل_STORE_پیغام_اوږدتیا;
     }
-    else
+    وإلا
     {
-        xBytesToStoreMessageLength = 0;
+        x_بایټونه_منزل_Store_پیغام_اوږدتیا = 0;
     }
 
     /* True if the available space equals zero. */
-    if( xStreamBufferSpacesAvailable( xStreamBuffer ) <= xBytesToStoreMessageLength )
+    إذا( x_بهیر_بفر_Spaces_شته( x_بهیر_بفر ) <= x_بایټونه_منزل_Store_پیغام_اوږدتیا )
     {
         xReturn = pdTRUE;
     }
-    else
+    وإلا
     {
         xReturn = pdFALSE;
     }
 
-    traceRETURN_xStreamBufferIsFull( xReturn );
+    trace_RETURN_x_بهیر_بفر_Is_ډک( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xStreamBufferSendCompletedFromISR( StreamBufferHandle_t xStreamBuffer,
-                                              BaseType_t * pxHigherPriorityTaskWoken )
+بنسټ_Type_t x_بهیر_بفر_Send_Completed_From_ISR( بهیر_بفر_Handle_t x_بهیر_بفر,
+                                              بنسټ_Type_t * px_Higher_لومړیتوب_Task_Woken )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    BaseType_t xReturn;
-    UBaseType_t uxSavedInterruptStatus;
+    بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
+    بنسټ_Type_t xReturn;
+    UBaseType_t ux_Saved_مداخله_حالت;
 
-    traceENTER_xStreamBufferSendCompletedFromISR( xStreamBuffer, pxHigherPriorityTaskWoken );
+    trace_ENTER_x_بهیر_بفر_Send_Completed_From_ISR( x_بهیر_بفر, px_Higher_لومړیتوب_Task_Woken );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_بهیر_بفر );
 
     /* MISRA Ref 4.7.1 [Return value shall be checked] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
     /* coverity[misra_c_2012_directive_4_7_violation] */
-    uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();
+    ux_Saved_مداخله_حالت = taskENTER_CRITICAL_FROM_ISR();
     {
-        if( ( pxStreamBuffer )->xTaskWaitingToReceive != NULL )
+        إذا( ( px_بهیر_بفر )->x_Task_انتظار_منزل_Receive != عدم )
         {
-            ( void ) xTaskNotifyIndexedFromISR( ( pxStreamBuffer )->xTaskWaitingToReceive,
-                                                ( pxStreamBuffer )->uxNotificationIndex,
+            ( فراغ ) x_Task_Notify_شاخصي_From_ISR( ( px_بهیر_بفر )->x_Task_انتظار_منزل_Receive,
+                                                ( px_بهیر_بفر )->ux_Notification_شاخص,
                                                 ( uint32_t ) 0,
                                                 eNoAction,
-                                                pxHigherPriorityTaskWoken );
-            ( pxStreamBuffer )->xTaskWaitingToReceive = NULL;
+                                                px_Higher_لومړیتوب_Task_Woken );
+            ( px_بهیر_بفر )->x_Task_انتظار_منزل_Receive = عدم;
             xReturn = pdTRUE;
         }
-        else
+        وإلا
         {
             xReturn = pdFALSE;
         }
     }
-    taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );
+    taskEXIT_CRITICAL_FROM_ISR( ux_Saved_مداخله_حالت );
 
-    traceRETURN_xStreamBufferSendCompletedFromISR( xReturn );
+    trace_RETURN_x_بهیر_بفر_Send_Completed_From_ISR( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xStreamBufferReceiveCompletedFromISR( StreamBufferHandle_t xStreamBuffer,
-                                                 BaseType_t * pxHigherPriorityTaskWoken )
+بنسټ_Type_t x_بهیر_بفر_Receive_Completed_From_ISR( بهیر_بفر_Handle_t x_بهیر_بفر,
+                                                 بنسټ_Type_t * px_Higher_لومړیتوب_Task_Woken )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
-    BaseType_t xReturn;
-    UBaseType_t uxSavedInterruptStatus;
+    بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
+    بنسټ_Type_t xReturn;
+    UBaseType_t ux_Saved_مداخله_حالت;
 
-    traceENTER_xStreamBufferReceiveCompletedFromISR( xStreamBuffer, pxHigherPriorityTaskWoken );
+    trace_ENTER_x_بهیر_بفر_Receive_Completed_From_ISR( x_بهیر_بفر, px_Higher_لومړیتوب_Task_Woken );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_بهیر_بفر );
 
     /* MISRA Ref 4.7.1 [Return value shall be checked] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47 */
     /* coverity[misra_c_2012_directive_4_7_violation] */
-    uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();
+    ux_Saved_مداخله_حالت = taskENTER_CRITICAL_FROM_ISR();
     {
-        if( ( pxStreamBuffer )->xTaskWaitingToSend != NULL )
+        إذا( ( px_بهیر_بفر )->x_Task_انتظار_منزل_Send != عدم )
         {
-            ( void ) xTaskNotifyIndexedFromISR( ( pxStreamBuffer )->xTaskWaitingToSend,
-                                                ( pxStreamBuffer )->uxNotificationIndex,
+            ( فراغ ) x_Task_Notify_شاخصي_From_ISR( ( px_بهیر_بفر )->x_Task_انتظار_منزل_Send,
+                                                ( px_بهیر_بفر )->ux_Notification_شاخص,
                                                 ( uint32_t ) 0,
                                                 eNoAction,
-                                                pxHigherPriorityTaskWoken );
-            ( pxStreamBuffer )->xTaskWaitingToSend = NULL;
+                                                px_Higher_لومړیتوب_Task_Woken );
+            ( px_بهیر_بفر )->x_Task_انتظار_منزل_Send = عدم;
             xReturn = pdTRUE;
         }
-        else
+        وإلا
         {
             xReturn = pdFALSE;
         }
     }
-    taskEXIT_CRITICAL_FROM_ISR( uxSavedInterruptStatus );
+    taskEXIT_CRITICAL_FROM_ISR( ux_Saved_مداخله_حالت );
 
-    traceRETURN_xStreamBufferReceiveCompletedFromISR( xReturn );
+    trace_RETURN_x_بهیر_بفر_Receive_Completed_From_ISR( xReturn );
 
-    return xReturn;
+    أرجع xReturn;
 }
 /*-----------------------------------------------------------*/
 
-static size_t prvWriteBytesToBuffer( StreamBuffer_t * const pxStreamBuffer,
-                                     const uint8_t * pucData,
-                                     size_t xCount,
-                                     size_t xHead )
+ساكن size_t prv_Write_بایټونه_منزل_بفر( بهیر_بفر_t * ثابت px_بهیر_بفر,
+                                     ثابت uint8_t * puc_معلومات,
+                                     size_t x_شمېر,
+                                     size_t x_سر )
 {
-    size_t xFirstLength;
+    size_t x_لومړی_اوږدتیا;
 
-    configASSERT( xCount > ( size_t ) 0 );
+    configASSERT( x_شمېر > ( size_t ) 0 );
 
     /* Calculate the number of bytes that can be added in the first write -
      * which may be less than the total number of bytes that need to be added if
      * the buffer will wrap back to the beginning. */
-    xFirstLength = configMIN( pxStreamBuffer->xLength - xHead, xCount );
+    x_لومړی_اوږدتیا = configMIN( px_بهیر_بفر->x_اوږدتیا - x_سر, x_شمېر );
 
     /* Write as many bytes as can be written in the first write. */
-    configASSERT( ( xHead + xFirstLength ) <= pxStreamBuffer->xLength );
-    ( void ) memcpy( ( void * ) ( &( pxStreamBuffer->pucBuffer[ xHead ] ) ), ( const void * ) pucData, xFirstLength );
+    configASSERT( ( x_سر + x_لومړی_اوږدتیا ) <= px_بهیر_بفر->x_اوږدتیا );
+    ( فراغ ) حافظه_نقل( ( فراغ * ) ( &( px_بهیر_بفر->puc_بفر[ x_سر ] ) ), ( ثابت فراغ * ) puc_معلومات, x_لومړی_اوږدتیا );
 
     /* If the number of bytes written was less than the number that could be
      * written in the first write... */
-    if( xCount > xFirstLength )
+    إذا( x_شمېر > x_لومړی_اوږدتیا )
     {
         /* ...then write the remaining bytes to the start of the buffer. */
-        configASSERT( ( xCount - xFirstLength ) <= pxStreamBuffer->xLength );
-        ( void ) memcpy( ( void * ) pxStreamBuffer->pucBuffer, ( const void * ) &( pucData[ xFirstLength ] ), xCount - xFirstLength );
+        configASSERT( ( x_شمېر - x_لومړی_اوږدتیا ) <= px_بهیر_بفر->x_اوږدتیا );
+        ( فراغ ) حافظه_نقل( ( فراغ * ) px_بهیر_بفر->puc_بفر, ( ثابت فراغ * ) &( puc_معلومات[ x_لومړی_اوږدتیا ] ), x_شمېر - x_لومړی_اوږدتیا );
     }
-    else
+    وإلا
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    xHead += xCount;
+    x_سر += x_شمېر;
 
-    if( xHead >= pxStreamBuffer->xLength )
+    إذا( x_سر >= px_بهیر_بفر->x_اوږدتیا )
     {
-        xHead -= pxStreamBuffer->xLength;
+        x_سر -= px_بهیر_بفر->x_اوږدتیا;
     }
-    else
+    وإلا
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    return xHead;
+    أرجع x_سر;
 }
 /*-----------------------------------------------------------*/
 
-static size_t prvReadBytesFromBuffer( StreamBuffer_t * pxStreamBuffer,
-                                      uint8_t * pucData,
-                                      size_t xCount,
-                                      size_t xTail )
+ساكن size_t prv_Read_بایټونه_From_بفر( بهیر_بفر_t * px_بهیر_بفر,
+                                      uint8_t * puc_معلومات,
+                                      size_t x_شمېر,
+                                      size_t x_لکۍ )
 {
-    size_t xFirstLength;
+    size_t x_لومړی_اوږدتیا;
 
-    configASSERT( xCount != ( size_t ) 0 );
+    configASSERT( x_شمېر != ( size_t ) 0 );
 
     /* Calculate the number of bytes that can be read - which may be
      * less than the number wanted if the data wraps around to the start of
      * the buffer. */
-    xFirstLength = configMIN( pxStreamBuffer->xLength - xTail, xCount );
+    x_لومړی_اوږدتیا = configMIN( px_بهیر_بفر->x_اوږدتیا - x_لکۍ, x_شمېر );
 
     /* Obtain the number of bytes it is possible to obtain in the first
      * read.  Asserts check bounds of read and write. */
-    configASSERT( xFirstLength <= xCount );
-    configASSERT( ( xTail + xFirstLength ) <= pxStreamBuffer->xLength );
-    ( void ) memcpy( ( void * ) pucData, ( const void * ) &( pxStreamBuffer->pucBuffer[ xTail ] ), xFirstLength );
+    configASSERT( x_لومړی_اوږدتیا <= x_شمېر );
+    configASSERT( ( x_لکۍ + x_لومړی_اوږدتیا ) <= px_بهیر_بفر->x_اوږدتیا );
+    ( فراغ ) حافظه_نقل( ( فراغ * ) puc_معلومات, ( ثابت فراغ * ) &( px_بهیر_بفر->puc_بفر[ x_لکۍ ] ), x_لومړی_اوږدتیا );
 
     /* If the total number of wanted bytes is greater than the number
      * that could be read in the first read... */
-    if( xCount > xFirstLength )
+    إذا( x_شمېر > x_لومړی_اوږدتیا )
     {
         /* ...then read the remaining bytes from the start of the buffer. */
-        ( void ) memcpy( ( void * ) &( pucData[ xFirstLength ] ), ( void * ) ( pxStreamBuffer->pucBuffer ), xCount - xFirstLength );
+        ( فراغ ) حافظه_نقل( ( فراغ * ) &( puc_معلومات[ x_لومړی_اوږدتیا ] ), ( فراغ * ) ( px_بهیر_بفر->puc_بفر ), x_شمېر - x_لومړی_اوږدتیا );
     }
-    else
+    وإلا
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
     /* Move the tail pointer to effectively remove the data read from the buffer. */
-    xTail += xCount;
+    x_لکۍ += x_شمېر;
 
-    if( xTail >= pxStreamBuffer->xLength )
+    إذا( x_لکۍ >= px_بهیر_بفر->x_اوږدتیا )
     {
-        xTail -= pxStreamBuffer->xLength;
+        x_لکۍ -= px_بهیر_بفر->x_اوږدتیا;
     }
 
-    return xTail;
+    أرجع x_لکۍ;
 }
 /*-----------------------------------------------------------*/
 
-static size_t prvBytesInBuffer( const StreamBuffer_t * const pxStreamBuffer )
+ساكن size_t prv_بایټونه_دننه_بفر( ثابت بهیر_بفر_t * ثابت px_بهیر_بفر )
 {
     /* Returns the distance between xTail and xHead. */
-    size_t xCount;
+    size_t x_شمېر;
 
-    xCount = pxStreamBuffer->xLength + pxStreamBuffer->xHead;
-    xCount -= pxStreamBuffer->xTail;
+    x_شمېر = px_بهیر_بفر->x_اوږدتیا + px_بهیر_بفر->x_سر;
+    x_شمېر -= px_بهیر_بفر->x_لکۍ;
 
-    if( xCount >= pxStreamBuffer->xLength )
+    إذا( x_شمېر >= px_بهیر_بفر->x_اوږدتیا )
     {
-        xCount -= pxStreamBuffer->xLength;
+        x_شمېر -= px_بهیر_بفر->x_اوږدتیا;
     }
-    else
+    وإلا
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    return xCount;
+    أرجع x_شمېر;
 }
 /*-----------------------------------------------------------*/
 
-static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
-                                          uint8_t * const pucBuffer,
-                                          size_t xBufferSizeBytes,
-                                          size_t xTriggerLevelBytes,
+ساكن فراغ prv_Initialise_New_بهیر_بفر( بهیر_بفر_t * ثابت px_بهیر_بفر,
+                                          uint8_t * ثابت puc_بفر,
+                                          size_t x_بفر_اندازه_بایټونه,
+                                          size_t x_Trigger_Level_بایټونه,
                                           uint8_t ucFlags,
-                                          StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                          StreamBufferCallbackFunction_t pxReceiveCompletedCallback )
+                                          بهیر_بفر_Callback_Function_t pxSendCompletedCallback,
+                                          بهیر_بفر_Callback_Function_t pxReceiveCompletedCallback )
 {
     /* Assert here is deliberately writing to the entire buffer to ensure it can
      * be written to without generating exceptions, and is setting the buffer to a
      * known value to assist in development/debugging. */
-    #if ( configASSERT_DEFINED == 1 )
+    #إذا ( configASSERT_DEFINED == 1 )
     {
         /* The value written just has to be identifiable when looking at the
          * memory.  Don't use 0xA5 as that is the stack fill value and could
          * result in confusion as to what is actually being observed. */
-        #define STREAM_BUFFER_BUFFER_WRITE_VALUE    ( 0x55 )
-        configASSERT( memset( pucBuffer, ( int ) STREAM_BUFFER_BUFFER_WRITE_VALUE, xBufferSizeBytes ) == pucBuffer );
+        #تعریف_کړه بهیر_بفر_بفر_WRITE_ارزښت    ( 0x55 )
+        configASSERT( memset( puc_بفر, ( صحيح ) بهیر_بفر_بفر_WRITE_ارزښت, x_بفر_اندازه_بایټونه ) == puc_بفر );
     }
-    #endif
+    #د_که_پای
 
-    ( void ) memset( ( void * ) pxStreamBuffer, 0x00, sizeof( StreamBuffer_t ) );
-    pxStreamBuffer->pucBuffer = pucBuffer;
-    pxStreamBuffer->xLength = xBufferSizeBytes;
-    pxStreamBuffer->xTriggerLevelBytes = xTriggerLevelBytes;
-    pxStreamBuffer->ucFlags = ucFlags;
-    pxStreamBuffer->uxNotificationIndex = tskDEFAULT_INDEX_TO_NOTIFY;
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    ( فراغ ) memset( ( فراغ * ) px_بهیر_بفر, 0x00, حجم( بهیر_بفر_t ) );
+    px_بهیر_بفر->puc_بفر = puc_بفر;
+    px_بهیر_بفر->x_اوږدتیا = x_بفر_اندازه_بایټونه;
+    px_بهیر_بفر->x_Trigger_Level_بایټونه = x_Trigger_Level_بایټونه;
+    px_بهیر_بفر->ucFlags = ucFlags;
+    px_بهیر_بفر->ux_Notification_شاخص = tsk_DEFAULT_شاخص_منزل_NOTIFY;
+    #إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
     {
-        pxStreamBuffer->pxSendCompletedCallback = pxSendCompletedCallback;
-        pxStreamBuffer->pxReceiveCompletedCallback = pxReceiveCompletedCallback;
+        px_بهیر_بفر->pxSendCompletedCallback = pxSendCompletedCallback;
+        px_بهیر_بفر->pxReceiveCompletedCallback = pxReceiveCompletedCallback;
     }
-    #else
+    #وإلا
     {
         /* MISRA Ref 11.1.1 [Object type casting] */
         /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-111 */
         /* coverity[misra_c_2012_rule_11_1_violation] */
-        ( void ) pxSendCompletedCallback;
+        ( فراغ ) pxSendCompletedCallback;
 
         /* MISRA Ref 11.1.1 [Object type casting] */
         /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-111 */
         /* coverity[misra_c_2012_rule_11_1_violation] */
-        ( void ) pxReceiveCompletedCallback;
+        ( فراغ ) pxReceiveCompletedCallback;
     }
-    #endif /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
+    #د_که_پای /* if ( configUSE_SB_COMPLETED_CALLBACK == 1 ) */
 }
 /*-----------------------------------------------------------*/
 
-UBaseType_t uxStreamBufferGetStreamBufferNotificationIndex( StreamBufferHandle_t xStreamBuffer )
+UBaseType_t ux_بهیر_بفر_Get_بهیر_بفر_Notification_شاخص( بهیر_بفر_Handle_t x_بهیر_بفر )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
+    بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
 
-    traceENTER_uxStreamBufferGetStreamBufferNotificationIndex( xStreamBuffer );
+    trace_ENTER_ux_بهیر_بفر_Get_بهیر_بفر_Notification_شاخص( x_بهیر_بفر );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_بهیر_بفر );
 
-    traceRETURN_uxStreamBufferGetStreamBufferNotificationIndex( pxStreamBuffer->uxNotificationIndex );
+    trace_RETURN_ux_بهیر_بفر_Get_بهیر_بفر_Notification_شاخص( px_بهیر_بفر->ux_Notification_شاخص );
 
-    return pxStreamBuffer->uxNotificationIndex;
+    أرجع px_بهیر_بفر->ux_Notification_شاخص;
 }
 /*-----------------------------------------------------------*/
 
-void vStreamBufferSetStreamBufferNotificationIndex( StreamBufferHandle_t xStreamBuffer,
-                                                    UBaseType_t uxNotificationIndex )
+فراغ v_بهیر_بفر_سېټ_بهیر_بفر_Notification_شاخص( بهیر_بفر_Handle_t x_بهیر_بفر,
+                                                    UBaseType_t ux_Notification_شاخص )
 {
-    StreamBuffer_t * const pxStreamBuffer = xStreamBuffer;
+    بهیر_بفر_t * ثابت px_بهیر_بفر = x_بهیر_بفر;
 
-    traceENTER_vStreamBufferSetStreamBufferNotificationIndex( xStreamBuffer, uxNotificationIndex );
+    trace_ENTER_v_بهیر_بفر_سېټ_بهیر_بفر_Notification_شاخص( x_بهیر_بفر, ux_Notification_شاخص );
 
-    configASSERT( pxStreamBuffer );
+    configASSERT( px_بهیر_بفر );
 
     /* There should be no task waiting otherwise we'd never resume them. */
-    configASSERT( pxStreamBuffer->xTaskWaitingToReceive == NULL );
-    configASSERT( pxStreamBuffer->xTaskWaitingToSend == NULL );
+    configASSERT( px_بهیر_بفر->x_Task_انتظار_منزل_Receive == عدم );
+    configASSERT( px_بهیر_بفر->x_Task_انتظار_منزل_Send == عدم );
 
     /* Check that the task notification index is valid. */
-    configASSERT( uxNotificationIndex < configTASK_NOTIFICATION_ARRAY_ENTRIES );
+    configASSERT( ux_Notification_شاخص < configTASK_NOTIFICATION_ARRAY_ENTRIES );
 
-    pxStreamBuffer->uxNotificationIndex = uxNotificationIndex;
+    px_بهیر_بفر->ux_Notification_شاخص = ux_Notification_شاخص;
 
-    traceRETURN_vStreamBufferSetStreamBufferNotificationIndex();
+    trace_RETURN_v_بهیر_بفر_سېټ_بهیر_بفر_Notification_شاخص();
 }
 /*-----------------------------------------------------------*/
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
 
-    UBaseType_t uxStreamBufferGetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer )
+    UBaseType_t ux_بهیر_بفر_Get_بهیر_بفر_شمېره( بهیر_بفر_Handle_t x_بهیر_بفر )
     {
-        traceENTER_uxStreamBufferGetStreamBufferNumber( xStreamBuffer );
+        trace_ENTER_ux_بهیر_بفر_Get_بهیر_بفر_شمېره( x_بهیر_بفر );
 
-        traceRETURN_uxStreamBufferGetStreamBufferNumber( xStreamBuffer->uxStreamBufferNumber );
+        trace_RETURN_ux_بهیر_بفر_Get_بهیر_بفر_شمېره( x_بهیر_بفر->ux_بهیر_بفر_شمېره );
 
-        return xStreamBuffer->uxStreamBufferNumber;
+        أرجع x_بهیر_بفر->ux_بهیر_بفر_شمېره;
     }
 
-    #endif /* configUSE_TRACE_FACILITY */
+    #د_که_پای /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
 
-    void vStreamBufferSetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer,
-                                             UBaseType_t uxStreamBufferNumber )
+    فراغ v_بهیر_بفر_سېټ_بهیر_بفر_شمېره( بهیر_بفر_Handle_t x_بهیر_بفر,
+                                             UBaseType_t ux_بهیر_بفر_شمېره )
     {
-        traceENTER_vStreamBufferSetStreamBufferNumber( xStreamBuffer, uxStreamBufferNumber );
+        trace_ENTER_v_بهیر_بفر_سېټ_بهیر_بفر_شمېره( x_بهیر_بفر, ux_بهیر_بفر_شمېره );
 
-        xStreamBuffer->uxStreamBufferNumber = uxStreamBufferNumber;
+        x_بهیر_بفر->ux_بهیر_بفر_شمېره = ux_بهیر_بفر_شمېره;
 
-        traceRETURN_vStreamBufferSetStreamBufferNumber();
+        trace_RETURN_v_بهیر_بفر_سېټ_بهیر_بفر_شمېره();
     }
 
-    #endif /* configUSE_TRACE_FACILITY */
+    #د_که_پای /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
 
-    uint8_t ucStreamBufferGetStreamBufferType( StreamBufferHandle_t xStreamBuffer )
+    uint8_t uc_بهیر_بفر_Get_بهیر_بفر_Type( بهیر_بفر_Handle_t x_بهیر_بفر )
     {
-        traceENTER_ucStreamBufferGetStreamBufferType( xStreamBuffer );
+        trace_ENTER_uc_بهیر_بفر_Get_بهیر_بفر_Type( x_بهیر_بفر );
 
-        traceRETURN_ucStreamBufferGetStreamBufferType( ( uint8_t ) ( xStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) );
+        trace_RETURN_uc_بهیر_بفر_Get_بهیر_بفر_Type( ( uint8_t ) ( x_بهیر_بفر->ucFlags & sb_FLAGS_IS_پیغام_بفر ) );
 
-        return( ( uint8_t ) ( xStreamBuffer->ucFlags & sbFLAGS_IS_MESSAGE_BUFFER ) );
+        أرجع( ( uint8_t ) ( x_بهیر_بفر->ucFlags & sb_FLAGS_IS_پیغام_بفر ) );
     }
 
-    #endif /* configUSE_TRACE_FACILITY */
+    #د_که_پای /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
 /* This entire source file will be skipped if the application is not configured
  * to include stream buffer functionality. This #if is closed at the very bottom
  * of this file. If you want to include stream buffers then ensure
  * configUSE_STREAM_BUFFERS is set to 1 in FreeRTOSConfig.h. */
-#endif /* configUSE_STREAM_BUFFERS == 1 */
+#د_که_پای /* configUSE_STREAM_BUFFERS == 1 */

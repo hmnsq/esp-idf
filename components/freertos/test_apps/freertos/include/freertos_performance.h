@@ -2,44 +2,44 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-#pragma once
+#لارښوونه once
 
-#include "sdkconfig.h"
+#ضمن "sdkconfig.h"
 
-#ifndef IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-#define IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP     230
-#else
-#define IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP     215
-#endif
-#endif
-#ifndef IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP_PSRAM
-#define IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP_PSRAM               300
-#endif
-#ifndef IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP_UNICORE
-#define IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP_UNICORE             130
-#endif
+#که_نه_تعریف_شوی IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_دورې_فی_OP
+#إذا CONFIG_FREERTOS_پورټ_THREAD_خوندي_CLAIM
+#تعریف_کړه IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_دورې_فی_OP     230
+#وإلا
+#تعریف_کړه IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_دورې_فی_OP     215
+#د_که_پای
+#د_که_پای
+#که_نه_تعریف_شوی IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_دورې_فی_OP_PSRAM
+#تعریف_کړه IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_دورې_فی_OP_PSRAM               300
+#د_که_پای
+#که_نه_تعریف_شوی IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_دورې_فی_OP_UNICORE
+#تعریف_کړه IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_دورې_فی_OP_UNICORE             130
+#د_که_پای
 
-#ifndef IDF_PERFORMANCE_MAX_ISR_ENTER_CYCLES
-#define IDF_PERFORMANCE_MAX_ISR_ENTER_CYCLES                                    290
-#endif
-#ifndef IDF_PERFORMANCE_MAX_ISR_EXIT_CYCLES
-#define IDF_PERFORMANCE_MAX_ISR_EXIT_CYCLES                                     565
-#endif
+#که_نه_تعریف_شوی IDF_PERFORMANCE_MAX_ISR_ENTER_دورې
+#تعریف_کړه IDF_PERFORMANCE_MAX_ISR_ENTER_دورې                                    290
+#د_که_پای
+#که_نه_تعریف_شوی IDF_PERFORMANCE_MAX_ISR_EXIT_دورې
+#تعریف_کړه IDF_PERFORMANCE_MAX_ISR_EXIT_دورې                                     565
+#د_که_پای
 
-#ifndef IDF_PERFORMANCE_MAX_SCHEDULING_TIME
-#define IDF_PERFORMANCE_MAX_SCHEDULING_TIME                                     2000
-#endif
+#که_نه_تعریف_شوی IDF_PERFORMANCE_MAX_SCHEDULING_وخت
+#تعریف_کړه IDF_PERFORMANCE_MAX_SCHEDULING_وخت                                     2000
+#د_که_پای
 
 // Chip-Specific Data
-#if CONFIG_IDF_TARGET_ESP32P4 || CONFIG_IDF_TARGET_ESP32S31 || CONFIG_IDF_TARGET_ESP32H4
+#إذا CONFIG_IDF_موخه_ESP32_P4 || CONFIG_IDF_موخه_ESP32_S31 || CONFIG_IDF_موخه_ESP32_H4
 /* Spinlock performance on esp32p4/esp32s31/esp32h4 is slower. */
-#undef IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP
-#define IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP                     400
-#undef IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP_UNICORE
-#define IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_CYCLES_PER_OP_UNICORE             150
+#تعریف_لغوه IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_دورې_فی_OP
+#تعریف_کړه IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_دورې_فی_OP                     400
+#تعریف_لغوه IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_دورې_فی_OP_UNICORE
+#تعریف_کړه IDF_PERFORMANCE_MAX_FREERTOS_SPINLOCK_دورې_فی_OP_UNICORE             150
 
 /* Solicited yields (portYIELD() or taskYIELD()) take longer on esp32p4/esp32s31/esp32h4. TODO: IDF-2809 */
-#undef IDF_PERFORMANCE_MAX_SCHEDULING_TIME
-#define IDF_PERFORMANCE_MAX_SCHEDULING_TIME                                     3200
-#endif
+#تعریف_لغوه IDF_PERFORMANCE_MAX_SCHEDULING_وخت
+#تعریف_کړه IDF_PERFORMANCE_MAX_SCHEDULING_وخت                                     3200
+#د_که_پای

@@ -30,17 +30,17 @@
  *
  */
 
-#ifndef MPU_WRAPPERS_H
-#define MPU_WRAPPERS_H
+#که_نه_تعریف_شوی MPU_WRAPPERS_H
+#تعریف_کړه MPU_WRAPPERS_H
 
 /* This file redefines API functions to be called through a wrapper macro, but
  * only for ports that are using the MPU. */
-#if ( portUSING_MPU_WRAPPERS == 1 )
+#إذا ( پورټ_USING_MPU_WRAPPERS == 1 )
 
 /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE will be defined when this file is
  * included from queue.c or task.c to prevent it from having an effect within
  * those files. */
-    #ifndef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+    #که_نه_تعریف_شوی MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /*
  * Map standard (non MPU) API functions to equivalents that start
@@ -51,230 +51,230 @@
  */
 
 /* Map standard task.h API functions to the MPU equivalents. */
-        #define vTaskDelay                            MPU_vTaskDelay
-        #define xTaskDelayUntil                       MPU_xTaskDelayUntil
-        #define xTaskAbortDelay                       MPU_xTaskAbortDelay
-        #define uxTaskPriorityGet                     MPU_uxTaskPriorityGet
-        #define eTaskGetState                         MPU_eTaskGetState
-        #define vTaskGetInfo                          MPU_vTaskGetInfo
-        #define vTaskSuspend                          MPU_vTaskSuspend
-        #define vTaskResume                           MPU_vTaskResume
-        #define xTaskGetTickCount                     MPU_xTaskGetTickCount
-        #define uxTaskGetNumberOfTasks                MPU_uxTaskGetNumberOfTasks
-        #define uxTaskGetStackHighWaterMark           MPU_uxTaskGetStackHighWaterMark
-        #define uxTaskGetStackHighWaterMark2          MPU_uxTaskGetStackHighWaterMark2
-        #define vTaskSetApplicationTaskTag            MPU_vTaskSetApplicationTaskTag
-        #define xTaskGetApplicationTaskTag            MPU_xTaskGetApplicationTaskTag
-        #define vTaskSetThreadLocalStoragePointer     MPU_vTaskSetThreadLocalStoragePointer
-        #define pvTaskGetThreadLocalStoragePointer    MPU_pvTaskGetThreadLocalStoragePointer
-        #define xTaskGetIdleTaskHandle                MPU_xTaskGetIdleTaskHandle
-        #define uxTaskGetSystemState                  MPU_uxTaskGetSystemState
-        #define ulTaskGetIdleRunTimeCounter           MPU_ulTaskGetIdleRunTimeCounter
-        #define ulTaskGetIdleRunTimePercent           MPU_ulTaskGetIdleRunTimePercent
-        #define xTaskGenericNotify                    MPU_xTaskGenericNotify
-        #define xTaskGenericNotifyWait                MPU_xTaskGenericNotifyWait
-        #define ulTaskGenericNotifyTake               MPU_ulTaskGenericNotifyTake
-        #define xTaskGenericNotifyStateClear          MPU_xTaskGenericNotifyStateClear
-        #define ulTaskGenericNotifyValueClear         MPU_ulTaskGenericNotifyValueClear
-        #define vTaskSetTimeOutState                  MPU_vTaskSetTimeOutState
-        #define xTaskCheckForTimeOut                  MPU_xTaskCheckForTimeOut
-        #define xTaskGetCurrentTaskHandle             MPU_xTaskGetCurrentTaskHandle
-        #define xTaskGetSchedulerState                MPU_xTaskGetSchedulerState
+        #تعریف_کړه vTaskDelay                            MPU_vTaskDelay
+        #تعریف_کړه xTaskDelayUntil                       MPU_xTaskDelayUntil
+        #تعریف_کړه xTaskAbortDelay                       MPU_xTaskAbortDelay
+        #تعریف_کړه ux_Task_لومړیتوب_Get                     MPU_ux_Task_لومړیتوب_Get
+        #تعریف_کړه eTaskGetState                         MPU_eTaskGetState
+        #تعریف_کړه vTaskGetInfo                          MPU_vTaskGetInfo
+        #تعریف_کړه vTaskSuspend                          MPU_vTaskSuspend
+        #تعریف_کړه vTaskResume                           MPU_vTaskResume
+        #تعریف_کړه x_Task_Get_Tick_شمېر                     MPU_x_Task_Get_Tick_شمېر
+        #تعریف_کړه ux_Task_Get_شمېره_د_Tasks                MPU_ux_Task_Get_شمېره_د_Tasks
+        #تعریف_کړه ux_Task_Get_ډېری_لوړ_Water_Mark           MPU_ux_Task_Get_ډېری_لوړ_Water_Mark
+        #تعریف_کړه ux_Task_Get_ډېری_لوړ_Water_Mark2          MPU_ux_Task_Get_ډېری_لوړ_Water_Mark2
+        #تعریف_کړه v_Task_سېټ_Application_Task_نښان            MPU_v_Task_سېټ_Application_Task_نښان
+        #تعریف_کړه x_Task_Get_Application_Task_نښان            MPU_x_Task_Get_Application_Task_نښان
+        #تعریف_کړه v_Task_سېټ_Thread_Local_Storage_اشاره_ګر     MPU_v_Task_سېټ_Thread_Local_Storage_اشاره_ګر
+        #تعریف_کړه pv_Task_Get_Thread_Local_Storage_اشاره_ګر    MPU_pv_Task_Get_Thread_Local_Storage_اشاره_ګر
+        #تعریف_کړه xTaskGetIdleTaskHandle                MPU_xTaskGetIdleTaskHandle
+        #تعریف_کړه uxTaskGetSystemState                  MPU_uxTaskGetSystemState
+        #تعریف_کړه ul_Task_Get_Idle_پرلپسې_وخت_Counter           MPU_ul_Task_Get_Idle_پرلپسې_وخت_Counter
+        #تعریف_کړه ul_Task_Get_Idle_پرلپسې_وخت_Percent           MPU_ul_Task_Get_Idle_پرلپسې_وخت_Percent
+        #تعریف_کړه xTaskGenericNotify                    MPU_xTaskGenericNotify
+        #تعریف_کړه xTaskGenericNotifyWait                MPU_xTaskGenericNotifyWait
+        #تعریف_کړه ulTaskGenericNotifyTake               MPU_ulTaskGenericNotifyTake
+        #تعریف_کړه xTaskGenericNotifyStateClear          MPU_xTaskGenericNotifyStateClear
+        #تعریف_کړه ul_Task_Generic_Notify_ارزښت_Clear         MPU_ul_Task_Generic_Notify_ارزښت_Clear
+        #تعریف_کړه v_Task_سېټ_وخت_بهر_State                  MPU_v_Task_سېټ_وخت_بهر_State
+        #تعریف_کړه x_Task_Check_For_وخت_بهر                  MPU_x_Task_Check_For_وخت_بهر
+        #تعریف_کړه xTaskGetCurrentTaskHandle             MPU_xTaskGetCurrentTaskHandle
+        #تعریف_کړه xTaskGetSchedulerState                MPU_xTaskGetSchedulerState
 
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
-            #define ulTaskGetRunTimeCounter           MPU_ulTaskGetRunTimeCounter
-            #define ulTaskGetRunTimePercent           MPU_ulTaskGetRunTimePercent
-        #endif /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
+        #إذا ( configUSE_MPU_WRAPPERS_V1 == 0 )
+            #تعریف_کړه ul_Task_Get_پرلپسې_وخت_Counter           MPU_ul_Task_Get_پرلپسې_وخت_Counter
+            #تعریف_کړه ul_Task_Get_پرلپسې_وخت_Percent           MPU_ul_Task_Get_پرلپسې_وخت_Percent
+        #د_که_پای /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 
 /* Privileged only wrappers for Task APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
-        #define xTaskCreate                              MPU_xTaskCreate
-        #define xTaskCreateStatic                        MPU_xTaskCreateStatic
-        #define vTaskDelete                              MPU_vTaskDelete
-        #define vTaskPrioritySet                         MPU_vTaskPrioritySet
-        #define xTaskGetHandle                           MPU_xTaskGetHandle
-        #define xTaskCallApplicationTaskHook             MPU_xTaskCallApplicationTaskHook
+        #تعریف_کړه xTaskCreate                              MPU_xTaskCreate
+        #تعریف_کړه xTaskCreateStatic                        MPU_xTaskCreateStatic
+        #تعریف_کړه vTaskDelete                              MPU_vTaskDelete
+        #تعریف_کړه v_Task_لومړیتوب_سېټ                         MPU_v_Task_لومړیتوب_سېټ
+        #تعریف_کړه xTaskGetHandle                           MPU_xTaskGetHandle
+        #تعریف_کړه xTaskCallApplicationTaskHook             MPU_xTaskCallApplicationTaskHook
 
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
-            #define pcTaskGetName                        MPU_pcTaskGetName
-            #define xTaskCreateRestricted                MPU_xTaskCreateRestricted
-            #define xTaskCreateRestrictedStatic          MPU_xTaskCreateRestrictedStatic
-            #define vTaskAllocateMPURegions              MPU_vTaskAllocateMPURegions
-            #define xTaskGetStaticBuffers                MPU_xTaskGetStaticBuffers
-            #define uxTaskPriorityGetFromISR             MPU_uxTaskPriorityGetFromISR
-            #define uxTaskBasePriorityGet                MPU_uxTaskBasePriorityGet
-            #define uxTaskBasePriorityGetFromISR         MPU_uxTaskBasePriorityGetFromISR
-            #define xTaskResumeFromISR                   MPU_xTaskResumeFromISR
-            #define xTaskGetApplicationTaskTagFromISR    MPU_xTaskGetApplicationTaskTagFromISR
-            #define xTaskGenericNotifyFromISR            MPU_xTaskGenericNotifyFromISR
-            #define vTaskGenericNotifyGiveFromISR        MPU_vTaskGenericNotifyGiveFromISR
-        #endif /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
+        #إذا ( configUSE_MPU_WRAPPERS_V1 == 0 )
+            #تعریف_کړه pcTaskGetName                        MPU_pcTaskGetName
+            #تعریف_کړه xTaskCreateRestricted                MPU_xTaskCreateRestricted
+            #تعریف_کړه xTaskCreateRestrictedStatic          MPU_xTaskCreateRestrictedStatic
+            #تعریف_کړه vTaskAllocateMPURegions              MPU_vTaskAllocateMPURegions
+            #تعریف_کړه xTaskGetStaticBuffers                MPU_xTaskGetStaticBuffers
+            #تعریف_کړه ux_Task_لومړیتوب_Get_From_ISR             MPU_ux_Task_لومړیتوب_Get_From_ISR
+            #تعریف_کړه ux_Task_بنسټ_لومړیتوب_Get                MPU_ux_Task_بنسټ_لومړیتوب_Get
+            #تعریف_کړه ux_Task_بنسټ_لومړیتوب_Get_From_ISR         MPU_ux_Task_بنسټ_لومړیتوب_Get_From_ISR
+            #تعریف_کړه xTaskResumeFromISR                   MPU_xTaskResumeFromISR
+            #تعریف_کړه x_Task_Get_Application_Task_نښان_From_ISR    MPU_x_Task_Get_Application_Task_نښان_From_ISR
+            #تعریف_کړه xTaskGenericNotifyFromISR            MPU_xTaskGenericNotifyFromISR
+            #تعریف_کړه vTaskGenericNotifyGiveFromISR        MPU_vTaskGenericNotifyGiveFromISR
+        #د_که_پای /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 
 /* Map standard queue.h API functions to the MPU equivalents. */
-        #define xQueueGenericSend            MPU_xQueueGenericSend
-        #define xQueueReceive                MPU_xQueueReceive
-        #define xQueuePeek                   MPU_xQueuePeek
-        #define xQueueSemaphoreTake          MPU_xQueueSemaphoreTake
-        #define uxQueueMessagesWaiting       MPU_uxQueueMessagesWaiting
-        #define uxQueueSpacesAvailable       MPU_uxQueueSpacesAvailable
-        #define xQueueGetMutexHolder         MPU_xQueueGetMutexHolder
-        #define xQueueTakeMutexRecursive     MPU_xQueueTakeMutexRecursive
-        #define xQueueGiveMutexRecursive     MPU_xQueueGiveMutexRecursive
-        #define xQueueAddToSet               MPU_xQueueAddToSet
-        #define xQueueSelectFromSet          MPU_xQueueSelectFromSet
+        #تعریف_کړه x_کتار_Generic_Send            MPU_x_کتار_Generic_Send
+        #تعریف_کړه x_کتار_Receive                MPU_x_کتار_Receive
+        #تعریف_کړه x_کتار_Peek                   MPU_x_کتار_Peek
+        #تعریف_کړه x_کتار_Semaphore_Take          MPU_x_کتار_Semaphore_Take
+        #تعریف_کړه ux_کتار_Messages_انتظار       MPU_ux_کتار_Messages_انتظار
+        #تعریف_کړه ux_کتار_Spaces_شته       MPU_ux_کتار_Spaces_شته
+        #تعریف_کړه x_کتار_Get_Mutex_Holder         MPU_x_کتار_Get_Mutex_Holder
+        #تعریف_کړه x_کتار_Take_Mutex_Recursive     MPU_x_کتار_Take_Mutex_Recursive
+        #تعریف_کړه x_کتار_Give_Mutex_Recursive     MPU_x_کتار_Give_Mutex_Recursive
+        #تعریف_کړه x_کتار_جمع_کړه_منزل_سېټ               MPU_x_کتار_جمع_کړه_منزل_سېټ
+        #تعریف_کړه x_کتار_Select_From_سېټ          MPU_x_کتار_Select_From_سېټ
 
-        #if ( configQUEUE_REGISTRY_SIZE > 0 )
-            #define vQueueAddToRegistry      MPU_vQueueAddToRegistry
-            #define vQueueUnregisterQueue    MPU_vQueueUnregisterQueue
-            #define pcQueueGetName           MPU_pcQueueGetName
-        #endif /* #if ( configQUEUE_REGISTRY_SIZE > 0 ) */
+        #إذا ( config_کتار_REGISTRY_اندازه > 0 )
+            #تعریف_کړه v_کتار_جمع_کړه_منزل_Registry      MPU_v_کتار_جمع_کړه_منزل_Registry
+            #تعریف_کړه v_کتار_Unregister_کتار    MPU_v_کتار_Unregister_کتار
+            #تعریف_کړه pc_کتار_Get_Name           MPU_pc_کتار_Get_Name
+        #د_که_پای /* #if ( configQUEUE_REGISTRY_SIZE > 0 ) */
 
 /* Privileged only wrappers for Queue APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
-        #define vQueueDelete                           MPU_vQueueDelete
-        #define xQueueCreateMutex                      MPU_xQueueCreateMutex
-        #define xQueueCreateMutexStatic                MPU_xQueueCreateMutexStatic
-        #define xQueueCreateCountingSemaphore          MPU_xQueueCreateCountingSemaphore
-        #define xQueueCreateCountingSemaphoreStatic    MPU_xQueueCreateCountingSemaphoreStatic
-        #define xQueueGenericCreate                    MPU_xQueueGenericCreate
-        #define xQueueGenericCreateStatic              MPU_xQueueGenericCreateStatic
-        #define xQueueGenericReset                     MPU_xQueueGenericReset
-        #define xQueueCreateSet                        MPU_xQueueCreateSet
-        #define xQueueRemoveFromSet                    MPU_xQueueRemoveFromSet
+        #تعریف_کړه v_کتار_Delete                           MPU_v_کتار_Delete
+        #تعریف_کړه x_کتار_Create_Mutex                      MPU_x_کتار_Create_Mutex
+        #تعریف_کړه x_کتار_Create_Mutex_Static                MPU_x_کتار_Create_Mutex_Static
+        #تعریف_کړه x_کتار_Create_Counting_Semaphore          MPU_x_کتار_Create_Counting_Semaphore
+        #تعریف_کړه x_کتار_Create_Counting_Semaphore_Static    MPU_x_کتار_Create_Counting_Semaphore_Static
+        #تعریف_کړه x_کتار_Generic_Create                    MPU_x_کتار_Generic_Create
+        #تعریف_کړه x_کتار_Generic_Create_Static              MPU_x_کتار_Generic_Create_Static
+        #تعریف_کړه x_کتار_Generic_Reset                     MPU_x_کتار_Generic_Reset
+        #تعریف_کړه x_کتار_Create_سېټ                        MPU_x_کتار_Create_سېټ
+        #تعریف_کړه x_کتار_Remove_From_سېټ                    MPU_x_کتار_Remove_From_سېټ
 
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
-            #define xQueueGenericGetStaticBuffers      MPU_xQueueGenericGetStaticBuffers
-            #define xQueueGenericSendFromISR           MPU_xQueueGenericSendFromISR
-            #define xQueueGiveFromISR                  MPU_xQueueGiveFromISR
-            #define xQueuePeekFromISR                  MPU_xQueuePeekFromISR
-            #define xQueueReceiveFromISR               MPU_xQueueReceiveFromISR
-            #define xQueueIsQueueEmptyFromISR          MPU_xQueueIsQueueEmptyFromISR
-            #define xQueueIsQueueFullFromISR           MPU_xQueueIsQueueFullFromISR
-            #define uxQueueMessagesWaitingFromISR      MPU_uxQueueMessagesWaitingFromISR
-            #define xQueueGetMutexHolderFromISR        MPU_xQueueGetMutexHolderFromISR
-            #define xQueueSelectFromSetFromISR         MPU_xQueueSelectFromSetFromISR
-        #endif /* if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
+        #إذا ( configUSE_MPU_WRAPPERS_V1 == 0 )
+            #تعریف_کړه x_کتار_Generic_Get_Static_Buffers      MPU_x_کتار_Generic_Get_Static_Buffers
+            #تعریف_کړه x_کتار_Generic_Send_From_ISR           MPU_x_کتار_Generic_Send_From_ISR
+            #تعریف_کړه x_کتار_Give_From_ISR                  MPU_x_کتار_Give_From_ISR
+            #تعریف_کړه x_کتار_Peek_From_ISR                  MPU_x_کتار_Peek_From_ISR
+            #تعریف_کړه x_کتار_Receive_From_ISR               MPU_x_کتار_Receive_From_ISR
+            #تعریف_کړه x_کتار_Is_کتار_تشه_From_ISR          MPU_x_کتار_Is_کتار_تشه_From_ISR
+            #تعریف_کړه x_کتار_Is_کتار_ډک_From_ISR           MPU_x_کتار_Is_کتار_ډک_From_ISR
+            #تعریف_کړه ux_کتار_Messages_انتظار_From_ISR      MPU_ux_کتار_Messages_انتظار_From_ISR
+            #تعریف_کړه x_کتار_Get_Mutex_Holder_From_ISR        MPU_x_کتار_Get_Mutex_Holder_From_ISR
+            #تعریف_کړه x_کتار_Select_From_سېټ_From_ISR         MPU_x_کتار_Select_From_سېټ_From_ISR
+        #د_که_پای /* if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 
 /* Map standard timer.h API functions to the MPU equivalents. */
-        #define pvTimerGetTimerID                 MPU_pvTimerGetTimerID
-        #define vTimerSetTimerID                  MPU_vTimerSetTimerID
-        #define xTimerIsTimerActive               MPU_xTimerIsTimerActive
-        #define xTimerGetTimerDaemonTaskHandle    MPU_xTimerGetTimerDaemonTaskHandle
-        #define xTimerGenericCommandFromTask      MPU_xTimerGenericCommandFromTask
-        #define pcTimerGetName                    MPU_pcTimerGetName
-        #define vTimerSetReloadMode               MPU_vTimerSetReloadMode
-        #define uxTimerGetReloadMode              MPU_uxTimerGetReloadMode
-        #define xTimerGetPeriod                   MPU_xTimerGetPeriod
-        #define xTimerGetExpiryTime               MPU_xTimerGetExpiryTime
+        #تعریف_کړه pvTimerGetTimerID                 MPU_pvTimerGetTimerID
+        #تعریف_کړه v_Timer_سېټ_Timer_ID                  MPU_v_Timer_سېټ_Timer_ID
+        #تعریف_کړه x_Timer_Is_Timer_فعال               MPU_x_Timer_Is_Timer_فعال
+        #تعریف_کړه xTimerGetTimerDaemonTaskHandle    MPU_xTimerGetTimerDaemonTaskHandle
+        #تعریف_کړه xTimerGenericCommandFromTask      MPU_xTimerGenericCommandFromTask
+        #تعریف_کړه pcTimerGetName                    MPU_pcTimerGetName
+        #تعریف_کړه v_Timer_سېټ_Reload_ډېرپېښ               MPU_v_Timer_سېټ_Reload_ډېرپېښ
+        #تعریف_کړه ux_Timer_Get_Reload_ډېرپېښ              MPU_ux_Timer_Get_Reload_ډېرپېښ
+        #تعریف_کړه xTimerGetPeriod                   MPU_xTimerGetPeriod
+        #تعریف_کړه x_Timer_Get_Expiry_وخت               MPU_x_Timer_Get_Expiry_وخت
 
 /* Privileged only wrappers for Timer APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
-            #define xTimerGetReloadMode            MPU_xTimerGetReloadMode
-            #define xTimerCreate                   MPU_xTimerCreate
-            #define xTimerCreateStatic             MPU_xTimerCreateStatic
-            #define xTimerGetStaticBuffer          MPU_xTimerGetStaticBuffer
-            #define xTimerGenericCommandFromISR    MPU_xTimerGenericCommandFromISR
-        #endif /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
+        #إذا ( configUSE_MPU_WRAPPERS_V1 == 0 )
+            #تعریف_کړه x_Timer_Get_Reload_ډېرپېښ            MPU_x_Timer_Get_Reload_ډېرپېښ
+            #تعریف_کړه xTimerCreate                   MPU_xTimerCreate
+            #تعریف_کړه xTimerCreateStatic             MPU_xTimerCreateStatic
+            #تعریف_کړه x_Timer_Get_Static_بفر          MPU_x_Timer_Get_Static_بفر
+            #تعریف_کړه xTimerGenericCommandFromISR    MPU_xTimerGenericCommandFromISR
+        #د_که_پای /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 
 /* Map standard event_group.h API functions to the MPU equivalents. */
-        #define xEventGroupWaitBits          MPU_xEventGroupWaitBits
-        #define xEventGroupClearBits         MPU_xEventGroupClearBits
-        #define xEventGroupSetBits           MPU_xEventGroupSetBits
-        #define xEventGroupSync              MPU_xEventGroupSync
+        #تعریف_کړه x_Event_ډله_Wait_بټونه          MPU_x_Event_ډله_Wait_بټونه
+        #تعریف_کړه x_Event_ډله_Clear_بټونه         MPU_x_Event_ډله_Clear_بټونه
+        #تعریف_کړه x_Event_ډله_سېټ_بټونه           MPU_x_Event_ډله_سېټ_بټونه
+        #تعریف_کړه x_Event_ډله_Sync              MPU_x_Event_ډله_Sync
 
-        #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) )
-            #define uxEventGroupGetNumber    MPU_uxEventGroupGetNumber
-            #define vEventGroupSetNumber     MPU_vEventGroupSetNumber
-        #endif /* #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) ) */
+        #إذا ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) )
+            #تعریف_کړه ux_Event_ډله_Get_شمېره    MPU_ux_Event_ډله_Get_شمېره
+            #تعریف_کړه v_Event_ډله_سېټ_شمېره     MPU_v_Event_ډله_سېټ_شمېره
+        #د_که_پای /* #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) ) */
 
 /* Privileged only wrappers for Event Group APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
-        #define xEventGroupCreate                  MPU_xEventGroupCreate
-        #define xEventGroupCreateStatic            MPU_xEventGroupCreateStatic
-        #define vEventGroupDelete                  MPU_vEventGroupDelete
+        #تعریف_کړه x_Event_ډله_Create                  MPU_x_Event_ډله_Create
+        #تعریف_کړه x_Event_ډله_Create_Static            MPU_x_Event_ډله_Create_Static
+        #تعریف_کړه v_Event_ډله_Delete                  MPU_v_Event_ډله_Delete
 
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
-            #define xEventGroupGetStaticBuffer     MPU_xEventGroupGetStaticBuffer
-            #define xEventGroupClearBitsFromISR    MPU_xEventGroupClearBitsFromISR
-            #define xEventGroupSetBitsFromISR      MPU_xEventGroupSetBitsFromISR
-            #define xEventGroupGetBitsFromISR      MPU_xEventGroupGetBitsFromISR
-        #endif /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
+        #إذا ( configUSE_MPU_WRAPPERS_V1 == 0 )
+            #تعریف_کړه x_Event_ډله_Get_Static_بفر     MPU_x_Event_ډله_Get_Static_بفر
+            #تعریف_کړه x_Event_ډله_Clear_بټونه_From_ISR    MPU_x_Event_ډله_Clear_بټونه_From_ISR
+            #تعریف_کړه x_Event_ډله_سېټ_بټونه_From_ISR      MPU_x_Event_ډله_سېټ_بټونه_From_ISR
+            #تعریف_کړه x_Event_ډله_Get_بټونه_From_ISR      MPU_x_Event_ډله_Get_بټونه_From_ISR
+        #د_که_پای /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 
 /* Map standard message/stream_buffer.h API functions to the MPU
  * equivalents. */
-        #define xStreamBufferSend                      MPU_xStreamBufferSend
-        #define xStreamBufferReceive                   MPU_xStreamBufferReceive
-        #define xStreamBufferIsFull                    MPU_xStreamBufferIsFull
-        #define xStreamBufferIsEmpty                   MPU_xStreamBufferIsEmpty
-        #define xStreamBufferSpacesAvailable           MPU_xStreamBufferSpacesAvailable
-        #define xStreamBufferBytesAvailable            MPU_xStreamBufferBytesAvailable
-        #define xStreamBufferSetTriggerLevel           MPU_xStreamBufferSetTriggerLevel
-        #define xStreamBufferNextMessageLengthBytes    MPU_xStreamBufferNextMessageLengthBytes
+        #تعریف_کړه x_بهیر_بفر_Send                      MPU_x_بهیر_بفر_Send
+        #تعریف_کړه x_بهیر_بفر_Receive                   MPU_x_بهیر_بفر_Receive
+        #تعریف_کړه x_بهیر_بفر_Is_ډک                    MPU_x_بهیر_بفر_Is_ډک
+        #تعریف_کړه x_بهیر_بفر_Is_تشه                   MPU_x_بهیر_بفر_Is_تشه
+        #تعریف_کړه x_بهیر_بفر_Spaces_شته           MPU_x_بهیر_بفر_Spaces_شته
+        #تعریف_کړه x_بهیر_بفر_بایټونه_شته            MPU_x_بهیر_بفر_بایټونه_شته
+        #تعریف_کړه x_بهیر_بفر_سېټ_Trigger_Level           MPU_x_بهیر_بفر_سېټ_Trigger_Level
+        #تعریف_کړه x_بهیر_بفر_بل_پیغام_اوږدتیا_بایټونه    MPU_x_بهیر_بفر_بل_پیغام_اوږدتیا_بایټونه
 
 /* Privileged only wrappers for Stream Buffer APIs. These are needed so that
  * the application can use opaque handles maintained in mpu_wrappers.c
  * with all the APIs. */
 
-        #define xStreamBufferGenericCreate                  MPU_xStreamBufferGenericCreate
-        #define xStreamBufferGenericCreateStatic            MPU_xStreamBufferGenericCreateStatic
-        #define vStreamBufferDelete                         MPU_vStreamBufferDelete
-        #define xStreamBufferReset                          MPU_xStreamBufferReset
+        #تعریف_کړه x_بهیر_بفر_Generic_Create                  MPU_x_بهیر_بفر_Generic_Create
+        #تعریف_کړه x_بهیر_بفر_Generic_Create_Static            MPU_x_بهیر_بفر_Generic_Create_Static
+        #تعریف_کړه v_بهیر_بفر_Delete                         MPU_v_بهیر_بفر_Delete
+        #تعریف_کړه x_بهیر_بفر_Reset                          MPU_x_بهیر_بفر_Reset
 
-        #if ( configUSE_MPU_WRAPPERS_V1 == 0 )
-            #define xStreamBufferGetStaticBuffers           MPU_xStreamBufferGetStaticBuffers
-            #define xStreamBufferSendFromISR                MPU_xStreamBufferSendFromISR
-            #define xStreamBufferReceiveFromISR             MPU_xStreamBufferReceiveFromISR
-            #define xStreamBufferSendCompletedFromISR       MPU_xStreamBufferSendCompletedFromISR
-            #define xStreamBufferReceiveCompletedFromISR    MPU_xStreamBufferReceiveCompletedFromISR
-            #define xStreamBufferResetFromISR               MPU_xStreamBufferResetFromISR
-        #endif /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
+        #إذا ( configUSE_MPU_WRAPPERS_V1 == 0 )
+            #تعریف_کړه x_بهیر_بفر_Get_Static_Buffers           MPU_x_بهیر_بفر_Get_Static_Buffers
+            #تعریف_کړه x_بهیر_بفر_Send_From_ISR                MPU_x_بهیر_بفر_Send_From_ISR
+            #تعریف_کړه x_بهیر_بفر_Receive_From_ISR             MPU_x_بهیر_بفر_Receive_From_ISR
+            #تعریف_کړه x_بهیر_بفر_Send_Completed_From_ISR       MPU_x_بهیر_بفر_Send_Completed_From_ISR
+            #تعریف_کړه x_بهیر_بفر_Receive_Completed_From_ISR    MPU_x_بهیر_بفر_Receive_Completed_From_ISR
+            #تعریف_کړه x_بهیر_بفر_Reset_From_ISR               MPU_x_بهیر_بفر_Reset_From_ISR
+        #د_که_پای /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 
-        #if ( ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) )
+        #إذا ( ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) )
 
-            #define vGrantAccessToTask( xTask, xTaskToGrantAccess )                        vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xTaskToGrantAccess ) )
-            #define vRevokeAccessToTask( xTask, xTaskToRevokeAccess )                      vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xTaskToRevokeAccess ) )
+            #تعریف_کړه v_Grant_Access_منزل_Task( xTask, x_Task_منزل_Grant_Access )                        v_Grant_Access_منزل_Kernel_Object( ( xTask ), ( int32_t ) ( x_Task_منزل_Grant_Access ) )
+            #تعریف_کړه v_Revoke_Access_منزل_Task( xTask, x_Task_منزل_Revoke_Access )                      v_Revoke_Access_منزل_Kernel_Object( ( xTask ), ( int32_t ) ( x_Task_منزل_Revoke_Access ) )
 
-            #define vGrantAccessToSemaphore( xTask, xSemaphoreToGrantAccess )              vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xSemaphoreToGrantAccess ) )
-            #define vRevokeAccessToSemaphore( xTask, xSemaphoreToRevokeAccess )            vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xSemaphoreToRevokeAccess ) )
+            #تعریف_کړه v_Grant_Access_منزل_Semaphore( xTask, x_Semaphore_منزل_Grant_Access )              v_Grant_Access_منزل_Kernel_Object( ( xTask ), ( int32_t ) ( x_Semaphore_منزل_Grant_Access ) )
+            #تعریف_کړه v_Revoke_Access_منزل_Semaphore( xTask, x_Semaphore_منزل_Revoke_Access )            v_Revoke_Access_منزل_Kernel_Object( ( xTask ), ( int32_t ) ( x_Semaphore_منزل_Revoke_Access ) )
 
-            #define vGrantAccessToQueue( xTask, xQueueToGrantAccess )                      vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xQueueToGrantAccess ) )
-            #define vRevokeAccessToQueue( xTask, xQueueToRevokeAccess )                    vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xQueueToRevokeAccess ) )
+            #تعریف_کړه v_Grant_Access_منزل_کتار( xTask, x_کتار_منزل_Grant_Access )                      v_Grant_Access_منزل_Kernel_Object( ( xTask ), ( int32_t ) ( x_کتار_منزل_Grant_Access ) )
+            #تعریف_کړه v_Revoke_Access_منزل_کتار( xTask, x_کتار_منزل_Revoke_Access )                    v_Revoke_Access_منزل_Kernel_Object( ( xTask ), ( int32_t ) ( x_کتار_منزل_Revoke_Access ) )
 
-            #define vGrantAccessToQueueSet( xTask, xQueueSetToGrantAccess )                vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xQueueSetToGrantAccess ) )
-            #define vRevokeAccessToQueueSet( xTask, xQueueSetToRevokeAccess )              vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xQueueSetToRevokeAccess ) )
+            #تعریف_کړه v_Grant_Access_منزل_کتار_سېټ( xTask, x_کتار_سېټ_منزل_Grant_Access )                v_Grant_Access_منزل_Kernel_Object( ( xTask ), ( int32_t ) ( x_کتار_سېټ_منزل_Grant_Access ) )
+            #تعریف_کړه v_Revoke_Access_منزل_کتار_سېټ( xTask, x_کتار_سېټ_منزل_Revoke_Access )              v_Revoke_Access_منزل_Kernel_Object( ( xTask ), ( int32_t ) ( x_کتار_سېټ_منزل_Revoke_Access ) )
 
-            #define vGrantAccessToEventGroup( xTask, xEventGroupToGrantAccess )            vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xEventGroupToGrantAccess ) )
-            #define vRevokeAccessToEventGroup( xTask, xEventGroupToRevokeAccess )          vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xEventGroupToRevokeAccess ) )
+            #تعریف_کړه v_Grant_Access_منزل_Event_ډله( xTask, x_Event_ډله_منزل_Grant_Access )            v_Grant_Access_منزل_Kernel_Object( ( xTask ), ( int32_t ) ( x_Event_ډله_منزل_Grant_Access ) )
+            #تعریف_کړه v_Revoke_Access_منزل_Event_ډله( xTask, x_Event_ډله_منزل_Revoke_Access )          v_Revoke_Access_منزل_Kernel_Object( ( xTask ), ( int32_t ) ( x_Event_ډله_منزل_Revoke_Access ) )
 
-            #define vGrantAccessToStreamBuffer( xTask, xStreamBufferToGrantAccess )        vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xStreamBufferToGrantAccess ) )
-            #define vRevokeAccessToStreamBuffer( xTask, xStreamBufferToRevokeAccess )      vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xStreamBufferToRevokeAccess ) )
+            #تعریف_کړه v_Grant_Access_منزل_بهیر_بفر( xTask, x_بهیر_بفر_منزل_Grant_Access )        v_Grant_Access_منزل_Kernel_Object( ( xTask ), ( int32_t ) ( x_بهیر_بفر_منزل_Grant_Access ) )
+            #تعریف_کړه v_Revoke_Access_منزل_بهیر_بفر( xTask, x_بهیر_بفر_منزل_Revoke_Access )      v_Revoke_Access_منزل_Kernel_Object( ( xTask ), ( int32_t ) ( x_بهیر_بفر_منزل_Revoke_Access ) )
 
-            #define vGrantAccessToMessageBuffer( xTask, xMessageBufferToGrantAccess )      vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xMessageBufferToGrantAccess ) )
-            #define vRevokeAccessToMessageBuffer( xTask, xMessageBufferToRevokeAccess )    vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xMessageBufferToRevokeAccess ) )
+            #تعریف_کړه v_Grant_Access_منزل_پیغام_بفر( xTask, x_پیغام_بفر_منزل_Grant_Access )      v_Grant_Access_منزل_Kernel_Object( ( xTask ), ( int32_t ) ( x_پیغام_بفر_منزل_Grant_Access ) )
+            #تعریف_کړه v_Revoke_Access_منزل_پیغام_بفر( xTask, x_پیغام_بفر_منزل_Revoke_Access )    v_Revoke_Access_منزل_Kernel_Object( ( xTask ), ( int32_t ) ( x_پیغام_بفر_منزل_Revoke_Access ) )
 
-            #define vGrantAccessToTimer( xTask, xTimerToGrantAccess )                      vGrantAccessToKernelObject( ( xTask ), ( int32_t ) ( xTimerToGrantAccess ) )
-            #define vRevokeAccessToTimer( xTask, xTimerToRevokeAccess )                    vRevokeAccessToKernelObject( ( xTask ), ( int32_t ) ( xTimerToRevokeAccess ) )
+            #تعریف_کړه v_Grant_Access_منزل_Timer( xTask, x_Timer_منزل_Grant_Access )                      v_Grant_Access_منزل_Kernel_Object( ( xTask ), ( int32_t ) ( x_Timer_منزل_Grant_Access ) )
+            #تعریف_کړه v_Revoke_Access_منزل_Timer( xTask, x_Timer_منزل_Revoke_Access )                    v_Revoke_Access_منزل_Kernel_Object( ( xTask ), ( int32_t ) ( x_Timer_منزل_Revoke_Access ) )
 
-        #endif /* #if ( ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) ) */
+        #د_که_پای /* #if ( ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) ) */
 
-    #endif /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
+    #د_که_پای /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
 
-    #define PRIVILEGED_FUNCTION     __attribute__( ( section( "privileged_functions" ) ) )
-    #define PRIVILEGED_DATA         __attribute__( ( section( "privileged_data" ) ) )
-    #define FREERTOS_SYSTEM_CALL    __attribute__( ( section( "freertos_system_calls" ) ) )
+    #تعریف_کړه PRIVILEGED_FUNCTION     __attribute__( ( section( "privileged_functions" ) ) )
+    #تعریف_کړه PRIVILEGED_معلومات         __attribute__( ( section( "privileged_data" ) ) )
+    #تعریف_کړه FREERTOS_SYSTEM_CALL    __attribute__( ( section( "freertos_system_calls" ) ) )
 
-#else /* portUSING_MPU_WRAPPERS */
+#وإلا /* portUSING_MPU_WRAPPERS */
 
-    #define PRIVILEGED_FUNCTION
-    #define PRIVILEGED_DATA
-    #define FREERTOS_SYSTEM_CALL
+    #تعریف_کړه PRIVILEGED_FUNCTION
+    #تعریف_کړه PRIVILEGED_معلومات
+    #تعریف_کړه FREERTOS_SYSTEM_CALL
 
-#endif /* portUSING_MPU_WRAPPERS */
+#د_که_پای /* portUSING_MPU_WRAPPERS */
 
 
-#endif /* MPU_WRAPPERS_H */
+#د_که_پای /* MPU_WRAPPERS_H */
