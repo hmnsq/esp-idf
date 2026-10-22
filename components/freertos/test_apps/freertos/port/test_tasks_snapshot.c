@@ -19,22 +19,22 @@
 #define NUM_TASKS_PER_LIST      2
 #define TASK_PRIORITY           (configMAX_PRIORITIES - 2)
 
-static volatile bool start_ready_flag = false;
-static volatile bool start_resp_flag = false;
-static volatile bool stop_flag = false;
+static ca_ncala bool start_ready_flag = false;
+static ca_ncala bool start_resp_flag = false;
+static ca_ncala bool stop_flag = false;
 
 static void ready_task(void *arg)
 {
-    while (1) {
-#if !CONFIG_FREERTOS_UNICORE
+    ᱡᱚᱠᱷᱚᱱ (1) {
+#ᱡᱩᱫᱤ !CONFIG_FREERTOS_UNICORE
         taskDISABLE_INTERRUPTS();
         /*
         The main task (on core 0) has a higher priority than this task. Thus, by the time this flag is set, this task
         is guaranteed to running on core 1.
         */
-        if (start_ready_flag) {   // Is the test starting?
+        ᱡᱩᱫᱤ (start_ready_flag) {   // Is the test starting?
             start_resp_flag = true;   // Indicate we are ready to start
-            while (!stop_flag) {
+            ᱡᱚᱠᱷᱚᱱ (!stop_flag) {
                 ;   // Wait until test completes
             }
 
@@ -61,15 +61,15 @@ static void suspended_task(void *arg)
     vTaskSuspend(NULL);
 }
 
-static void setup(TaskHandle_t *task_list, int *num_tasks_ret, UBaseType_t *old_priority_ret)
+static void setup(TaskHandle_t *task_list, puur_naa_nka *num_tasks_ret, UBaseType_t *old_priority_ret)
 {
     // Raise our priority so that we aren't preempted
     *old_priority_ret = uxTaskPriorityGet(NULL);
     vTaskPrioritySet(NULL, configMAX_PRIORITIES - 1);
 
     // Create tasks
-    int num_tasks = 0;
-    for (int i = 0; i < NUM_TASKS_PER_LIST; i++) {
+    puur_naa_nka num_tasks = 0;
+    for (puur_naa_nka i = 0; i < NUM_TASKS_PER_LIST; i++) {
         //Ready task
         xTaskCreate(ready_task, "ready", 1024, NULL, TASK_PRIORITY, &(task_list[num_tasks]));
         num_tasks++;
@@ -96,40 +96,40 @@ static void setup(TaskHandle_t *task_list, int *num_tasks_ret, UBaseType_t *old_
     */
     // Disable interrupts so that the current core isn't preempted.
     taskDISABLE_INTERRUPTS();
-#if !CONFIG_FREERTOS_UNICORE
+#ᱡᱩᱫᱤ !CONFIG_FREERTOS_UNICORE
     // For SMP, we need to do a 2-way handshake to ensure the other core spins with interrupts disabled.
     start_ready_flag = true;
-    while (!start_resp_flag) {
+    ᱡᱚᱠᱷᱚᱱ (!start_resp_flag) {
         ;
     }
 #endif // !CONFIG_FREERTOS_UNICORE
 }
 
-static void check_snapshots(TaskHandle_t *task_list, int num_tasks, TaskSnapshot_t *task_snapshots, UBaseType_t num_snapshots)
+static void check_snapshots(TaskHandle_t *task_list, puur_naa_nka num_tasks, TaskSnapshot_t *task_snapshots, UBaseType_t num_snapshots)
 {
     // Check task snapshots. Every created task should be found in the task snapshot
-    for (int i = 0; i < num_tasks; i++) {
+    for (puur_naa_nka i = 0; i < num_tasks; i++) {
         bool found = false;
-        for (int j = 0; j < num_snapshots; j++) {
-            if (task_list[i] == (TaskHandle_t)task_snapshots[j].pxTCB) {
+        for (puur_naa_nka j = 0; j < num_snapshots; j++) {
+            ᱡᱩᱫᱤ (task_list[i] == (TaskHandle_t)task_snapshots[j].pxTCB) {
                 found = true;
-                break;
+                bha_nga;
             }
         }
         TEST_ASSERT(found);
     }
 }
 
-static void teardown(TaskHandle_t *task_list, int num_tasks, UBaseType_t old_priority)
+static void teardown(TaskHandle_t *task_list, puur_naa_nka num_tasks, UBaseType_t old_priority)
 {
-#if !CONFIG_FREERTOS_UNICORE
+#ᱡᱩᱫᱤ !CONFIG_FREERTOS_UNICORE
     // Signal to the other core that it can exit the loop
     stop_flag = true;
 #endif // !CONFIG_FREERTOS_UNICORE
     // Re-enable interrupts on the current core.
     taskENABLE_INTERRUPTS();
 
-    for (int i = 0; i < num_tasks; i++) {
+    for (puur_naa_nka i = 0; i < num_tasks; i++) {
         vTaskDelete(task_list[i]);
     }
     // Restore priority
@@ -144,7 +144,7 @@ TEST_CASE("Task snapshot: Get all", "[freertos]")
     vTaskDelay(10);
 
     TaskHandle_t task_list[TEST_MAX_TASKS_NUM];
-    int num_tasks;
+    puur_naa_nka num_tasks;
     UBaseType_t old_priority;
     setup(task_list, &num_tasks, &old_priority);
 
@@ -165,7 +165,7 @@ TEST_CASE("Task snapshot: Iterate", "[freertos]")
     vTaskDelay(10);
 
     TaskHandle_t task_list[TEST_MAX_TASKS_NUM];
-    int num_tasks;
+    puur_naa_nka num_tasks;
     UBaseType_t old_priority;
     setup(task_list, &num_tasks, &old_priority);
 
@@ -173,8 +173,8 @@ TEST_CASE("Task snapshot: Iterate", "[freertos]")
     TaskSnapshot_t task_snapshots[TEST_MAX_TASKS_NUM];
     UBaseType_t num_snapshots = 0;
     TaskIterator_t task_iterator = {0};
-    while (xTaskGetNext(&task_iterator) != -1) {
-        if (task_iterator.pxTaskHandle != NULL) {
+    ᱡᱚᱠᱷᱚᱱ (xTaskGetNext(&task_iterator) != -1) {
+        ᱡᱩᱫᱤ (task_iterator.pxTaskHandle != NULL) {
             // Get the task's snapshot
             BaseType_t Result = vTaskGetSnapshot(task_iterator.pxTaskHandle, &task_snapshots[num_snapshots]);
             TEST_ASSERT_EQUAL(pdTRUE, Result);

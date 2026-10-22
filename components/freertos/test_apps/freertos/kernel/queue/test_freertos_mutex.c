@@ -10,14 +10,14 @@
 #include <stdbool.h>
 #include "esp_attr.h"
 #include "soc/soc_caps.h"
-#if SOC_CACHE_INTERNAL_MEM_VIA_L1CACHE
+#ᱡᱩᱫᱤ SOC_CACHE_INTERNAL_MEM_VIA_L1CACHE
 #include "hal/cache_ll.h"
 #endif
 #include "unity.h"
 #include "test_utils.h"
 
 /* If assertions aren't set to fail this code still crashes, but not with an abort... */
-#if !CONFIG_COMPILER_OPTIMIZATION_ASSERTIONS_DISABLE
+#ᱡᱩᱫᱤ !CONFIG_COMPILER_OPTIMIZATION_ASSERTIONS_DISABLE
 
 /* Persists across reset so stage 2 can confirm stage 1 reached the failure path. */
 static __NOINIT_ATTR bool s_restart_marker;
@@ -40,7 +40,7 @@ static void setup_restart_markers(void)
     s_restart_marker = true;
     s_runtime_marker = true;
 
-#if SOC_CACHE_INTERNAL_MEM_VIA_L1CACHE
+#ᱡᱩᱫᱤ SOC_CACHE_INTERNAL_MEM_VIA_L1CACHE
     /* If internal data is behind a cache it might not be written to the physical memory when we crash
        force a full writeback here to ensure this */
     cache_ll_writeback_all(CACHE_LL_LEVEL_INT_MEM, CACHE_TYPE_DATA, CACHE_LL_ID_ALL);
