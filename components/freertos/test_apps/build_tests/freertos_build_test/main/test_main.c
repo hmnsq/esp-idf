@@ -3,6 +3,6 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-void app_main(void)
+शून्य app_main(शून्य)
 {
 }
