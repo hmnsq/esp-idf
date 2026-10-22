@@ -4,33 +4,33 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include "FreeRTOS.h"
-#include "semphr.h"
-#include "freertos_test_utils.h"
+#ଅନ୍ତର୍ଭାଵ "sdkconfig.h"
+#ଅନ୍ତର୍ଭାଵ "FreeRTOS.h"
+#ଅନ୍ତର୍ଭାଵ "semphr.h"
+#ଅନ୍ତର୍ଭାଵ "freertos_test_utils.h"
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
+#ଯଦି ( CONFIG_FREERTOS_ସଂଖ୍ୟା_OF_CORES > 1 )
 
-typedef struct {
-    const TestFunction_t pxTestCode;
-    void * const pvTestCodeArg;
-    const SemaphoreHandle_t xTaskDoneSem;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା ସଂରଚନା {
+    ଅଚଳ TestFunction_t pxTestCode;
+    ଶୂନ୍ୟ * ଅଚଳ pvTestCodeArg;
+    ଅଚଳ SemaphoreHandle_t xTaskDoneSem;
 } TestArgs_t;
 
-static void test_func_task(void * pvParameters)
+ସ୍ଥିର ଶୂନ୍ୟ test_func_task(ଶୂନ୍ୟ * pvParameters)
 {
     TestArgs_t * pxTestArgs = (TestArgs_t *) pvParameters;
     /* Call the test function */
     pxTestArgs->pxTestCode(pxTestArgs->pvTestCodeArg);
     /* Indicate completion to the creation task and wait to be deleted. */
     xSemaphoreGive(pxTestArgs->xTaskDoneSem);
-    vTaskSuspend(NULL);
+    vTaskSuspend(ଖାଲି);
 }
 
-void vTestOnAllCores(TestFunction_t pxTestCode, void * pvTestCodeArg, uint32_t ulStackDepth, UBaseType_t uxPriority)
+ଶୂନ୍ୟ vTestOnAllCores(TestFunction_t pxTestCode, ଶୂନ୍ୟ * pvTestCodeArg, uint32_t ul_ଗଦା_Depth, UBaseType_t uxPriority)
 {
-    SemaphoreHandle_t xTaskDoneSem = xSemaphoreCreateCounting(CONFIG_FREERTOS_NUMBER_OF_CORES, 0);
-    TaskHandle_t xTaskHandles[ CONFIG_FREERTOS_NUMBER_OF_CORES ];
+    SemaphoreHandle_t xTaskDoneSem = xSemaphoreCreateCounting(CONFIG_FREERTOS_ସଂଖ୍ୟା_OF_CORES, 0);
+    TaskHandle_t xTaskHandles[ CONFIG_FREERTOS_ସଂଖ୍ୟା_OF_CORES ];
     TestArgs_t xTestArgs = {
         .pxTestCode = pxTestCode,
         .pvTestCodeArg = pvTestCodeArg,
@@ -38,20 +38,20 @@ void vTestOnAllCores(TestFunction_t pxTestCode, void * pvTestCodeArg, uint32_t u
     };
 
     /* Create a separate task on each core to run the test function */
-    for (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_NUMBER_OF_CORES; xCoreID++) {
-#if ( CONFIG_FREERTOS_SMP == 1 )
+    ପାଇଁ (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_ସଂଖ୍ୟା_OF_CORES; xCoreID++) {
+#ଯଦି ( CONFIG_FREERTOS_SMP == 1 )
         xTaskCreateAffinitySet(test_func_task,
                                "task",
-                               ulStackDepth,
-                               (void *) &xTestArgs,
+                               ul_ଗଦା_Depth,
+                               (ଶୂନ୍ୟ *) &xTestArgs,
                                uxPriority,
                                (UBaseType_t)(1 << xCoreID),
                                &(xTaskHandles[ xCoreID ]));
-#else
+#ଅନ୍ୟଥା
         xTaskCreatePinnedToCore(test_func_task,
                                 "task",
-                                ulStackDepth,
-                                (void *) &xTestArgs,
+                                ul_ଗଦା_Depth,
+                                (ଶୂନ୍ୟ *) &xTestArgs,
                                 uxPriority,
                                 &(xTaskHandles[ xCoreID ]),
                                 xCoreID);
@@ -59,12 +59,12 @@ void vTestOnAllCores(TestFunction_t pxTestCode, void * pvTestCodeArg, uint32_t u
     }
 
     /* Wait for each tasks to complete test */
-    for (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_NUMBER_OF_CORES; xCoreID++) {
+    ପାଇଁ (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_ସଂଖ୍ୟା_OF_CORES; xCoreID++) {
         xSemaphoreTake(xTaskDoneSem, portMAX_DELAY);
     }
 
     /* Cleanup */
-    for (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_NUMBER_OF_CORES; xCoreID++) {
+    ପାଇଁ (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_ସଂଖ୍ୟା_OF_CORES; xCoreID++) {
         vTaskDelete(xTaskHandles[ xCoreID ]);
     }
     vSemaphoreDelete(xTaskDoneSem);

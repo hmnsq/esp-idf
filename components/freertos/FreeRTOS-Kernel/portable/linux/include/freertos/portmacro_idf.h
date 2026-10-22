@@ -12,28 +12,28 @@
 
 #pragma once
 
-#include <stdint.h>
-#include <stdlib.h> // This is for malloc(), used by portmacro.h
-#include "sdkconfig.h"
-#include "esp_attr.h"
-#include "esp_task.h"
-#include "spinlock.h"
+#ଅନ୍ତର୍ଭାଵ <stdint.h>
+#ଅନ୍ତର୍ଭାଵ <stdlib.h> // This is for malloc(), used by portmacro.h
+#ଅନ୍ତର୍ଭାଵ "sdkconfig.h"
+#ଅନ୍ତର୍ଭାଵ "esp_attr.h"
+#ଅନ୍ତର୍ଭାଵ "esp_task.h"
+#ଅନ୍ତର୍ଭାଵ "spinlock.h"
 
 #ifdef __cplusplus
-extern "C" {
+ବାହ୍ୟ "C" {
 #endif
 
-typedef spinlock_t portMUX_TYPE;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା spinlock_t portMUX_TYPE;
 
 /**< Spinlock initializer */
 #define portMUX_INITIALIZER_UNLOCKED {                      \
             .owner = portMUX_FREE_VAL,                      \
-            .count = 0,                                     \
+            .ଗଣନା_2 = 0,                                     \
         }
 #define portMUX_FREE_VAL                    SPINLOCK_FREE           /**< Spinlock is free. [refactor-todo] check if this is still required */
 
-void vPortYieldFromISR(void);
-void vPortYieldOtherCore(BaseType_t coreid);
+ଶୂନ୍ୟ vPortYieldFromISR(ଶୂନ୍ୟ);
+ଶୂନ୍ୟ vPortYieldOtherCore(BaseType_t coreid);
 
 #define portMUX_INITIALIZE(mux)             spinlock_initialize(mux)    /*< Initialize a spinlock to its unlocked state */
 
@@ -43,9 +43,9 @@ void vPortYieldOtherCore(BaseType_t coreid);
  * @note dummy function for freertos simulator, always returns 0.
  @ return BaseType_t 0
  */
-static inline BaseType_t xPortGetCoreID(void)
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ BaseType_t xPortGetCoreID(ଶୂନ୍ୟ)
 {
-    return (BaseType_t) 0;
+    ଫେରନ୍ତୁ (BaseType_t) 0;
 }
 
 /**
@@ -57,7 +57,7 @@ static inline BaseType_t xPortGetCoreID(void)
  * @return true Memory can be used to store a List
  * @return false Otherwise
  */
-bool xPortCheckValidListMem(const void *ptr);
+bool xPortCheckValidListMem(ଅଚଳ ଶୂନ୍ୟ *ptr);
 
 /**
  * @brief Checks if a given piece of memory can be used to store a task's TCB
@@ -68,7 +68,7 @@ bool xPortCheckValidListMem(const void *ptr);
  * @return true Memory can be used to store a TCB
  * @return false Otherwise
  */
-bool xPortCheckValidTCBMem(const void *ptr);
+bool xPortCheckValidTCBMem(ଅଚଳ ଶୂନ୍ୟ *ptr);
 
 /**
  * @brief Checks if a given piece of memory can be used to store a task's stack
@@ -79,13 +79,13 @@ bool xPortCheckValidTCBMem(const void *ptr);
  * @return true Memory can be used to store a task stack
  * @return false Otherwise
  */
-bool xPortcheckValidStackMem(const void *ptr);
+bool x_Portcheck_Valid_ଗଦା_Mem(ଅଚଳ ଶୂନ୍ୟ *ptr);
 
 #define portVALID_LIST_MEM(ptr)     xPortCheckValidListMem(ptr)
 #define portVALID_TCB_MEM(ptr)      xPortCheckValidTCBMem(ptr)
-#define portVALID_STACK_MEM(ptr)    xPortcheckValidStackMem(ptr)
+#define port_VALID_ଗଦା_MEM(ptr)    x_Portcheck_Valid_ଗଦା_Mem(ptr)
 
-BaseType_t xPortCheckIfInISR(void);
+BaseType_t xPortCheckIfInISR(ଶୂନ୍ୟ);
 
 /**
  * @brief Checks if the current core is in an ISR context
@@ -98,13 +98,13 @@ BaseType_t xPortCheckIfInISR(void);
  *  - pdTRUE if in ISR
  *  - pdFALSE otherwise
  */
-static inline BaseType_t xPortInIsrContext(void)
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ BaseType_t xPortInIsrContext(ଶୂନ୍ୟ)
 {
     //Just call the FreeRTOS port interface version
-    return xPortCheckIfInISR();
+    ଫେରନ୍ତୁ xPortCheckIfInISR();
 }
 
-static inline void vPortAssertIfInISR(void)
+ସ୍ଥିର ଧାଡ଼ିଭିତରେ ଶୂନ୍ୟ vPortAssertIfInISR(ଶୂନ୍ୟ)
 {
     /* Assert if the interrupt nesting count is > 0 */
     configASSERT(xPortInIsrContext() == 0);

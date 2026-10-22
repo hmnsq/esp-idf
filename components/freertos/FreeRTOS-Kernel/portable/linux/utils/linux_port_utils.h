@@ -5,17 +5,17 @@
 
 #pragma once
 
-#include <pthread.h>
+#ଅନ୍ତର୍ଭାଵ <pthread.h>
 
 #ifdef __cplusplus
-extern "C" {
+ବାହ୍ୟ "C" {
 #endif
 
-typedef struct thread *thread_hdl;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା ସଂରଚନା thread *thread_hdl;
 
-void linux_port_setup_backtrace_signal(void);
-void linux_port_print_backtrace(void);
-pthread_t linux_port_get_scheduled_task_pthread(void);
+ଶୂନ୍ୟ linux_port_setup_backtrace_signal(ଶୂନ୍ୟ);
+ଶୂନ୍ୟ linux_port_print_backtrace(ଶୂନ୍ୟ);
+pthread_t linux_port_get_scheduled_task_pthread(ଶୂନ୍ୟ);
 
 #ifdef __cplusplus
 }

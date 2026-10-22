@@ -8,36 +8,36 @@
  Test for LoadStore exception handlers. This test performs unaligned load and store in 32bit aligned addresses
 */
 
-#include "sdkconfig.h"
+#ଅନ୍ତର୍ଭାଵ "sdkconfig.h"
 
-#if CONFIG_IDF_TARGET_ARCH_XTENSA && CONFIG_ESP32_IRAM_AS_8BIT_ACCESSIBLE_MEMORY
+#ଯଦି CONFIG_IDF_TARGET_ARCH_XTENSA && CONFIG_ESP32_IRAM_AS_8BIT_ACCESSIBLE_MEMORY
 
-#include <esp_types.h>
-#include <stdio.h>
-#include <esp_heap_caps.h>
-#include "esp_attr.h"
-#include "esp_random.h"
-#include "esp_intr_alloc.h"
-#include "xtensa_api.h"
-#include "esp_rom_sys.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include <string.h>
-#include "unity.h"
-#include "esp_log_buffer.h"
+#ଅନ୍ତର୍ଭାଵ <esp_types.h>
+#ଅନ୍ତର୍ଭାଵ <stdio.h>
+#ଅନ୍ତର୍ଭାଵ <esp_heap_caps.h>
+#ଅନ୍ତର୍ଭାଵ "esp_attr.h"
+#ଅନ୍ତର୍ଭାଵ "esp_random.h"
+#ଅନ୍ତର୍ଭାଵ "esp_intr_alloc.h"
+#ଅନ୍ତର୍ଭାଵ "xtensa_api.h"
+#ଅନ୍ତର୍ଭାଵ "esp_rom_sys.h"
+#ଅନ୍ତର୍ଭାଵ "freertos/FreeRTOS.h"
+#ଅନ୍ତର୍ଭାଵ "freertos/task.h"
+#ଅନ୍ତର୍ଭାଵ <string.h>
+#ଅନ୍ତର୍ଭାଵ "unity.h"
+#ଅନ୍ତର୍ଭାଵ "esp_log_buffer.h"
 
-#define SW_ISR_NUM_L1  7    // CPU interrupt number for internal SW0 (level 1)
-#define SW_ISR_NUM_L3  29   // CPU interrupt number for internal SW1 (level 3)
+#define SW_ISR_ଅଙ୍କ_L1  7    // CPU interrupt number for internal SW0 (level 1)
+#define SW_ISR_ଅଙ୍କ_L3  29   // CPU interrupt number for internal SW1 (level 3)
 
-typedef struct {
+ପ୍ରକାରବ୍ୟାଖ୍ୟା ସଂରଚନା {
     uint8_t  b8;
     uint16_t b16;
     uint8_t  b8_2;
     uint32_t b32;
 } iram_data_t;
 
-static volatile iram_data_t *s_iram;
-static volatile int isr_hits;
+ସ୍ଥିର ଅସ୍ଥିର iram_data_t *s_iram;
+ସ୍ଥିର ଅସ୍ଥିର ପୂର୍ଣ୍ଣସଂଖ୍ୟା isr_hits;
 
 TEST_CASE("LoadStore Exception handler", "[freertos]")
 {
@@ -58,14 +58,14 @@ TEST_CASE("LoadStore Exception handler", "[freertos]")
 
     uint32_t largest_free = heap_caps_get_largest_free_block(MALLOC_CAP_IRAM_8BIT);
 
-    int8_t *arr = heap_caps_malloc(largest_free * sizeof(int8_t), MALLOC_CAP_IRAM_8BIT);
-    TEST_ASSERT(arr != NULL);
+    int8_t *arr = heap_caps_malloc(largest_free * ଆକାର(int8_t), MALLOC_CAP_IRAM_8BIT);
+    TEST_ASSERT(arr != ଖାଲି);
 
     int8_t *arr8 =  arr;
     int16_t *arr16 = (int16_t *)arr;
     int32_t *arr32 = (int32_t *)arr;
 
-    for (int i = 0; i < 1024; i++) {
+    ପାଇଁ (ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < 1024; i++) {
 
         // LoadStoreError
 
@@ -83,7 +83,7 @@ TEST_CASE("LoadStore Exception handler", "[freertos]")
         arr8[offset8 + 3] = val8_3;
 
         // Just to make sure compiler doesn't read stale data
-        asm volatile("memw\n");
+        asm ଅସ୍ଥିର("memw\n");
         TEST_ASSERT_EQUAL(val8_0, arr8[offset8]);
         TEST_ASSERT_EQUAL(val8_1, arr8[offset8 + 1]);
         TEST_ASSERT_EQUAL(val8_2, arr8[offset8 + 2]);
@@ -95,7 +95,7 @@ TEST_CASE("LoadStore Exception handler", "[freertos]")
         arr16[offset16 + 3] = val16_3;
 
         // Just to make sure compiler doesn't read stale data
-        asm volatile("memw\n");
+        asm ଅସ୍ଥିର("memw\n");
         TEST_ASSERT_EQUAL(val16_0, arr16[offset16]);
         TEST_ASSERT_EQUAL(val16_1, arr16[offset16 + 1]);
         TEST_ASSERT_EQUAL(val16_2, arr16[offset16 + 2]);
@@ -104,38 +104,38 @@ TEST_CASE("LoadStore Exception handler", "[freertos]")
         // LoadStoreAlignement Error
 
         // Check that it doesn't write to adjacent bytes
-        int8_t *ptr8_0 = (void *)&arr8[offset8];
-        int8_t *ptr8_1 = (void *)&arr8[offset8] + 5;
-        int8_t *ptr8_2 = (void *)&arr8[offset8] + 10;
-        int8_t *ptr8_3 = (void *)&arr8[offset8] + 15;
+        int8_t *ptr8_0 = (ଶୂନ୍ୟ *)&arr8[offset8];
+        int8_t *ptr8_1 = (ଶୂନ୍ୟ *)&arr8[offset8] + 5;
+        int8_t *ptr8_2 = (ଶୂନ୍ୟ *)&arr8[offset8] + 10;
+        int8_t *ptr8_3 = (ଶୂନ୍ୟ *)&arr8[offset8] + 15;
 
         *ptr8_0 = 0x73;
         *ptr8_1 = 0x73;
         *ptr8_2 = 0x73;
         *ptr8_3 = 0x73;
 
-        int16_t *ptr16_0 = (void *)&arr16[offset16] + 1;
-        int16_t *ptr16_1 = (void *)&arr16[offset16] + 3;
+        int16_t *ptr16_0 = (ଶୂନ୍ୟ *)&arr16[offset16] + 1;
+        int16_t *ptr16_1 = (ଶୂନ୍ୟ *)&arr16[offset16] + 3;
 
         *ptr16_0 = val16_0;
         *ptr16_1 = val16_1;
 
         // Just to make sure compiler doesn't read stale data
-        asm volatile("memw\n");
+        asm ଅସ୍ଥିର("memw\n");
         TEST_ASSERT_EQUAL(val16_0, *ptr16_0);
         TEST_ASSERT_EQUAL(0x73, *ptr8_0);
         TEST_ASSERT_EQUAL(val16_1, *ptr16_1);
         TEST_ASSERT_EQUAL(0x73, *ptr8_1);
 
-        int32_t *ptr32_0 = (void *)&arr32[offset32] + 1;
-        int32_t *ptr32_1 = (void *)&arr32[offset32] + 6;
-        int32_t *ptr32_2 = (void *)&arr32[offset32] + 11;
+        int32_t *ptr32_0 = (ଶୂନ୍ୟ *)&arr32[offset32] + 1;
+        int32_t *ptr32_1 = (ଶୂନ୍ୟ *)&arr32[offset32] + 6;
+        int32_t *ptr32_2 = (ଶୂନ୍ୟ *)&arr32[offset32] + 11;
         *ptr32_0 = val0;
         *ptr32_1 = val1;
         *ptr32_2 = val2;
 
         // Just to make sure compiler doesn't read stale data
-        asm volatile("memw");
+        asm ଅସ୍ଥିର("memw");
         TEST_ASSERT_EQUAL(0x73, *ptr8_0);
         TEST_ASSERT_EQUAL(val0, *ptr32_0);
         TEST_ASSERT_EQUAL(0x73, *ptr8_1);
@@ -149,18 +149,18 @@ TEST_CASE("LoadStore Exception handler", "[freertos]")
     heap_caps_free(arr);
 }
 
-static void IRAM_ATTR level_isr(void *arg)
+ସ୍ଥିର ଶୂନ୍ୟ IRAM_ATTR level_isr(ଶୂନ୍ୟ *arg)
 {
-    const int cpu_intr_num = *(const int *)arg;
+    ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା cpu_intr_ଅଙ୍କ = *(ଅଚଳ ପୂର୍ଣ୍ଣସଂଖ୍ୟା *)arg;
 
     // Clear the SW interrupt source
-    xt_set_intclear(1 << cpu_intr_num);
+    xt_set_intclear(1 << cpu_intr_ଅଙ୍କ);
 
     // Schedule another pending level interrupt while still inside this ISR
     // to keep dispatch_c_isr in the interrupt loop handling. The pending
     // interrupt will be handled after this ISR returns.
-    if (isr_hits == 0) {
-        xt_set_intset(1 << cpu_intr_num);
+    ଯଦି (isr_hits == 0) {
+        xt_set_intset(1 << cpu_intr_ଅଙ୍କ);
     }
 
     // 8/16-bit accesses to s_iram will trigger LoadStore/Alignment exceptions which changes the EXCSAVE_1 value
@@ -171,25 +171,25 @@ static void IRAM_ATTR level_isr(void *arg)
     isr_hits++;
 }
 
-static void run_sw_isr_level(int int_level)
+ସ୍ଥିର ଶୂନ୍ୟ run_sw_isr_level(ପୂର୍ଣ୍ଣସଂଖ୍ୟା int_level)
 {
-    memset((void *)s_iram, 0, sizeof(iram_data_t));
+    memset((ଶୂନ୍ୟ *)s_iram, 0, ଆକାର(iram_data_t));
     isr_hits = 0;
 
     intr_handle_t handle;
-    int cpu_intr_num = (int_level == 1) ? SW_ISR_NUM_L1 : SW_ISR_NUM_L3;
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା cpu_intr_ଅଙ୍କ = (int_level == 1) ? SW_ISR_ଅଙ୍କ_L1 : SW_ISR_ଅଙ୍କ_L3;
     TEST_ASSERT_EQUAL(ESP_OK, esp_intr_alloc((int_level == 1) ? ETS_INTERNAL_SW0_INTR_SOURCE : ETS_INTERNAL_SW1_INTR_SOURCE,
                                              (int_level == 1) ? ESP_INTR_FLAG_LEVEL1 : ESP_INTR_FLAG_LEVEL3,
                                              level_isr,
-                                             (void *)&cpu_intr_num,
+                                             (ଶୂନ୍ୟ *)&cpu_intr_ଅଙ୍କ,
                                              &handle));
 
     // Trigger the first interrupt; ISR will queue one more while running
-    xt_set_intset(1 << cpu_intr_num);
+    xt_set_intset(1 << cpu_intr_ଅଙ୍କ);
 
     // Wait for the ISR to be invoked twice
-    TickType_t start = xTaskGetTickCount();
-    while (isr_hits < 2 && (xTaskGetTickCount() - start) < pdMS_TO_TICKS(500)) {
+    TickType_t start = x_Task_Get_Tick_ଗଣନା();
+    ଯେତେବେଳେ (isr_hits < 2 && (x_Task_Get_Tick_ଗଣନା() - start) < pdMS_TO_TICKS(500)) {
         vTaskDelay(1);
     }
 
@@ -204,7 +204,7 @@ static void run_sw_isr_level(int int_level)
 
 TEST_CASE("LoadStore: 8/16-bit field access in IRAM from ISRs when pending interrupts are present", "[freertos]")
 {
-    s_iram = heap_caps_calloc(1, sizeof(*s_iram), MALLOC_CAP_IRAM_8BIT);
+    s_iram = heap_caps_calloc(1, ଆକାର(*s_iram), MALLOC_CAP_IRAM_8BIT);
     TEST_ASSERT_NOT_NULL(s_iram);
 
     esp_rom_printf("Running test in level-1 ISR...\n");
@@ -215,13 +215,13 @@ TEST_CASE("LoadStore: 8/16-bit field access in IRAM from ISRs when pending inter
     run_sw_isr_level(3);
     esp_rom_printf("test passed\n");
 
-    heap_caps_free((void *)s_iram);
+    heap_caps_free((ଶୂନ୍ୟ *)s_iram);
     vTaskDelay(100); // Wait in ticks for memory to be freed, to avoid affecting other tests.
 }
 
 TEST_CASE("LoadStore: zero-overhead loop continues after IRAM 8-bit store", "[freertos]")
 {
-    const unsigned len = 32;
+    ଅଚଳ unsigned len = 32;
 
     uint8_t *dst = heap_caps_calloc(len, 1, MALLOC_CAP_IRAM_8BIT);
     TEST_ASSERT_NOT_NULL(dst);
@@ -229,7 +229,7 @@ TEST_CASE("LoadStore: zero-overhead loop continues after IRAM 8-bit store", "[fr
     uint8_t *src = heap_caps_calloc(len, 1, MALLOC_CAP_IRAM_8BIT);
     TEST_ASSERT_NOT_NULL(src);
 
-    for (unsigned i = 0; i < len; i++) {
+    ପାଇଁ (unsigned i = 0; i < len; i++) {
         src[i] = i + 1;
         dst[i] = 0xCC;
     }
@@ -250,7 +250,7 @@ TEST_CASE("LoadStore: zero-overhead loop continues after IRAM 8-bit store", "[fr
     uint8_t *dst_it = dst;
     uint8_t *src_it = src;
     unsigned cnt = len;
-    __asm__ volatile(
+    __asm__ ଅସ୍ଥିର(
         "addi       %0, %0, -1\n"   /* dst-- */
         "addi       %1, %1, -1\n"   /* src-- */
         "loopnez    %2, .endLoop\n"
@@ -266,7 +266,7 @@ TEST_CASE("LoadStore: zero-overhead loop continues after IRAM 8-bit store", "[fr
 
     ESP_LOG_BUFFER_HEX("dst  after", dst, len);
 
-    for (unsigned i = 0; i < len; i++) {
+    ପାଇଁ (unsigned i = 0; i < len; i++) {
         TEST_ASSERT_EQUAL_HEX8(src[i], dst[i]);
     }
 

@@ -4,56 +4,56 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <assert.h>
-#include <unistd.h>
-#include <execinfo.h>
-#include <signal.h>
-#include <pthread.h>
+#ଅନ୍ତର୍ଭାଵ <string.h>
+#ଅନ୍ତର୍ଭାଵ <stdlib.h>
+#ଅନ୍ତର୍ଭାଵ <stdio.h>
+#ଅନ୍ତର୍ଭାଵ <assert.h>
+#ଅନ୍ତର୍ଭାଵ <unistd.h>
+#ଅନ୍ତର୍ଭାଵ <execinfo.h>
+#ଅନ୍ତର୍ଭାଵ <signal.h>
+#ଅନ୍ତର୍ଭାଵ <pthread.h>
 
-#include "FreeRTOS.h"
-#include "task.h"
-#include "esp_log.h"
-#include "utils/linux_port_utils.h"
+#ଅନ୍ତର୍ଭାଵ "FreeRTOS.h"
+#ଅନ୍ତର୍ଭାଵ "task.h"
+#ଅନ୍ତର୍ଭାଵ "esp_log.h"
+#ଅନ୍ତର୍ଭାଵ "utils/linux_port_utils.h"
 
 #define BACKTRACE_PC_ARRAY_SIZE 20
 #define FREERTOS_SIM_BACKTRACE_SIZE 16
 #define ON_SEGFAULT_MESSAGE "ERROR: Segmentation Fault, here's your backtrace:\n"
 #define ON_ABORT_MESSAGE "ERROR: Aborted\n"
 
-static void linux_port_backtrace_handler(int sig)
+ସ୍ଥିର ଶୂନ୍ୟ linux_port_backtrace_handler(ପୂର୍ଣ୍ଣସଂଖ୍ୟା sig)
 {
     /* All calls here must be async-signal-safe (no stdio, no malloc).
      * write() and backtrace_symbols_fd() write directly to the fd. */
-    void *buffer[FREERTOS_SIM_BACKTRACE_SIZE];
-    int nptrs = backtrace(buffer, FREERTOS_SIM_BACKTRACE_SIZE);
+    ଶୂନ୍ୟ *buffer[FREERTOS_SIM_BACKTRACE_SIZE];
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା nptrs = backtrace(buffer, FREERTOS_SIM_BACKTRACE_SIZE);
 
-    const char *name = pcTaskGetName(NULL); /* simple pointer dereference, no lock */
+    ଅଚଳ ଅକ୍ଷର *name = pcTaskGetName(ଖାଲି); /* simple pointer dereference, no lock */
     ssize_t ignore __attribute__((unused));
-    ignore = write(STDERR_FILENO, "=== Backtrace for task: ", 24);
-    if (name) {
+    ignore = ଲିଖ(STDERR_FILENO, "=== Backtrace for task: ", 24);
+    ଯଦି (name) {
         size_t len = 0;
-        while (name[len] != '\0') {
+        ଯେତେବେଳେ (name[len] != '\0') {
             len++;
         }
-        ignore = write(STDERR_FILENO, name, len);
+        ignore = ଲିଖ(STDERR_FILENO, name, len);
     }
-    ignore = write(STDERR_FILENO, " ===\n", 5);
+    ignore = ଲିଖ(STDERR_FILENO, " ===\n", 5);
     backtrace_symbols_fd(buffer, nptrs, STDERR_FILENO);
 }
 
-void linux_port_setup_backtrace_signal(void)
+ଶୂନ୍ୟ linux_port_setup_backtrace_signal(ଶୂନ୍ୟ)
 {
-    struct sigaction sa;
+    ସଂରଚନା sigaction sa;
     sa.sa_handler = linux_port_backtrace_handler;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_RESTART;
-    sigaction(SIGUSR1, &sa, NULL);
+    sigaction(SIGUSR1, &sa, ଖାଲି);
 }
 
-void linux_port_print_backtrace(void)
+ଶୂନ୍ୟ linux_port_print_backtrace(ଶୂନ୍ୟ)
 {
     pthread_kill(linux_port_get_scheduled_task_pthread(), SIGUSR1);
 }
@@ -61,40 +61,40 @@ void linux_port_print_backtrace(void)
 ESP_LOG_ATTR_TAG(LINUX_TAG, "port_idf_linux");
 ESP_LOG_ATTR_TAG(MAIN_TAG, "main_task");
 
-#if (defined(__APPLE__) && defined(__MACH__))
-typedef sig_t sighandler_t;
+#ଯଦି (defined(__APPLE__) && defined(__MACH__))
+ପ୍ରକାରବ୍ୟାଖ୍ୟା sig_t sighandler_t;
 #endif
 
-static volatile UBaseType_t uxInterruptNesting = 0;
-BaseType_t xPortCheckIfInISR(void)
+ସ୍ଥିର ଅସ୍ଥିର UBaseType_t uxInterruptNesting = 0;
+BaseType_t xPortCheckIfInISR(ଶୂନ୍ୟ)
 {
-    return uxInterruptNesting;
+    ଫେରନ୍ତୁ uxInterruptNesting;
 }
 
-#if CONFIG_COMPILER_OPTIMIZATION_DEBUG
+#ଯଦି CONFIG_COMPILER_OPTIMIZATION_DEBUG
 #define BACKTRACE_PC_ARRAY_SIZE_DUMMY 1
-static void load_libgcc(void)
+ସ୍ଥିର ଶୂନ୍ୟ load_libgcc(ଶୂନ୍ୟ)
 {
-    void *array[BACKTRACE_PC_ARRAY_SIZE_DUMMY];
+    ଶୂନ୍ୟ *array[BACKTRACE_PC_ARRAY_SIZE_DUMMY];
     size_t size = backtrace(array, BACKTRACE_PC_ARRAY_SIZE_DUMMY);
-    assert(size == 1);
+    ପ୍ରତିଜ୍ଞା(size == 1);
 }
 
-static void segfault_handler(int sig)
+ସ୍ଥିର ଶୂନ୍ୟ segfault_handler(ପୂର୍ଣ୍ଣସଂଖ୍ୟା sig)
 {
-    void *array[BACKTRACE_PC_ARRAY_SIZE];
+    ଶୂନ୍ୟ *array[BACKTRACE_PC_ARRAY_SIZE];
     size_t size = backtrace(array, BACKTRACE_PC_ARRAY_SIZE);
     ssize_t ignore __attribute__((unused));
-    ignore = write(STDERR_FILENO, ON_SEGFAULT_MESSAGE, sizeof(ON_SEGFAULT_MESSAGE));
+    ignore = ଲିଖ(STDERR_FILENO, ON_SEGFAULT_MESSAGE, ଆକାର(ON_SEGFAULT_MESSAGE));
     backtrace_symbols_fd(array, size, STDERR_FILENO);
     _exit(1);
 }
 
-static void abort_handler(int sig)
+ସ୍ଥିର ଶୂନ୍ୟ abort_handler(ପୂର୍ଣ୍ଣସଂଖ୍ୟା sig)
 {
     // we need a raw file write here because other functions are not async-signal-safe
     ssize_t ignore __attribute__((unused));
-    ignore = write(STDERR_FILENO, ON_ABORT_MESSAGE, sizeof(ON_ABORT_MESSAGE));
+    ignore = ଲିଖ(STDERR_FILENO, ON_ABORT_MESSAGE, ଆକାର(ON_ABORT_MESSAGE));
     _exit(1);
 }
 #endif // CONFIG_COMPILER_OPTIMIZATION_DEBUG
@@ -102,96 +102,96 @@ static void abort_handler(int sig)
 /*-----------------------------------------------------------
 * Main FreeRTOS task
 *-----------------------------------------------------------*/
-extern void app_main(void);
-static void main_task(void *args)
+ବାହ୍ୟ ଶୂନ୍ୟ app_main(ଶୂନ୍ୟ);
+ସ୍ଥିର ଶୂନ୍ୟ main_task(ଶୂନ୍ୟ *args)
 {
-    (void)args;
-    ESP_LOGI(MAIN_TAG, "Started on CPU%d", (int)xPortGetCoreID());
+    (ଶୂନ୍ୟ)args;
+    ESP_LOGI(MAIN_TAG, "Started on CPU%d", (ପୂର୍ଣ୍ଣସଂଖ୍ୟା)xPortGetCoreID());
 
     ESP_LOGI(MAIN_TAG, "Calling app_main()");
 
     app_main();
 
     ESP_LOGI(MAIN_TAG, "Returned from app_main()");
-    vTaskDelete(NULL);
+    vTaskDelete(ଖାଲି);
 }
 
-void esp_startup_start_app(void)
+ଶୂନ୍ୟ esp_startup_start_app(ଶୂନ୍ୟ)
 {
-    setvbuf(stdout, NULL, _IONBF, 0);
+    setvbuf(stdout, ଖାଲି, _IONBF, 0);
 
-#if CONFIG_COMPILER_OPTIMIZATION_DEBUG
+#ଯଦି CONFIG_COMPILER_OPTIMIZATION_DEBUG
     load_libgcc();
     sighandler_t sig_res;
 
-    sig_res = signal(SIGSEGV, segfault_handler);
-    if (sig_res == SIG_ERR) {
+    sig_res = ସଙ୍କେତ(SIGSEGV, segfault_handler);
+    ଯଦି (sig_res == SIG_ERR) {
         abort();
     }
 
-    sig_res = signal(SIGABRT, abort_handler);
-    if (sig_res == SIG_ERR) {
+    sig_res = ସଙ୍କେତ(SIGABRT, abort_handler);
+    ଯଦି (sig_res == SIG_ERR) {
         abort();
     }
 #endif
 
     // Create main_task using FreeRTOS API
     ESP_LOGI(LINUX_TAG, "Starting main task.");
-    assert(xTaskCreate(&main_task, "main", ESP_TASK_MAIN_STACK, NULL, ESP_TASK_MAIN_PRIO, NULL) == pdTRUE);
+    ପ୍ରତିଜ୍ଞା(xTaskCreate(&main_task, "main", ESP_TASK_MAIN_ଗଦା, ଖାଲି, ESP_TASK_MAIN_PRIO, ଖାଲି) == pdTRUE);
 
     ESP_LOGI(LINUX_TAG, "Starting scheduler task.");
     vTaskStartScheduler();
 
     // Should never reach here
-    assert(false);
+    ପ୍ରତିଜ୍ଞା(false);
 }
 
 /*-----------------------------------------------------------
  * idle and tick hooks
  *-----------------------------------------------------------*/
-#if (configUSE_IDLE_HOOK > 0)
-void vApplicationIdleHook(void)
+#ଯଦି (configUSE_IDLE_HOOK > 0)
+ଶୂନ୍ୟ vApplicationIdleHook(ଶୂନ୍ୟ)
 {
 }
 #endif
 
-#if (configUSE_TICK_HOOK > 0)
-void vApplicationTickHook(void)
+#ଯଦି (configUSE_TICK_HOOK > 0)
+ଶୂନ୍ୟ vApplicationTickHook(ଶୂନ୍ୟ)
 {
-    extern void esp_vApplicationTickHook(void);
+    ବାହ୍ୟ ଶୂନ୍ୟ esp_vApplicationTickHook(ଶୂନ୍ୟ);
     esp_vApplicationTickHook();
 }
-#else
+#ଅନ୍ୟଥା
 #endif
 
 /*-----------------------------------------------------------
  * Static allocation support
  *-----------------------------------------------------------*/
-#if (configSUPPORT_STATIC_ALLOCATION == 1)
+#ଯଦି (configSUPPORT_STATIC_ALLOCATION == 1)
 
-void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
-                                   StackType_t **ppxIdleTaskStackBuffer,
-                                   uint32_t *pulIdleTaskStackSize)
+ଶୂନ୍ୟ vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
+                                   ଗଦା_Type_t **ppx_Idle_Task_ଗଦା_Buffer,
+                                   uint32_t *pul_Idle_Task_ଗଦା_Size)
 {
-    static StaticTask_t xIdleTaskTCB;
-    static StackType_t uxIdleTaskStack[configMINIMAL_STACK_SIZE];
+    ସ୍ଥିର StaticTask_t xIdleTaskTCB;
+    ସ୍ଥିର ଗଦା_Type_t ux_Idle_Task_ଗଦା[config_MINIMAL_ଗଦା_SIZE];
 
     *ppxIdleTaskTCBBuffer = &xIdleTaskTCB;
-    *ppxIdleTaskStackBuffer = uxIdleTaskStack;
-    *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+    *ppx_Idle_Task_ଗଦା_Buffer = ux_Idle_Task_ଗଦା;
+    *pul_Idle_Task_ଗଦା_Size = config_MINIMAL_ଗଦା_SIZE;
 }
 
-#if (configUSE_TIMERS == 1)
-StackType_t uxTimerTaskStack[configTIMER_TASK_STACK_DEPTH];
+#ଯଦି (configUSE_TIMERS == 1)
+ଗଦା_Type_t ux_Timer_Task_ଗଦା[config_TIMER_TASK_ଗଦା_DEPTH];
 
-void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
-                                    StackType_t **ppxTimerTaskStackBuffer,
-                                    uint32_t *pulTimerTaskStackSize)
+ଶୂନ୍ୟ vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
+                                    ଗଦା_Type_t **ppx_Timer_Task_ଗଦା_Buffer,
+                                    uint32_t *pul_Timer_Task_ଗଦା_Size)
 {
-    static StaticTask_t xTimerTaskTCB;
+    ସ୍ଥିର StaticTask_t xTimerTaskTCB;
     *ppxTimerTaskTCBBuffer = &xTimerTaskTCB;
-    *ppxTimerTaskStackBuffer = uxTimerTaskStack;
-    *pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
+    *ppx_Timer_Task_ଗଦା_Buffer = ux_Timer_Task_ଗଦା;
+    *pul_Timer_Task_ଗଦା_Size = config_TIMER_TASK_ଗଦା_DEPTH;
 }
 #endif
 
@@ -200,16 +200,16 @@ void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
 /*-----------------------------------------------------------
  * Stack overflow hook
  *-----------------------------------------------------------*/
-void __attribute__((weak)) vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
+ଶୂନ୍ୟ __attribute__((weak)) v_Application_ଗଦା_Overflow_Hook(TaskHandle_t xTask, ଅକ୍ଷର *pcTaskName)
 {
 #define ERR_STR1 "***ERROR*** A stack overflow in task "
 #define ERR_STR2 " has been detected."
-    const char *str[] = {ERR_STR1, pcTaskName, ERR_STR2};
+    ଅଚଳ ଅକ୍ଷର *str[] = {ERR_STR1, pcTaskName, ERR_STR2};
 
-    char buf[sizeof(ERR_STR1) + CONFIG_FREERTOS_MAX_TASK_NAME_LEN + sizeof(ERR_STR2) + 1 /* null char */] = {0};
+    ଅକ୍ଷର buf[ଆକାର(ERR_STR1) + CONFIG_FREERTOS_MAX_TASK_NAME_LEN + ଆକାର(ERR_STR2) + 1 /* null char */] = {0};
 
-    char *dest = buf;
-    for (int i = 0; i < sizeof(str) / sizeof(str[0]); i++) {
+    ଅକ୍ଷର *dest = buf;
+    ପାଇଁ (ପୂର୍ଣ୍ଣସଂଖ୍ୟା i = 0; i < ଆକାର(str) / ଆକାର(str[0]); i++) {
         dest = strcat(dest, str[i]);
     }
 	printf("%s\n", buf);

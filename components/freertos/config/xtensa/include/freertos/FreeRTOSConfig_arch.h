@@ -8,10 +8,10 @@
 
 /* Xtensa Architecture specific configuration. This file is included in the common FreeRTOSConfig.h. */
 
-#include "sdkconfig.h"
+#ଅନ୍ତର୍ଭାଵ "sdkconfig.h"
 
 /* Required for configuration-dependent settings. */
-#include "xtensa_config.h"
+#ଅନ୍ତର୍ଭାଵ "xtensa_config.h"
 
 /* -------------------------------------------- Xtensa Additional Config  ----------------------------------------------
  * - Provide Xtensa definitions usually given by -D option when building with xt-make (see readme_xtensa.txt)
@@ -28,9 +28,9 @@
 
 #define configXT_SIMULATOR          0
 #define configXT_BOARD              1                           /* Board mode */
-#if CONFIG_FREERTOS_CORETIMER_0
+#ଯଦି CONFIG_FREERTOS_CORETIMER_0
     #define configXT_TIMER_INDEX    0
-#elif CONFIG_FREERTOS_CORETIMER_1
+#ନଚେତଯଦି CONFIG_FREERTOS_CORETIMER_1
     #define configXT_TIMER_INDEX    1
 #endif
 #define configXT_INTEXC_HOOKS       0
@@ -45,15 +45,15 @@
 
 #ifdef CONFIG_FREERTOS_OPTIMIZED_SCHEDULER
     #define configUSE_PORT_OPTIMISED_TASK_SELECTION    1
-#else
+#ଅନ୍ୟଥା
     #define configUSE_PORT_OPTIMISED_TASK_SELECTION    0
 #endif /* CONFIG_FREERTOS_OPTIMIZED_SCHEDULER */
-#define configMINIMAL_STACK_SIZE                       ( CONFIG_FREERTOS_IDLE_TASK_STACKSIZE + configSTACK_OVERHEAD_TOTAL )
+#define config_MINIMAL_ଗଦା_SIZE                       ( CONFIG_FREERTOS_IDLE_TASK_STACKSIZE + config_ଗଦା_OVERHEAD_TOTAL )
 #define configMAX_API_CALL_INTERRUPT_PRIORITY          XCHAL_EXCM_LEVEL
 
 /* ---------------- Amazon SMP FreeRTOS -------------------- */
 
-#if CONFIG_FREERTOS_SMP
+#ଯଦି CONFIG_FREERTOS_SMP
 
 /* This is always enabled to call IDF style idle hooks, by can be "--Wl,--wrap"
  * if users enable CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK. */
@@ -62,9 +62,9 @@
 
 /* ----------------------- System -------------------------- */
 
-#if CONFIG_LIBC_NEWLIB
+#ଯଦି CONFIG_LIBC_NEWLIB
 #define configUSE_NEWLIB_REENTRANT    1
-#else
+#ଅନ୍ୟଥା
 #define configUSE_NEWLIB_REENTRANT    0
 #endif
 
@@ -72,9 +72,9 @@
  * - We simply provide our own INIT and DEINIT functions
  * - We set "SET" to a blank macro since there is no need to set the reentrancy
  * pointer. All newlib functions calls __getreent. */
-#if CONFIG_FREERTOS_SMP
-    #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )    esp_reent_init( &( xTLSBlock ) )
-#else /* CONFIG_FREERTOS_SMP */
+#ଯଦି CONFIG_FREERTOS_SMP
+    #define configINIT_TLS_BLOCK( xTLSBlock, px_ଶୀର୍ଷ_Of_ଗଦା )    esp_reent_init( &( xTLSBlock ) )
+#ଅନ୍ୟଥା /* CONFIG_FREERTOS_SMP */
     #define configINIT_TLS_BLOCK( xTLSBlock )                  esp_reent_init( &( xTLSBlock ) )
 #endif /* CONFIG_FREERTOS_SMP */
 #define configSET_TLS_BLOCK( xTLSBlock )
@@ -91,7 +91,7 @@
 
 /* ------------------- Run-time Stats ---------------------- */
 
-#if CONFIG_FREERTOS_USE_TRACE_FACILITY
+#ଯଦି CONFIG_FREERTOS_USE_TRACE_FACILITY
     /* Used by uxTaskGetSystemState(), and other trace facility functions */
     #define configUSE_TRACE_FACILITY    1
 #endif /* CONFIG_FREERTOS_USE_TRACE_FACILITY */
@@ -100,7 +100,7 @@
 
 /* Todo: Reconcile INCLUDE_option differences (IDF-8186) */
 #define INCLUDE_xTaskDelayUntil                 1
-#define INCLUDE_uxTaskGetStackHighWaterMark2    1
+#define INCLUDE_ux_Task_Get_ଗଦା_ଉପର_Water_Mark2    1
 
 /* ------------------------------------------------ ESP-IDF Additions --------------------------------------------------
  *
@@ -111,7 +111,7 @@
  * Size needs to be aligned to the stack increment, since the location of
  * the stack for the 2nd CPU will be calculated using configISR_STACK_SIZE.
  */
-#define configSTACK_ALIGNMENT       16
-#ifndef configISR_STACK_SIZE
-    #define configISR_STACK_SIZE    ( ( CONFIG_FREERTOS_ISR_STACKSIZE + configSTACK_ALIGNMENT - 1 ) & ( ~( configSTACK_ALIGNMENT - 1 ) ) )
+#define config_ଗଦା_ALIGNMENT       16
+#ifndef config_ISR_ଗଦା_SIZE
+    #define config_ISR_ଗଦା_SIZE    ( ( CONFIG_FREERTOS_ISR_STACKSIZE + config_ଗଦା_ALIGNMENT - 1 ) & ( ~( config_ଗଦା_ALIGNMENT - 1 ) ) )
 #endif

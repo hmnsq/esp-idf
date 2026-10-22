@@ -31,77 +31,77 @@
  *
  */
 
-#include <pthread.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <assert.h>
+#ଅନ୍ତର୍ଭାଵ <pthread.h>
+#ଅନ୍ତର୍ଭାଵ <stdlib.h>
+#ଅନ୍ତର୍ଭାଵ <errno.h>
+#ଅନ୍ତର୍ଭାଵ <assert.h>
 
-#include "wait_for_event.h"
+#ଅନ୍ତର୍ଭାଵ "wait_for_event.h"
 
-struct event
+ସଂରଚନା event
 {
     pthread_mutex_t mutex;
     pthread_cond_t cond;
     bool event_triggered;
 };
 
-struct event * event_create()
+ସଂରଚନା event * event_create()
 {
-    struct event * ev = malloc( sizeof( struct event ) );
-    assert(ev != NULL);
+    ସଂରଚନା event * ev = malloc( ଆକାର( ସଂରଚନା event ) );
+    ପ୍ରତିଜ୍ଞା(ev != ଖାଲି);
     ev->event_triggered = false;
-    pthread_mutex_init( &ev->mutex, NULL );
-    pthread_cond_init( &ev->cond, NULL );
-    return ev;
+    pthread_mutex_init( &ev->mutex, ଖାଲି );
+    pthread_cond_init( &ev->cond, ଖାଲି );
+    ଫେରନ୍ତୁ ev;
 }
 
-void event_delete( struct event * ev )
+ଶୂନ୍ୟ event_delete( ସଂରଚନା event * ev )
 {
     pthread_mutex_destroy( &ev->mutex );
     pthread_cond_destroy( &ev->cond );
-    free( ev );
+    ମୁକ୍ତ( ev );
 }
 
-bool event_wait( struct event * ev )
+bool event_wait( ସଂରଚନା event * ev )
 {
     pthread_mutex_lock( &ev->mutex );
 
-    while( ev->event_triggered == false )
+    ଯେତେବେଳେ( ev->event_triggered == false )
     {
         pthread_cond_wait( &ev->cond, &ev->mutex );
     }
 
     ev->event_triggered = false;
     pthread_mutex_unlock( &ev->mutex );
-    return true;
+    ଫେରନ୍ତୁ true;
 }
-bool event_wait_timed( struct event * ev,
+bool event_wait_timed( ସଂରଚନା event * ev,
                        time_t ms )
 {
-    struct timespec ts;
-    int ret = 0;
+    ସଂରଚନା timespec ts;
+    ପୂର୍ଣ୍ଣସଂଖ୍ୟା ret = 0;
 
     clock_gettime( CLOCK_REALTIME, &ts );
     ts.tv_sec += ms / 1000;
     ts.tv_nsec += ((ms % 1000) * 1000000);
     pthread_mutex_lock( &ev->mutex );
 
-    while( (ev->event_triggered == false) && (ret == 0) )
+    ଯେତେବେଳେ( (ev->event_triggered == false) && (ret == 0) )
     {
         ret = pthread_cond_timedwait( &ev->cond, &ev->mutex, &ts );
 
-        if( ( ret == -1 ) && ( errno == ETIMEDOUT ) )
+        ଯଦି( ( ret == -1 ) && ( errno == ETIMEDOUT ) )
         {
-            return false;
+            ଫେରନ୍ତୁ false;
         }
     }
 
     ev->event_triggered = false;
     pthread_mutex_unlock( &ev->mutex );
-    return true;
+    ଫେରନ୍ତୁ true;
 }
 
-void event_signal( struct event * ev )
+ଶୂନ୍ୟ event_signal( ସଂରଚନା event * ev )
 {
     pthread_mutex_lock( &ev->mutex );
     ev->event_triggered = true;

@@ -18,29 +18,29 @@
  * A lower-priority heartbeat is created after PASS and must keep printing
  * if that second delete did not panic.
  */
-#include <array>
-#include <cstdio>
+#ଅନ୍ତର୍ଭାଵ <array>
+#ଅନ୍ତର୍ଭାଵ <cstdio>
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#ଅନ୍ତର୍ଭାଵ "freertos/FreeRTOS.h"
+#ଅନ୍ତର୍ଭାଵ "freertos/task.h"
 
-namespace {
+ନାମାକାଶ {
 
 StaticTask_t s_self_tcb;
 StaticTask_t s_heartbeat_tcb;
-std::array<StackType_t, 4096> s_self_stack;
-std::array<StackType_t, 4096> s_heartbeat_stack;
+std::array<ଗଦା_Type_t, 4096> s_self_ଗଦା;
+std::array<ଗଦା_Type_t, 4096> s_heartbeat_ଗଦା;
 
-void self_delete_must_not_return(void *arg)
+ଶୂନ୍ୟ self_delete_must_not_return(ଶୂନ୍ୟ *arg)
 {
-    (void)arg;
+    (ଶୂନ୍ୟ)arg;
     vTaskDelete(nullptr);
 }
 
-void heartbeat(void *arg)
+ଶୂନ୍ୟ heartbeat(ଶୂନ୍ୟ *arg)
 {
-    (void)arg;
-    for (;;) {
+    (ଶୂନ୍ୟ)arg;
+    ପାଇଁ (;;) {
         std::printf("task_self_delete: still running\n");
         vTaskDelay(pdMS_TO_TICKS(100));
     }
@@ -48,18 +48,18 @@ void heartbeat(void *arg)
 
 } // namespace
 
-extern "C" void app_main(void)
+ବାହ୍ୟ "C" ଶୂନ୍ୟ app_main(ଶୂନ୍ୟ)
 {
     TaskHandle_t self_del = xTaskCreateStatic(self_delete_must_not_return,
                                               "self_del",
-                                              s_self_stack.size(),
+                                              s_self_ଗଦା.size(),
                                               nullptr,
                                               configMAX_PRIORITIES - 1,
-                                              s_self_stack.data(),
+                                              s_self_ଗଦା.data(),
                                               &s_self_tcb);
-    if (self_del == nullptr) {
+    ଯଦି (self_del == nullptr) {
         std::printf("task_self_delete: FAIL create\n");
-        return;
+        ଫେରନ୍ତୁ;
     }
 
     /* Child was higher priority, so it has already run. Surviving to here
@@ -68,13 +68,13 @@ extern "C" void app_main(void)
 
     TaskHandle_t hb = xTaskCreateStatic(heartbeat,
                                         "hb",
-                                        s_heartbeat_stack.size(),
+                                        s_heartbeat_ଗଦା.size(),
                                         nullptr,
                                         tskIDLE_PRIORITY + 1,
-                                        s_heartbeat_stack.data(),
+                                        s_heartbeat_ଗଦା.data(),
                                         &s_heartbeat_tcb);
-    if (hb == nullptr) {
+    ଯଦି (hb == nullptr) {
         std::printf("task_self_delete: FAIL create\n");
-        return;
+        ଫେରନ୍ତୁ;
     }
 }

@@ -7,13 +7,13 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+ବାହ୍ୟ "C" {
 #endif
 
 /**
  * @brief Set up the SysTick interrupt
  */
-void vPortSetupTimer(void);
+ଶୂନ୍ୟ vPortSetupTimer(ଶୂନ୍ୟ);
 
 #ifdef __cplusplus
 }

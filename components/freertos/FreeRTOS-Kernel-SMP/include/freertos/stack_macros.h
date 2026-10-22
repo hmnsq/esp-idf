@@ -30,8 +30,8 @@
  *
  */
 
-#ifndef STACK_MACROS_H
-#define STACK_MACROS_H
+#ifndef ଗଦା_MACROS_H
+#define ଗଦା_MACROS_H
 
 /*
  * Call the stack overflow hook function if the stack of the task being swapped
@@ -53,91 +53,91 @@
  * portSTACK_LIMIT_PADDING is a number of extra words to consider to be in
  * use on the stack.
  */
-#ifndef portSTACK_LIMIT_PADDING
-    #define portSTACK_LIMIT_PADDING    0
+#ifndef port_ଗଦା_LIMIT_PADDING
+    #define port_ଗଦା_LIMIT_PADDING    0
 #endif
 
-#if ( ( configCHECK_FOR_STACK_OVERFLOW == 1 ) && ( portSTACK_GROWTH < 0 ) )
+#ଯଦି ( ( config_CHECK_FOR_ଗଦା_OVERFLOW == 1 ) && ( port_ଗଦା_GROWTH < 0 ) )
 
 /* Only the current stack state is to be checked. */
-    #define taskCHECK_FOR_STACK_OVERFLOW()                                                      \
-    do {                                                                                        \
+    #define task_CHECK_FOR_ଗଦା_OVERFLOW()                                                      \
+    କର {                                                                                        \
         /* Is the currently saved stack pointer within the stack limit? */                      \
-        if( pxCurrentTCB->pxTopOfStack <= pxCurrentTCB->pxStack + portSTACK_LIMIT_PADDING )     \
+        ଯଦି( pxCurrentTCB->px_ଶୀର୍ଷ_Of_ଗଦା <= pxCurrentTCB->px_ଗଦା + port_ଗଦା_LIMIT_PADDING )     \
         {                                                                                       \
-            char * pcOverflowTaskName = pxCurrentTCB->pcTaskName;                               \
-            vApplicationStackOverflowHook( ( TaskHandle_t ) pxCurrentTCB, pcOverflowTaskName ); \
+            ଅକ୍ଷର * pcOverflowTaskName = pxCurrentTCB->pcTaskName;                               \
+            v_Application_ଗଦା_Overflow_Hook( ( TaskHandle_t ) pxCurrentTCB, pcOverflowTaskName ); \
         }                                                                                       \
-    } while( 0 )
+    } ଯେତେବେଳେ( 0 )
 
 #endif /* configCHECK_FOR_STACK_OVERFLOW == 1 */
 /*-----------------------------------------------------------*/
 
-#if ( ( configCHECK_FOR_STACK_OVERFLOW == 1 ) && ( portSTACK_GROWTH > 0 ) )
+#ଯଦି ( ( config_CHECK_FOR_ଗଦା_OVERFLOW == 1 ) && ( port_ଗଦା_GROWTH > 0 ) )
 
 /* Only the current stack state is to be checked. */
-    #define taskCHECK_FOR_STACK_OVERFLOW()                                                       \
-    do {                                                                                         \
+    #define task_CHECK_FOR_ଗଦା_OVERFLOW()                                                       \
+    କର {                                                                                         \
                                                                                                  \
         /* Is the currently saved stack pointer within the stack limit? */                       \
-        if( pxCurrentTCB->pxTopOfStack >= pxCurrentTCB->pxEndOfStack - portSTACK_LIMIT_PADDING ) \
+        ଯଦି( pxCurrentTCB->px_ଶୀର୍ଷ_Of_ଗଦା >= pxCurrentTCB->px_End_Of_ଗଦା - port_ଗଦା_LIMIT_PADDING ) \
         {                                                                                        \
-            char * pcOverflowTaskName = pxCurrentTCB->pcTaskName;                                \
-            vApplicationStackOverflowHook( ( TaskHandle_t ) pxCurrentTCB, pcOverflowTaskName );  \
+            ଅକ୍ଷର * pcOverflowTaskName = pxCurrentTCB->pcTaskName;                                \
+            v_Application_ଗଦା_Overflow_Hook( ( TaskHandle_t ) pxCurrentTCB, pcOverflowTaskName );  \
         }                                                                                        \
-    } while( 0 )
+    } ଯେତେବେଳେ( 0 )
 
 #endif /* configCHECK_FOR_STACK_OVERFLOW == 1 */
 /*-----------------------------------------------------------*/
 
-#if ( ( configCHECK_FOR_STACK_OVERFLOW > 1 ) && ( portSTACK_GROWTH < 0 ) )
+#ଯଦି ( ( config_CHECK_FOR_ଗଦା_OVERFLOW > 1 ) && ( port_ଗଦା_GROWTH < 0 ) )
 
-    #define taskCHECK_FOR_STACK_OVERFLOW()                                                      \
-    do {                                                                                        \
-        const uint32_t * const pulStack = ( uint32_t * ) pxCurrentTCB->pxStack;                 \
-        const uint32_t ulCheckValue = ( uint32_t ) 0xa5a5a5a5U;                                 \
+    #define task_CHECK_FOR_ଗଦା_OVERFLOW()                                                      \
+    କର {                                                                                        \
+        ଅଚଳ uint32_t * ଅଚଳ pul_ଗଦା = ( uint32_t * ) pxCurrentTCB->px_ଗଦା;                 \
+        ଅଚଳ uint32_t ul_Check_ମୂଲ୍ୟ = ( uint32_t ) 0xa5a5a5a5U;                                 \
                                                                                                 \
-        if( ( pulStack[ 0 ] != ulCheckValue ) ||                                                \
-            ( pulStack[ 1 ] != ulCheckValue ) ||                                                \
-            ( pulStack[ 2 ] != ulCheckValue ) ||                                                \
-            ( pulStack[ 3 ] != ulCheckValue ) )                                                 \
+        ଯଦି( ( pul_ଗଦା[ 0 ] != ul_Check_ମୂଲ୍ୟ ) ||                                                \
+            ( pul_ଗଦା[ 1 ] != ul_Check_ମୂଲ୍ୟ ) ||                                                \
+            ( pul_ଗଦା[ 2 ] != ul_Check_ମୂଲ୍ୟ ) ||                                                \
+            ( pul_ଗଦା[ 3 ] != ul_Check_ମୂଲ୍ୟ ) )                                                 \
         {                                                                                       \
-            char * pcOverflowTaskName = pxCurrentTCB->pcTaskName;                               \
-            vApplicationStackOverflowHook( ( TaskHandle_t ) pxCurrentTCB, pcOverflowTaskName ); \
+            ଅକ୍ଷର * pcOverflowTaskName = pxCurrentTCB->pcTaskName;                               \
+            v_Application_ଗଦା_Overflow_Hook( ( TaskHandle_t ) pxCurrentTCB, pcOverflowTaskName ); \
         }                                                                                       \
-    } while( 0 )
+    } ଯେତେବେଳେ( 0 )
 
 #endif /* #if( configCHECK_FOR_STACK_OVERFLOW > 1 ) */
 /*-----------------------------------------------------------*/
 
-#if ( ( configCHECK_FOR_STACK_OVERFLOW > 1 ) && ( portSTACK_GROWTH > 0 ) )
+#ଯଦି ( ( config_CHECK_FOR_ଗଦା_OVERFLOW > 1 ) && ( port_ଗଦା_GROWTH > 0 ) )
 
-    #define taskCHECK_FOR_STACK_OVERFLOW()                                                                                                \
-    do {                                                                                                                                  \
-        int8_t * pcEndOfStack = ( int8_t * ) pxCurrentTCB->pxEndOfStack;                                                                  \
-        static const uint8_t ucExpectedStackBytes[] = { tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE,   \
-                                                        tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE,   \
-                                                        tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE,   \
-                                                        tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE,   \
-                                                        tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE }; \
+    #define task_CHECK_FOR_ଗଦା_OVERFLOW()                                                                                                \
+    କର {                                                                                                                                  \
+        int8_t * pc_End_Of_ଗଦା = ( int8_t * ) pxCurrentTCB->px_End_Of_ଗଦା;                                                                  \
+        ସ୍ଥିର ଅଚଳ uint8_t uc_Expected_ଗଦା_Bytes[] = { tsk_ଗଦା_FILL_BYTE, tsk_ଗଦା_FILL_BYTE, tsk_ଗଦା_FILL_BYTE, tsk_ଗଦା_FILL_BYTE,   \
+                                                        tsk_ଗଦା_FILL_BYTE, tsk_ଗଦା_FILL_BYTE, tsk_ଗଦା_FILL_BYTE, tsk_ଗଦା_FILL_BYTE,   \
+                                                        tsk_ଗଦା_FILL_BYTE, tsk_ଗଦା_FILL_BYTE, tsk_ଗଦା_FILL_BYTE, tsk_ଗଦା_FILL_BYTE,   \
+                                                        tsk_ଗଦା_FILL_BYTE, tsk_ଗଦା_FILL_BYTE, tsk_ଗଦା_FILL_BYTE, tsk_ଗଦା_FILL_BYTE,   \
+                                                        tsk_ଗଦା_FILL_BYTE, tsk_ଗଦା_FILL_BYTE, tsk_ଗଦା_FILL_BYTE, tsk_ଗଦା_FILL_BYTE }; \
                                                                                                                                           \
                                                                                                                                           \
-        pcEndOfStack -= sizeof( ucExpectedStackBytes );                                                                                   \
+        pc_End_Of_ଗଦା -= ଆକାର( uc_Expected_ଗଦା_Bytes );                                                                                   \
                                                                                                                                           \
         /* Has the extremity of the task stack ever been written over? */                                                                 \
-        if( memcmp( ( void * ) pcEndOfStack, ( void * ) ucExpectedStackBytes, sizeof( ucExpectedStackBytes ) ) != 0 )                     \
+        ଯଦି( memcmp( ( ଶୂନ୍ୟ * ) pc_End_Of_ଗଦା, ( ଶୂନ୍ୟ * ) uc_Expected_ଗଦା_Bytes, ଆକାର( uc_Expected_ଗଦା_Bytes ) ) != 0 )                     \
         {                                                                                                                                 \
-            char * pcOverflowTaskName = pxCurrentTCB->pcTaskName;                                                                         \
-            vApplicationStackOverflowHook( ( TaskHandle_t ) pxCurrentTCB, pcOverflowTaskName );                                           \
+            ଅକ୍ଷର * pcOverflowTaskName = pxCurrentTCB->pcTaskName;                                                                         \
+            v_Application_ଗଦା_Overflow_Hook( ( TaskHandle_t ) pxCurrentTCB, pcOverflowTaskName );                                           \
         }                                                                                                                                 \
-    } while( 0 )
+    } ଯେତେବେଳେ( 0 )
 
 #endif /* #if( configCHECK_FOR_STACK_OVERFLOW > 1 ) */
 /*-----------------------------------------------------------*/
 
 /* Remove stack overflow macro if not being used. */
-#ifndef taskCHECK_FOR_STACK_OVERFLOW
-    #define taskCHECK_FOR_STACK_OVERFLOW()
+#ifndef task_CHECK_FOR_ଗଦା_OVERFLOW
+    #define task_CHECK_FOR_ଗଦା_OVERFLOW()
 #endif
 
 

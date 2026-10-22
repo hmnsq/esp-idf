@@ -4,59 +4,59 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/idf_additions.h"
-#include "esp_private/freertos_idf_additions_priv.h"
-#include "unity.h"
-#include "esp_heap_caps.h"
-#include "unity_test_runner.h"
-#include "memory_checks.h"
+#ଅନ୍ତର୍ଭାଵ <stdio.h>
+#ଅନ୍ତର୍ଭାଵ "freertos/FreeRTOS.h"
+#ଅନ୍ତର୍ଭାଵ "freertos/task.h"
+#ଅନ୍ତର୍ଭାଵ "freertos/idf_additions.h"
+#ଅନ୍ତର୍ଭାଵ "esp_private/freertos_idf_additions_priv.h"
+#ଅନ୍ତର୍ଭାଵ "unity.h"
+#ଅନ୍ତର୍ଭାଵ "esp_heap_caps.h"
+#ଅନ୍ତର୍ଭାଵ "unity_test_runner.h"
+#ଅନ୍ତର୍ଭାଵ "memory_checks.h"
 
 #define UNITY_FREERTOS_PRIORITY 5
 
-#if CONFIG_SPIRAM
+#ଯଦି CONFIG_SPIRAM
 
-static void task_delete_itself(void *arg)
+ସ୍ଥିର ଶୂନ୍ୟ task_delete_itself(ଶୂନ୍ୟ *arg)
 {
     printf("starting task\n");
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
     xTaskNotifyGive((TaskHandle_t)arg);
-    vTaskDelete(NULL);
+    vTaskDelete(ଖାଲି);
 }
 
-static void task_should_never_run(void *arg)
+ସ୍ଥିର ଶୂନ୍ୟ task_should_never_run(ଶୂନ୍ୟ *arg)
 {
     printf("ERROR: this task should not run, aborting\n");
     abort();
 }
 
-static BaseType_t create_task(TaskFunction_t function,
-                              size_t stack_size,
-                              void *task_arg,
-                              int core_num,
+ସ୍ଥିର BaseType_t create_task(TaskFunction_t function,
+                              size_t ଗଦା_size,
+                              ଶୂନ୍ୟ *task_arg,
+                              ପୂର୍ଣ୍ଣସଂଖ୍ୟା core_ଅଙ୍କ,
                               UBaseType_t heap_caps,
                               TaskHandle_t *task_handle)
 {
-#if CONFIG_FREERTOS_SMP
-    UBaseType_t core_affinity_mask = (core_num == -1) ? tskNO_AFFINITY : 1 << core_num;
-    return prvTaskCreateDynamicAffinitySetWithCaps(function,
+#ଯଦି CONFIG_FREERTOS_SMP
+    UBaseType_t core_affinity_mask = (core_ଅଙ୍କ == -1) ? tskNO_AFFINITY : 1 << core_ଅଙ୍କ;
+    ଫେରନ୍ତୁ prvTaskCreateDynamicAffinitySetWithCaps(function,
                                                    "self_delete",
-                                                   stack_size,
+                                                   ଗଦା_size,
                                                    task_arg,
                                                    UNITY_FREERTOS_PRIORITY + 1,
                                                    core_affinity_mask,
                                                    heap_caps,
                                                    task_handle);
-#else
-    const BaseType_t task_core_num = (core_num == -1) ? tskNO_AFFINITY : core_num;
-    return prvTaskCreateDynamicPinnedToCoreWithCaps(function,
+#ଅନ୍ୟଥା
+    ଅଚଳ BaseType_t task_core_ଅଙ୍କ = (core_ଅଙ୍କ == -1) ? tskNO_AFFINITY : core_ଅଙ୍କ;
+    ଫେରନ୍ତୁ prvTaskCreateDynamicPinnedToCoreWithCaps(function,
                                                     "self_delete",
-                                                    stack_size,
+                                                    ଗଦା_size,
                                                     task_arg,
                                                     UNITY_FREERTOS_PRIORITY + 1,
-                                                    task_core_num,
+                                                    task_core_ଅଙ୍କ,
                                                     heap_caps,
                                                     task_handle);
 #endif
@@ -64,29 +64,29 @@ static BaseType_t create_task(TaskFunction_t function,
 
 TEST_CASE("Out of memory failure", "[freertos][psram]")
 {
-    TaskHandle_t task_handle = NULL;
-    const size_t STACK_SIZE = 0x80000000; // far larger than the virtual address space on ESP32
+    TaskHandle_t task_handle = ଖାଲି;
+    ଅଚଳ size_t ଗଦା_SIZE = 0x80000000; // far larger than the virtual address space on ESP32
     UBaseType_t HEAP_CAPS = (MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
 
     BaseType_t result = create_task(task_should_never_run,
-                                    STACK_SIZE,
-                                    (void *)xTaskGetCurrentTaskHandle(),
+                                    ଗଦା_SIZE,
+                                    (ଶୂନ୍ୟ *)xTaskGetCurrentTaskHandle(),
                                     -1,
                                     HEAP_CAPS,
                                     &task_handle);
     TEST_ASSERT_EQUAL(errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY, result);
-    (void)task_handle;
+    (ଶୂନ୍ୟ)task_handle;
 }
 
 TEST_CASE("Task with stack memory in PSRAM", "[freertos][psram]")
 {
-    TaskHandle_t task_handle = NULL;
-    const size_t STACK_SIZE = 0x80000; // value is too large for any internal RAM on current chips
+    TaskHandle_t task_handle = ଖାଲି;
+    ଅଚଳ size_t ଗଦା_SIZE = 0x80000; // value is too large for any internal RAM on current chips
     UBaseType_t HEAP_CAPS = (MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
 
     BaseType_t result = create_task(task_delete_itself,
-                                    STACK_SIZE,
-                                    (void *)xTaskGetCurrentTaskHandle(),
+                                    ଗଦା_SIZE,
+                                    (ଶୂନ୍ୟ *)xTaskGetCurrentTaskHandle(),
                                     -1,
                                     HEAP_CAPS,
                                     &task_handle);
@@ -98,18 +98,18 @@ TEST_CASE("Task with stack memory in PSRAM", "[freertos][psram]")
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 }
 
-#if !CONFIG_FREERTOS_UNICORE
-typedef struct {
-    size_t recorded_core_num;
+#ଯଦି !CONFIG_FREERTOS_UNICORE
+ପ୍ରକାରବ୍ୟାଖ୍ୟା ସଂରଚନା {
+    size_t recorded_core_ଅଙ୍କ;
     TaskHandle_t parent_handle;
 } report_corenum_info_t;
 
-static void task_report_corenum(void *arg)
+ସ୍ଥିର ଶୂନ୍ୟ task_report_corenum(ଶୂନ୍ୟ *arg)
 {
     report_corenum_info_t *info = (report_corenum_info_t*) arg;
-    info->recorded_core_num = xTaskGetCoreID(NULL);
+    info->recorded_core_ଅଙ୍କ = xTaskGetCoreID(ଖାଲି);
     xTaskNotifyGive(info->parent_handle);
-    vTaskSuspend(NULL);
+    vTaskSuspend(ଖାଲି);
 }
 
 /**
@@ -117,17 +117,17 @@ static void task_report_corenum(void *arg)
  */
 TEST_CASE("Task on specific core works", "[freertos][psram]")
 {
-    const size_t STACK_SIZE = 0x1000;
+    ଅଚଳ size_t ଗଦା_SIZE = 0x1000;
     report_corenum_info_t corenum_info;
     TaskHandle_t task_handle;
 
-    for (int corenum = 0; corenum < CONFIG_SOC_CPU_CORES_NUM; corenum++) {
-        corenum_info.recorded_core_num = 0xFFFFFFFF;
+    ପାଇଁ (ପୂର୍ଣ୍ଣସଂଖ୍ୟା corenum = 0; corenum < CONFIG_SOC_CPU_CORES_ଅଙ୍କ; corenum++) {
+        corenum_info.recorded_core_ଅଙ୍କ = 0xFFFFFFFF;
         corenum_info.parent_handle = xTaskGetCurrentTaskHandle();
         UBaseType_t HEAP_CAPS = (MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
         BaseType_t result = create_task(task_report_corenum,
-                                        STACK_SIZE,
-                                        (void *) & (corenum_info),
+                                        ଗଦା_SIZE,
+                                        (ଶୂନ୍ୟ *) & (corenum_info),
                                         corenum,
                                         HEAP_CAPS,
                                         &task_handle);
@@ -137,7 +137,7 @@ TEST_CASE("Task on specific core works", "[freertos][psram]")
         // Wait for the created task to finish its job
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
-        TEST_ASSERT_EQUAL((size_t) corenum, corenum_info.recorded_core_num);
+        TEST_ASSERT_EQUAL((size_t) corenum, corenum_info.recorded_core_ଅଙ୍କ);
 
         vTaskDelete(task_handle);
 
