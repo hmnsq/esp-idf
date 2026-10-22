@@ -34,17 +34,17 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+बाह्य "C" {
 #endif
 
-#include <stdbool.h>
-#include <time.h>
+#अन्तर्भाव <stdbool.h>
+#अन्तर्भाव <time.h>
 
 /**
  * @brief
  *
  */
-typedef struct event
+प्रकारनिर्देश संरचना event
 {
     pthread_mutex_t mutex;
     pthread_cond_t cond;
@@ -57,14 +57,14 @@ typedef struct event
  *
  * @return event_t*
  */
-event_t *event_create(void);
+event_t *event_create(शून्य);
 
 /**
  * @brief
  *
  * @param ev
  */
-void event_delete(event_t *ev);
+शून्य event_delete(event_t *ev);
 
 /**
  * @brief
@@ -83,21 +83,21 @@ bool event_wait(event_t *ev);
  * @return true
  * @return false
  */
-bool event_wait_timed(event_t *ev, time_t ms);
+bool event_wait_timed(event_t *ev, समय_प्रकार ms);
 
 /**
  * @brief
  *
  * @param ev
  */
-void event_signal(event_t *ev);
+शून्य event_signal(event_t *ev);
 
 /**
  * @brief Discard a pending signal that was never consumed by a wait
  *
  * @param ev
  */
-void event_clear(event_t *ev);
+शून्य event_clear(event_t *ev);
 
 #ifdef __cplusplus
 }

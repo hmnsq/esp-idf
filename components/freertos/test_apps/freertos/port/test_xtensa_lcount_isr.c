@@ -4,46 +4,46 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
+#अन्तर्भाव "sdkconfig.h"
 
-#if CONFIG_IDF_TARGET_ARCH_XTENSA
+#यदि CONFIG_IDF_TARGET_ARCH_XTENSA
 
-#include <stdint.h>
-#include "esp_intr_alloc.h"
-#include "esp_rom_sys.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "unity.h"
-#include "xtensa/config/core-isa.h"
-#include "xtensa/xt_specreg.h"
-#include "xtensa_api.h"
+#अन्तर्भाव <stdint.h>
+#अन्तर्भाव "esp_intr_alloc.h"
+#अन्तर्भाव "esp_rom_sys.h"
+#अन्तर्भाव "freertos/FreeRTOS.h"
+#अन्तर्भाव "freertos/task.h"
+#अन्तर्भाव "unity.h"
+#अन्तर्भाव "xtensa/config/core-isa.h"
+#अन्तर्भाव "xtensa/xt_specreg.h"
+#अन्तर्भाव "xtensa_api.h"
 
-#if XCHAL_HAVE_LOOPS
+#यदि XCHAL_HAVE_LOOPS
 
 #define SW_ISR_LEVEL_1      7
 #define SW_ISR_MASK         (1U << SW_ISR_LEVEL_1)
 
-static volatile uint32_t s_isr_body_hits;
+स्थिर चञ्चल uint32_t s_isr_body_hits;
 
-static inline uint32_t read_lbeg(void)
+स्थिर अन्तःस्थ uint32_t read_lbeg(शून्य)
 {
     uint32_t val;
-    __asm__ volatile("rsr.lbeg %0" : "=r"(val));
-    return val;
+    __asm__ चञ्चल("rsr.lbeg %0" : "=r"(val));
+    फर्काऊ val;
 }
 
-static inline uint32_t read_lend(void)
+स्थिर अन्तःस्थ uint32_t read_lend(शून्य)
 {
     uint32_t val;
-    __asm__ volatile("rsr.lend %0" : "=r"(val));
-    return val;
+    __asm__ चञ्चल("rsr.lend %0" : "=r"(val));
+    फर्काऊ val;
 }
 
-static inline uint32_t read_lcount(void)
+स्थिर अन्तःस्थ uint32_t read_lcount(शून्य)
 {
     uint32_t val;
-    __asm__ volatile("rsr.lcount %0" : "=r"(val));
-    return val;
+    __asm__ चञ्चल("rsr.lcount %0" : "=r"(val));
+    फर्काऊ val;
 }
 
 /*
@@ -52,16 +52,16 @@ static inline uint32_t read_lcount(void)
  * - ISR call: enter same function but skip loopnez (do not program loop regs).
  *   If stale LCOUNT/LBEG/LEND leaked into ISR, reaching old LEND will loop.
  */
-static uint32_t IRAM_ATTR __attribute__((noinline, noclone)) zol_reentry_probe(uint32_t setup_loop)
+स्थिर uint32_t IRAM_ATTR __attribute__((noinline, noclone)) zol_reentry_probe(uint32_t setup_loop)
 {
     uint32_t body_hits = 0;
-    uint32_t loop_count = 256;
+    uint32_t loop_गन्ती = 256;
     uint32_t trigger_once = setup_loop == 1;
 
     esp_rom_printf("From %s: setup_loop=%u\n", xPortInIsrContext() ? "ISR" : "TASK", setup_loop);
     esp_rom_printf("LBEG=0x%08x LEND=0x%08x LCOUNT=0x%08x\n", read_lbeg(), read_lend(), read_lcount());
 
-    __asm__ volatile(
+    __asm__ चञ्चल(
         "beqz   %[setup], 1f\n"
         "loopnez %[cnt], .loopEnd\n"
         "addi   %[hits], %[hits], 1\n"
@@ -72,17 +72,17 @@ static uint32_t IRAM_ATTR __attribute__((noinline, noclone)) zol_reentry_probe(u
         "nop\n"
         ".loopEnd:\n"
         : [hits] "+r"(body_hits),
-        [cnt] "+r"(loop_count),
+        [cnt] "+r"(loop_गन्ती),
         [trigger] "+r"(trigger_once)
         : [setup] "r"(setup_loop),
         [int_mask] "r"(SW_ISR_MASK)
         : "memory"
     );
 
-    return body_hits;
+    फर्काऊ body_hits;
 }
 
-static void IRAM_ATTR lcount_probe_isr(void *arg)
+स्थिर शून्य IRAM_ATTR lcount_probe_isr(शून्य *arg)
 {
     TaskHandle_t waiter_task = (TaskHandle_t)arg;
     BaseType_t should_yield = pdFALSE;
@@ -91,18 +91,18 @@ static void IRAM_ATTR lcount_probe_isr(void *arg)
     s_isr_body_hits = zol_reentry_probe(0);
 
     vTaskNotifyGiveFromISR(waiter_task, &should_yield);
-    if (should_yield == pdTRUE) {
+    यदि (should_yield == pdTRUE) {
         portYIELD_FROM_ISR();
     }
 }
 
 TEST_CASE("Xtensa: ISR does not inherit active ZOL state", "[freertos]")
 {
-    intr_handle_t isr_handle = NULL;
+    intr_handle_t isr_handle = रिक्त;
     TaskHandle_t this_task = xTaskGetCurrentTaskHandle();
 
     xt_set_intclear(SW_ISR_MASK);
-    TEST_ESP_OK(esp_intr_alloc(ETS_INTERNAL_SW0_INTR_SOURCE, ESP_INTR_FLAG_LEVEL1, lcount_probe_isr, (void *)this_task, &isr_handle));
+    TEST_ESP_OK(esp_intr_alloc(ETS_INTERNAL_SW0_INTR_SOURCE, ESP_INTR_FLAG_LEVEL1, lcount_probe_isr, (शून्य *)this_task, &isr_handle));
 
     s_isr_body_hits = 0xFFFF;
     uint32_t task_body_hits = zol_reentry_probe(1);

@@ -4,25 +4,25 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
+#अन्तर्भाव "sdkconfig.h"
 
-#if CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
+#यदि CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/idf_additions.h"
-#include "esp_log.h"
+#अन्तर्भाव "freertos/FreeRTOS.h"
+#अन्तर्भाव "freertos/task.h"
+#अन्तर्भाव "freertos/idf_additions.h"
+#अन्तर्भाव "esp_log.h"
 
 /*
  * Keep the blacklist out of the upstream TCB. A small handle table is enough
  * for this debug option and is safe to scan from the PIE exception path.
  */
-static TaskHandle_t volatile s_pie_blacklist[ CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX ];
-static portMUX_TYPE s_pie_blacklist_mux = portMUX_INITIALIZER_UNLOCKED;
+स्थिर TaskHandle_t चञ्चल s_pie_blacklist[ CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX ];
+स्थिर portMUX_TYPE s_pie_blacklist_mux = portMUX_INITIALIZER_UNLOCKED;
 
-static TaskHandle_t prvResolveTask( TaskHandle_t xTask )
+स्थिर TaskHandle_t prvResolveTask( TaskHandle_t xTask )
 {
-    return ( xTask != NULL ) ? xTask : xTaskGetCurrentTaskHandle();
+    फर्काऊ ( xTask != रिक्त ) ? xTask : xTaskGetCurrentTaskHandle();
 }
 
 /*
@@ -30,20 +30,20 @@ static TaskHandle_t prvResolveTask( TaskHandle_t xTask )
  * PIE exception handler, where taking the spinlock could deadlock. A stale read
  * is acceptable for a debug aid.
  */
-static BaseType_t prvIsTaskPieBlacklisted( TaskHandle_t xTask )
+स्थिर BaseType_t prvIsTaskPieBlacklisted( TaskHandle_t xTask )
 {
-    for( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
+    लागि( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
     {
-        if( s_pie_blacklist[ i ] == xTask )
+        यदि( s_pie_blacklist[ i ] == xTask )
         {
-            return pdTRUE;
+            फर्काऊ pdTRUE;
         }
     }
 
-    return pdFALSE;
+    फर्काऊ pdFALSE;
 }
 
-void vTaskSetPieBlacklisted( TaskHandle_t xTask,
+शून्य vTaskSetPieBlacklisted( TaskHandle_t xTask,
                              BaseType_t xBlacklisted )
 {
     TaskHandle_t xHandle = prvResolveTask( xTask );
@@ -51,38 +51,38 @@ void vTaskSetPieBlacklisted( TaskHandle_t xTask,
 
     taskENTER_CRITICAL( &s_pie_blacklist_mux );
 
-    if( xBlacklisted != pdFALSE )
+    यदि( xBlacklisted != pdFALSE )
     {
-        if( prvIsTaskPieBlacklisted( xHandle ) == pdFALSE )
+        यदि( prvIsTaskPieBlacklisted( xHandle ) == pdFALSE )
         {
             xStored = pdFALSE;
 
-            for( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
+            लागि( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
             {
-                if( s_pie_blacklist[ i ] == NULL )
+                यदि( s_pie_blacklist[ i ] == रिक्त )
                 {
                     s_pie_blacklist[ i ] = xHandle;
                     xStored = pdTRUE;
-                    break;
+                    रोक;
                 }
             }
         }
     }
-    else
+    अन्यथा
     {
-        for( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
+        लागि( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
         {
-            if( s_pie_blacklist[ i ] == xHandle )
+            यदि( s_pie_blacklist[ i ] == xHandle )
             {
-                s_pie_blacklist[ i ] = NULL;
-                break;
+                s_pie_blacklist[ i ] = रिक्त;
+                रोक;
             }
         }
     }
 
     taskEXIT_CRITICAL( &s_pie_blacklist_mux );
 
-    if( xStored == pdFALSE )
+    यदि( xStored == pdFALSE )
     {
         ESP_EARLY_LOGE( "FreeRTOS", "PIE blacklist table is full (max %d)", CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX );
         configASSERT( xStored == pdTRUE );
@@ -91,7 +91,7 @@ void vTaskSetPieBlacklisted( TaskHandle_t xTask,
 
 BaseType_t xTaskGetPieBlacklisted( TaskHandle_t xTask )
 {
-    return prvIsTaskPieBlacklisted( prvResolveTask( xTask ) );
+    फर्काऊ prvIsTaskPieBlacklisted( prvResolveTask( xTask ) );
 }
 
 #endif /* CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST */
