@@ -44,7 +44,7 @@ extern "C" {
  * @brief
  *
  */
-typedef struct event
+typedef sa_nracanaa event
 {
     pthread_mutex_t mutex;
     pthread_cond_t cond;

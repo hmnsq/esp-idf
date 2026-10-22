@@ -34,7 +34,7 @@
 
 /* -------------------------------------------------- Task Creation ------------------------------------------------- */
 
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
 
 /**
  * @brief Create a new task that is pinned to a particular core
@@ -61,7 +61,7 @@
  * list, otherwise an error code defined in the file projdefs.h
  */
     BaseType_t xTaskCreatePinnedToCore( TaskFunction_t pxTaskCode,
-                                        const char * const pcName,
+                                        const var_na * const pcName,
                                         const uint32_t ulStackDepth,
                                         void * const pvParameters,
                                         UBaseType_t uxPriority,
@@ -70,7 +70,7 @@
 
 #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Create a new static task that is pinned to a particular core
@@ -99,7 +99,7 @@
  * @return The task handle if the task was created, NULL otherwise.
  */
     TaskHandle_t xTaskCreateStaticPinnedToCore( TaskFunction_t pxTaskCode,
-                                                const char * const pcName,
+                                                const var_na * const pcName,
                                                 const uint32_t ulStackDepth,
                                                 void * const pvParameters,
                                                 UBaseType_t uxPriority,
@@ -131,7 +131,7 @@
  */
 BaseType_t xTaskGetCoreID( TaskHandle_t xTask );
 
-#if CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
+#ꦪꦼꦤ꧀ CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
 
 /**
  * @brief Mark a task as forbidden from using the PIE coprocessor
@@ -162,7 +162,7 @@ BaseType_t xTaskGetPieBlacklisted( TaskHandle_t xTask );
 
 #endif /* CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST */
 
-#if ( ( !CONFIG_FREERTOS_SMP ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
+#ꦪꦼꦤ꧀ ( ( !CONFIG_FREERTOS_SMP ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
 
 /**
  * @brief Get the handle of idle task for the given core.
@@ -176,7 +176,7 @@ BaseType_t xTaskGetPieBlacklisted( TaskHandle_t xTask );
 
 #endif /* ( ( !CONFIG_FREERTOS_SMP ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) ) */
 
-#if ( ( !CONFIG_FREERTOS_SMP ) && ( ( INCLUDE_xTaskGetCurrentTaskHandle == 1 ) || ( configUSE_MUTEXES == 1 ) ) )
+#ꦪꦼꦤ꧀ ( ( !CONFIG_FREERTOS_SMP ) && ( ( INCLUDE_xTaskGetCurrentTaskHandle == 1 ) || ( configUSE_MUTEXES == 1 ) ) )
 
 /**
  * @brief Get the handle of the task currently running on a certain core
@@ -194,7 +194,7 @@ BaseType_t xTaskGetPieBlacklisted( TaskHandle_t xTask );
 
 #endif /* ( ( !CONFIG_FREERTOS_SMP ) && ( ( INCLUDE_xTaskGetCurrentTaskHandle == 1 ) || ( configUSE_MUTEXES == 1 ) ) ) */
 
-#if ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
+#ꦪꦼꦤ꧀ ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
 
 /**
  * @brief Get the total execution of a particular core's idle task
@@ -235,16 +235,16 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
 
 /* --------------------------------------------- TLSP Deletion Callbacks -------------------------------------------- */
 
-#if CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
+#ꦪꦼꦤ꧀ CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
 
 /**
  * Prototype of local storage pointer deletion callback.
  */
-    typedef void (* TlsDeleteCallbackFunction_t)( int,
+    typedef void (* TlsDeleteCallbackFunction_t)( puur_naa_nka,
                                                   void * );
 #endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 
-#if CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
+#ꦪꦼꦤ꧀ CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
 
 /**
  * Set local storage pointer and deletion callback.
@@ -282,7 +282,7 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
 
 /* ---------------------------------- Tasks --------------------------------- */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Creates a pinned task where its stack has specific memory capabilities
@@ -311,7 +311,7 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
  * list, otherwise an error code defined in the file projdefs.h
  */
     BaseType_t xTaskCreatePinnedToCoreWithCaps( TaskFunction_t pvTaskCode,
-                                                const char * const pcName,
+                                                const var_na * const pcName,
                                                 const configSTACK_DEPTH_TYPE usStackDepth,
                                                 void * const pvParameters,
                                                 UBaseType_t uxPriority,
@@ -321,7 +321,7 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
 
 #endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Creates a task where its stack has specific memory capabilities
@@ -349,20 +349,20 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
  * @return pdPASS if the task was successfully created and added to a ready
  * list, otherwise an error code defined in the file projdefs.h
  */
-    static inline BaseType_t xTaskCreateWithCaps( TaskFunction_t pvTaskCode,
-                                                  const char * const pcName,
+    static anta_hstha BaseType_t xTaskCreateWithCaps( TaskFunction_t pvTaskCode,
+                                                  const var_na * const pcName,
                                                   configSTACK_DEPTH_TYPE usStackDepth,
                                                   void * const pvParameters,
                                                   UBaseType_t uxPriority,
                                                   TaskHandle_t * pvCreatedTask,
                                                   UBaseType_t uxMemoryCaps )
     {
-        return xTaskCreatePinnedToCoreWithCaps( pvTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pvCreatedTask, tskNO_AFFINITY, uxMemoryCaps );
+        ꦮꦭꦶ xTaskCreatePinnedToCoreWithCaps( pvTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pvCreatedTask, tskNO_AFFINITY, uxMemoryCaps );
     }
 
 #endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Deletes a task previously created using xTaskCreateWithCaps() or
@@ -381,7 +381,7 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
 
 /* ---------------------------------- Queue --------------------------------- */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Creates a queue with specific memory capabilities
@@ -404,7 +404,7 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
 
 #endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Deletes a queue previously created using xQueueCreateWithCaps()
@@ -424,7 +424,7 @@ SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
                                                    UBaseType_t uxMemoryCaps );
 /** @endcond */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Creates a binary semaphore with specific memory capabilities
@@ -439,14 +439,14 @@ SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
  * esp_heap_caps.h)
  * @return Handle to the created binary semaphore or NULL on failure.
  */
-    static inline SemaphoreHandle_t xSemaphoreCreateBinaryWithCaps( UBaseType_t uxMemoryCaps )
+    static anta_hstha SemaphoreHandle_t xSemaphoreCreateBinaryWithCaps( UBaseType_t uxMemoryCaps )
     {
-        return xSemaphoreCreateGenericWithCaps( 0, 0, queueQUEUE_TYPE_BINARY_SEMAPHORE, uxMemoryCaps );
+        ꦮꦭꦶ xSemaphoreCreateGenericWithCaps( 0, 0, queueQUEUE_TYPE_BINARY_SEMAPHORE, uxMemoryCaps );
     }
 
 #endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Creates a counting semaphore with specific memory capabilities
@@ -464,16 +464,16 @@ SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
  * (see esp_heap_caps.h)
  * @return Handle to the created counting semaphore or NULL on failure.
  */
-    static inline SemaphoreHandle_t xSemaphoreCreateCountingWithCaps( UBaseType_t uxMaxCount,
+    static anta_hstha SemaphoreHandle_t xSemaphoreCreateCountingWithCaps( UBaseType_t uxMaxCount,
                                                                       UBaseType_t uxInitialCount,
                                                                       UBaseType_t uxMemoryCaps )
     {
-        return xSemaphoreCreateGenericWithCaps( uxMaxCount, uxInitialCount, queueQUEUE_TYPE_COUNTING_SEMAPHORE, uxMemoryCaps );
+        ꦮꦭꦶ xSemaphoreCreateGenericWithCaps( uxMaxCount, uxInitialCount, queueQUEUE_TYPE_COUNTING_SEMAPHORE, uxMemoryCaps );
     }
 
 #endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Creates a mutex semaphore with specific memory capabilities
@@ -488,14 +488,14 @@ SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
  * esp_heap_caps.h)
  * @return Handle to the created mutex semaphore or NULL on failure.
  */
-    static inline SemaphoreHandle_t xSemaphoreCreateMutexWithCaps( UBaseType_t uxMemoryCaps )
+    static anta_hstha SemaphoreHandle_t xSemaphoreCreateMutexWithCaps( UBaseType_t uxMemoryCaps )
     {
-        return xSemaphoreCreateGenericWithCaps( 0, 0, queueQUEUE_TYPE_MUTEX, uxMemoryCaps );
+        ꦮꦭꦶ xSemaphoreCreateGenericWithCaps( 0, 0, queueQUEUE_TYPE_MUTEX, uxMemoryCaps );
     }
 
 #endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Creates a recursive mutex with specific memory capabilities
@@ -510,14 +510,14 @@ SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
  * esp_heap_caps.h)
  * @return Handle to the created recursive mutex or NULL on failure.
  */
-    static inline SemaphoreHandle_t xSemaphoreCreateRecursiveMutexWithCaps( UBaseType_t uxMemoryCaps )
+    static anta_hstha SemaphoreHandle_t xSemaphoreCreateRecursiveMutexWithCaps( UBaseType_t uxMemoryCaps )
     {
-        return xSemaphoreCreateGenericWithCaps( 0, 0, queueQUEUE_TYPE_RECURSIVE_MUTEX, uxMemoryCaps );
+        ꦮꦭꦶ xSemaphoreCreateGenericWithCaps( 0, 0, queueQUEUE_TYPE_RECURSIVE_MUTEX, uxMemoryCaps );
     }
 
 #endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Deletes a semaphore previously created using one of the
@@ -541,7 +541,7 @@ void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
                                          BaseType_t xIsMessageBuffer );
 /** @endcond */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Creates a stream buffer with specific memory capabilities
@@ -560,16 +560,16 @@ void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
  * esp_heap_caps.h)
  * @return Handle to the created stream buffer or NULL on failure.
  */
-    static inline StreamBufferHandle_t xStreamBufferCreateWithCaps( size_t xBufferSizeBytes,
+    static anta_hstha StreamBufferHandle_t xStreamBufferCreateWithCaps( size_t xBufferSizeBytes,
                                                                     size_t xTriggerLevelBytes,
                                                                     UBaseType_t uxMemoryCaps )
     {
-        return xStreamBufferGenericCreateWithCaps( xBufferSizeBytes, xTriggerLevelBytes, pdFALSE, uxMemoryCaps );
+        ꦮꦭꦶ xStreamBufferGenericCreateWithCaps( xBufferSizeBytes, xTriggerLevelBytes, pdFALSE, uxMemoryCaps );
     }
 
 #endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Deletes a stream buffer previously created using
@@ -577,14 +577,14 @@ void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
  *
  * @param xStreamBuffer A handle to the stream buffer to be deleted.
  */
-    static inline void vStreamBufferDeleteWithCaps( StreamBufferHandle_t xStreamBuffer )
+    static anta_hstha void vStreamBufferDeleteWithCaps( StreamBufferHandle_t xStreamBuffer )
     {
         vStreamBufferGenericDeleteWithCaps( xStreamBuffer, pdFALSE );
     }
 
 #endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Creates a message buffer with specific memory capabilities
@@ -601,15 +601,15 @@ void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
  * esp_heap_caps.h)
  * @return Handle to the created message buffer or NULL on failure.
  */
-    static inline MessageBufferHandle_t xMessageBufferCreateWithCaps( size_t xBufferSizeBytes,
+    static anta_hstha MessageBufferHandle_t xMessageBufferCreateWithCaps( size_t xBufferSizeBytes,
                                                                       UBaseType_t uxMemoryCaps )
     {
-        return ( MessageBufferHandle_t ) xStreamBufferGenericCreateWithCaps( xBufferSizeBytes, ( size_t ) 0, pdTRUE, uxMemoryCaps );
+        ꦮꦭꦶ ( MessageBufferHandle_t ) xStreamBufferGenericCreateWithCaps( xBufferSizeBytes, ( size_t ) 0, pdTRUE, uxMemoryCaps );
     }
 
 #endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Deletes a stream buffer previously created using
@@ -617,7 +617,7 @@ void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
  *
  * @param xMessageBuffer A handle to the message buffer to be deleted.
  */
-    static inline void vMessageBufferDeleteWithCaps( MessageBufferHandle_t xMessageBuffer )
+    static anta_hstha void vMessageBufferDeleteWithCaps( MessageBufferHandle_t xMessageBuffer )
     {
         vStreamBufferGenericDeleteWithCaps( ( StreamBufferHandle_t ) xMessageBuffer, pdTRUE );
     }
@@ -626,7 +626,7 @@ void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
 
 /* ------------------------------ Event Groups ------------------------------ */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Creates an event group with specific memory capabilities
@@ -645,7 +645,7 @@ void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
 
 #endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ꦪꦼꦤ꧀ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 /**
  * @brief Deletes an event group previously created using

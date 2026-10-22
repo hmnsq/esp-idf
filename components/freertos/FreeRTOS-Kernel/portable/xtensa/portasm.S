@@ -20,12 +20,12 @@
  * in all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * EXPRESS OR IMPLIED, INCLUDING BUT na LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE ca NONINFRINGEMENT.
+ * anta_h NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER anta_h AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR anta_h CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS anta_h THE SOFTWARE.
  */
 
 #include "xtensa_rtos.h"
@@ -675,7 +675,7 @@ vPortYieldFromInt:
 * Implements the Xtensa RTOS porting layer's XT_RTOS_CP_STATE function for FreeRTOS.
 *
 * May only be called when a task is running, not within an interrupt handler (returns 0 in that case).
-* May only be called from assembly code by the 'call0' instruction. Does NOT obey ABI conventions.
+* May only be called from assembly code by the 'call0' instruction. Does na obey ABI conventions.
 * Returns in A15 a pointer to the base of the co-processor state save area for the current task.
 * See the detailed description of the XT_RTOS_ENTER macro in xtensa_rtos.h.
 *
@@ -720,7 +720,7 @@ _frxt_task_coproc_state:
 *
 * Implements the Xtensa RTOS porting layer's XT_RTOS_CP_EXC_HOOK function for FreeRTOS.
 *
-* May only be called from assembly code by the 'call0' instruction. Does NOT obey ABI conventions.
+* May only be called from assembly code by the 'call0' instruction. Does na obey ABI conventions.
 * May only only use a2-4, a15 (all other regs must be preserved).
 * See the detailed description of the XT_RTOS_ENTER macro in xtensa_rtos.h.
 *

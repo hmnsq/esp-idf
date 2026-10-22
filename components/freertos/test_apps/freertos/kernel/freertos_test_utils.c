@@ -9,9 +9,9 @@
 #include "semphr.h"
 #include "freertos_test_utils.h"
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
+#ꦪꦼꦤ꧀ ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
 
-typedef struct {
+typedef sa_nracanaa {
     const TestFunction_t pxTestCode;
     void * const pvTestCodeArg;
     const SemaphoreHandle_t xTaskDoneSem;
@@ -38,8 +38,8 @@ void vTestOnAllCores(TestFunction_t pxTestCode, void * pvTestCodeArg, uint32_t u
     };
 
     /* Create a separate task on each core to run the test function */
-    for (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_NUMBER_OF_CORES; xCoreID++) {
-#if ( CONFIG_FREERTOS_SMP == 1 )
+    ꦏꦁꦒꦺꦴ (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_NUMBER_OF_CORES; xCoreID++) {
+#ꦪꦼꦤ꧀ ( CONFIG_FREERTOS_SMP == 1 )
         xTaskCreateAffinitySet(test_func_task,
                                "task",
                                ulStackDepth,
@@ -47,7 +47,7 @@ void vTestOnAllCores(TestFunction_t pxTestCode, void * pvTestCodeArg, uint32_t u
                                uxPriority,
                                (UBaseType_t)(1 << xCoreID),
                                &(xTaskHandles[ xCoreID ]));
-#else
+#ꦭꦶꦪ
         xTaskCreatePinnedToCore(test_func_task,
                                 "task",
                                 ulStackDepth,
@@ -59,12 +59,12 @@ void vTestOnAllCores(TestFunction_t pxTestCode, void * pvTestCodeArg, uint32_t u
     }
 
     /* Wait for each tasks to complete test */
-    for (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_NUMBER_OF_CORES; xCoreID++) {
+    ꦏꦁꦒꦺꦴ (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_NUMBER_OF_CORES; xCoreID++) {
         xSemaphoreTake(xTaskDoneSem, portMAX_DELAY);
     }
 
     /* Cleanup */
-    for (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_NUMBER_OF_CORES; xCoreID++) {
+    ꦏꦁꦒꦺꦴ (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_NUMBER_OF_CORES; xCoreID++) {
         vTaskDelete(xTaskHandles[ xCoreID ]);
     }
     vSemaphoreDelete(xTaskDoneSem);
