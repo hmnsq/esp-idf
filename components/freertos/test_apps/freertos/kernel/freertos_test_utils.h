@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include "FreeRTOS.h"
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
+#ပေႃး ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
 
 /**
  * @brief Prototype for test function.

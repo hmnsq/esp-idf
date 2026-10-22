@@ -75,13 +75,13 @@ typedef void (* TaskFunction_t)( void * arg );
     #define configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES    0
 #endif
 
-#if ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS )
+#ပေႃး ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS )
     #define pdINTEGRITY_CHECK_VALUE    0x5a5a
 #elif ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_32_BITS )
     #define pdINTEGRITY_CHECK_VALUE    0x5a5a5a5aUL
 #elif ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_64_BITS )
     #define pdINTEGRITY_CHECK_VALUE    0x5a5a5a5a5a5a5a5aULL
-#else
+#ပေႃးဢမ်ႇ
     #error configTICK_TYPE_WIDTH_IN_BITS set to unsupported tick type width.
 #endif
 

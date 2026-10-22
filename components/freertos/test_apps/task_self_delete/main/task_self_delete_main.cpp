@@ -57,9 +57,9 @@ extern "C" void app_main(void)
                                               configMAX_PRIORITIES - 1,
                                               s_self_stack.data(),
                                               &s_self_tcb);
-    if (self_del == nullptr) {
+    ပေႃး (self_del == nullptr) {
         std::printf("task_self_delete: FAIL create\n");
-        return;
+        ပွၵ်ႈ;
     }
 
     /* Child was higher priority, so it has already run. Surviving to here
@@ -73,8 +73,8 @@ extern "C" void app_main(void)
                                         tskIDLE_PRIORITY + 1,
                                         s_heartbeat_stack.data(),
                                         &s_heartbeat_tcb);
-    if (hb == nullptr) {
+    ပေႃး (hb == nullptr) {
         std::printf("task_self_delete: FAIL create\n");
-        return;
+        ပွၵ်ႈ;
     }
 }
