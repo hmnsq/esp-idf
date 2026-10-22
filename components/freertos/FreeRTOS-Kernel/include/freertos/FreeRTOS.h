@@ -30,13 +30,13 @@
  *
  */
 
-#ifndef INC_FREERTOS_H
-#define INC_FREERTOS_H
+#جيڪڏهن_وصف_نه_ٿيل INC_FREERTOS_H
+#وصف_ڪريو INC_FREERTOS_H
 
 /*
  * Include the generic headers required for the FreeRTOS port being used.
  */
-#include <stddef.h>
+#ضمن <stddef.h>
 
 /*
  * If stdint.h cannot be located then:
@@ -51,30 +51,30 @@
  *     contains the typedefs required to build FreeRTOS.  Read the instructions
  *     in FreeRTOS/source/stdint.readme for more information.
  */
-#include <stdint.h> /* READ COMMENT ABOVE. */
+#ضمن <stdint.h> /* READ COMMENT ABOVE. */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#جيڪڏهن_وصف_ٿيل __cplusplus
+    خارجي "C" {
+#جيڪڏهن_پورو
 /* *INDENT-ON* */
 
 /* Application specific configuration options. */
-#include "FreeRTOSConfig.h"
+#ضمن "FreeRTOSConfig.h"
 
 /* Basic FreeRTOS definitions. */
-#include "projdefs.h"
+#ضمن "projdefs.h"
 
 /* Definitions specific to the port being used. */
-#include "portable.h"
+#ضمن "portable.h"
 
 /* Must be defaulted before configUSE_NEWLIB_REENTRANT is used below. */
-#ifndef configUSE_NEWLIB_REENTRANT
-    #define configUSE_NEWLIB_REENTRANT    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_NEWLIB_REENTRANT
+    #وصف_ڪريو configUSE_NEWLIB_REENTRANT    0
+#جيڪڏهن_پورو
 
 /* Required if struct _reent is used. */
-#if ( configUSE_NEWLIB_REENTRANT == 1 )
+#إذا ( configUSE_NEWLIB_REENTRANT == 1 )
 
 /* Note Newlib support has been included by popular demand, but is not
  * used by the FreeRTOS maintainers themselves.  FreeRTOS is not
@@ -85,49 +85,49 @@
  *
  * See the third party link http://www.nadler.com/embedded/newlibAndFreeRTOS.html
  * for additional information. */
-    #include <reent.h>
+    #ضمن <reent.h>
 
-    #define configUSE_C_RUNTIME_TLS_SUPPORT    1
+    #وصف_ڪريو configUSE_C_RUNTIME_TLS_SUPPORT    1
 
-    #ifndef configTLS_BLOCK_TYPE
-        #define configTLS_BLOCK_TYPE           struct _reent
-    #endif
+    #جيڪڏهن_وصف_نه_ٿيل config_TLS_بلاڪ_TYPE
+        #وصف_ڪريو config_TLS_بلاڪ_TYPE           بنية _reent
+    #جيڪڏهن_پورو
 
-    #ifndef configINIT_TLS_BLOCK
-        #define configINIT_TLS_BLOCK( xTLSBlock )    _REENT_INIT_PTR( &( xTLSBlock ) )
-    #endif
+    #جيڪڏهن_وصف_نه_ٿيل config_INIT_TLS_بلاڪ
+        #وصف_ڪريو config_INIT_TLS_بلاڪ( xTLSBlock )    _REENT_INIT_PTR( &( xTLSBlock ) )
+    #جيڪڏهن_پورو
 
-    #ifndef configSET_TLS_BLOCK
-        #define configSET_TLS_BLOCK( xTLSBlock )    _impure_ptr = &( xTLSBlock )
-    #endif
+    #جيڪڏهن_وصف_نه_ٿيل config_سيٽ_TLS_بلاڪ
+        #وصف_ڪريو config_سيٽ_TLS_بلاڪ( xTLSBlock )    _impure_ptr = &( xTLSBlock )
+    #جيڪڏهن_پورو
 
-    #ifndef configDEINIT_TLS_BLOCK
-        #define configDEINIT_TLS_BLOCK( xTLSBlock )    _reclaim_reent( &( xTLSBlock ) )
-    #endif
-#endif /* if ( configUSE_NEWLIB_REENTRANT == 1 ) */
+    #جيڪڏهن_وصف_نه_ٿيل config_DEINIT_TLS_بلاڪ
+        #وصف_ڪريو config_DEINIT_TLS_بلاڪ( xTLSBlock )    _reclaim_reent( &( xTLSBlock ) )
+    #جيڪڏهن_پورو
+#جيڪڏهن_پورو /* if ( configUSE_NEWLIB_REENTRANT == 1 ) */
 
-#ifndef configUSE_C_RUNTIME_TLS_SUPPORT
-    #define configUSE_C_RUNTIME_TLS_SUPPORT    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_C_RUNTIME_TLS_SUPPORT
+    #وصف_ڪريو configUSE_C_RUNTIME_TLS_SUPPORT    0
+#جيڪڏهن_پورو
 
-#if ( ( configUSE_NEWLIB_REENTRANT == 0 ) && ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) )
+#إذا ( ( configUSE_NEWLIB_REENTRANT == 0 ) && ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) )
 
-    #ifndef configTLS_BLOCK_TYPE
-        #error Missing definition:  configTLS_BLOCK_TYPE must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
+    #جيڪڏهن_وصف_نه_ٿيل config_TLS_بلاڪ_TYPE
+        #غلطي Missing definition:  config_TLS_بلاڪ_TYPE must be defined اندريون FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is سيٽ منزل 1.
+    #جيڪڏهن_پورو
 
-    #ifndef configINIT_TLS_BLOCK
-        #error Missing definition:  configINIT_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
+    #جيڪڏهن_وصف_نه_ٿيل config_INIT_TLS_بلاڪ
+        #غلطي Missing definition:  config_INIT_TLS_بلاڪ must be defined اندريون FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is سيٽ منزل 1.
+    #جيڪڏهن_پورو
 
-    #ifndef configSET_TLS_BLOCK
-        #error Missing definition:  configSET_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
+    #جيڪڏهن_وصف_نه_ٿيل config_سيٽ_TLS_بلاڪ
+        #غلطي Missing definition:  config_سيٽ_TLS_بلاڪ must be defined اندريون FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is سيٽ منزل 1.
+    #جيڪڏهن_پورو
 
-    #ifndef configDEINIT_TLS_BLOCK
-        #error Missing definition:  configDEINIT_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
-#endif /* if ( ( configUSE_NEWLIB_REENTRANT == 0 ) && ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) ) */
+    #جيڪڏهن_وصف_نه_ٿيل config_DEINIT_TLS_بلاڪ
+        #غلطي Missing definition:  config_DEINIT_TLS_بلاڪ must be defined اندريون FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is سيٽ منزل 1.
+    #جيڪڏهن_پورو
+#جيڪڏهن_پورو /* if ( ( configUSE_NEWLIB_REENTRANT == 0 ) && ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) ) */
 
 /*
  * Check all the required application specific macros have been defined.
@@ -135,930 +135,930 @@
  * within FreeRTOSConfig.h.
  */
 
-#ifndef configNUMBER_OF_CORES
-    #error Missing definition:  configNUMBER_OF_CORES must be defined in FreeRTOSConfig.h
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_عدد_جو_CORES
+    #غلطي Missing definition:  config_عدد_جو_CORES must be defined اندريون FreeRTOSConfig.h
+#جيڪڏهن_پورو
 
-#if ( configNUMBER_OF_CORES > 1 )
-    #ifndef portGET_CORE_ID
-        #error "Missing definition: portGET_CORE_ID() must be defined if in portmacro.h if configNUMBER_OF_CORES > 1"
-    #endif
-    #ifndef portYIELD_CORE
-        #error "Missing definition: portYIELD_CORE() must be defined if in portmacro.h if configNUMBER_OF_CORES > 1"
-    #endif
-#elif ( configNUMBER_OF_CORES == 1 )
-    #undef portGET_CORE_ID
-    #define portGET_CORE_ID()    0
-#else
-    #error configNUMBER_OF_CORES must be defined to either 1 or > 1.
-#endif /* if ( configNUMBER_OF_CORES > 1 ) */
+#إذا ( config_عدد_جو_CORES > 1 )
+    #جيڪڏهن_وصف_نه_ٿيل پورٽ_GET_CORE_ID
+        #غلطي "Missing definition: portGET_CORE_ID() must be defined if in portmacro.h if configNUMBER_OF_CORES > 1"
+    #جيڪڏهن_پورو
+    #جيڪڏهن_وصف_نه_ٿيل پورٽ_YIELD_CORE
+        #غلطي "Missing definition: portYIELD_CORE() must be defined if in portmacro.h if configNUMBER_OF_CORES > 1"
+    #جيڪڏهن_پورو
+#وإلاإذا ( config_عدد_جو_CORES == 1 )
+    #وصف_رد پورٽ_GET_CORE_ID
+    #وصف_ڪريو پورٽ_GET_CORE_ID()    0
+#وإلا
+    #غلطي config_عدد_جو_CORES must be defined منزل either 1 or > 1.
+#جيڪڏهن_پورو /* if ( configNUMBER_OF_CORES > 1 ) */
 
-#ifndef configMINIMAL_STACK_SIZE
-    #error Missing definition:  configMINIMAL_STACK_SIZE must be defined in FreeRTOSConfig.h.  configMINIMAL_STACK_SIZE defines the size (in words) of the stack allocated to the idle task.  Refer to the demo project provided for your port for a suitable value.
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_گهٽتر_ڍير_سائيز
+    #غلطي Missing definition:  config_گهٽتر_ڍير_سائيز must be defined اندريون FreeRTOSConfig.h.  config_گهٽتر_ڍير_سائيز مقرر_ڪري the سائيز (اندريون لفظ) جو the ڍير allocated منزل the idle task.  Refer منزل the demo project provided لكل your پورٽ لكل a suitable قدر.
+#جيڪڏهن_پورو
 
-#ifndef configMAX_PRIORITIES
-    #error Missing definition:  configMAX_PRIORITIES must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configMAX_PRIORITIES
+    #غلطي Missing definition:  configMAX_PRIORITIES must be defined اندريون FreeRTOSConfig.h.  See the Configuration section جو the FreeRTOS API documentation لكل details.
+#جيڪڏهن_پورو
 
-#if configMAX_PRIORITIES < 1
-    #error configMAX_PRIORITIES must be defined to be greater than or equal to 1.
-#endif
+#إذا configMAX_PRIORITIES < 1
+    #غلطي configMAX_PRIORITIES must be defined منزل be greater than or equal منزل 1.
+#جيڪڏهن_پورو
 
-#ifndef configUSE_PREEMPTION
-    #error Missing definition:  configUSE_PREEMPTION must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_PREEMPTION
+    #غلطي Missing definition:  configUSE_PREEMPTION must be defined اندريون FreeRTOSConfig.h as either 1 or 0.  See the Configuration section جو the FreeRTOS API documentation لكل details.
+#جيڪڏهن_پورو
 
-#ifndef configUSE_IDLE_HOOK
-    #error Missing definition:  configUSE_IDLE_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_IDLE_HOOK
+    #غلطي Missing definition:  configUSE_IDLE_HOOK must be defined اندريون FreeRTOSConfig.h as either 1 or 0.  See the Configuration section جو the FreeRTOS API documentation لكل details.
+#جيڪڏهن_پورو
 
-#ifndef configUSE_TICK_HOOK
-    #error Missing definition:  configUSE_TICK_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_TICK_HOOK
+    #غلطي Missing definition:  configUSE_TICK_HOOK must be defined اندريون FreeRTOSConfig.h as either 1 or 0.  See the Configuration section جو the FreeRTOS API documentation لكل details.
+#جيڪڏهن_پورو
 
-#ifndef configUSE_16_BIT_TICKS
-    #error Missing definition:  configUSE_16_BIT_TICKS must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_USE_16_ٻٽو_انگ_TICKS
+    #غلطي Missing definition:  config_USE_16_ٻٽو_انگ_TICKS must be defined اندريون FreeRTOSConfig.h as either 1 or 0.  See the Configuration section جو the FreeRTOS API documentation لكل details.
+#جيڪڏهن_پورو
 
-#ifndef configUSE_CO_ROUTINES
-    #define configUSE_CO_ROUTINES    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_CO_ROUTINES
+    #وصف_ڪريو configUSE_CO_ROUTINES    0
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_vTaskPrioritySet
-    #define INCLUDE_vTaskPrioritySet    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_v_Task_ترجيح_سيٽ
+    #وصف_ڪريو INCLUDE_v_Task_ترجيح_سيٽ    0
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_uxTaskPriorityGet
-    #define INCLUDE_uxTaskPriorityGet    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_ux_Task_ترجيح_Get
+    #وصف_ڪريو INCLUDE_ux_Task_ترجيح_Get    0
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_vTaskDelete
-    #define INCLUDE_vTaskDelete    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_vTaskDelete
+    #وصف_ڪريو INCLUDE_vTaskDelete    0
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_vTaskSuspend
-    #define INCLUDE_vTaskSuspend    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_vTaskSuspend
+    #وصف_ڪريو INCLUDE_vTaskSuspend    0
+#جيڪڏهن_پورو
 
-#ifdef INCLUDE_xTaskDelayUntil
-    #ifdef INCLUDE_vTaskDelayUntil
+#جيڪڏهن_وصف_ٿيل INCLUDE_xTaskDelayUntil
+    #جيڪڏهن_وصف_ٿيل INCLUDE_vTaskDelayUntil
 
 /* INCLUDE_vTaskDelayUntil was replaced by INCLUDE_xTaskDelayUntil.  Backward
  * compatibility is maintained if only one or the other is defined, but
  * there is a conflict if both are defined. */
-        #error INCLUDE_vTaskDelayUntil and INCLUDE_xTaskDelayUntil are both defined.  INCLUDE_vTaskDelayUntil is no longer required and should be removed
-    #endif
-#endif
+        #غلطي INCLUDE_vTaskDelayUntil and INCLUDE_xTaskDelayUntil are both defined.  INCLUDE_vTaskDelayUntil is no longer required and should be removed
+    #جيڪڏهن_پورو
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_xTaskDelayUntil
-    #ifdef INCLUDE_vTaskDelayUntil
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_xTaskDelayUntil
+    #جيڪڏهن_وصف_ٿيل INCLUDE_vTaskDelayUntil
 
 /* If INCLUDE_vTaskDelayUntil is set but INCLUDE_xTaskDelayUntil is not then
  * the project's FreeRTOSConfig.h probably pre-dates the introduction of
  * xTaskDelayUntil and setting INCLUDE_xTaskDelayUntil to whatever
  * INCLUDE_vTaskDelayUntil is set to will ensure backward compatibility.
  */
-        #define INCLUDE_xTaskDelayUntil    INCLUDE_vTaskDelayUntil
-    #endif
-#endif
+        #وصف_ڪريو INCLUDE_xTaskDelayUntil    INCLUDE_vTaskDelayUntil
+    #جيڪڏهن_پورو
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_xTaskDelayUntil
-    #define INCLUDE_xTaskDelayUntil    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_xTaskDelayUntil
+    #وصف_ڪريو INCLUDE_xTaskDelayUntil    0
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_vTaskDelay
-    #define INCLUDE_vTaskDelay    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_vTaskDelay
+    #وصف_ڪريو INCLUDE_vTaskDelay    0
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_xTaskGetIdleTaskHandle
-    #define INCLUDE_xTaskGetIdleTaskHandle    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_xTaskGetIdleTaskHandle
+    #وصف_ڪريو INCLUDE_xTaskGetIdleTaskHandle    0
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_xTaskAbortDelay
-    #define INCLUDE_xTaskAbortDelay    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_xTaskAbortDelay
+    #وصف_ڪريو INCLUDE_xTaskAbortDelay    0
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_xQueueGetMutexHolder
-    #define INCLUDE_xQueueGetMutexHolder    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_x_قطار_Get_Mutex_Holder
+    #وصف_ڪريو INCLUDE_x_قطار_Get_Mutex_Holder    0
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_xSemaphoreGetMutexHolder
-    #define INCLUDE_xSemaphoreGetMutexHolder    INCLUDE_xQueueGetMutexHolder
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_xSemaphoreGetMutexHolder
+    #وصف_ڪريو INCLUDE_xSemaphoreGetMutexHolder    INCLUDE_x_قطار_Get_Mutex_Holder
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_xTaskGetHandle
-    #define INCLUDE_xTaskGetHandle    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_xTaskGetHandle
+    #وصف_ڪريو INCLUDE_xTaskGetHandle    0
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_uxTaskGetStackHighWaterMark
-    #define INCLUDE_uxTaskGetStackHighWaterMark    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_ux_Task_Get_ڍير_مٿاهون_Water_Mark
+    #وصف_ڪريو INCLUDE_ux_Task_Get_ڍير_مٿاهون_Water_Mark    0
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_uxTaskGetStackHighWaterMark2
-    #define INCLUDE_uxTaskGetStackHighWaterMark2    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_ux_Task_Get_ڍير_مٿاهون_Water_Mark2
+    #وصف_ڪريو INCLUDE_ux_Task_Get_ڍير_مٿاهون_Water_Mark2    0
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_eTaskGetState
-    #define INCLUDE_eTaskGetState    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_eTaskGetState
+    #وصف_ڪريو INCLUDE_eTaskGetState    0
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_xTaskResumeFromISR
-    #define INCLUDE_xTaskResumeFromISR    1
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_xTaskResumeFromISR
+    #وصف_ڪريو INCLUDE_xTaskResumeFromISR    1
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_xTimerPendFunctionCall
-    #define INCLUDE_xTimerPendFunctionCall    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_xTimerPendFunctionCall
+    #وصف_ڪريو INCLUDE_xTimerPendFunctionCall    0
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_xTaskGetSchedulerState
-    #define INCLUDE_xTaskGetSchedulerState    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_xTaskGetSchedulerState
+    #وصف_ڪريو INCLUDE_xTaskGetSchedulerState    0
+#جيڪڏهن_پورو
 
-#ifndef INCLUDE_xTaskGetCurrentTaskHandle
-    #define INCLUDE_xTaskGetCurrentTaskHandle    1
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INCLUDE_xTaskGetCurrentTaskHandle
+    #وصف_ڪريو INCLUDE_xTaskGetCurrentTaskHandle    1
+#جيڪڏهن_پورو
 
-#if configUSE_CO_ROUTINES != 0
-    #ifndef configMAX_CO_ROUTINE_PRIORITIES
-        #error configMAX_CO_ROUTINE_PRIORITIES must be greater than or equal to 1.
-    #endif
-#endif
+#إذا configUSE_CO_ROUTINES != 0
+    #جيڪڏهن_وصف_نه_ٿيل configMAX_CO_ROUTINE_PRIORITIES
+        #غلطي configMAX_CO_ROUTINE_PRIORITIES must be greater than or equal منزل 1.
+    #جيڪڏهن_پورو
+#جيڪڏهن_پورو
 
-#ifndef configUSE_DAEMON_TASK_STARTUP_HOOK
-    #define configUSE_DAEMON_TASK_STARTUP_HOOK    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_DAEMON_TASK_STARTUP_HOOK
+    #وصف_ڪريو configUSE_DAEMON_TASK_STARTUP_HOOK    0
+#جيڪڏهن_پورو
 
-#ifndef configUSE_APPLICATION_TASK_TAG
-    #define configUSE_APPLICATION_TASK_TAG    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_USE_APPLICATION_TASK_ٽيگ
+    #وصف_ڪريو config_USE_APPLICATION_TASK_ٽيگ    0
+#جيڪڏهن_پورو
 
-#ifndef configNUM_THREAD_LOCAL_STORAGE_POINTERS
-    #define configNUM_THREAD_LOCAL_STORAGE_POINTERS    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_انگ_THREAD_LOCAL_STORAGE_اشارا
+    #وصف_ڪريو config_انگ_THREAD_LOCAL_STORAGE_اشارا    0
+#جيڪڏهن_پورو
 
-#ifndef configUSE_RECURSIVE_MUTEXES
-    #define configUSE_RECURSIVE_MUTEXES    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_RECURSIVE_MUTEXES
+    #وصف_ڪريو configUSE_RECURSIVE_MUTEXES    0
+#جيڪڏهن_پورو
 
-#ifndef configUSE_MUTEXES
-    #define configUSE_MUTEXES    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_MUTEXES
+    #وصف_ڪريو configUSE_MUTEXES    0
+#جيڪڏهن_پورو
 
-#ifndef configUSE_TIMERS
-    #define configUSE_TIMERS    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_TIMERS
+    #وصف_ڪريو configUSE_TIMERS    0
+#جيڪڏهن_پورو
 
-#ifndef configUSE_COUNTING_SEMAPHORES
-    #define configUSE_COUNTING_SEMAPHORES    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_COUNTING_SEMAPHORES
+    #وصف_ڪريو configUSE_COUNTING_SEMAPHORES    0
+#جيڪڏهن_پورو
 
-#ifndef configUSE_ALTERNATIVE_API
-    #define configUSE_ALTERNATIVE_API    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_ALTERNATIVE_API
+    #وصف_ڪريو configUSE_ALTERNATIVE_API    0
+#جيڪڏهن_پورو
 
-#ifndef portCRITICAL_NESTING_IN_TCB
-    #define portCRITICAL_NESTING_IN_TCB    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_CRITICAL_NESTING_اندريون_TCB
+    #وصف_ڪريو پورٽ_CRITICAL_NESTING_اندريون_TCB    0
+#جيڪڏهن_پورو
 
-#ifndef configMAX_TASK_NAME_LEN
-    #define configMAX_TASK_NAME_LEN    16
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configMAX_TASK_NAME_LEN
+    #وصف_ڪريو configMAX_TASK_NAME_LEN    16
+#جيڪڏهن_پورو
 
-#ifndef configIDLE_SHOULD_YIELD
-    #define configIDLE_SHOULD_YIELD    1
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configIDLE_SHOULD_YIELD
+    #وصف_ڪريو configIDLE_SHOULD_YIELD    1
+#جيڪڏهن_پورو
 
-#if configMAX_TASK_NAME_LEN < 1
-    #error configMAX_TASK_NAME_LEN must be set to a minimum of 1 in FreeRTOSConfig.h
-#endif
+#إذا configMAX_TASK_NAME_LEN < 1
+    #غلطي configMAX_TASK_NAME_LEN must be سيٽ منزل a minimum جو 1 اندريون FreeRTOSConfig.h
+#جيڪڏهن_پورو
 
-#ifndef configASSERT
-    #define configASSERT( x )
-    #define configASSERT_DEFINED    0
-#else
-    #define configASSERT_DEFINED    1
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configASSERT
+    #وصف_ڪريو configASSERT( x )
+    #وصف_ڪريو configASSERT_DEFINED    0
+#وإلا
+    #وصف_ڪريو configASSERT_DEFINED    1
+#جيڪڏهن_پورو
 
 /* configPRECONDITION should be defined as configASSERT.
  * The CBMC proofs need a way to track assumptions and assertions.
  * A configPRECONDITION statement should express an implicit invariant or
  * assumption made.  A configASSERT statement should express an invariant that must
  * hold explicit before calling the code. */
-#ifndef configPRECONDITION
-    #define configPRECONDITION( X )    configASSERT( X )
-    #define configPRECONDITION_DEFINED    0
-#else
-    #define configPRECONDITION_DEFINED    1
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configPRECONDITION
+    #وصف_ڪريو configPRECONDITION( X )    configASSERT( X )
+    #وصف_ڪريو configPRECONDITION_DEFINED    0
+#وإلا
+    #وصف_ڪريو configPRECONDITION_DEFINED    1
+#جيڪڏهن_پورو
 
-#ifndef portMEMORY_BARRIER
-    #define portMEMORY_BARRIER()
-#endif
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_يادگيري_BARRIER
+    #وصف_ڪريو پورٽ_يادگيري_BARRIER()
+#جيڪڏهن_پورو
 
-#ifndef portSOFTWARE_BARRIER
-    #define portSOFTWARE_BARRIER()
-#endif
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_SOFTWARE_BARRIER
+    #وصف_ڪريو پورٽ_SOFTWARE_BARRIER()
+#جيڪڏهن_پورو
 
 /* The timers module relies on xTaskGetSchedulerState(). */
-#if configUSE_TIMERS == 1
+#إذا configUSE_TIMERS == 1
 
-    #ifndef configTIMER_TASK_PRIORITY
-        #error If configUSE_TIMERS is set to 1 then configTIMER_TASK_PRIORITY must also be defined.
-    #endif /* configTIMER_TASK_PRIORITY */
+    #جيڪڏهن_وصف_نه_ٿيل config_TIMER_TASK_ترجيح
+        #غلطي If configUSE_TIMERS is سيٽ منزل 1 then config_TIMER_TASK_ترجيح must also be defined.
+    #جيڪڏهن_پورو /* configTIMER_TASK_PRIORITY */
 
-    #ifndef configTIMER_QUEUE_LENGTH
-        #error If configUSE_TIMERS is set to 1 then configTIMER_QUEUE_LENGTH must also be defined.
-    #endif /* configTIMER_QUEUE_LENGTH */
+    #جيڪڏهن_وصف_نه_ٿيل config_TIMER_قطار_ڊيگهائي
+        #غلطي If configUSE_TIMERS is سيٽ منزل 1 then config_TIMER_قطار_ڊيگهائي must also be defined.
+    #جيڪڏهن_پورو /* configTIMER_QUEUE_LENGTH */
 
-    #ifndef configTIMER_TASK_STACK_DEPTH
-        #error If configUSE_TIMERS is set to 1 then configTIMER_TASK_STACK_DEPTH must also be defined.
-    #endif /* configTIMER_TASK_STACK_DEPTH */
+    #جيڪڏهن_وصف_نه_ٿيل config_TIMER_TASK_ڍير_اونهائي
+        #غلطي If configUSE_TIMERS is سيٽ منزل 1 then config_TIMER_TASK_ڍير_اونهائي must also be defined.
+    #جيڪڏهن_پورو /* configTIMER_TASK_STACK_DEPTH */
 
-#endif /* configUSE_TIMERS */
+#جيڪڏهن_پورو /* configUSE_TIMERS */
 
-#ifndef portSET_INTERRUPT_MASK_FROM_ISR
-    #define portSET_INTERRUPT_MASK_FROM_ISR()    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_سيٽ_مداخلت_نقاب_FROM_ISR
+    #وصف_ڪريو پورٽ_سيٽ_مداخلت_نقاب_FROM_ISR()    0
+#جيڪڏهن_پورو
 
-#ifndef portCLEAR_INTERRUPT_MASK_FROM_ISR
-    #define portCLEAR_INTERRUPT_MASK_FROM_ISR( uxSavedStatusValue )    ( void ) ( uxSavedStatusValue )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_CLEAR_مداخلت_نقاب_FROM_ISR
+    #وصف_ڪريو پورٽ_CLEAR_مداخلت_نقاب_FROM_ISR( ux_Saved_حالت_قدر )    ( فراغ ) ( ux_Saved_حالت_قدر )
+#جيڪڏهن_پورو
 
-#ifndef portCLEAN_UP_TCB
-    #define portCLEAN_UP_TCB( pxTCB )    ( void ) ( pxTCB )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_CLEAN_مٿي_TCB
+    #وصف_ڪريو پورٽ_CLEAN_مٿي_TCB( pxTCB )    ( فراغ ) ( pxTCB )
+#جيڪڏهن_پورو
 
-#ifndef portPRE_TASK_DELETE_HOOK
-    #define portPRE_TASK_DELETE_HOOK( pvTaskToDelete, pxYieldPending )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_PRE_TASK_DELETE_HOOK
+    #وصف_ڪريو پورٽ_PRE_TASK_DELETE_HOOK( pv_Task_منزل_Delete, pxYieldPending )
+#جيڪڏهن_پورو
 
-#ifndef portSETUP_TCB
-    #define portSETUP_TCB( pxTCB )    ( void ) ( pxTCB )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_تياري_TCB
+    #وصف_ڪريو پورٽ_تياري_TCB( pxTCB )    ( فراغ ) ( pxTCB )
+#جيڪڏهن_پورو
 
-#ifndef configQUEUE_REGISTRY_SIZE
-    #define configQUEUE_REGISTRY_SIZE    0U
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_قطار_REGISTRY_سائيز
+    #وصف_ڪريو config_قطار_REGISTRY_سائيز    0U
+#جيڪڏهن_پورو
 
-#if ( configQUEUE_REGISTRY_SIZE < 1 )
-    #define vQueueAddToRegistry( xQueue, pcName )
-    #define vQueueUnregisterQueue( xQueue )
-    #define pcQueueGetName( xQueue )
-#endif
+#إذا ( config_قطار_REGISTRY_سائيز < 1 )
+    #وصف_ڪريو v_قطار_جوڙيو_منزل_Registry( x_قطار, pcName )
+    #وصف_ڪريو v_قطار_Unregister_قطار( x_قطار )
+    #وصف_ڪريو pc_قطار_Get_Name( x_قطار )
+#جيڪڏهن_پورو
 
-#ifndef configUSE_MINI_LIST_ITEM
-    #define configUSE_MINI_LIST_ITEM    1
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_USE_MINI_LIST_شي
+    #وصف_ڪريو config_USE_MINI_LIST_شي    1
+#جيڪڏهن_پورو
 
-#ifndef portPOINTER_SIZE_TYPE
-    #define portPOINTER_SIZE_TYPE    uint32_t
-#endif
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_اشارو_سائيز_TYPE
+    #وصف_ڪريو پورٽ_اشارو_سائيز_TYPE    uint32_t
+#جيڪڏهن_پورو
 
 /* Remove any unused trace macros. */
-#ifndef traceSTART
+#جيڪڏهن_وصف_نه_ٿيل trace_شروعات
 
 /* Used to perform any necessary initialisation - for example, open a file
  * into which trace is to be written. */
-    #define traceSTART()
-#endif
+    #وصف_ڪريو trace_شروعات()
+#جيڪڏهن_پورو
 
-#ifndef traceEND
+#جيڪڏهن_وصف_نه_ٿيل trace_پڇاڙي
 
 /* Use to close a trace, for example close a file into which trace has been
  * written. */
-    #define traceEND()
-#endif
+    #وصف_ڪريو trace_پڇاڙي()
+#جيڪڏهن_پورو
 
-#ifndef traceTASK_SWITCHED_IN
+#جيڪڏهن_وصف_نه_ٿيل trace_TASK_SWITCHED_اندريون
 
 /* Called after a task has been selected to run.  pxCurrentTCB holds a pointer
  * to the task control block of the selected task. */
-    #define traceTASK_SWITCHED_IN()
-#endif
+    #وصف_ڪريو trace_TASK_SWITCHED_اندريون()
+#جيڪڏهن_پورو
 
-#ifndef traceINCREASE_TICK_COUNT
+#جيڪڏهن_وصف_نه_ٿيل trace_INCREASE_TICK_ڳڻپ
 
 /* Called before stepping the tick count after waking from tickless idle
  * sleep. */
-    #define traceINCREASE_TICK_COUNT( x )
-#endif
+    #وصف_ڪريو trace_INCREASE_TICK_ڳڻپ( x )
+#جيڪڏهن_پورو
 
-#ifndef traceLOW_POWER_IDLE_BEGIN
+#جيڪڏهن_وصف_نه_ٿيل trace_هيٺيون_POWER_IDLE_BEGIN
     /* Called immediately before entering tickless idle. */
-    #define traceLOW_POWER_IDLE_BEGIN()
-#endif
+    #وصف_ڪريو trace_هيٺيون_POWER_IDLE_BEGIN()
+#جيڪڏهن_پورو
 
-#ifndef traceLOW_POWER_IDLE_END
+#جيڪڏهن_وصف_نه_ٿيل trace_هيٺيون_POWER_IDLE_پڇاڙي
     /* Called when returning to the Idle task after a tickless idle. */
-    #define traceLOW_POWER_IDLE_END()
-#endif
+    #وصف_ڪريو trace_هيٺيون_POWER_IDLE_پڇاڙي()
+#جيڪڏهن_پورو
 
-#ifndef traceTASK_SWITCHED_OUT
+#جيڪڏهن_وصف_نه_ٿيل trace_TASK_SWITCHED_ٻاهريون
 
 /* Called before a task has been selected to run.  pxCurrentTCB holds a pointer
  * to the task control block of the task being switched out. */
-    #define traceTASK_SWITCHED_OUT()
-#endif
+    #وصف_ڪريو trace_TASK_SWITCHED_ٻاهريون()
+#جيڪڏهن_پورو
 
-#ifndef traceTASK_PRIORITY_INHERIT
+#جيڪڏهن_وصف_نه_ٿيل trace_TASK_ترجيح_INHERIT
 
 /* Called when a task attempts to take a mutex that is already held by a
  * lower priority task.  pxTCBOfMutexHolder is a pointer to the TCB of the task
  * that holds the mutex.  uxInheritedPriority is the priority the mutex holder
  * will inherit (the priority of the task that is attempting to obtain the
  * muted. */
-    #define traceTASK_PRIORITY_INHERIT( pxTCBOfMutexHolder, uxInheritedPriority )
-#endif
+    #وصف_ڪريو trace_TASK_ترجيح_INHERIT( pxTCBOfMutexHolder, ux_Inherited_ترجيح )
+#جيڪڏهن_پورو
 
-#ifndef traceTASK_PRIORITY_DISINHERIT
+#جيڪڏهن_وصف_نه_ٿيل trace_TASK_ترجيح_DISINHERIT
 
 /* Called when a task releases a mutex, the holding of which had resulted in
  * the task inheriting the priority of a higher priority task.
  * pxTCBOfMutexHolder is a pointer to the TCB of the task that is releasing the
  * mutex.  uxOriginalPriority is the task's configured (base) priority. */
-    #define traceTASK_PRIORITY_DISINHERIT( pxTCBOfMutexHolder, uxOriginalPriority )
-#endif
+    #وصف_ڪريو trace_TASK_ترجيح_DISINHERIT( pxTCBOfMutexHolder, ux_Original_ترجيح )
+#جيڪڏهن_پورو
 
-#ifndef traceBLOCKING_ON_QUEUE_RECEIVE
-
-/* Task is about to block because it cannot read from a
- * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
- * upon which the read was attempted.  pxCurrentTCB points to the TCB of the
- * task that attempted the read. */
-    #define traceBLOCKING_ON_QUEUE_RECEIVE( pxQueue )
-#endif
-
-#ifndef traceBLOCKING_ON_QUEUE_PEEK
+#جيڪڏهن_وصف_نه_ٿيل trace_BLOCKING_ON_قطار_RECEIVE
 
 /* Task is about to block because it cannot read from a
  * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
  * upon which the read was attempted.  pxCurrentTCB points to the TCB of the
  * task that attempted the read. */
-    #define traceBLOCKING_ON_QUEUE_PEEK( pxQueue )
-#endif
+    #وصف_ڪريو trace_BLOCKING_ON_قطار_RECEIVE( px_قطار )
+#جيڪڏهن_پورو
 
-#ifndef traceBLOCKING_ON_QUEUE_SEND
+#جيڪڏهن_وصف_نه_ٿيل trace_BLOCKING_ON_قطار_PEEK
+
+/* Task is about to block because it cannot read from a
+ * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
+ * upon which the read was attempted.  pxCurrentTCB points to the TCB of the
+ * task that attempted the read. */
+    #وصف_ڪريو trace_BLOCKING_ON_قطار_PEEK( px_قطار )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_BLOCKING_ON_قطار_SEND
 
 /* Task is about to block because it cannot write to a
  * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
  * upon which the write was attempted.  pxCurrentTCB points to the TCB of the
  * task that attempted the write. */
-    #define traceBLOCKING_ON_QUEUE_SEND( pxQueue )
-#endif
+    #وصف_ڪريو trace_BLOCKING_ON_قطار_SEND( px_قطار )
+#جيڪڏهن_پورو
 
-#ifndef configCHECK_FOR_STACK_OVERFLOW
-    #define configCHECK_FOR_STACK_OVERFLOW    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_CHECK_FOR_ڍير_حد_کان_مٿي
+    #وصف_ڪريو config_CHECK_FOR_ڍير_حد_کان_مٿي    0
+#جيڪڏهن_پورو
 
-#ifndef configRECORD_STACK_HIGH_ADDRESS
-    #define configRECORD_STACK_HIGH_ADDRESS    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_رڪارڊ_ڍير_مٿاهون_پتو
+    #وصف_ڪريو config_رڪارڊ_ڍير_مٿاهون_پتو    0
+#جيڪڏهن_پورو
 
-#ifndef configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H
-    #define configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H
+    #وصف_ڪريو configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H    0
+#جيڪڏهن_پورو
 
 /* The following event macros are embedded in the kernel API calls. */
 
-#ifndef traceMOVED_TASK_TO_READY_STATE
-    #define traceMOVED_TASK_TO_READY_STATE( pxTCB )
-#endif
-
-#ifndef tracePOST_MOVED_TASK_TO_READY_STATE
-    #define tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )
-#endif
-
-#ifndef traceQUEUE_CREATE
-    #define traceQUEUE_CREATE( pxNewQueue )
-#endif
-
-#ifndef traceQUEUE_CREATE_FAILED
-    #define traceQUEUE_CREATE_FAILED( ucQueueType )
-#endif
-
-#ifndef traceCREATE_MUTEX
-    #define traceCREATE_MUTEX( pxNewQueue )
-#endif
-
-#ifndef traceCREATE_MUTEX_FAILED
-    #define traceCREATE_MUTEX_FAILED()
-#endif
-
-#ifndef traceGIVE_MUTEX_RECURSIVE
-    #define traceGIVE_MUTEX_RECURSIVE( pxMutex )
-#endif
-
-#ifndef traceGIVE_MUTEX_RECURSIVE_FAILED
-    #define traceGIVE_MUTEX_RECURSIVE_FAILED( pxMutex )
-#endif
-
-#ifndef traceTAKE_MUTEX_RECURSIVE
-    #define traceTAKE_MUTEX_RECURSIVE( pxMutex )
-#endif
-
-#ifndef traceTAKE_MUTEX_RECURSIVE_FAILED
-    #define traceTAKE_MUTEX_RECURSIVE_FAILED( pxMutex )
-#endif
-
-#ifndef traceCREATE_COUNTING_SEMAPHORE
-    #define traceCREATE_COUNTING_SEMAPHORE()
-#endif
-
-#ifndef traceCREATE_COUNTING_SEMAPHORE_FAILED
-    #define traceCREATE_COUNTING_SEMAPHORE_FAILED()
-#endif
-
-#ifndef traceQUEUE_SET_SEND
-    #define traceQUEUE_SET_SEND    traceQUEUE_SEND
-#endif
-
-#ifndef traceQUEUE_SEND
-    #define traceQUEUE_SEND( pxQueue )
-#endif
-
-#ifndef traceQUEUE_SEND_FAILED
-    #define traceQUEUE_SEND_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE
-    #define traceQUEUE_RECEIVE( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK
-    #define traceQUEUE_PEEK( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK_FAILED
-    #define traceQUEUE_PEEK_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK_FROM_ISR
-    #define traceQUEUE_PEEK_FROM_ISR( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE_FAILED
-    #define traceQUEUE_RECEIVE_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_SEND_FROM_ISR
-    #define traceQUEUE_SEND_FROM_ISR( pxQueue )
-#endif
-
-#ifndef traceQUEUE_SEND_FROM_ISR_FAILED
-    #define traceQUEUE_SEND_FROM_ISR_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE_FROM_ISR
-    #define traceQUEUE_RECEIVE_FROM_ISR( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE_FROM_ISR_FAILED
-    #define traceQUEUE_RECEIVE_FROM_ISR_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK_FROM_ISR_FAILED
-    #define traceQUEUE_PEEK_FROM_ISR_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_DELETE
-    #define traceQUEUE_DELETE( pxQueue )
-#endif
-
-#ifndef traceTASK_CREATE
-    #define traceTASK_CREATE( pxNewTCB )
-#endif
-
-#ifndef traceTASK_CREATE_FAILED
-    #define traceTASK_CREATE_FAILED()
-#endif
-
-#ifndef traceTASK_DELETE
-    #define traceTASK_DELETE( pxTaskToDelete )
-#endif
-
-#ifndef traceTASK_DELAY_UNTIL
-    #define traceTASK_DELAY_UNTIL( x )
-#endif
-
-#ifndef traceTASK_DELAY
-    #define traceTASK_DELAY()
-#endif
-
-#ifndef traceTASK_PRIORITY_SET
-    #define traceTASK_PRIORITY_SET( pxTask, uxNewPriority )
-#endif
-
-#ifndef traceTASK_SUSPEND
-    #define traceTASK_SUSPEND( pxTaskToSuspend )
-#endif
-
-#ifndef traceTASK_RESUME
-    #define traceTASK_RESUME( pxTaskToResume )
-#endif
-
-#ifndef traceTASK_RESUME_FROM_ISR
-    #define traceTASK_RESUME_FROM_ISR( pxTaskToResume )
-#endif
-
-#ifndef traceTASK_INCREMENT_TICK
-    #define traceTASK_INCREMENT_TICK( xTickCount )
-#endif
-
-#ifndef traceTIMER_CREATE
-    #define traceTIMER_CREATE( pxNewTimer )
-#endif
-
-#ifndef traceTIMER_CREATE_FAILED
-    #define traceTIMER_CREATE_FAILED()
-#endif
-
-#ifndef traceTIMER_COMMAND_SEND
-    #define traceTIMER_COMMAND_SEND( xTimer, xMessageID, xMessageValueValue, xReturn )
-#endif
-
-#ifndef traceTIMER_EXPIRED
-    #define traceTIMER_EXPIRED( pxTimer )
-#endif
-
-#ifndef traceTIMER_COMMAND_RECEIVED
-    #define traceTIMER_COMMAND_RECEIVED( pxTimer, xMessageID, xMessageValue )
-#endif
-
-#ifndef traceMALLOC
-    #define traceMALLOC( pvAddress, uiSize )
-#endif
-
-#ifndef traceFREE
-    #define traceFREE( pvAddress, uiSize )
-#endif
-
-#ifndef traceEVENT_GROUP_CREATE
-    #define traceEVENT_GROUP_CREATE( xEventGroup )
-#endif
-
-#ifndef traceEVENT_GROUP_CREATE_FAILED
-    #define traceEVENT_GROUP_CREATE_FAILED()
-#endif
-
-#ifndef traceEVENT_GROUP_SYNC_BLOCK
-    #define traceEVENT_GROUP_SYNC_BLOCK( xEventGroup, uxBitsToSet, uxBitsToWaitFor )
-#endif
-
-#ifndef traceEVENT_GROUP_SYNC_END
-    #define traceEVENT_GROUP_SYNC_END( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTimeoutOccurred )    ( void ) ( xTimeoutOccurred )
-#endif
-
-#ifndef traceEVENT_GROUP_WAIT_BITS_BLOCK
-    #define traceEVENT_GROUP_WAIT_BITS_BLOCK( xEventGroup, uxBitsToWaitFor )
-#endif
-
-#ifndef traceEVENT_GROUP_WAIT_BITS_END
-    #define traceEVENT_GROUP_WAIT_BITS_END( xEventGroup, uxBitsToWaitFor, xTimeoutOccurred )    ( void ) ( xTimeoutOccurred )
-#endif
-
-#ifndef traceEVENT_GROUP_CLEAR_BITS
-    #define traceEVENT_GROUP_CLEAR_BITS( xEventGroup, uxBitsToClear )
-#endif
-
-#ifndef traceEVENT_GROUP_CLEAR_BITS_FROM_ISR
-    #define traceEVENT_GROUP_CLEAR_BITS_FROM_ISR( xEventGroup, uxBitsToClear )
-#endif
-
-#ifndef traceEVENT_GROUP_SET_BITS
-    #define traceEVENT_GROUP_SET_BITS( xEventGroup, uxBitsToSet )
-#endif
-
-#ifndef traceEVENT_GROUP_SET_BITS_FROM_ISR
-    #define traceEVENT_GROUP_SET_BITS_FROM_ISR( xEventGroup, uxBitsToSet )
-#endif
-
-#ifndef traceEVENT_GROUP_DELETE
-    #define traceEVENT_GROUP_DELETE( xEventGroup )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل trace_MOVED_TASK_منزل_READY_STATE
+    #وصف_ڪريو trace_MOVED_TASK_منزل_READY_STATE( pxTCB )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_POST_MOVED_TASK_منزل_READY_STATE
+    #وصف_ڪريو trace_POST_MOVED_TASK_منزل_READY_STATE( pxTCB )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_CREATE
+    #وصف_ڪريو trace_قطار_CREATE( px_New_قطار )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_CREATE_FAILED
+    #وصف_ڪريو trace_قطار_CREATE_FAILED( uc_قطار_Type )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceCREATE_MUTEX
+    #وصف_ڪريو traceCREATE_MUTEX( px_New_قطار )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceCREATE_MUTEX_FAILED
+    #وصف_ڪريو traceCREATE_MUTEX_FAILED()
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceGIVE_MUTEX_RECURSIVE
+    #وصف_ڪريو traceGIVE_MUTEX_RECURSIVE( pxMutex )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceGIVE_MUTEX_RECURSIVE_FAILED
+    #وصف_ڪريو traceGIVE_MUTEX_RECURSIVE_FAILED( pxMutex )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceTAKE_MUTEX_RECURSIVE
+    #وصف_ڪريو traceTAKE_MUTEX_RECURSIVE( pxMutex )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceTAKE_MUTEX_RECURSIVE_FAILED
+    #وصف_ڪريو traceTAKE_MUTEX_RECURSIVE_FAILED( pxMutex )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceCREATE_COUNTING_SEMAPHORE
+    #وصف_ڪريو traceCREATE_COUNTING_SEMAPHORE()
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceCREATE_COUNTING_SEMAPHORE_FAILED
+    #وصف_ڪريو traceCREATE_COUNTING_SEMAPHORE_FAILED()
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_سيٽ_SEND
+    #وصف_ڪريو trace_قطار_سيٽ_SEND    trace_قطار_SEND
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_SEND
+    #وصف_ڪريو trace_قطار_SEND( px_قطار )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_SEND_FAILED
+    #وصف_ڪريو trace_قطار_SEND_FAILED( px_قطار )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_RECEIVE
+    #وصف_ڪريو trace_قطار_RECEIVE( px_قطار )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_PEEK
+    #وصف_ڪريو trace_قطار_PEEK( px_قطار )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_PEEK_FAILED
+    #وصف_ڪريو trace_قطار_PEEK_FAILED( px_قطار )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_PEEK_FROM_ISR
+    #وصف_ڪريو trace_قطار_PEEK_FROM_ISR( px_قطار )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_RECEIVE_FAILED
+    #وصف_ڪريو trace_قطار_RECEIVE_FAILED( px_قطار )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_SEND_FROM_ISR
+    #وصف_ڪريو trace_قطار_SEND_FROM_ISR( px_قطار )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_SEND_FROM_ISR_FAILED
+    #وصف_ڪريو trace_قطار_SEND_FROM_ISR_FAILED( px_قطار )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_RECEIVE_FROM_ISR
+    #وصف_ڪريو trace_قطار_RECEIVE_FROM_ISR( px_قطار )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_RECEIVE_FROM_ISR_FAILED
+    #وصف_ڪريو trace_قطار_RECEIVE_FROM_ISR_FAILED( px_قطار )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_PEEK_FROM_ISR_FAILED
+    #وصف_ڪريو trace_قطار_PEEK_FROM_ISR_FAILED( px_قطار )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_DELETE
+    #وصف_ڪريو trace_قطار_DELETE( px_قطار )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceTASK_CREATE
+    #وصف_ڪريو traceTASK_CREATE( pxNewTCB )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceTASK_CREATE_FAILED
+    #وصف_ڪريو traceTASK_CREATE_FAILED()
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceTASK_DELETE
+    #وصف_ڪريو traceTASK_DELETE( px_Task_منزل_Delete )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceTASK_DELAY_UNTIL
+    #وصف_ڪريو traceTASK_DELAY_UNTIL( x )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceTASK_DELAY
+    #وصف_ڪريو traceTASK_DELAY()
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_TASK_ترجيح_سيٽ
+    #وصف_ڪريو trace_TASK_ترجيح_سيٽ( pxTask, ux_New_ترجيح )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceTASK_SUSPEND
+    #وصف_ڪريو traceTASK_SUSPEND( px_Task_منزل_Suspend )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceTASK_RESUME
+    #وصف_ڪريو traceTASK_RESUME( px_Task_منزل_Resume )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceTASK_RESUME_FROM_ISR
+    #وصف_ڪريو traceTASK_RESUME_FROM_ISR( px_Task_منزل_Resume )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceTASK_INCREMENT_TICK
+    #وصف_ڪريو traceTASK_INCREMENT_TICK( x_Tick_ڳڻپ )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceTIMER_CREATE
+    #وصف_ڪريو traceTIMER_CREATE( pxNewTimer )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceTIMER_CREATE_FAILED
+    #وصف_ڪريو traceTIMER_CREATE_FAILED()
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceTIMER_COMMAND_SEND
+    #وصف_ڪريو traceTIMER_COMMAND_SEND( xTimer, x_پيغام_ID, x_پيغام_قدر_قدر, xReturn )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceTIMER_EXPIRED
+    #وصف_ڪريو traceTIMER_EXPIRED( pxTimer )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceTIMER_COMMAND_RECEIVED
+    #وصف_ڪريو traceTIMER_COMMAND_RECEIVED( pxTimer, x_پيغام_ID, x_پيغام_قدر )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceMALLOC
+    #وصف_ڪريو traceMALLOC( pv_پتو, ui_سائيز )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل traceFREE
+    #وصف_ڪريو traceFREE( pv_پتو, ui_سائيز )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_EVENT_گروهه_CREATE
+    #وصف_ڪريو trace_EVENT_گروهه_CREATE( x_Event_گروهه )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_EVENT_گروهه_CREATE_FAILED
+    #وصف_ڪريو trace_EVENT_گروهه_CREATE_FAILED()
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_EVENT_گروهه_SYNC_بلاڪ
+    #وصف_ڪريو trace_EVENT_گروهه_SYNC_بلاڪ( x_Event_گروهه, ux_بٽ_منزل_سيٽ, ux_بٽ_منزل_Wait_For )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_EVENT_گروهه_SYNC_پڇاڙي
+    #وصف_ڪريو trace_EVENT_گروهه_SYNC_پڇاڙي( x_Event_گروهه, ux_بٽ_منزل_سيٽ, ux_بٽ_منزل_Wait_For, xTimeoutOccurred )    ( فراغ ) ( xTimeoutOccurred )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_EVENT_گروهه_WAIT_بٽ_بلاڪ
+    #وصف_ڪريو trace_EVENT_گروهه_WAIT_بٽ_بلاڪ( x_Event_گروهه, ux_بٽ_منزل_Wait_For )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_EVENT_گروهه_WAIT_بٽ_پڇاڙي
+    #وصف_ڪريو trace_EVENT_گروهه_WAIT_بٽ_پڇاڙي( x_Event_گروهه, ux_بٽ_منزل_Wait_For, xTimeoutOccurred )    ( فراغ ) ( xTimeoutOccurred )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_EVENT_گروهه_CLEAR_بٽ
+    #وصف_ڪريو trace_EVENT_گروهه_CLEAR_بٽ( x_Event_گروهه, ux_بٽ_منزل_Clear )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_EVENT_گروهه_CLEAR_بٽ_FROM_ISR
+    #وصف_ڪريو trace_EVENT_گروهه_CLEAR_بٽ_FROM_ISR( x_Event_گروهه, ux_بٽ_منزل_Clear )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_EVENT_گروهه_سيٽ_بٽ
+    #وصف_ڪريو trace_EVENT_گروهه_سيٽ_بٽ( x_Event_گروهه, ux_بٽ_منزل_سيٽ )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_EVENT_گروهه_سيٽ_بٽ_FROM_ISR
+    #وصف_ڪريو trace_EVENT_گروهه_سيٽ_بٽ_FROM_ISR( x_Event_گروهه, ux_بٽ_منزل_سيٽ )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_EVENT_گروهه_DELETE
+    #وصف_ڪريو trace_EVENT_گروهه_DELETE( x_Event_گروهه )
+#جيڪڏهن_پورو
 
-#ifndef tracePEND_FUNC_CALL
-    #define tracePEND_FUNC_CALL( xFunctionToPend, pvParameter1, ulParameter2, ret )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل tracePEND_FUNC_CALL
+    #وصف_ڪريو tracePEND_FUNC_CALL( x_Function_منزل_Pend, pvParameter1, ulParameter2, ret )
+#جيڪڏهن_پورو
 
-#ifndef tracePEND_FUNC_CALL_FROM_ISR
-    #define tracePEND_FUNC_CALL_FROM_ISR( xFunctionToPend, pvParameter1, ulParameter2, ret )
-#endif
-
-#ifndef traceQUEUE_REGISTRY_ADD
-    #define traceQUEUE_REGISTRY_ADD( xQueue, pcQueueName )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل tracePEND_FUNC_CALL_FROM_ISR
+    #وصف_ڪريو tracePEND_FUNC_CALL_FROM_ISR( x_Function_منزل_Pend, pvParameter1, ulParameter2, ret )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل trace_قطار_REGISTRY_جوڙيو
+    #وصف_ڪريو trace_قطار_REGISTRY_جوڙيو( x_قطار, pc_قطار_Name )
+#جيڪڏهن_پورو
 
-#ifndef traceTASK_NOTIFY_TAKE_BLOCK
-    #define traceTASK_NOTIFY_TAKE_BLOCK( uxIndexToWait )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل trace_TASK_NOTIFY_TAKE_بلاڪ
+    #وصف_ڪريو trace_TASK_NOTIFY_TAKE_بلاڪ( ux_اشاريو_منزل_Wait )
+#جيڪڏهن_پورو
 
-#ifndef traceTASK_NOTIFY_TAKE
-    #define traceTASK_NOTIFY_TAKE( uxIndexToWait )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل traceTASK_NOTIFY_TAKE
+    #وصف_ڪريو traceTASK_NOTIFY_TAKE( ux_اشاريو_منزل_Wait )
+#جيڪڏهن_پورو
 
-#ifndef traceTASK_NOTIFY_WAIT_BLOCK
-    #define traceTASK_NOTIFY_WAIT_BLOCK( uxIndexToWait )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل trace_TASK_NOTIFY_WAIT_بلاڪ
+    #وصف_ڪريو trace_TASK_NOTIFY_WAIT_بلاڪ( ux_اشاريو_منزل_Wait )
+#جيڪڏهن_پورو
 
-#ifndef traceTASK_NOTIFY_WAIT
-    #define traceTASK_NOTIFY_WAIT( uxIndexToWait )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل traceTASK_NOTIFY_WAIT
+    #وصف_ڪريو traceTASK_NOTIFY_WAIT( ux_اشاريو_منزل_Wait )
+#جيڪڏهن_پورو
 
-#ifndef traceTASK_NOTIFY
-    #define traceTASK_NOTIFY( uxIndexToNotify )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل traceTASK_NOTIFY
+    #وصف_ڪريو traceTASK_NOTIFY( ux_اشاريو_منزل_Notify )
+#جيڪڏهن_پورو
 
-#ifndef traceTASK_NOTIFY_FROM_ISR
-    #define traceTASK_NOTIFY_FROM_ISR( uxIndexToNotify )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل traceTASK_NOTIFY_FROM_ISR
+    #وصف_ڪريو traceTASK_NOTIFY_FROM_ISR( ux_اشاريو_منزل_Notify )
+#جيڪڏهن_پورو
 
-#ifndef traceTASK_NOTIFY_GIVE_FROM_ISR
-    #define traceTASK_NOTIFY_GIVE_FROM_ISR( uxIndexToNotify )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل traceTASK_NOTIFY_GIVE_FROM_ISR
+    #وصف_ڪريو traceTASK_NOTIFY_GIVE_FROM_ISR( ux_اشاريو_منزل_Notify )
+#جيڪڏهن_پورو
 
-#ifndef traceSTREAM_BUFFER_CREATE_FAILED
-    #define traceSTREAM_BUFFER_CREATE_FAILED( xIsMessageBuffer )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل trace_وهڪرو_بفر_CREATE_FAILED
+    #وصف_ڪريو trace_وهڪرو_بفر_CREATE_FAILED( x_Is_پيغام_بفر )
+#جيڪڏهن_پورو
 
-#ifndef traceSTREAM_BUFFER_CREATE_STATIC_FAILED
-    #define traceSTREAM_BUFFER_CREATE_STATIC_FAILED( xReturn, xIsMessageBuffer )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل trace_وهڪرو_بفر_CREATE_STATIC_FAILED
+    #وصف_ڪريو trace_وهڪرو_بفر_CREATE_STATIC_FAILED( xReturn, x_Is_پيغام_بفر )
+#جيڪڏهن_پورو
 
-#ifndef traceSTREAM_BUFFER_CREATE
-    #define traceSTREAM_BUFFER_CREATE( pxStreamBuffer, xIsMessageBuffer )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل trace_وهڪرو_بفر_CREATE
+    #وصف_ڪريو trace_وهڪرو_بفر_CREATE( px_وهڪرو_بفر, x_Is_پيغام_بفر )
+#جيڪڏهن_پورو
 
-#ifndef traceSTREAM_BUFFER_DELETE
-    #define traceSTREAM_BUFFER_DELETE( xStreamBuffer )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل trace_وهڪرو_بفر_DELETE
+    #وصف_ڪريو trace_وهڪرو_بفر_DELETE( x_وهڪرو_بفر )
+#جيڪڏهن_پورو
 
-#ifndef traceSTREAM_BUFFER_RESET
-    #define traceSTREAM_BUFFER_RESET( xStreamBuffer )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل trace_وهڪرو_بفر_RESET
+    #وصف_ڪريو trace_وهڪرو_بفر_RESET( x_وهڪرو_بفر )
+#جيڪڏهن_پورو
 
-#ifndef traceBLOCKING_ON_STREAM_BUFFER_SEND
-    #define traceBLOCKING_ON_STREAM_BUFFER_SEND( xStreamBuffer )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل trace_BLOCKING_ON_وهڪرو_بفر_SEND
+    #وصف_ڪريو trace_BLOCKING_ON_وهڪرو_بفر_SEND( x_وهڪرو_بفر )
+#جيڪڏهن_پورو
 
-#ifndef traceSTREAM_BUFFER_SEND
-    #define traceSTREAM_BUFFER_SEND( xStreamBuffer, xBytesSent )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل trace_وهڪرو_بفر_SEND
+    #وصف_ڪريو trace_وهڪرو_بفر_SEND( x_وهڪرو_بفر, x_بائيٽون_موڪليل )
+#جيڪڏهن_پورو
 
-#ifndef traceSTREAM_BUFFER_SEND_FAILED
-    #define traceSTREAM_BUFFER_SEND_FAILED( xStreamBuffer )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل trace_وهڪرو_بفر_SEND_FAILED
+    #وصف_ڪريو trace_وهڪرو_بفر_SEND_FAILED( x_وهڪرو_بفر )
+#جيڪڏهن_پورو
 
-#ifndef traceSTREAM_BUFFER_SEND_FROM_ISR
-    #define traceSTREAM_BUFFER_SEND_FROM_ISR( xStreamBuffer, xBytesSent )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل trace_وهڪرو_بفر_SEND_FROM_ISR
+    #وصف_ڪريو trace_وهڪرو_بفر_SEND_FROM_ISR( x_وهڪرو_بفر, x_بائيٽون_موڪليل )
+#جيڪڏهن_پورو
 
-#ifndef traceBLOCKING_ON_STREAM_BUFFER_RECEIVE
-    #define traceBLOCKING_ON_STREAM_BUFFER_RECEIVE( xStreamBuffer )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل trace_BLOCKING_ON_وهڪرو_بفر_RECEIVE
+    #وصف_ڪريو trace_BLOCKING_ON_وهڪرو_بفر_RECEIVE( x_وهڪرو_بفر )
+#جيڪڏهن_پورو
 
-#ifndef traceSTREAM_BUFFER_RECEIVE
-    #define traceSTREAM_BUFFER_RECEIVE( xStreamBuffer, xReceivedLength )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل trace_وهڪرو_بفر_RECEIVE
+    #وصف_ڪريو trace_وهڪرو_بفر_RECEIVE( x_وهڪرو_بفر, x_Received_ڊيگهائي )
+#جيڪڏهن_پورو
 
-#ifndef traceSTREAM_BUFFER_RECEIVE_FAILED
-    #define traceSTREAM_BUFFER_RECEIVE_FAILED( xStreamBuffer )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل trace_وهڪرو_بفر_RECEIVE_FAILED
+    #وصف_ڪريو trace_وهڪرو_بفر_RECEIVE_FAILED( x_وهڪرو_بفر )
+#جيڪڏهن_پورو
 
-#ifndef traceSTREAM_BUFFER_RECEIVE_FROM_ISR
-    #define traceSTREAM_BUFFER_RECEIVE_FROM_ISR( xStreamBuffer, xReceivedLength )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل trace_وهڪرو_بفر_RECEIVE_FROM_ISR
+    #وصف_ڪريو trace_وهڪرو_بفر_RECEIVE_FROM_ISR( x_وهڪرو_بفر, x_Received_ڊيگهائي )
+#جيڪڏهن_پورو
 
-#ifndef configGENERATE_RUN_TIME_STATS
-    #define configGENERATE_RUN_TIME_STATS    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_GENERATE_لاڳيتو_وقت_STATS
+    #وصف_ڪريو config_GENERATE_لاڳيتو_وقت_STATS    0
+#جيڪڏهن_پورو
 
-#if ( configGENERATE_RUN_TIME_STATS == 1 )
-
-    #ifndef portCONFIGURE_TIMER_FOR_RUN_TIME_STATS
-        #error If configGENERATE_RUN_TIME_STATS is defined then portCONFIGURE_TIMER_FOR_RUN_TIME_STATS must also be defined.  portCONFIGURE_TIMER_FOR_RUN_TIME_STATS should call a port layer function to setup a peripheral timer/counter that can then be used as the run time counter time base.
-    #endif /* portCONFIGURE_TIMER_FOR_RUN_TIME_STATS */
-
-    #ifndef portGET_RUN_TIME_COUNTER_VALUE
-        #ifndef portALT_GET_RUN_TIME_COUNTER_VALUE
-            #error If configGENERATE_RUN_TIME_STATS is defined then either portGET_RUN_TIME_COUNTER_VALUE or portALT_GET_RUN_TIME_COUNTER_VALUE must also be defined.  See the examples provided and the FreeRTOS web site for more information.
-        #endif /* portALT_GET_RUN_TIME_COUNTER_VALUE */
-    #endif /* portGET_RUN_TIME_COUNTER_VALUE */
+#إذا ( config_GENERATE_لاڳيتو_وقت_STATS == 1 )
+
+    #جيڪڏهن_وصف_نه_ٿيل پورٽ_CONFIGURE_TIMER_FOR_لاڳيتو_وقت_STATS
+        #غلطي If config_GENERATE_لاڳيتو_وقت_STATS is defined then پورٽ_CONFIGURE_TIMER_FOR_لاڳيتو_وقت_STATS must also be defined.  پورٽ_CONFIGURE_TIMER_FOR_لاڳيتو_وقت_STATS should call a پورٽ layer function منزل تياري a peripheral timer/counter that can then be استعمال_ٿيل as the لاڳيتو time counter time بنياد.
+    #جيڪڏهن_پورو /* portCONFIGURE_TIMER_FOR_RUN_TIME_STATS */
+
+    #جيڪڏهن_وصف_نه_ٿيل پورٽ_GET_لاڳيتو_وقت_COUNTER_قدر
+        #جيڪڏهن_وصف_نه_ٿيل پورٽ_ALT_GET_لاڳيتو_وقت_COUNTER_قدر
+            #غلطي If config_GENERATE_لاڳيتو_وقت_STATS is defined then either پورٽ_GET_لاڳيتو_وقت_COUNTER_قدر or پورٽ_ALT_GET_لاڳيتو_وقت_COUNTER_قدر must also be defined.  See the examples provided and the FreeRTOS web site لكل وڌيڪ information.
+        #جيڪڏهن_پورو /* portALT_GET_RUN_TIME_COUNTER_VALUE */
+    #جيڪڏهن_پورو /* portGET_RUN_TIME_COUNTER_VALUE */
 
-#endif /* configGENERATE_RUN_TIME_STATS */
-
-#ifndef portCONFIGURE_TIMER_FOR_RUN_TIME_STATS
-    #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
-#endif
-
-#ifndef configUSE_MALLOC_FAILED_HOOK
-    #define configUSE_MALLOC_FAILED_HOOK    0
-#endif
-
-#ifndef portPRIVILEGE_BIT
-    #define portPRIVILEGE_BIT    ( ( UBaseType_t ) 0x00 )
-#endif
-
-#ifndef portYIELD_WITHIN_API
-    #define portYIELD_WITHIN_API    portYIELD
-#endif
-
-#ifndef portSUPPRESS_TICKS_AND_SLEEP
-    #define portSUPPRESS_TICKS_AND_SLEEP( xExpectedIdleTime )
-#endif
+#جيڪڏهن_پورو /* configGENERATE_RUN_TIME_STATS */
+
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_CONFIGURE_TIMER_FOR_لاڳيتو_وقت_STATS
+    #وصف_ڪريو پورٽ_CONFIGURE_TIMER_FOR_لاڳيتو_وقت_STATS()
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل configUSE_MALLOC_FAILED_HOOK
+    #وصف_ڪريو configUSE_MALLOC_FAILED_HOOK    0
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_PRIVILEGE_ٻٽو_انگ
+    #وصف_ڪريو پورٽ_PRIVILEGE_ٻٽو_انگ    ( ( UBaseType_t ) 0x00 )
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_YIELD_WITHIN_API
+    #وصف_ڪريو پورٽ_YIELD_WITHIN_API    پورٽ_YIELD
+#جيڪڏهن_پورو
+
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_SUPPRESS_TICKS_AND_SLEEP
+    #وصف_ڪريو پورٽ_SUPPRESS_TICKS_AND_SLEEP( x_Expected_Idle_وقت )
+#جيڪڏهن_پورو
 
-#ifndef configEXPECTED_IDLE_TIME_BEFORE_SLEEP
-    #define configEXPECTED_IDLE_TIME_BEFORE_SLEEP    2
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_EXPECTED_IDLE_وقت_BEFORE_SLEEP
+    #وصف_ڪريو config_EXPECTED_IDLE_وقت_BEFORE_SLEEP    2
+#جيڪڏهن_پورو
 
-#if configEXPECTED_IDLE_TIME_BEFORE_SLEEP < 2
-    #error configEXPECTED_IDLE_TIME_BEFORE_SLEEP must not be less than 2
-#endif
+#إذا config_EXPECTED_IDLE_وقت_BEFORE_SLEEP < 2
+    #غلطي config_EXPECTED_IDLE_وقت_BEFORE_SLEEP must not be less than 2
+#جيڪڏهن_پورو
 
-#ifndef configUSE_TICKLESS_IDLE
-    #define configUSE_TICKLESS_IDLE    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_TICKLESS_IDLE
+    #وصف_ڪريو configUSE_TICKLESS_IDLE    0
+#جيڪڏهن_پورو
 
-#ifndef configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING
-    #define configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING( x )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING
+    #وصف_ڪريو configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING( x )
+#جيڪڏهن_پورو
 
-#ifndef configPRE_SLEEP_PROCESSING
-    #define configPRE_SLEEP_PROCESSING( x )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configPRE_SLEEP_PROCESSING
+    #وصف_ڪريو configPRE_SLEEP_PROCESSING( x )
+#جيڪڏهن_پورو
 
-#ifndef configPOST_SLEEP_PROCESSING
-    #define configPOST_SLEEP_PROCESSING( x )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configPOST_SLEEP_PROCESSING
+    #وصف_ڪريو configPOST_SLEEP_PROCESSING( x )
+#جيڪڏهن_پورو
 
-#ifndef configUSE_QUEUE_SETS
-    #define configUSE_QUEUE_SETS    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_USE_قطار_SETS
+    #وصف_ڪريو config_USE_قطار_SETS    0
+#جيڪڏهن_پورو
 
-#ifndef portTASK_USES_FLOATING_POINT
-    #define portTASK_USES_FLOATING_POINT()
-#endif
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_TASK_استعمال_ڪري_FLOATING_نقطو
+    #وصف_ڪريو پورٽ_TASK_استعمال_ڪري_FLOATING_نقطو()
+#جيڪڏهن_پورو
 
-#ifndef portALLOCATE_SECURE_CONTEXT
-    #define portALLOCATE_SECURE_CONTEXT( ulSecureStackSize )
-#endif
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_ALLOCATE_SECURE_CONTEXT
+    #وصف_ڪريو پورٽ_ALLOCATE_SECURE_CONTEXT( ul_Secure_ڍير_سائيز )
+#جيڪڏهن_پورو
 
-#ifndef portDONT_DISCARD
-    #define portDONT_DISCARD
-#endif
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_DONT_DISCARD
+    #وصف_ڪريو پورٽ_DONT_DISCARD
+#جيڪڏهن_پورو
 
-#ifndef configUSE_TIME_SLICING
-    #define configUSE_TIME_SLICING    1
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_USE_وقت_SLICING
+    #وصف_ڪريو config_USE_وقت_SLICING    1
+#جيڪڏهن_پورو
 
-#ifndef configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS
-    #define configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS
+    #وصف_ڪريو configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS    0
+#جيڪڏهن_پورو
 
-#ifndef configUSE_STATS_FORMATTING_FUNCTIONS
-    #define configUSE_STATS_FORMATTING_FUNCTIONS    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_STATS_FORMATTING_FUNCTIONS
+    #وصف_ڪريو configUSE_STATS_FORMATTING_FUNCTIONS    0
+#جيڪڏهن_پورو
 
-#ifndef portASSERT_IF_INTERRUPT_PRIORITY_INVALID
-    #define portASSERT_IF_INTERRUPT_PRIORITY_INVALID()
-#endif
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_ASSERT_IF_مداخلت_ترجيح_INVALID
+    #وصف_ڪريو پورٽ_ASSERT_IF_مداخلت_ترجيح_INVALID()
+#جيڪڏهن_پورو
 
-#ifndef configUSE_TRACE_FACILITY
-    #define configUSE_TRACE_FACILITY    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_TRACE_FACILITY
+    #وصف_ڪريو configUSE_TRACE_FACILITY    0
+#جيڪڏهن_پورو
 
-#ifndef mtCOVERAGE_TEST_MARKER
-    #define mtCOVERAGE_TEST_MARKER()
-#endif
+#جيڪڏهن_وصف_نه_ٿيل mtCOVERAGE_TEST_MARKER
+    #وصف_ڪريو mtCOVERAGE_TEST_MARKER()
+#جيڪڏهن_پورو
 
-#ifndef mtCOVERAGE_TEST_DELAY
-    #define mtCOVERAGE_TEST_DELAY()
-#endif
+#جيڪڏهن_وصف_نه_ٿيل mtCOVERAGE_TEST_DELAY
+    #وصف_ڪريو mtCOVERAGE_TEST_DELAY()
+#جيڪڏهن_پورو
 
-#ifndef portASSERT_IF_IN_ISR
-    #define portASSERT_IF_IN_ISR()
-#endif
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_ASSERT_IF_اندريون_ISR
+    #وصف_ڪريو پورٽ_ASSERT_IF_اندريون_ISR()
+#جيڪڏهن_پورو
 
-#ifndef configUSE_PORT_OPTIMISED_TASK_SELECTION
-    #define configUSE_PORT_OPTIMISED_TASK_SELECTION    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_USE_پورٽ_OPTIMISED_TASK_SELECTION
+    #وصف_ڪريو config_USE_پورٽ_OPTIMISED_TASK_SELECTION    0
+#جيڪڏهن_پورو
 
-#ifndef configAPPLICATION_ALLOCATED_HEAP
-    #define configAPPLICATION_ALLOCATED_HEAP    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_APPLICATION_ALLOCATED_ڍير
+    #وصف_ڪريو config_APPLICATION_ALLOCATED_ڍير    0
+#جيڪڏهن_پورو
 
-#ifndef configUSE_TASK_NOTIFICATIONS
-    #define configUSE_TASK_NOTIFICATIONS    1
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_TASK_NOTIFICATIONS
+    #وصف_ڪريو configUSE_TASK_NOTIFICATIONS    1
+#جيڪڏهن_پورو
 
-#ifndef configTASK_NOTIFICATION_ARRAY_ENTRIES
-    #define configTASK_NOTIFICATION_ARRAY_ENTRIES    1
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configTASK_NOTIFICATION_ARRAY_ENTRIES
+    #وصف_ڪريو configTASK_NOTIFICATION_ARRAY_ENTRIES    1
+#جيڪڏهن_پورو
 
-#if configTASK_NOTIFICATION_ARRAY_ENTRIES < 1
-    #error configTASK_NOTIFICATION_ARRAY_ENTRIES must be at least 1
-#endif
+#إذا configTASK_NOTIFICATION_ARRAY_ENTRIES < 1
+    #غلطي configTASK_NOTIFICATION_ARRAY_ENTRIES must be at گهٽ_کان_گهٽ 1
+#جيڪڏهن_پورو
 
-#ifndef configUSE_POSIX_ERRNO
-    #define configUSE_POSIX_ERRNO    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_POSIX_ERRNO
+    #وصف_ڪريو configUSE_POSIX_ERRNO    0
+#جيڪڏهن_پورو
 
-#ifndef configUSE_SB_COMPLETED_CALLBACK
+#جيڪڏهن_وصف_نه_ٿيل configUSE_SB_COMPLETED_CALLBACK
 
 /* By default per-instance callbacks are not enabled for stream buffer or message buffer. */
-    #define configUSE_SB_COMPLETED_CALLBACK    0
-#endif
+    #وصف_ڪريو configUSE_SB_COMPLETED_CALLBACK    0
+#جيڪڏهن_پورو
 
-#ifndef portTICK_TYPE_IS_ATOMIC
-    #define portTICK_TYPE_IS_ATOMIC    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل پورٽ_TICK_TYPE_IS_ATOMIC
+    #وصف_ڪريو پورٽ_TICK_TYPE_IS_ATOMIC    0
+#جيڪڏهن_پورو
 
-#ifndef configSUPPORT_STATIC_ALLOCATION
+#جيڪڏهن_وصف_نه_ٿيل config_SUPPORT_STATIC_ورهاست
     /* Defaults to 0 for backward compatibility. */
-    #define configSUPPORT_STATIC_ALLOCATION    0
-#endif
+    #وصف_ڪريو config_SUPPORT_STATIC_ورهاست    0
+#جيڪڏهن_پورو
 
-#ifndef configSUPPORT_DYNAMIC_ALLOCATION
+#جيڪڏهن_وصف_نه_ٿيل config_SUPPORT_DYNAMIC_ورهاست
     /* Defaults to 1 for backward compatibility. */
-    #define configSUPPORT_DYNAMIC_ALLOCATION    1
-#endif
+    #وصف_ڪريو config_SUPPORT_DYNAMIC_ورهاست    1
+#جيڪڏهن_پورو
 
-#if ( ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION != 1 ) )
-    #error configUSE_STATS_FORMATTING_FUNCTIONS cannot be used without dynamic allocation, but configSUPPORT_DYNAMIC_ALLOCATION is not set to 1.
-#endif
+#إذا ( ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( config_SUPPORT_DYNAMIC_ورهاست != 1 ) )
+    #غلطي configUSE_STATS_FORMATTING_FUNCTIONS cannot be استعمال_ٿيل without dynamic ورهاست, but config_SUPPORT_DYNAMIC_ورهاست is not سيٽ منزل 1.
+#جيڪڏهن_پورو
 
-#if ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 )
-    #if ( ( configUSE_TRACE_FACILITY != 1 ) && ( configGENERATE_RUN_TIME_STATS != 1 ) )
-        #error configUSE_STATS_FORMATTING_FUNCTIONS is 1 but the functions it enables are not used because neither configUSE_TRACE_FACILITY or configGENERATE_RUN_TIME_STATS are 1.  Set configUSE_STATS_FORMATTING_FUNCTIONS to 0 in FreeRTOSConfig.h.
-    #endif
-#endif
+#إذا ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 )
+    #إذا ( ( configUSE_TRACE_FACILITY != 1 ) && ( config_GENERATE_لاڳيتو_وقت_STATS != 1 ) )
+        #غلطي configUSE_STATS_FORMATTING_FUNCTIONS is 1 but the functions it enables are not استعمال_ٿيل because neither configUSE_TRACE_FACILITY or config_GENERATE_لاڳيتو_وقت_STATS are 1.  سيٽ_2 configUSE_STATS_FORMATTING_FUNCTIONS منزل 0 اندريون FreeRTOSConfig.h.
+    #جيڪڏهن_پورو
+#جيڪڏهن_پورو
 
-#ifndef configSTACK_DEPTH_TYPE
+#جيڪڏهن_وصف_نه_ٿيل config_ڍير_اونهائي_TYPE
 
 /* Defaults to uint16_t for backward compatibility, but can be overridden
  * in FreeRTOSConfig.h if uint16_t is too restrictive. */
-    #define configSTACK_DEPTH_TYPE    uint16_t
-#endif
+    #وصف_ڪريو config_ڍير_اونهائي_TYPE    uint16_t
+#جيڪڏهن_پورو
 
-#ifndef configRUN_TIME_COUNTER_TYPE
+#جيڪڏهن_وصف_نه_ٿيل config_لاڳيتو_وقت_COUNTER_TYPE
 
 /* Defaults to uint32_t for backward compatibility, but can be overridden in
  * FreeRTOSConfig.h if uint32_t is too restrictive. */
 
-    #define configRUN_TIME_COUNTER_TYPE    uint32_t
-#endif
+    #وصف_ڪريو config_لاڳيتو_وقت_COUNTER_TYPE    uint32_t
+#جيڪڏهن_پورو
 
-#ifndef configMESSAGE_BUFFER_LENGTH_TYPE
+#جيڪڏهن_وصف_نه_ٿيل config_پيغام_بفر_ڊيگهائي_TYPE
 
 /* Defaults to size_t for backward compatibility, but can be overridden
  * in FreeRTOSConfig.h if lengths will always be less than the number of bytes
  * in a size_t. */
-    #define configMESSAGE_BUFFER_LENGTH_TYPE    size_t
-#endif
+    #وصف_ڪريو config_پيغام_بفر_ڊيگهائي_TYPE    size_t
+#جيڪڏهن_پورو
 
 /* Sanity check the configuration. */
-#if ( ( configSUPPORT_STATIC_ALLOCATION == 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 0 ) )
-    #error configSUPPORT_STATIC_ALLOCATION and configSUPPORT_DYNAMIC_ALLOCATION cannot both be 0, but can both be 1.
-#endif
+#إذا ( ( config_SUPPORT_STATIC_ورهاست == 0 ) && ( config_SUPPORT_DYNAMIC_ورهاست == 0 ) )
+    #غلطي config_SUPPORT_STATIC_ورهاست and config_SUPPORT_DYNAMIC_ورهاست cannot both be 0, but can both be 1.
+#جيڪڏهن_پورو
 
-#if ( ( configUSE_RECURSIVE_MUTEXES == 1 ) && ( configUSE_MUTEXES != 1 ) )
-    #error configUSE_MUTEXES must be set to 1 to use recursive mutexes
-#endif
+#إذا ( ( configUSE_RECURSIVE_MUTEXES == 1 ) && ( configUSE_MUTEXES != 1 ) )
+    #غلطي configUSE_MUTEXES must be سيٽ منزل 1 منزل use recursive mutexes
+#جيڪڏهن_پورو
 
-#if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_PORT_OPTIMISED_TASK_SELECTION != 0 ) )
-    #error configUSE_PORT_OPTIMISED_TASK_SELECTION is not supported in SMP
-#endif
+#إذا ( ( config_عدد_جو_CORES > 1 ) && ( config_USE_پورٽ_OPTIMISED_TASK_SELECTION != 0 ) )
+    #غلطي config_USE_پورٽ_OPTIMISED_TASK_SELECTION is not supported اندريون SMP
+#جيڪڏهن_پورو
 
-#ifndef configINITIAL_TICK_COUNT
-    #define configINITIAL_TICK_COUNT    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_INITIAL_TICK_ڳڻپ
+    #وصف_ڪريو config_INITIAL_TICK_ڳڻپ    0
+#جيڪڏهن_پورو
 
-#if ( portTICK_TYPE_IS_ATOMIC == 0 )
+#إذا ( پورٽ_TICK_TYPE_IS_ATOMIC == 0 )
 
 /* Either variables of tick type cannot be read atomically, or
  * portTICK_TYPE_IS_ATOMIC was not set - map the critical sections used when
  * the tick count is returned to the standard critical section macros. */
-    #define portTICK_TYPE_ENTER_CRITICAL()                      portENTER_CRITICAL()
-    #define portTICK_TYPE_EXIT_CRITICAL()                       portEXIT_CRITICAL()
-    #define portTICK_TYPE_SET_INTERRUPT_MASK_FROM_ISR()         portSET_INTERRUPT_MASK_FROM_ISR()
-    #define portTICK_TYPE_CLEAR_INTERRUPT_MASK_FROM_ISR( x )    portCLEAR_INTERRUPT_MASK_FROM_ISR( ( x ) )
-#else
+    #وصف_ڪريو پورٽ_TICK_TYPE_ENTER_CRITICAL()                      پورٽ_ENTER_CRITICAL()
+    #وصف_ڪريو پورٽ_TICK_TYPE_EXIT_CRITICAL()                       پورٽ_EXIT_CRITICAL()
+    #وصف_ڪريو پورٽ_TICK_TYPE_سيٽ_مداخلت_نقاب_FROM_ISR()         پورٽ_سيٽ_مداخلت_نقاب_FROM_ISR()
+    #وصف_ڪريو پورٽ_TICK_TYPE_CLEAR_مداخلت_نقاب_FROM_ISR( x )    پورٽ_CLEAR_مداخلت_نقاب_FROM_ISR( ( x ) )
+#وإلا
 
 /* The tick type can be read atomically, so critical sections used when the
  * tick count is returned can be defined away. */
-    #define portTICK_TYPE_ENTER_CRITICAL()
-    #define portTICK_TYPE_EXIT_CRITICAL()
-    #define portTICK_TYPE_SET_INTERRUPT_MASK_FROM_ISR()         0
-    #define portTICK_TYPE_CLEAR_INTERRUPT_MASK_FROM_ISR( x )    ( void ) ( x )
-#endif /* if ( portTICK_TYPE_IS_ATOMIC == 0 ) */
+    #وصف_ڪريو پورٽ_TICK_TYPE_ENTER_CRITICAL()
+    #وصف_ڪريو پورٽ_TICK_TYPE_EXIT_CRITICAL()
+    #وصف_ڪريو پورٽ_TICK_TYPE_سيٽ_مداخلت_نقاب_FROM_ISR()         0
+    #وصف_ڪريو پورٽ_TICK_TYPE_CLEAR_مداخلت_نقاب_FROM_ISR( x )    ( فراغ ) ( x )
+#جيڪڏهن_پورو /* if ( portTICK_TYPE_IS_ATOMIC == 0 ) */
 
 /* Definitions to allow backward compatibility with FreeRTOS versions prior to
  * V8 if desired. */
-#ifndef configENABLE_BACKWARD_COMPATIBILITY
-    #define configENABLE_BACKWARD_COMPATIBILITY    1
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configENABLE_BACKWARD_COMPATIBILITY
+    #وصف_ڪريو configENABLE_BACKWARD_COMPATIBILITY    1
+#جيڪڏهن_پورو
 
-#ifndef configPRINTF
+#جيڪڏهن_وصف_نه_ٿيل configPRINTF
 
 /* configPRINTF() was not defined, so define it away to nothing.  To use
  * configPRINTF() then define it as follows (where MyPrintFunction() is
@@ -1070,102 +1070,102 @@
  * Then call like a standard printf() function, but placing brackets around
  * all parameters so they are passed as a single parameter.  For example:
  * configPRINTF( ("Value = %d", MyVariable) ); */
-    #define configPRINTF( X )
-#endif
+    #وصف_ڪريو configPRINTF( X )
+#جيڪڏهن_پورو
 
-#ifndef configMAX
+#جيڪڏهن_وصف_نه_ٿيل configMAX
 
 /* The application writer has not provided their own MAX macro, so define
  * the following generic implementation. */
-    #define configMAX( a, b )    ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) )
-#endif
+    #وصف_ڪريو configMAX( a, b )    ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) )
+#جيڪڏهن_پورو
 
-#ifndef configMIN
+#جيڪڏهن_وصف_نه_ٿيل configMIN
 
 /* The application writer has not provided their own MIN macro, so define
  * the following generic implementation. */
-    #define configMIN( a, b )    ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
-#endif
+    #وصف_ڪريو configMIN( a, b )    ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
+#جيڪڏهن_پورو
 
-#if configENABLE_BACKWARD_COMPATIBILITY == 1
-    #define eTaskStateGet                 eTaskGetState
-    #define portTickType                  TickType_t
-    #define xTaskHandle                   TaskHandle_t
-    #define xQueueHandle                  QueueHandle_t
-    #define xSemaphoreHandle              SemaphoreHandle_t
-    #define xQueueSetHandle               QueueSetHandle_t
-    #define xQueueSetMemberHandle         QueueSetMemberHandle_t
-    #define xTimeOutType                  TimeOut_t
-    #define xMemoryRegion                 MemoryRegion_t
-    #define xTaskParameters               TaskParameters_t
-    #define xTaskStatusType               TaskStatus_t
-    #define xTimerHandle                  TimerHandle_t
-    #define xCoRoutineHandle              CoRoutineHandle_t
-    #define pdTASK_HOOK_CODE              TaskHookFunction_t
-    #define portTICK_RATE_MS              portTICK_PERIOD_MS
-    #define pcTaskGetTaskName             pcTaskGetName
-    #define pcTimerGetTimerName           pcTimerGetName
-    #define pcQueueGetQueueName           pcQueueGetName
-    #define vTaskGetTaskInfo              vTaskGetInfo
-    #define xTaskGetIdleRunTimeCounter    ulTaskGetIdleRunTimeCounter
+#إذا configENABLE_BACKWARD_COMPATIBILITY == 1
+    #وصف_ڪريو eTaskStateGet                 eTaskGetState
+    #وصف_ڪريو پورٽ_Tick_Type                  TickType_t
+    #وصف_ڪريو xTaskHandle                   TaskHandle_t
+    #وصف_ڪريو x_قطار_Handle                  قطار_Handle_t
+    #وصف_ڪريو xSemaphoreHandle              SemaphoreHandle_t
+    #وصف_ڪريو x_قطار_سيٽ_Handle               قطار_سيٽ_Handle_t
+    #وصف_ڪريو x_قطار_سيٽ_Member_Handle         قطار_سيٽ_Member_Handle_t
+    #وصف_ڪريو x_وقت_ٻاهريون_Type                  وقت_ٻاهريون_t
+    #وصف_ڪريو x_يادگيري_Region                 يادگيري_Region_t
+    #وصف_ڪريو xTaskParameters               TaskParameters_t
+    #وصف_ڪريو x_Task_حالت_Type               Task_حالت_t
+    #وصف_ڪريو xTimerHandle                  TimerHandle_t
+    #وصف_ڪريو xCoRoutineHandle              CoRoutineHandle_t
+    #وصف_ڪريو pd_TASK_HOOK_ڪوڊ              TaskHookFunction_t
+    #وصف_ڪريو پورٽ_TICK_شرح_MS              پورٽ_TICK_PERIOD_MS
+    #وصف_ڪريو pcTaskGetTaskName             pcTaskGetName
+    #وصف_ڪريو pcTimerGetTimerName           pcTimerGetName
+    #وصف_ڪريو pc_قطار_Get_قطار_Name           pc_قطار_Get_Name
+    #وصف_ڪريو vTaskGetTaskInfo              vTaskGetInfo
+    #وصف_ڪريو x_Task_Get_Idle_لاڳيتو_وقت_Counter    ul_Task_Get_Idle_لاڳيتو_وقت_Counter
 
 /* Backward compatibility within the scheduler code only - these definitions
  * are not really required but are included for completeness. */
-    #define tmrTIMER_CALLBACK             TimerCallbackFunction_t
-    #define pdTASK_CODE                   TaskFunction_t
-    #define xListItem                     ListItem_t
-    #define xList                         List_t
+    #وصف_ڪريو tmrTIMER_CALLBACK             TimerCallbackFunction_t
+    #وصف_ڪريو pd_TASK_ڪوڊ                   TaskFunction_t
+    #وصف_ڪريو x_List_شي                     List_شي_t
+    #وصف_ڪريو xList                         List_t
 
 /* For libraries that break the list data hiding, and access list structure
  * members directly (which is not supposed to be done). */
-    #define pxContainer                   pvContainer
-#endif /* configENABLE_BACKWARD_COMPATIBILITY */
+    #وصف_ڪريو pxContainer                   pvContainer
+#جيڪڏهن_پورو /* configENABLE_BACKWARD_COMPATIBILITY */
 
-#if ( configUSE_ALTERNATIVE_API != 0 )
-    #error The alternative API was deprecated some time ago, and was removed in FreeRTOS V9.0 0
-#endif
+#إذا ( configUSE_ALTERNATIVE_API != 0 )
+    #غلطي The alternative API was deprecated some time ago, and was removed اندريون FreeRTOS V9.0 0
+#جيڪڏهن_پورو
 
 /* Set configUSE_TASK_FPU_SUPPORT to 0 to omit floating point support even
  * if floating point hardware is otherwise supported by the FreeRTOS port in use.
  * This constant is not supported by all FreeRTOS ports that include floating
  * point support. */
-#ifndef configUSE_TASK_FPU_SUPPORT
-    #define configUSE_TASK_FPU_SUPPORT    1
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configUSE_TASK_FPU_SUPPORT
+    #وصف_ڪريو configUSE_TASK_FPU_SUPPORT    1
+#جيڪڏهن_پورو
 
 /* Set configENABLE_MPU to 1 to enable MPU support and 0 to disable it. This is
  * currently used in ARMv8M ports. */
-#ifndef configENABLE_MPU
-    #define configENABLE_MPU    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configENABLE_MPU
+    #وصف_ڪريو configENABLE_MPU    0
+#جيڪڏهن_پورو
 
 /* Set configENABLE_FPU to 1 to enable FPU support and 0 to disable it. This is
  * currently used in ARMv8M ports. */
-#ifndef configENABLE_FPU
-    #define configENABLE_FPU    1
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configENABLE_FPU
+    #وصف_ڪريو configENABLE_FPU    1
+#جيڪڏهن_پورو
 
 /* Set configENABLE_MVE to 1 to enable MVE support and 0 to disable it. This is
  * currently used in ARMv8M ports. */
-#ifndef configENABLE_MVE
-    #define configENABLE_MVE    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configENABLE_MVE
+    #وصف_ڪريو configENABLE_MVE    0
+#جيڪڏهن_پورو
 
 /* Set configENABLE_TRUSTZONE to 1 enable TrustZone support and 0 to disable it.
  * This is currently used in ARMv8M ports. */
-#ifndef configENABLE_TRUSTZONE
-    #define configENABLE_TRUSTZONE    1
-#endif
+#جيڪڏهن_وصف_نه_ٿيل configENABLE_TRUSTZONE
+    #وصف_ڪريو configENABLE_TRUSTZONE    1
+#جيڪڏهن_پورو
 
 /* Set configRUN_FREERTOS_SECURE_ONLY to 1 to run the FreeRTOS ARMv8M port on
  * the Secure Side only. */
-#ifndef configRUN_FREERTOS_SECURE_ONLY
-    #define configRUN_FREERTOS_SECURE_ONLY    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_لاڳيتو_FREERTOS_SECURE_ONLY
+    #وصف_ڪريو config_لاڳيتو_FREERTOS_SECURE_ONLY    0
+#جيڪڏهن_پورو
 
-#ifndef configRUN_ADDITIONAL_TESTS
-    #define configRUN_ADDITIONAL_TESTS    0
-#endif
+#جيڪڏهن_وصف_نه_ٿيل config_لاڳيتو_ADDITIONAL_TESTS
+    #وصف_ڪريو config_لاڳيتو_ADDITIONAL_TESTS    0
+#جيڪڏهن_پورو
 
 
 /* Sometimes the FreeRTOSConfig.h settings only allow a task to be created using
@@ -1210,9 +1210,9 @@
  * |     |         |        | xTaskCreateRestrictedStatic |                                   |                  |           |
  * +-----+---------+--------+-----------------------------+-----------------------------------+------------------+-----------+
  */
-#define tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE                                                                                     \
-    ( ( ( portUSING_MPU_WRAPPERS == 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) ) || \
-      ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) ) )
+#وصف_ڪريو tsk_STATIC_AND_DYNAMIC_ورهاست_POSSIBLE                                                                                     \
+    ( ( ( پورٽ_USING_MPU_WRAPPERS == 0 ) && ( config_SUPPORT_DYNAMIC_ورهاست == 1 ) && ( config_SUPPORT_STATIC_ورهاست == 1 ) ) || \
+      ( ( پورٽ_USING_MPU_WRAPPERS == 1 ) && ( config_SUPPORT_DYNAMIC_ورهاست == 1 ) ) )
 
 /*
  * In line with software engineering best practice, FreeRTOS implements a strict
@@ -1224,46 +1224,46 @@
  * real objects are used for this purpose.  The dummy list and list item
  * structures below are used for inclusion in such a dummy structure.
  */
-struct xSTATIC_LIST_ITEM
+بنية x_STATIC_LIST_شي
 {
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #إذا ( config_USE_LIST_معلومات_INTEGRITY_CHECK_بائيٽون == 1 )
         TickType_t xDummy1;
-    #endif
+    #جيڪڏهن_پورو
     TickType_t xDummy2;
-    void * pvDummy3[ 4 ];
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    فراغ * pvDummy3[ 4 ];
+    #إذا ( config_USE_LIST_معلومات_INTEGRITY_CHECK_بائيٽون == 1 )
         TickType_t xDummy4;
-    #endif
+    #جيڪڏهن_پورو
 };
-typedef struct xSTATIC_LIST_ITEM StaticListItem_t;
+تعريفنوع بنية x_STATIC_LIST_شي Static_List_شي_t;
 
-#if ( configUSE_MINI_LIST_ITEM == 1 )
+#إذا ( config_USE_MINI_LIST_شي == 1 )
     /* See the comments above the struct xSTATIC_LIST_ITEM definition. */
-    struct xSTATIC_MINI_LIST_ITEM
+    بنية x_STATIC_MINI_LIST_شي
     {
-        #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+        #إذا ( config_USE_LIST_معلومات_INTEGRITY_CHECK_بائيٽون == 1 )
             TickType_t xDummy1;
-        #endif
+        #جيڪڏهن_پورو
         TickType_t xDummy2;
-        void * pvDummy3[ 2 ];
+        فراغ * pvDummy3[ 2 ];
     };
-    typedef struct xSTATIC_MINI_LIST_ITEM StaticMiniListItem_t;
-#else /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
-    typedef struct xSTATIC_LIST_ITEM      StaticMiniListItem_t;
-#endif /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
+    تعريفنوع بنية x_STATIC_MINI_LIST_شي Static_Mini_List_شي_t;
+#وإلا /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
+    تعريفنوع بنية x_STATIC_LIST_شي      Static_Mini_List_شي_t;
+#جيڪڏهن_پورو /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
 
 /* See the comments above the struct xSTATIC_LIST_ITEM definition. */
-typedef struct xSTATIC_LIST
+تعريفنوع بنية xSTATIC_LIST
 {
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #إذا ( config_USE_LIST_معلومات_INTEGRITY_CHECK_بائيٽون == 1 )
         TickType_t xDummy1;
-    #endif
+    #جيڪڏهن_پورو
     UBaseType_t uxDummy2;
-    void * pvDummy3;
-    StaticMiniListItem_t xDummy4;
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    فراغ * pvDummy3;
+    Static_Mini_List_شي_t xDummy4;
+    #إذا ( config_USE_LIST_معلومات_INTEGRITY_CHECK_بائيٽون == 1 )
         TickType_t xDummy5;
-    #endif
+    #جيڪڏهن_پورو
 } StaticList_t;
 
 /*
@@ -1279,57 +1279,57 @@ typedef struct xSTATIC_LIST
  * are set.  Its contents are somewhat obfuscated in the hope users will
  * recognise that it would be unwise to make direct use of the structure members.
  */
-typedef struct xSTATIC_TCB
+تعريفنوع بنية xSTATIC_TCB
 {
-    void * pxDummy1;
-    #if ( portUSING_MPU_WRAPPERS == 1 )
+    فراغ * pxDummy1;
+    #إذا ( پورٽ_USING_MPU_WRAPPERS == 1 )
         xMPU_SETTINGS xDummy2;
-    #endif
-    StaticListItem_t xDummy3[ 2 ];
+    #جيڪڏهن_پورو
+    Static_List_شي_t xDummy3[ 2 ];
     UBaseType_t uxDummy5;
-    void * pxDummy6;
+    فراغ * pxDummy6;
     uint8_t ucDummy7[ configMAX_TASK_NAME_LEN ];
-    #if ( configNUMBER_OF_CORES > 1 )
-        BaseType_t xDummyCoreID;
-    #endif /* configNUMBER_OF_CORES > 1 */
-    #if ( ( portSTACK_GROWTH > 0 ) || ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
-        void * pxDummy8;
-    #endif
-    #if ( portCRITICAL_NESTING_IN_TCB == 1 )
+    #إذا ( config_عدد_جو_CORES > 1 )
+        بنياد_Type_t xDummyCoreID;
+    #جيڪڏهن_پورو /* configNUMBER_OF_CORES > 1 */
+    #إذا ( ( پورٽ_ڍير_GROWTH > 0 ) || ( config_رڪارڊ_ڍير_مٿاهون_پتو == 1 ) )
+        فراغ * pxDummy8;
+    #جيڪڏهن_پورو
+    #إذا ( پورٽ_CRITICAL_NESTING_اندريون_TCB == 1 )
         UBaseType_t uxDummy9;
-    #endif
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #جيڪڏهن_پورو
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy10[ 2 ];
-    #endif
-    #if ( configUSE_MUTEXES == 1 )
+    #جيڪڏهن_پورو
+    #إذا ( configUSE_MUTEXES == 1 )
         UBaseType_t uxDummy12[ 2 ];
-    #endif
-    #if ( configUSE_APPLICATION_TASK_TAG == 1 )
-        void * pxDummy14;
-    #endif
-    #if ( configNUM_THREAD_LOCAL_STORAGE_POINTERS > 0 )
-        void * pvDummy15[ configNUM_THREAD_LOCAL_STORAGE_POINTERS ];
-    #endif
-    #if ( configGENERATE_RUN_TIME_STATS == 1 )
-        configRUN_TIME_COUNTER_TYPE ulDummy16;
-    #endif
-    #if ( ( configUSE_NEWLIB_REENTRANT == 1 ) || ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) )
-        configTLS_BLOCK_TYPE xDummy17;
-    #endif
-    #if ( configUSE_TASK_NOTIFICATIONS == 1 )
+    #جيڪڏهن_پورو
+    #إذا ( config_USE_APPLICATION_TASK_ٽيگ == 1 )
+        فراغ * pxDummy14;
+    #جيڪڏهن_پورو
+    #إذا ( config_انگ_THREAD_LOCAL_STORAGE_اشارا > 0 )
+        فراغ * pvDummy15[ config_انگ_THREAD_LOCAL_STORAGE_اشارا ];
+    #جيڪڏهن_پورو
+    #إذا ( config_GENERATE_لاڳيتو_وقت_STATS == 1 )
+        config_لاڳيتو_وقت_COUNTER_TYPE ulDummy16;
+    #جيڪڏهن_پورو
+    #إذا ( ( configUSE_NEWLIB_REENTRANT == 1 ) || ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) )
+        config_TLS_بلاڪ_TYPE xDummy17;
+    #جيڪڏهن_پورو
+    #إذا ( configUSE_TASK_NOTIFICATIONS == 1 )
         uint32_t ulDummy18[ configTASK_NOTIFICATION_ARRAY_ENTRIES ];
         uint8_t ucDummy19[ configTASK_NOTIFICATION_ARRAY_ENTRIES ];
-    #endif
-    #if ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )
+    #جيڪڏهن_پورو
+    #إذا ( tsk_STATIC_AND_DYNAMIC_ورهاست_POSSIBLE != 0 )
         uint8_t uxDummy20;
-    #endif
+    #جيڪڏهن_پورو
 
-    #if ( INCLUDE_xTaskAbortDelay == 1 )
+    #إذا ( INCLUDE_xTaskAbortDelay == 1 )
         uint8_t ucDummy21;
-    #endif
-    #if ( configUSE_POSIX_ERRNO == 1 )
-        int iDummy22;
-    #endif
+    #جيڪڏهن_پورو
+    #إذا ( configUSE_POSIX_ERRNO == 1 )
+        صحيح iDummy22;
+    #جيڪڏهن_پورو
 } StaticTask_t;
 
 /*
@@ -1346,13 +1346,13 @@ typedef struct xSTATIC_TCB
  * users will recognise that it would be unwise to make direct use of the
  * structure members.
  */
-typedef struct xSTATIC_QUEUE
+تعريفنوع بنية x_STATIC_قطار
 {
-    void * pvDummy1[ 3 ];
+    فراغ * pvDummy1[ 3 ];
 
-    union
+    اتحاد
     {
-        void * pvDummy2;
+        فراغ * pvDummy2;
         UBaseType_t uxDummy2;
     } u;
 
@@ -1360,21 +1360,21 @@ typedef struct xSTATIC_QUEUE
     UBaseType_t uxDummy4[ 3 ];
     uint8_t ucDummy5[ 2 ];
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #إذا ( ( config_SUPPORT_STATIC_ورهاست == 1 ) && ( config_SUPPORT_DYNAMIC_ورهاست == 1 ) )
         uint8_t ucDummy6;
-    #endif
+    #جيڪڏهن_پورو
 
-    #if ( configUSE_QUEUE_SETS == 1 )
-        void * pvDummy7;
-    #endif
+    #إذا ( config_USE_قطار_SETS == 1 )
+        فراغ * pvDummy7;
+    #جيڪڏهن_پورو
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy8;
         uint8_t ucDummy9;
-    #endif
-    portMUX_TYPE xDummyQueueLock;
-} StaticQueue_t;
-typedef StaticQueue_t StaticSemaphore_t;
+    #جيڪڏهن_پورو
+    پورٽ_MUX_TYPE x_Dummy_قطار_تالو;
+} Static_قطار_t;
+تعريفنوع Static_قطار_t StaticSemaphore_t;
 
 /*
  * In line with software engineering best practice, especially when supplying a
@@ -1390,20 +1390,20 @@ typedef StaticQueue_t StaticSemaphore_t;
  * obfuscated in the hope users will recognise that it would be unwise to make
  * direct use of the structure members.
  */
-typedef struct xSTATIC_EVENT_GROUP
+تعريفنوع بنية x_STATIC_EVENT_گروهه
 {
     TickType_t xDummy1;
     StaticList_t xDummy2;
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy3;
-    #endif
+    #جيڪڏهن_پورو
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #إذا ( ( config_SUPPORT_STATIC_ورهاست == 1 ) && ( config_SUPPORT_DYNAMIC_ورهاست == 1 ) )
         uint8_t ucDummy4;
-    #endif
-    portMUX_TYPE xDummyEventGroupLock;
-} StaticEventGroup_t;
+    #جيڪڏهن_پورو
+    پورٽ_MUX_TYPE x_Dummy_Event_گروهه_تالو;
+} Static_Event_گروهه_t;
 
 /*
  * In line with software engineering best practice, especially when supplying a
@@ -1419,16 +1419,16 @@ typedef struct xSTATIC_EVENT_GROUP
  * the hope users will recognise that it would be unwise to make direct use of
  * the structure members.
  */
-typedef struct xSTATIC_TIMER
+تعريفنوع بنية xSTATIC_TIMER
 {
-    void * pvDummy1;
-    StaticListItem_t xDummy2;
+    فراغ * pvDummy1;
+    Static_List_شي_t xDummy2;
     TickType_t xDummy3;
-    void * pvDummy5;
+    فراغ * pvDummy5;
     TaskFunction_t pvDummy6;
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy7;
-    #endif
+    #جيڪڏهن_پورو
     uint8_t ucDummy8;
 } StaticTimer_t;
 
@@ -1446,73 +1446,73 @@ typedef struct xSTATIC_TIMER
  * somewhat obfuscated in the hope users will recognise that it would be unwise
  * to make direct use of the structure members.
  */
-typedef struct xSTATIC_STREAM_BUFFER
+تعريفنوع بنية x_STATIC_وهڪرو_بفر
 {
     size_t uxDummy1[ 4 ];
-    void * pvDummy2[ 3 ];
+    فراغ * pvDummy2[ 3 ];
     uint8_t ucDummy3;
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy4;
-    #endif
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-        void * pvDummy5[ 2 ];
-    #endif
-    portMUX_TYPE xDummyStreamBufferLock;
-} StaticStreamBuffer_t;
+    #جيڪڏهن_پورو
+    #إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+        فراغ * pvDummy5[ 2 ];
+    #جيڪڏهن_پورو
+    پورٽ_MUX_TYPE x_Dummy_وهڪرو_بفر_تالو;
+} Static_وهڪرو_بفر_t;
 
 /* Message buffers are built on stream buffers. */
-typedef StaticStreamBuffer_t StaticMessageBuffer_t;
+تعريفنوع Static_وهڪرو_بفر_t Static_پيغام_بفر_t;
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#جيڪڏهن_وصف_ٿيل __cplusplus
     }
-#endif
+#جيڪڏهن_پورو
 /* *INDENT-ON* */
 
 /*-----------------------------------------------------------
 * IDF Compatibility
 *----------------------------------------------------------*/
 
-#ifdef ESP_PLATFORM
+#جيڪڏهن_وصف_ٿيل ESP_PLATFORM
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#جيڪڏهن_وصف_ٿيل __cplusplus
+    خارجي "C" {
+#جيڪڏهن_پورو
 /* *INDENT-ON* */
 
 /*
  * Default values for trace macros added by ESP-IDF and are not part of Vanilla FreeRTOS
  */
 
-    #ifndef traceISR_EXIT_TO_SCHEDULER
-        #define traceISR_EXIT_TO_SCHEDULER()
-    #endif
+    #جيڪڏهن_وصف_نه_ٿيل trace_ISR_EXIT_منزل_SCHEDULER
+        #وصف_ڪريو trace_ISR_EXIT_منزل_SCHEDULER()
+    #جيڪڏهن_پورو
 
-    #ifndef traceISR_EXIT
-        #define traceISR_EXIT()
-    #endif
+    #جيڪڏهن_وصف_نه_ٿيل traceISR_EXIT
+        #وصف_ڪريو traceISR_EXIT()
+    #جيڪڏهن_پورو
 
-    #ifndef traceISR_ENTER
-        #define traceISR_ENTER( _n_ )
-    #endif
+    #جيڪڏهن_وصف_نه_ٿيل traceISR_ENTER
+        #وصف_ڪريو traceISR_ENTER( _n_ )
+    #جيڪڏهن_پورو
 
-    #ifndef traceQUEUE_SEMAPHORE_RECEIVE
-        #define traceQUEUE_SEMAPHORE_RECEIVE( pxQueue )
-    #endif
+    #جيڪڏهن_وصف_نه_ٿيل trace_قطار_SEMAPHORE_RECEIVE
+        #وصف_ڪريو trace_قطار_SEMAPHORE_RECEIVE( px_قطار )
+    #جيڪڏهن_پورو
 
-    #ifndef traceQUEUE_GIVE_FROM_ISR
-        #define traceQUEUE_GIVE_FROM_ISR( pxQueue )
-    #endif
+    #جيڪڏهن_وصف_نه_ٿيل trace_قطار_GIVE_FROM_ISR
+        #وصف_ڪريو trace_قطار_GIVE_FROM_ISR( px_قطار )
+    #جيڪڏهن_پورو
 
-    #ifndef traceQUEUE_GIVE_FROM_ISR_FAILED
-        #define traceQUEUE_GIVE_FROM_ISR_FAILED( pxQueue )
-    #endif
+    #جيڪڏهن_وصف_نه_ٿيل trace_قطار_GIVE_FROM_ISR_FAILED
+        #وصف_ڪريو trace_قطار_GIVE_FROM_ISR_FAILED( px_قطار )
+    #جيڪڏهن_پورو
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#جيڪڏهن_وصف_ٿيل __cplusplus
     }
-#endif
+#جيڪڏهن_پورو
 /* *INDENT-ON* */
 
 /*
@@ -1528,8 +1528,8 @@ typedef StaticStreamBuffer_t StaticMessageBuffer_t;
  * any existing source code can continue using these relocated APIs without
  * any additional header inclusions via this implicit inclusion.
  */
-    #include "freertos/idf_additions.h"
+    #ضمن "freertos/idf_additions.h"
 
-#endif /* ESP_PLATFORM */
+#جيڪڏهن_پورو /* ESP_PLATFORM */
 
-#endif /* INC_FREERTOS_H */
+#جيڪڏهن_پورو /* INC_FREERTOS_H */

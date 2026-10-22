@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#pragma once
+#هدايت once
 
 /* Xtensa Architecture specific configuration. This file is included in the common FreeRTOSConfig.h. */
 
-#include "sdkconfig.h"
+#ضمن "sdkconfig.h"
 
 /* Required for configuration-dependent settings. */
-#include "xtensa_config.h"
+#ضمن "xtensa_config.h"
 
 /* -------------------------------------------- Xtensa Additional Config  ----------------------------------------------
  * - Provide Xtensa definitions usually given by -D option when building with xt-make (see readme_xtensa.txt)
@@ -26,16 +26,16 @@
  *      - XT_USE_SWPRI         We don't define this (unused)
  * ------------------------------------------------------------------------------------------------------------------ */
 
-#define configXT_SIMULATOR          0
-#define configXT_BOARD              1                           /* Board mode */
-#if CONFIG_FREERTOS_CORETIMER_0
-    #define configXT_TIMER_INDEX    0
-#elif CONFIG_FREERTOS_CORETIMER_1
-    #define configXT_TIMER_INDEX    1
-#endif
-#define configXT_INTEXC_HOOKS       0
+#وصف_ڪريو configXT_SIMULATOR          0
+#وصف_ڪريو configXT_BOARD              1                           /* Board mode */
+#إذا CONFIG_FREERTOS_CORETIMER_0
+    #وصف_ڪريو config_XT_TIMER_اشاريو    0
+#وإلاإذا CONFIG_FREERTOS_CORETIMER_1
+    #وصف_ڪريو config_XT_TIMER_اشاريو    1
+#جيڪڏهن_پورو
+#وصف_ڪريو configXT_INTEXC_HOOKS       0
 
-#define configBENCHMARK             0
+#وصف_ڪريو configBENCHMARK             0
 
 /* ------------------------------------------------- FreeRTOS Config ---------------------------------------------------
  * - All Vanilla FreeRTOS configuration goes into this section
@@ -43,64 +43,64 @@
 
 /* ------------------ Scheduler Related -------------------- */
 
-#ifdef CONFIG_FREERTOS_OPTIMIZED_SCHEDULER
-    #define configUSE_PORT_OPTIMISED_TASK_SELECTION    1
-#else
-    #define configUSE_PORT_OPTIMISED_TASK_SELECTION    0
-#endif /* CONFIG_FREERTOS_OPTIMIZED_SCHEDULER */
-#define configMINIMAL_STACK_SIZE                       ( CONFIG_FREERTOS_IDLE_TASK_STACKSIZE + configSTACK_OVERHEAD_TOTAL )
-#define configMAX_API_CALL_INTERRUPT_PRIORITY          XCHAL_EXCM_LEVEL
+#جيڪڏهن_وصف_ٿيل CONFIG_FREERTOS_OPTIMIZED_SCHEDULER
+    #وصف_ڪريو config_USE_پورٽ_OPTIMISED_TASK_SELECTION    1
+#وإلا
+    #وصف_ڪريو config_USE_پورٽ_OPTIMISED_TASK_SELECTION    0
+#جيڪڏهن_پورو /* CONFIG_FREERTOS_OPTIMIZED_SCHEDULER */
+#وصف_ڪريو config_گهٽتر_ڍير_سائيز                       ( CONFIG_FREERTOS_IDLE_TASK_STACKSIZE + config_ڍير_OVERHEAD_ڪل )
+#وصف_ڪريو config_MAX_API_CALL_مداخلت_ترجيح          XCHAL_EXCM_LEVEL
 
 /* ---------------- Amazon SMP FreeRTOS -------------------- */
 
-#if CONFIG_FREERTOS_SMP
+#إذا CONFIG_FREERTOS_SMP
 
 /* This is always enabled to call IDF style idle hooks, by can be "--Wl,--wrap"
  * if users enable CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK. */
-    #define configUSE_PASSIVE_IDLE_HOOK    1
-#endif
+    #وصف_ڪريو configUSE_PASSIVE_IDLE_HOOK    1
+#جيڪڏهن_پورو
 
 /* ----------------------- System -------------------------- */
 
-#if CONFIG_LIBC_NEWLIB
-#define configUSE_NEWLIB_REENTRANT    1
-#else
-#define configUSE_NEWLIB_REENTRANT    0
-#endif
+#إذا CONFIG_LIBC_NEWLIB
+#وصف_ڪريو configUSE_NEWLIB_REENTRANT    1
+#وإلا
+#وصف_ڪريو configUSE_NEWLIB_REENTRANT    0
+#جيڪڏهن_پورو
 
 /* - FreeRTOS provides default for configTLS_BLOCK_TYPE.
  * - We simply provide our own INIT and DEINIT functions
  * - We set "SET" to a blank macro since there is no need to set the reentrancy
  * pointer. All newlib functions calls __getreent. */
-#if CONFIG_FREERTOS_SMP
-    #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )    esp_reent_init( &( xTLSBlock ) )
-#else /* CONFIG_FREERTOS_SMP */
-    #define configINIT_TLS_BLOCK( xTLSBlock )                  esp_reent_init( &( xTLSBlock ) )
-#endif /* CONFIG_FREERTOS_SMP */
-#define configSET_TLS_BLOCK( xTLSBlock )
-#define configDEINIT_TLS_BLOCK( xTLSBlock )                    _reclaim_reent( &( xTLSBlock ) )
+#إذا CONFIG_FREERTOS_SMP
+    #وصف_ڪريو config_INIT_TLS_بلاڪ( xTLSBlock, px_چوٽي_جو_ڍير )    esp_reent_init( &( xTLSBlock ) )
+#وإلا /* CONFIG_FREERTOS_SMP */
+    #وصف_ڪريو config_INIT_TLS_بلاڪ( xTLSBlock )                  esp_reent_init( &( xTLSBlock ) )
+#جيڪڏهن_پورو /* CONFIG_FREERTOS_SMP */
+#وصف_ڪريو config_سيٽ_TLS_بلاڪ( xTLSBlock )
+#وصف_ڪريو config_DEINIT_TLS_بلاڪ( xTLSBlock )                    _reclaim_reent( &( xTLSBlock ) )
 
-#define configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H    1
+#وصف_ڪريو configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H    1
 
 /* ----------------------- Memory  ------------------------- */
 
 /* This isn't used as FreeRTOS will only allocate from internal memory (see
  * heap_idf.c). We simply define this macro to span all non-statically-allocated
  * shared RAM. */
-#define configTOTAL_HEAP_SIZE    ( &_heap_end - &_heap_start )
+#وصف_ڪريو config_ڪل_ڍير_سائيز    ( &ڍير_پڇاڙي - &ڍير_شروعات )
 
 /* ------------------- Run-time Stats ---------------------- */
 
-#if CONFIG_FREERTOS_USE_TRACE_FACILITY
+#إذا CONFIG_FREERTOS_USE_TRACE_FACILITY
     /* Used by uxTaskGetSystemState(), and other trace facility functions */
-    #define configUSE_TRACE_FACILITY    1
-#endif /* CONFIG_FREERTOS_USE_TRACE_FACILITY */
+    #وصف_ڪريو configUSE_TRACE_FACILITY    1
+#جيڪڏهن_پورو /* CONFIG_FREERTOS_USE_TRACE_FACILITY */
 
 /* -------------------- API Includes ----------------------- */
 
 /* Todo: Reconcile INCLUDE_option differences (IDF-8186) */
-#define INCLUDE_xTaskDelayUntil                 1
-#define INCLUDE_uxTaskGetStackHighWaterMark2    1
+#وصف_ڪريو INCLUDE_xTaskDelayUntil                 1
+#وصف_ڪريو INCLUDE_ux_Task_Get_ڍير_مٿاهون_Water_Mark2    1
 
 /* ------------------------------------------------ ESP-IDF Additions --------------------------------------------------
  *
@@ -111,7 +111,7 @@
  * Size needs to be aligned to the stack increment, since the location of
  * the stack for the 2nd CPU will be calculated using configISR_STACK_SIZE.
  */
-#define configSTACK_ALIGNMENT       16
-#ifndef configISR_STACK_SIZE
-    #define configISR_STACK_SIZE    ( ( CONFIG_FREERTOS_ISR_STACKSIZE + configSTACK_ALIGNMENT - 1 ) & ( ~( configSTACK_ALIGNMENT - 1 ) ) )
-#endif
+#وصف_ڪريو config_ڍير_ALIGNMENT       16
+#جيڪڏهن_وصف_نه_ٿيل config_ISR_ڍير_سائيز
+    #وصف_ڪريو config_ISR_ڍير_سائيز    ( ( CONFIG_FREERTOS_ISR_STACKSIZE + config_ڍير_ALIGNMENT - 1 ) & ( ~( config_ڍير_ALIGNMENT - 1 ) ) )
+#جيڪڏهن_پورو

@@ -39,230 +39,230 @@
  */
 
 
-#ifndef MPU_PROTOTYPES_H
-#define MPU_PROTOTYPES_H
+#جيڪڏهن_وصف_نه_ٿيل MPU_PROTOTYPES_H
+#وصف_ڪريو MPU_PROTOTYPES_H
 
 /* MPU versions of task.h API functions. */
-BaseType_t MPU_xTaskCreate( TaskFunction_t pxTaskCode,
-                            const char * const pcName,
-                            const uint16_t usStackDepth,
-                            void * const pvParameters,
-                            UBaseType_t uxPriority,
-                            TaskHandle_t * const pxCreatedTask ) FREERTOS_SYSTEM_CALL;
-TaskHandle_t MPU_xTaskCreateStatic( TaskFunction_t pxTaskCode,
-                                    const char * const pcName,
-                                    const uint32_t ulStackDepth,
-                                    void * const pvParameters,
-                                    UBaseType_t uxPriority,
-                                    StackType_t * const puxStackBuffer,
-                                    StaticTask_t * const pxTaskBuffer ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskDelete( TaskHandle_t xTaskToDelete ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskDelay( const TickType_t xTicksToDelay ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskDelayUntil( TickType_t * const pxPreviousWakeTime,
-                                const TickType_t xTimeIncrement ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskAbortDelay( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxTaskPriorityGet( const TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_xTaskCreate( TaskFunction_t px_Task_ڪوڊ,
+                            ثابت حرف * ثابت pcName,
+                            ثابت uint16_t us_ڍير_اونهائي,
+                            فراغ * ثابت pvParameters,
+                            UBaseType_t ux_ترجيح,
+                            TaskHandle_t * ثابت pxCreatedTask ) FREERTOS_SYSTEM_CALL;
+TaskHandle_t MPU_xTaskCreateStatic( TaskFunction_t px_Task_ڪوڊ,
+                                    ثابت حرف * ثابت pcName,
+                                    ثابت uint32_t ul_ڍير_اونهائي,
+                                    فراغ * ثابت pvParameters,
+                                    UBaseType_t ux_ترجيح,
+                                    ڍير_Type_t * ثابت pux_ڍير_بفر,
+                                    StaticTask_t * ثابت px_Task_بفر ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_vTaskDelete( TaskHandle_t x_Task_منزل_Delete ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_vTaskDelay( ثابت TickType_t x_Ticks_منزل_Delay ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_xTaskDelayUntil( TickType_t * ثابت px_اڳيون_Wake_وقت,
+                                ثابت TickType_t x_وقت_Increment ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_xTaskAbortDelay( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Task_ترجيح_Get( ثابت TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
 eTaskState MPU_eTaskGetState( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskGetInfo( TaskHandle_t xTask,
-                       TaskStatus_t * pxTaskStatus,
-                       BaseType_t xGetFreeStackSpace,
+فراغ MPU_vTaskGetInfo( TaskHandle_t xTask,
+                       Task_حالت_t * px_Task_حالت,
+                       بنياد_Type_t x_Get_Free_ڍير_Space,
                        eTaskState eState ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskPrioritySet( TaskHandle_t xTask,
-                           UBaseType_t uxNewPriority ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskSuspend( TaskHandle_t xTaskToSuspend ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskResume( TaskHandle_t xTaskToResume ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskStartScheduler( void ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskSuspendAll( void ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskResumeAll( void ) FREERTOS_SYSTEM_CALL;
-TickType_t MPU_xTaskGetTickCount( void ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxTaskGetNumberOfTasks( void ) FREERTOS_SYSTEM_CALL;
-char * MPU_pcTaskGetName( TaskHandle_t xTaskToQuery ) FREERTOS_SYSTEM_CALL;
-TaskHandle_t MPU_xTaskGetHandle( const char * pcNameToQuery ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxTaskGetStackHighWaterMark( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
-configSTACK_DEPTH_TYPE MPU_uxTaskGetStackHighWaterMark2( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskSetApplicationTaskTag( TaskHandle_t xTask,
+فراغ MPU_v_Task_ترجيح_سيٽ( TaskHandle_t xTask,
+                           UBaseType_t ux_New_ترجيح ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_vTaskSuspend( TaskHandle_t x_Task_منزل_Suspend ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_vTaskResume( TaskHandle_t x_Task_منزل_Resume ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_v_Task_شروعات_Scheduler( فراغ ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_vTaskSuspendAll( فراغ ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_xTaskResumeAll( فراغ ) FREERTOS_SYSTEM_CALL;
+TickType_t MPU_x_Task_Get_Tick_ڳڻپ( فراغ ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Task_Get_عدد_جو_Tasks( فراغ ) FREERTOS_SYSTEM_CALL;
+حرف * MPU_pcTaskGetName( TaskHandle_t x_Task_منزل_Query ) FREERTOS_SYSTEM_CALL;
+TaskHandle_t MPU_xTaskGetHandle( ثابت حرف * pc_Name_منزل_Query ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Task_Get_ڍير_مٿاهون_Water_Mark( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
+config_ڍير_اونهائي_TYPE MPU_ux_Task_Get_ڍير_مٿاهون_Water_Mark2( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_v_Task_سيٽ_Application_Task_ٽيگ( TaskHandle_t xTask,
                                      TaskHookFunction_t pxHookFunction ) FREERTOS_SYSTEM_CALL;
-TaskHookFunction_t MPU_xTaskGetApplicationTaskTag( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskSetThreadLocalStoragePointer( TaskHandle_t xTaskToSet,
-                                            BaseType_t xIndex,
-                                            void * pvValue ) FREERTOS_SYSTEM_CALL;
-void * MPU_pvTaskGetThreadLocalStoragePointer( TaskHandle_t xTaskToQuery,
-                                               BaseType_t xIndex ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskCallApplicationTaskHook( TaskHandle_t xTask,
-                                             void * pvParameter ) FREERTOS_SYSTEM_CALL;
-TaskHandle_t MPU_xTaskGetIdleTaskHandle( void ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxTaskGetSystemState( TaskStatus_t * const pxTaskStatusArray,
-                                      const UBaseType_t uxArraySize,
-                                      configRUN_TIME_COUNTER_TYPE * const pulTotalRunTime ) FREERTOS_SYSTEM_CALL;
-configRUN_TIME_COUNTER_TYPE MPU_ulTaskGetIdleRunTimeCounter( void ) FREERTOS_SYSTEM_CALL;
-configRUN_TIME_COUNTER_TYPE MPU_ulTaskGetIdleRunTimePercent( void ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskList( char * pcWriteBuffer ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskGetRunTimeStats( char * pcWriteBuffer ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskGenericNotify( TaskHandle_t xTaskToNotify,
-                                   UBaseType_t uxIndexToNotify,
-                                   uint32_t ulValue,
+TaskHookFunction_t MPU_x_Task_Get_Application_Task_ٽيگ( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_v_Task_سيٽ_Thread_Local_Storage_اشارو( TaskHandle_t x_Task_منزل_سيٽ,
+                                            بنياد_Type_t x_اشاريو,
+                                            فراغ * pv_قدر ) FREERTOS_SYSTEM_CALL;
+فراغ * MPU_pv_Task_Get_Thread_Local_Storage_اشارو( TaskHandle_t x_Task_منزل_Query,
+                                               بنياد_Type_t x_اشاريو ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_xTaskCallApplicationTaskHook( TaskHandle_t xTask,
+                                             فراغ * pvParameter ) FREERTOS_SYSTEM_CALL;
+TaskHandle_t MPU_xTaskGetIdleTaskHandle( فراغ ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_uxTaskGetSystemState( Task_حالت_t * ثابت px_Task_حالت_Array,
+                                      ثابت UBaseType_t ux_Array_سائيز,
+                                      config_لاڳيتو_وقت_COUNTER_TYPE * ثابت pul_ڪل_لاڳيتو_وقت ) FREERTOS_SYSTEM_CALL;
+config_لاڳيتو_وقت_COUNTER_TYPE MPU_ul_Task_Get_Idle_لاڳيتو_وقت_Counter( فراغ ) FREERTOS_SYSTEM_CALL;
+config_لاڳيتو_وقت_COUNTER_TYPE MPU_ul_Task_Get_Idle_لاڳيتو_وقت_Percent( فراغ ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_vTaskList( حرف * pc_Write_بفر ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_v_Task_Get_لاڳيتو_وقت_Stats( حرف * pc_Write_بفر ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_xTaskGenericNotify( TaskHandle_t x_Task_منزل_Notify,
+                                   UBaseType_t ux_اشاريو_منزل_Notify,
+                                   uint32_t ul_قدر,
                                    eNotifyAction eAction,
-                                   uint32_t * pulPreviousNotificationValue ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskGenericNotifyWait( UBaseType_t uxIndexToWaitOn,
-                                       uint32_t ulBitsToClearOnEntry,
-                                       uint32_t ulBitsToClearOnExit,
-                                       uint32_t * pulNotificationValue,
-                                       TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-uint32_t MPU_ulTaskGenericNotifyTake( UBaseType_t uxIndexToWaitOn,
-                                      BaseType_t xClearCountOnExit,
-                                      TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskGenericNotifyStateClear( TaskHandle_t xTask,
-                                             UBaseType_t uxIndexToClear ) FREERTOS_SYSTEM_CALL;
-uint32_t MPU_ulTaskGenericNotifyValueClear( TaskHandle_t xTask,
-                                            UBaseType_t uxIndexToClear,
-                                            uint32_t ulBitsToClear ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskIncrementTick( void ) FREERTOS_SYSTEM_CALL;
-TaskHandle_t MPU_xTaskGetCurrentTaskHandle( void ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskSetTimeOutState( TimeOut_t * const pxTimeOut ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskCheckForTimeOut( TimeOut_t * const pxTimeOut,
-                                     TickType_t * const pxTicksToWait ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskMissedYield( void ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskGetSchedulerState( void ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTaskCatchUpTicks( TickType_t xTicksToCatchUp ) FREERTOS_SYSTEM_CALL;
+                                   uint32_t * pul_اڳيون_Notification_قدر ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_xTaskGenericNotifyWait( UBaseType_t ux_اشاريو_منزل_Wait_On,
+                                       uint32_t ul_بٽ_منزل_Clear_On_داخلا,
+                                       uint32_t ul_بٽ_منزل_Clear_On_Exit,
+                                       uint32_t * pul_Notification_قدر,
+                                       TickType_t x_Ticks_منزل_Wait ) FREERTOS_SYSTEM_CALL;
+uint32_t MPU_ulTaskGenericNotifyTake( UBaseType_t ux_اشاريو_منزل_Wait_On,
+                                      بنياد_Type_t x_Clear_ڳڻپ_On_Exit,
+                                      TickType_t x_Ticks_منزل_Wait ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_xTaskGenericNotifyStateClear( TaskHandle_t xTask,
+                                             UBaseType_t ux_اشاريو_منزل_Clear ) FREERTOS_SYSTEM_CALL;
+uint32_t MPU_ul_Task_Generic_Notify_قدر_Clear( TaskHandle_t xTask,
+                                            UBaseType_t ux_اشاريو_منزل_Clear,
+                                            uint32_t ul_بٽ_منزل_Clear ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_xTaskIncrementTick( فراغ ) FREERTOS_SYSTEM_CALL;
+TaskHandle_t MPU_xTaskGetCurrentTaskHandle( فراغ ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_v_Task_سيٽ_وقت_ٻاهريون_State( وقت_ٻاهريون_t * ثابت px_وقت_ٻاهريون ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_x_Task_Check_For_وقت_ٻاهريون( وقت_ٻاهريون_t * ثابت px_وقت_ٻاهريون,
+                                     TickType_t * ثابت px_Ticks_منزل_Wait ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_vTaskMissedYield( فراغ ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_xTaskGetSchedulerState( فراغ ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_x_Task_Catch_مٿي_Ticks( TickType_t x_Ticks_منزل_Catch_مٿي ) FREERTOS_SYSTEM_CALL;
 
 /* MPU versions of queue.h API functions. */
-BaseType_t MPU_xQueueGenericSend( QueueHandle_t xQueue,
-                                  const void * const pvItemToQueue,
-                                  TickType_t xTicksToWait,
-                                  const BaseType_t xCopyPosition ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xQueueReceive( QueueHandle_t xQueue,
-                              void * const pvBuffer,
-                              TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xQueuePeek( QueueHandle_t xQueue,
-                           void * const pvBuffer,
-                           TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xQueueSemaphoreTake( QueueHandle_t xQueue,
-                                    TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxQueueMessagesWaiting( const QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxQueueSpacesAvailable( const QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
-void MPU_vQueueDelete( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
-QueueHandle_t MPU_xQueueCreateMutex( const uint8_t ucQueueType ) FREERTOS_SYSTEM_CALL;
-QueueHandle_t MPU_xQueueCreateMutexStatic( const uint8_t ucQueueType,
-                                           StaticQueue_t * pxStaticQueue ) FREERTOS_SYSTEM_CALL;
-QueueHandle_t MPU_xQueueCreateCountingSemaphore( const UBaseType_t uxMaxCount,
-                                                 const UBaseType_t uxInitialCount ) FREERTOS_SYSTEM_CALL;
-QueueHandle_t MPU_xQueueCreateCountingSemaphoreStatic( const UBaseType_t uxMaxCount,
-                                                       const UBaseType_t uxInitialCount,
-                                                       StaticQueue_t * pxStaticQueue ) FREERTOS_SYSTEM_CALL;
-TaskHandle_t MPU_xQueueGetMutexHolder( QueueHandle_t xSemaphore ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xQueueTakeMutexRecursive( QueueHandle_t xMutex,
-                                         TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xQueueGiveMutexRecursive( QueueHandle_t pxMutex ) FREERTOS_SYSTEM_CALL;
-void MPU_vQueueAddToRegistry( QueueHandle_t xQueue,
-                              const char * pcName ) FREERTOS_SYSTEM_CALL;
-void MPU_vQueueUnregisterQueue( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
-const char * MPU_pcQueueGetName( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
-QueueHandle_t MPU_xQueueGenericCreate( const UBaseType_t uxQueueLength,
-                                       const UBaseType_t uxItemSize,
-                                       const uint8_t ucQueueType ) FREERTOS_SYSTEM_CALL;
-QueueHandle_t MPU_xQueueGenericCreateStatic( const UBaseType_t uxQueueLength,
-                                             const UBaseType_t uxItemSize,
-                                             uint8_t * pucQueueStorage,
-                                             StaticQueue_t * pxStaticQueue,
-                                             const uint8_t ucQueueType ) FREERTOS_SYSTEM_CALL;
-QueueSetHandle_t MPU_xQueueCreateSet( const UBaseType_t uxEventQueueLength ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xQueueAddToSet( QueueSetMemberHandle_t xQueueOrSemaphore,
-                               QueueSetHandle_t xQueueSet ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xQueueRemoveFromSet( QueueSetMemberHandle_t xQueueOrSemaphore,
-                                    QueueSetHandle_t xQueueSet ) FREERTOS_SYSTEM_CALL;
-QueueSetMemberHandle_t MPU_xQueueSelectFromSet( QueueSetHandle_t xQueueSet,
-                                                const TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xQueueGenericReset( QueueHandle_t xQueue,
-                                   BaseType_t xNewQueue ) FREERTOS_SYSTEM_CALL;
-void MPU_vQueueSetQueueNumber( QueueHandle_t xQueue,
-                               UBaseType_t uxQueueNumber ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxQueueGetQueueNumber( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
-uint8_t MPU_ucQueueGetQueueType( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_x_قطار_Generic_Send( قطار_Handle_t x_قطار,
+                                  ثابت فراغ * ثابت pv_شي_منزل_قطار,
+                                  TickType_t x_Ticks_منزل_Wait,
+                                  ثابت بنياد_Type_t xCopyPosition ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_x_قطار_Receive( قطار_Handle_t x_قطار,
+                              فراغ * ثابت pv_بفر,
+                              TickType_t x_Ticks_منزل_Wait ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_x_قطار_Peek( قطار_Handle_t x_قطار,
+                           فراغ * ثابت pv_بفر,
+                           TickType_t x_Ticks_منزل_Wait ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_x_قطار_Semaphore_Take( قطار_Handle_t x_قطار,
+                                    TickType_t x_Ticks_منزل_Wait ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_قطار_Messages_انتظار( ثابت قطار_Handle_t x_قطار ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_قطار_Spaces_موجود( ثابت قطار_Handle_t x_قطار ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_v_قطار_Delete( قطار_Handle_t x_قطار ) FREERTOS_SYSTEM_CALL;
+قطار_Handle_t MPU_x_قطار_Create_Mutex( ثابت uint8_t uc_قطار_Type ) FREERTOS_SYSTEM_CALL;
+قطار_Handle_t MPU_x_قطار_Create_Mutex_Static( ثابت uint8_t uc_قطار_Type,
+                                           Static_قطار_t * px_Static_قطار ) FREERTOS_SYSTEM_CALL;
+قطار_Handle_t MPU_x_قطار_Create_Counting_Semaphore( ثابت UBaseType_t ux_Max_ڳڻپ,
+                                                 ثابت UBaseType_t ux_Initial_ڳڻپ ) FREERTOS_SYSTEM_CALL;
+قطار_Handle_t MPU_x_قطار_Create_Counting_Semaphore_Static( ثابت UBaseType_t ux_Max_ڳڻپ,
+                                                       ثابت UBaseType_t ux_Initial_ڳڻپ,
+                                                       Static_قطار_t * px_Static_قطار ) FREERTOS_SYSTEM_CALL;
+TaskHandle_t MPU_x_قطار_Get_Mutex_Holder( قطار_Handle_t xSemaphore ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_x_قطار_Take_Mutex_Recursive( قطار_Handle_t xMutex,
+                                         TickType_t x_Ticks_منزل_Wait ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_x_قطار_Give_Mutex_Recursive( قطار_Handle_t pxMutex ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_v_قطار_جوڙيو_منزل_Registry( قطار_Handle_t x_قطار,
+                              ثابت حرف * pcName ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_v_قطار_Unregister_قطار( قطار_Handle_t x_قطار ) FREERTOS_SYSTEM_CALL;
+ثابت حرف * MPU_pc_قطار_Get_Name( قطار_Handle_t x_قطار ) FREERTOS_SYSTEM_CALL;
+قطار_Handle_t MPU_x_قطار_Generic_Create( ثابت UBaseType_t ux_قطار_ڊيگهائي,
+                                       ثابت UBaseType_t ux_شي_سائيز,
+                                       ثابت uint8_t uc_قطار_Type ) FREERTOS_SYSTEM_CALL;
+قطار_Handle_t MPU_x_قطار_Generic_Create_Static( ثابت UBaseType_t ux_قطار_ڊيگهائي,
+                                             ثابت UBaseType_t ux_شي_سائيز,
+                                             uint8_t * puc_قطار_Storage,
+                                             Static_قطار_t * px_Static_قطار,
+                                             ثابت uint8_t uc_قطار_Type ) FREERTOS_SYSTEM_CALL;
+قطار_سيٽ_Handle_t MPU_x_قطار_Create_سيٽ( ثابت UBaseType_t ux_Event_قطار_ڊيگهائي ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_x_قطار_جوڙيو_منزل_سيٽ( قطار_سيٽ_Member_Handle_t x_قطار_Or_Semaphore,
+                               قطار_سيٽ_Handle_t x_قطار_سيٽ ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_x_قطار_Remove_From_سيٽ( قطار_سيٽ_Member_Handle_t x_قطار_Or_Semaphore,
+                                    قطار_سيٽ_Handle_t x_قطار_سيٽ ) FREERTOS_SYSTEM_CALL;
+قطار_سيٽ_Member_Handle_t MPU_x_قطار_Select_From_سيٽ( قطار_سيٽ_Handle_t x_قطار_سيٽ,
+                                                ثابت TickType_t x_Ticks_منزل_Wait ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_x_قطار_Generic_Reset( قطار_Handle_t x_قطار,
+                                   بنياد_Type_t x_New_قطار ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_v_قطار_سيٽ_قطار_عدد( قطار_Handle_t x_قطار,
+                               UBaseType_t ux_قطار_عدد ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_قطار_Get_قطار_عدد( قطار_Handle_t x_قطار ) FREERTOS_SYSTEM_CALL;
+uint8_t MPU_uc_قطار_Get_قطار_Type( قطار_Handle_t x_قطار ) FREERTOS_SYSTEM_CALL;
 
 /* MPU versions of timers.h API functions. */
-TimerHandle_t MPU_xTimerCreate( const char * const pcTimerName,
-                                const TickType_t xTimerPeriodInTicks,
-                                const UBaseType_t uxAutoReload,
-                                void * const pvTimerID,
+TimerHandle_t MPU_xTimerCreate( ثابت حرف * ثابت pcTimerName,
+                                ثابت TickType_t x_Timer_Period_اندريون_Ticks,
+                                ثابت UBaseType_t uxAutoReload,
+                                فراغ * ثابت pvTimerID,
                                 TimerCallbackFunction_t pxCallbackFunction ) FREERTOS_SYSTEM_CALL;
-TimerHandle_t MPU_xTimerCreateStatic( const char * const pcTimerName,
-                                      const TickType_t xTimerPeriodInTicks,
-                                      const UBaseType_t uxAutoReload,
-                                      void * const pvTimerID,
+TimerHandle_t MPU_xTimerCreateStatic( ثابت حرف * ثابت pcTimerName,
+                                      ثابت TickType_t x_Timer_Period_اندريون_Ticks,
+                                      ثابت UBaseType_t uxAutoReload,
+                                      فراغ * ثابت pvTimerID,
                                       TimerCallbackFunction_t pxCallbackFunction,
-                                      StaticTimer_t * pxTimerBuffer ) FREERTOS_SYSTEM_CALL;
-void * MPU_pvTimerGetTimerID( const TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
-void MPU_vTimerSetTimerID( TimerHandle_t xTimer,
-                           void * pvNewID ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTimerIsTimerActive( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
-TaskHandle_t MPU_xTimerGetTimerDaemonTaskHandle( void ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTimerPendFunctionCall( PendedFunction_t xFunctionToPend,
-                                       void * pvParameter1,
+                                      StaticTimer_t * px_Timer_بفر ) FREERTOS_SYSTEM_CALL;
+فراغ * MPU_pvTimerGetTimerID( ثابت TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_v_Timer_سيٽ_Timer_ID( TimerHandle_t xTimer,
+                           فراغ * pvNewID ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_x_Timer_Is_Timer_سرگرم( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
+TaskHandle_t MPU_xTimerGetTimerDaemonTaskHandle( فراغ ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_xTimerPendFunctionCall( PendedFunction_t x_Function_منزل_Pend,
+                                       فراغ * pvParameter1,
                                        uint32_t ulParameter2,
-                                       TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-const char * MPU_pcTimerGetName( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
-void MPU_vTimerSetReloadMode( TimerHandle_t xTimer,
-                              const UBaseType_t uxAutoReload ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxTimerGetReloadMode( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
+                                       TickType_t x_Ticks_منزل_Wait ) FREERTOS_SYSTEM_CALL;
+ثابت حرف * MPU_pcTimerGetName( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_v_Timer_سيٽ_Reload_گهڻائي( TimerHandle_t xTimer,
+                              ثابت UBaseType_t uxAutoReload ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Timer_Get_Reload_گهڻائي( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
 TickType_t MPU_xTimerGetPeriod( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
-TickType_t MPU_xTimerGetExpiryTime( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTimerCreateTimerTask( void ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xTimerGenericCommand( TimerHandle_t xTimer,
-                                     const BaseType_t xCommandID,
-                                     const TickType_t xOptionalValue,
-                                     BaseType_t * const pxHigherPriorityTaskWoken,
-                                     const TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
+TickType_t MPU_x_Timer_Get_Expiry_وقت( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_xTimerCreateTimerTask( فراغ ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_xTimerGenericCommand( TimerHandle_t xTimer,
+                                     ثابت بنياد_Type_t xCommandID,
+                                     ثابت TickType_t x_Optional_قدر,
+                                     بنياد_Type_t * ثابت px_Higher_ترجيح_Task_Woken,
+                                     ثابت TickType_t x_Ticks_منزل_Wait ) FREERTOS_SYSTEM_CALL;
 
 /* MPU versions of event_group.h API functions. */
-EventGroupHandle_t MPU_xEventGroupCreate( void ) FREERTOS_SYSTEM_CALL;
-EventGroupHandle_t MPU_xEventGroupCreateStatic( StaticEventGroup_t * pxEventGroupBuffer ) FREERTOS_SYSTEM_CALL;
-EventBits_t MPU_xEventGroupWaitBits( EventGroupHandle_t xEventGroup,
-                                     const EventBits_t uxBitsToWaitFor,
-                                     const BaseType_t xClearOnExit,
-                                     const BaseType_t xWaitForAllBits,
-                                     TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-EventBits_t MPU_xEventGroupClearBits( EventGroupHandle_t xEventGroup,
-                                      const EventBits_t uxBitsToClear ) FREERTOS_SYSTEM_CALL;
-EventBits_t MPU_xEventGroupSetBits( EventGroupHandle_t xEventGroup,
-                                    const EventBits_t uxBitsToSet ) FREERTOS_SYSTEM_CALL;
-EventBits_t MPU_xEventGroupSync( EventGroupHandle_t xEventGroup,
-                                 const EventBits_t uxBitsToSet,
-                                 const EventBits_t uxBitsToWaitFor,
-                                 TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-void MPU_vEventGroupDelete( EventGroupHandle_t xEventGroup ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxEventGroupGetNumber( void * xEventGroup ) FREERTOS_SYSTEM_CALL;
+Event_گروهه_Handle_t MPU_x_Event_گروهه_Create( فراغ ) FREERTOS_SYSTEM_CALL;
+Event_گروهه_Handle_t MPU_x_Event_گروهه_Create_Static( Static_Event_گروهه_t * px_Event_گروهه_بفر ) FREERTOS_SYSTEM_CALL;
+Event_بٽ_t MPU_x_Event_گروهه_Wait_بٽ( Event_گروهه_Handle_t x_Event_گروهه,
+                                     ثابت Event_بٽ_t ux_بٽ_منزل_Wait_For,
+                                     ثابت بنياد_Type_t xClearOnExit,
+                                     ثابت بنياد_Type_t x_Wait_For_All_بٽ,
+                                     TickType_t x_Ticks_منزل_Wait ) FREERTOS_SYSTEM_CALL;
+Event_بٽ_t MPU_x_Event_گروهه_Clear_بٽ( Event_گروهه_Handle_t x_Event_گروهه,
+                                      ثابت Event_بٽ_t ux_بٽ_منزل_Clear ) FREERTOS_SYSTEM_CALL;
+Event_بٽ_t MPU_x_Event_گروهه_سيٽ_بٽ( Event_گروهه_Handle_t x_Event_گروهه,
+                                    ثابت Event_بٽ_t ux_بٽ_منزل_سيٽ ) FREERTOS_SYSTEM_CALL;
+Event_بٽ_t MPU_x_Event_گروهه_Sync( Event_گروهه_Handle_t x_Event_گروهه,
+                                 ثابت Event_بٽ_t ux_بٽ_منزل_سيٽ,
+                                 ثابت Event_بٽ_t ux_بٽ_منزل_Wait_For,
+                                 TickType_t x_Ticks_منزل_Wait ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_v_Event_گروهه_Delete( Event_گروهه_Handle_t x_Event_گروهه ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Event_گروهه_Get_عدد( فراغ * x_Event_گروهه ) FREERTOS_SYSTEM_CALL;
 
 /* MPU versions of message/stream_buffer.h API functions. */
-size_t MPU_xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
-                              const void * pvTxData,
-                              size_t xDataLengthBytes,
-                              TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-size_t MPU_xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
-                                 void * pvRxData,
-                                 size_t xBufferLengthBytes,
-                                 TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-size_t MPU_xStreamBufferNextMessageLengthBytes( StreamBufferHandle_t xStreamBuffer ) FREERTOS_SYSTEM_CALL;
-void MPU_vStreamBufferDelete( StreamBufferHandle_t xStreamBuffer ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xStreamBufferIsFull( StreamBufferHandle_t xStreamBuffer ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xStreamBufferIsEmpty( StreamBufferHandle_t xStreamBuffer ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xStreamBufferReset( StreamBufferHandle_t xStreamBuffer ) FREERTOS_SYSTEM_CALL;
-size_t MPU_xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer ) FREERTOS_SYSTEM_CALL;
-size_t MPU_xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer ) FREERTOS_SYSTEM_CALL;
-BaseType_t MPU_xStreamBufferSetTriggerLevel( StreamBufferHandle_t xStreamBuffer,
+size_t MPU_x_وهڪرو_بفر_Send( وهڪرو_بفر_Handle_t x_وهڪرو_بفر,
+                              ثابت فراغ * pv_Tx_معلومات,
+                              size_t x_معلومات_ڊيگهائي_بائيٽون,
+                              TickType_t x_Ticks_منزل_Wait ) FREERTOS_SYSTEM_CALL;
+size_t MPU_x_وهڪرو_بفر_Receive( وهڪرو_بفر_Handle_t x_وهڪرو_بفر,
+                                 فراغ * pv_Rx_معلومات,
+                                 size_t x_بفر_ڊيگهائي_بائيٽون,
+                                 TickType_t x_Ticks_منزل_Wait ) FREERTOS_SYSTEM_CALL;
+size_t MPU_x_وهڪرو_بفر_ايندڙ_پيغام_ڊيگهائي_بائيٽون( وهڪرو_بفر_Handle_t x_وهڪرو_بفر ) FREERTOS_SYSTEM_CALL;
+فراغ MPU_v_وهڪرو_بفر_Delete( وهڪرو_بفر_Handle_t x_وهڪرو_بفر ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_x_وهڪرو_بفر_Is_ڀريل( وهڪرو_بفر_Handle_t x_وهڪرو_بفر ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_x_وهڪرو_بفر_Is_خالي_جايون( وهڪرو_بفر_Handle_t x_وهڪرو_بفر ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_x_وهڪرو_بفر_Reset( وهڪرو_بفر_Handle_t x_وهڪرو_بفر ) FREERTOS_SYSTEM_CALL;
+size_t MPU_x_وهڪرو_بفر_Spaces_موجود( وهڪرو_بفر_Handle_t x_وهڪرو_بفر ) FREERTOS_SYSTEM_CALL;
+size_t MPU_x_وهڪرو_بفر_بائيٽون_موجود( وهڪرو_بفر_Handle_t x_وهڪرو_بفر ) FREERTOS_SYSTEM_CALL;
+بنياد_Type_t MPU_x_وهڪرو_بفر_سيٽ_Trigger_Level( وهڪرو_بفر_Handle_t x_وهڪرو_بفر,
                                              size_t xTriggerLevel ) FREERTOS_SYSTEM_CALL;
-StreamBufferHandle_t MPU_xStreamBufferGenericCreate( size_t xBufferSizeBytes,
-                                                     size_t xTriggerLevelBytes,
-                                                     BaseType_t xIsMessageBuffer,
-                                                     StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                                     StreamBufferCallbackFunction_t pxReceiveCompletedCallback ) FREERTOS_SYSTEM_CALL;
-StreamBufferHandle_t MPU_xStreamBufferGenericCreateStatic( size_t xBufferSizeBytes,
-                                                           size_t xTriggerLevelBytes,
-                                                           BaseType_t xIsMessageBuffer,
-                                                           uint8_t * const pucStreamBufferStorageArea,
-                                                           StaticStreamBuffer_t * const pxStaticStreamBuffer,
-                                                           StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                                           StreamBufferCallbackFunction_t pxReceiveCompletedCallback ) FREERTOS_SYSTEM_CALL;
+وهڪرو_بفر_Handle_t MPU_x_وهڪرو_بفر_Generic_Create( size_t x_بفر_سائيز_بائيٽون,
+                                                     size_t x_Trigger_Level_بائيٽون,
+                                                     بنياد_Type_t x_Is_پيغام_بفر,
+                                                     وهڪرو_بفر_Callback_Function_t pxSendCompletedCallback,
+                                                     وهڪرو_بفر_Callback_Function_t pxReceiveCompletedCallback ) FREERTOS_SYSTEM_CALL;
+وهڪرو_بفر_Handle_t MPU_x_وهڪرو_بفر_Generic_Create_Static( size_t x_بفر_سائيز_بائيٽون,
+                                                           size_t x_Trigger_Level_بائيٽون,
+                                                           بنياد_Type_t x_Is_پيغام_بفر,
+                                                           uint8_t * ثابت puc_وهڪرو_بفر_Storage_Area,
+                                                           Static_وهڪرو_بفر_t * ثابت px_Static_وهڪرو_بفر,
+                                                           وهڪرو_بفر_Callback_Function_t pxSendCompletedCallback,
+                                                           وهڪرو_بفر_Callback_Function_t pxReceiveCompletedCallback ) FREERTOS_SYSTEM_CALL;
 
 
 
-#endif /* MPU_PROTOTYPES_H */
+#جيڪڏهن_پورو /* MPU_PROTOTYPES_H */

@@ -27,7 +27,7 @@
 use_hwlp:
     li   a1, 0
     mv   t0, a0
-    esp.lp.setup 0, t0, end
+    esp.lp.setup 0, t0, پڇاڙي
     addi a1, a1, 1
     addi a1, a1, 1
     addi a1, a1, 1
@@ -43,7 +43,7 @@ use_hwlp:
     addi a1, a1, 1
     addi a1, a1, 1
     addi a1, a1, 1
-end:
+پڇاڙي:
     addi a1, a1, 1
     mv   a0, a1
     ret
@@ -109,7 +109,7 @@ use_hwlp_irq:
  *
  *        The full set of constraints for the hwloop is:
  *          1. the loop start (esp.lp.setup / first instruction) is 4-byte aligned;
- *          2. the last executed loop instruction is 4-byte aligned and NOT a
+ *          2. the last executed loop instruction is 4-byte aligned and ليس a
  *             compressed (16-bit) instruction;
  *          3. the loop body has at least six 32-bit instructions or twelve
  *             16-bit ones; for a mix, the body must exceed 6*4 = 24 bytes;
@@ -117,7 +117,7 @@ use_hwlp_irq:
  *
  *        This routine VIOLATES (1) and (2): a c.nop before esp.lp.setup shifts
  *        the whole loop by 2 bytes, so both the first and the last loop
- *        instruction are NOT 4-byte aligned. Constraints (3) and (4) are kept
+ *        instruction are ليس 4-byte aligned. Constraints (3) and (4) are kept
  *        satisfied (>6 plain 32-bit instructions, no coprocessor instruction),
  *        to isolate misalignment as the sole cause. The loop also pends a
  *        from-CPU interrupt at its entry and exit boundaries; the ISR arrives a
@@ -137,7 +137,7 @@ use_hwlp_irq:
 use_hwlp_broken:
     li     t1, 0                    /* result accumulator */
     mv     t0, a0                   /* loop count */
-    .short 0x0001                   /* c.nop: 2-byte shift -> loop start (and all body) NOT 4-aligned */
+    .short 0x0001                   /* c.nop: 2-byte shift -> loop start (and all body) ليس 4-aligned */
     esp.lp.setup 0, t0, .Lbroken_end
     sw     a2, 0(a1)                /* pend IRQ at loop entry (ISR a few cycles later) */
     addi   t1, t1, 1
@@ -150,7 +150,7 @@ use_hwlp_broken:
     addi   t1, t1, 1
     sw     a2, 0(a1)                /* pend IRQ at loop-exit boundary (ISR a few cycles later) */
 .Lbroken_end:
-    addi   t1, t1, 1               /* last loop instruction, deliberately NOT 4-byte aligned */
+    addi   t1, t1, 1               /* last loop instruction, deliberately ليس 4-byte aligned */
     mv     a0, t1
     ret
     .size use_hwlp_broken, .-use_hwlp_broken

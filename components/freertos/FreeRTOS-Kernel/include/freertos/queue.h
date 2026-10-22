@@ -31,57 +31,57 @@
  */
 
 
-#ifndef QUEUE_H
-#define QUEUE_H
+#جيڪڏهن_وصف_نه_ٿيل قطار_H
+#وصف_ڪريو قطار_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h" must appear in source files before "include queue.h"
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INC_FREERTOS_H
+    #غلطي "include FreeRTOS.h" must appear اندريون ذريعو files before "include queue.h"
+#جيڪڏهن_پورو
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#جيڪڏهن_وصف_ٿيل __cplusplus
+    خارجي "C" {
+#جيڪڏهن_پورو
 /* *INDENT-ON* */
 
-#include "task.h"
+#ضمن "task.h"
 
 /**
  * Type by which queues are referenced.  For example, a call to xQueueCreate()
  * returns an QueueHandle_t variable that can then be used as a parameter to
  * xQueueSend(), xQueueReceive(), etc.
  */
-struct QueueDefinition; /* Using old naming convention so as not to break kernel aware debuggers. */
-typedef struct QueueDefinition   * QueueHandle_t;
+بنية قطار_Definition; /* Using old naming convention so as not to break kernel aware debuggers. */
+تعريفنوع بنية قطار_Definition   * قطار_Handle_t;
 
 /**
  * Type by which queue sets are referenced.  For example, a call to
  * xQueueCreateSet() returns an xQueueSet variable that can then be used as a
  * parameter to xQueueSelectFromSet(), xQueueAddToSet(), etc.
  */
-typedef struct QueueDefinition   * QueueSetHandle_t;
+تعريفنوع بنية قطار_Definition   * قطار_سيٽ_Handle_t;
 
 /**
  * Queue sets can contain both queues and semaphores, so the
  * QueueSetMemberHandle_t is defined as a type to be used where a parameter or
  * return value can be either an QueueHandle_t or an SemaphoreHandle_t.
  */
-typedef struct QueueDefinition   * QueueSetMemberHandle_t;
+تعريفنوع بنية قطار_Definition   * قطار_سيٽ_Member_Handle_t;
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
 
 /* For internal use only. */
-#define queueSEND_TO_BACK                     ( ( BaseType_t ) 0 )
-#define queueSEND_TO_FRONT                    ( ( BaseType_t ) 1 )
-#define queueOVERWRITE                        ( ( BaseType_t ) 2 )
+#وصف_ڪريو قطار_SEND_منزل_پٺ                     ( ( بنياد_Type_t ) 0 )
+#وصف_ڪريو قطار_SEND_منزل_FRONT                    ( ( بنياد_Type_t ) 1 )
+#وصف_ڪريو قطار_OVERWRITE                        ( ( بنياد_Type_t ) 2 )
 
 /* For internal use only.  These definitions *must* match those in queue.c. */
-#define queueQUEUE_TYPE_BASE                  ( ( uint8_t ) 0U )
-#define queueQUEUE_TYPE_SET                   ( ( uint8_t ) 0U )
-#define queueQUEUE_TYPE_MUTEX                 ( ( uint8_t ) 1U )
-#define queueQUEUE_TYPE_COUNTING_SEMAPHORE    ( ( uint8_t ) 2U )
-#define queueQUEUE_TYPE_BINARY_SEMAPHORE      ( ( uint8_t ) 3U )
-#define queueQUEUE_TYPE_RECURSIVE_MUTEX       ( ( uint8_t ) 4U )
+#وصف_ڪريو قطار_قطار_TYPE_بنياد                  ( ( uint8_t ) 0U )
+#وصف_ڪريو قطار_قطار_TYPE_سيٽ                   ( ( uint8_t ) 0U )
+#وصف_ڪريو قطار_قطار_TYPE_MUTEX                 ( ( uint8_t ) 1U )
+#وصف_ڪريو قطار_قطار_TYPE_COUNTING_SEMAPHORE    ( ( uint8_t ) 2U )
+#وصف_ڪريو قطار_قطار_TYPE_ٻٽو_SEMAPHORE      ( ( uint8_t ) 3U )
+#وصف_ڪريو قطار_قطار_TYPE_RECURSIVE_MUTEX       ( ( uint8_t ) 4U )
 
 /** @endcond */
 
@@ -145,9 +145,9 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * @endcode
  * \ingroup QueueManagement
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    #define xQueueCreate( uxQueueLength, uxItemSize )    xQueueGenericCreate( ( uxQueueLength ), ( uxItemSize ), ( queueQUEUE_TYPE_BASE ) )
-#endif
+#إذا ( config_SUPPORT_DYNAMIC_ورهاست == 1 )
+    #وصف_ڪريو x_قطار_Create( ux_قطار_ڊيگهائي, ux_شي_سائيز )    x_قطار_Generic_Create( ( ux_قطار_ڊيگهائي ), ( ux_شي_سائيز ), ( قطار_قطار_TYPE_بنياد ) )
+#جيڪڏهن_پورو
 
 /**
  *
@@ -221,9 +221,9 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * @endcode
  * \ingroup QueueManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xQueueCreateStatic( uxQueueLength, uxItemSize, pucQueueStorage, pxQueueBuffer )    xQueueGenericCreateStatic( ( uxQueueLength ), ( uxItemSize ), ( pucQueueStorage ), ( pxQueueBuffer ), ( queueQUEUE_TYPE_BASE ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#إذا ( config_SUPPORT_STATIC_ورهاست == 1 )
+    #وصف_ڪريو x_قطار_Create_Static( ux_قطار_ڊيگهائي, ux_شي_سائيز, puc_قطار_Storage, px_قطار_بفر )    x_قطار_Generic_Create_Static( ( ux_قطار_ڊيگهائي ), ( ux_شي_سائيز ), ( puc_قطار_Storage ), ( px_قطار_بفر ), ( قطار_قطار_TYPE_بنياد ) )
+#جيڪڏهن_پورو /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  *
@@ -243,9 +243,9 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  *
  * \ingroup QueueManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xQueueGetStaticBuffers( xQueue, ppucQueueStorage, ppxStaticQueue )    xQueueGenericGetStaticBuffers( ( xQueue ), ( ppucQueueStorage ), ( ppxStaticQueue ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#إذا ( config_SUPPORT_STATIC_ورهاست == 1 )
+    #وصف_ڪريو x_قطار_Get_Static_Buffers( x_قطار, ppuc_قطار_Storage, ppx_Static_قطار )    x_قطار_Generic_Get_Static_Buffers( ( x_قطار ), ( ppuc_قطار_Storage ), ( ppx_Static_قطار ) )
+#جيڪڏهن_پورو /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  *
@@ -316,8 +316,8 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * @endcode
  * \ingroup QueueManagement
  */
-#define xQueueSendToFront( xQueue, pvItemToQueue, xTicksToWait ) \
-    xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_FRONT )
+#وصف_ڪريو x_قطار_Send_منزل_Front( x_قطار, pv_شي_منزل_قطار, x_Ticks_منزل_Wait ) \
+    x_قطار_Generic_Send( ( x_قطار ), ( pv_شي_منزل_قطار ), ( x_Ticks_منزل_Wait ), قطار_SEND_منزل_FRONT )
 
 /**
  *
@@ -390,8 +390,8 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * @endcode
  * \ingroup QueueManagement
  */
-#define xQueueSendToBack( xQueue, pvItemToQueue, xTicksToWait ) \
-    xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_BACK )
+#وصف_ڪريو x_قطار_Send_منزل_پٺ( x_قطار, pv_شي_منزل_قطار, x_Ticks_منزل_Wait ) \
+    x_قطار_Generic_Send( ( x_قطار ), ( pv_شي_منزل_قطار ), ( x_Ticks_منزل_Wait ), قطار_SEND_منزل_پٺ )
 
 /**
  *
@@ -466,8 +466,8 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * @endcode
  * \ingroup QueueManagement
  */
-#define xQueueSend( xQueue, pvItemToQueue, xTicksToWait ) \
-    xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_BACK )
+#وصف_ڪريو x_قطار_Send( x_قطار, pv_شي_منزل_قطار, x_Ticks_منزل_Wait ) \
+    x_قطار_Generic_Send( ( x_قطار ), ( pv_شي_منزل_قطار ), ( x_Ticks_منزل_Wait ), قطار_SEND_منزل_پٺ )
 
 /**
  *
@@ -542,8 +542,8 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * @endcode
  * \ingroup QueueManagement
  */
-#define xQueueOverwrite( xQueue, pvItemToQueue ) \
-    xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), 0, queueOVERWRITE )
+#وصف_ڪريو x_قطار_Overwrite( x_قطار, pv_شي_منزل_قطار ) \
+    x_قطار_Generic_Send( ( x_قطار ), ( pv_شي_منزل_قطار ), 0, قطار_OVERWRITE )
 
 
 /**
@@ -621,10 +621,10 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * @endcode
  * \ingroup QueueManagement
  */
-BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
-                              const void * const pvItemToQueue,
-                              TickType_t xTicksToWait,
-                              const BaseType_t xCopyPosition ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_قطار_Generic_Send( قطار_Handle_t x_قطار,
+                              ثابت فراغ * ثابت pv_شي_منزل_قطار,
+                              TickType_t x_Ticks_منزل_Wait,
+                              ثابت بنياد_Type_t xCopyPosition ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -710,9 +710,9 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue,
  * @endcode
  * \ingroup QueueManagement
  */
-BaseType_t xQueuePeek( QueueHandle_t xQueue,
-                       void * const pvBuffer,
-                       TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_قطار_Peek( قطار_Handle_t x_قطار,
+                       فراغ * ثابت pv_بفر,
+                       TickType_t x_Ticks_منزل_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -738,8 +738,8 @@ BaseType_t xQueuePeek( QueueHandle_t xQueue,
  *
  * \ingroup QueueManagement
  */
-BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue,
-                              void * const pvBuffer ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_قطار_Peek_From_ISR( قطار_Handle_t x_قطار,
+                              فراغ * ثابت pv_بفر ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -822,9 +822,9 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue,
  * @endcode
  * \ingroup QueueManagement
  */
-BaseType_t xQueueReceive( QueueHandle_t xQueue,
-                          void * const pvBuffer,
-                          TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_قطار_Receive( قطار_Handle_t x_قطار,
+                          فراغ * ثابت pv_بفر,
+                          TickType_t x_Ticks_منزل_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -836,7 +836,7 @@ BaseType_t xQueueReceive( QueueHandle_t xQueue,
  *
  * \ingroup QueueManagement
  */
-UBaseType_t uxQueueMessagesWaiting( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_قطار_Messages_انتظار( ثابت قطار_Handle_t x_قطار ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -850,7 +850,7 @@ UBaseType_t uxQueueMessagesWaiting( const QueueHandle_t xQueue ) PRIVILEGED_FUNC
  *
  * \ingroup QueueManagement
  */
-UBaseType_t uxQueueSpacesAvailable( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_قطار_Spaces_موجود( ثابت قطار_Handle_t x_قطار ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -861,7 +861,7 @@ UBaseType_t uxQueueSpacesAvailable( const QueueHandle_t xQueue ) PRIVILEGED_FUNC
  *
  * \ingroup QueueManagement
  */
-void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+فراغ v_قطار_Delete( قطار_Handle_t x_قطار ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -922,8 +922,8 @@ void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
  *
  * \ingroup QueueManagement
  */
-#define xQueueSendToFrontFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken ) \
-    xQueueGenericSendFromISR( ( xQueue ), ( pvItemToQueue ), ( pxHigherPriorityTaskWoken ), queueSEND_TO_FRONT )
+#وصف_ڪريو x_قطار_Send_منزل_Front_From_ISR( x_قطار, pv_شي_منزل_قطار, px_Higher_ترجيح_Task_Woken ) \
+    x_قطار_Generic_Send_From_ISR( ( x_قطار ), ( pv_شي_منزل_قطار ), ( px_Higher_ترجيح_Task_Woken ), قطار_SEND_منزل_FRONT )
 
 
 /**
@@ -985,8 +985,8 @@ void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
  *
  * \ingroup QueueManagement
  */
-#define xQueueSendToBackFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken ) \
-    xQueueGenericSendFromISR( ( xQueue ), ( pvItemToQueue ), ( pxHigherPriorityTaskWoken ), queueSEND_TO_BACK )
+#وصف_ڪريو x_قطار_Send_منزل_پٺ_From_ISR( x_قطار, pv_شي_منزل_قطار, px_Higher_ترجيح_Task_Woken ) \
+    x_قطار_Generic_Send_From_ISR( ( x_قطار ), ( pv_شي_منزل_قطار ), ( px_Higher_ترجيح_Task_Woken ), قطار_SEND_منزل_پٺ )
 
 /**
  *
@@ -1064,8 +1064,8 @@ void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
  * @endcode
  * \ingroup QueueManagement
  */
-#define xQueueOverwriteFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken ) \
-    xQueueGenericSendFromISR( ( xQueue ), ( pvItemToQueue ), ( pxHigherPriorityTaskWoken ), queueOVERWRITE )
+#وصف_ڪريو x_قطار_Overwrite_From_ISR( x_قطار, pv_شي_منزل_قطار, px_Higher_ترجيح_Task_Woken ) \
+    x_قطار_Generic_Send_From_ISR( ( x_قطار ), ( pv_شي_منزل_قطار ), ( px_Higher_ترجيح_Task_Woken ), قطار_OVERWRITE )
 
 /**
  *
@@ -1130,8 +1130,8 @@ void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
  *
  * \ingroup QueueManagement
  */
-#define xQueueSendFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken ) \
-    xQueueGenericSendFromISR( ( xQueue ), ( pvItemToQueue ), ( pxHigherPriorityTaskWoken ), queueSEND_TO_BACK )
+#وصف_ڪريو x_قطار_Send_From_ISR( x_قطار, pv_شي_منزل_قطار, px_Higher_ترجيح_Task_Woken ) \
+    x_قطار_Generic_Send_From_ISR( ( x_قطار ), ( pv_شي_منزل_قطار ), ( px_Higher_ترجيح_Task_Woken ), قطار_SEND_منزل_پٺ )
 
 /**
  *
@@ -1200,12 +1200,12 @@ void vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
  *
  * \ingroup QueueManagement
  */
-BaseType_t xQueueGenericSendFromISR( QueueHandle_t xQueue,
-                                     const void * const pvItemToQueue,
-                                     BaseType_t * const pxHigherPriorityTaskWoken,
-                                     const BaseType_t xCopyPosition ) PRIVILEGED_FUNCTION;
-BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue,
-                              BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_قطار_Generic_Send_From_ISR( قطار_Handle_t x_قطار,
+                                     ثابت فراغ * ثابت pv_شي_منزل_قطار,
+                                     بنياد_Type_t * ثابت px_Higher_ترجيح_Task_Woken,
+                                     ثابت بنياد_Type_t xCopyPosition ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_قطار_Give_From_ISR( قطار_Handle_t x_قطار,
+                              بنياد_Type_t * ثابت px_Higher_ترجيح_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /**
  *
@@ -1285,9 +1285,9 @@ BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue,
  * @endcode
  * \ingroup QueueManagement
  */
-BaseType_t xQueueReceiveFromISR( QueueHandle_t xQueue,
-                                 void * const pvBuffer,
-                                 BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_قطار_Receive_From_ISR( قطار_Handle_t x_قطار,
+                                 فراغ * ثابت pv_بفر,
+                                 بنياد_Type_t * ثابت px_Higher_ترجيح_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /**
  * Queries a queue to determine if the queue is empty. This function should only be used in an ISR.
@@ -1295,7 +1295,7 @@ BaseType_t xQueueReceiveFromISR( QueueHandle_t xQueue,
  * @param xQueue The handle of the queue being queried
  * @return pdFALSE if the queue is not empty, or pdTRUE if the queue is empty.
  */
-BaseType_t xQueueIsQueueEmptyFromISR( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_قطار_Is_قطار_خالي_جايون_From_ISR( ثابت قطار_Handle_t x_قطار ) PRIVILEGED_FUNCTION;
 
 /**
  * Queries a queue to determine if the queue is full. This function should only be used in an ISR.
@@ -1303,7 +1303,7 @@ BaseType_t xQueueIsQueueEmptyFromISR( const QueueHandle_t xQueue ) PRIVILEGED_FU
  * @param xQueue The handle of the queue being queried
  * @return pdFALSE if the queue is not full, or pdTRUE if the queue is full.
  */
-BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_قطار_Is_قطار_ڀريل_From_ISR( ثابت قطار_Handle_t x_قطار ) PRIVILEGED_FUNCTION;
 
 /**
  * A version of uxQueueMessagesWaiting() that can be called from an ISR. Return the number of messages stored in a queue.
@@ -1311,7 +1311,7 @@ BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue ) PRIVILEGED_FUN
  * @param xQueue A handle to the queue being queried.
  * @return The number of messages available in the queue.
  */
-UBaseType_t uxQueueMessagesWaitingFromISR( const QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_قطار_Messages_انتظار_From_ISR( ثابت قطار_Handle_t x_قطار ) PRIVILEGED_FUNCTION;
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
 
@@ -1324,44 +1324,44 @@ UBaseType_t uxQueueMessagesWaitingFromISR( const QueueHandle_t xQueue ) PRIVILEG
  * should not be called directly from application code.  Instead use the macro
  * wrappers defined within croutine.h.
  */
-BaseType_t xQueueCRSendFromISR( QueueHandle_t xQueue,
-                                const void * pvItemToQueue,
-                                BaseType_t xCoRoutinePreviouslyWoken );
-BaseType_t xQueueCRReceiveFromISR( QueueHandle_t xQueue,
-                                   void * pvBuffer,
-                                   BaseType_t * pxTaskWoken );
-BaseType_t xQueueCRSend( QueueHandle_t xQueue,
-                         const void * pvItemToQueue,
-                         TickType_t xTicksToWait );
-BaseType_t xQueueCRReceive( QueueHandle_t xQueue,
-                            void * pvBuffer,
-                            TickType_t xTicksToWait );
+بنياد_Type_t x_قطار_CRSend_From_ISR( قطار_Handle_t x_قطار,
+                                ثابت فراغ * pv_شي_منزل_قطار,
+                                بنياد_Type_t xCoRoutinePreviouslyWoken );
+بنياد_Type_t x_قطار_CRReceive_From_ISR( قطار_Handle_t x_قطار,
+                                   فراغ * pv_بفر,
+                                   بنياد_Type_t * pxTaskWoken );
+بنياد_Type_t x_قطار_CRSend( قطار_Handle_t x_قطار,
+                         ثابت فراغ * pv_شي_منزل_قطار,
+                         TickType_t x_Ticks_منزل_Wait );
+بنياد_Type_t x_قطار_CRReceive( قطار_Handle_t x_قطار,
+                            فراغ * pv_بفر,
+                            TickType_t x_Ticks_منزل_Wait );
 
 /*
  * For internal use only.  Use xSemaphoreCreateMutex(),
  * xSemaphoreCreateCounting() or xSemaphoreGetMutexHolder() instead of calling
  * these functions directly.
  */
-QueueHandle_t xQueueCreateMutex( const uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
-QueueHandle_t xQueueCreateMutexStatic( const uint8_t ucQueueType,
-                                       StaticQueue_t * pxStaticQueue ) PRIVILEGED_FUNCTION;
-QueueHandle_t xQueueCreateCountingSemaphore( const UBaseType_t uxMaxCount,
-                                             const UBaseType_t uxInitialCount ) PRIVILEGED_FUNCTION;
-QueueHandle_t xQueueCreateCountingSemaphoreStatic( const UBaseType_t uxMaxCount,
-                                                   const UBaseType_t uxInitialCount,
-                                                   StaticQueue_t * pxStaticQueue ) PRIVILEGED_FUNCTION;
-BaseType_t xQueueSemaphoreTake( QueueHandle_t xQueue,
-                                TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
-TaskHandle_t xQueueGetMutexHolder( QueueHandle_t xSemaphore ) PRIVILEGED_FUNCTION;
-TaskHandle_t xQueueGetMutexHolderFromISR( QueueHandle_t xSemaphore ) PRIVILEGED_FUNCTION;
+قطار_Handle_t x_قطار_Create_Mutex( ثابت uint8_t uc_قطار_Type ) PRIVILEGED_FUNCTION;
+قطار_Handle_t x_قطار_Create_Mutex_Static( ثابت uint8_t uc_قطار_Type,
+                                       Static_قطار_t * px_Static_قطار ) PRIVILEGED_FUNCTION;
+قطار_Handle_t x_قطار_Create_Counting_Semaphore( ثابت UBaseType_t ux_Max_ڳڻپ,
+                                             ثابت UBaseType_t ux_Initial_ڳڻپ ) PRIVILEGED_FUNCTION;
+قطار_Handle_t x_قطار_Create_Counting_Semaphore_Static( ثابت UBaseType_t ux_Max_ڳڻپ,
+                                                   ثابت UBaseType_t ux_Initial_ڳڻپ,
+                                                   Static_قطار_t * px_Static_قطار ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_قطار_Semaphore_Take( قطار_Handle_t x_قطار,
+                                TickType_t x_Ticks_منزل_Wait ) PRIVILEGED_FUNCTION;
+TaskHandle_t x_قطار_Get_Mutex_Holder( قطار_Handle_t xSemaphore ) PRIVILEGED_FUNCTION;
+TaskHandle_t x_قطار_Get_Mutex_Holder_From_ISR( قطار_Handle_t xSemaphore ) PRIVILEGED_FUNCTION;
 
 /*
  * For internal use only.  Use xSemaphoreTakeMutexRecursive() or
  * xSemaphoreGiveMutexRecursive() instead of calling these functions directly.
  */
-BaseType_t xQueueTakeMutexRecursive( QueueHandle_t xMutex,
-                                     TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
-BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_قطار_Take_Mutex_Recursive( قطار_Handle_t xMutex,
+                                     TickType_t x_Ticks_منزل_Wait ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_قطار_Give_Mutex_Recursive( قطار_Handle_t xMutex ) PRIVILEGED_FUNCTION;
 
 /** @endcond */
 
@@ -1369,7 +1369,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * Reset a queue back to its original empty state.  The return value is now
  * obsolete and is always set to pdPASS.
  */
-#define xQueueReset( xQueue )    xQueueGenericReset( ( xQueue ), pdFALSE )
+#وصف_ڪريو x_قطار_Reset( x_قطار )    x_قطار_Generic_Reset( ( x_قطار ), pdFALSE )
 
 /**
  * The registry is provided as a means for kernel aware debuggers to
@@ -1397,10 +1397,10 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * stores a pointer to the string - so the string must be persistent (global or
  * preferably in ROM/Flash), not on the stack.
  */
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
-    void vQueueAddToRegistry( QueueHandle_t xQueue,
-                              const char * pcQueueName ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-#endif
+#إذا ( config_قطار_REGISTRY_سائيز > 0 )
+    فراغ v_قطار_جوڙيو_منزل_Registry( قطار_Handle_t x_قطار,
+                              ثابت حرف * pc_قطار_Name ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+#جيڪڏهن_پورو
 
 /**
  * The registry is provided as a means for kernel aware debuggers to
@@ -1412,9 +1412,9 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  *
  * @param xQueue The handle of the queue being removed from the registry.
  */
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
-    void vQueueUnregisterQueue( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( config_قطار_REGISTRY_سائيز > 0 )
+    فراغ v_قطار_Unregister_قطار( قطار_Handle_t x_قطار ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /**
  * The queue registry is provided as a means for kernel aware debuggers to
@@ -1427,9 +1427,9 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * queue is returned.  If the queue is not in the registry then NULL is
  * returned.
  */
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
-    const char * pcQueueGetName( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-#endif
+#إذا ( config_قطار_REGISTRY_سائيز > 0 )
+    ثابت حرف * pc_قطار_Get_Name( قطار_Handle_t x_قطار ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+#جيڪڏهن_پورو
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
 
@@ -1438,24 +1438,24 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * allocation.  This is called by other functions and macros that create other
  * RTOS objects that use the queue structure as their base.
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    QueueHandle_t xQueueGenericCreate( const UBaseType_t uxQueueLength,
-                                       const UBaseType_t uxItemSize,
-                                       const uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( config_SUPPORT_DYNAMIC_ورهاست == 1 )
+    قطار_Handle_t x_قطار_Generic_Create( ثابت UBaseType_t ux_قطار_ڊيگهائي,
+                                       ثابت UBaseType_t ux_شي_سائيز,
+                                       ثابت uint8_t uc_قطار_Type ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /*
  * Generic version of the function used to create a queue using dynamic memory
  * allocation.  This is called by other functions and macros that create other
  * RTOS objects that use the queue structure as their base.
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    QueueHandle_t xQueueGenericCreateStatic( const UBaseType_t uxQueueLength,
-                                             const UBaseType_t uxItemSize,
-                                             uint8_t * pucQueueStorage,
-                                             StaticQueue_t * pxStaticQueue,
-                                             const uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( config_SUPPORT_STATIC_ورهاست == 1 )
+    قطار_Handle_t x_قطار_Generic_Create_Static( ثابت UBaseType_t ux_قطار_ڊيگهائي,
+                                             ثابت UBaseType_t ux_شي_سائيز,
+                                             uint8_t * puc_قطار_Storage,
+                                             Static_قطار_t * px_Static_قطار,
+                                             ثابت uint8_t uc_قطار_Type ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /*
  * Generic version of the function used to retrieve the buffers of statically
@@ -1463,11 +1463,11 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * the buffers of other statically created RTOS objects that use the queue
  * structure as their base.
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    BaseType_t xQueueGenericGetStaticBuffers( QueueHandle_t xQueue,
-                                              uint8_t ** ppucQueueStorage,
-                                              StaticQueue_t ** ppxStaticQueue ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( config_SUPPORT_STATIC_ورهاست == 1 )
+    بنياد_Type_t x_قطار_Generic_Get_Static_Buffers( قطار_Handle_t x_قطار,
+                                              uint8_t ** ppuc_قطار_Storage,
+                                              Static_قطار_t ** ppx_Static_قطار ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /** @endcond */
 
@@ -1519,7 +1519,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * @return If the queue set is created successfully then a handle to the created
  * queue set is returned.  Otherwise NULL is returned.
  */
-QueueSetHandle_t xQueueCreateSet( const UBaseType_t uxEventQueueLength ) PRIVILEGED_FUNCTION;
+قطار_سيٽ_Handle_t x_قطار_Create_سيٽ( ثابت UBaseType_t ux_Event_قطار_ڊيگهائي ) PRIVILEGED_FUNCTION;
 
 /**
  * Adds a queue or semaphore to a queue set that was previously created by a
@@ -1543,8 +1543,8 @@ QueueSetHandle_t xQueueCreateSet( const UBaseType_t uxEventQueueLength ) PRIVILE
  * queue set because it is already a member of a different queue set then pdFAIL
  * is returned.
  */
-BaseType_t xQueueAddToSet( QueueSetMemberHandle_t xQueueOrSemaphore,
-                           QueueSetHandle_t xQueueSet ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_قطار_جوڙيو_منزل_سيٽ( قطار_سيٽ_Member_Handle_t x_قطار_Or_Semaphore,
+                           قطار_سيٽ_Handle_t x_قطار_سيٽ ) PRIVILEGED_FUNCTION;
 
 /**
  * Removes a queue or semaphore from a queue set.  A queue or semaphore can only
@@ -1563,8 +1563,8 @@ BaseType_t xQueueAddToSet( QueueSetMemberHandle_t xQueueOrSemaphore,
  * then pdPASS is returned.  If the queue was not in the queue set, or the
  * queue (or semaphore) was not empty, then pdFAIL is returned.
  */
-BaseType_t xQueueRemoveFromSet( QueueSetMemberHandle_t xQueueOrSemaphore,
-                                QueueSetHandle_t xQueueSet ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_قطار_Remove_From_سيٽ( قطار_سيٽ_Member_Handle_t x_قطار_Or_Semaphore,
+                                قطار_سيٽ_Handle_t x_قطار_سيٽ ) PRIVILEGED_FUNCTION;
 
 /**
  * xQueueSelectFromSet() selects from the members of a queue set a queue or
@@ -1600,33 +1600,33 @@ BaseType_t xQueueRemoveFromSet( QueueSetMemberHandle_t xQueueOrSemaphore,
  * in the queue set that is available, or NULL if no such queue or semaphore
  * exists before before the specified block time expires.
  */
-QueueSetMemberHandle_t xQueueSelectFromSet( QueueSetHandle_t xQueueSet,
-                                            const TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+قطار_سيٽ_Member_Handle_t x_قطار_Select_From_سيٽ( قطار_سيٽ_Handle_t x_قطار_سيٽ,
+                                            ثابت TickType_t x_Ticks_منزل_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  * A version of xQueueSelectFromSet() that can be used from an ISR.
  */
-QueueSetMemberHandle_t xQueueSelectFromSetFromISR( QueueSetHandle_t xQueueSet ) PRIVILEGED_FUNCTION;
+قطار_سيٽ_Member_Handle_t x_قطار_Select_From_سيٽ_From_ISR( قطار_سيٽ_Handle_t x_قطار_سيٽ ) PRIVILEGED_FUNCTION;
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
 
 /* Not public API functions. */
-void vQueueWaitForMessageRestricted( QueueHandle_t xQueue,
-                                     TickType_t xTicksToWait,
-                                     const BaseType_t xWaitIndefinitely ) PRIVILEGED_FUNCTION;
-BaseType_t xQueueGenericReset( QueueHandle_t xQueue,
-                               BaseType_t xNewQueue ) PRIVILEGED_FUNCTION;
-void vQueueSetQueueNumber( QueueHandle_t xQueue,
-                           UBaseType_t uxQueueNumber ) PRIVILEGED_FUNCTION;
-UBaseType_t uxQueueGetQueueNumber( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
-uint8_t ucQueueGetQueueType( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+فراغ v_قطار_Wait_For_پيغام_Restricted( قطار_Handle_t x_قطار,
+                                     TickType_t x_Ticks_منزل_Wait,
+                                     ثابت بنياد_Type_t xWaitIndefinitely ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_قطار_Generic_Reset( قطار_Handle_t x_قطار,
+                               بنياد_Type_t x_New_قطار ) PRIVILEGED_FUNCTION;
+فراغ v_قطار_سيٽ_قطار_عدد( قطار_Handle_t x_قطار,
+                           UBaseType_t ux_قطار_عدد ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_قطار_Get_قطار_عدد( قطار_Handle_t x_قطار ) PRIVILEGED_FUNCTION;
+uint8_t uc_قطار_Get_قطار_Type( قطار_Handle_t x_قطار ) PRIVILEGED_FUNCTION;
 
 /** @endcond */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#جيڪڏهن_وصف_ٿيل __cplusplus
     }
-#endif
+#جيڪڏهن_پورو
 /* *INDENT-ON* */
 
-#endif /* QUEUE_H */
+#جيڪڏهن_پورو /* QUEUE_H */

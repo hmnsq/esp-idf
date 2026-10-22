@@ -31,19 +31,19 @@
  */
 
 
-#ifndef INC_TASK_H
-#define INC_TASK_H
+#جيڪڏهن_وصف_نه_ٿيل INC_TASK_H
+#وصف_ڪريو INC_TASK_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h must appear in source files before include task.h"
-#endif
+#جيڪڏهن_وصف_نه_ٿيل INC_FREERTOS_H
+    #غلطي "include FreeRTOS.h must appear in source files before include task.h"
+#جيڪڏهن_پورو
 
-#include "list.h"
+#ضمن "list.h"
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#جيڪڏهن_وصف_ٿيل __cplusplus
+    خارجي "C" {
+#جيڪڏهن_پورو
 /* *INDENT-ON* */
 
 /*-----------------------------------------------------------
@@ -57,30 +57,30 @@
  * The tskKERNEL_VERSION_MAJOR, tskKERNEL_VERSION_MINOR, tskKERNEL_VERSION_BUILD
  * values will reflect the last released version number.
  */
-#define tskKERNEL_VERSION_NUMBER       "V11.1.0"
-#define tskKERNEL_VERSION_MAJOR        11
-#define tskKERNEL_VERSION_MINOR        1
-#define tskKERNEL_VERSION_BUILD        0
+#وصف_ڪريو tsk_KERNEL_نسخو_عدد       "V11.1.0"
+#وصف_ڪريو tsk_KERNEL_نسخو_MAJOR        11
+#وصف_ڪريو tsk_KERNEL_نسخو_MINOR        1
+#وصف_ڪريو tsk_KERNEL_نسخو_BUILD        0
 
 /* MPU region parameters passed in ulParameters
  * of MemoryRegion_t struct. */
-#define tskMPU_REGION_READ_ONLY        ( 1U << 0U )
-#define tskMPU_REGION_READ_WRITE       ( 1U << 1U )
-#define tskMPU_REGION_EXECUTE_NEVER    ( 1U << 2U )
-#define tskMPU_REGION_NORMAL_MEMORY    ( 1U << 3U )
-#define tskMPU_REGION_DEVICE_MEMORY    ( 1U << 4U )
+#وصف_ڪريو tskMPU_REGION_READ_ONLY        ( 1U << 0U )
+#وصف_ڪريو tskMPU_REGION_READ_WRITE       ( 1U << 1U )
+#وصف_ڪريو tskMPU_REGION_EXECUTE_NEVER    ( 1U << 2U )
+#وصف_ڪريو tsk_MPU_REGION_عام_يادگيري    ( 1U << 3U )
+#وصف_ڪريو tsk_MPU_REGION_DEVICE_يادگيري    ( 1U << 4U )
 
 /* MPU region permissions stored in MPU settings to
  * authorize access requests. */
-#define tskMPU_READ_PERMISSION         ( 1U << 0U )
-#define tskMPU_WRITE_PERMISSION        ( 1U << 1U )
+#وصف_ڪريو tskMPU_READ_PERMISSION         ( 1U << 0U )
+#وصف_ڪريو tskMPU_WRITE_PERMISSION        ( 1U << 1U )
 
 /* The direct to task notification feature used to have only a single notification
  * per task.  Now there is an array of notifications per task that is dimensioned by
  * configTASK_NOTIFICATION_ARRAY_ENTRIES.  For backward compatibility, any use of the
  * original direct to task notification defaults to using the first index in the
  * array. */
-#define tskDEFAULT_INDEX_TO_NOTIFY     ( 0 )
+#وصف_ڪريو tsk_DEFAULT_اشاريو_منزل_NOTIFY     ( 0 )
 
 /**
  * task. h
@@ -92,18 +92,18 @@
  * \defgroup TaskHandle_t TaskHandle_t
  * \ingroup Tasks
  */
-struct tskTaskControlBlock; /* The old naming convention is used to prevent breaking kernel aware debuggers. */
-typedef struct tskTaskControlBlock         * TaskHandle_t;
-typedef const struct tskTaskControlBlock   * ConstTaskHandle_t;
+بنية tsk_Task_Control_بلاڪ; /* The old naming convention is used to prevent breaking kernel aware debuggers. */
+تعريفنوع بنية tsk_Task_Control_بلاڪ         * TaskHandle_t;
+تعريفنوع ثابت بنية tsk_Task_Control_بلاڪ   * ConstTaskHandle_t;
 
 /*
  * Defines the prototype to which the application task hook function must
  * conform.
  */
-typedef BaseType_t (* TaskHookFunction_t)( void * arg );
+تعريفنوع بنياد_Type_t (* TaskHookFunction_t)( فراغ * arg );
 
 /* Task states returned by eTaskGetState. */
-typedef enum
+تعريفنوع تعداد
 {
     eRunning = 0, /* A task is querying the state of itself, so must be running. */
     eReady,       /* The task being queried is in a ready or pending ready list. */
@@ -114,97 +114,97 @@ typedef enum
 } eTaskState;
 
 /* Actions that can be performed when vTaskNotify() is called. */
-typedef enum
+تعريفنوع تعداد
 {
     eNoAction = 0,            /* Notify the task without updating its notify value. */
-    eSetBits,                 /* Set bits in the task's notification value. */
+    e_سيٽ_بٽ,                 /* Set bits in the task's notification value. */
     eIncrement,               /* Increment the task's notification value. */
-    eSetValueWithOverwrite,   /* Set the task's notification value to a specific value even if the previous value has not yet been read by the task. */
-    eSetValueWithoutOverwrite /* Set the task's notification value if the previous value has been read by the task. */
+    e_سيٽ_قدر_With_Overwrite,   /* Set the task's notification value to a specific value even if the previous value has not yet been read by the task. */
+    e_سيٽ_قدر_Without_Overwrite /* Set the task's notification value if the previous value has been read by the task. */
 } eNotifyAction;
 
 /*
  * Used internally only.
  */
-typedef struct xTIME_OUT
+تعريفنوع بنية x_وقت_ٻاهريون
 {
-    BaseType_t xOverflowCount;
-    TickType_t xTimeOnEntering;
-} TimeOut_t;
+    بنياد_Type_t x_حد_کان_مٿي_ڳڻپ;
+    TickType_t x_وقت_On_Entering;
+} وقت_ٻاهريون_t;
 
 /*
  * Defines the memory ranges allocated to the task when an MPU is used.
  */
-typedef struct xMEMORY_REGION
+تعريفنوع بنية x_يادگيري_REGION
 {
-    void * pvBaseAddress;
-    uint32_t ulLengthInBytes;
+    فراغ * pv_بنياد_پتو;
+    uint32_t ul_ڊيگهائي_اندريون_بائيٽون;
     uint32_t ulParameters;
-} MemoryRegion_t;
+} يادگيري_Region_t;
 
 /*
  * Parameters required to create an MPU protected task.
  */
-typedef struct xTASK_PARAMETERS
+تعريفنوع بنية xTASK_PARAMETERS
 {
-    TaskFunction_t pvTaskCode;
-    const char * pcName;
-    configSTACK_DEPTH_TYPE usStackDepth;
-    void * pvParameters;
-    UBaseType_t uxPriority;
-    StackType_t * puxStackBuffer;
-    MemoryRegion_t xRegions[ portNUM_CONFIGURABLE_REGIONS ];
-    #if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
-        StaticTask_t * const pxTaskBuffer;
-    #endif
+    TaskFunction_t pv_Task_ڪوڊ;
+    ثابت حرف * pcName;
+    config_ڍير_اونهائي_TYPE us_ڍير_اونهائي;
+    فراغ * pvParameters;
+    UBaseType_t ux_ترجيح;
+    ڍير_Type_t * pux_ڍير_بفر;
+    يادگيري_Region_t xRegions[ پورٽ_انگ_CONFIGURABLE_REGIONS ];
+    #إذا ( ( پورٽ_USING_MPU_WRAPPERS == 1 ) && ( config_SUPPORT_STATIC_ورهاست == 1 ) )
+        StaticTask_t * ثابت px_Task_بفر;
+    #جيڪڏهن_پورو
 } TaskParameters_t;
 
 /* Used with the uxTaskGetSystemState() function to return the state of each task
  * in the system. */
-typedef struct xTASK_STATUS
+تعريفنوع بنية x_TASK_حالت
 {
     TaskHandle_t xHandle;                         /* The handle of the task to which the rest of the information in the structure relates. */
-    const char * pcTaskName;                      /* A pointer to the task's name.  This value will be invalid if the task was deleted since the structure was populated! */
-    UBaseType_t xTaskNumber;                      /* A number unique to the task. */
+    ثابت حرف * pcTaskName;                      /* A pointer to the task's name.  This value will be invalid if the task was deleted since the structure was populated! */
+    UBaseType_t x_Task_عدد;                      /* A number unique to the task. */
     eTaskState eCurrentState;                     /* The state in which the task existed when the structure was populated. */
-    UBaseType_t uxCurrentPriority;                /* The priority at which the task was running (may be inherited) when the structure was populated. */
-    UBaseType_t uxBasePriority;                   /* The priority to which the task will return if the task's current priority has been inherited to avoid unbounded priority inversion when obtaining a mutex.  Only valid if configUSE_MUTEXES is defined as 1 in FreeRTOSConfig.h. */
-    configRUN_TIME_COUNTER_TYPE ulRunTimeCounter; /* The total run time allocated to the task so far, as defined by the run time stats clock.  See https://www.FreeRTOS.org/rtos-run-time-stats.html.  Only valid when configGENERATE_RUN_TIME_STATS is defined as 1 in FreeRTOSConfig.h. */
-    StackType_t * pxStackBase;                    /* Points to the lowest address of the task's stack area. */
-    #if ( ( portSTACK_GROWTH > 0 ) || ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
-        StackType_t * pxTopOfStack;               /* Points to the top address of the task's stack area. */
-        StackType_t * pxEndOfStack;               /* Points to the end address of the task's stack area. */
-    #endif
-    configSTACK_DEPTH_TYPE usStackHighWaterMark;  /* The minimum amount of stack space that has remained for the task since the task was created.  The closer this value is to zero the closer the task has come to overflowing its stack. */
-    #if ( ( configUSE_CORE_AFFINITY == 1 ) && ( configNUMBER_OF_CORES > 1 ) )
-        UBaseType_t uxCoreAffinityMask;           /* The core affinity mask for the task */
-    #endif
-} TaskStatus_t;
+    UBaseType_t ux_Current_ترجيح;                /* The priority at which the task was running (may be inherited) when the structure was populated. */
+    UBaseType_t ux_بنياد_ترجيح;                   /* The priority to which the task will return if the task's current priority has been inherited to avoid unbounded priority inversion when obtaining a mutex.  Only valid if configUSE_MUTEXES is defined as 1 in FreeRTOSConfig.h. */
+    config_لاڳيتو_وقت_COUNTER_TYPE ul_لاڳيتو_وقت_Counter; /* The total run time allocated to the task so far, as defined by the run time stats clock.  See https://www.FreeRTOS.org/rtos-run-time-stats.html.  Only valid when configGENERATE_RUN_TIME_STATS is defined as 1 in FreeRTOSConfig.h. */
+    ڍير_Type_t * px_ڍير_بنياد;                    /* Points to the lowest address of the task's stack area. */
+    #إذا ( ( پورٽ_ڍير_GROWTH > 0 ) || ( config_رڪارڊ_ڍير_مٿاهون_پتو == 1 ) )
+        ڍير_Type_t * px_چوٽي_جو_ڍير;               /* Points to the top address of the task's stack area. */
+        ڍير_Type_t * px_پڇاڙي_جو_ڍير;               /* Points to the end address of the task's stack area. */
+    #جيڪڏهن_پورو
+    config_ڍير_اونهائي_TYPE us_ڍير_مٿاهون_Water_Mark;  /* The minimum amount of stack space that has remained for the task since the task was created.  The closer this value is to zero the closer the task has come to overflowing its stack. */
+    #إذا ( ( configUSE_CORE_AFFINITY == 1 ) && ( config_عدد_جو_CORES > 1 ) )
+        UBaseType_t ux_Core_Affinity_نقاب;           /* The core affinity mask for the task */
+    #جيڪڏهن_پورو
+} Task_حالت_t;
 
 /* Possible return values for eTaskConfirmSleepModeStatus(). */
-typedef enum
+تعريفنوع تعداد
 {
     eAbortSleep = 0, /* A task has been made ready or a context switch pended since portSUPPRESS_TICKS_AND_SLEEP() was called - abort entering a sleep mode. */
     eStandardSleep   /* Enter a sleep mode that will not last any longer than the expected idle time. */
-    #if ( INCLUDE_vTaskSuspend == 1 )
+    #إذا ( INCLUDE_vTaskSuspend == 1 )
         ,
-        eNoTasksWaitingTimeout /* No tasks are waiting for a timeout so it is safe to enter a sleep mode that can only be exited by an external interrupt. */
-    #endif /* INCLUDE_vTaskSuspend */
-} eSleepModeStatus;
+        e_No_Tasks_انتظار_Timeout /* No tasks are waiting for a timeout so it is safe to enter a sleep mode that can only be exited by an external interrupt. */
+    #جيڪڏهن_پورو /* INCLUDE_vTaskSuspend */
+} e_Sleep_گهڻائي_حالت;
 
 /**
  * Defines the priority used by the idle task.  This must not be modified.
  *
  * \ingroup TaskUtils
  */
-#define tskIDLE_PRIORITY    ( ( UBaseType_t ) 0U )
+#وصف_ڪريو tsk_IDLE_ترجيح    ( ( UBaseType_t ) 0U )
 
 /**
  * Defines affinity to all available cores.
  *
  * \ingroup TaskUtils
  */
-#define tskNO_AFFINITY      ( ( UBaseType_t ) -1 )
+#وصف_ڪريو tskNO_AFFINITY      ( ( UBaseType_t ) -1 )
 
 /**
  * task. h
@@ -214,7 +214,7 @@ typedef enum
  * \defgroup taskYIELD taskYIELD
  * \ingroup SchedulerControl
  */
-#define taskYIELD()                          portYIELD()
+#وصف_ڪريو taskYIELD()                          پورٽ_YIELD()
 
 /**
  * task. h
@@ -228,12 +228,12 @@ typedef enum
  * \defgroup taskENTER_CRITICAL taskENTER_CRITICAL
  * \ingroup SchedulerControl
  */
-#define taskENTER_CRITICAL()                 portENTER_CRITICAL()
-#if ( configNUMBER_OF_CORES == 1 )
-    #define taskENTER_CRITICAL_FROM_ISR()    portSET_INTERRUPT_MASK_FROM_ISR()
-#else
-    #define taskENTER_CRITICAL_FROM_ISR()    portENTER_CRITICAL_FROM_ISR()
-#endif
+#وصف_ڪريو taskENTER_CRITICAL()                 پورٽ_ENTER_CRITICAL()
+#إذا ( config_عدد_جو_CORES == 1 )
+    #وصف_ڪريو taskENTER_CRITICAL_FROM_ISR()    پورٽ_سيٽ_مداخلت_نقاب_FROM_ISR()
+#وإلا
+    #وصف_ڪريو taskENTER_CRITICAL_FROM_ISR()    پورٽ_ENTER_CRITICAL_FROM_ISR()
+#جيڪڏهن_پورو
 
 /**
  * task. h
@@ -247,12 +247,12 @@ typedef enum
  * \defgroup taskEXIT_CRITICAL taskEXIT_CRITICAL
  * \ingroup SchedulerControl
  */
-#define taskEXIT_CRITICAL()                    portEXIT_CRITICAL()
-#if ( configNUMBER_OF_CORES == 1 )
-    #define taskEXIT_CRITICAL_FROM_ISR( x )    portCLEAR_INTERRUPT_MASK_FROM_ISR( x )
-#else
-    #define taskEXIT_CRITICAL_FROM_ISR( x )    portEXIT_CRITICAL_FROM_ISR( x )
-#endif
+#وصف_ڪريو taskEXIT_CRITICAL()                    پورٽ_EXIT_CRITICAL()
+#إذا ( config_عدد_جو_CORES == 1 )
+    #وصف_ڪريو taskEXIT_CRITICAL_FROM_ISR( x )    پورٽ_CLEAR_مداخلت_نقاب_FROM_ISR( x )
+#وإلا
+    #وصف_ڪريو taskEXIT_CRITICAL_FROM_ISR( x )    پورٽ_EXIT_CRITICAL_FROM_ISR( x )
+#جيڪڏهن_پورو
 
 /**
  * task. h
@@ -262,7 +262,7 @@ typedef enum
  * \defgroup taskDISABLE_INTERRUPTS taskDISABLE_INTERRUPTS
  * \ingroup SchedulerControl
  */
-#define taskDISABLE_INTERRUPTS()    portDISABLE_INTERRUPTS()
+#وصف_ڪريو taskDISABLE_INTERRUPTS()    پورٽ_DISABLE_INTERRUPTS()
 
 /**
  * task. h
@@ -272,17 +272,17 @@ typedef enum
  * \defgroup taskENABLE_INTERRUPTS taskENABLE_INTERRUPTS
  * \ingroup SchedulerControl
  */
-#define taskENABLE_INTERRUPTS()     portENABLE_INTERRUPTS()
+#وصف_ڪريو taskENABLE_INTERRUPTS()     پورٽ_ENABLE_INTERRUPTS()
 
 /* Definitions returned by xTaskGetSchedulerState().  taskSCHEDULER_SUSPENDED is
  * 0 to generate more optimal code when configASSERT() is defined as the constant
  * is used in assert() statements. */
-#define taskSCHEDULER_SUSPENDED      ( ( BaseType_t ) 0 )
-#define taskSCHEDULER_NOT_STARTED    ( ( BaseType_t ) 1 )
-#define taskSCHEDULER_RUNNING        ( ( BaseType_t ) 2 )
+#وصف_ڪريو taskSCHEDULER_SUSPENDED      ( ( بنياد_Type_t ) 0 )
+#وصف_ڪريو taskSCHEDULER_NOT_STARTED    ( ( بنياد_Type_t ) 1 )
+#وصف_ڪريو taskSCHEDULER_RUNNING        ( ( بنياد_Type_t ) 2 )
 
 /* Checks if core ID is valid. */
-#define taskVALID_CORE_ID( xCoreID )    ( ( ( ( ( BaseType_t ) 0 <= ( xCoreID ) ) && ( ( xCoreID ) < ( BaseType_t ) configNUMBER_OF_CORES ) ) ) ? ( pdTRUE ) : ( pdFALSE ) )
+#وصف_ڪريو taskVALID_CORE_ID( xCoreID )    ( ( ( ( ( بنياد_Type_t ) 0 <= ( xCoreID ) ) && ( ( xCoreID ) < ( بنياد_Type_t ) config_عدد_جو_CORES ) ) ) ? ( pdTRUE ) : ( pdFALSE ) )
 
 /*-----------------------------------------------------------
 * TASK CREATION API
@@ -382,24 +382,24 @@ typedef enum
  * \defgroup xTaskCreate xTaskCreate
  * \ingroup Tasks
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    BaseType_t xTaskCreate( TaskFunction_t pxTaskCode,
-                            const char * const pcName,
-                            const configSTACK_DEPTH_TYPE uxStackDepth,
-                            void * const pvParameters,
-                            UBaseType_t uxPriority,
-                            TaskHandle_t * const pxCreatedTask ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( config_SUPPORT_DYNAMIC_ورهاست == 1 )
+    بنياد_Type_t xTaskCreate( TaskFunction_t px_Task_ڪوڊ,
+                            ثابت حرف * ثابت pcName,
+                            ثابت config_ڍير_اونهائي_TYPE ux_ڍير_اونهائي,
+                            فراغ * ثابت pvParameters,
+                            UBaseType_t ux_ترجيح,
+                            TaskHandle_t * ثابت pxCreatedTask ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
-#if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
-    BaseType_t xTaskCreateAffinitySet( TaskFunction_t pxTaskCode,
-                                       const char * const pcName,
-                                       const configSTACK_DEPTH_TYPE uxStackDepth,
-                                       void * const pvParameters,
-                                       UBaseType_t uxPriority,
-                                       UBaseType_t uxCoreAffinityMask,
-                                       TaskHandle_t * const pxCreatedTask ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( ( config_SUPPORT_DYNAMIC_ورهاست == 1 ) && ( config_عدد_جو_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+    بنياد_Type_t x_Task_Create_Affinity_سيٽ( TaskFunction_t px_Task_ڪوڊ,
+                                       ثابت حرف * ثابت pcName,
+                                       ثابت config_ڍير_اونهائي_TYPE ux_ڍير_اونهائي,
+                                       فراغ * ثابت pvParameters,
+                                       UBaseType_t ux_ترجيح,
+                                       UBaseType_t ux_Core_Affinity_نقاب,
+                                       TaskHandle_t * ثابت pxCreatedTask ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /**
  * task. h
@@ -509,26 +509,26 @@ typedef enum
  * \defgroup xTaskCreateStatic xTaskCreateStatic
  * \ingroup Tasks
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    TaskHandle_t xTaskCreateStatic( TaskFunction_t pxTaskCode,
-                                    const char * const pcName,
-                                    const configSTACK_DEPTH_TYPE uxStackDepth,
-                                    void * const pvParameters,
-                                    UBaseType_t uxPriority,
-                                    StackType_t * const puxStackBuffer,
-                                    StaticTask_t * const pxTaskBuffer ) PRIVILEGED_FUNCTION;
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#إذا ( config_SUPPORT_STATIC_ورهاست == 1 )
+    TaskHandle_t xTaskCreateStatic( TaskFunction_t px_Task_ڪوڊ,
+                                    ثابت حرف * ثابت pcName,
+                                    ثابت config_ڍير_اونهائي_TYPE ux_ڍير_اونهائي,
+                                    فراغ * ثابت pvParameters,
+                                    UBaseType_t ux_ترجيح,
+                                    ڍير_Type_t * ثابت pux_ڍير_بفر,
+                                    StaticTask_t * ثابت px_Task_بفر ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو /* configSUPPORT_STATIC_ALLOCATION */
 
-#if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
-    TaskHandle_t xTaskCreateStaticAffinitySet( TaskFunction_t pxTaskCode,
-                                               const char * const pcName,
-                                               const configSTACK_DEPTH_TYPE uxStackDepth,
-                                               void * const pvParameters,
-                                               UBaseType_t uxPriority,
-                                               StackType_t * const puxStackBuffer,
-                                               StaticTask_t * const pxTaskBuffer,
-                                               UBaseType_t uxCoreAffinityMask ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( ( config_SUPPORT_STATIC_ورهاست == 1 ) && ( config_عدد_جو_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+    TaskHandle_t x_Task_Create_Static_Affinity_سيٽ( TaskFunction_t px_Task_ڪوڊ,
+                                               ثابت حرف * ثابت pcName,
+                                               ثابت config_ڍير_اونهائي_TYPE ux_ڍير_اونهائي,
+                                               فراغ * ثابت pvParameters,
+                                               UBaseType_t ux_ترجيح,
+                                               ڍير_Type_t * ثابت pux_ڍير_بفر,
+                                               StaticTask_t * ثابت px_Task_بفر,
+                                               UBaseType_t ux_Core_Affinity_نقاب ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /**
  * task. h
@@ -603,16 +603,16 @@ typedef enum
  * \defgroup xTaskCreateRestricted xTaskCreateRestricted
  * \ingroup Tasks
  */
-#if ( portUSING_MPU_WRAPPERS == 1 )
-    BaseType_t xTaskCreateRestricted( const TaskParameters_t * const pxTaskDefinition,
+#إذا ( پورٽ_USING_MPU_WRAPPERS == 1 )
+    بنياد_Type_t xTaskCreateRestricted( ثابت TaskParameters_t * ثابت pxTaskDefinition,
                                       TaskHandle_t * pxCreatedTask ) PRIVILEGED_FUNCTION;
-#endif
+#جيڪڏهن_پورو
 
-#if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
-    BaseType_t xTaskCreateRestrictedAffinitySet( const TaskParameters_t * const pxTaskDefinition,
-                                                 UBaseType_t uxCoreAffinityMask,
+#إذا ( ( پورٽ_USING_MPU_WRAPPERS == 1 ) && ( config_عدد_جو_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+    بنياد_Type_t x_Task_Create_Restricted_Affinity_سيٽ( ثابت TaskParameters_t * ثابت pxTaskDefinition,
+                                                 UBaseType_t ux_Core_Affinity_نقاب,
                                                  TaskHandle_t * pxCreatedTask ) PRIVILEGED_FUNCTION;
-#endif
+#جيڪڏهن_پورو
 
 /**
  * task. h
@@ -699,16 +699,16 @@ typedef enum
  * \defgroup xTaskCreateRestrictedStatic xTaskCreateRestrictedStatic
  * \ingroup Tasks
  */
-#if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
-    BaseType_t xTaskCreateRestrictedStatic( const TaskParameters_t * const pxTaskDefinition,
+#إذا ( ( پورٽ_USING_MPU_WRAPPERS == 1 ) && ( config_SUPPORT_STATIC_ورهاست == 1 ) )
+    بنياد_Type_t xTaskCreateRestrictedStatic( ثابت TaskParameters_t * ثابت pxTaskDefinition,
                                             TaskHandle_t * pxCreatedTask ) PRIVILEGED_FUNCTION;
-#endif
+#جيڪڏهن_پورو
 
-#if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
-    BaseType_t xTaskCreateRestrictedStaticAffinitySet( const TaskParameters_t * const pxTaskDefinition,
-                                                       UBaseType_t uxCoreAffinityMask,
+#إذا ( ( پورٽ_USING_MPU_WRAPPERS == 1 ) && ( config_SUPPORT_STATIC_ورهاست == 1 ) && ( config_عدد_جو_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+    بنياد_Type_t x_Task_Create_Restricted_Static_Affinity_سيٽ( ثابت TaskParameters_t * ثابت pxTaskDefinition,
+                                                       UBaseType_t ux_Core_Affinity_نقاب,
                                                        TaskHandle_t * pxCreatedTask ) PRIVILEGED_FUNCTION;
-#endif
+#جيڪڏهن_پورو
 
 /**
  * task. h
@@ -757,10 +757,10 @@ typedef enum
  * \defgroup vTaskAllocateMPURegions vTaskAllocateMPURegions
  * \ingroup Tasks
  */
-#if ( portUSING_MPU_WRAPPERS == 1 )
-    void vTaskAllocateMPURegions( TaskHandle_t xTaskToModify,
-                                  const MemoryRegion_t * const pxRegions ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( پورٽ_USING_MPU_WRAPPERS == 1 )
+    فراغ vTaskAllocateMPURegions( TaskHandle_t x_Task_منزل_Modify,
+                                  ثابت يادگيري_Region_t * ثابت pxRegions ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /**
  * task. h
@@ -803,7 +803,7 @@ typedef enum
  * \defgroup vTaskDelete vTaskDelete
  * \ingroup Tasks
  */
-void vTaskDelete( TaskHandle_t xTaskToDelete ) PRIVILEGED_FUNCTION;
+فراغ vTaskDelete( TaskHandle_t x_Task_منزل_Delete ) PRIVILEGED_FUNCTION;
 
 /*-----------------------------------------------------------
 * TASK CONTROL API
@@ -857,7 +857,7 @@ void vTaskDelete( TaskHandle_t xTaskToDelete ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskDelay vTaskDelay
  * \ingroup TaskCtrl
  */
-void vTaskDelay( const TickType_t xTicksToDelay ) PRIVILEGED_FUNCTION;
+فراغ vTaskDelay( ثابت TickType_t x_Ticks_منزل_Delay ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -924,17 +924,17 @@ void vTaskDelay( const TickType_t xTicksToDelay ) PRIVILEGED_FUNCTION;
  * \defgroup xTaskDelayUntil xTaskDelayUntil
  * \ingroup TaskCtrl
  */
-BaseType_t xTaskDelayUntil( TickType_t * const pxPreviousWakeTime,
-                            const TickType_t xTimeIncrement ) PRIVILEGED_FUNCTION;
+بنياد_Type_t xTaskDelayUntil( TickType_t * ثابت px_اڳيون_Wake_وقت,
+                            ثابت TickType_t x_وقت_Increment ) PRIVILEGED_FUNCTION;
 
 /*
  * vTaskDelayUntil() is the older version of xTaskDelayUntil() and does not
  * return a value.
  */
-#define vTaskDelayUntil( pxPreviousWakeTime, xTimeIncrement )                   \
-    do {                                                                        \
-        ( void ) xTaskDelayUntil( ( pxPreviousWakeTime ), ( xTimeIncrement ) ); \
-    } while( 0 )
+#وصف_ڪريو vTaskDelayUntil( px_اڳيون_Wake_وقت, x_وقت_Increment )                   \
+    افعل {                                                                        \
+        ( فراغ ) xTaskDelayUntil( ( px_اڳيون_Wake_وقت ), ( x_وقت_Increment ) ); \
+    } طالما( 0 )
 
 
 /**
@@ -967,9 +967,9 @@ BaseType_t xTaskDelayUntil( TickType_t * const pxPreviousWakeTime,
  * \defgroup xTaskAbortDelay xTaskAbortDelay
  * \ingroup TaskCtrl
  */
-#if ( INCLUDE_xTaskAbortDelay == 1 )
-    BaseType_t xTaskAbortDelay( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( INCLUDE_xTaskAbortDelay == 1 )
+    بنياد_Type_t xTaskAbortDelay( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /**
  * task. h
@@ -1018,7 +1018,7 @@ BaseType_t xTaskDelayUntil( TickType_t * const pxPreviousWakeTime,
  * \defgroup uxTaskPriorityGet uxTaskPriorityGet
  * \ingroup TaskCtrl
  */
-UBaseType_t uxTaskPriorityGet( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_Task_ترجيح_Get( ثابت TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1028,7 +1028,7 @@ UBaseType_t uxTaskPriorityGet( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
  *
  * A version of uxTaskPriorityGet() that can be used from an ISR.
  */
-UBaseType_t uxTaskPriorityGetFromISR( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_Task_ترجيح_Get_From_ISR( ثابت TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1049,7 +1049,7 @@ UBaseType_t uxTaskPriorityGetFromISR( const TaskHandle_t xTask ) PRIVILEGED_FUNC
  * \defgroup uxTaskPriorityGet uxTaskBasePriorityGet
  * \ingroup TaskCtrl
  */
-UBaseType_t uxTaskBasePriorityGet( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_Task_بنياد_ترجيح_Get( ثابت TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1059,7 +1059,7 @@ UBaseType_t uxTaskBasePriorityGet( const TaskHandle_t xTask ) PRIVILEGED_FUNCTIO
  *
  * A version of uxTaskBasePriorityGet() that can be used from an ISR.
  */
-UBaseType_t uxTaskBasePriorityGetFromISR( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_Task_بنياد_ترجيح_Get_From_ISR( ثابت TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1079,9 +1079,9 @@ UBaseType_t uxTaskBasePriorityGetFromISR( const TaskHandle_t xTask ) PRIVILEGED_
  * state of the task might change between the function being called, and the
  * functions return value being tested by the calling task.
  */
-#if ( ( INCLUDE_eTaskGetState == 1 ) || ( configUSE_TRACE_FACILITY == 1 ) || ( INCLUDE_xTaskAbortDelay == 1 ) )
+#إذا ( ( INCLUDE_eTaskGetState == 1 ) || ( configUSE_TRACE_FACILITY == 1 ) || ( INCLUDE_xTaskAbortDelay == 1 ) )
     eTaskState eTaskGetState( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-#endif
+#جيڪڏهن_پورو
 
 /**
  * task. h
@@ -1139,12 +1139,12 @@ UBaseType_t uxTaskBasePriorityGetFromISR( const TaskHandle_t xTask ) PRIVILEGED_
  * \defgroup vTaskGetInfo vTaskGetInfo
  * \ingroup TaskCtrl
  */
-#if ( configUSE_TRACE_FACILITY == 1 )
-    void vTaskGetInfo( TaskHandle_t xTask,
-                       TaskStatus_t * pxTaskStatus,
-                       BaseType_t xGetFreeStackSpace,
+#إذا ( configUSE_TRACE_FACILITY == 1 )
+    فراغ vTaskGetInfo( TaskHandle_t xTask,
+                       Task_حالت_t * px_Task_حالت,
+                       بنياد_Type_t x_Get_Free_ڍير_Space,
                        eTaskState eState ) PRIVILEGED_FUNCTION;
-#endif
+#جيڪڏهن_پورو
 
 /**
  * task. h
@@ -1188,8 +1188,8 @@ UBaseType_t uxTaskBasePriorityGetFromISR( const TaskHandle_t xTask ) PRIVILEGED_
  * \defgroup vTaskPrioritySet vTaskPrioritySet
  * \ingroup TaskCtrl
  */
-void vTaskPrioritySet( TaskHandle_t xTask,
-                       UBaseType_t uxNewPriority ) PRIVILEGED_FUNCTION;
+فراغ v_Task_ترجيح_سيٽ( TaskHandle_t xTask,
+                       UBaseType_t ux_New_ترجيح ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1242,7 +1242,7 @@ void vTaskPrioritySet( TaskHandle_t xTask,
  * \defgroup vTaskSuspend vTaskSuspend
  * \ingroup TaskCtrl
  */
-void vTaskSuspend( TaskHandle_t xTaskToSuspend ) PRIVILEGED_FUNCTION;
+فراغ vTaskSuspend( TaskHandle_t x_Task_منزل_Suspend ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1293,7 +1293,7 @@ void vTaskSuspend( TaskHandle_t xTaskToSuspend ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskResume vTaskResume
  * \ingroup TaskCtrl
  */
-void vTaskResume( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
+فراغ vTaskResume( TaskHandle_t x_Task_منزل_Resume ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1324,9 +1324,9 @@ void vTaskResume( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskResumeFromISR vTaskResumeFromISR
  * \ingroup TaskCtrl
  */
-BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
+بنياد_Type_t xTaskResumeFromISR( TaskHandle_t x_Task_منزل_Resume ) PRIVILEGED_FUNCTION;
 
-#if ( configUSE_CORE_AFFINITY == 1 )
+#إذا ( configUSE_CORE_AFFINITY == 1 )
 
 /**
  * @brief Sets the core affinity mask for a task.
@@ -1361,11 +1361,11 @@ BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
  *      vTaskCoreAffinitySet( xHandle, uxCoreAffinityMask );
  * }
  */
-    void vTaskCoreAffinitySet( const TaskHandle_t xTask,
-                               UBaseType_t uxCoreAffinityMask );
-#endif
+    فراغ v_Task_Core_Affinity_سيٽ( ثابت TaskHandle_t xTask,
+                               UBaseType_t ux_Core_Affinity_نقاب );
+#جيڪڏهن_پورو
 
-#if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+#إذا ( ( config_عدد_جو_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
 
 /**
  * @brief Gets the core affinity mask for a task.
@@ -1414,9 +1414,9 @@ BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
  * }
  */
     UBaseType_t vTaskCoreAffinityGet( ConstTaskHandle_t xTask );
-#endif
+#جيڪڏهن_پورو
 
-#if ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
+#إذا ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
 
 /**
  * @brief Disables preemption for a task.
@@ -1447,10 +1447,10 @@ BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
  *     }
  * }
  */
-    void vTaskPreemptionDisable( const TaskHandle_t xTask );
-#endif
+    فراغ vTaskPreemptionDisable( ثابت TaskHandle_t xTask );
+#جيڪڏهن_پورو
 
-#if ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
+#إذا ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
 
 /**
  * @brief Enables preemption for a task.
@@ -1481,8 +1481,8 @@ BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
  *     }
  * }
  */
-    void vTaskPreemptionEnable( const TaskHandle_t xTask );
-#endif
+    فراغ vTaskPreemptionEnable( ثابت TaskHandle_t xTask );
+#جيڪڏهن_پورو
 
 /*-----------------------------------------------------------
 * SCHEDULER CONTROL
@@ -1517,7 +1517,7 @@ BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskStartScheduler vTaskStartScheduler
  * \ingroup SchedulerControl
  */
-void vTaskStartScheduler( void ) PRIVILEGED_FUNCTION;
+فراغ v_Task_شروعات_Scheduler( فراغ ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1575,7 +1575,7 @@ void vTaskStartScheduler( void ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskEndScheduler vTaskEndScheduler
  * \ingroup SchedulerControl
  */
-void vTaskEndScheduler( void ) PRIVILEGED_FUNCTION;
+فراغ v_Task_پڇاڙي_Scheduler( فراغ ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1628,7 +1628,7 @@ void vTaskEndScheduler( void ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskSuspendAll vTaskSuspendAll
  * \ingroup SchedulerControl
  */
-void vTaskSuspendAll( void ) PRIVILEGED_FUNCTION;
+فراغ vTaskSuspendAll( فراغ ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1684,7 +1684,7 @@ void vTaskSuspendAll( void ) PRIVILEGED_FUNCTION;
  * \defgroup xTaskResumeAll xTaskResumeAll
  * \ingroup SchedulerControl
  */
-BaseType_t xTaskResumeAll( void ) PRIVILEGED_FUNCTION;
+بنياد_Type_t xTaskResumeAll( فراغ ) PRIVILEGED_FUNCTION;
 
 /*-----------------------------------------------------------
 * TASK UTILITIES
@@ -1701,7 +1701,7 @@ BaseType_t xTaskResumeAll( void ) PRIVILEGED_FUNCTION;
  * \defgroup xTaskGetTickCount xTaskGetTickCount
  * \ingroup TaskUtils
  */
-TickType_t xTaskGetTickCount( void ) PRIVILEGED_FUNCTION;
+TickType_t x_Task_Get_Tick_ڳڻپ( فراغ ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1719,7 +1719,7 @@ TickType_t xTaskGetTickCount( void ) PRIVILEGED_FUNCTION;
  * \defgroup xTaskGetTickCountFromISR xTaskGetTickCountFromISR
  * \ingroup TaskUtils
  */
-TickType_t xTaskGetTickCountFromISR( void ) PRIVILEGED_FUNCTION;
+TickType_t x_Task_Get_Tick_ڳڻپ_From_ISR( فراغ ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1735,7 +1735,7 @@ TickType_t xTaskGetTickCountFromISR( void ) PRIVILEGED_FUNCTION;
  * \defgroup uxTaskGetNumberOfTasks uxTaskGetNumberOfTasks
  * \ingroup TaskUtils
  */
-UBaseType_t uxTaskGetNumberOfTasks( void ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_Task_Get_عدد_جو_Tasks( فراغ ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1750,7 +1750,7 @@ UBaseType_t uxTaskGetNumberOfTasks( void ) PRIVILEGED_FUNCTION;
  * \defgroup pcTaskGetName pcTaskGetName
  * \ingroup TaskUtils
  */
-char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
+حرف * pcTaskGetName( TaskHandle_t x_Task_منزل_Query ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1768,9 +1768,9 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup pcTaskGetHandle pcTaskGetHandle
  * \ingroup TaskUtils
  */
-#if ( INCLUDE_xTaskGetHandle == 1 )
-    TaskHandle_t xTaskGetHandle( const char * pcNameToQuery ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( INCLUDE_xTaskGetHandle == 1 )
+    TaskHandle_t xTaskGetHandle( ثابت حرف * pc_Name_منزل_Query ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /**
  * task. h
@@ -1796,11 +1796,11 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup xTaskGetStaticBuffers xTaskGetStaticBuffers
  * \ingroup TaskUtils
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    BaseType_t xTaskGetStaticBuffers( TaskHandle_t xTask,
-                                      StackType_t ** ppuxStackBuffer,
-                                      StaticTask_t ** ppxTaskBuffer ) PRIVILEGED_FUNCTION;
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#إذا ( config_SUPPORT_STATIC_ورهاست == 1 )
+    بنياد_Type_t xTaskGetStaticBuffers( TaskHandle_t xTask,
+                                      ڍير_Type_t ** ppux_ڍير_بفر,
+                                      StaticTask_t ** ppx_Task_بفر ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  * task.h
@@ -1829,9 +1829,9 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * actual spaces on the stack rather than bytes) since the task referenced by
  * xTask was created.
  */
-#if ( INCLUDE_uxTaskGetStackHighWaterMark == 1 )
-    UBaseType_t uxTaskGetStackHighWaterMark( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( INCLUDE_ux_Task_Get_ڍير_مٿاهون_Water_Mark == 1 )
+    UBaseType_t ux_Task_Get_ڍير_مٿاهون_Water_Mark( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /**
  * task.h
@@ -1860,9 +1860,9 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * actual spaces on the stack rather than bytes) since the task referenced by
  * xTask was created.
  */
-#if ( INCLUDE_uxTaskGetStackHighWaterMark2 == 1 )
-    configSTACK_DEPTH_TYPE uxTaskGetStackHighWaterMark2( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( INCLUDE_ux_Task_Get_ڍير_مٿاهون_Water_Mark2 == 1 )
+    config_ڍير_اونهائي_TYPE ux_Task_Get_ڍير_مٿاهون_Water_Mark2( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /* When using trace macros it is sometimes necessary to include task.h before
  * FreeRTOS.h.  When this is done TaskHookFunction_t will not yet have been defined,
@@ -1870,8 +1870,8 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * fixed by simply guarding against the inclusion of these two prototypes unless
  * they are explicitly required by the configUSE_APPLICATION_TASK_TAG configuration
  * constant. */
-#ifdef configUSE_APPLICATION_TASK_TAG
-    #if configUSE_APPLICATION_TASK_TAG == 1
+#جيڪڏهن_وصف_ٿيل config_USE_APPLICATION_TASK_ٽيگ
+    #إذا config_USE_APPLICATION_TASK_ٽيگ == 1
 
 /**
  * task.h
@@ -1883,7 +1883,7 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * Passing xTask as NULL has the effect of setting the calling tasks hook
  * function.
  */
-        void vTaskSetApplicationTaskTag( TaskHandle_t xTask,
+        فراغ v_Task_سيٽ_Application_Task_ٽيگ( TaskHandle_t xTask,
                                          TaskHookFunction_t pxHookFunction ) PRIVILEGED_FUNCTION;
 
 /**
@@ -1896,7 +1896,7 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * call from an interrupt service routine - call
  * xTaskGetApplicationTaskTagFromISR() instead.
  */
-        TaskHookFunction_t xTaskGetApplicationTaskTag( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+        TaskHookFunction_t x_Task_Get_Application_Task_ٽيگ( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
 
 /**
  * task.h
@@ -1907,26 +1907,26 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * Returns the pxHookFunction value assigned to the task xTask.  Can
  * be called from an interrupt service routine.
  */
-        TaskHookFunction_t xTaskGetApplicationTaskTagFromISR( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-    #endif /* configUSE_APPLICATION_TASK_TAG ==1 */
-#endif /* ifdef configUSE_APPLICATION_TASK_TAG */
+        TaskHookFunction_t x_Task_Get_Application_Task_ٽيگ_From_ISR( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+    #جيڪڏهن_پورو /* configUSE_APPLICATION_TASK_TAG ==1 */
+#جيڪڏهن_پورو /* ifdef configUSE_APPLICATION_TASK_TAG */
 
-#if ( configNUM_THREAD_LOCAL_STORAGE_POINTERS > 0 )
+#إذا ( config_انگ_THREAD_LOCAL_STORAGE_اشارا > 0 )
 
 /* Each task contains an array of pointers that is dimensioned by the
  * configNUM_THREAD_LOCAL_STORAGE_POINTERS setting in FreeRTOSConfig.h.  The
  * kernel does not use the pointers itself, so the application writer can use
  * the pointers for any purpose they wish.  The following two functions are
  * used to set and query a pointer respectively. */
-    void vTaskSetThreadLocalStoragePointer( TaskHandle_t xTaskToSet,
-                                            BaseType_t xIndex,
-                                            void * pvValue ) PRIVILEGED_FUNCTION;
-    void * pvTaskGetThreadLocalStoragePointer( TaskHandle_t xTaskToQuery,
-                                               BaseType_t xIndex ) PRIVILEGED_FUNCTION;
+    فراغ v_Task_سيٽ_Thread_Local_Storage_اشارو( TaskHandle_t x_Task_منزل_سيٽ,
+                                            بنياد_Type_t x_اشاريو,
+                                            فراغ * pv_قدر ) PRIVILEGED_FUNCTION;
+    فراغ * pv_Task_Get_Thread_Local_Storage_اشارو( TaskHandle_t x_Task_منزل_Query,
+                                               بنياد_Type_t x_اشاريو ) PRIVILEGED_FUNCTION;
 
-#endif
+#جيڪڏهن_پورو
 
-#if ( configCHECK_FOR_STACK_OVERFLOW > 0 )
+#إذا ( config_CHECK_FOR_ڍير_حد_کان_مٿي > 0 )
 
 /**
  * task.h
@@ -1944,12 +1944,12 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
     /* MISRA Ref 8.6.1 [External linkage] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-86 */
     /* coverity[misra_c_2012_rule_8_6_violation] */
-    void vApplicationStackOverflowHook( TaskHandle_t xTask,
-                                        char * pcTaskName );
+    فراغ v_Application_ڍير_حد_کان_مٿي_Hook( TaskHandle_t xTask,
+                                        حرف * pcTaskName );
 
-#endif
+#جيڪڏهن_پورو
 
-#if ( configUSE_IDLE_HOOK == 1 )
+#إذا ( configUSE_IDLE_HOOK == 1 )
 
 /**
  * task.h
@@ -1965,12 +1965,12 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
     /* MISRA Ref 8.6.1 [External linkage] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-86 */
     /* coverity[misra_c_2012_rule_8_6_violation] */
-    void vApplicationIdleHook( void );
+    فراغ vApplicationIdleHook( فراغ );
 
-#endif
+#جيڪڏهن_پورو
 
 
-#if  ( configUSE_TICK_HOOK != 0 )
+#إذا  ( configUSE_TICK_HOOK != 0 )
 
 /**
  *  task.h
@@ -1983,11 +1983,11 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
     /* MISRA Ref 8.6.1 [External linkage] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-86 */
     /* coverity[misra_c_2012_rule_8_6_violation] */
-    void vApplicationTickHook( void );
+    فراغ vApplicationTickHook( فراغ );
 
-#endif
+#جيڪڏهن_پورو
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#إذا ( config_SUPPORT_STATIC_ورهاست == 1 )
 
 /**
  * task.h
@@ -2002,9 +2002,9 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * @param ppxIdleTaskStackBuffer A handle to a statically allocated Stack buffer for the idle task
  * @param puxIdleTaskStackSize A pointer to the number of elements that will fit in the allocated stack buffer
  */
-    void vApplicationGetIdleTaskMemory( StaticTask_t ** ppxIdleTaskTCBBuffer,
-                                        StackType_t ** ppxIdleTaskStackBuffer,
-                                        configSTACK_DEPTH_TYPE * puxIdleTaskStackSize );
+    فراغ v_Application_Get_Idle_Task_يادگيري( StaticTask_t ** ppxIdleTaskTCBBuffer,
+                                        ڍير_Type_t ** ppx_Idle_Task_ڍير_بفر,
+                                        config_ڍير_اونهائي_TYPE * pux_Idle_Task_ڍير_سائيز );
 
 /**
  * task.h
@@ -2030,13 +2030,13 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * @param puxIdleTaskStackSize A pointer to the number of elements that will fit in the allocated stack buffer
  * @param xPassiveIdleTaskIndex The passive idle task index of the idle task buffer
  */
-    #if ( configNUMBER_OF_CORES > 1 )
-        void vApplicationGetPassiveIdleTaskMemory( StaticTask_t ** ppxIdleTaskTCBBuffer,
-                                                   StackType_t ** ppxIdleTaskStackBuffer,
-                                                   configSTACK_DEPTH_TYPE * puxIdleTaskStackSize,
-                                                   BaseType_t xPassiveIdleTaskIndex );
-    #endif /* #if ( configNUMBER_OF_CORES > 1 ) */
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+    #إذا ( config_عدد_جو_CORES > 1 )
+        فراغ v_Application_Get_Passive_Idle_Task_يادگيري( StaticTask_t ** ppxIdleTaskTCBBuffer,
+                                                   ڍير_Type_t ** ppx_Idle_Task_ڍير_بفر,
+                                                   config_ڍير_اونهائي_TYPE * pux_Idle_Task_ڍير_سائيز,
+                                                   بنياد_Type_t x_Passive_Idle_Task_اشاريو );
+    #جيڪڏهن_پورو /* #if ( configNUMBER_OF_CORES > 1 ) */
+#جيڪڏهن_پورو /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 
 /**
  * task.h
@@ -2051,10 +2051,10 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * wants.  The return value is the value returned by the task hook function
  * registered by the user.
  */
-#if ( configUSE_APPLICATION_TASK_TAG == 1 )
-    BaseType_t xTaskCallApplicationTaskHook( TaskHandle_t xTask,
-                                             void * pvParameter ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( config_USE_APPLICATION_TASK_ٽيگ == 1 )
+    بنياد_Type_t xTaskCallApplicationTaskHook( TaskHandle_t xTask,
+                                             فراغ * pvParameter ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /**
  * xTaskGetIdleTaskHandle() is only available if
@@ -2073,13 +2073,13 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * idle task handle. Call xTaskGetIdleTaskHandleForCore() with xCoreID set to
  * 1,2 ... ( configNUMBER_OF_CORES - 1 ) to get the Passive idle task handles.
  */
-#if ( INCLUDE_xTaskGetIdleTaskHandle == 1 )
-    #if ( configNUMBER_OF_CORES == 1 )
-        TaskHandle_t xTaskGetIdleTaskHandle( void ) PRIVILEGED_FUNCTION;
-    #endif /* #if ( configNUMBER_OF_CORES == 1 ) */
+#إذا ( INCLUDE_xTaskGetIdleTaskHandle == 1 )
+    #إذا ( config_عدد_جو_CORES == 1 )
+        TaskHandle_t xTaskGetIdleTaskHandle( فراغ ) PRIVILEGED_FUNCTION;
+    #جيڪڏهن_پورو /* #if ( configNUMBER_OF_CORES == 1 ) */
 
-    TaskHandle_t xTaskGetIdleTaskHandleForCore( BaseType_t xCoreID ) PRIVILEGED_FUNCTION;
-#endif /* #if ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) */
+    TaskHandle_t xTaskGetIdleTaskHandleForCore( بنياد_Type_t xCoreID ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو /* #if ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) */
 
 /**
  * configUSE_TRACE_FACILITY must be defined as 1 in FreeRTOSConfig.h for
@@ -2178,11 +2178,11 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  *  }
  *  @endcode
  */
-#if ( configUSE_TRACE_FACILITY == 1 )
-    UBaseType_t uxTaskGetSystemState( TaskStatus_t * const pxTaskStatusArray,
-                                      const UBaseType_t uxArraySize,
-                                      configRUN_TIME_COUNTER_TYPE * const pulTotalRunTime ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( configUSE_TRACE_FACILITY == 1 )
+    UBaseType_t uxTaskGetSystemState( Task_حالت_t * ثابت px_Task_حالت_Array,
+                                      ثابت UBaseType_t ux_Array_سائيز,
+                                      config_لاڳيتو_وقت_COUNTER_TYPE * ثابت pul_ڪل_لاڳيتو_وقت ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /**
  * task. h
@@ -2235,10 +2235,10 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskListTasks vTaskListTasks
  * \ingroup TaskUtils
  */
-#if ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) )
-    void vTaskListTasks( char * pcWriteBuffer,
-                         size_t uxBufferLength ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) )
+    فراغ vTaskListTasks( حرف * pc_Write_بفر,
+                         size_t ux_بفر_ڊيگهائي ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /**
  * task. h
@@ -2294,7 +2294,7 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskList vTaskList
  * \ingroup TaskUtils
  */
-#define vTaskList( pcWriteBuffer )    vTaskListTasks( ( pcWriteBuffer ), configSTATS_BUFFER_MAX_LENGTH )
+#وصف_ڪريو vTaskList( pc_Write_بفر )    vTaskListTasks( ( pc_Write_بفر ), config_STATS_بفر_MAX_ڊيگهائي )
 
 /**
  * task. h
@@ -2352,10 +2352,10 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskGetRunTimeStatistics vTaskGetRunTimeStatistics
  * \ingroup TaskUtils
  */
-#if ( ( configGENERATE_RUN_TIME_STATS == 1 ) && ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configUSE_TRACE_FACILITY == 1 ) )
-    void vTaskGetRunTimeStatistics( char * pcWriteBuffer,
-                                    size_t uxBufferLength ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( ( config_GENERATE_لاڳيتو_وقت_STATS == 1 ) && ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configUSE_TRACE_FACILITY == 1 ) )
+    فراغ v_Task_Get_لاڳيتو_وقت_Statistics( حرف * pc_Write_بفر,
+                                    size_t ux_بفر_ڊيگهائي ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /**
  * task. h
@@ -2417,7 +2417,7 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskGetRunTimeStats vTaskGetRunTimeStats
  * \ingroup TaskUtils
  */
-#define vTaskGetRunTimeStats( pcWriteBuffer )    vTaskGetRunTimeStatistics( ( pcWriteBuffer ), configSTATS_BUFFER_MAX_LENGTH )
+#وصف_ڪريو v_Task_Get_لاڳيتو_وقت_Stats( pc_Write_بفر )    v_Task_Get_لاڳيتو_وقت_Statistics( ( pc_Write_بفر ), config_STATS_بفر_MAX_ڊيگهائي )
 
 /**
  * task. h
@@ -2452,10 +2452,10 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup ulTaskGetRunTimeCounter ulTaskGetRunTimeCounter
  * \ingroup TaskUtils
  */
-#if ( configGENERATE_RUN_TIME_STATS == 1 )
-    configRUN_TIME_COUNTER_TYPE ulTaskGetRunTimeCounter( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-    configRUN_TIME_COUNTER_TYPE ulTaskGetRunTimePercent( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( config_GENERATE_لاڳيتو_وقت_STATS == 1 )
+    config_لاڳيتو_وقت_COUNTER_TYPE ul_Task_Get_لاڳيتو_وقت_Counter( ثابت TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+    config_لاڳيتو_وقت_COUNTER_TYPE ul_Task_Get_لاڳيتو_وقت_Percent( ثابت TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /**
  * task. h
@@ -2494,10 +2494,10 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup ulTaskGetIdleRunTimeCounter ulTaskGetIdleRunTimeCounter
  * \ingroup TaskUtils
  */
-#if ( ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
-    configRUN_TIME_COUNTER_TYPE ulTaskGetIdleRunTimeCounter( void ) PRIVILEGED_FUNCTION;
-    configRUN_TIME_COUNTER_TYPE ulTaskGetIdleRunTimePercent( void ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( ( config_GENERATE_لاڳيتو_وقت_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
+    config_لاڳيتو_وقت_COUNTER_TYPE ul_Task_Get_Idle_لاڳيتو_وقت_Counter( فراغ ) PRIVILEGED_FUNCTION;
+    config_لاڳيتو_وقت_COUNTER_TYPE ul_Task_Get_Idle_لاڳيتو_وقت_Percent( فراغ ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /**
  * task. h
@@ -2607,15 +2607,15 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup xTaskNotifyIndexed xTaskNotifyIndexed
  * \ingroup TaskNotifications
  */
-BaseType_t xTaskGenericNotify( TaskHandle_t xTaskToNotify,
-                               UBaseType_t uxIndexToNotify,
-                               uint32_t ulValue,
+بنياد_Type_t xTaskGenericNotify( TaskHandle_t x_Task_منزل_Notify,
+                               UBaseType_t ux_اشاريو_منزل_Notify,
+                               uint32_t ul_قدر,
                                eNotifyAction eAction,
-                               uint32_t * pulPreviousNotificationValue ) PRIVILEGED_FUNCTION;
-#define xTaskNotify( xTaskToNotify, ulValue, eAction ) \
-    xTaskGenericNotify( ( xTaskToNotify ), ( tskDEFAULT_INDEX_TO_NOTIFY ), ( ulValue ), ( eAction ), NULL )
-#define xTaskNotifyIndexed( xTaskToNotify, uxIndexToNotify, ulValue, eAction ) \
-    xTaskGenericNotify( ( xTaskToNotify ), ( uxIndexToNotify ), ( ulValue ), ( eAction ), NULL )
+                               uint32_t * pul_اڳيون_Notification_قدر ) PRIVILEGED_FUNCTION;
+#وصف_ڪريو xTaskNotify( x_Task_منزل_Notify, ul_قدر, eAction ) \
+    xTaskGenericNotify( ( x_Task_منزل_Notify ), ( tsk_DEFAULT_اشاريو_منزل_NOTIFY ), ( ul_قدر ), ( eAction ), عدم )
+#وصف_ڪريو x_Task_Notify_اشاريي_وارو( x_Task_منزل_Notify, ux_اشاريو_منزل_Notify, ul_قدر, eAction ) \
+    xTaskGenericNotify( ( x_Task_منزل_Notify ), ( ux_اشاريو_منزل_Notify ), ( ul_قدر ), ( eAction ), عدم )
 
 /**
  * task. h
@@ -2641,10 +2641,10 @@ BaseType_t xTaskGenericNotify( TaskHandle_t xTaskToNotify,
  * \defgroup xTaskNotifyAndQueryIndexed xTaskNotifyAndQueryIndexed
  * \ingroup TaskNotifications
  */
-#define xTaskNotifyAndQuery( xTaskToNotify, ulValue, eAction, pulPreviousNotifyValue ) \
-    xTaskGenericNotify( ( xTaskToNotify ), ( tskDEFAULT_INDEX_TO_NOTIFY ), ( ulValue ), ( eAction ), ( pulPreviousNotifyValue ) )
-#define xTaskNotifyAndQueryIndexed( xTaskToNotify, uxIndexToNotify, ulValue, eAction, pulPreviousNotifyValue ) \
-    xTaskGenericNotify( ( xTaskToNotify ), ( uxIndexToNotify ), ( ulValue ), ( eAction ), ( pulPreviousNotifyValue ) )
+#وصف_ڪريو xTaskNotifyAndQuery( x_Task_منزل_Notify, ul_قدر, eAction, pul_اڳيون_Notify_قدر ) \
+    xTaskGenericNotify( ( x_Task_منزل_Notify ), ( tsk_DEFAULT_اشاريو_منزل_NOTIFY ), ( ul_قدر ), ( eAction ), ( pul_اڳيون_Notify_قدر ) )
+#وصف_ڪريو x_Task_Notify_And_Query_اشاريي_وارو( x_Task_منزل_Notify, ux_اشاريو_منزل_Notify, ul_قدر, eAction, pul_اڳيون_Notify_قدر ) \
+    xTaskGenericNotify( ( x_Task_منزل_Notify ), ( ux_اشاريو_منزل_Notify ), ( ul_قدر ), ( eAction ), ( pul_اڳيون_Notify_قدر ) )
 
 /**
  * task. h
@@ -2759,16 +2759,16 @@ BaseType_t xTaskGenericNotify( TaskHandle_t xTaskToNotify,
  * \defgroup xTaskNotifyIndexedFromISR xTaskNotifyIndexedFromISR
  * \ingroup TaskNotifications
  */
-BaseType_t xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify,
-                                      UBaseType_t uxIndexToNotify,
-                                      uint32_t ulValue,
+بنياد_Type_t xTaskGenericNotifyFromISR( TaskHandle_t x_Task_منزل_Notify,
+                                      UBaseType_t ux_اشاريو_منزل_Notify,
+                                      uint32_t ul_قدر,
                                       eNotifyAction eAction,
-                                      uint32_t * pulPreviousNotificationValue,
-                                      BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
-#define xTaskNotifyFromISR( xTaskToNotify, ulValue, eAction, pxHigherPriorityTaskWoken ) \
-    xTaskGenericNotifyFromISR( ( xTaskToNotify ), ( tskDEFAULT_INDEX_TO_NOTIFY ), ( ulValue ), ( eAction ), NULL, ( pxHigherPriorityTaskWoken ) )
-#define xTaskNotifyIndexedFromISR( xTaskToNotify, uxIndexToNotify, ulValue, eAction, pxHigherPriorityTaskWoken ) \
-    xTaskGenericNotifyFromISR( ( xTaskToNotify ), ( uxIndexToNotify ), ( ulValue ), ( eAction ), NULL, ( pxHigherPriorityTaskWoken ) )
+                                      uint32_t * pul_اڳيون_Notification_قدر,
+                                      بنياد_Type_t * px_Higher_ترجيح_Task_Woken ) PRIVILEGED_FUNCTION;
+#وصف_ڪريو xTaskNotifyFromISR( x_Task_منزل_Notify, ul_قدر, eAction, px_Higher_ترجيح_Task_Woken ) \
+    xTaskGenericNotifyFromISR( ( x_Task_منزل_Notify ), ( tsk_DEFAULT_اشاريو_منزل_NOTIFY ), ( ul_قدر ), ( eAction ), عدم, ( px_Higher_ترجيح_Task_Woken ) )
+#وصف_ڪريو x_Task_Notify_اشاريي_وارو_From_ISR( x_Task_منزل_Notify, ux_اشاريو_منزل_Notify, ul_قدر, eAction, px_Higher_ترجيح_Task_Woken ) \
+    xTaskGenericNotifyFromISR( ( x_Task_منزل_Notify ), ( ux_اشاريو_منزل_Notify ), ( ul_قدر ), ( eAction ), عدم, ( px_Higher_ترجيح_Task_Woken ) )
 
 /**
  * task. h
@@ -2794,10 +2794,10 @@ BaseType_t xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify,
  * \defgroup xTaskNotifyAndQueryIndexedFromISR xTaskNotifyAndQueryIndexedFromISR
  * \ingroup TaskNotifications
  */
-#define xTaskNotifyAndQueryIndexedFromISR( xTaskToNotify, uxIndexToNotify, ulValue, eAction, pulPreviousNotificationValue, pxHigherPriorityTaskWoken ) \
-    xTaskGenericNotifyFromISR( ( xTaskToNotify ), ( uxIndexToNotify ), ( ulValue ), ( eAction ), ( pulPreviousNotificationValue ), ( pxHigherPriorityTaskWoken ) )
-#define xTaskNotifyAndQueryFromISR( xTaskToNotify, ulValue, eAction, pulPreviousNotificationValue, pxHigherPriorityTaskWoken ) \
-    xTaskGenericNotifyFromISR( ( xTaskToNotify ), ( tskDEFAULT_INDEX_TO_NOTIFY ), ( ulValue ), ( eAction ), ( pulPreviousNotificationValue ), ( pxHigherPriorityTaskWoken ) )
+#وصف_ڪريو x_Task_Notify_And_Query_اشاريي_وارو_From_ISR( x_Task_منزل_Notify, ux_اشاريو_منزل_Notify, ul_قدر, eAction, pul_اڳيون_Notification_قدر, px_Higher_ترجيح_Task_Woken ) \
+    xTaskGenericNotifyFromISR( ( x_Task_منزل_Notify ), ( ux_اشاريو_منزل_Notify ), ( ul_قدر ), ( eAction ), ( pul_اڳيون_Notification_قدر ), ( px_Higher_ترجيح_Task_Woken ) )
+#وصف_ڪريو xTaskNotifyAndQueryFromISR( x_Task_منزل_Notify, ul_قدر, eAction, pul_اڳيون_Notification_قدر, px_Higher_ترجيح_Task_Woken ) \
+    xTaskGenericNotifyFromISR( ( x_Task_منزل_Notify ), ( tsk_DEFAULT_اشاريو_منزل_NOTIFY ), ( ul_قدر ), ( eAction ), ( pul_اڳيون_Notification_قدر ), ( px_Higher_ترجيح_Task_Woken ) )
 
 /**
  * task. h
@@ -2903,15 +2903,15 @@ BaseType_t xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify,
  * \defgroup xTaskNotifyWaitIndexed xTaskNotifyWaitIndexed
  * \ingroup TaskNotifications
  */
-BaseType_t xTaskGenericNotifyWait( UBaseType_t uxIndexToWaitOn,
-                                   uint32_t ulBitsToClearOnEntry,
-                                   uint32_t ulBitsToClearOnExit,
-                                   uint32_t * pulNotificationValue,
-                                   TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
-#define xTaskNotifyWait( ulBitsToClearOnEntry, ulBitsToClearOnExit, pulNotificationValue, xTicksToWait ) \
-    xTaskGenericNotifyWait( tskDEFAULT_INDEX_TO_NOTIFY, ( ulBitsToClearOnEntry ), ( ulBitsToClearOnExit ), ( pulNotificationValue ), ( xTicksToWait ) )
-#define xTaskNotifyWaitIndexed( uxIndexToWaitOn, ulBitsToClearOnEntry, ulBitsToClearOnExit, pulNotificationValue, xTicksToWait ) \
-    xTaskGenericNotifyWait( ( uxIndexToWaitOn ), ( ulBitsToClearOnEntry ), ( ulBitsToClearOnExit ), ( pulNotificationValue ), ( xTicksToWait ) )
+بنياد_Type_t xTaskGenericNotifyWait( UBaseType_t ux_اشاريو_منزل_Wait_On,
+                                   uint32_t ul_بٽ_منزل_Clear_On_داخلا,
+                                   uint32_t ul_بٽ_منزل_Clear_On_Exit,
+                                   uint32_t * pul_Notification_قدر,
+                                   TickType_t x_Ticks_منزل_Wait ) PRIVILEGED_FUNCTION;
+#وصف_ڪريو xTaskNotifyWait( ul_بٽ_منزل_Clear_On_داخلا, ul_بٽ_منزل_Clear_On_Exit, pul_Notification_قدر, x_Ticks_منزل_Wait ) \
+    xTaskGenericNotifyWait( tsk_DEFAULT_اشاريو_منزل_NOTIFY, ( ul_بٽ_منزل_Clear_On_داخلا ), ( ul_بٽ_منزل_Clear_On_Exit ), ( pul_Notification_قدر ), ( x_Ticks_منزل_Wait ) )
+#وصف_ڪريو x_Task_Notify_Wait_اشاريي_وارو( ux_اشاريو_منزل_Wait_On, ul_بٽ_منزل_Clear_On_داخلا, ul_بٽ_منزل_Clear_On_Exit, pul_Notification_قدر, x_Ticks_منزل_Wait ) \
+    xTaskGenericNotifyWait( ( ux_اشاريو_منزل_Wait_On ), ( ul_بٽ_منزل_Clear_On_داخلا ), ( ul_بٽ_منزل_Clear_On_Exit ), ( pul_Notification_قدر ), ( x_Ticks_منزل_Wait ) )
 
 /**
  * task. h
@@ -2985,10 +2985,10 @@ BaseType_t xTaskGenericNotifyWait( UBaseType_t uxIndexToWaitOn,
  * \defgroup xTaskNotifyGiveIndexed xTaskNotifyGiveIndexed
  * \ingroup TaskNotifications
  */
-#define xTaskNotifyGive( xTaskToNotify ) \
-    xTaskGenericNotify( ( xTaskToNotify ), ( tskDEFAULT_INDEX_TO_NOTIFY ), ( 0 ), eIncrement, NULL )
-#define xTaskNotifyGiveIndexed( xTaskToNotify, uxIndexToNotify ) \
-    xTaskGenericNotify( ( xTaskToNotify ), ( uxIndexToNotify ), ( 0 ), eIncrement, NULL )
+#وصف_ڪريو xTaskNotifyGive( x_Task_منزل_Notify ) \
+    xTaskGenericNotify( ( x_Task_منزل_Notify ), ( tsk_DEFAULT_اشاريو_منزل_NOTIFY ), ( 0 ), eIncrement, عدم )
+#وصف_ڪريو x_Task_Notify_Give_اشاريي_وارو( x_Task_منزل_Notify, ux_اشاريو_منزل_Notify ) \
+    xTaskGenericNotify( ( x_Task_منزل_Notify ), ( ux_اشاريو_منزل_Notify ), ( 0 ), eIncrement, عدم )
 
 /**
  * task. h
@@ -3069,13 +3069,13 @@ BaseType_t xTaskGenericNotifyWait( UBaseType_t uxIndexToWaitOn,
  * \defgroup vTaskNotifyGiveIndexedFromISR vTaskNotifyGiveIndexedFromISR
  * \ingroup TaskNotifications
  */
-void vTaskGenericNotifyGiveFromISR( TaskHandle_t xTaskToNotify,
-                                    UBaseType_t uxIndexToNotify,
-                                    BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
-#define vTaskNotifyGiveFromISR( xTaskToNotify, pxHigherPriorityTaskWoken ) \
-    vTaskGenericNotifyGiveFromISR( ( xTaskToNotify ), ( tskDEFAULT_INDEX_TO_NOTIFY ), ( pxHigherPriorityTaskWoken ) )
-#define vTaskNotifyGiveIndexedFromISR( xTaskToNotify, uxIndexToNotify, pxHigherPriorityTaskWoken ) \
-    vTaskGenericNotifyGiveFromISR( ( xTaskToNotify ), ( uxIndexToNotify ), ( pxHigherPriorityTaskWoken ) )
+فراغ vTaskGenericNotifyGiveFromISR( TaskHandle_t x_Task_منزل_Notify,
+                                    UBaseType_t ux_اشاريو_منزل_Notify,
+                                    بنياد_Type_t * px_Higher_ترجيح_Task_Woken ) PRIVILEGED_FUNCTION;
+#وصف_ڪريو vTaskNotifyGiveFromISR( x_Task_منزل_Notify, px_Higher_ترجيح_Task_Woken ) \
+    vTaskGenericNotifyGiveFromISR( ( x_Task_منزل_Notify ), ( tsk_DEFAULT_اشاريو_منزل_NOTIFY ), ( px_Higher_ترجيح_Task_Woken ) )
+#وصف_ڪريو v_Task_Notify_Give_اشاريي_وارو_From_ISR( x_Task_منزل_Notify, ux_اشاريو_منزل_Notify, px_Higher_ترجيح_Task_Woken ) \
+    vTaskGenericNotifyGiveFromISR( ( x_Task_منزل_Notify ), ( ux_اشاريو_منزل_Notify ), ( px_Higher_ترجيح_Task_Woken ) )
 
 /**
  * task. h
@@ -3175,13 +3175,13 @@ void vTaskGenericNotifyGiveFromISR( TaskHandle_t xTaskToNotify,
  * \defgroup ulTaskNotifyTakeIndexed ulTaskNotifyTakeIndexed
  * \ingroup TaskNotifications
  */
-uint32_t ulTaskGenericNotifyTake( UBaseType_t uxIndexToWaitOn,
-                                  BaseType_t xClearCountOnExit,
-                                  TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
-#define ulTaskNotifyTake( xClearCountOnExit, xTicksToWait ) \
-    ulTaskGenericNotifyTake( ( tskDEFAULT_INDEX_TO_NOTIFY ), ( xClearCountOnExit ), ( xTicksToWait ) )
-#define ulTaskNotifyTakeIndexed( uxIndexToWaitOn, xClearCountOnExit, xTicksToWait ) \
-    ulTaskGenericNotifyTake( ( uxIndexToWaitOn ), ( xClearCountOnExit ), ( xTicksToWait ) )
+uint32_t ulTaskGenericNotifyTake( UBaseType_t ux_اشاريو_منزل_Wait_On,
+                                  بنياد_Type_t x_Clear_ڳڻپ_On_Exit,
+                                  TickType_t x_Ticks_منزل_Wait ) PRIVILEGED_FUNCTION;
+#وصف_ڪريو ulTaskNotifyTake( x_Clear_ڳڻپ_On_Exit, x_Ticks_منزل_Wait ) \
+    ulTaskGenericNotifyTake( ( tsk_DEFAULT_اشاريو_منزل_NOTIFY ), ( x_Clear_ڳڻپ_On_Exit ), ( x_Ticks_منزل_Wait ) )
+#وصف_ڪريو ul_Task_Notify_Take_اشاريي_وارو( ux_اشاريو_منزل_Wait_On, x_Clear_ڳڻپ_On_Exit, x_Ticks_منزل_Wait ) \
+    ulTaskGenericNotifyTake( ( ux_اشاريو_منزل_Wait_On ), ( x_Clear_ڳڻپ_On_Exit ), ( x_Ticks_منزل_Wait ) )
 
 /**
  * task. h
@@ -3240,12 +3240,12 @@ uint32_t ulTaskGenericNotifyTake( UBaseType_t uxIndexToWaitOn,
  * \defgroup xTaskNotifyStateClearIndexed xTaskNotifyStateClearIndexed
  * \ingroup TaskNotifications
  */
-BaseType_t xTaskGenericNotifyStateClear( TaskHandle_t xTask,
-                                         UBaseType_t uxIndexToClear ) PRIVILEGED_FUNCTION;
-#define xTaskNotifyStateClear( xTask ) \
-    xTaskGenericNotifyStateClear( ( xTask ), ( tskDEFAULT_INDEX_TO_NOTIFY ) )
-#define xTaskNotifyStateClearIndexed( xTask, uxIndexToClear ) \
-    xTaskGenericNotifyStateClear( ( xTask ), ( uxIndexToClear ) )
+بنياد_Type_t xTaskGenericNotifyStateClear( TaskHandle_t xTask,
+                                         UBaseType_t ux_اشاريو_منزل_Clear ) PRIVILEGED_FUNCTION;
+#وصف_ڪريو xTaskNotifyStateClear( xTask ) \
+    xTaskGenericNotifyStateClear( ( xTask ), ( tsk_DEFAULT_اشاريو_منزل_NOTIFY ) )
+#وصف_ڪريو x_Task_Notify_State_Clear_اشاريي_وارو( xTask, ux_اشاريو_منزل_Clear ) \
+    xTaskGenericNotifyStateClear( ( xTask ), ( ux_اشاريو_منزل_Clear ) )
 
 /**
  * task. h
@@ -3305,13 +3305,13 @@ BaseType_t xTaskGenericNotifyStateClear( TaskHandle_t xTask,
  * \defgroup ulTaskNotifyValueClear ulTaskNotifyValueClear
  * \ingroup TaskNotifications
  */
-uint32_t ulTaskGenericNotifyValueClear( TaskHandle_t xTask,
-                                        UBaseType_t uxIndexToClear,
-                                        uint32_t ulBitsToClear ) PRIVILEGED_FUNCTION;
-#define ulTaskNotifyValueClear( xTask, ulBitsToClear ) \
-    ulTaskGenericNotifyValueClear( ( xTask ), ( tskDEFAULT_INDEX_TO_NOTIFY ), ( ulBitsToClear ) )
-#define ulTaskNotifyValueClearIndexed( xTask, uxIndexToClear, ulBitsToClear ) \
-    ulTaskGenericNotifyValueClear( ( xTask ), ( uxIndexToClear ), ( ulBitsToClear ) )
+uint32_t ul_Task_Generic_Notify_قدر_Clear( TaskHandle_t xTask,
+                                        UBaseType_t ux_اشاريو_منزل_Clear,
+                                        uint32_t ul_بٽ_منزل_Clear ) PRIVILEGED_FUNCTION;
+#وصف_ڪريو ul_Task_Notify_قدر_Clear( xTask, ul_بٽ_منزل_Clear ) \
+    ul_Task_Generic_Notify_قدر_Clear( ( xTask ), ( tsk_DEFAULT_اشاريو_منزل_NOTIFY ), ( ul_بٽ_منزل_Clear ) )
+#وصف_ڪريو ul_Task_Notify_قدر_Clear_اشاريي_وارو( xTask, ux_اشاريو_منزل_Clear, ul_بٽ_منزل_Clear ) \
+    ul_Task_Generic_Notify_قدر_Clear( ( xTask ), ( ux_اشاريو_منزل_Clear ), ( ul_بٽ_منزل_Clear ) )
 
 /**
  * task.h
@@ -3327,7 +3327,7 @@ uint32_t ulTaskGenericNotifyValueClear( TaskHandle_t xTask,
  * \defgroup vTaskSetTimeOutState vTaskSetTimeOutState
  * \ingroup TaskCtrl
  */
-void vTaskSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNCTION;
+فراغ v_Task_سيٽ_وقت_ٻاهريون_State( وقت_ٻاهريون_t * ثابت px_وقت_ٻاهريون ) PRIVILEGED_FUNCTION;
 
 /**
  * task.h
@@ -3412,8 +3412,8 @@ void vTaskSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNCTION;
  * \defgroup xTaskCheckForTimeOut xTaskCheckForTimeOut
  * \ingroup TaskCtrl
  */
-BaseType_t xTaskCheckForTimeOut( TimeOut_t * const pxTimeOut,
-                                 TickType_t * const pxTicksToWait ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_Task_Check_For_وقت_ٻاهريون( وقت_ٻاهريون_t * ثابت px_وقت_ٻاهريون,
+                                 TickType_t * ثابت px_Ticks_منزل_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  * task.h
@@ -3441,7 +3441,7 @@ BaseType_t xTaskCheckForTimeOut( TimeOut_t * const pxTimeOut,
  * \defgroup xTaskCatchUpTicks xTaskCatchUpTicks
  * \ingroup TaskCtrl
  */
-BaseType_t xTaskCatchUpTicks( TickType_t xTicksToCatchUp ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_Task_Catch_مٿي_Ticks( TickType_t x_Ticks_منزل_Catch_مٿي ) PRIVILEGED_FUNCTION;
 
 /**
  * task.h
@@ -3455,18 +3455,18 @@ BaseType_t xTaskCatchUpTicks( TickType_t xTicksToCatchUp ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskResetState vTaskResetState
  * \ingroup SchedulerControl
  */
-void vTaskResetState( void ) PRIVILEGED_FUNCTION;
+فراغ vTaskResetState( فراغ ) PRIVILEGED_FUNCTION;
 
 
 /*-----------------------------------------------------------
 * SCHEDULER INTERNALS AVAILABLE FOR PORTING PURPOSES
 *----------------------------------------------------------*/
 
-#if ( configNUMBER_OF_CORES == 1 )
-    #define taskYIELD_WITHIN_API()    portYIELD_WITHIN_API()
-#else /* #if ( configNUMBER_OF_CORES == 1 ) */
-    #define taskYIELD_WITHIN_API()    vTaskYieldWithinAPI()
-#endif /* #if ( configNUMBER_OF_CORES == 1 ) */
+#إذا ( config_عدد_جو_CORES == 1 )
+    #وصف_ڪريو taskYIELD_WITHIN_API()    پورٽ_YIELD_WITHIN_API()
+#وإلا /* #if ( configNUMBER_OF_CORES == 1 ) */
+    #وصف_ڪريو taskYIELD_WITHIN_API()    vTaskYieldWithinAPI()
+#جيڪڏهن_پورو /* #if ( configNUMBER_OF_CORES == 1 ) */
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS ONLY
@@ -3483,7 +3483,7 @@ void vTaskResetState( void ) PRIVILEGED_FUNCTION;
  *   + Time slicing is in use and there is a task of equal priority to the
  *     currently running task.
  */
-BaseType_t xTaskIncrementTick( void ) PRIVILEGED_FUNCTION;
+بنياد_Type_t xTaskIncrementTick( فراغ ) PRIVILEGED_FUNCTION;
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS AN
@@ -3516,11 +3516,11 @@ BaseType_t xTaskIncrementTick( void ) PRIVILEGED_FUNCTION;
  * portTICK_PERIOD_MS can be used to convert kernel ticks into a real time
  * period.
  */
-void vTaskPlaceOnEventList( List_t * const pxEventList,
-                            const TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
-void vTaskPlaceOnUnorderedEventList( List_t * pxEventList,
-                                     const TickType_t xItemValue,
-                                     const TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+فراغ v_Task_رکو_On_Event_List( List_t * ثابت pxEventList,
+                            ثابت TickType_t x_Ticks_منزل_Wait ) PRIVILEGED_FUNCTION;
+فراغ v_Task_رکو_On_Unordered_Event_List( List_t * pxEventList,
+                                     ثابت TickType_t x_شي_قدر,
+                                     ثابت TickType_t x_Ticks_منزل_Wait ) PRIVILEGED_FUNCTION;
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS AN
@@ -3533,9 +3533,9 @@ void vTaskPlaceOnUnorderedEventList( List_t * pxEventList,
  * indefinitely, whereas vTaskPlaceOnEventList() does.
  *
  */
-void vTaskPlaceOnEventListRestricted( List_t * const pxEventList,
-                                      TickType_t xTicksToWait,
-                                      const BaseType_t xWaitIndefinitely ) PRIVILEGED_FUNCTION;
+فراغ v_Task_رکو_On_Event_List_Restricted( List_t * ثابت pxEventList,
+                                      TickType_t x_Ticks_منزل_Wait,
+                                      ثابت بنياد_Type_t xWaitIndefinitely ) PRIVILEGED_FUNCTION;
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS AN
@@ -3561,9 +3561,9 @@ void vTaskPlaceOnEventListRestricted( List_t * const pxEventList,
  * @return pdTRUE if the task being removed has a higher priority than the task
  * making the call, otherwise pdFALSE.
  */
-BaseType_t xTaskRemoveFromEventList( const List_t * const pxEventList ) PRIVILEGED_FUNCTION;
-void vTaskRemoveFromUnorderedEventList( ListItem_t * pxEventListItem,
-                                        const TickType_t xItemValue ) PRIVILEGED_FUNCTION;
+بنياد_Type_t xTaskRemoveFromEventList( ثابت List_t * ثابت pxEventList ) PRIVILEGED_FUNCTION;
+فراغ vTaskRemoveFromUnorderedEventList( List_شي_t * px_Event_List_شي,
+                                        ثابت TickType_t x_شي_قدر ) PRIVILEGED_FUNCTION;
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS ONLY
@@ -3573,51 +3573,51 @@ void vTaskRemoveFromUnorderedEventList( ListItem_t * pxEventListItem,
  * Sets the pointer to the current TCB to the TCB of the highest priority task
  * that is ready to run.
  */
-#if ( configNUMBER_OF_CORES == 1 )
-    portDONT_DISCARD void vTaskSwitchContext( void ) PRIVILEGED_FUNCTION;
-#else
-    portDONT_DISCARD void vTaskSwitchContext( BaseType_t xCoreID ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( config_عدد_جو_CORES == 1 )
+    پورٽ_DONT_DISCARD فراغ vTaskSwitchContext( فراغ ) PRIVILEGED_FUNCTION;
+#وإلا
+    پورٽ_DONT_DISCARD فراغ vTaskSwitchContext( بنياد_Type_t xCoreID ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /*
  * THESE FUNCTIONS MUST NOT BE USED FROM APPLICATION CODE.  THEY ARE USED BY
  * THE EVENT BITS MODULE.
  */
-TickType_t uxTaskResetEventItemValue( void ) PRIVILEGED_FUNCTION;
+TickType_t ux_Task_Reset_Event_شي_قدر( فراغ ) PRIVILEGED_FUNCTION;
 
 /*
  * Return the handle of the calling task.
  */
-TaskHandle_t xTaskGetCurrentTaskHandle( void ) PRIVILEGED_FUNCTION;
+TaskHandle_t xTaskGetCurrentTaskHandle( فراغ ) PRIVILEGED_FUNCTION;
 
 /*
  * Return the handle of the task running on specified core.
  */
-TaskHandle_t xTaskGetCurrentTaskHandleForCore( BaseType_t xCoreID ) PRIVILEGED_FUNCTION;
+TaskHandle_t xTaskGetCurrentTaskHandleForCore( بنياد_Type_t xCoreID ) PRIVILEGED_FUNCTION;
 
 /*
  * Shortcut used by the queue implementation to prevent unnecessary call to
  * taskYIELD();
  */
-void vTaskMissedYield( void ) PRIVILEGED_FUNCTION;
+فراغ vTaskMissedYield( فراغ ) PRIVILEGED_FUNCTION;
 
 /*
  * Returns the scheduler state as taskSCHEDULER_RUNNING,
  * taskSCHEDULER_NOT_STARTED or taskSCHEDULER_SUSPENDED.
  */
-BaseType_t xTaskGetSchedulerState( void ) PRIVILEGED_FUNCTION;
+بنياد_Type_t xTaskGetSchedulerState( فراغ ) PRIVILEGED_FUNCTION;
 
 /*
  * Raises the priority of the mutex holder to that of the calling task should
  * the mutex holder have a priority less than the calling task.
  */
-BaseType_t xTaskPriorityInherit( TaskHandle_t const pxMutexHolder ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_Task_ترجيح_Inherit( TaskHandle_t ثابت pxMutexHolder ) PRIVILEGED_FUNCTION;
 
 /*
  * Set the priority of a task back to its proper priority in the case that it
  * inherited a higher priority while it was holding a semaphore.
  */
-BaseType_t xTaskPriorityDisinherit( TaskHandle_t const pxMutexHolder ) PRIVILEGED_FUNCTION;
+بنياد_Type_t x_Task_ترجيح_Disinherit( TaskHandle_t ثابت pxMutexHolder ) PRIVILEGED_FUNCTION;
 
 /*
  * If a higher priority task attempting to obtain a mutex caused a lower
@@ -3627,24 +3627,24 @@ BaseType_t xTaskPriorityDisinherit( TaskHandle_t const pxMutexHolder ) PRIVILEGE
  * the highest priority task that is still waiting for the mutex (if there were
  * more than one task waiting for the mutex).
  */
-void vTaskPriorityDisinheritAfterTimeout( TaskHandle_t const pxMutexHolder,
-                                          UBaseType_t uxHighestPriorityWaitingTask ) PRIVILEGED_FUNCTION;
+فراغ v_Task_ترجيح_Disinherit_After_Timeout( TaskHandle_t ثابت pxMutexHolder,
+                                          UBaseType_t ux_Highest_ترجيح_انتظار_Task ) PRIVILEGED_FUNCTION;
 
 /*
  * Get the uxTaskNumber assigned to the task referenced by the xTask parameter.
  */
-#if ( configUSE_TRACE_FACILITY == 1 )
-    UBaseType_t uxTaskGetTaskNumber( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( configUSE_TRACE_FACILITY == 1 )
+    UBaseType_t ux_Task_Get_Task_عدد( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /*
  * Set the uxTaskNumber of the task referenced by the xTask parameter to
  * uxHandle.
  */
-#if ( configUSE_TRACE_FACILITY == 1 )
-    void vTaskSetTaskNumber( TaskHandle_t xTask,
-                             const UBaseType_t uxHandle ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( configUSE_TRACE_FACILITY == 1 )
+    فراغ v_Task_سيٽ_Task_عدد( TaskHandle_t xTask,
+                             ثابت UBaseType_t uxHandle ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /*
  * Only available when configUSE_TICKLESS_IDLE is set to 1.
@@ -3654,9 +3654,9 @@ void vTaskPriorityDisinheritAfterTimeout( TaskHandle_t const pxMutexHolder,
  * to date with the actual execution time by being skipped forward by a time
  * equal to the idle period.
  */
-#if ( configUSE_TICKLESS_IDLE != 0 )
-    void vTaskStepTick( TickType_t xTicksToJump ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( configUSE_TICKLESS_IDLE != 0 )
+    فراغ v_Task_قدم_Tick( TickType_t x_Ticks_منزل_Jump ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /*
  * Only available when configUSE_TICKLESS_IDLE is set to 1.
@@ -3672,29 +3672,29 @@ void vTaskPriorityDisinheritAfterTimeout( TaskHandle_t const pxMutexHolder,
  * critical section between the timer being stopped and the sleep mode being
  * entered to ensure it is ok to proceed into the sleep mode.
  */
-#if ( configUSE_TICKLESS_IDLE != 0 )
-    eSleepModeStatus eTaskConfirmSleepModeStatus( void ) PRIVILEGED_FUNCTION;
-#endif
+#إذا ( configUSE_TICKLESS_IDLE != 0 )
+    e_Sleep_گهڻائي_حالت e_Task_Confirm_Sleep_گهڻائي_حالت( فراغ ) PRIVILEGED_FUNCTION;
+#جيڪڏهن_پورو
 
 /*
  * For internal use only.  Increment the mutex held count when a mutex is
  * taken and return the handle of the task that has taken the mutex.
  */
-TaskHandle_t pvTaskIncrementMutexHeldCount( void ) PRIVILEGED_FUNCTION;
+TaskHandle_t pv_Task_Increment_Mutex_Held_ڳڻپ( فراغ ) PRIVILEGED_FUNCTION;
 
 /*
  * For internal use only.  Same as vTaskSetTimeOutState(), but without a critical
  * section.
  */
-void vTaskInternalSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNCTION;
+فراغ v_Task_اندروني_سيٽ_وقت_ٻاهريون_State( وقت_ٻاهريون_t * ثابت px_وقت_ٻاهريون ) PRIVILEGED_FUNCTION;
 
 /*
  * For internal use only. Same as portYIELD_WITHIN_API() in single core FreeRTOS.
  * For SMP this is not defined by the port.
  */
-#if ( configNUMBER_OF_CORES > 1 )
-    void vTaskYieldWithinAPI( void );
-#endif
+#إذا ( config_عدد_جو_CORES > 1 )
+    فراغ vTaskYieldWithinAPI( فراغ );
+#جيڪڏهن_پورو
 
 /*
  * This function is only intended for use when implementing a port of the scheduler
@@ -3704,9 +3704,9 @@ void vTaskInternalSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNC
  * It should be used in the implementation of portENTER_CRITICAL if port is running a
  * multiple core FreeRTOS.
  */
-#if ( ( portCRITICAL_NESTING_IN_TCB == 1 ) || ( configNUMBER_OF_CORES > 1 ) )
-    void vTaskEnterCritical( void );
-#endif
+#إذا ( ( پورٽ_CRITICAL_NESTING_اندريون_TCB == 1 ) || ( config_عدد_جو_CORES > 1 ) )
+    فراغ vTaskEnterCritical( فراغ );
+#جيڪڏهن_پورو
 
 /*
  * This function is only intended for use when implementing a port of the scheduler
@@ -3716,9 +3716,9 @@ void vTaskInternalSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNC
  * It should be used in the implementation of portEXIT_CRITICAL if port is running a
  * multiple core FreeRTOS.
  */
-#if ( ( portCRITICAL_NESTING_IN_TCB == 1 ) || ( configNUMBER_OF_CORES > 1 ) )
-    void vTaskExitCritical( void );
-#endif
+#إذا ( ( پورٽ_CRITICAL_NESTING_اندريون_TCB == 1 ) || ( config_عدد_جو_CORES > 1 ) )
+    فراغ vTaskExitCritical( فراغ );
+#جيڪڏهن_پورو
 
 /*
  * This function is only intended for use when implementing a port of the scheduler
@@ -3726,9 +3726,9 @@ void vTaskInternalSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNC
  * should be used in the implementation of portENTER_CRITICAL_FROM_ISR if port is
  * running a multiple core FreeRTOS.
  */
-#if ( configNUMBER_OF_CORES > 1 )
-    UBaseType_t vTaskEnterCriticalFromISR( void );
-#endif
+#إذا ( config_عدد_جو_CORES > 1 )
+    UBaseType_t vTaskEnterCriticalFromISR( فراغ );
+#جيڪڏهن_پورو
 
 /*
  * This function is only intended for use when implementing a port of the scheduler
@@ -3736,43 +3736,43 @@ void vTaskInternalSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNC
  * should be used in the implementation of portEXIT_CRITICAL_FROM_ISR if port is
  * running a multiple core FreeRTOS.
  */
-#if ( configNUMBER_OF_CORES > 1 )
-    void vTaskExitCriticalFromISR( UBaseType_t uxSavedInterruptStatus );
-#endif
+#إذا ( config_عدد_جو_CORES > 1 )
+    فراغ vTaskExitCriticalFromISR( UBaseType_t ux_Saved_مداخلت_حالت );
+#جيڪڏهن_پورو
 
-#if ( portUSING_MPU_WRAPPERS == 1 )
+#إذا ( پورٽ_USING_MPU_WRAPPERS == 1 )
 
 /*
  * For internal use only.  Get MPU settings associated with a task.
  */
     xMPU_SETTINGS * xTaskGetMPUSettings( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
 
-#endif /* portUSING_MPU_WRAPPERS */
+#جيڪڏهن_پورو /* portUSING_MPU_WRAPPERS */
 
 
-#if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) )
+#إذا ( ( پورٽ_USING_MPU_WRAPPERS == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) )
 
 /*
  * For internal use only.  Grant/Revoke a task's access to a kernel object.
  */
-    void vGrantAccessToKernelObject( TaskHandle_t xExternalTaskHandle,
+    فراغ v_Grant_Access_منزل_Kernel_Object( TaskHandle_t xExternalTaskHandle,
                                      int32_t lExternalKernelObjectHandle ) PRIVILEGED_FUNCTION;
-    void vRevokeAccessToKernelObject( TaskHandle_t xExternalTaskHandle,
+    فراغ v_Revoke_Access_منزل_Kernel_Object( TaskHandle_t xExternalTaskHandle,
                                       int32_t lExternalKernelObjectHandle ) PRIVILEGED_FUNCTION;
 
 /*
  * For internal use only.  Grant/Revoke a task's access to a kernel object.
  */
-    void vPortGrantAccessToKernelObject( TaskHandle_t xInternalTaskHandle,
-                                         int32_t lInternalIndexOfKernelObject ) PRIVILEGED_FUNCTION;
-    void vPortRevokeAccessToKernelObject( TaskHandle_t xInternalTaskHandle,
-                                          int32_t lInternalIndexOfKernelObject ) PRIVILEGED_FUNCTION;
+    فراغ v_پورٽ_Grant_Access_منزل_Kernel_Object( TaskHandle_t x_اندروني_Task_Handle,
+                                         int32_t l_اندروني_اشاريو_جو_Kernel_Object ) PRIVILEGED_FUNCTION;
+    فراغ v_پورٽ_Revoke_Access_منزل_Kernel_Object( TaskHandle_t x_اندروني_Task_Handle,
+                                          int32_t l_اندروني_اشاريو_جو_Kernel_Object ) PRIVILEGED_FUNCTION;
 
-#endif /* #if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) ) */
+#جيڪڏهن_پورو /* #if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) ) */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#جيڪڏهن_وصف_ٿيل __cplusplus
     }
-#endif
+#جيڪڏهن_پورو
 /* *INDENT-ON* */
-#endif /* INC_TASK_H */
+#جيڪڏهن_پورو /* INC_TASK_H */

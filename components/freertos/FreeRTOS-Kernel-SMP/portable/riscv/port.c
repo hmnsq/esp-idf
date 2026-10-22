@@ -4,51 +4,51 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <stdbool.h>
-#include <string.h>
-#include "esp_compiler.h"
-#include "soc/soc_caps.h"
-#include "soc/periph_defs.h"
-#include "soc/system_reg.h"
-#include "hal/crosscore_int_ll.h"
-#include "hal/systimer_hal.h"
-#include "hal/systimer_ll.h"
-#include "riscv/rvruntime-frames.h"
-#include "riscv/rv_utils.h"
-#include "riscv/interrupt.h"
-#include "esp_private/crosscore_int.h"
-#include "esp_private/esp_int_wdt.h"
-#include "esp_private/periph_ctrl.h"
-#include "esp_private/systimer.h"
-#include "esp_attr.h"
-#include "esp_system.h"
-#include "esp_heap_caps_init.h"
-#include "esp_task_wdt.h"
-#include "esp_task.h"
-#include "esp_intr_alloc.h"
-#include "esp_log.h"
-#include "FreeRTOS.h"       /* This pulls in portmacro.h */
-#include "task.h"
-#include "port_systick.h"
-#include "portmacro.h"
-#include "esp_memory_utils.h"
-#include "esp_macros.h"
-#if CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
-#include "esp_timer.h"
-#endif
-#ifdef CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER
-#include "soc/periph_defs.h"
-#include "soc/system_reg.h"
-#include "hal/systimer_hal.h"
-#include "hal/systimer_ll.h"
-#endif
-#ifdef CONFIG_PM_TRACE
-#include "esp_private/pm_trace.h"
-#endif //CONFIG_PM_TRACE
+#ضمن "sdkconfig.h"
+#ضمن <stdbool.h>
+#ضمن <string.h>
+#ضمن "esp_compiler.h"
+#ضمن "soc/soc_caps.h"
+#ضمن "soc/periph_defs.h"
+#ضمن "soc/system_reg.h"
+#ضمن "hal/crosscore_int_ll.h"
+#ضمن "hal/systimer_hal.h"
+#ضمن "hal/systimer_ll.h"
+#ضمن "riscv/rvruntime-frames.h"
+#ضمن "riscv/rv_utils.h"
+#ضمن "riscv/interrupt.h"
+#ضمن "esp_private/crosscore_int.h"
+#ضمن "esp_private/esp_int_wdt.h"
+#ضمن "esp_private/periph_ctrl.h"
+#ضمن "esp_private/systimer.h"
+#ضمن "esp_attr.h"
+#ضمن "esp_system.h"
+#ضمن "esp_heap_caps_init.h"
+#ضمن "esp_task_wdt.h"
+#ضمن "esp_task.h"
+#ضمن "esp_intr_alloc.h"
+#ضمن "esp_log.h"
+#ضمن "FreeRTOS.h"       /* This pulls in portmacro.h */
+#ضمن "task.h"
+#ضمن "port_systick.h"
+#ضمن "portmacro.h"
+#ضمن "esp_memory_utils.h"
+#ضمن "esp_macros.h"
+#إذا CONFIG_FREERTOS_لاڳيتو_وقت_STATS_USING_ESP_TIMER
+#ضمن "esp_timer.h"
+#جيڪڏهن_پورو
+#جيڪڏهن_وصف_ٿيل CONFIG_FREERTOS_SYSTICK_استعمال_ڪري_SYSTIMER
+#ضمن "soc/periph_defs.h"
+#ضمن "soc/system_reg.h"
+#ضمن "hal/systimer_hal.h"
+#ضمن "hal/systimer_ll.h"
+#جيڪڏهن_پورو
+#جيڪڏهن_وصف_ٿيل CONFIG_PM_TRACE
+#ضمن "esp_private/pm_trace.h"
+#جيڪڏهن_پورو //CONFIG_PM_TRACE
 
-_Static_assert(portBYTE_ALIGNMENT == 16, "portBYTE_ALIGNMENT must be set to 16");
-#if CONFIG_ESP_SYSTEM_HW_STACK_GUARD
+_Static_assert(پورٽ_BYTE_ALIGNMENT == 16, "portBYTE_ALIGNMENT must be set to 16");
+#إذا CONFIG_ESP_SYSTEM_HW_ڍير_GUARD
 /**
  * offsetof() can not be used in asm code. Then we need make sure that
  * PORT_OFFSET_PX_STACK and PORT_OFFSET_PX_END_OF_STACK have expected values.
@@ -56,31 +56,31 @@ _Static_assert(portBYTE_ALIGNMENT == 16, "portBYTE_ALIGNMENT must be set to 16")
  * which accessing DRAM memory. This optimization saves CPU time in the interrupt handling.
  */
 
-_Static_assert(offsetof( StaticTask_t, pxDummy6 ) == PORT_OFFSET_PX_STACK);
-_Static_assert(offsetof( StaticTask_t, pxDummy8 ) == PORT_OFFSET_PX_END_OF_STACK);
-#endif // CONFIG_ESP_SYSTEM_HW_STACK_GUARD
+_Static_assert(offsetof( StaticTask_t, pxDummy6 ) == پورٽ_وٿي_PX_ڍير);
+_Static_assert(offsetof( StaticTask_t, pxDummy8 ) == پورٽ_وٿي_PX_پڇاڙي_جو_ڍير);
+#جيڪڏهن_پورو // CONFIG_ESP_SYSTEM_HW_STACK_GUARD
 
 /* ---------------------------------------------------- Variables ------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------------------------------ */
 
-BaseType_t uxSchedulerRunning = 0;  // Duplicate of xSchedulerRunning, accessible to port files
-volatile UBaseType_t uxInterruptNesting = 0;
-#if configNUM_CORES > 1
-volatile unsigned port_uxCoreStartupDone[portNUM_PROCESSORS] = {0};  // Indicates whether the core has completed its startup sequence
-#endif
-portMUX_TYPE port_xTaskLock = portMUX_INITIALIZER_UNLOCKED;
-portMUX_TYPE port_xISRLock = portMUX_INITIALIZER_UNLOCKED;
-volatile BaseType_t xPortSwitchFlag = 0;
-__attribute__((aligned(16))) StackType_t xIsrStack[configISR_STACK_SIZE];
-StackType_t *xIsrStackTop = &xIsrStack[0] + (configISR_STACK_SIZE & (~((portPOINTER_SIZE_TYPE)portBYTE_ALIGNMENT_MASK)));
+بنياد_Type_t uxSchedulerRunning = 0;  // Duplicate of xSchedulerRunning, accessible to port files
+متطاير UBaseType_t ux_مداخلت_Nesting = 0;
+#إذا config_انگ_CORES > 1
+متطاير بنانشان پورٽ_ux_Core_Startup_پورو[پورٽ_انگ_PROCESSORS] = {0};  // Indicates whether the core has completed its startup sequence
+#جيڪڏهن_پورو
+پورٽ_MUX_TYPE پورٽ_x_Task_تالو = پورٽ_MUX_INITIALIZER_UNLOCKED;
+پورٽ_MUX_TYPE پورٽ_x_ISRLock = پورٽ_MUX_INITIALIZER_UNLOCKED;
+متطاير بنياد_Type_t x_پورٽ_Switch_Flag = 0;
+__attribute__((aligned(16))) ڍير_Type_t x_Isr_ڍير[config_ISR_ڍير_سائيز];
+ڍير_Type_t *x_Isr_ڍير_چوٽي = &x_Isr_ڍير[0] + (config_ISR_ڍير_سائيز & (~((پورٽ_اشارو_سائيز_TYPE)پورٽ_BYTE_ALIGNMENT_نقاب)));
 
 // Variables used for IDF style critical sections. These are orthogonal to FreeRTOS critical sections
-static UBaseType_t port_uxCriticalNestingIDF = 0;
-static UBaseType_t port_uxCriticalOldInterruptStateIDF = 0;
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-volatile bool port_xThreadSafeClaimed = false;
-#endif
+ساكن UBaseType_t پورٽ_ux_Critical_Nesting_IDF = 0;
+ساكن UBaseType_t پورٽ_ux_Critical_Old_مداخلت_State_IDF = 0;
+#إذا CONFIG_FREERTOS_پورٽ_THREAD_محفوظ_CLAIM
+متطاير bool پورٽ_x_Thread_محفوظ_Claimed = false;
+#جيڪڏهن_پورو
 
 /* ------------------------------------------------ IDF Compatibility --------------------------------------------------
  * - These need to be defined for IDF to compile
@@ -88,70 +88,70 @@ volatile bool port_xThreadSafeClaimed = false;
 
 // ------------------ Critical Sections --------------------
 
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-void xPortThreadSafeClaim(void)
+#إذا CONFIG_FREERTOS_پورٽ_THREAD_محفوظ_CLAIM
+فراغ x_پورٽ_Thread_محفوظ_Claim(فراغ)
 {
-    configASSERT(!xPortCanYield());
-    configASSERT(!port_xThreadSafeClaimed);
-    port_xThreadSafeClaimed = true;
+    configASSERT(!x_پورٽ_Can_Yield());
+    configASSERT(!پورٽ_x_Thread_محفوظ_Claimed);
+    پورٽ_x_Thread_محفوظ_Claimed = true;
 }
 
-void xPortThreadSafeDisclaim(void)
+فراغ x_پورٽ_Thread_محفوظ_Disclaim(فراغ)
 {
-    configASSERT(!xPortCanYield());
-    configASSERT(port_xThreadSafeClaimed);
-    port_xThreadSafeClaimed = false;
+    configASSERT(!x_پورٽ_Can_Yield());
+    configASSERT(پورٽ_x_Thread_محفوظ_Claimed);
+    پورٽ_x_Thread_محفوظ_Claimed = false;
 }
-#endif /* CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM */
+#جيڪڏهن_پورو /* CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM */
 
-void vPortEnterCritical(void)
+فراغ v_پورٽ_Enter_Critical(فراغ)
 {
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-    if (unlikely(port_xThreadSafeClaimed)) {
-        return;
+#إذا CONFIG_FREERTOS_پورٽ_THREAD_محفوظ_CLAIM
+    إذا (unlikely(پورٽ_x_Thread_محفوظ_Claimed)) {
+        أرجع;
     }
-#endif
+#جيڪڏهن_پورو
     // Save current interrupt threshold and disable interrupts
-    UBaseType_t old_thresh = ulPortSetInterruptMask();
+    UBaseType_t old_thresh = ul_پورٽ_سيٽ_مداخلت_نقاب();
     // Update the IDF critical nesting count
-    port_uxCriticalNestingIDF++;
-    if (port_uxCriticalNestingIDF == 1) {
+    پورٽ_ux_Critical_Nesting_IDF++;
+    إذا (پورٽ_ux_Critical_Nesting_IDF == 1) {
         // Save a copy of the old interrupt threshold
-        port_uxCriticalOldInterruptStateIDF = (UBaseType_t) old_thresh;
+        پورٽ_ux_Critical_Old_مداخلت_State_IDF = (UBaseType_t) old_thresh;
     }
 }
 
-void vPortExitCritical(void)
+فراغ v_پورٽ_Exit_Critical(فراغ)
 {
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-    if (unlikely(port_xThreadSafeClaimed)) {
-        return;
+#إذا CONFIG_FREERTOS_پورٽ_THREAD_محفوظ_CLAIM
+    إذا (unlikely(پورٽ_x_Thread_محفوظ_Claimed)) {
+        أرجع;
     }
-#endif
+#جيڪڏهن_پورو
 
     /* Critical section nesting coung must never be negative */
-    configASSERT( port_uxCriticalNestingIDF > 0 );
+    configASSERT( پورٽ_ux_Critical_Nesting_IDF > 0 );
 
-    if (port_uxCriticalNestingIDF > 0) {
-        port_uxCriticalNestingIDF--;
+    إذا (پورٽ_ux_Critical_Nesting_IDF > 0) {
+        پورٽ_ux_Critical_Nesting_IDF--;
 
-        if (port_uxCriticalNestingIDF == 0) {
+        إذا (پورٽ_ux_Critical_Nesting_IDF == 0) {
             // Restore the saved interrupt threshold
-            vPortClearInterruptMask((int)port_uxCriticalOldInterruptStateIDF);
+            v_پورٽ_Clear_مداخلت_نقاب((صحيح)پورٽ_ux_Critical_Old_مداخلت_State_IDF);
         }
     }
 }
 
 // ----------------------- System --------------------------
 
-#define STACK_WATCH_AREA_SIZE 32
-#define STACK_WATCH_POINT_NUMBER (SOC_CPU_WATCHPOINTS_NUM - 1)
+#وصف_ڪريو ڍير_WATCH_AREA_سائيز 32
+#وصف_ڪريو ڍير_WATCH_نقطو_عدد (SOC_CPU_WATCHPOINTS_انگ - 1)
 
-void vPortSetStackWatchpoint(void *pxStackStart)
+فراغ v_پورٽ_سيٽ_ڍير_Watchpoint(فراغ *px_ڍير_شروعات)
 {
-    uint32_t addr = (uint32_t)pxStackStart;
-    addr = (addr + (STACK_WATCH_AREA_SIZE - 1)) & (~(STACK_WATCH_AREA_SIZE - 1));
-    esp_cpu_set_watchpoint(STACK_WATCH_POINT_NUMBER, (char *)addr, STACK_WATCH_AREA_SIZE, ESP_CPU_WATCHPOINT_STORE);
+    uint32_t addr = (uint32_t)px_ڍير_شروعات;
+    addr = (addr + (ڍير_WATCH_AREA_سائيز - 1)) & (~(ڍير_WATCH_AREA_سائيز - 1));
+    esp_cpu_سيٽ_watchpoint(ڍير_WATCH_نقطو_عدد, (حرف *)addr, ڍير_WATCH_AREA_سائيز, ESP_CPU_WATCHPOINT_STORE);
 }
 
 
@@ -162,16 +162,16 @@ void vPortSetStackWatchpoint(void *pxStackStart)
 
 // --------------------- Interrupts ------------------------
 
-UBaseType_t ulPortSetInterruptMask(void)
+UBaseType_t ul_پورٽ_سيٽ_مداخلت_نقاب(فراغ)
 {
     UBaseType_t prev_int_level = 0, int_level = 0;
-#if !SOC_INT_CLIC_SUPPORTED
+#إذا !SOC_INT_CLIC_SUPPORTED
     int_level = RVHAL_EXCM_LEVEL;
-#else
+#وإلا
     int_level = RVHAL_EXCM_LEVEL_CLIC;
-#endif
+#جيڪڏهن_پورو
 
-    prev_int_level = rv_utils_set_intlevel_regval(int_level);
+    prev_int_level = rv_utils_سيٽ_intlevel_regval(int_level);
     /**
      * In theory, this function should not return immediately as there is a
      * delay between the moment we mask the interrupt threshold register and
@@ -183,12 +183,12 @@ UBaseType_t ulPortSetInterruptMask(void)
      * followed by two instructions: `ret` and `csrrs` (RV_SET_CSR).
      * That's why we don't need any additional nop instructions here.
      */
-    return prev_int_level;
+    أرجع prev_int_level;
 }
 
-void vPortClearInterruptMask(UBaseType_t mask)
+فراغ v_پورٽ_Clear_مداخلت_نقاب(UBaseType_t نقاب)
 {
-    rv_utils_restore_intlevel_regval(mask);
+    rv_utils_restore_intlevel_regval(نقاب);
     /**
      * The delay between the moment we unmask the interrupt threshold register
      * and the moment the potential requested interrupt is triggered is not
@@ -204,46 +204,46 @@ void vPortClearInterruptMask(UBaseType_t mask)
      * In order to prevent this, force this routine to have a 3-instruction
      * delay before exiting.
      */
-    asm volatile ( "nop" );
-    asm volatile ( "nop" );
-    asm volatile ( "nop" );
+    asm متطاير ( "nop" );
+    asm متطاير ( "nop" );
+    asm متطاير ( "nop" );
 }
 
-BaseType_t xPortCheckIfInISR(void)
+بنياد_Type_t x_پورٽ_Check_If_اندريون_ISR(فراغ)
 {
-    return uxInterruptNesting;
+    أرجع ux_مداخلت_Nesting;
 }
 
-void vPortAssertIfInISR(void)
+فراغ v_پورٽ_Assert_If_اندريون_ISR(فراغ)
 {
     /* Assert if the interrupt nesting count is > 0 */
-    configASSERT(xPortCheckIfInISR() == 0);
+    configASSERT(x_پورٽ_Check_If_اندريون_ISR() == 0);
 }
 
 // ------------------ Critical Sections --------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
-void vPortTakeLock( portMUX_TYPE *lock )
+#إذا ( config_عدد_جو_CORES > 1 )
+فراغ v_پورٽ_Take_تالو( پورٽ_MUX_TYPE *تالو )
 {
-    spinlock_acquire( lock, portMUX_NO_TIMEOUT);
+    spinlock_acquire( تالو, پورٽ_MUX_NO_TIMEOUT);
 }
 
-void vPortReleaseLock( portMUX_TYPE *lock )
+فراغ v_پورٽ_Release_تالو( پورٽ_MUX_TYPE *تالو )
 {
-    spinlock_release( lock );
+    spinlock_release( تالو );
 }
-#endif /* configNUMBER_OF_CORES > 1 */
+#جيڪڏهن_پورو /* configNUMBER_OF_CORES > 1 */
 
 // ---------------------- Yielding -------------------------
 
-void vPortYield(void)
+فراغ v_پورٽ_Yield(فراغ)
 {
     // TODO: IDF-8113
-    const int core_id = 0;
+    ثابت صحيح core_id = 0;
 
-    if (uxInterruptNesting) {
-        vPortYieldFromISR();
-    } else {
+    إذا (ux_مداخلت_Nesting) {
+        v_پورٽ_Yield_From_ISR();
+    } وإلا {
 
         esp_crosscore_int_send_yield(0);
         /* There are 3-4 instructions of latency between triggering the software
@@ -256,15 +256,15 @@ void vPortYield(void)
            for an instant yield, and if that happens then the WFI would be
            waiting for the next interrupt to occur...)
         */
-        while (uxSchedulerRunning && crosscore_int_ll_get_state(core_id) != 0) {}
+        طالما (uxSchedulerRunning && crosscore_int_ll_get_state(core_id) != 0) {}
     }
 }
 
-void vPortYieldFromISR( void )
+فراغ v_پورٽ_Yield_From_ISR( فراغ )
 {
     //traceISR_EXIT_TO_SCHEDULER();
     uxSchedulerRunning = 1;
-    xPortSwitchFlag = 1;
+    x_پورٽ_Switch_Flag = 1;
 }
 // ----------------------- System --------------------------
 
@@ -272,8 +272,8 @@ void vPortYieldFromISR( void )
 
 // --------------------- TCB Cleanup -----------------------
 
-#if ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
-static void vPortTLSPointersDelCb( void *pxTCB )
+#إذا ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
+ساكن فراغ v_پورٽ_TLSPointers_Del_Cb( فراغ *pxTCB )
 {
     /* Typecast pxTCB to StaticTask_t type to access TCB struct members.
      * pvDummy15 corresponds to pvThreadLocalStoragePointers member of the TCB.
@@ -281,37 +281,37 @@ static void vPortTLSPointersDelCb( void *pxTCB )
     StaticTask_t *tcb = ( StaticTask_t * )pxTCB;
 
     /* The TLSP deletion callbacks are stored at an offset of (configNUM_THREAD_LOCAL_STORAGE_POINTERS/2) */
-    TlsDeleteCallbackFunction_t *pvThreadLocalStoragePointersDelCallback = ( TlsDeleteCallbackFunction_t * )( &( tcb->pvDummy15[ ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ) ] ) );
+    TlsDeleteCallbackFunction_t *pv_Thread_Local_Storage_اشارا_Del_Callback = ( TlsDeleteCallbackFunction_t * )( &( tcb->pvDummy15[ ( config_انگ_THREAD_LOCAL_STORAGE_اشارا / 2 ) ] ) );
 
     /* We need to iterate over half the depth of the pvThreadLocalStoragePointers area
      * to access all TLS pointers and their respective TLS deletion callbacks.
      */
-    for ( int x = 0; x < ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ); x++ ) {
-        if ( pvThreadLocalStoragePointersDelCallback[ x ] != NULL ) {  //If del cb is set
+    لكل ( صحيح x = 0; x < ( config_انگ_THREAD_LOCAL_STORAGE_اشارا / 2 ); x++ ) {
+        إذا ( pv_Thread_Local_Storage_اشارا_Del_Callback[ x ] != عدم ) {  //If del cb is set
             /* In case the TLSP deletion callback has been overwritten by a TLS pointer, gracefully abort. */
-            if ( !esp_ptr_executable( pvThreadLocalStoragePointersDelCallback[ x ] ) ) {
-                ESP_EARLY_LOGE("FreeRTOS", "Fatal error: TLSP deletion callback at index %d overwritten with non-excutable pointer %p", x, pvThreadLocalStoragePointersDelCallback[ x ]);
+            إذا ( !esp_ptr_executable( pv_Thread_Local_Storage_اشارا_Del_Callback[ x ] ) ) {
+                ESP_EARLY_LOGE("FreeRTOS", "Fatal error: TLSP deletion callback at index %d overwritten with non-excutable pointer %p", x, pv_Thread_Local_Storage_اشارا_Del_Callback[ x ]);
                 abort();
             }
 
-            pvThreadLocalStoragePointersDelCallback[ x ]( x, tcb->pvDummy15[ x ] );   //Call del cb
+            pv_Thread_Local_Storage_اشارا_Del_Callback[ x ]( x, tcb->pvDummy15[ x ] );   //Call del cb
         }
     }
 }
-#endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+#جيڪڏهن_پورو /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 
-void vPortTCBPreDeleteHook( void *pxTCB )
+فراغ v_پورٽ_TCBPre_Delete_Hook( فراغ *pxTCB )
 {
-    #if ( CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK )
+    #إذا ( CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK )
         /* Call the user defined task pre-deletion hook */
-        extern void vTaskPreDeletionHook( void * pxTCB );
+        خارجي فراغ vTaskPreDeletionHook( فراغ * pxTCB );
         vTaskPreDeletionHook( pxTCB );
-    #endif /* CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK */
+    #جيڪڏهن_پورو /* CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK */
 
-    #if ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
+    #إذا ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
         /* Call TLS pointers deletion callbacks */
-        vPortTLSPointersDelCb( pxTCB );
-    #endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+        v_پورٽ_TLSPointers_Del_Cb( pxTCB );
+    #جيڪڏهن_پورو /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 }
 
 /* ------------------------------------------------ FreeRTOS Portable --------------------------------------------------
@@ -321,30 +321,30 @@ void vPortTCBPreDeleteHook( void *pxTCB )
 
 // ----------------- Scheduler Start/End -------------------
 
-BaseType_t xPortStartScheduler(void)
+بنياد_Type_t x_پورٽ_شروعات_Scheduler(فراغ)
 {
-    uxInterruptNesting = 0;
-    port_uxCriticalNestingIDF = 0;
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-    port_xThreadSafeClaimed = false;
-#endif
+    ux_مداخلت_Nesting = 0;
+    پورٽ_ux_Critical_Nesting_IDF = 0;
+#إذا CONFIG_FREERTOS_پورٽ_THREAD_محفوظ_CLAIM
+    پورٽ_x_Thread_محفوظ_Claimed = false;
+#جيڪڏهن_پورو
     uxSchedulerRunning = 0;
-#if configNUM_CORES > 1
-    port_uxCoreStartupDone[xPortGetCoreID()] = 0;
-#endif
+#إذا config_انگ_CORES > 1
+    پورٽ_ux_Core_Startup_پورو[x_پورٽ_Get_Core_ID()] = 0;
+#جيڪڏهن_پورو
     /* Setup the hardware to generate the tick. */
-    vPortSetupTimer();
+    v_پورٽ_تياري_Timer();
 
     rv_utils_intr_global_enable();
-    esprv_int_set_threshold(RVHAL_INTR_ENABLE_THRESH); /* set global interrupt masking level */
+    esprv_int_سيٽ_حد(RVHAL_INTR_ENABLE_THRESH); /* set global interrupt masking level */
 
-    vPortYield();
+    v_پورٽ_Yield();
 
     /*Should not get here*/
-    return pdFALSE;
+    أرجع pdFALSE;
 }
 
-void vPortEndScheduler(void)
+فراغ v_پورٽ_پڇاڙي_Scheduler(فراغ)
 {
     /* very unlikely this function will be called, so just trap here */
     abort();
@@ -370,7 +370,7 @@ void vPortEndScheduler(void)
  * @param[out] ret_threadptr_reg_init Calculated THREADPTR register initialization value
  * @return Stack pointer that points to the TLS area
  */
-FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackTLS(UBaseType_t uxStackPointer, uint32_t *ret_threadptr_reg_init)
+FORCE_INLINE_ATTR UBaseType_t ux_Initialise_ڍير_TLS(UBaseType_t ux_ڍير_اشارو, uint32_t *ret_threadptr_reg_init)
 {
     /*
     LOW ADDRESS
@@ -392,39 +392,39 @@ FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackTLS(UBaseType_t uxStackPointer, u
     HIGH ADDRESS
     */
     // Calculate TLS area size and round up to multiple of 16 bytes.
-    extern char _thread_local_data_start, _thread_local_data_end;
-    extern char _thread_local_bss_start, _thread_local_bss_end;
-    const uint32_t tls_data_size = (uint32_t)&_thread_local_data_end - (uint32_t)&_thread_local_data_start;
-    const uint32_t tls_bss_size = (uint32_t)&_thread_local_bss_end - (uint32_t)&_thread_local_bss_start;
-    const uint32_t tls_area_size = ESP_ALIGN_UP(tls_data_size + tls_bss_size, 16);
+    خارجي حرف thread_local_معلومات_شروعات, thread_local_معلومات_پڇاڙي;
+    خارجي حرف thread_local_bss_شروعات, thread_local_bss_پڇاڙي;
+    ثابت uint32_t tls_معلومات_سائيز = (uint32_t)&thread_local_معلومات_پڇاڙي - (uint32_t)&thread_local_معلومات_شروعات;
+    ثابت uint32_t tls_bss_سائيز = (uint32_t)&thread_local_bss_پڇاڙي - (uint32_t)&thread_local_bss_شروعات;
+    ثابت uint32_t tls_area_سائيز = ESP_ALIGN_مٿي(tls_معلومات_سائيز + tls_bss_سائيز, 16);
     // TODO: check that TLS area fits the stack
 
     // Allocate space for the TLS area on the stack. The area must be aligned to 16-bytes
-    uxStackPointer = ESP_ALIGN_DOWN(uxStackPointer - (UBaseType_t)tls_area_size, 16);
+    ux_ڍير_اشارو = ESP_ALIGN_هيٺ_ڏانهن(ux_ڍير_اشارو - (UBaseType_t)tls_area_سائيز, 16);
     // Initialize the TLS data with the initialization values of each TLS variable
-    memcpy((void *)uxStackPointer, &_thread_local_data_start, tls_data_size);
+    يادگيري_نقل((فراغ *)ux_ڍير_اشارو, &thread_local_معلومات_شروعات, tls_معلومات_سائيز);
     // Initialize the TLS bss with zeroes
-    memset((void *)(uxStackPointer + tls_data_size), 0, tls_bss_size);
+    memset((فراغ *)(ux_ڍير_اشارو + tls_معلومات_سائيز), 0, tls_bss_سائيز);
 
     // Save tls start address
-    *ret_threadptr_reg_init = (uint32_t)uxStackPointer;
-    return uxStackPointer;
+    *ret_threadptr_reg_init = (uint32_t)ux_ڍير_اشارو;
+    أرجع ux_ڍير_اشارو;
 }
 
-#if CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
-static void vPortTaskWrapper(TaskFunction_t pxCode, void *pvParameters)
+#إذا CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
+ساكن فراغ v_پورٽ_Task_Wrapper(TaskFunction_t px_ڪوڊ, فراغ *pvParameters)
 {
-    __asm__ volatile(".cfi_undefined ra");  // tell to debugger that it's outermost (initial) frame
-    extern void __attribute__((noreturn)) panic_abort(const char *details);
-    static char DRAM_ATTR msg[80] = "FreeRTOS: FreeRTOS Task \"\0";
-    pxCode(pvParameters);
+    __asm__ متطاير(".cfi_undefined ra");  // tell to debugger that it's outermost (initial) frame
+    خارجي فراغ __attribute__((noreturn)) panic_abort(ثابت حرف *details);
+    ساكن حرف DRAM_ATTR نياپو[80] = "FreeRTOS: FreeRTOS Task \"\0";
+    px_ڪوڊ(pvParameters);
     /* FreeRTOS tasks should not return. Log the task name and abort. */
     /* We cannot use s(n)printf because it is in flash */
-    strcat(msg, pcTaskGetName(NULL));
-    strcat(msg, "\" should not return, Aborting now!");
-    panic_abort(msg);
+    strcat(نياپو, pcTaskGetName(عدم));
+    strcat(نياپو, "\" should not return, Aborting now!");
+    panic_abort(نياپو);
 }
-#endif // CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
+#جيڪڏهن_پورو // CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
 
 /**
  * @brief Initialize the task's starting interrupt stack frame
@@ -441,42 +441,42 @@ static void vPortTaskWrapper(TaskFunction_t pxCode, void *pvParameters)
  * @param[in] threadptr_reg_init THREADPTR register initialization value
  * @return Stack pointer that points to the stack frame
  */
-FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackFrame(UBaseType_t uxStackPointer, TaskFunction_t pxCode, void *pvParameters, uint32_t threadptr_reg_init)
+FORCE_INLINE_ATTR UBaseType_t ux_Initialise_ڍير_چوکٺو(UBaseType_t ux_ڍير_اشارو, TaskFunction_t px_ڪوڊ, فراغ *pvParameters, uint32_t threadptr_reg_init)
 {
     /*
     Allocate space for the task's starting interrupt stack frame.
     - The stack frame must be allocated to a 16-byte aligned address.
     - We use RV_STK_FRMSZ (instead of sizeof(RvExcFrame)) as it rounds up the total size to a multiple of 16.
     */
-    uxStackPointer = ESP_ALIGN_DOWN(uxStackPointer - RV_STK_FRMSZ, 16);
+    ux_ڍير_اشارو = ESP_ALIGN_هيٺ_ڏانهن(ux_ڍير_اشارو - RV_STK_FRMSZ, 16);
 
     // Clear the entire interrupt stack frame
-    RvExcFrame *frame = (RvExcFrame *)uxStackPointer;
-    memset(frame, 0, sizeof(RvExcFrame));
+    Rv_Exc_چوکٺو *چوکٺو = (Rv_Exc_چوکٺو *)ux_ڍير_اشارو;
+    memset(چوکٺو, 0, حجم(Rv_Exc_چوکٺو));
 
     /* Initialize the stack frame. */
-    extern uint32_t __global_pointer$;
-    #if CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
-        frame->mepc = (UBaseType_t)vPortTaskWrapper;
-        frame->a0 = (UBaseType_t)pxCode;
-        frame->a1 = (UBaseType_t)pvParameters;
-    #else
-        frame->mepc = (UBaseType_t)pxCode;
-        frame->a0 = (UBaseType_t)pvParameters;
-    #endif // CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
-    frame->gp = (UBaseType_t)&__global_pointer$;
-    frame->tp = (UBaseType_t)threadptr_reg_init;
+    خارجي uint32_t __global_pointer$;
+    #إذا CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
+        چوکٺو->mepc = (UBaseType_t)v_پورٽ_Task_Wrapper;
+        چوکٺو->a0 = (UBaseType_t)px_ڪوڊ;
+        چوکٺو->a1 = (UBaseType_t)pvParameters;
+    #وإلا
+        چوکٺو->mepc = (UBaseType_t)px_ڪوڊ;
+        چوکٺو->a0 = (UBaseType_t)pvParameters;
+    #جيڪڏهن_پورو // CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
+    چوکٺو->gp = (UBaseType_t)&__global_pointer$;
+    چوکٺو->tp = (UBaseType_t)threadptr_reg_init;
 
-    return uxStackPointer;
+    أرجع ux_ڍير_اشارو;
 }
 
-StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack, TaskFunction_t pxCode, void *pvParameters)
+ڍير_Type_t *px_پورٽ_Initialise_ڍير(ڍير_Type_t *px_چوٽي_جو_ڍير, TaskFunction_t px_ڪوڊ, فراغ *pvParameters)
 {
-#ifdef __clang_analyzer__
+#جيڪڏهن_وصف_ٿيل __clang_analyzer__
     // Teach clang-tidy that pxTopOfStack cannot be a pointer to const
-    volatile StackType_t * pxTemp = pxTopOfStack;
-    pxTopOfStack = pxTemp;
-#endif /*__clang_analyzer__ */
+    متطاير ڍير_Type_t * px_عارضي = px_چوٽي_جو_ڍير;
+    px_چوٽي_جو_ڍير = px_عارضي;
+#جيڪڏهن_پورو /*__clang_analyzer__ */
     /*
     HIGH ADDRESS
     |---------------------------| <- pxTopOfStack on entry
@@ -494,77 +494,77 @@ StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack, TaskFunction_t pxC
     - We use UBaseType_t for all of stack area initialization functions for more convenient pointer arithmetic
     */
 
-    UBaseType_t uxStackPointer = (UBaseType_t)pxTopOfStack;
-    configASSERT((uxStackPointer & portBYTE_ALIGNMENT_MASK) == 0);
+    UBaseType_t ux_ڍير_اشارو = (UBaseType_t)px_چوٽي_جو_ڍير;
+    configASSERT((ux_ڍير_اشارو & پورٽ_BYTE_ALIGNMENT_نقاب) == 0);
 
     // Initialize GCC TLS area
     uint32_t threadptr_reg_init;
-    uxStackPointer = uxInitialiseStackTLS(uxStackPointer, &threadptr_reg_init);
-    configASSERT((uxStackPointer & portBYTE_ALIGNMENT_MASK) == 0);
+    ux_ڍير_اشارو = ux_Initialise_ڍير_TLS(ux_ڍير_اشارو, &threadptr_reg_init);
+    configASSERT((ux_ڍير_اشارو & پورٽ_BYTE_ALIGNMENT_نقاب) == 0);
 
     // Initialize the starting interrupt stack frame
-    uxStackPointer = uxInitialiseStackFrame(uxStackPointer, pxCode, pvParameters, threadptr_reg_init);
-    configASSERT((uxStackPointer & portBYTE_ALIGNMENT_MASK) == 0);
+    ux_ڍير_اشارو = ux_Initialise_ڍير_چوکٺو(ux_ڍير_اشارو, px_ڪوڊ, pvParameters, threadptr_reg_init);
+    configASSERT((ux_ڍير_اشارو & پورٽ_BYTE_ALIGNMENT_نقاب) == 0);
 
     // Return the task's current stack pointer address which should point to the starting interrupt stack frame
-    return (StackType_t *)uxStackPointer;
+    أرجع (ڍير_Type_t *)ux_ڍير_اشارو;
 }
 
 // ------------------- Hook Functions ----------------------
 
-void __attribute__((weak)) vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
+فراغ __attribute__((weak)) v_Application_ڍير_حد_کان_مٿي_Hook(TaskHandle_t xTask, حرف *pcTaskName)
 {
-#define ERR_STR1 "***ERROR*** A stack overflow in task "
-#define ERR_STR2 " has been detected."
-    const char *str[] = {ERR_STR1, pcTaskName, ERR_STR2};
+#وصف_ڪريو ERR_STR1 "***ERROR*** A stack overflow in task "
+#وصف_ڪريو ERR_STR2 " has been detected."
+    ثابت حرف *str[] = {ERR_STR1, pcTaskName, ERR_STR2};
 
-    char buf[sizeof(ERR_STR1) + CONFIG_FREERTOS_MAX_TASK_NAME_LEN + sizeof(ERR_STR2) + 1 /* null char */] = {0};
+    حرف buf[حجم(ERR_STR1) + CONFIG_FREERTOS_MAX_TASK_NAME_LEN + حجم(ERR_STR2) + 1 /* null char */] = {0};
 
-    char *dest = buf;
-    for (int i = 0; i < sizeof(str) / sizeof(str[0]); i++) {
+    حرف *dest = buf;
+    لكل (صحيح i = 0; i < حجم(str) / حجم(str[0]); i++) {
         dest = strcat(dest, str[i]);
     }
     esp_system_abort(buf);
 }
 
-#if  (  configUSE_TICK_HOOK > 0 )
-void vApplicationTickHook( void )
+#إذا  (  configUSE_TICK_HOOK > 0 )
+فراغ vApplicationTickHook( فراغ )
 {
     esp_vApplicationTickHook();
 }
-#endif
+#جيڪڏهن_پورو
 
-extern void esp_vApplicationIdleHook(void);
-#if CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK
+خارجي فراغ esp_vApplicationIdleHook(فراغ);
+#إذا CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK
 /*
 By default, the port uses vApplicationPassiveIdleHook() to run IDF style idle
 hooks. However, users may also want to provide their own vApplicationPassiveIdleHook().
 In this case, we use to -Wl,--wrap option to wrap the user provided vApplicationPassiveIdleHook()
 */
-extern void __real_vApplicationPassiveIdleHook( void );
-void __wrap_vApplicationPassiveIdleHook( void )
+خارجي فراغ __real_vApplicationPassiveIdleHook( فراغ );
+فراغ __wrap_vApplicationPassiveIdleHook( فراغ )
 {
     esp_vApplicationIdleHook(); //Run IDF style hooks
     __real_vApplicationPassiveIdleHook(); //Call the user provided vApplicationPassiveIdleHook()
 }
-#else // CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK
-void vApplicationPassiveIdleHook( void )
+#وإلا // CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK
+فراغ vApplicationPassiveIdleHook( فراغ )
 {
     esp_vApplicationIdleHook(); //Run IDF style hooks
 }
-#endif // CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK
+#جيڪڏهن_پورو // CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK
 
 /* ------------------------------------------------ Run Time Stats ------------------------------------------------- */
 
-#if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
+#إذا ( CONFIG_FREERTOS_GENERATE_لاڳيتو_وقت_STATS )
 
-configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void )
+config_لاڳيتو_وقت_COUNTER_TYPE x_پورٽ_Get_لاڳيتو_وقت_Counter_قدر( فراغ )
 {
-#ifdef CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
-    return (configRUN_TIME_COUNTER_TYPE) esp_timer_get_time();
-#else
-    return 0;
-#endif // CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
+#جيڪڏهن_وصف_ٿيل CONFIG_FREERTOS_لاڳيتو_وقت_STATS_USING_ESP_TIMER
+    أرجع (config_لاڳيتو_وقت_COUNTER_TYPE) esp_timer_get_وقت();
+#وإلا
+    أرجع 0;
+#جيڪڏهن_پورو // CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
 }
 
-#endif /* CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS */
+#جيڪڏهن_پورو /* CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS */
