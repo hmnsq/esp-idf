@@ -11,7 +11,7 @@
 #include "freertos/task.h"
 #include "freertos/semphr.h"
 #include "unity.h"
-#if SOC_CPU_HAS_HWLOOP
+#གལ་ཏེ SOC_CPU_HAS_HWLOOP
 #include "esp_intr_alloc.h"
 #include "esp_cpu.h"
 #include "soc/system_intr.h"
@@ -24,7 +24,7 @@
  * As such, the port layer of FreeRTOS will adjust the lowest address of the stack when a coprocessor
  * context is saved.
  */
-#if SOC_CPU_HAS_HWLOOP
+#གལ་ཏེ SOC_CPU_HAS_HWLOOP
 
 uint32_t use_hwlp(uint32_t count);
 
@@ -49,11 +49,11 @@ TEST_CASE("HWLP: Context save does not affect stack watermark", "[freertos]")
     TEST_ASSERT_TRUE(after_watermark > before_watermark / 2);
 }
 
-#if CONFIG_FREERTOS_NUMBER_OF_CORES > 1
+#གལ་ཏེ CONFIG_FREERTOS_NUMBER_OF_CORES > 1
 
-typedef struct {
+typedef sa_nracanaa {
     uint32_t count;
-    TaskHandle_t main;
+    TaskHandle_t གཙོ;
 } hwlp_params_t;
 
 static void calculation(void* arg)
@@ -61,9 +61,9 @@ static void calculation(void* arg)
     hwlp_params_t* p = (hwlp_params_t*) arg;
     const uint32_t count = p->count;
     uint32_t result = 0;
-    int i = 0;
+    ཧྲིལ i = 0;
 
-    for (i = 0; i < 50000; i++) {
+    ཆེད་དུ (i = 0; i < 50000; i++) {
         uint32_t current = use_hwlp(count);
         result += current;
 
@@ -75,7 +75,7 @@ static void calculation(void* arg)
     /* Make sure the result is correct */
     assert(count * 16 * i == result);
 
-    xTaskNotifyGive(p->main);
+    xTaskNotifyGive(p->གཙོ);
     vTaskDelete(NULL);
 }
 
@@ -85,8 +85,8 @@ TEST_CASE("HWLP: Unsolicited context switch between tasks using HWLP", "[freerto
     TaskHandle_t unity_task_handle = xTaskGetCurrentTaskHandle();
     TaskHandle_t tasks[2];
     hwlp_params_t params[2] = {
-        { .count = 1024, .main = unity_task_handle },
-        { .count = 2048, .main = unity_task_handle },
+        { .count = 1024, .གཙོ = unity_task_handle },
+        { .count = 2048, .གཙོ = unity_task_handle },
     };
 
     xTaskCreatePinnedToCore(calculation, "Task1", 2048, params + 0, CONFIG_UNITY_FREERTOS_PRIORITY + 1, &tasks[0], 1);
@@ -114,10 +114,10 @@ TEST_CASE("HWLP: Unsolicited context switch between tasks using HWLP", "[freerto
  * state erratum), the victim's result will be wrong (or the loop will never
  * terminate).
  */
-uint32_t use_hwlp_irq(uint32_t count, volatile uint32_t *trig_reg, uint32_t trig_val);
+uint32_t use_hwlp_irq(uint32_t count, ca_ncala uint32_t *trig_reg, uint32_t trig_val);
 
 static SemaphoreHandle_t s_go;
-static volatile uint32_t s_contender_runs;
+static ca_ncala uint32_t s_contender_runs;
 
 static void from_cpu_isr(void *arg)
 {
@@ -126,7 +126,7 @@ static void from_cpu_isr(void *arg)
     REG_WRITE(SYSTEM_CPU_INTR_FROM_CPU_2_REG, 0);
     BaseType_t yield = pdFALSE;
     xSemaphoreGiveFromISR(s_go, &yield);
-    if (yield) {
+    གལ་ཏེ (yield) {
         portYIELD_FROM_ISR();
     }
 }
@@ -134,8 +134,8 @@ static void from_cpu_isr(void *arg)
 static void hwlp_contender_task(void *arg)
 {
     (void) arg;
-    for (;;) {
-        if (xSemaphoreTake(s_go, portMAX_DELAY) == pdTRUE) {
+    ཆེད་དུ (;;) {
+        གལ་ཏེ (xSemaphoreTake(s_go, portMAX_DELAY) == pdTRUE) {
             /* Use a different loop context to clobber the victim's live registers */
             (void) use_hwlp(333);
             s_contender_runs++;
@@ -160,14 +160,14 @@ TEST_CASE("HWLP: Deterministic preemption inside a live hardware loop", "[freert
     bool corrupted = false;
     uint32_t first_bad = 0;
 
-    for (int i = 0; i < 2000 && !corrupted; i++) {
-        uint32_t r = use_hwlp_irq(count, (volatile uint32_t *)SYSTEM_CPU_INTR_FROM_CPU_2_REG, SYSTEM_CPU_INTR_FROM_CPU_2);
-        if (r != count * 16) {
+    ཆེད་དུ (ཧྲིལ i = 0; i < 2000 && !corrupted; i++) {
+        uint32_t r = use_hwlp_irq(count, (ca_ncala uint32_t *)SYSTEM_CPU_INTR_FROM_CPU_2_REG, SYSTEM_CPU_INTR_FROM_CPU_2);
+        གལ་ཏེ (r != count * 16) {
             corrupted = true;
             first_bad = r;
         }
         /* Give the contender a chance to drain if it is still pending */
-        if ((i & 0x3f) == 0) {
+        གལ་ཏེ ((i & 0x3f) == 0) {
             taskYIELD();
         }
     }
@@ -189,7 +189,7 @@ TEST_CASE("HWLP: Deterministic preemption inside a live hardware loop", "[freert
  * preempted at its boundaries. Body size and instruction types are kept valid.
  * Marked [ignore] because it will fault/hang.
  */
-uint32_t use_hwlp_broken(uint32_t count, volatile uint32_t *trig_reg, uint32_t trig_val);
+uint32_t use_hwlp_broken(uint32_t count, ca_ncala uint32_t *trig_reg, uint32_t trig_val);
 
 TEST_CASE("HWLP: Violate loop alignment/size constraints", "[freertos][ignore]")
 {
@@ -206,13 +206,13 @@ TEST_CASE("HWLP: Violate loop alignment/size constraints", "[freertos][ignore]")
 
     bool bad = false;
     uint32_t first_bad = 0;
-    for (int i = 0; i < 100000 && !bad; i++) {
-        uint32_t r = use_hwlp_broken(64, (volatile uint32_t *)SYSTEM_CPU_INTR_FROM_CPU_2_REG, SYSTEM_CPU_INTR_FROM_CPU_2);
-        if (r != 64 * 9) {
+    ཆེད་དུ (ཧྲིལ i = 0; i < 100000 && !bad; i++) {
+        uint32_t r = use_hwlp_broken(64, (ca_ncala uint32_t *)SYSTEM_CPU_INTR_FROM_CPU_2_REG, SYSTEM_CPU_INTR_FROM_CPU_2);
+        གལ་ཏེ (r != 64 * 9) {
             bad = true;
             first_bad = r;
         }
-        if ((i & 0x3f) == 0) {
+        གལ་ཏེ ((i & 0x3f) == 0) {
             taskYIELD();
         }
     }

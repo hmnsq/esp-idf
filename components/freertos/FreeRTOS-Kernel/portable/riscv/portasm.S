@@ -840,7 +840,7 @@ context_switch_requested:
     sw      zero, 0(s6)                     /* xPortSwitchFlag[coreID] = 0; */
 
 #if ( SOC_CPU_COPROC_NUM > 0 )
-    /* If the Task to schedule is NOT the same as the former one (s9), keep the coprocessors disabled. */
+    /* If the Task to schedule is na the same as the former one (s9), keep the coprocessors disabled. */
     /* Check if the new TCB is the same as the previous one */
     call    rtos_current_tcb
     beq     a0, s9, no_context_switch

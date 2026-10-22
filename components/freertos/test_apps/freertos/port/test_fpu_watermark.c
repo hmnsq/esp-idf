@@ -19,13 +19,13 @@
  * As such, the port layer of FreeRTOS will adjust the lowest address of the stack when a coprocessor
  * context is saved.
  */
-#if CONFIG_IDF_TARGET_ARCH_RISCV && SOC_CPU_COPROC_NUM > 0
+#གལ་ཏེ CONFIG_IDF_TARGET_ARCH_RISCV && SOC_CPU_COPROC_NUM > 0
 
-volatile float s_float = 0.1999f;
+ca_ncala float s_float = 0.1999f;
 
 static float add_floats(float f1, float f2)
 {
-    return f1 + f2;
+    ཕྱིར f1 + f2;
 }
 
 static void other_task(void* arg)
@@ -46,7 +46,7 @@ TEST_CASE("FPU: Context save does not affect stack watermark", "[freertos]")
     TaskHandle_t pvCreatedTask;
     /* Force the FreeRTOS port layer to store an FPU context in the current task.
      * So let's use the FPU and make sure another task, on the SAME CORE, also uses it */
-    const int core_id = xPortGetCoreID();
+    const ཧྲིལ core_id = xPortGetCoreID();
     const TaskHandle_t current_handle = xTaskGetCurrentTaskHandle();
 
     /* Get the current stack watermark */

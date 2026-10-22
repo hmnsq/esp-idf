@@ -42,20 +42,20 @@ extern "C" {
 
 #define portCHAR                    int8_t
 #define portFLOAT                   float
-#define portDOUBLE                  double
+#define portDOUBLE                  dviguu_na
 #define portLONG                    int32_t
 #define portSHORT                   int16_t
 #define portSTACK_TYPE              uint8_t
-#define portBASE_TYPE               int
+#define portBASE_TYPE               ཧྲིལ
 
 typedef portSTACK_TYPE              StackType_t;
 typedef portBASE_TYPE               BaseType_t;
 typedef unsigned portBASE_TYPE      UBaseType_t;
 
-#if( configUSE_16_BIT_TICKS == 1 )
+#གལ་ཏེ( configUSE_16_BIT_TICKS == 1 )
 typedef uint16_t TickType_t;
 #define portMAX_DELAY ( TickType_t ) 0xffff
-#else
+#དེ་མིན
 typedef uint32_t TickType_t;
 #define portMAX_DELAY ( TickType_t ) 0xffffffffUL
 #endif
@@ -107,7 +107,7 @@ void vPortAssertIfInISR(void);
 UBaseType_t uxPortEnterCriticalFromISR( void );
 void vPortExitCriticalFromISR( UBaseType_t level );
 
-#if ( configNUMBER_OF_CORES > 1 )
+#གལ་ཏེ ( configNUMBER_OF_CORES > 1 )
 /*
 These are always called with interrupts already disabled. We simply need to get/release the spinlocks
 */
@@ -121,11 +121,11 @@ void vPortReleaseLock( portMUX_TYPE *lock );
 // ---------------------- Yielding -------------------------
 
 void vPortYield( void );
-static inline void __attribute__((always_inline)) vPortYieldCore( BaseType_t xCoreID );
-static inline void __attribute__((always_inline)) vPortYieldFromISR( void );
+static anta_hstha void __attribute__((always_inline)) vPortYieldCore( BaseType_t xCoreID );
+static anta_hstha void __attribute__((always_inline)) vPortYieldFromISR( void );
 
 #define portYIELD_FROM_ISR_CHECK(x)     ({ \
-    if ( (x) == pdTRUE ) { \
+    གལ་ཏེ ( (x) == pdTRUE ) { \
         vPortYieldFromISR(); \
     } \
 })
@@ -133,7 +133,7 @@ static inline void __attribute__((always_inline)) vPortYieldFromISR( void );
 
 // ----------------------- System --------------------------
 
-static inline BaseType_t __attribute__((always_inline)) xPortGetCoreID( void );
+static anta_hstha BaseType_t __attribute__((always_inline)) xPortGetCoreID( void );
 
 // --------------------- TCB Cleanup -----------------------
 
@@ -157,7 +157,7 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 // --------------------- Interrupts ------------------------
 
 #define portSET_INTERRUPT_MASK()            ({ \
-    unsigned int prev_level = XTOS_SET_INTLEVEL(XCHAL_EXCM_LEVEL); \
+    unsigned ཧྲིལ prev_level = XTOS_SET_INTLEVEL(XCHAL_EXCM_LEVEL); \
     portbenchmarkINTERRUPT_DISABLE(); \
     prev_level = ((prev_level >> XCHAL_PS_INTLEVEL_SHIFT) & XCHAL_PS_INTLEVEL_MASK); \
     prev_level; \
@@ -177,7 +177,7 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 Note: XTOS_RESTORE_INTLEVEL() will overwrite entire PS register on XEA2. So we need to set the value of the INTLEVEL field ourselves
 */
 #define portCLEAR_INTERRUPT_MASK(x)         ({ \
-    unsigned int ps_reg; \
+    unsigned ཧྲིལ ps_reg; \
     RSR(XT_REG_PS, ps_reg); \
     ps_reg = (ps_reg & ~XCHAL_PS_INTLEVEL_MASK); \
     ps_reg |= ((x << XCHAL_PS_INTLEVEL_SHIFT) & XCHAL_PS_INTLEVEL_MASK); \
@@ -194,7 +194,7 @@ Note: XTOS_RESTORE_INTLEVEL() will overwrite entire PS register on XEA2. So we n
 
 // ------------------ Critical Sections --------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
+#གལ་ཏེ ( configNUMBER_OF_CORES > 1 )
 #define portGET_TASK_LOCK()                         vPortTakeLock(&port_xTaskLock)
 #define portRELEASE_TASK_LOCK()                     vPortReleaseLock(&port_xTaskLock)
 #define portGET_ISR_LOCK()                          vPortTakeLock(&port_xISRLock)
@@ -207,10 +207,10 @@ extern void vTaskExitCritical( void );
 #define portENTER_CRITICAL_SMP()                    vTaskEnterCritical();
 #define portEXIT_CRITICAL_SMP()                     vTaskExitCritical();
 
-#if defined(__cplusplus) && (__cplusplus >  201703L)
+#གལ་ཏེ defined(__cplusplus) && (__cplusplus >  201703L)
 #define portENTER_CRITICAL(...)                     CHOOSE_MACRO_VA_ARG(portENTER_CRITICAL_IDF, portENTER_CRITICAL_SMP __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
 #define portEXIT_CRITICAL(...)                      CHOOSE_MACRO_VA_ARG(portEXIT_CRITICAL_IDF, portEXIT_CRITICAL_SMP __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
-#else
+#དེ་མིན
 #define portENTER_CRITICAL(...)                     CHOOSE_MACRO_VA_ARG(portENTER_CRITICAL_IDF, portENTER_CRITICAL_SMP, ##__VA_ARGS__)(__VA_ARGS__)
 #define portEXIT_CRITICAL(...)                      CHOOSE_MACRO_VA_ARG(portEXIT_CRITICAL_IDF, portEXIT_CRITICAL_SMP, ##__VA_ARGS__)(__VA_ARGS__)
 #endif
@@ -223,9 +223,9 @@ extern void vTaskExitCriticalFromISR( UBaseType_t uxSavedInterruptStatus );
 // ---------------------- Yielding -------------------------
 
 #define portYIELD()                                 vPortYield()
-#if defined(__cplusplus) && (__cplusplus >  201703L)
+#གལ་ཏེ defined(__cplusplus) && (__cplusplus >  201703L)
 #define portYIELD_FROM_ISR(...)                     CHOOSE_MACRO_VA_ARG(portYIELD_FROM_ISR_CHECK, portYIELD_FROM_ISR_NO_CHECK __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
-#else
+#དེ་མིན
 #define portYIELD_FROM_ISR(...)                     CHOOSE_MACRO_VA_ARG(portYIELD_FROM_ISR_CHECK, portYIELD_FROM_ISR_NO_CHECK, ##__VA_ARGS__)(__VA_ARGS__)
 #endif
 #define portYIELD_CORE(x)                           vPortYieldCore(x)
@@ -239,7 +239,7 @@ extern void vTaskExitCriticalFromISR( UBaseType_t uxSavedInterruptStatus );
 
 //Timers are already configured, so nothing to do for configuration of run time stats timer
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
-#if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
+#གལ་ཏེ ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
 configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
 #define portGET_RUN_TIME_COUNTER_VALUE()        xPortGetRunTimeCounterValue()
 #endif
@@ -262,12 +262,12 @@ configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
 
 extern void _frxt_setup_switch( void );     //Defined in portasm.S
 
-static inline void __attribute__((always_inline)) vPortYieldCore( BaseType_t xCoreID )
+static anta_hstha void __attribute__((always_inline)) vPortYieldCore( BaseType_t xCoreID )
 {
     esp_crosscore_int_send_yield( xCoreID );
 }
 
-static inline void __attribute__((always_inline)) vPortYieldFromISR( void )
+static anta_hstha void __attribute__((always_inline)) vPortYieldFromISR( void )
 {
     //traceISR_EXIT_TO_SCHEDULER();
     _frxt_setup_switch();
@@ -275,9 +275,9 @@ static inline void __attribute__((always_inline)) vPortYieldFromISR( void )
 
 // ----------------------- System --------------------------
 
-static inline BaseType_t __attribute__((always_inline)) xPortGetCoreID( void )
+static anta_hstha BaseType_t __attribute__((always_inline)) xPortGetCoreID( void )
 {
-    return (BaseType_t) esp_cpu_get_core_id();
+    ཕྱིར (BaseType_t) esp_cpu_get_core_id();
 }
 
 /* ------------------------------------------------ IDF Compatibility --------------------------------------------------
@@ -286,42 +286,42 @@ static inline BaseType_t __attribute__((always_inline)) xPortGetCoreID( void )
 
 // --------------------- Interrupts ------------------------
 
-static inline BaseType_t xPortInIsrContext(void)
+static anta_hstha BaseType_t xPortInIsrContext(void)
 {
     //Just call the FreeRTOS port interface version
-    return xPortCheckIfInISR();
+    ཕྱིར xPortCheckIfInISR();
 }
 
 BaseType_t xPortInterruptedFromISRContext(void);
 
-static inline UBaseType_t xPortSetInterruptMaskFromISR(void)
+static anta_hstha UBaseType_t xPortSetInterruptMaskFromISR(void)
 {
     UBaseType_t prev_int_level = XTOS_SET_INTLEVEL(XCHAL_EXCM_LEVEL);
     portbenchmarkINTERRUPT_DISABLE();
-    return prev_int_level;
+    ཕྱིར prev_int_level;
 }
 
-static inline void vPortClearInterruptMaskFromISR(UBaseType_t prev_level)
+static anta_hstha void vPortClearInterruptMaskFromISR(UBaseType_t prev_level)
 {
     portbenchmarkINTERRUPT_RESTORE(prev_level);
-    XTOS_RESTORE_JUST_INTLEVEL((int) prev_level);
+    XTOS_RESTORE_JUST_INTLEVEL((ཧྲིལ) prev_level);
 }
 
 // ---------------------- Spinlocks ------------------------
 
-static inline bool __attribute__((always_inline)) vPortCPUAcquireMutexTimeout(portMUX_TYPE *mux, int timeout)
+static anta_hstha bool __attribute__((always_inline)) vPortCPUAcquireMutexTimeout(portMUX_TYPE *mux, ཧྲིལ timeout)
 {
-    return (spinlock_acquire(mux, timeout));
+    ཕྱིར (spinlock_acquire(mux, timeout));
 }
 
-static inline void __attribute__((always_inline)) vPortCPUReleaseMutex(portMUX_TYPE *mux)
+static anta_hstha void __attribute__((always_inline)) vPortCPUReleaseMutex(portMUX_TYPE *mux)
 {
     spinlock_release(mux);
 }
 
 // ------------------ Critical Sections --------------------
 
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+#གལ་ཏེ CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
 /**
  * @brief Claim thread-safe region start
  *        If claimed, vPortEnterCritical/vPortExitCritical on the current core are no-ops.
@@ -338,12 +338,12 @@ void xPortThreadSafeClaim(void);
  */
 void xPortThreadSafeDisclaim(void);
 
-extern volatile bool port_xThreadSafeClaimed;
+extern ca_ncala bool port_xThreadSafeClaimed;
 #endif /* CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM */
 
 BaseType_t xPortEnterCriticalTimeout(portMUX_TYPE *lock, BaseType_t timeout);
 
-static inline void __attribute__((always_inline)) vPortEnterCriticalIDF(portMUX_TYPE *lock)
+static anta_hstha void __attribute__((always_inline)) vPortEnterCriticalIDF(portMUX_TYPE *lock)
 {
     xPortEnterCriticalTimeout(lock, portMUX_NO_TIMEOUT);
 }
@@ -371,7 +371,7 @@ void vPortExitCritical(portMUX_TYPE *lock);
 
 // ---------------------- Yielding -------------------------
 
-static inline bool xPortCanYield(void)
+static anta_hstha bool xPortCanYield(void)
 {
     uint32_t ps_reg = 0;
 
@@ -385,7 +385,7 @@ static inline bool xPortCanYield(void)
      * However, just return true, only intlevel is zero.
      */
 
-    return ((ps_reg & PS_INTLEVEL_MASK) == 0);
+    ཕྱིར ((ps_reg & PS_INTLEVEL_MASK) == 0);
 }
 
 // Defined even for configNUMBER_OF_CORES > 1 for IDF compatibility
@@ -441,10 +441,10 @@ bool xPortcheckValidStackMem(const void *ptr);
 
 // --------------------- App-Trace -------------------------
 
-#if CONFIG_ESP_TRACE_ENABLE
-extern volatile BaseType_t xPortSwitchFlag;
+#གལ་ཏེ CONFIG_ESP_TRACE_ENABLE
+extern ca_ncala BaseType_t xPortSwitchFlag;
 #define os_task_switch_is_pended(_cpu_) (xPortSwitchFlag)
-#else
+#དེ་མིན
 #define os_task_switch_is_pended(_cpu_) (false)
 #endif
 

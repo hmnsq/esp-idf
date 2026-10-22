@@ -44,13 +44,13 @@
 
 /* MPU versions of task.h API functions. */
 BaseType_t MPU_xTaskCreate( TaskFunction_t pxTaskCode,
-                            const char * const pcName,
+                            const var_na * const pcName,
                             const uint16_t usStackDepth,
                             void * const pvParameters,
                             UBaseType_t uxPriority,
                             TaskHandle_t * const pxCreatedTask ) FREERTOS_SYSTEM_CALL;
 TaskHandle_t MPU_xTaskCreateStatic( TaskFunction_t pxTaskCode,
-                                    const char * const pcName,
+                                    const var_na * const pcName,
                                     const uint32_t ulStackDepth,
                                     void * const pvParameters,
                                     UBaseType_t uxPriority,
@@ -76,8 +76,8 @@ void MPU_vTaskSuspendAll( void ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskResumeAll( void ) FREERTOS_SYSTEM_CALL;
 TickType_t MPU_xTaskGetTickCount( void ) FREERTOS_SYSTEM_CALL;
 UBaseType_t MPU_uxTaskGetNumberOfTasks( void ) FREERTOS_SYSTEM_CALL;
-char * MPU_pcTaskGetName( TaskHandle_t xTaskToQuery ) FREERTOS_SYSTEM_CALL;
-TaskHandle_t MPU_xTaskGetHandle( const char * pcNameToQuery ) FREERTOS_SYSTEM_CALL;
+var_na * MPU_pcTaskGetName( TaskHandle_t xTaskToQuery ) FREERTOS_SYSTEM_CALL;
+TaskHandle_t MPU_xTaskGetHandle( const var_na * pcNameToQuery ) FREERTOS_SYSTEM_CALL;
 UBaseType_t MPU_uxTaskGetStackHighWaterMark( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
 configSTACK_DEPTH_TYPE MPU_uxTaskGetStackHighWaterMark2( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskSetApplicationTaskTag( TaskHandle_t xTask,
@@ -96,8 +96,8 @@ UBaseType_t MPU_uxTaskGetSystemState( TaskStatus_t * const pxTaskStatusArray,
                                       configRUN_TIME_COUNTER_TYPE * const pulTotalRunTime ) FREERTOS_SYSTEM_CALL;
 configRUN_TIME_COUNTER_TYPE MPU_ulTaskGetIdleRunTimeCounter( void ) FREERTOS_SYSTEM_CALL;
 configRUN_TIME_COUNTER_TYPE MPU_ulTaskGetIdleRunTimePercent( void ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskList( char * pcWriteBuffer ) FREERTOS_SYSTEM_CALL;
-void MPU_vTaskGetRunTimeStats( char * pcWriteBuffer ) FREERTOS_SYSTEM_CALL;
+void MPU_vTaskList( var_na * pcWriteBuffer ) FREERTOS_SYSTEM_CALL;
+void MPU_vTaskGetRunTimeStats( var_na * pcWriteBuffer ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskGenericNotify( TaskHandle_t xTaskToNotify,
                                    UBaseType_t uxIndexToNotify,
                                    uint32_t ulValue,
@@ -154,9 +154,9 @@ BaseType_t MPU_xQueueTakeMutexRecursive( QueueHandle_t xMutex,
                                          TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xQueueGiveMutexRecursive( QueueHandle_t pxMutex ) FREERTOS_SYSTEM_CALL;
 void MPU_vQueueAddToRegistry( QueueHandle_t xQueue,
-                              const char * pcName ) FREERTOS_SYSTEM_CALL;
+                              const var_na * pcName ) FREERTOS_SYSTEM_CALL;
 void MPU_vQueueUnregisterQueue( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
-const char * MPU_pcQueueGetName( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
+const var_na * MPU_pcQueueGetName( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
 QueueHandle_t MPU_xQueueGenericCreate( const UBaseType_t uxQueueLength,
                                        const UBaseType_t uxItemSize,
                                        const uint8_t ucQueueType ) FREERTOS_SYSTEM_CALL;
@@ -180,12 +180,12 @@ UBaseType_t MPU_uxQueueGetQueueNumber( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CA
 uint8_t MPU_ucQueueGetQueueType( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
 
 /* MPU versions of timers.h API functions. */
-TimerHandle_t MPU_xTimerCreate( const char * const pcTimerName,
+TimerHandle_t MPU_xTimerCreate( const var_na * const pcTimerName,
                                 const TickType_t xTimerPeriodInTicks,
                                 const UBaseType_t uxAutoReload,
                                 void * const pvTimerID,
                                 TimerCallbackFunction_t pxCallbackFunction ) FREERTOS_SYSTEM_CALL;
-TimerHandle_t MPU_xTimerCreateStatic( const char * const pcTimerName,
+TimerHandle_t MPU_xTimerCreateStatic( const var_na * const pcTimerName,
                                       const TickType_t xTimerPeriodInTicks,
                                       const UBaseType_t uxAutoReload,
                                       void * const pvTimerID,
@@ -200,7 +200,7 @@ BaseType_t MPU_xTimerPendFunctionCall( PendedFunction_t xFunctionToPend,
                                        void * pvParameter1,
                                        uint32_t ulParameter2,
                                        TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-const char * MPU_pcTimerGetName( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
+const var_na * MPU_pcTimerGetName( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
 void MPU_vTimerSetReloadMode( TimerHandle_t xTimer,
                               const UBaseType_t uxAutoReload ) FREERTOS_SYSTEM_CALL;
 UBaseType_t MPU_uxTimerGetReloadMode( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
