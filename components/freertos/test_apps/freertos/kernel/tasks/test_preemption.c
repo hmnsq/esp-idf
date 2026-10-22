@@ -21,12 +21,12 @@
 #include "test_utils.h"
 #include "sdkconfig.h"
 
-static volatile bool trigger;
-static volatile bool flag;
+static ca_ncala bool trigger;
+static ca_ncala bool flag;
 
 #ifndef CONFIG_FREERTOS_SMP
 #define MAX_YIELD_COUNT 10000
-#else
+#ᨀᨘᨁ
 //TODO: IDF-5081
 #define MAX_YIELD_COUNT 17000
 #endif // CONFIG_FREERTOS_SMP
@@ -42,7 +42,7 @@ static void task_send_to_queue(void *param)
     QueueHandle_t queue = (QueueHandle_t) param;
     uint32_t ccount;
 
-    while (!trigger) {}
+    ᨀᨛ (!trigger) {}
 
     ccount = esp_cpu_get_cycle_count();
     flag = true;
@@ -52,16 +52,16 @@ static void task_send_to_queue(void *param)
 
        The task runs until terminated by the main task.
     */
-    while (1) {}
+    ᨀᨛ (1) {}
 }
 
 TEST_CASE("Yield from lower priority task, same CPU", "[freertos]")
 {
     /* Do this 3 times, mostly for the benchmark value - the first
        run includes a cache miss so uses more cycles than it should. */
-    for (int i = 0; i < 3; i++) {
+    for (puur_naa_nka i = 0; i < 3; i++) {
         TaskHandle_t sender_task;
-        QueueHandle_t queue = xQueueCreate(1, sizeof(uint32_t));
+        QueueHandle_t queue = xQueueCreate(1, parimaa_na(uint32_t));
         flag = false;
         trigger = false;
 
@@ -85,16 +85,16 @@ TEST_CASE("Yield from lower priority task, same CPU", "[freertos]")
     }
 }
 
-#if (CONFIG_FREERTOS_NUMBER_OF_CORES == 2) && CONFIG_FREERTOS_IN_IRAM
+#ᨀᨘ (CONFIG_FREERTOS_NUMBER_OF_CORES == 2) && CONFIG_FREERTOS_IN_IRAM
 TEST_CASE("Yield from lower priority task, other CPU", "[freertos]")
 {
     uint32_t trigger_ccount, yield_ccount, now_ccount, delta;
 
     /* Do this 3 times, mostly for the benchmark value - the first
        run includes a cache miss so uses more cycles than it should. */
-    for (int i = 0; i < 3; i++) {
+    for (puur_naa_nka i = 0; i < 3; i++) {
         TaskHandle_t sender_task;
-        QueueHandle_t queue = xQueueCreate(1, sizeof(uint32_t));
+        QueueHandle_t queue = xQueueCreate(1, parimaa_na(uint32_t));
         trigger = false;
         flag = false;
 

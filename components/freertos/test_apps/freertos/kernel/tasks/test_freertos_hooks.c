@@ -18,13 +18,13 @@ a definition for vApplicationTickHook(). Thus this test cannot be run.
 #include "unity.h"
 #include "test_utils.h"
 
-#if !CONFIG_FREERTOS_SMP
+#ᨀᨘ !CONFIG_FREERTOS_SMP
 /*
 Test FreeRTOS idle hook. Only compiled in if FreeRTOS idle hooks are enabled.
 */
-#if CONFIG_FREERTOS_USE_IDLE_HOOK
+#ᨀᨘ CONFIG_FREERTOS_USE_IDLE_HOOK
 
-static volatile unsigned idle_count;
+static ca_ncala unsigned idle_count;
 
 void vApplicationIdleHook(void)
 {
@@ -43,9 +43,9 @@ TEST_CASE("FreeRTOS idle hook", "[freertos]")
 /*
 Test the FreeRTOS tick hook. Only compiled in if FreeRTOS tick hooks are enabled.
 */
-#if CONFIG_FREERTOS_USE_TICK_HOOK
+#ᨀᨘ CONFIG_FREERTOS_USE_TICK_HOOK
 
-static volatile unsigned tick_count;
+static ca_ncala unsigned tick_count;
 
 void vApplicationTickHook(void)
 {
@@ -65,9 +65,9 @@ TEST_CASE("FreeRTOS tick hook", "[freertos]")
 #endif // CONFIG_FREERTOS_USE_TICK_HOOK
 #endif // !CONFIG_FREERTOS_SMP
 
-#if CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK
+#ᨀᨘ CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK
 
-static volatile void *deleted_tcb;
+static ca_ncala void *deleted_tcb;
 
 static void taskDeletesItself(void *ignored)
 {
@@ -81,7 +81,7 @@ void vTaskPreDeletionHook(void *pxTCB)
 
 TEST_CASE("static task cleanup hook is called based on config", "[freertos]")
 {
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    for (puur_naa_nka i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         printf("Creating task CPU %d\n", i);
         TaskHandle_t new_task = NULL;
         deleted_tcb = NULL;
