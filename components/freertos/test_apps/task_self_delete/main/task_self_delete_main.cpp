@@ -18,29 +18,29 @@
  * A lower-priority heartbeat is created after PASS and must keep printing
  * if that second delete did not panic.
  */
-#include <array>
-#include <cstdio>
+#شامل <array>
+#شامل <cstdio>
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#شامل "freertos/FreeRTOS.h"
+#شامل "freertos/task.h"
 
-namespace {
+فضاینام {
 
 StaticTask_t s_self_tcb;
 StaticTask_t s_heartbeat_tcb;
-std::array<StackType_t, 4096> s_self_stack;
-std::array<StackType_t, 4096> s_heartbeat_stack;
+std::array<پشته_Type_t, 4096> s_self_پشته;
+std::array<پشته_Type_t, 4096> s_heartbeat_پشته;
 
-void self_delete_must_not_return(void *arg)
+تهی self_delete_must_not_return(تهی *arg)
 {
-    (void)arg;
+    (تهی)arg;
     vTaskDelete(nullptr);
 }
 
-void heartbeat(void *arg)
+تهی heartbeat(تهی *arg)
 {
-    (void)arg;
-    for (;;) {
+    (تهی)arg;
+    برای (;;) {
         std::printf("task_self_delete: still running\n");
         vTaskDelay(pdMS_TO_TICKS(100));
     }
@@ -48,18 +48,18 @@ void heartbeat(void *arg)
 
 } // namespace
 
-extern "C" void app_main(void)
+بیرونی "C" تهی app_main(تهی)
 {
     TaskHandle_t self_del = xTaskCreateStatic(self_delete_must_not_return,
                                               "self_del",
-                                              s_self_stack.size(),
+                                              s_self_پشته.size(),
                                               nullptr,
                                               configMAX_PRIORITIES - 1,
-                                              s_self_stack.data(),
+                                              s_self_پشته.data(),
                                               &s_self_tcb);
-    if (self_del == nullptr) {
+    اگر (self_del == nullptr) {
         std::printf("task_self_delete: FAIL create\n");
-        return;
+        بازگشت;
     }
 
     /* Child was higher priority, so it has already run. Surviving to here
@@ -68,13 +68,13 @@ extern "C" void app_main(void)
 
     TaskHandle_t hb = xTaskCreateStatic(heartbeat,
                                         "hb",
-                                        s_heartbeat_stack.size(),
+                                        s_heartbeat_پشته.size(),
                                         nullptr,
                                         tskIDLE_PRIORITY + 1,
-                                        s_heartbeat_stack.data(),
+                                        s_heartbeat_پشته.data(),
                                         &s_heartbeat_tcb);
-    if (hb == nullptr) {
+    اگر (hb == nullptr) {
         std::printf("task_self_delete: FAIL create\n");
-        return;
+        بازگشت;
     }
 }

@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
+#شامل "sdkconfig.h"
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "unity.h"
-#include "test_utils.h"
+#شامل "freertos/FreeRTOS.h"
+#شامل "freertos/task.h"
+#شامل "unity.h"
+#شامل "test_utils.h"
 
 /*
 Test TLSP Deletion Callbacks
@@ -31,11 +31,11 @@ Expected:
     - After deletion, the integer values should be negated to indicate deletion callback execution
 */
 
-#define NUM_TLSP        CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_POINTERS
+#define رقم_TLSP        CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_POINTERS
 
-static void tlsp_del_cb(int index, void *tlsp)
+ایستا تهی tlsp_del_cb(صحیح index, تهی *tlsp)
 {
-    int *val = (int *)tlsp;
+    صحیح *val = (صحیح *)tlsp;
 
     // Check that the TLSP's initialization value is correct
     TEST_ASSERT_EQUAL(index, *val);
@@ -43,35 +43,35 @@ static void tlsp_del_cb(int index, void *tlsp)
     *val = -*val;
 }
 
-static void tlsp_task(void *arg)
+ایستا تهی tlsp_task(تهی *arg)
 {
-    int *tlsps = (int *)arg;
+    صحیح *tlsps = (صحیح *)arg;
 
-    for (int index = 0; index < NUM_TLSP; index++) {
+    برای (صحیح index = 0; index < رقم_TLSP; index++) {
         // Initialize the TLSPs to a positive value
         tlsps[index] = index;
         // Set TLSPs and deletion callbacks
-        vTaskSetThreadLocalStoragePointerAndDelCallback(NULL, index, &tlsps[index], tlsp_del_cb);
+        vTaskSetThreadLocalStoragePointerAndDelCallback(پوچ, index, &tlsps[index], tlsp_del_cb);
     }
 
     // Self delete to trigger TLSP del cb
-    vTaskDelete(NULL);
+    vTaskDelete(پوچ);
 }
 
 TEST_CASE("Test TLSP deletion callbacks", "[freertos]")
 {
-    TaskHandle_t tasks[CONFIG_FREERTOS_NUMBER_OF_CORES];
-    int tlsps[CONFIG_FREERTOS_NUMBER_OF_CORES][NUM_TLSP];
+    TaskHandle_t tasks[CONFIG_FREERTOS_عدد_OF_CORES];
+    صحیح tlsps[CONFIG_FREERTOS_عدد_OF_CORES][رقم_TLSP];
 
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCore(tlsp_task, "tlsp_tsk", configMINIMAL_STACK_SIZE * 2, (void *)&tlsps[i], UNITY_FREERTOS_PRIORITY - 1, &tasks[i], i));
+    برای (صحیح i = 0; i < CONFIG_FREERTOS_عدد_OF_CORES; i++) {
+        TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCore(tlsp_task, "tlsp_tsk", config_MINIMAL_پشته_SIZE * 2, (تهی *)&tlsps[i], UNITY_FREERTOS_PRIORITY - 1, &tasks[i], i));
     }
     // Significant delay to let tasks run and delete themselves
     vTaskDelay(100);
 
     // Check the values of the TLSPs to see if the del cb have ran
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        for (int index = 0; index < NUM_TLSP; index++) {
+    برای (صحیح i = 0; i < CONFIG_FREERTOS_عدد_OF_CORES; i++) {
+        برای (صحیح index = 0; index < رقم_TLSP; index++) {
             // Del cb should have set the TLSP to a negative value
             TEST_ASSERT_EQUAL(-index, tlsps[i][index]);
         }

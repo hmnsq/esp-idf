@@ -4,25 +4,25 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
+#شامل "sdkconfig.h"
 
-#if CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
+#اگر CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/idf_additions.h"
-#include "esp_log.h"
+#شامل "freertos/FreeRTOS.h"
+#شامل "freertos/task.h"
+#شامل "freertos/idf_additions.h"
+#شامل "esp_log.h"
 
 /*
  * Keep the blacklist out of the upstream TCB. A small handle table is enough
  * for this debug option and is safe to scan from the PIE exception path.
  */
-static TaskHandle_t volatile s_pie_blacklist[ CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX ];
-static portMUX_TYPE s_pie_blacklist_mux = portMUX_INITIALIZER_UNLOCKED;
+ایستا TaskHandle_t فرار s_pie_blacklist[ CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX ];
+ایستا portMUX_TYPE s_pie_blacklist_mux = portMUX_INITIALIZER_UNLOCKED;
 
-static TaskHandle_t prvResolveTask( TaskHandle_t xTask )
+ایستا TaskHandle_t prvResolveTask( TaskHandle_t xTask )
 {
-    return ( xTask != NULL ) ? xTask : xTaskGetCurrentTaskHandle();
+    بازگشت ( xTask != پوچ ) ? xTask : xTaskGetCurrentTaskHandle();
 }
 
 /*
@@ -30,20 +30,20 @@ static TaskHandle_t prvResolveTask( TaskHandle_t xTask )
  * PIE exception handler, where taking the spinlock could deadlock. A stale read
  * is acceptable for a debug aid.
  */
-static BaseType_t prvIsTaskPieBlacklisted( TaskHandle_t xTask )
+ایستا BaseType_t prvIsTaskPieBlacklisted( TaskHandle_t xTask )
 {
-    for( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
+    برای( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
     {
-        if( s_pie_blacklist[ i ] == xTask )
+        اگر( s_pie_blacklist[ i ] == xTask )
         {
-            return pdTRUE;
+            بازگشت pdTRUE;
         }
     }
 
-    return pdFALSE;
+    بازگشت pdFALSE;
 }
 
-void vTaskSetPieBlacklisted( TaskHandle_t xTask,
+تهی vTaskSetPieBlacklisted( TaskHandle_t xTask,
                              BaseType_t xBlacklisted )
 {
     TaskHandle_t xHandle = prvResolveTask( xTask );
@@ -51,38 +51,38 @@ void vTaskSetPieBlacklisted( TaskHandle_t xTask,
 
     taskENTER_CRITICAL( &s_pie_blacklist_mux );
 
-    if( xBlacklisted != pdFALSE )
+    اگر( xBlacklisted != pdFALSE )
     {
-        if( prvIsTaskPieBlacklisted( xHandle ) == pdFALSE )
+        اگر( prvIsTaskPieBlacklisted( xHandle ) == pdFALSE )
         {
             xStored = pdFALSE;
 
-            for( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
+            برای( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
             {
-                if( s_pie_blacklist[ i ] == NULL )
+                اگر( s_pie_blacklist[ i ] == پوچ )
                 {
                     s_pie_blacklist[ i ] = xHandle;
                     xStored = pdTRUE;
-                    break;
+                    بشکن;
                 }
             }
         }
     }
-    else
+    وگرنه
     {
-        for( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
+        برای( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
         {
-            if( s_pie_blacklist[ i ] == xHandle )
+            اگر( s_pie_blacklist[ i ] == xHandle )
             {
-                s_pie_blacklist[ i ] = NULL;
-                break;
+                s_pie_blacklist[ i ] = پوچ;
+                بشکن;
             }
         }
     }
 
     taskEXIT_CRITICAL( &s_pie_blacklist_mux );
 
-    if( xStored == pdFALSE )
+    اگر( xStored == pdFALSE )
     {
         ESP_EARLY_LOGE( "FreeRTOS", "PIE blacklist table is full (max %d)", CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX );
         configASSERT( xStored == pdTRUE );
@@ -91,7 +91,7 @@ void vTaskSetPieBlacklisted( TaskHandle_t xTask,
 
 BaseType_t xTaskGetPieBlacklisted( TaskHandle_t xTask )
 {
-    return prvIsTaskPieBlacklisted( prvResolveTask( xTask ) );
+    بازگشت prvIsTaskPieBlacklisted( prvResolveTask( xTask ) );
 }
 
 #endif /* CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST */

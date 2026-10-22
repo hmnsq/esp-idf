@@ -72,11 +72,11 @@
 #endif
 
 /* Message buffers are built onto of stream buffers. */
-#include "stream_buffer.h"
+#شامل "stream_buffer.h"
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
-    extern "C" {
+#اگر defined( __cplusplus )
+    بیرونی "C" {
 #endif
 /* *INDENT-ON* */
 
@@ -87,7 +87,7 @@
  * etc. Message buffer is essentially built as a stream buffer hence its handle
  * is also set to same type as a stream buffer handle.
  */
-typedef StreamBufferHandle_t MessageBufferHandle_t;
+تعریفنوع StreamBufferHandle_t MessageBufferHandle_t;
 
 /*-----------------------------------------------------------*/
 
@@ -155,9 +155,9 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  */
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
 #define xMessageBufferCreate( xBufferSizeBytes ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( size_t ) 0, pdTRUE, NULL, NULL )
+    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( size_t ) 0, pdTRUE, پوچ, پوچ )
 /** @endcond */
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+#اگر ( configUSE_SB_COMPLETED_CALLBACK == 1 )
     #define xMessageBufferCreateWithCallback( xBufferSizeBytes, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
     xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( size_t ) 0, pdTRUE, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
 #endif
@@ -230,9 +230,9 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  */
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
 #define xMessageBufferCreateStatic( xBufferSizeBytes, pucMessageBufferStorageArea, pxStaticMessageBuffer ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), 0, pdTRUE, ( pucMessageBufferStorageArea ), ( pxStaticMessageBuffer ), NULL, NULL )
+    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), 0, pdTRUE, ( pucMessageBufferStorageArea ), ( pxStaticMessageBuffer ), پوچ, پوچ )
 /** @endcond */
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+#اگر ( configUSE_SB_COMPLETED_CALLBACK == 1 )
     #define xMessageBufferCreateStaticWithCallback( xBufferSizeBytes, pucMessageBufferStorageArea, pxStaticMessageBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
     xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), 0, pdTRUE, ( pucMessageBufferStorageArea ), ( pxStaticMessageBuffer ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
 #endif
@@ -255,7 +255,7 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  *
  * \ingroup MessageBufferManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#اگر ( configSUPPORT_STATIC_ALLOCATION == 1 )
     #define xMessageBufferGetStaticBuffers( xMessageBuffer, ppucMessageBufferStorageArea, ppxStaticMessageBuffer ) \
     xStreamBufferGetStaticBuffers( ( xMessageBuffer ), ( ppucMessageBufferStorageArea ), ( ppxStaticMessageBuffer ) )
 #endif /* configSUPPORT_STATIC_ALLOCATION */
@@ -791,7 +791,7 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
     xStreamBufferReceiveCompletedFromISR( ( xMessageBuffer ), ( pxHigherPriorityTaskWoken ) )
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
+#اگر defined( __cplusplus )
     } /* extern "C" */
 #endif
 /* *INDENT-ON* */
