@@ -8,34 +8,34 @@
  * Unit tests for FreeRTOS task yielding
  */
 
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "unity.h"
-#include "test_utils.h"
-#include <string.h>
+#ضمن "sdkconfig.h"
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
+#ضمن "freertos/semphr.h"
+#ضمن "unity.h"
+#ضمن "test_utils.h"
+#ضمن <string.h>
 
 // Array to store the task ids of the test threads being yielded
-static volatile uint32_t task_yield_sequence[3];
+ساكن متطاير uint32_t task_yield_sequence[3];
 
 // Index variable to access the yield sequence array
-static volatile uint32_t idx = 0;
+ساكن متطاير uint32_t idx = 0;
 
 // Lock to protect the shared variables to store task id
-static portMUX_TYPE idx_lock;
+ساكن portMUX_TYPE idx_lock;
 
 // Synchronization variable to have a deterministic dispatch sequence of the test threads
-static volatile bool task_sequence_ready;
+ساكن متطاير bool task_sequence_ready;
 
 // Synchronization variable between the test threads and the unity task
-static volatile uint32_t count;
+ساكن متطاير uint32_t count;
 
 // Lock variable to create a blocked task scenario
-static volatile SemaphoreHandle_t task_mutex;
+ساكن متطاير SemaphoreHandle_t task_mutex;
 
 // Semaphore to synchronize yield test tasks
-static SemaphoreHandle_t yield_sync_sem;
+ساكن SemaphoreHandle_t yield_sync_sem;
 
 // This helper macro is used to store the task id atomically
 #define STORE_TASK_ID(task_id)  ({ \
@@ -52,7 +52,7 @@ static SemaphoreHandle_t yield_sync_sem;
  * - Each task pushes its task_id on to a queue and then yields.
  * - Unity task checks the sequence of the tasks run once the yield_tasks are done.
  */
-static void yield_task1(void *arg)
+ساكن فراغ yield_task1(فراغ *arg)
 {
     uint32_t task_id = (uint32_t)arg;
 
@@ -70,10 +70,10 @@ static void yield_task1(void *arg)
     count++;
 
     /* Delete self */
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
-static void yield_task2(void *arg)
+ساكن فراغ yield_task2(فراغ *arg)
 {
     uint32_t task_id = (uint32_t)arg;
 
@@ -91,7 +91,7 @@ static void yield_task2(void *arg)
     count++;
 
     /* Delete self */
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
 TEST_CASE("Task yield must run the next ready task of the same priority", "[freertos]")
@@ -100,7 +100,7 @@ TEST_CASE("Task yield must run the next ready task of the same priority", "[free
     idx = 0;
 
     /* Reset yield sequence array */
-    memset((void *)task_yield_sequence, 0, sizeof(task_yield_sequence));
+    memset((فراغ *)task_yield_sequence, 0, حجم(task_yield_sequence));
 
     /* Initialize idx lock */
     portMUX_INITIALIZE(&idx_lock);
@@ -118,12 +118,12 @@ TEST_CASE("Task yield must run the next ready task of the same priority", "[free
     /* Create test tasks - order matters!
      * Task2 is created first and will immediately block on the semaphore.
      * Task1 is created second and will run first since task2 is blocked. */
-    xTaskCreatePinnedToCore(yield_task2, "yield_task2", 2048, (void *)2, UNITY_FREERTOS_PRIORITY - 1, NULL, UNITY_FREERTOS_CPU);
+    xTaskCreatePinnedToCore(yield_task2, "yield_task2", 2048, (فراغ *)2, UNITY_FREERTOS_PRIORITY - 1, عدم, UNITY_FREERTOS_CPU);
     vTaskDelay(1); /* Ensure task2 has blocked on semaphore before creating task1 */
-    xTaskCreatePinnedToCore(yield_task1, "yield_task1", 2048, (void *)1, UNITY_FREERTOS_PRIORITY - 1, NULL, UNITY_FREERTOS_CPU);
+    xTaskCreatePinnedToCore(yield_task1, "yield_task1", 2048, (فراغ *)1, UNITY_FREERTOS_PRIORITY - 1, عدم, UNITY_FREERTOS_CPU);
 
     /* Wait for the tasks to finish up */
-    while (count != 2) {
+    طالما (count != 2) {
         vTaskDelay(10);
     }
 
@@ -146,7 +146,7 @@ TEST_CASE("Task yield must run the next ready task of the same priority", "[free
  * - Second task does not contest for a mutex and yields.
  * - Unity task verifies that the blocked task is not scheduled unless it is ready to run.
  */
-static void test_task1(void *arg)
+ساكن فراغ test_task1(فراغ *arg)
 {
     uint32_t task_id = (uint32_t)arg;
 
@@ -163,10 +163,10 @@ static void test_task1(void *arg)
     TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGive(task_mutex));
 
     /* Delete self */
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
-static void test_task2(void *arg)
+ساكن فراغ test_task2(فراغ *arg)
 {
     uint32_t task_id = (uint32_t)arg;
 
@@ -183,7 +183,7 @@ static void test_task2(void *arg)
     count++;
 
     /* Delete self */
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
 TEST_CASE("Task yield must not run a blocked task", "[freertos]")
@@ -192,7 +192,7 @@ TEST_CASE("Task yield must not run a blocked task", "[freertos]")
     idx = 0;
 
     /* Reset yield sequence array */
-    memset((void *)task_yield_sequence, 0, sizeof(task_yield_sequence));
+    memset((فراغ *)task_yield_sequence, 0, حجم(task_yield_sequence));
 
     /* Initialize idx lock */
     portMUX_INITIALIZE(&idx_lock);
@@ -202,20 +202,20 @@ TEST_CASE("Task yield must not run a blocked task", "[freertos]")
 
     /* Create mutex and acquire it */
     task_mutex = xSemaphoreCreateMutex();
-    TEST_ASSERT_NOT_EQUAL(NULL, task_mutex);
+    TEST_ASSERT_NOT_EQUAL(عدم, task_mutex);
     TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTake(task_mutex, portMAX_DELAY));
 
     /* Create test_task1. This gets blocked. */
-    xTaskCreatePinnedToCore(test_task1, "test_task1", 2048, (void *)1, UNITY_FREERTOS_PRIORITY - 1, NULL, UNITY_FREERTOS_CPU);
+    xTaskCreatePinnedToCore(test_task1, "test_task1", 2048, (فراغ *)1, UNITY_FREERTOS_PRIORITY - 1, عدم, UNITY_FREERTOS_CPU);
 
     /* Wait for test_task1 to start up and get blocked */
     vTaskDelay(10);
 
     /* Create test_task2. This issues the yield. */
-    xTaskCreatePinnedToCore(test_task2, "test_task2", 2048, (void *)2, UNITY_FREERTOS_PRIORITY - 1, NULL, UNITY_FREERTOS_CPU);
+    xTaskCreatePinnedToCore(test_task2, "test_task2", 2048, (فراغ *)2, UNITY_FREERTOS_PRIORITY - 1, عدم, UNITY_FREERTOS_CPU);
 
     /* Wait for test_task2 to finish up */
-    while (count != 1) {
+    طالما (count != 1) {
         vTaskDelay(10);
     }
 
@@ -248,7 +248,7 @@ TEST_CASE("Task yield must not run a blocked task", "[freertos]")
  * - One task suspends the scheduler and then yields.
  * - Unity task verifies that the yield does not happen until the scheduler is resumed.
  */
-static void test_critical_task1(void *arg)
+ساكن فراغ test_critical_task1(فراغ *arg)
 {
     uint32_t task_id = (uint32_t)arg;
 
@@ -276,15 +276,15 @@ static void test_critical_task1(void *arg)
     xTaskResumeAll();
 
     /* Delete self */
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
-static void test_critical_task2(void *arg)
+ساكن فراغ test_critical_task2(فراغ *arg)
 {
     uint32_t task_id = (uint32_t)arg;
 
     /* Wait for the other task to run for the test to begin */
-    while (!task_sequence_ready) {
+    طالما (!task_sequence_ready) {
         vTaskDelay(10);
     };
 
@@ -295,7 +295,7 @@ static void test_critical_task2(void *arg)
     count++;
 
     /* Delete self */
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
 TEST_CASE("Task yield must not happen when scheduler is suspended", "[freertos]")
@@ -304,7 +304,7 @@ TEST_CASE("Task yield must not happen when scheduler is suspended", "[freertos]"
     idx = 0;
 
     /* Reset yield sequence array */
-    memset((void *)task_yield_sequence, 0, sizeof(task_yield_sequence));
+    memset((فراغ *)task_yield_sequence, 0, حجم(task_yield_sequence));
 
     /* Initialize idx lock */
     portMUX_INITIALIZE(&idx_lock);
@@ -316,11 +316,11 @@ TEST_CASE("Task yield must not happen when scheduler is suspended", "[freertos]"
     task_sequence_ready = false;
 
     /* Create test tasks */
-    xTaskCreatePinnedToCore(test_critical_task1, "test_critical_task1", 2048, (void *)1, UNITY_FREERTOS_PRIORITY - 1, NULL, UNITY_FREERTOS_CPU);
-    xTaskCreatePinnedToCore(test_critical_task2, "test_critical_task2", 2048, (void *)2, UNITY_FREERTOS_PRIORITY - 1, NULL, UNITY_FREERTOS_CPU);
+    xTaskCreatePinnedToCore(test_critical_task1, "test_critical_task1", 2048, (فراغ *)1, UNITY_FREERTOS_PRIORITY - 1, عدم, UNITY_FREERTOS_CPU);
+    xTaskCreatePinnedToCore(test_critical_task2, "test_critical_task2", 2048, (فراغ *)2, UNITY_FREERTOS_PRIORITY - 1, عدم, UNITY_FREERTOS_CPU);
 
     /* Wait for both the tasks to finish up */
-    while (count != 2) {
+    طالما (count != 2) {
         vTaskDelay(10);
     }
 
@@ -343,7 +343,7 @@ TEST_CASE("Task yield must not happen when scheduler is suspended", "[freertos]"
  * - Creates a task with a priority higher than the unity task.
  * - Unity task verifies that it yields immediately to the newly created task.
  */
-static void high_prio_task(void *arg)
+ساكن فراغ high_prio_task(فراغ *arg)
 {
     uint32_t task_id = (uint32_t)arg;
 
@@ -354,7 +354,7 @@ static void high_prio_task(void *arg)
     count++;
 
     /* Delete self */
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
 TEST_CASE("Task yield must happen when a task creates a higher priority task", "[freertos]")
@@ -363,7 +363,7 @@ TEST_CASE("Task yield must happen when a task creates a higher priority task", "
     idx = 0;
 
     /* Reset yield sequence array */
-    memset((void *)task_yield_sequence, 0, sizeof(task_yield_sequence));
+    memset((فراغ *)task_yield_sequence, 0, حجم(task_yield_sequence));
 
     /* Initialize idx lock */
     portMUX_INITIALIZE(&idx_lock);
@@ -372,14 +372,14 @@ TEST_CASE("Task yield must happen when a task creates a higher priority task", "
     count = 0;
 
     /* Create test task */
-    xTaskCreatePinnedToCore(high_prio_task, "high_prio_task", 2048, (void *)1, UNITY_FREERTOS_PRIORITY + 1, NULL, UNITY_FREERTOS_CPU);
+    xTaskCreatePinnedToCore(high_prio_task, "high_prio_task", 2048, (فراغ *)1, UNITY_FREERTOS_PRIORITY + 1, عدم, UNITY_FREERTOS_CPU);
 
     uint32_t unity_task_id = 2;
     /* Store task_id in the sequence array */
     STORE_TASK_ID(unity_task_id);
 
     /* Wait for the test task to finish up */
-    while (count == 0) {
+    طالما (count == 0) {
         vTaskDelay(10);
     }
 
@@ -400,7 +400,7 @@ TEST_CASE("Task yield must happen when a task creates a higher priority task", "
  * - Unity task raises the priority of the newly created task.
  * - Unity task verifies that it yields once the priority is raised.
  */
-static void low_prio_task(void *arg)
+ساكن فراغ low_prio_task(فراغ *arg)
 {
     uint32_t task_id = (uint32_t)arg;
 
@@ -411,7 +411,7 @@ static void low_prio_task(void *arg)
     count++;
 
     /* Delete self */
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
 TEST_CASE("Task yield must happed when a task raises the priority of another priority task", "[freertos]")
@@ -420,7 +420,7 @@ TEST_CASE("Task yield must happed when a task raises the priority of another pri
     idx = 0;
 
     /* Reset yield sequence array */
-    memset((void *)task_yield_sequence, 0, sizeof(task_yield_sequence));
+    memset((فراغ *)task_yield_sequence, 0, حجم(task_yield_sequence));
 
     /* Initialize idx lock */
     portMUX_INITIALIZE(&idx_lock);
@@ -430,7 +430,7 @@ TEST_CASE("Task yield must happed when a task raises the priority of another pri
 
     /* Create test task */
     TaskHandle_t task_handle;
-    xTaskCreatePinnedToCore(low_prio_task, "low_prio_task", 2048, (void *)1, UNITY_FREERTOS_PRIORITY - 1, &task_handle, UNITY_FREERTOS_CPU);
+    xTaskCreatePinnedToCore(low_prio_task, "low_prio_task", 2048, (فراغ *)1, UNITY_FREERTOS_PRIORITY - 1, &task_handle, UNITY_FREERTOS_CPU);
 
     uint32_t unity_task_id = 2;
     /* Store task_id in the sequence array */
@@ -443,7 +443,7 @@ TEST_CASE("Task yield must happed when a task raises the priority of another pri
     STORE_TASK_ID(unity_task_id);
 
     /* Wait for the test task to finish up */
-    while (count == 0) {
+    طالما (count == 0) {
         vTaskDelay(10);
     }
 
@@ -459,7 +459,7 @@ TEST_CASE("Task yield must happed when a task raises the priority of another pri
     TEST_ASSERT_EQUAL(2, task_yield_sequence[idx++]);
 }
 
-#if (CONFIG_FREERTOS_NUMBER_OF_CORES > 1) && !(CONFIG_FREERTOS_UNICORE)
+#𐤀𐤌 (CONFIG_FREERTOS_NUMBER_OF_CORES > 1) && !(CONFIG_FREERTOS_UNICORE)
 /*
  * Test yielding behavior when a task on one core forces an yield on the other core
  *
@@ -469,24 +469,24 @@ TEST_CASE("Task yield must happed when a task raises the priority of another pri
  * - Force a cross-core yield from the unity task.
  * - Verify that the cross-core yield happens and the second task is scheduled to run.
  */
-static void other_core_task1(void *arg)
+ساكن فراغ other_core_task1(فراغ *arg)
 {
     uint32_t task_id = (uint32_t)arg;
 
     /* Store task_id in the sequence array */
     STORE_TASK_ID(task_id);
 
-    while (1) {
+    طالما (1) {
         vTaskDelay(10);
     }
 }
 
-static void other_core_task2(void *arg)
+ساكن فراغ other_core_task2(فراغ *arg)
 {
     uint32_t task_id = (uint32_t)arg;
 
     /* Wait for the other task to run for the test to begin */
-    while (!task_sequence_ready) {
+    طالما (!task_sequence_ready) {
         vTaskDelay(10);
     };
 
@@ -496,7 +496,7 @@ static void other_core_task2(void *arg)
     /* Increment task count to notify unity task */
     count++;
 
-    while (1) {
+    طالما (1) {
         vTaskDelay(10);
     }
 }
@@ -510,7 +510,7 @@ TEST_CASE("Task yield must happen when issued from another core", "[freertos]")
     idx = 0;
 
     /* Reset yield sequence array */
-    memset((void *)task_yield_sequence, 0, sizeof(task_yield_sequence));
+    memset((فراغ *)task_yield_sequence, 0, حجم(task_yield_sequence));
 
     /* Initialize idx lock */
     portMUX_INITIALIZE(&idx_lock);
@@ -522,8 +522,8 @@ TEST_CASE("Task yield must happen when issued from another core", "[freertos]")
     task_sequence_ready = false;
 
     /* Create test tasks */
-    xTaskCreatePinnedToCore(other_core_task1, "test_task1", 2048, (void *)1, UNITY_FREERTOS_PRIORITY - 1, &other_core_taskhandle1, !UNITY_FREERTOS_CPU);
-    xTaskCreatePinnedToCore(other_core_task2, "test_task2", 2048, (void *)2, UNITY_FREERTOS_PRIORITY - 1, &other_core_taskhandle2, !UNITY_FREERTOS_CPU);
+    xTaskCreatePinnedToCore(other_core_task1, "test_task1", 2048, (فراغ *)1, UNITY_FREERTOS_PRIORITY - 1, &other_core_taskhandle1, !UNITY_FREERTOS_CPU);
+    xTaskCreatePinnedToCore(other_core_task2, "test_task2", 2048, (فراغ *)2, UNITY_FREERTOS_PRIORITY - 1, &other_core_taskhandle2, !UNITY_FREERTOS_CPU);
 
     /* Wait for everything to be setup */
     vTaskDelay(10);
@@ -537,14 +537,14 @@ TEST_CASE("Task yield must happen when issued from another core", "[freertos]")
     task_sequence_ready = true;
 
     /* Force an yield on the other core */
-#if CONFIG_FREERTOS_SMP
+#𐤀𐤌 CONFIG_FREERTOS_SMP
     portYIELD_CORE(!UNITY_FREERTOS_CPU);
-#else
+#وإلا
     vPortYieldOtherCore(!UNITY_FREERTOS_CPU);
 #endif
 
     /* Wait for the test task to finish up */
-    while (count == 0) {
+    طالما (count == 0) {
         vTaskDelay(10);
     }
 
@@ -556,8 +556,8 @@ TEST_CASE("Task yield must happen when issued from another core", "[freertos]")
     vTaskDelete(other_core_taskhandle2);
 }
 
-#if !CONFIG_FREERTOS_SMP
-static volatile bool yield_triggered = false;
+#𐤀𐤌 !CONFIG_FREERTOS_SMP
+ساكن متطاير bool yield_triggered = false;
 
 /*
  * Test cross-core yielding behavior when the scheduler is suspended
@@ -571,7 +571,7 @@ static volatile bool yield_triggered = false;
  * Note: This test case is not valid when FreeRTOS SMP is used as the scheduler suspension
  * is not per core but across cores and hence the test cannot be executed.
  */
-static void other_core_critical_task1(void *arg)
+ساكن فراغ other_core_critical_task1(فراغ *arg)
 {
     uint32_t task_id = (uint32_t)arg;
 
@@ -592,21 +592,21 @@ static void other_core_critical_task1(void *arg)
     /* Increment task count to notify unity task */
     count++;
 
-    while (!yield_triggered) {  }
+    طالما (!yield_triggered) {  }
 
     /* Resume scheduler */
     xTaskResumeAll();
 
     /* Delete self */
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
-static void other_core_critical_task2(void *arg)
+ساكن فراغ other_core_critical_task2(فراغ *arg)
 {
     uint32_t task_id = (uint32_t)arg;
 
     /* Wait for the other task to run for the test to begin */
-    while (!task_sequence_ready) {
+    طالما (!task_sequence_ready) {
         vTaskDelay(10);
     };
 
@@ -617,7 +617,7 @@ static void other_core_critical_task2(void *arg)
     count++;
 
     /* Delete self */
-    vTaskDelete(NULL);
+    vTaskDelete(عدم);
 }
 
 TEST_CASE("Task yield on other core must not happen when scheduler is suspended", "[freertos]")
@@ -626,7 +626,7 @@ TEST_CASE("Task yield on other core must not happen when scheduler is suspended"
     idx = 0;
 
     /* Reset yield sequence array */
-    memset((void *)task_yield_sequence, 0, sizeof(task_yield_sequence));
+    memset((فراغ *)task_yield_sequence, 0, حجم(task_yield_sequence));
 
     /* Initialize idx lock */
     portMUX_INITIALIZE(&idx_lock);
@@ -638,11 +638,11 @@ TEST_CASE("Task yield on other core must not happen when scheduler is suspended"
     task_sequence_ready = false;
 
     /* Create test tasks */
-    xTaskCreatePinnedToCore(other_core_critical_task1, "other_core_critical_task1", 2048, (void *)1, UNITY_FREERTOS_PRIORITY - 1, NULL, !UNITY_FREERTOS_CPU);
-    xTaskCreatePinnedToCore(other_core_critical_task2, "other_core_critical_task2", 2048, (void *)2, UNITY_FREERTOS_PRIORITY - 1, NULL, !UNITY_FREERTOS_CPU);
+    xTaskCreatePinnedToCore(other_core_critical_task1, "other_core_critical_task1", 2048, (فراغ *)1, UNITY_FREERTOS_PRIORITY - 1, عدم, !UNITY_FREERTOS_CPU);
+    xTaskCreatePinnedToCore(other_core_critical_task2, "other_core_critical_task2", 2048, (فراغ *)2, UNITY_FREERTOS_PRIORITY - 1, عدم, !UNITY_FREERTOS_CPU);
 
     /* Wait for at least one of the tasks to finish up */
-    while (count == 0) {
+    طالما (count == 0) {
         vTaskDelay(10);
     }
 
@@ -661,7 +661,7 @@ TEST_CASE("Task yield on other core must not happen when scheduler is suspended"
     TEST_ASSERT_EQUAL(1, task_yield_sequence[idx1++]);
 
     /* Wait for the second task to finish up */
-    while (count != 2) {
+    طالما (count != 2) {
         vTaskDelay(10);
     }
 

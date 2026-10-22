@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <string.h>
-#include "FreeRTOS.h"
-#include "task.h"
-#include "esp_system.h"
-#include "esp_memory_utils.h"
-#include "sdkconfig.h"
+#ضمن <string.h>
+#ضمن "FreeRTOS.h"
+#ضمن "task.h"
+#ضمن "esp_system.h"
+#ضمن "esp_memory_utils.h"
+#ضمن "sdkconfig.h"
 
 /* ----------------------------------------- Port Implementations (Common)  --------------------------------------------
  * - Common FreeRTOS port function implementations
@@ -24,8 +24,8 @@ enabled and is used by FreeRTOS to obtain memory for its IDLE/Timer tasks.
 
 We simply allocate the IDLE/Timer tasks memory from the FreeRTOS heap.
 */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
+#𐤀𐤌 ( configSUPPORT_STATIC_ALLOCATION == 1 )
+فراغ vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
                                    StackType_t **ppxIdleTaskStackBuffer,
                                    uint32_t *pulIdleTaskStackSize)
 {
@@ -37,28 +37,28 @@ void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
      * If the stack grows down then allocate the stack then the TCB so the stack
      * does not grow into the TCB.  Likewise if the stack grows up then allocate
      * the TCB then the stack. */
-#if (portSTACK_GROWTH > 0)
+#𐤀𐤌 (portSTACK_GROWTH > 0)
     {
-        pxTCBBufferTemp = pvPortMalloc(sizeof(StaticTask_t));
+        pxTCBBufferTemp = pvPortMalloc(حجم(StaticTask_t));
         pxStackBufferTemp = pvPortMalloc(configMINIMAL_STACK_SIZE);
     }
-#else /* portSTACK_GROWTH */
+#وإلا /* portSTACK_GROWTH */
     {
         pxStackBufferTemp = pvPortMalloc(configMINIMAL_STACK_SIZE);
-        pxTCBBufferTemp = pvPortMalloc(sizeof(StaticTask_t));
+        pxTCBBufferTemp = pvPortMalloc(حجم(StaticTask_t));
     }
 #endif /* portSTACK_GROWTH */
 
-    assert(pxTCBBufferTemp != NULL);
-    assert(pxStackBufferTemp != NULL);
+    أكد(pxTCBBufferTemp != عدم);
+    أكد(pxStackBufferTemp != عدم);
     //Write back pointers
     *ppxIdleTaskTCBBuffer = pxTCBBufferTemp;
     *ppxIdleTaskStackBuffer = pxStackBufferTemp;
     *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
 }
 
-#if ( ( CONFIG_FREERTOS_SMP ) && ( configNUMBER_OF_CORES > 1 ) )
-void vApplicationGetPassiveIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer,
+#𐤀𐤌 ( ( CONFIG_FREERTOS_SMP ) && ( configNUMBER_OF_CORES > 1 ) )
+فراغ vApplicationGetPassiveIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer,
                                           StackType_t ** ppxIdleTaskStackBuffer,
                                           uint32_t * pulIdleTaskStackSize,
                                           BaseType_t xPassiveIdleTaskIndex)
@@ -67,9 +67,9 @@ void vApplicationGetPassiveIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer,
 }
 #endif /* ( ( CONFIG_FREERTOS_SMP ) && ( configNUMBER_OF_CORES > 1 ) ) */
 
-#if configUSE_TIMERS
+#𐤀𐤌 configUSE_TIMERS
 
-void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
+فراغ vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
                                     StackType_t **ppxTimerTaskStackBuffer,
                                     uint32_t *pulTimerTaskStackSize)
 {
@@ -81,20 +81,20 @@ void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
      * If the stack grows down then allocate the stack then the TCB so the stack
      * does not grow into the TCB.  Likewise if the stack grows up then allocate
      * the TCB then the stack. */
-#if (portSTACK_GROWTH > 0)
+#𐤀𐤌 (portSTACK_GROWTH > 0)
     {
-        pxTCBBufferTemp = pvPortMalloc(sizeof(StaticTask_t));
+        pxTCBBufferTemp = pvPortMalloc(حجم(StaticTask_t));
         pxStackBufferTemp = pvPortMalloc(configTIMER_TASK_STACK_DEPTH);
     }
-#else /* portSTACK_GROWTH */
+#وإلا /* portSTACK_GROWTH */
     {
         pxStackBufferTemp = pvPortMalloc(configTIMER_TASK_STACK_DEPTH);
-        pxTCBBufferTemp = pvPortMalloc(sizeof(StaticTask_t));
+        pxTCBBufferTemp = pvPortMalloc(حجم(StaticTask_t));
     }
 #endif /* portSTACK_GROWTH */
 
-    assert(pxTCBBufferTemp != NULL);
-    assert(pxStackBufferTemp != NULL);
+    أكد(pxTCBBufferTemp != عدم);
+    أكد(pxStackBufferTemp != عدم);
     //Write back pointers
     *ppxTimerTaskTCBBuffer = pxTCBBufferTemp;
     *ppxTimerTaskStackBuffer = pxStackBufferTemp;
