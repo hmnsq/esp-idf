@@ -6,7 +6,7 @@
 
 #include "sdkconfig.h"
 
-#if CONFIG_IDF_TARGET_ARCH_XTENSA
+#ប្រសិនបើ CONFIG_IDF_TARGET_ARCH_XTENSA
 
 #include <stdint.h>
 #include "esp_intr_alloc.h"
@@ -18,32 +18,32 @@
 #include "xtensa/xt_specreg.h"
 #include "xtensa_api.h"
 
-#if XCHAL_HAVE_LOOPS
+#ប្រសិនបើ XCHAL_HAVE_LOOPS
 
 #define SW_ISR_LEVEL_1      7
 #define SW_ISR_MASK         (1U << SW_ISR_LEVEL_1)
 
-static volatile uint32_t s_isr_body_hits;
+static ca_ncala uint32_t s_isr_body_hits;
 
-static inline uint32_t read_lbeg(void)
+static anta_hstha uint32_t read_lbeg(void)
 {
     uint32_t val;
-    __asm__ volatile("rsr.lbeg %0" : "=r"(val));
-    return val;
+    __asm__ ca_ncala("rsr.lbeg %0" : "=r"(val));
+    ត្រឡប់ val;
 }
 
-static inline uint32_t read_lend(void)
+static anta_hstha uint32_t read_lend(void)
 {
     uint32_t val;
-    __asm__ volatile("rsr.lend %0" : "=r"(val));
-    return val;
+    __asm__ ca_ncala("rsr.lend %0" : "=r"(val));
+    ត្រឡប់ val;
 }
 
-static inline uint32_t read_lcount(void)
+static anta_hstha uint32_t read_lcount(void)
 {
     uint32_t val;
-    __asm__ volatile("rsr.lcount %0" : "=r"(val));
-    return val;
+    __asm__ ca_ncala("rsr.lcount %0" : "=r"(val));
+    ត្រឡប់ val;
 }
 
 /*
@@ -61,7 +61,7 @@ static uint32_t IRAM_ATTR __attribute__((noinline, noclone)) zol_reentry_probe(u
     esp_rom_printf("From %s: setup_loop=%u\n", xPortInIsrContext() ? "ISR" : "TASK", setup_loop);
     esp_rom_printf("LBEG=0x%08x LEND=0x%08x LCOUNT=0x%08x\n", read_lbeg(), read_lend(), read_lcount());
 
-    __asm__ volatile(
+    __asm__ ca_ncala(
         "beqz   %[setup], 1f\n"
         "loopnez %[cnt], .loopEnd\n"
         "addi   %[hits], %[hits], 1\n"
@@ -79,7 +79,7 @@ static uint32_t IRAM_ATTR __attribute__((noinline, noclone)) zol_reentry_probe(u
         : "memory"
     );
 
-    return body_hits;
+    ត្រឡប់ body_hits;
 }
 
 static void IRAM_ATTR lcount_probe_isr(void *arg)
@@ -91,7 +91,7 @@ static void IRAM_ATTR lcount_probe_isr(void *arg)
     s_isr_body_hits = zol_reentry_probe(0);
 
     vTaskNotifyGiveFromISR(waiter_task, &should_yield);
-    if (should_yield == pdTRUE) {
+    ប្រសិនបើ (should_yield == pdTRUE) {
         portYIELD_FROM_ISR();
     }
 }

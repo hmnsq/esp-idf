@@ -17,23 +17,23 @@
 
 #define QUEUE_LEN       4
 
-static void allocate_resources(int num_queues, int queue_len, QueueHandle_t *queue_list_ret, QueueSetHandle_t *queue_set_ret)
+static void allocate_resources(ចំនួនគត់ num_queues, ចំនួនគត់ queue_len, QueueHandle_t *queue_list_ret, QueueSetHandle_t *queue_set_ret)
 {
     // Create queue set
     *queue_set_ret = xQueueCreateSet(num_queues * queue_len);
     TEST_ASSERT_NOT_EQUAL(NULL, *queue_set_ret);
     // Create queues and add them to the queue set
-    for (int i = 0; i < num_queues; i++) {
-        queue_list_ret[i] = xQueueCreate(queue_len, sizeof(BaseType_t));
+    សម្រាប់ (ចំនួនគត់ i = 0; i < num_queues; i++) {
+        queue_list_ret[i] = xQueueCreate(queue_len, parimaa_na(BaseType_t));
         TEST_ASSERT_NOT_EQUAL(NULL, queue_list_ret[i]);
         TEST_ASSERT_EQUAL(pdPASS, xQueueAddToSet(queue_list_ret[i], *queue_set_ret));
     }
 }
 
-static void free_resources(int num_queues, QueueHandle_t *queue_list, QueueSetHandle_t queue_set)
+static void free_resources(ចំនួនគត់ num_queues, QueueHandle_t *queue_list, QueueSetHandle_t queue_set)
 {
     // Remove queues form queue set and delete the queues
-    for (int i = 0; i < num_queues; i++) {
+    សម្រាប់ (ចំនួនគត់ i = 0; i < num_queues; i++) {
         TEST_ASSERT_EQUAL(pdPASS, xQueueRemoveFromSet(queue_list[i], queue_set));
         vQueueDelete(queue_list[i]);
     }
@@ -66,15 +66,15 @@ TEST_CASE("Test Queue sets", "[freertos]")
     allocate_resources(NUM_QUEUES, QUEUE_LEN, queues, &queue_set);
 
     // Fill each queue sequentially with QUEUE_LEN items
-    for (int i = 0; i < NUM_QUEUES; i++) {
-        for (int j = 0; j < QUEUE_LEN; j++) {
+    សម្រាប់ (ចំនួនគត់ i = 0; i < NUM_QUEUES; i++) {
+        សម្រាប់ (ចំនួនគត់ j = 0; j < QUEUE_LEN; j++) {
             BaseType_t item = j;
             TEST_ASSERT_EQUAL(pdTRUE, xQueueSend(queues[i], &item, 0));
         }
     }
 
-    for (int i = 0; i < NUM_QUEUES; i++) {
-        for (int j = 0; j < QUEUE_LEN; j++) {
+    សម្រាប់ (ចំនួនគត់ i = 0; i < NUM_QUEUES; i++) {
+        សម្រាប់ (ចំនួនគត់ j = 0; j < QUEUE_LEN; j++) {
             // Check the queue set member
             QueueSetMemberHandle_t member = xQueueSelectFromSet(queue_set, 0);
             TEST_ASSERT_EQUAL(queues[i], member);
@@ -108,29 +108,29 @@ Expected:
     - The item sent by the xQueueSend() is correct when read
 */
 
-static volatile bool start_other_cores;
+static ca_ncala bool start_other_cores;
 static SemaphoreHandle_t done_sem = NULL;
 
 static void send_func(void *arg)
 {
     QueueHandle_t queue = (QueueHandle_t)arg;
     BaseType_t core_id = xPortGetCoreID();
-    if (core_id == 0) {
+    ប្រសិនបើ (core_id == 0) {
         // We are core 0. Trigger the other cores to start
         start_other_cores = true;
-    } else {
+    } បើមិនដូច្នេះ {
         // Wait to be started by main core
-        while (!start_other_cores) {
+        ខណៈពេល (!start_other_cores) {
             ;
         }
     }
 
     // Fill the queue assigned to the current core
-    for (int i = 0; i < QUEUE_LEN; i++) {
+    សម្រាប់ (ចំនួនគត់ i = 0; i < QUEUE_LEN; i++) {
         TEST_ASSERT_EQUAL(pdTRUE, xQueueSend(queue, &core_id, 0));
     }
 
-    if (core_id != 0) {
+    ប្រសិនបើ (core_id != 0) {
         // Indicate completion to core 0 and self delete
         xSemaphoreGive(done_sem);
         vTaskDelete(NULL);
@@ -149,7 +149,7 @@ TEST_CASE("Test queue sets multi-core", "[freertos]")
     allocate_resources(CONFIG_FREERTOS_NUMBER_OF_CORES, QUEUE_LEN, queues, &queue_set);
 
     // Create tasks of the same priority for all cores except for core 0
-    for (int i = 1; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    សម្រាប់ (ចំនួនគត់ i = 1; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(send_func, "send", 2048, (void *)queues[i], UNITY_FREERTOS_PRIORITY, NULL, i));
     }
 
@@ -157,14 +157,14 @@ TEST_CASE("Test queue sets multi-core", "[freertos]")
     send_func((void *)queues[0]);
 
     // Wait for all other cores to be done
-    for (int i = 1; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    សម្រាប់ (ចំនួនគត់ i = 1; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         xSemaphoreTake(done_sem, portMAX_DELAY);
     }
 
     // Read queues from the queue set, then read an item from the queue
     uint32_t queues_check_count[CONFIG_FREERTOS_NUMBER_OF_CORES] = {0};
     QueueSetMemberHandle_t member = xQueueSelectFromSet(queue_set, 0);
-    while (member != NULL) {
+    ខណៈពេល (member != NULL) {
         // Read the core ID from the queue, check that core ID is sane
         BaseType_t core_id;
         TEST_ASSERT_EQUAL(pdTRUE, xQueueReceive(member, &core_id, 0));
@@ -175,7 +175,7 @@ TEST_CASE("Test queue sets multi-core", "[freertos]")
         member = xQueueSelectFromSet(queue_set, 0);
     }
     // Check that all items from all queues have been read
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    សម្រាប់ (ចំនួនគត់ i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         TEST_ASSERT_EQUAL(QUEUE_LEN, queues_check_count[i]);
     }
 

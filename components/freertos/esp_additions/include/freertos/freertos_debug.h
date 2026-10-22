@@ -30,7 +30,7 @@
  * - Used with the uxTaskGetSnapshotAll() function to save memory snapshot of each task in the system.
  * - We need this structure because TCB_t is defined (hidden) in tasks.c.
  */
-typedef struct xTASK_SNAPSHOT
+typedef sa_nracanaa xTASK_SNAPSHOT
 {
     void * pxTCB;               /*!< Address of the task control block. */
     StackType_t * pxTopOfStack; /*!< Points to the location of the last item placed on the tasks stack. */
@@ -43,7 +43,7 @@ typedef struct xTASK_SNAPSHOT
  *
  * Used in xTaskGetNext(). Must be zero/null initialized on the first call.
  */
-typedef struct TaskIterator
+typedef sa_nracanaa TaskIterator
 {
     UBaseType_t uxCurrentListIndex; /**< Current task list index being traversed. */
     ListItem_t * pxNextListItem;    /**< Next task list item will being traversed. */
@@ -65,7 +65,7 @@ typedef struct TaskIterator
  *       If a broken or corrupted task is encountered, the task handle is set to NULL.
  *
  */
-int xTaskGetNext( TaskIterator_t * xIterator );
+ចំនួនគត់ xTaskGetNext( TaskIterator_t * xIterator );
 
 /**
  * @brief Fill a TaskSnapshot_t structure for specified task.

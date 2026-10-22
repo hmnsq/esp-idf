@@ -75,7 +75,7 @@
 #include "stream_buffer.h"
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
+#ប្រសិនបើ defined( __cplusplus )
     extern "C" {
 #endif
 /* *INDENT-ON* */
@@ -157,7 +157,7 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
 #define xMessageBufferCreate( xBufferSizeBytes ) \
     xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( size_t ) 0, pdTRUE, NULL, NULL )
 /** @endcond */
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+#ប្រសិនបើ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
     #define xMessageBufferCreateWithCallback( xBufferSizeBytes, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
     xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( size_t ) 0, pdTRUE, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
 #endif
@@ -232,7 +232,7 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
 #define xMessageBufferCreateStatic( xBufferSizeBytes, pucMessageBufferStorageArea, pxStaticMessageBuffer ) \
     xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), 0, pdTRUE, ( pucMessageBufferStorageArea ), ( pxStaticMessageBuffer ), NULL, NULL )
 /** @endcond */
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+#ប្រសិនបើ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
     #define xMessageBufferCreateStaticWithCallback( xBufferSizeBytes, pucMessageBufferStorageArea, pxStaticMessageBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
     xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), 0, pdTRUE, ( pucMessageBufferStorageArea ), ( pxStaticMessageBuffer ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
 #endif
@@ -255,7 +255,7 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  *
  * \ingroup MessageBufferManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ប្រសិនបើ ( configSUPPORT_STATIC_ALLOCATION == 1 )
     #define xMessageBufferGetStaticBuffers( xMessageBuffer, ppucMessageBufferStorageArea, ppxStaticMessageBuffer ) \
     xStreamBufferGetStaticBuffers( ( xMessageBuffer ), ( ppucMessageBufferStorageArea ), ( ppxStaticMessageBuffer ) )
 #endif /* configSUPPORT_STATIC_ALLOCATION */
@@ -791,7 +791,7 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
     xStreamBufferReceiveCompletedFromISR( ( xMessageBuffer ), ( pxHigherPriorityTaskWoken ) )
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
+#ប្រសិនបើ defined( __cplusplus )
     } /* extern "C" */
 #endif
 /* *INDENT-ON* */

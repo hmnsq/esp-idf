@@ -70,7 +70,7 @@ void vListInitialise( List_t * const pxList )
     pxList->xListEnd.pxPrevious = ( ListItem_t * ) &( pxList->xListEnd ); /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
 
     /* Initialize the remaining fields of xListEnd when it is a proper ListItem_t */
-    #if ( configUSE_MINI_LIST_ITEM == 0 )
+    #ប្រសិនបើ ( configUSE_MINI_LIST_ITEM == 0 )
     {
         pxList->xListEnd.pvOwner = NULL;
         pxList->xListEnd.pxContainer = NULL;
@@ -149,11 +149,11 @@ void vListInsert( List_t * const pxList,
      * share of the CPU.  However, if the xItemValue is the same as the back marker
      * the iteration loop below will not end.  Therefore the value is checked
      * first, and the algorithm slightly modified if necessary. */
-    if( xValueOfInsertion == portMAX_DELAY )
+    ប្រសិនបើ( xValueOfInsertion == portMAX_DELAY )
     {
         pxIterator = pxList->xListEnd.pxPrevious;
     }
-    else
+    បើមិនដូច្នេះ
     {
         /* *** NOTE ***********************************************************
         *  If you find your application is crashing here then likely causes are
@@ -180,7 +180,7 @@ void vListInsert( List_t * const pxList,
         *      configMAX_SYSCALL_INTERRUPT_PRIORITY.
         **********************************************************************/
 
-        for( pxIterator = ( ListItem_t * ) &( pxList->xListEnd ); pxIterator->pxNext->xItemValue <= xValueOfInsertion; pxIterator = pxIterator->pxNext ) /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. *//*lint !e440 The iterator moves to a different value, not xValueOfInsertion. */
+        សម្រាប់( pxIterator = ( ListItem_t * ) &( pxList->xListEnd ); pxIterator->pxNext->xItemValue <= xValueOfInsertion; pxIterator = pxIterator->pxNext ) /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. *//*lint !e440 The iterator moves to a different value, not xValueOfInsertion. */
         {
             /* There is nothing to do here, just iterating to the wanted
              * insertion position. */
@@ -213,11 +213,11 @@ UBaseType_t uxListRemove( ListItem_t * const pxItemToRemove )
     mtCOVERAGE_TEST_DELAY();
 
     /* Make sure the index is left pointing to a valid item. */
-    if( pxList->pxIndex == pxItemToRemove )
+    ប្រសិនបើ( pxList->pxIndex == pxItemToRemove )
     {
         pxList->pxIndex = pxItemToRemove->pxPrevious;
     }
-    else
+    បើមិនដូច្នេះ
     {
         mtCOVERAGE_TEST_MARKER();
     }
@@ -225,6 +225,6 @@ UBaseType_t uxListRemove( ListItem_t * const pxItemToRemove )
     pxItemToRemove->pxContainer = NULL;
     ( pxList->uxNumberOfItems )--;
 
-    return pxList->uxNumberOfItems;
+    ត្រឡប់ pxList->uxNumberOfItems;
 }
 /*-----------------------------------------------------------*/
