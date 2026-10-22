@@ -31,77 +31,77 @@
  *
  */
 
-#include <pthread.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <assert.h>
+#அந்தர்பாவ <pthread.h>
+#அந்தர்பாவ <stdlib.h>
+#அந்தர்பாவ <errno.h>
+#அந்தர்பாவ <assert.h>
 
-#include "wait_for_event.h"
+#அந்தர்பாவ "wait_for_event.h"
 
-struct event
+கட்டமைப்பு event
 {
     pthread_mutex_t mutex;
     pthread_cond_t cond;
     bool event_triggered;
 };
 
-struct event * event_create()
+கட்டமைப்பு event * event_create()
 {
-    struct event * ev = malloc( sizeof( struct event ) );
-    assert(ev != NULL);
+    கட்டமைப்பு event * ev = malloc( அளவு( கட்டமைப்பு event ) );
+    ப்ரதிஜ்ஞா(ev != வெற்று);
     ev->event_triggered = false;
-    pthread_mutex_init( &ev->mutex, NULL );
-    pthread_cond_init( &ev->cond, NULL );
-    return ev;
+    pthread_mutex_init( &ev->mutex, வெற்று );
+    pthread_cond_init( &ev->cond, வெற்று );
+    திரும்பு ev;
 }
 
-void event_delete( struct event * ev )
+வெறுமை event_delete( கட்டமைப்பு event * ev )
 {
     pthread_mutex_destroy( &ev->mutex );
     pthread_cond_destroy( &ev->cond );
-    free( ev );
+    விடுவி( ev );
 }
 
-bool event_wait( struct event * ev )
+bool event_wait( கட்டமைப்பு event * ev )
 {
     pthread_mutex_lock( &ev->mutex );
 
-    while( ev->event_triggered == false )
+    போது( ev->event_triggered == false )
     {
         pthread_cond_wait( &ev->cond, &ev->mutex );
     }
 
     ev->event_triggered = false;
     pthread_mutex_unlock( &ev->mutex );
-    return true;
+    திரும்பு true;
 }
-bool event_wait_timed( struct event * ev,
+bool event_wait_timed( கட்டமைப்பு event * ev,
                        time_t ms )
 {
-    struct timespec ts;
-    int ret = 0;
+    கட்டமைப்பு timespec ts;
+    முழு ret = 0;
 
     clock_gettime( CLOCK_REALTIME, &ts );
     ts.tv_sec += ms / 1000;
     ts.tv_nsec += ((ms % 1000) * 1000000);
     pthread_mutex_lock( &ev->mutex );
 
-    while( (ev->event_triggered == false) && (ret == 0) )
+    போது( (ev->event_triggered == false) && (ret == 0) )
     {
         ret = pthread_cond_timedwait( &ev->cond, &ev->mutex, &ts );
 
-        if( ( ret == -1 ) && ( errno == ETIMEDOUT ) )
+        எனில்( ( ret == -1 ) && ( errno == ETIMEDOUT ) )
         {
-            return false;
+            திரும்பு false;
         }
     }
 
     ev->event_triggered = false;
     pthread_mutex_unlock( &ev->mutex );
-    return true;
+    திரும்பு true;
 }
 
-void event_signal( struct event * ev )
+வெறுமை event_signal( கட்டமைப்பு event * ev )
 {
     pthread_mutex_lock( &ev->mutex );
     ev->event_triggered = true;

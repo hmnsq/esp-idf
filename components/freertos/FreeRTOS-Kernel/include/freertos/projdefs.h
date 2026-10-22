@@ -37,7 +37,7 @@
  * Defines the prototype to which task functions must conform.  Defined in this
  * file to ensure the type is known before portable.h is included.
  */
-typedef void (* TaskFunction_t)( void * );
+வகைவரை வெறுமை (* TaskFunction_t)( வெறுமை * );
 
 /* Converts a time in milliseconds to a time in ticks.  This macro can be
  * overridden by a macro of the same name defined in FreeRTOSConfig.h in case the
@@ -72,10 +72,10 @@ typedef void (* TaskFunction_t)( void * );
     #define configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES    0
 #endif
 
-#if ( configUSE_16_BIT_TICKS == 1 )
-    #define pdINTEGRITY_CHECK_VALUE    0x5a5a
-#else
-    #define pdINTEGRITY_CHECK_VALUE    0x5a5a5a5aUL
+#எனில் ( configUSE_16_BIT_TICKS == 1 )
+    #define pd_INTEGRITY_CHECK_மதிப்பு    0x5a5a
+#இல்லையெனில்
+    #define pd_INTEGRITY_CHECK_மதிப்பு    0x5a5a5a5aUL
 #endif
 
 /* The following errno values are used by FreeRTOS+ components, not FreeRTOS

@@ -4,27 +4,27 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include <stdbool.h>
-#include "esp_attr.h"
-#include "soc/soc_caps.h"
-#if SOC_CACHE_INTERNAL_MEM_VIA_L1CACHE
-#include "hal/cache_ll.h"
+#அந்தர்பாவ "freertos/FreeRTOS.h"
+#அந்தர்பாவ "freertos/task.h"
+#அந்தர்பாவ "freertos/semphr.h"
+#அந்தர்பாவ <stdbool.h>
+#அந்தர்பாவ "esp_attr.h"
+#அந்தர்பாவ "soc/soc_caps.h"
+#எனில் SOC_CACHE_INTERNAL_MEM_VIA_L1CACHE
+#அந்தர்பாவ "hal/cache_ll.h"
 #endif
-#include "unity.h"
-#include "test_utils.h"
+#அந்தர்பாவ "unity.h"
+#அந்தர்பாவ "test_utils.h"
 
 /* If assertions aren't set to fail this code still crashes, but not with an abort... */
-#if !CONFIG_COMPILER_OPTIMIZATION_ASSERTIONS_DISABLE
+#எனில் !CONFIG_COMPILER_OPTIMIZATION_ASSERTIONS_DISABLE
 
 /* Persists across reset so stage 2 can confirm stage 1 reached the failure path. */
-static __NOINIT_ATTR bool s_restart_marker;
+நிலையான __NOINIT_ATTR bool s_restart_marker;
 /* Reinitialized on reboot so stage 2 can distinguish a real restart from normal return. */
-static bool s_runtime_marker;
+நிலையான bool s_runtime_marker;
 
-static void mutex_release_task(void* arg)
+நிலையான வெறுமை mutex_release_task(வெறுமை* arg)
 {
     SemaphoreHandle_t mutex = (SemaphoreHandle_t) arg;
     xSemaphoreGive(mutex);
@@ -35,19 +35,19 @@ static void mutex_release_task(void* arg)
     TEST_FAIL_MESSAGE("should not be reached");
 }
 
-static void setup_restart_markers(void)
+நிலையான வெறுமை setup_restart_markers(வெறுமை)
 {
     s_restart_marker = true;
     s_runtime_marker = true;
 
-#if SOC_CACHE_INTERNAL_MEM_VIA_L1CACHE
+#எனில் SOC_CACHE_INTERNAL_MEM_VIA_L1CACHE
     /* If internal data is behind a cache it might not be written to the physical memory when we crash
        force a full writeback here to ensure this */
     cache_ll_writeback_all(CACHE_LL_LEVEL_INT_MEM, CACHE_TYPE_DATA, CACHE_LL_ID_ALL);
 #endif
 }
 
-static void check_system_restarted(void)
+நிலையான வெறுமை check_system_restarted(வெறுமை)
 {
     /* s_restart_marker is NOINIT so it still holds the true value set in stage 1 across the
      * software reset; s_runtime_marker is BSS so it is re-initialized to false on every boot. */
@@ -57,15 +57,15 @@ static void check_system_restarted(void)
     s_restart_marker = false;
 }
 
-static void do_mutex_release_assert(void)
+நிலையான வெறுமை do_mutex_release_assert(வெறுமை)
 {
     setup_restart_markers();
 
     SemaphoreHandle_t mutex = xSemaphoreCreateMutex();
     xSemaphoreTake(mutex, portMAX_DELAY);
-    xTaskCreate(&mutex_release_task, "mutex_release", 2048, mutex, UNITY_FREERTOS_PRIORITY + 1, NULL);
+    xTaskCreate(&mutex_release_task, "mutex_release", 2048, mutex, UNITY_FREERTOS_PRIORITY + 1, வெற்று);
     /* Stage 1 must not return to Unity before the releaser trips the panic. */
-    vTaskSuspend(NULL);
+    vTaskSuspend(வெற்று);
 }
 
 TEST_CASE_MULTIPLE_STAGES("mutex released not by owner causes an assert", "[freertos]",

@@ -8,32 +8,32 @@
  See if xPortInIsrContext works
 */
 
-#include <esp_types.h>
-#include <stdio.h>
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "unity.h"
-#include "esp_intr_alloc.h"
-#include "esp_rom_sys.h"
-#include "esp_freertos_hooks.h"
+#அந்தர்பாவ <esp_types.h>
+#அந்தர்பாவ <stdio.h>
+#அந்தர்பாவ "sdkconfig.h"
+#அந்தர்பாவ "freertos/FreeRTOS.h"
+#அந்தர்பாவ "freertos/task.h"
+#அந்தர்பாவ "freertos/semphr.h"
+#அந்தர்பாவ "freertos/queue.h"
+#அந்தர்பாவ "unity.h"
+#அந்தர்பாவ "esp_intr_alloc.h"
+#அந்தர்பாவ "esp_rom_sys.h"
+#அந்தர்பாவ "esp_freertos_hooks.h"
 
-#if CONFIG_FREERTOS_CORETIMER_0
+#எனில் CONFIG_FREERTOS_CORETIMER_0
 
-static volatile int in_int_context, int_handled;
+நிலையான நிலையற்ற முழு in_int_context, int_handled;
 
-static void testint(void)
+நிலையான வெறுமை testint(வெறுமை)
 {
     esp_rom_printf("INT!\n");
-    if (xPortInIsrContext()) {
+    எனில் (xPortInIsrContext()) {
         in_int_context++;
     }
     int_handled++;
 }
 
-static void testthread(void *arg)
+நிலையான வெறுமை testthread(வெறுமை *arg)
 {
     in_int_context = 0;
     int_handled = 0;
@@ -44,24 +44,24 @@ static void testthread(void *arg)
     TEST_ASSERT(int_handled);
     TEST_ASSERT(in_int_context);
     esp_deregister_freertos_tick_hook_for_cpu(testint, xPortGetCoreID());
-    vTaskDelete(NULL);
+    vTaskDelete(வெற்று);
 }
 
 TEST_CASE("xPortInIsrContext test", "[freertos]")
 {
-    xTaskCreatePinnedToCore(testthread, "tst", 4096, NULL, 3, NULL, 0);
+    xTaskCreatePinnedToCore(testthread, "tst", 4096, வெற்று, 3, வெற்று, 0);
     vTaskDelay(150 / portTICK_PERIOD_MS);
-#if CONFIG_FREERTOS_NUMBER_OF_CORES == 2
-    xTaskCreatePinnedToCore(testthread, "tst", 4096, NULL, 3, NULL, 1);
+#எனில் CONFIG_FREERTOS_எண்_OF_CORES == 2
+    xTaskCreatePinnedToCore(testthread, "tst", 4096, வெற்று, 3, வெற்று, 1);
     vTaskDelay(150 / portTICK_PERIOD_MS);
 #endif
 }
 
 #endif
 
-#if !CONFIG_FREERTOS_SMP // TODO: Enable when IDF-10540 is fixed
+#எனில் !CONFIG_FREERTOS_SMP // TODO: Enable when IDF-10540 is fixed
 
-static void testint_assert(void)
+நிலையான வெறுமை testint_assert(வெறுமை)
 {
     esp_rom_printf("INT!\n");
     portASSERT_IF_IN_ISR();

@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include "unity.h"
-#include "esp_intr_alloc.h"
+#அந்தர்பாவ "sdkconfig.h"
+#அந்தர்பாவ "unity.h"
+#அந்தர்பாவ "esp_intr_alloc.h"
 
-#if defined(__XTENSA__) && CONFIG_FREERTOS_CORETIMER_0
-#include "xtensa/config/core-isa.h"
-#include "xtensa/hal.h"
-#if defined(XCHAL_HAVE_WINDOWED)
+#எனில் defined(__XTENSA__) && CONFIG_FREERTOS_CORETIMER_0
+#அந்தர்பாவ "xtensa/config/core-isa.h"
+#அந்தர்பாவ "xtensa/hal.h"
+#எனில் defined(XCHAL_HAVE_WINDOWED)
 /* Regression test for a0 register being corrupted in _xt_context_save.
  *
  * The idea in this test is to have a function which recursively calls itself
@@ -22,19 +22,19 @@
  */
 
 /* See test_context_save_clober_func.S */
-extern void test_context_save_clober_func(void);
+வெளி வெறுமை test_context_save_clober_func(வெறுமை);
 
-static void int_timer_handler(void *arg)
+நிலையான வெறுமை int_timer_handler(வெறுமை *arg)
 {
     xthal_set_ccompare(1, xthal_get_ccount() + 10000);
-    (*(int*) arg)++;
+    (*(முழு*) arg)++;
 }
 
 TEST_CASE("context save doesn't corrupt return address register", "[freertos]")
 {
     /* set up an interrupt */
     intr_handle_t ih;
-    int int_triggered = 0;
+    முழு int_triggered = 0;
     TEST_ESP_OK(esp_intr_alloc(ETS_INTERNAL_TIMER1_INTR_SOURCE, 0, int_timer_handler, &int_triggered, &ih));
     xthal_set_ccompare(1, xthal_get_ccount() + 10000);
 

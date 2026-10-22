@@ -18,15 +18,15 @@
  * event group functions
  */
 
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/event_groups.h"
-#include "freertos/idf_additions.h"
-#include "esp_heap_caps.h"
+#அந்தர்பாவ "sdkconfig.h"
+#அந்தர்பாவ "freertos/FreeRTOS.h"
+#அந்தர்பாவ "freertos/event_groups.h"
+#அந்தர்பாவ "freertos/idf_additions.h"
+#அந்தர்பாவ "esp_heap_caps.h"
 
 /* ------------------------------ Event Groups ------------------------------ */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#எனில் ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
     EventGroupHandle_t xEventGroupCreateWithCaps( UBaseType_t uxMemoryCaps )
     {
@@ -34,30 +34,30 @@
         StaticEventGroup_t * pxEventGroupBuffer;
 
         /* Allocate memory for the event group using the provided memory caps */
-        pxEventGroupBuffer = heap_caps_malloc( sizeof( StaticEventGroup_t ), uxMemoryCaps );
+        pxEventGroupBuffer = heap_caps_malloc( அளவு( StaticEventGroup_t ), uxMemoryCaps );
 
-        if( pxEventGroupBuffer == NULL )
+        எனில்( pxEventGroupBuffer == வெற்று )
         {
-            return NULL;
+            திரும்பு வெற்று;
         }
 
         /* Create the event group using static creation API */
         xEventGroup = xEventGroupCreateStatic( pxEventGroupBuffer );
 
-        if( xEventGroup == NULL )
+        எனில்( xEventGroup == வெற்று )
         {
             heap_caps_free( pxEventGroupBuffer );
         }
 
-        return xEventGroup;
+        திரும்பு xEventGroup;
     }
 
 #endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#எனில் ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
-    void vEventGroupDeleteWithCaps( EventGroupHandle_t xEventGroup )
+    வெறுமை vEventGroupDeleteWithCaps( EventGroupHandle_t xEventGroup )
     {
         // Return value unused if asserts are disabled
         BaseType_t __attribute__((unused)) xResult;

@@ -4,29 +4,29 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <stdint.h>
-#include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/stream_buffer.h"
-#include "unity.h"
-#include "test_utils.h"
+#அந்தர்பாவ <stdint.h>
+#அந்தர்பாவ <stdio.h>
+#அந்தர்பாவ "freertos/FreeRTOS.h"
+#அந்தர்பாவ "freertos/task.h"
+#அந்தர்பாவ "freertos/semphr.h"
+#அந்தர்பாவ "freertos/stream_buffer.h"
+#அந்தர்பாவ "unity.h"
+#அந்தர்பாவ "test_utils.h"
 
-#define TEST_NUM_BYTES                  100
+#define TEST_இலக்கம்_BYTES                  100
 #define TEST_RECEIVER_TIMEOUT_TICKS     pdMS_TO_TICKS(1000)    // 1ms timeout for receiver task
 
-typedef struct {
+வகைவரை கட்டமைப்பு {
     StreamBufferHandle_t stream_buffer;
     SemaphoreHandle_t done_sem;
 } test_args_t;
 
-static void sender_task(void *arg)
+நிலையான வெறுமை sender_task(வெறுமை *arg)
 {
     test_args_t *test_args = (test_args_t *)arg;
     printf("Starting sender task... \n");
 
-    for (int i = 0; i < TEST_NUM_BYTES; i++) {
+    க்கு (முழு i = 0; i < TEST_இலக்கம்_BYTES; i++) {
         // Send a single byte, with the byte's value being the number of bytes sent thus far
         uint8_t data = (uint8_t)i;
         TEST_ASSERT_EQUAL(1, xStreamBufferSend(test_args->stream_buffer, &data, 1, 0));
@@ -35,15 +35,15 @@ static void sender_task(void *arg)
     }
 
     xSemaphoreGive(test_args->done_sem);
-    vTaskDelete(NULL);
+    vTaskDelete(வெற்று);
 }
 
-static void receiver_task(void *arg)
+நிலையான வெறுமை receiver_task(வெறுமை *arg)
 {
     test_args_t *test_args = (test_args_t *)arg;
     printf("Starting receiver task... \n");
 
-    for (int i = 0; i < TEST_NUM_BYTES; i++) {
+    க்கு (முழு i = 0; i < TEST_இலக்கம்_BYTES; i++) {
         // Receive  a single byte. The received byte's value being the number of bytes sent/received thus far
         uint8_t data;
         TEST_ASSERT_EQUAL(1, xStreamBufferReceive(test_args->stream_buffer, &data, 1, TEST_RECEIVER_TIMEOUT_TICKS));
@@ -51,29 +51,29 @@ static void receiver_task(void *arg)
     }
 
     xSemaphoreGive(test_args->done_sem);
-    vTaskDelete(NULL);
+    vTaskDelete(வெற்று);
 }
 
 TEST_CASE("Stream Buffer: Send-receive tasks", "[freertos]")
 {
     test_args_t test_args;
-    test_args.stream_buffer = xStreamBufferCreate(TEST_NUM_BYTES, 1);
+    test_args.stream_buffer = xStreamBufferCreate(TEST_இலக்கம்_BYTES, 1);
     test_args.done_sem = xSemaphoreCreateCounting(2, 0);
     TEST_ASSERT_NOT_NULL(test_args.stream_buffer);
     TEST_ASSERT_NOT_NULL(test_args.done_sem);
     BaseType_t sender_core_id;
     BaseType_t receiver_core_id;
     sender_core_id = 0;
-#if CONFIG_FREERTOS_UNICORE
+#எனில் CONFIG_FREERTOS_UNICORE
     receiver_core_id = 0;
-#else
+#இல்லையெனில்
     receiver_core_id = 1;
 #endif
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(sender_task, "sender", 4096, &test_args, UNITY_FREERTOS_PRIORITY + 2, NULL, sender_core_id));
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(receiver_task, "receiver", 4096, &test_args, UNITY_FREERTOS_PRIORITY + 1, NULL, receiver_core_id));
+    TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(sender_task, "sender", 4096, &test_args, UNITY_FREERTOS_PRIORITY + 2, வெற்று, sender_core_id));
+    TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(receiver_task, "receiver", 4096, &test_args, UNITY_FREERTOS_PRIORITY + 1, வெற்று, receiver_core_id));
 
     // Wait for both tasks to complete
-    for (int i = 0; i < 2; i++) {
+    க்கு (முழு i = 0; i < 2; i++) {
         xSemaphoreTake(test_args.done_sem, portMAX_DELAY);
     }
 

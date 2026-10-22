@@ -15,84 +15,84 @@
  * Real libc entry points are resolved via dlsym(RTLD_NEXT, …).
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <stdarg.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/uio.h>
-#include <sys/socket.h>
-#include <sys/select.h>
-#include <sys/time.h>
-#include <time.h>
-#include <poll.h>
-#include <dlfcn.h>
-#include <pthread.h>
+#அந்தர்பாவ <stdio.h>
+#அந்தர்பாவ <stdlib.h>
+#அந்தர்பாவ <string.h>
+#அந்தர்பாவ <errno.h>
+#அந்தர்பாவ <fcntl.h>
+#அந்தர்பாவ <stdarg.h>
+#அந்தர்பாவ <unistd.h>
+#அந்தர்பாவ <sys/types.h>
+#அந்தர்பாவ <sys/uio.h>
+#அந்தர்பாவ <sys/socket.h>
+#அந்தர்பாவ <sys/select.h>
+#அந்தர்பாவ <sys/time.h>
+#அந்தர்பாவ <time.h>
+#அந்தர்பாவ <poll.h>
+#அந்தர்பாவ <dlfcn.h>
+#அந்தர்பாவ <pthread.h>
 
-#include "linux_port_coop_internal.h"
-#include "esp_private/freertos_linux_coop_syscalls.h"
+#அந்தர்பாவ "linux_port_coop_internal.h"
+#அந்தர்பாவ "esp_private/freertos_linux_coop_syscalls.h"
 
-static ssize_t  (*real_readv)(int, const struct iovec *, int);
-static ssize_t  (*real_writev)(int, const struct iovec *, int);
-static ssize_t  (*real_recv)(int, void *, size_t, int);
-static ssize_t  (*real_send)(int, const void *, size_t, int);
-static ssize_t  (*real_recvfrom)(int, void *, size_t, int,
-                                 struct sockaddr *, socklen_t *);
-static ssize_t  (*real_sendto)(int, const void *, size_t, int,
-                                const struct sockaddr *, socklen_t);
-static ssize_t  (*real_recvmsg)(int, struct msghdr *, int);
-static ssize_t  (*real_sendmsg)(int, const struct msghdr *, int);
-static int      (*real_connect)(int, const struct sockaddr *, socklen_t);
-static int      (*real_accept)(int, struct sockaddr *, socklen_t *);
-static int      (*real_pselect)(int, fd_set *, fd_set *, fd_set *,
-                                const struct timespec *, const sigset_t *);
-static int      (*real_poll)(struct pollfd *, nfds_t, int);
-static int      (*real_socket)(int, int, int);
-static int      (*real_socketpair)(int, int, int, int[2]);
-static int      (*real_pipe)(int[2]);
-static int      (*real_pipe2)(int[2], int);
-static int      (*real_dup)(int);
-static int      (*real_dup2)(int, int);
-static int      (*real_nanosleep)(const struct timespec *, struct timespec *);
-static ssize_t  (*real_read)(int, void *, size_t);
-static ssize_t  (*real_write)(int, const void *, size_t);
-static ssize_t  (*real_pread)(int, void *, size_t, off_t);
-static ssize_t  (*real_pwrite)(int, const void *, size_t, off_t);
-static int      (*real_close)(int);
-static int      (*real_select)(int, fd_set *, fd_set *, fd_set *,
-                                struct timeval *);
+நிலையான ssize_t  (*real_readv)(முழு, மாறிலி கட்டமைப்பு iovec *, முழு);
+நிலையான ssize_t  (*real_writev)(முழு, மாறிலி கட்டமைப்பு iovec *, முழு);
+நிலையான ssize_t  (*real_recv)(முழு, வெறுமை *, size_t, முழு);
+நிலையான ssize_t  (*real_send)(முழு, மாறிலி வெறுமை *, size_t, முழு);
+நிலையான ssize_t  (*real_recvfrom)(முழு, வெறுமை *, size_t, முழு,
+                                 கட்டமைப்பு sockaddr *, socklen_t *);
+நிலையான ssize_t  (*real_sendto)(முழு, மாறிலி வெறுமை *, size_t, முழு,
+                                மாறிலி கட்டமைப்பு sockaddr *, socklen_t);
+நிலையான ssize_t  (*real_recvmsg)(முழு, கட்டமைப்பு msghdr *, முழு);
+நிலையான ssize_t  (*real_sendmsg)(முழு, மாறிலி கட்டமைப்பு msghdr *, முழு);
+நிலையான முழு      (*real_connect)(முழு, மாறிலி கட்டமைப்பு sockaddr *, socklen_t);
+நிலையான முழு      (*real_accept)(முழு, கட்டமைப்பு sockaddr *, socklen_t *);
+நிலையான முழு      (*real_pselect)(முழு, fd_set *, fd_set *, fd_set *,
+                                மாறிலி கட்டமைப்பு timespec *, மாறிலி sigset_t *);
+நிலையான முழு      (*real_poll)(கட்டமைப்பு pollfd *, nfds_t, முழு);
+நிலையான முழு      (*real_socket)(முழு, முழு, முழு);
+நிலையான முழு      (*real_socketpair)(முழு, முழு, முழு, முழு[2]);
+நிலையான முழு      (*real_pipe)(முழு[2]);
+நிலையான முழு      (*real_pipe2)(முழு[2], முழு);
+நிலையான முழு      (*real_dup)(முழு);
+நிலையான முழு      (*real_dup2)(முழு, முழு);
+நிலையான முழு      (*real_nanosleep)(மாறிலி கட்டமைப்பு timespec *, கட்டமைப்பு timespec *);
+நிலையான ssize_t  (*real_read)(முழு, வெறுமை *, size_t);
+நிலையான ssize_t  (*real_write)(முழு, மாறிலி வெறுமை *, size_t);
+நிலையான ssize_t  (*real_pread)(முழு, வெறுமை *, size_t, off_t);
+நிலையான ssize_t  (*real_pwrite)(முழு, மாறிலி வெறுமை *, size_t, off_t);
+நிலையான முழு      (*real_close)(முழு);
+நிலையான முழு      (*real_select)(முழு, fd_set *, fd_set *, fd_set *,
+                                கட்டமைப்பு timeval *);
 
-typedef int (*linux_coop_fcntl_fn_t)(int, int, ...);
-static linux_coop_fcntl_fn_t real_fcntl;
+வகைவரை முழு (*linux_coop_fcntl_fn_t)(முழு, முழு, ...);
+நிலையான linux_coop_fcntl_fn_t real_fcntl;
 
-typedef int (*linux_coop_open_fn_t)(const char *, int, mode_t);
-static linux_coop_open_fn_t real_open;
+வகைவரை முழு (*linux_coop_open_fn_t)(மாறிலி எழுத்து *, முழு, mode_t);
+நிலையான linux_coop_open_fn_t real_open;
 
-typedef struct linux_coop_fd_state {
-    int fd;
-    int user_flags;
-    struct linux_coop_fd_state *next;
+வகைவரை கட்டமைப்பு linux_coop_fd_state {
+    முழு fd;
+    முழு user_flags;
+    கட்டமைப்பு linux_coop_fd_state *next;
 } linux_coop_fd_state_t;
 
-static linux_coop_fd_state_t *s_fd_state_list;
-static pthread_mutex_t s_fd_state_lock = PTHREAD_MUTEX_INITIALIZER;
+நிலையான linux_coop_fd_state_t *s_fd_state_list;
+நிலையான pthread_mutex_t s_fd_state_lock = PTHREAD_MUTEX_INITIALIZER;
 
-static linux_coop_fd_state_t *linux_coop_find_fd_locked(int fd)
+நிலையான linux_coop_fd_state_t *linux_coop_find_fd_locked(முழு fd)
 {
-    linux_coop_fd_state_t *node = s_fd_state_list;
-    while (node != NULL) {
-        if (node->fd == fd) {
-            return node;
+    linux_coop_fd_state_t *முனை = s_fd_state_list;
+    போது (முனை != வெற்று) {
+        எனில் (முனை->fd == fd) {
+            திரும்பு முனை;
         }
-        node = node->next;
+        முனை = முனை->next;
     }
-    return NULL;
+    திரும்பு வெற்று;
 }
 
-static void __attribute__((constructor)) linux_coop_resolve_all(void)
+நிலையான வெறுமை __attribute__((constructor)) linux_coop_resolve_all(வெறுமை)
 {
     LINUX_COOP_RESOLVE(readv);
     LINUX_COOP_RESOLVE(writev);
@@ -114,8 +114,8 @@ static void __attribute__((constructor)) linux_coop_resolve_all(void)
     LINUX_COOP_RESOLVE(dup2);
     LINUX_COOP_RESOLVE(nanosleep);
     LINUX_COOP_RESOLVE(fcntl);
-    LINUX_COOP_RESOLVE(read);
-    LINUX_COOP_RESOLVE(write);
+    LINUX_COOP_RESOLVE(பட);
+    LINUX_COOP_RESOLVE(லிக);
     LINUX_COOP_RESOLVE(pread);
     LINUX_COOP_RESOLVE(pwrite);
     LINUX_COOP_RESOLVE(close);
@@ -123,169 +123,169 @@ static void __attribute__((constructor)) linux_coop_resolve_all(void)
     LINUX_COOP_RESOLVE(open);
 }
 
-void linux_coop_set_nonblocking(int fd)
+வெறுமை linux_coop_set_nonblocking(முழு fd)
 {
-    if (fd >= 0) {
-        int flags = real_fcntl(fd, F_GETFL, 0);
-        if (flags >= 0) {
+    எனில் (fd >= 0) {
+        முழு flags = real_fcntl(fd, F_GETFL, 0);
+        எனில் (flags >= 0) {
             real_fcntl(fd, F_SETFL, flags | O_NONBLOCK);
         }
     }
 }
 
-void linux_coop_track_fd(int fd, int user_flags)
+வெறுமை linux_coop_track_fd(முழு fd, முழு user_flags)
 {
-    if (fd < 0) {
-        return;
+    எனில் (fd < 0) {
+        திரும்பு;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
-    linux_coop_fd_state_t *node = linux_coop_find_fd_locked(fd);
-    if (node != NULL) {
-        node->user_flags = user_flags;
+    linux_coop_fd_state_t *முனை = linux_coop_find_fd_locked(fd);
+    எனில் (முனை != வெற்று) {
+        முனை->user_flags = user_flags;
         pthread_mutex_unlock(&s_fd_state_lock);
-        return;
+        திரும்பு;
     }
 
-    node = calloc(1, sizeof(*node));
-    if (node != NULL) {
-        node->fd = fd;
-        node->user_flags = user_flags;
-        node->next = s_fd_state_list;
-        s_fd_state_list = node;
+    முனை = calloc(1, அளவு(*முனை));
+    எனில் (முனை != வெற்று) {
+        முனை->fd = fd;
+        முனை->user_flags = user_flags;
+        முனை->next = s_fd_state_list;
+        s_fd_state_list = முனை;
     }
     pthread_mutex_unlock(&s_fd_state_lock);
 }
 
-void linux_coop_untrack_fd(int fd)
+வெறுமை linux_coop_untrack_fd(முழு fd)
 {
-    if (fd < 0) {
-        return;
+    எனில் (fd < 0) {
+        திரும்பு;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
-    linux_coop_fd_state_t *prev = NULL;
-    linux_coop_fd_state_t *node = s_fd_state_list;
-    while (node != NULL) {
-        if (node->fd == fd) {
-            if (prev == NULL) {
-                s_fd_state_list = node->next;
-            } else {
-                prev->next = node->next;
+    linux_coop_fd_state_t *prev = வெற்று;
+    linux_coop_fd_state_t *முனை = s_fd_state_list;
+    போது (முனை != வெற்று) {
+        எனில் (முனை->fd == fd) {
+            எனில் (prev == வெற்று) {
+                s_fd_state_list = முனை->next;
+            } இல்லையெனில் {
+                prev->next = முனை->next;
             }
-            free(node);
-            break;
+            விடுவி(முனை);
+            நிறுத்து;
         }
-        prev = node;
-        node = node->next;
+        prev = முனை;
+        முனை = முனை->next;
     }
     pthread_mutex_unlock(&s_fd_state_lock);
 }
 
-void linux_coop_set_user_flags(int fd, int user_flags)
+வெறுமை linux_coop_set_user_flags(முழு fd, முழு user_flags)
 {
     linux_coop_track_fd(fd, user_flags);
 }
 
-bool linux_coop_get_user_flags(int fd, int *flags)
+bool linux_coop_get_user_flags(முழு fd, முழு *flags)
 {
-    if (fd < 0 || flags == NULL) {
-        return false;
+    எனில் (fd < 0 || flags == வெற்று) {
+        திரும்பு false;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
-    linux_coop_fd_state_t *node = linux_coop_find_fd_locked(fd);
-    if (node == NULL) {
+    linux_coop_fd_state_t *முனை = linux_coop_find_fd_locked(fd);
+    எனில் (முனை == வெற்று) {
         pthread_mutex_unlock(&s_fd_state_lock);
-        return false;
+        திரும்பு false;
     }
-    *flags = node->user_flags;
+    *flags = முனை->user_flags;
     pthread_mutex_unlock(&s_fd_state_lock);
-    return true;
+    திரும்பு true;
 }
 
-bool linux_coop_fd_user_nonblocking(int fd)
+bool linux_coop_fd_user_nonblocking(முழு fd)
 {
-    int user_flags = 0;
-    if (linux_coop_get_user_flags(fd, &user_flags)) {
-        return (user_flags & O_NONBLOCK) != 0;
+    முழு user_flags = 0;
+    எனில் (linux_coop_get_user_flags(fd, &user_flags)) {
+        திரும்பு (user_flags & O_NONBLOCK) != 0;
     }
-    return false;
+    திரும்பு false;
 }
 
 
-ssize_t freertos_linux_coop_read(int fd, void *buf, size_t count)
+ssize_t freertos_linux_coop_read(முழு fd, வெறுமை *buf, size_t மொத்தம்)
 {
-    LINUX_COOP_IO_LOOP(fd, real_read(fd, buf, count))
+    LINUX_COOP_IO_LOOP(fd, real_read(fd, buf, மொத்தம்))
 }
 
-ssize_t freertos_linux_coop_write(int fd, const void *buf, size_t count)
+ssize_t freertos_linux_coop_write(முழு fd, மாறிலி வெறுமை *buf, size_t மொத்தம்)
 {
-    LINUX_COOP_IO_LOOP(fd, real_write(fd, buf, count))
+    LINUX_COOP_IO_LOOP(fd, real_write(fd, buf, மொத்தம்))
 }
 
-ssize_t freertos_linux_coop_pread(int fd, void *buf, size_t count, off_t offset)
+ssize_t freertos_linux_coop_pread(முழு fd, வெறுமை *buf, size_t மொத்தம், off_t offset)
 {
-    LINUX_COOP_IO_LOOP(fd, real_pread(fd, buf, count, offset))
+    LINUX_COOP_IO_LOOP(fd, real_pread(fd, buf, மொத்தம், offset))
 }
 
-ssize_t freertos_linux_coop_pwrite(int fd, const void *buf, size_t count, off_t offset)
+ssize_t freertos_linux_coop_pwrite(முழு fd, மாறிலி வெறுமை *buf, size_t மொத்தம், off_t offset)
 {
-    LINUX_COOP_IO_LOOP(fd, real_pwrite(fd, buf, count, offset))
+    LINUX_COOP_IO_LOOP(fd, real_pwrite(fd, buf, மொத்தம், offset))
 }
 
-int freertos_linux_coop_open(const char *path, int flags, int mode)
+முழு freertos_linux_coop_open(மாறிலி எழுத்து *path, முழு flags, முழு mode)
 {
-    int fd = real_open(path, flags, (mode_t)mode);
+    முழு fd = real_open(path, flags, (mode_t)mode);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, flags & O_NONBLOCK);
-    return fd;
+    திரும்பு fd;
 }
 
-int freertos_linux_coop_close(int fd)
+முழு freertos_linux_coop_close(முழு fd)
 {
-    int ret = real_close(fd);
-    if (ret == 0 || errno == EINTR) {
+    முழு ret = real_close(fd);
+    எனில் (ret == 0 || errno == EINTR) {
         /* On Linux, close() always releases the fd even when returning
          * EINTR.  Retrying would risk closing a fd reused by another
          * thread.  Treat EINTR as success. */
         linux_coop_untrack_fd(fd);
-        return 0;
+        திரும்பு 0;
     }
-    return -1;
+    திரும்பு -1;
 }
 
-int freertos_linux_coop_fcntl(int fd, int cmd, int arg)
+முழு freertos_linux_coop_fcntl(முழு fd, முழு cmd, முழு arg)
 {
-    if (cmd == F_GETFL) {
-        int real_flags = real_fcntl(fd, F_GETFL, 0);
-        if (real_flags < 0) {
-            return -1;
+    எனில் (cmd == F_GETFL) {
+        முழு real_flags = real_fcntl(fd, F_GETFL, 0);
+        எனில் (real_flags < 0) {
+            திரும்பு -1;
         }
-        int user_flags = 0;
-        if (linux_coop_get_user_flags(fd, &user_flags)) {
+        முழு user_flags = 0;
+        எனில் (linux_coop_get_user_flags(fd, &user_flags)) {
             real_flags &= ~O_NONBLOCK;
             real_flags |= (user_flags & O_NONBLOCK);
         }
-        return real_flags;
+        திரும்பு real_flags;
     }
-    if (cmd == F_SETFL) {
+    எனில் (cmd == F_SETFL) {
         linux_coop_set_user_flags(fd, arg);
-        int internal_flags = arg | O_NONBLOCK;
-        return real_fcntl(fd, F_SETFL, internal_flags);
+        முழு internal_flags = arg | O_NONBLOCK;
+        திரும்பு real_fcntl(fd, F_SETFL, internal_flags);
     }
-    return real_fcntl(fd, cmd, arg);
+    திரும்பு real_fcntl(fd, cmd, arg);
 }
 
-int freertos_linux_coop_select(int nfds, fd_set *readfds, fd_set *writefds,
-                      fd_set *exceptfds, struct timeval *timeout)
+முழு freertos_linux_coop_select(முழு nfds, fd_set *readfds, fd_set *writefds,
+                      fd_set *exceptfds, கட்டமைப்பு timeval *timeout)
 {
     long timeout_ms = -1;
-    if (timeout != NULL) {
+    எனில் (timeout != வெற்று) {
         timeout_ms = (long)timeout->tv_sec * 1000 +
                      (timeout->tv_usec + 999) / 1000;
-        if (timeout_ms == 0) {
-            return real_select(nfds, readfds, writefds, exceptfds, timeout);
+        எனில் (timeout_ms == 0) {
+            திரும்பு real_select(nfds, readfds, writefds, exceptfds, timeout);
         }
     }
 
@@ -294,45 +294,45 @@ int freertos_linux_coop_select(int nfds, fd_set *readfds, fd_set *writefds,
      * iterations we must snapshot the caller's sets and restore them on every
      * loop. */
     fd_set rfds_in, wfds_in, efds_in;
-    if (readfds != NULL) {
+    எனில் (readfds != வெற்று) {
         rfds_in = *readfds;
     }
-    if (writefds != NULL) {
+    எனில் (writefds != வெற்று) {
         wfds_in = *writefds;
     }
-    if (exceptfds != NULL) {
+    எனில் (exceptfds != வெற்று) {
         efds_in = *exceptfds;
     }
 
     long waited_ms = 0;
-    while (1) {
-        if (readfds != NULL) {
+    போது (1) {
+        எனில் (readfds != வெற்று) {
             *readfds = rfds_in;
         }
-        if (writefds != NULL) {
+        எனில் (writefds != வெற்று) {
             *writefds = wfds_in;
         }
-        if (exceptfds != NULL) {
+        எனில் (exceptfds != வெற்று) {
             *exceptfds = efds_in;
         }
 
-        struct timeval zero_tv = {0, 0};
-        int ret = real_select(nfds, readfds, writefds, exceptfds, &zero_tv);
-        if (ret != 0) {
-            return ret;
+        கட்டமைப்பு timeval zero_tv = {0, 0};
+        முழு ret = real_select(nfds, readfds, writefds, exceptfds, &zero_tv);
+        எனில் (ret != 0) {
+            திரும்பு ret;
         }
-        if (timeout_ms == 0) {
-            return 0;
+        எனில் (timeout_ms == 0) {
+            திரும்பு 0;
         }
-        if (timeout_ms > 0 && waited_ms >= timeout_ms) {
-            return 0;
+        எனில் (timeout_ms > 0 && waited_ms >= timeout_ms) {
+            திரும்பு 0;
         }
         linux_coop_yield(LINUX_COOP_TICK_MS);
         waited_ms += LINUX_COOP_TICK_MS;
     }
 }
 
-void freertos_linux_coop_syscalls_init(void)
+வெறுமை freertos_linux_coop_syscalls_init(வெறுமை)
 {
     linux_coop_set_nonblocking(STDIN_FILENO);
     linux_coop_set_nonblocking(STDOUT_FILENO);
@@ -346,252 +346,252 @@ void freertos_linux_coop_syscalls_init(void)
  * is linked.  When VFS is absent the weak versions provide cooperative
  * behaviour directly via real libc. */
 
-__attribute__((weak)) ssize_t read(int fd, void *buf, size_t count)
+__attribute__((weak)) ssize_t பட(முழு fd, வெறுமை *buf, size_t மொத்தம்)
 {
-    return freertos_linux_coop_read(fd, buf, count);
+    திரும்பு freertos_linux_coop_read(fd, buf, மொத்தம்);
 }
 
-__attribute__((weak)) ssize_t write(int fd, const void *buf, size_t count)
+__attribute__((weak)) ssize_t லிக(முழு fd, மாறிலி வெறுமை *buf, size_t மொத்தம்)
 {
-    return freertos_linux_coop_write(fd, buf, count);
+    திரும்பு freertos_linux_coop_write(fd, buf, மொத்தம்);
 }
 
-__attribute__((weak)) ssize_t pread(int fd, void *buf, size_t count, off_t offset)
+__attribute__((weak)) ssize_t pread(முழு fd, வெறுமை *buf, size_t மொத்தம், off_t offset)
 {
-    return freertos_linux_coop_pread(fd, buf, count, offset);
+    திரும்பு freertos_linux_coop_pread(fd, buf, மொத்தம், offset);
 }
 
-__attribute__((weak)) ssize_t pwrite(int fd, const void *buf, size_t count, off_t offset)
+__attribute__((weak)) ssize_t pwrite(முழு fd, மாறிலி வெறுமை *buf, size_t மொத்தம், off_t offset)
 {
-    return freertos_linux_coop_pwrite(fd, buf, count, offset);
+    திரும்பு freertos_linux_coop_pwrite(fd, buf, மொத்தம், offset);
 }
 
-__attribute__((weak)) int open(const char *path, int flags, ...)
+__attribute__((weak)) முழு open(மாறிலி எழுத்து *path, முழு flags, ...)
 {
-    int mode = 0;
-    if (flags & O_CREAT) {
+    முழு mode = 0;
+    எனில் (flags & O_CREAT) {
         va_list ap;
         va_start(ap, flags);
-        mode = va_arg(ap, int);
+        mode = va_arg(ap, முழு);
         va_end(ap);
     }
-    return freertos_linux_coop_open(path, flags, mode);
+    திரும்பு freertos_linux_coop_open(path, flags, mode);
 }
 
-__attribute__((weak)) int close(int fd)
+__attribute__((weak)) முழு close(முழு fd)
 {
-    return freertos_linux_coop_close(fd);
+    திரும்பு freertos_linux_coop_close(fd);
 }
 
-__attribute__((weak)) int fcntl(int fd, int cmd, ...)
+__attribute__((weak)) முழு fcntl(முழு fd, முழு cmd, ...)
 {
-    int arg = 0;
-    if (cmd != F_GETFL) {
+    முழு arg = 0;
+    எனில் (cmd != F_GETFL) {
         va_list list;
         va_start(list, cmd);
-        arg = va_arg(list, int);
+        arg = va_arg(list, முழு);
         va_end(list);
     }
-    return freertos_linux_coop_fcntl(fd, cmd, arg);
+    திரும்பு freertos_linux_coop_fcntl(fd, cmd, arg);
 }
 
-__attribute__((weak)) int select(int nfds, fd_set *readfds, fd_set *writefds,
-                                 fd_set *exceptfds, struct timeval *timeout)
+__attribute__((weak)) முழு select(முழு nfds, fd_set *readfds, fd_set *writefds,
+                                 fd_set *exceptfds, கட்டமைப்பு timeval *timeout)
 {
-    return freertos_linux_coop_select(nfds, readfds, writefds, exceptfds, timeout);
+    திரும்பு freertos_linux_coop_select(nfds, readfds, writefds, exceptfds, timeout);
 }
 
-ssize_t freertos_linux_coop_readv(int fd, const struct iovec *iov, int iovcnt)
+ssize_t freertos_linux_coop_readv(முழு fd, மாறிலி கட்டமைப்பு iovec *iov, முழு iovcnt)
 {
     LINUX_COOP_IO_LOOP(fd, real_readv(fd, iov, iovcnt))
 }
 
-ssize_t freertos_linux_coop_writev(int fd, const struct iovec *iov, int iovcnt)
+ssize_t freertos_linux_coop_writev(முழு fd, மாறிலி கட்டமைப்பு iovec *iov, முழு iovcnt)
 {
     LINUX_COOP_IO_LOOP(fd, real_writev(fd, iov, iovcnt))
 }
 
-ssize_t freertos_linux_coop_recv(int sockfd, void *buf, size_t len, int flags)
+ssize_t freertos_linux_coop_recv(முழு sockfd, வெறுமை *buf, size_t len, முழு flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recv(sockfd, buf, len, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_send(int sockfd, const void *buf, size_t len, int flags)
+ssize_t freertos_linux_coop_send(முழு sockfd, மாறிலி வெறுமை *buf, size_t len, முழு flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_send(sockfd, buf, len, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_recvfrom(int sockfd, void *buf, size_t len, int flags,
-                 struct sockaddr *src_addr, socklen_t *addrlen)
+ssize_t freertos_linux_coop_recvfrom(முழு sockfd, வெறுமை *buf, size_t len, முழு flags,
+                 கட்டமைப்பு sockaddr *src_addr, socklen_t *addrlen)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recvfrom(sockfd, buf, len, flags | MSG_DONTWAIT,
                             src_addr, addrlen))
 }
 
-ssize_t freertos_linux_coop_sendto(int sockfd, const void *buf, size_t len, int flags,
-               const struct sockaddr *dest_addr, socklen_t addrlen)
+ssize_t freertos_linux_coop_sendto(முழு sockfd, மாறிலி வெறுமை *buf, size_t len, முழு flags,
+               மாறிலி கட்டமைப்பு sockaddr *dest_addr, socklen_t addrlen)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_sendto(sockfd, buf, len, flags | MSG_DONTWAIT,
                           dest_addr, addrlen))
 }
 
-ssize_t freertos_linux_coop_recvmsg(int sockfd, struct msghdr *msg, int flags)
+ssize_t freertos_linux_coop_recvmsg(முழு sockfd, கட்டமைப்பு msghdr *செய்தி, முழு flags)
 {
-    LINUX_COOP_IO_LOOP(sockfd, real_recvmsg(sockfd, msg, flags | MSG_DONTWAIT))
+    LINUX_COOP_IO_LOOP(sockfd, real_recvmsg(sockfd, செய்தி, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_sendmsg(int sockfd, const struct msghdr *msg, int flags)
+ssize_t freertos_linux_coop_sendmsg(முழு sockfd, மாறிலி கட்டமைப்பு msghdr *செய்தி, முழு flags)
 {
-    LINUX_COOP_IO_LOOP(sockfd, real_sendmsg(sockfd, msg, flags | MSG_DONTWAIT))
+    LINUX_COOP_IO_LOOP(sockfd, real_sendmsg(sockfd, செய்தி, flags | MSG_DONTWAIT))
 }
 
-__attribute__((weak)) ssize_t readv(int fd, const struct iovec *iov, int iovcnt)
+__attribute__((weak)) ssize_t readv(முழு fd, மாறிலி கட்டமைப்பு iovec *iov, முழு iovcnt)
 {
-    return freertos_linux_coop_readv(fd, iov, iovcnt);
+    திரும்பு freertos_linux_coop_readv(fd, iov, iovcnt);
 }
 
-__attribute__((weak)) ssize_t writev(int fd, const struct iovec *iov, int iovcnt)
+__attribute__((weak)) ssize_t writev(முழு fd, மாறிலி கட்டமைப்பு iovec *iov, முழு iovcnt)
 {
-    return freertos_linux_coop_writev(fd, iov, iovcnt);
+    திரும்பு freertos_linux_coop_writev(fd, iov, iovcnt);
 }
 
-__attribute__((weak)) ssize_t recv(int sockfd, void *buf, size_t len, int flags)
+__attribute__((weak)) ssize_t recv(முழு sockfd, வெறுமை *buf, size_t len, முழு flags)
 {
-    return freertos_linux_coop_recv(sockfd, buf, len, flags);
+    திரும்பு freertos_linux_coop_recv(sockfd, buf, len, flags);
 }
 
-__attribute__((weak)) ssize_t send(int sockfd, const void *buf, size_t len, int flags)
+__attribute__((weak)) ssize_t send(முழு sockfd, மாறிலி வெறுமை *buf, size_t len, முழு flags)
 {
-    return freertos_linux_coop_send(sockfd, buf, len, flags);
+    திரும்பு freertos_linux_coop_send(sockfd, buf, len, flags);
 }
 
-__attribute__((weak)) ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
-                 struct sockaddr *src_addr, socklen_t *addrlen)
+__attribute__((weak)) ssize_t recvfrom(முழு sockfd, வெறுமை *buf, size_t len, முழு flags,
+                 கட்டமைப்பு sockaddr *src_addr, socklen_t *addrlen)
 {
-    return freertos_linux_coop_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
+    திரும்பு freertos_linux_coop_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
 }
 
-__attribute__((weak)) ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
-               const struct sockaddr *dest_addr, socklen_t addrlen)
+__attribute__((weak)) ssize_t sendto(முழு sockfd, மாறிலி வெறுமை *buf, size_t len, முழு flags,
+               மாறிலி கட்டமைப்பு sockaddr *dest_addr, socklen_t addrlen)
 {
-    return freertos_linux_coop_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
+    திரும்பு freertos_linux_coop_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
 }
 
-__attribute__((weak)) ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
+__attribute__((weak)) ssize_t recvmsg(முழு sockfd, கட்டமைப்பு msghdr *செய்தி, முழு flags)
 {
-    return freertos_linux_coop_recvmsg(sockfd, msg, flags);
+    திரும்பு freertos_linux_coop_recvmsg(sockfd, செய்தி, flags);
 }
 
-__attribute__((weak)) ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags)
+__attribute__((weak)) ssize_t sendmsg(முழு sockfd, மாறிலி கட்டமைப்பு msghdr *செய்தி, முழு flags)
 {
-    return freertos_linux_coop_sendmsg(sockfd, msg, flags);
+    திரும்பு freertos_linux_coop_sendmsg(sockfd, செய்தி, flags);
 }
 
-int freertos_linux_coop_connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+முழு freertos_linux_coop_connect(முழு sockfd, மாறிலி கட்டமைப்பு sockaddr *addr, socklen_t addrlen)
 {
-    while (1)
+    போது (1)
     {
-        int ret = real_connect(sockfd, addr, addrlen);
-        if (ret == 0) {
-            return ret;
+        முழு ret = real_connect(sockfd, addr, addrlen);
+        எனில் (ret == 0) {
+            திரும்பு ret;
         }
 
-        if (errno == EINPROGRESS || errno == EALREADY) {
-            struct pollfd pfd;
+        எனில் (errno == EINPROGRESS || errno == EALREADY) {
+            கட்டமைப்பு pollfd pfd;
             pfd.fd = sockfd;
             pfd.events = POLLOUT;
             pfd.revents = 0;
 
-            int poll_retries = 0;
-            while (1)
+            முழு poll_retries = 0;
+            போது (1)
             {
-                int press = real_poll(&pfd, 1, 0);
-                if (press > 0) {
-                    int so_err = 0;
-                    socklen_t len = sizeof(so_err);
-                    if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
+                முழு press = real_poll(&pfd, 1, 0);
+                எனில் (press > 0) {
+                    முழு so_err = 0;
+                    socklen_t len = அளவு(so_err);
+                    எனில் (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
                                    &so_err, &len) < 0) {
-                        return -1;
+                        திரும்பு -1;
                     }
-                    if (so_err == 0) {
-                        return 0;
-                    } else {
+                    எனில் (so_err == 0) {
+                        திரும்பு 0;
+                    } இல்லையெனில் {
                         errno = so_err;
-                        return -1;
+                        திரும்பு -1;
                     }
-                } else if (press == 0) {
+                } இல்லையெனில் எனில் (press == 0) {
                     linux_coop_yield(LINUX_COOP_TICK_MS);
-                    continue;
-                } else {
-                    if (errno == EINTR) {
-                        continue;
+                    தொடர்;
+                } இல்லையெனில் {
+                    எனில் (errno == EINTR) {
+                        தொடர்;
                     }
                     /* Non-EINTR poll error; bail out after a few retries */
-                    if (++poll_retries > 3) {
-                        return -1;
+                    எனில் (++poll_retries > 3) {
+                        திரும்பு -1;
                     }
                     linux_coop_yield(LINUX_COOP_TICK_MS);
-                    continue;
+                    தொடர்;
                 }
             }
         }
 
-        if (errno == EINTR) {
-            return -1;
+        எனில் (errno == EINTR) {
+            திரும்பு -1;
         }
 
-        return -1;
+        திரும்பு -1;
     }
 }
 
-int freertos_linux_coop_accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+முழு freertos_linux_coop_accept(முழு sockfd, கட்டமைப்பு sockaddr *addr, socklen_t *addrlen)
 {
-    while (1)
+    போது (1)
     {
-        int fd = real_accept(sockfd, addr, addrlen);
-        if (fd >= 0) {
+        முழு fd = real_accept(sockfd, addr, addrlen);
+        எனில் (fd >= 0) {
             linux_coop_set_nonblocking(fd);
             linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(sockfd) ? O_NONBLOCK : 0);
-            return fd;
+            திரும்பு fd;
         }
-        if (errno == EAGAIN || errno == EWOULDBLOCK) {
-            if (linux_coop_fd_user_nonblocking(sockfd)) {
-                return -1;
+        எனில் (errno == EAGAIN || errno == EWOULDBLOCK) {
+            எனில் (linux_coop_fd_user_nonblocking(sockfd)) {
+                திரும்பு -1;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
-            continue;
+            தொடர்;
         }
-        return -1;
+        திரும்பு -1;
     }
 }
 
-int freertos_linux_coop_pselect(int nfds, fd_set *readfds, fd_set *writefds,
-            fd_set *exceptfds, const struct timespec *timeout,
-            const sigset_t *sigmask)
+முழு freertos_linux_coop_pselect(முழு nfds, fd_set *readfds, fd_set *writefds,
+            fd_set *exceptfds, மாறிலி கட்டமைப்பு timespec *timeout,
+            மாறிலி sigset_t *sigmask)
 {
     long timeout_ms = -1;
-    if (timeout != NULL) {
+    எனில் (timeout != வெற்று) {
         timeout_ms = (long)timeout->tv_sec * 1000 +
                      (timeout->tv_nsec + 999999) / 1000000;
-        if (timeout_ms == 0) {
-            return real_pselect(nfds, readfds, writefds, exceptfds,
+        எனில் (timeout_ms == 0) {
+            திரும்பு real_pselect(nfds, readfds, writefds, exceptfds,
                                 timeout, sigmask);
         }
     }
 
     long waited_ms = 0;
-    while (1)
+    போது (1)
     {
-        struct timespec zero_ts = {0, 0};
-        int ret = real_pselect(nfds, readfds, writefds, exceptfds,
+        கட்டமைப்பு timespec zero_ts = {0, 0};
+        முழு ret = real_pselect(nfds, readfds, writefds, exceptfds,
                                &zero_ts, sigmask);
-        if (ret != 0) {
-            return ret;
+        எனில் (ret != 0) {
+            திரும்பு ret;
         }
 
-        if (timeout_ms == 0 ||
+        எனில் (timeout_ms == 0 ||
             (timeout_ms > 0 && waited_ms >= timeout_ms)) {
-            return 0;
+            திரும்பு 0;
         }
 
         linux_coop_yield(LINUX_COOP_TICK_MS);
@@ -599,197 +599,197 @@ int freertos_linux_coop_pselect(int nfds, fd_set *readfds, fd_set *writefds,
     }
 }
 
-int freertos_linux_coop_poll(struct pollfd *fds, nfds_t nfds, int timeout)
+முழு freertos_linux_coop_poll(கட்டமைப்பு pollfd *fds, nfds_t nfds, முழு timeout)
 {
-    if (timeout == 0) {
-        return real_poll(fds, nfds, 0);
+    எனில் (timeout == 0) {
+        திரும்பு real_poll(fds, nfds, 0);
     }
 
     long timeout_ms = -1;
-    if (timeout > 0) {
+    எனில் (timeout > 0) {
         timeout_ms = timeout;
     }
 
     long waited_ms = 0;
 
-    while (1)
+    போது (1)
     {
-        int ret = real_poll(fds, nfds, 0);
-        if (ret > 0) {
-            return ret;
-        } else if (ret == 0) {
-            if (timeout_ms == 0 ||
+        முழு ret = real_poll(fds, nfds, 0);
+        எனில் (ret > 0) {
+            திரும்பு ret;
+        } இல்லையெனில் எனில் (ret == 0) {
+            எனில் (timeout_ms == 0 ||
                 (timeout_ms > 0 && waited_ms >= timeout_ms)) {
-                return 0;
+                திரும்பு 0;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
             waited_ms += LINUX_COOP_TICK_MS;
-            continue;
-        } else {
-            if (errno == EINTR) {
-                continue;
+            தொடர்;
+        } இல்லையெனில் {
+            எனில் (errno == EINTR) {
+                தொடர்;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
-            if (timeout_ms > 0 && waited_ms >= timeout_ms) {
-                return -1;
+            எனில் (timeout_ms > 0 && waited_ms >= timeout_ms) {
+                திரும்பு -1;
             }
             waited_ms += LINUX_COOP_TICK_MS;
         }
     }
 }
 
-int nanosleep(const struct timespec *req, struct timespec *rem)
+முழு nanosleep(மாறிலி கட்டமைப்பு timespec *req, கட்டமைப்பு timespec *rem)
 {
-    if (req == NULL) {
+    எனில் (req == வெற்று) {
         errno = EFAULT;
-        return -1;
+        திரும்பு -1;
     }
-    if (!linux_port_in_freertos_task()) {
-        return real_nanosleep(req, rem);
+    எனில் (!linux_port_in_freertos_task()) {
+        திரும்பு real_nanosleep(req, rem);
     }
     long ms = req->tv_sec * 1000 + (req->tv_nsec + 999999) / 1000000;
-    if (ms <= 0) {
+    எனில் (ms <= 0) {
         ms = 1;
     }
     vTaskDelay(ms);
-    if (rem) {
+    எனில் (rem) {
         rem->tv_sec = 0;
         rem->tv_nsec = 0;
     }
-    return 0;
+    திரும்பு 0;
 }
 
-unsigned int sleep(unsigned int seconds)
+unsigned முழு sleep(unsigned முழு seconds)
 {
     linux_coop_yield(seconds * 1000);
-    return 0;
+    திரும்பு 0;
 }
 
-int usleep(useconds_t usec)
+முழு usleep(useconds_t usec)
 {
     linux_coop_yield(usec / 1000);
-    return 0;
+    திரும்பு 0;
 }
 
-int freertos_linux_coop_socket(int domain, int type, int protocol)
+முழு freertos_linux_coop_socket(முழு domain, முழு type, முழு protocol)
 {
-    int fd = real_socket(domain, type, protocol);
+    முழு fd = real_socket(domain, type, protocol);
     linux_coop_set_nonblocking(fd);
 #ifdef SOCK_NONBLOCK
-    const int user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
-#else
-    const int user_flags = 0;
+    மாறிலி முழு user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
+#இல்லையெனில்
+    மாறிலி முழு user_flags = 0;
 #endif
     linux_coop_track_fd(fd, user_flags);
-    return fd;
+    திரும்பு fd;
 }
 
-int freertos_linux_coop_socketpair(int domain, int type, int protocol, int *sv)
+முழு freertos_linux_coop_socketpair(முழு domain, முழு type, முழு protocol, முழு *sv)
 {
-    int ret = real_socketpair(domain, type, protocol, sv);
-    if (ret == 0) {
+    முழு ret = real_socketpair(domain, type, protocol, sv);
+    எனில் (ret == 0) {
         linux_coop_set_nonblocking(sv[0]);
         linux_coop_set_nonblocking(sv[1]);
 #ifdef SOCK_NONBLOCK
-        const int user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
-#else
-        const int user_flags = 0;
+        மாறிலி முழு user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
+#இல்லையெனில்
+        மாறிலி முழு user_flags = 0;
 #endif
         linux_coop_track_fd(sv[0], user_flags);
         linux_coop_track_fd(sv[1], user_flags);
     }
-    return ret;
+    திரும்பு ret;
 }
 
-int freertos_linux_coop_pipe(int *fds)
+முழு freertos_linux_coop_pipe(முழு *fds)
 {
-    int ret = real_pipe(fds);
-    if (ret == 0) {
+    முழு ret = real_pipe(fds);
+    எனில் (ret == 0) {
         linux_coop_set_nonblocking(fds[0]);
         linux_coop_set_nonblocking(fds[1]);
         linux_coop_track_fd(fds[0], 0);
         linux_coop_track_fd(fds[1], 0);
     }
-    return ret;
+    திரும்பு ret;
 }
 
-int freertos_linux_coop_pipe2(int *fds, int flags)
+முழு freertos_linux_coop_pipe2(முழு *fds, முழு flags)
 {
-    int ret = real_pipe2(fds, flags);
-    if (ret == 0) {
+    முழு ret = real_pipe2(fds, flags);
+    எனில் (ret == 0) {
         linux_coop_set_nonblocking(fds[0]);
         linux_coop_set_nonblocking(fds[1]);
-        const int user_flags = (flags & O_NONBLOCK) ? O_NONBLOCK : 0;
+        மாறிலி முழு user_flags = (flags & O_NONBLOCK) ? O_NONBLOCK : 0;
         linux_coop_track_fd(fds[0], user_flags);
         linux_coop_track_fd(fds[1], user_flags);
     }
-    return ret;
+    திரும்பு ret;
 }
 
-int freertos_linux_coop_dup(int oldfd)
+முழு freertos_linux_coop_dup(முழு oldfd)
 {
-    int fd = real_dup(oldfd);
+    முழு fd = real_dup(oldfd);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(oldfd) ? O_NONBLOCK : 0);
-    return fd;
+    திரும்பு fd;
 }
 
-int freertos_linux_coop_dup2(int oldfd, int newfd)
+முழு freertos_linux_coop_dup2(முழு oldfd, முழு newfd)
 {
-    int fd = real_dup2(oldfd, newfd);
+    முழு fd = real_dup2(oldfd, newfd);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(oldfd) ? O_NONBLOCK : 0);
-    return fd;
+    திரும்பு fd;
 }
 
-__attribute__((weak)) int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+__attribute__((weak)) முழு connect(முழு sockfd, மாறிலி கட்டமைப்பு sockaddr *addr, socklen_t addrlen)
 {
-    return freertos_linux_coop_connect(sockfd, addr, addrlen);
+    திரும்பு freertos_linux_coop_connect(sockfd, addr, addrlen);
 }
 
-__attribute__((weak)) int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+__attribute__((weak)) முழு accept(முழு sockfd, கட்டமைப்பு sockaddr *addr, socklen_t *addrlen)
 {
-    return freertos_linux_coop_accept(sockfd, addr, addrlen);
+    திரும்பு freertos_linux_coop_accept(sockfd, addr, addrlen);
 }
 
-__attribute__((weak)) int pselect(int nfds, fd_set *readfds, fd_set *writefds,
-            fd_set *exceptfds, const struct timespec *timeout,
-            const sigset_t *sigmask)
+__attribute__((weak)) முழு pselect(முழு nfds, fd_set *readfds, fd_set *writefds,
+            fd_set *exceptfds, மாறிலி கட்டமைப்பு timespec *timeout,
+            மாறிலி sigset_t *sigmask)
 {
-    return freertos_linux_coop_pselect(nfds, readfds, writefds, exceptfds, timeout, sigmask);
+    திரும்பு freertos_linux_coop_pselect(nfds, readfds, writefds, exceptfds, timeout, sigmask);
 }
 
-__attribute__((weak)) int poll(struct pollfd *fds, nfds_t nfds, int timeout)
+__attribute__((weak)) முழு poll(கட்டமைப்பு pollfd *fds, nfds_t nfds, முழு timeout)
 {
-    return freertos_linux_coop_poll(fds, nfds, timeout);
+    திரும்பு freertos_linux_coop_poll(fds, nfds, timeout);
 }
 
-__attribute__((weak)) int socket(int domain, int type, int protocol)
+__attribute__((weak)) முழு socket(முழு domain, முழு type, முழு protocol)
 {
-    return freertos_linux_coop_socket(domain, type, protocol);
+    திரும்பு freertos_linux_coop_socket(domain, type, protocol);
 }
 
-__attribute__((weak)) int socketpair(int domain, int type, int protocol, int sv[2])
+__attribute__((weak)) முழு socketpair(முழு domain, முழு type, முழு protocol, முழு sv[2])
 {
-    return freertos_linux_coop_socketpair(domain, type, protocol, sv);
+    திரும்பு freertos_linux_coop_socketpair(domain, type, protocol, sv);
 }
 
-__attribute__((weak)) int pipe(int fds[2])
+__attribute__((weak)) முழு pipe(முழு fds[2])
 {
-    return freertos_linux_coop_pipe(fds);
+    திரும்பு freertos_linux_coop_pipe(fds);
 }
 
-__attribute__((weak)) int pipe2(int fds[2], int flags)
+__attribute__((weak)) முழு pipe2(முழு fds[2], முழு flags)
 {
-    return freertos_linux_coop_pipe2(fds, flags);
+    திரும்பு freertos_linux_coop_pipe2(fds, flags);
 }
 
-__attribute__((weak)) int dup(int oldfd)
+__attribute__((weak)) முழு dup(முழு oldfd)
 {
-    return freertos_linux_coop_dup(oldfd);
+    திரும்பு freertos_linux_coop_dup(oldfd);
 }
 
-__attribute__((weak)) int dup2(int oldfd, int newfd)
+__attribute__((weak)) முழு dup2(முழு oldfd, முழு newfd)
 {
-    return freertos_linux_coop_dup2(oldfd, newfd);
+    திரும்பு freertos_linux_coop_dup2(oldfd, newfd);
 }

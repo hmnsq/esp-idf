@@ -38,22 +38,22 @@
 #endif
 
 /* FreeRTOS includes. */
-#include "timers.h"
+#அந்தர்பாவ "timers.h"
 
 /* The following bit fields convey control information in a task's event list
  * item value.  It is important they don't clash with the
  * taskEVENT_LIST_ITEM_VALUE_IN_USE definition. */
-#if ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS )
+#எனில் ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS )
     #define eventCLEAR_EVENTS_ON_EXIT_BIT    ( ( uint16_t ) 0x0100U )
     #define eventUNBLOCKED_DUE_TO_BIT_SET    ( ( uint16_t ) 0x0200U )
     #define eventWAIT_FOR_ALL_BITS           ( ( uint16_t ) 0x0400U )
     #define eventEVENT_BITS_CONTROL_BYTES    ( ( uint16_t ) 0xff00U )
-#elif ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_32_BITS )
+#அல்லதெனில் ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_32_BITS )
     #define eventCLEAR_EVENTS_ON_EXIT_BIT    ( ( uint32_t ) 0x01000000U )
     #define eventUNBLOCKED_DUE_TO_BIT_SET    ( ( uint32_t ) 0x02000000U )
     #define eventWAIT_FOR_ALL_BITS           ( ( uint32_t ) 0x04000000U )
     #define eventEVENT_BITS_CONTROL_BYTES    ( ( uint32_t ) 0xff000000U )
-#elif ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_64_BITS )
+#அல்லதெனில் ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_64_BITS )
     #define eventCLEAR_EVENTS_ON_EXIT_BIT    ( ( uint64_t ) 0x0100000000000000U )
     #define eventUNBLOCKED_DUE_TO_BIT_SET    ( ( uint64_t ) 0x0200000000000000U )
     #define eventWAIT_FOR_ALL_BITS           ( ( uint64_t ) 0x0400000000000000U )
@@ -62,7 +62,7 @@
 
 /* *INDENT-OFF* */
 #ifdef __cplusplus
-    extern "C" {
+    வெளி "C" {
 #endif
 /* *INDENT-ON* */
 
@@ -103,8 +103,8 @@
  * \defgroup EventGroupHandle_t EventGroupHandle_t
  * \ingroup EventGroup
  */
-struct EventGroupDef_t;
-typedef struct EventGroupDef_t   * EventGroupHandle_t;
+கட்டமைப்பு EventGroupDef_t;
+வகைவரை கட்டமைப்பு EventGroupDef_t   * EventGroupHandle_t;
 
 /*
  * The type that holds event bits always matches TickType_t - therefore the
@@ -114,7 +114,7 @@ typedef struct EventGroupDef_t   * EventGroupHandle_t;
  * \defgroup EventBits_t EventBits_t
  * \ingroup EventGroup
  */
-typedef TickType_t               EventBits_t;
+வகைவரை TickType_t               EventBits_t;
 
 /**
  * event_groups.h
@@ -172,8 +172,8 @@ typedef TickType_t               EventBits_t;
  * \defgroup xEventGroupCreate xEventGroupCreate
  * \ingroup EventGroup
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    EventGroupHandle_t xEventGroupCreate( void ) PRIVILEGED_FUNCTION;
+#எனில் ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+    EventGroupHandle_t xEventGroupCreate( வெறுமை ) PRIVILEGED_FUNCTION;
 #endif
 
 /**
@@ -229,7 +229,7 @@ typedef TickType_t               EventBits_t;
  *  xEventGroup = xEventGroupCreateStatic( &xEventGroupBuffer );
  * @endcode
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#எனில் ( configSUPPORT_STATIC_ALLOCATION == 1 )
     EventGroupHandle_t xEventGroupCreateStatic( StaticEventGroup_t * pxEventGroupBuffer ) PRIVILEGED_FUNCTION;
 #endif
 
@@ -330,9 +330,9 @@ typedef TickType_t               EventBits_t;
  * \ingroup EventGroup
  */
 EventBits_t xEventGroupWaitBits( EventGroupHandle_t xEventGroup,
-                                 const EventBits_t uxBitsToWaitFor,
-                                 const BaseType_t xClearOnExit,
-                                 const BaseType_t xWaitForAllBits,
+                                 மாறிலி EventBits_t uxBitsToWaitFor,
+                                 மாறிலி BaseType_t xClearOnExit,
+                                 மாறிலி BaseType_t xWaitForAllBits,
                                  TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
 
 /**
@@ -394,7 +394,7 @@ EventBits_t xEventGroupWaitBits( EventGroupHandle_t xEventGroup,
  * \ingroup EventGroup
  */
 EventBits_t xEventGroupClearBits( EventGroupHandle_t xEventGroup,
-                                  const EventBits_t uxBitsToClear ) PRIVILEGED_FUNCTION;
+                                  மாறிலி EventBits_t uxBitsToClear ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -456,12 +456,12 @@ EventBits_t xEventGroupClearBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupClearBitsFromISR xEventGroupClearBitsFromISR
  * \ingroup EventGroup
  */
-#if ( configUSE_TRACE_FACILITY == 1 )
+#எனில் ( configUSE_TRACE_FACILITY == 1 )
     BaseType_t xEventGroupClearBitsFromISR( EventGroupHandle_t xEventGroup,
-                                            const EventBits_t uxBitsToClear ) PRIVILEGED_FUNCTION;
-#else
+                                            மாறிலி EventBits_t uxBitsToClear ) PRIVILEGED_FUNCTION;
+#இல்லையெனில்
     #define xEventGroupClearBitsFromISR( xEventGroup, uxBitsToClear ) \
-    xTimerPendFunctionCallFromISR( vEventGroupClearBitsCallback, ( void * ) ( xEventGroup ), ( uint32_t ) ( uxBitsToClear ), NULL )
+    xTimerPendFunctionCallFromISR( vEventGroupClearBitsCallback, ( வெறுமை * ) ( xEventGroup ), ( uint32_t ) ( uxBitsToClear ), வெற்று )
 #endif
 
 /**
@@ -540,7 +540,7 @@ EventBits_t xEventGroupClearBits( EventGroupHandle_t xEventGroup,
  * \ingroup EventGroup
  */
 EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
-                                const EventBits_t uxBitsToSet ) PRIVILEGED_FUNCTION;
+                                மாறிலி EventBits_t uxBitsToSet ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -614,13 +614,13 @@ EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupSetBitsFromISR xEventGroupSetBitsFromISR
  * \ingroup EventGroup
  */
-#if ( configUSE_TRACE_FACILITY == 1 )
+#எனில் ( configUSE_TRACE_FACILITY == 1 )
     BaseType_t xEventGroupSetBitsFromISR( EventGroupHandle_t xEventGroup,
-                                          const EventBits_t uxBitsToSet,
+                                          மாறிலி EventBits_t uxBitsToSet,
                                           BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
-#else
+#இல்லையெனில்
     #define xEventGroupSetBitsFromISR( xEventGroup, uxBitsToSet, pxHigherPriorityTaskWoken ) \
-    xTimerPendFunctionCallFromISR( vEventGroupSetBitsCallback, ( void * ) ( xEventGroup ), ( uint32_t ) ( uxBitsToSet ), ( pxHigherPriorityTaskWoken ) )
+    xTimerPendFunctionCallFromISR( vEventGroupSetBitsCallback, ( வெறுமை * ) ( xEventGroup ), ( uint32_t ) ( uxBitsToSet ), ( pxHigherPriorityTaskWoken ) )
 #endif
 
 /**
@@ -751,8 +751,8 @@ EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
  * \ingroup EventGroup
  */
 EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
-                             const EventBits_t uxBitsToSet,
-                             const EventBits_t uxBitsToWaitFor,
+                             மாறிலி EventBits_t uxBitsToSet,
+                             மாறிலி EventBits_t uxBitsToWaitFor,
                              TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
 
 
@@ -812,7 +812,7 @@ EventBits_t xEventGroupGetBitsFromISR( EventGroupHandle_t xEventGroup ) PRIVILEG
  *
  * @param xEventGroup The event group being deleted.
  */
-void vEventGroupDelete( EventGroupHandle_t xEventGroup ) PRIVILEGED_FUNCTION;
+வெறுமை vEventGroupDelete( EventGroupHandle_t xEventGroup ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -834,22 +834,22 @@ void vEventGroupDelete( EventGroupHandle_t xEventGroup ) PRIVILEGED_FUNCTION;
  *
  * @return pdTRUE if the buffer was retrieved, pdFALSE otherwise.
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#எனில் ( configSUPPORT_STATIC_ALLOCATION == 1 )
     BaseType_t xEventGroupGetStaticBuffer( EventGroupHandle_t xEventGroup,
                                            StaticEventGroup_t ** ppxEventGroupBuffer ) PRIVILEGED_FUNCTION;
 #endif /* configSUPPORT_STATIC_ALLOCATION */
 
 /* For internal use only. */
-void vEventGroupSetBitsCallback( void * pvEventGroup,
+வெறுமை vEventGroupSetBitsCallback( வெறுமை * pvEventGroup,
                                  uint32_t ulBitsToSet ) PRIVILEGED_FUNCTION;
-void vEventGroupClearBitsCallback( void * pvEventGroup,
+வெறுமை vEventGroupClearBitsCallback( வெறுமை * pvEventGroup,
                                    uint32_t ulBitsToClear ) PRIVILEGED_FUNCTION;
 
 
-#if ( configUSE_TRACE_FACILITY == 1 )
-    UBaseType_t uxEventGroupGetNumber( void * xEventGroup ) PRIVILEGED_FUNCTION;
-    void vEventGroupSetNumber( void * xEventGroup,
-                               UBaseType_t uxEventGroupNumber ) PRIVILEGED_FUNCTION;
+#எனில் ( configUSE_TRACE_FACILITY == 1 )
+    UBaseType_t ux_Event_Group_Get_எண்( வெறுமை * xEventGroup ) PRIVILEGED_FUNCTION;
+    வெறுமை v_Event_Group_Set_எண்( வெறுமை * xEventGroup,
+                               UBaseType_t ux_Event_Group_எண் ) PRIVILEGED_FUNCTION;
 #endif
 
 /* *INDENT-OFF* */

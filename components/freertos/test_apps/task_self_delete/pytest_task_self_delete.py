@@ -1,8 +1,8 @@
 # SPDX-FileCopyrightText: 2026 Espressif Systems (Shanghai) CO LTD
 # SPDX-License-Identifier: Apache-2.0
-import pytest
-from pytest_embedded import Dut
-from pytest_embedded_idf.utils import idf_parametrize
+இறக்குமதி pytest
+தஃ pytest_embedded இறக்குமதி Dut
+தஃ pytest_embedded_idf.utils இறக்குமதி idf_parametrize
 
 
 @pytest.mark.generic

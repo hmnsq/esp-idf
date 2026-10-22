@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
+#அந்தர்பாவ "sdkconfig.h"
 
 /* This file implements the heap related functions that are called by FreeRTOS.
  * ESP-IDF provides its own heap containing memory with different capabilities
@@ -25,28 +25,28 @@
  * task.h is included from an application file. */
 #define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#include "FreeRTOS.h"
+#அந்தர்பாவ "FreeRTOS.h"
 
 #undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 0 )
-#error This file must not be used if configSUPPORT_DYNAMIC_ALLOCATION is 0
+#எனில் ( configSUPPORT_DYNAMIC_ALLOCATION == 0 )
+#error This file must not be used எனில் configSUPPORT_DYNAMIC_ALLOCATION is 0
 #endif
 
-#include "esp_heap_caps.h"
+#அந்தர்பாவ "esp_heap_caps.h"
 
-#if !CONFIG_IDF_TARGET_LINUX
+#எனில் !CONFIG_IDF_TARGET_LINUX
 /* Memory util functions are not implemented in the Linux simulator */
-#include "esp_memory_utils.h"
+#அந்தர்பாவ "esp_memory_utils.h"
 #endif /* CONFIG_IDF_TARGET_LINUX */
 
 #define portFREERTOS_HEAP_CAPS    ( MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT )
 
 /*-----------------------------------------------------------*/
 
-void * pvPortMalloc(size_t xWantedSize)
+வெறுமை * pvPortMalloc(size_t xWantedSize)
 {
-    void * pvReturn = NULL;
+    வெறுமை * pvReturn = வெற்று;
 
     /* All dynamic allocation done by FreeRTOS goes through this function. If
      * users need to allocate FreeRTOS objects into external RAM, they should
@@ -54,67 +54,67 @@ void * pvPortMalloc(size_t xWantedSize)
      * (e.g., queues). */
     pvReturn = heap_caps_malloc(xWantedSize, portFREERTOS_HEAP_CAPS);
 
-    return pvReturn;
+    திரும்பு pvReturn;
 }
 /*-----------------------------------------------------------*/
 
-void vPortFree(void * pv)
+வெறுமை vPortFree(வெறுமை * pv)
 {
     heap_caps_free(pv);
 }
 /*-----------------------------------------------------------*/
 
-size_t xPortGetFreeHeapSize(void)
+size_t xPortGetFreeHeapSize(வெறுமை)
 {
-    return heap_caps_get_free_size(portFREERTOS_HEAP_CAPS);
+    திரும்பு heap_caps_get_free_size(portFREERTOS_HEAP_CAPS);
 }
 /*-----------------------------------------------------------*/
 
-size_t xPortGetMinimumEverFreeHeapSize(void)
+size_t xPortGetMinimumEverFreeHeapSize(வெறுமை)
 {
-    return heap_caps_get_minimum_free_size(portFREERTOS_HEAP_CAPS);
+    திரும்பு heap_caps_get_minimum_free_size(portFREERTOS_HEAP_CAPS);
 }
 /*-----------------------------------------------------------*/
 
-bool xPortCheckValidListMem(const void * ptr)
+bool xPortCheckValidListMem(மாறிலி வெறுமை * ptr)
 {
-#if CONFIG_IDF_TARGET_LINUX
-    return true;
-#else /* CONFIG_IDF_TARGET_LINUX */
-    return esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
+#எனில் CONFIG_IDF_TARGET_LINUX
+    திரும்பு true;
+#இல்லையெனில் /* CONFIG_IDF_TARGET_LINUX */
+    திரும்பு esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
 #endif /* CONFIG_IDF_TARGET_LINUX */
 }
 
-bool xPortCheckValidTCBMem(const void * ptr)
+bool xPortCheckValidTCBMem(மாறிலி வெறுமை * ptr)
 {
-#if CONFIG_IDF_TARGET_LINUX
-    return true;
-#else /* CONFIG_IDF_TARGET_LINUX */
-    return esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
+#எனில் CONFIG_IDF_TARGET_LINUX
+    திரும்பு true;
+#இல்லையெனில் /* CONFIG_IDF_TARGET_LINUX */
+    திரும்பு esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
 #endif /* CONFIG_IDF_TARGET_LINUX */
 }
 
-#if CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM
-void * pvPortMallocStack(size_t xWantedSize)
+#எனில் CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM
+வெறுமை * pv_Port_Malloc_அடுக்கு(size_t xWantedSize)
 {
-    return heap_caps_malloc_prefer(xWantedSize, 2, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
+    திரும்பு heap_caps_malloc_prefer(xWantedSize, 2, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
 }
 
-void vPortFreeStack(void * pv)
+வெறுமை v_Port_Free_அடுக்கு(வெறுமை * pv)
 {
     heap_caps_free(pv);
 }
 #endif /* CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM */
 
-bool xPortcheckValidStackMem(const void * ptr)
+bool x_Portcheck_Valid_அடுக்கு_Mem(மாறிலி வெறுமை * ptr)
 {
-#if CONFIG_IDF_TARGET_LINUX
-    return true;
-#else /* CONFIG_IDF_TARGET_LINUX */
+#எனில் CONFIG_IDF_TARGET_LINUX
+    திரும்பு true;
+#இல்லையெனில் /* CONFIG_IDF_TARGET_LINUX */
 #ifdef CONFIG_FREERTOS_TASK_CREATE_ALLOW_EXT_MEM
-    return esp_ptr_byte_accessible(ptr);
-#else
-    return esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
+    திரும்பு esp_ptr_byte_accessible(ptr);
+#இல்லையெனில்
+    திரும்பு esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
 #endif
 #endif /* CONFIG_IDF_TARGET_LINUX */
 }
