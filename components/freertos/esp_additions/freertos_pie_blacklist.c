@@ -6,7 +6,7 @@
 
 #include "sdkconfig.h"
 
-#if CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
+#ако CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -22,7 +22,7 @@ static portMUX_TYPE s_pie_blacklist_mux = portMUX_INITIALIZER_UNLOCKED;
 
 static TaskHandle_t prvResolveTask( TaskHandle_t xTask )
 {
-    return ( xTask != NULL ) ? xTask : xTaskGetCurrentTaskHandle();
+    врати ( xTask != NULL ) ? xTask : xTaskGetCurrentTaskHandle();
 }
 
 /*
@@ -32,15 +32,15 @@ static TaskHandle_t prvResolveTask( TaskHandle_t xTask )
  */
 static BaseType_t prvIsTaskPieBlacklisted( TaskHandle_t xTask )
 {
-    for( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
+    за( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
     {
-        if( s_pie_blacklist[ i ] == xTask )
+        ако( s_pie_blacklist[ i ] == xTask )
         {
-            return pdTRUE;
+            врати pdTRUE;
         }
     }
 
-    return pdFALSE;
+    врати pdFALSE;
 }
 
 void vTaskSetPieBlacklisted( TaskHandle_t xTask,
@@ -51,15 +51,15 @@ void vTaskSetPieBlacklisted( TaskHandle_t xTask,
 
     taskENTER_CRITICAL( &s_pie_blacklist_mux );
 
-    if( xBlacklisted != pdFALSE )
+    ако( xBlacklisted != pdFALSE )
     {
-        if( prvIsTaskPieBlacklisted( xHandle ) == pdFALSE )
+        ако( prvIsTaskPieBlacklisted( xHandle ) == pdFALSE )
         {
             xStored = pdFALSE;
 
-            for( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
+            за( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
             {
-                if( s_pie_blacklist[ i ] == NULL )
+                ако( s_pie_blacklist[ i ] == NULL )
                 {
                     s_pie_blacklist[ i ] = xHandle;
                     xStored = pdTRUE;
@@ -68,11 +68,11 @@ void vTaskSetPieBlacklisted( TaskHandle_t xTask,
             }
         }
     }
-    else
+    инако
     {
-        for( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
+        за( UBaseType_t i = 0; i < CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX; i++ )
         {
-            if( s_pie_blacklist[ i ] == xHandle )
+            ако( s_pie_blacklist[ i ] == xHandle )
             {
                 s_pie_blacklist[ i ] = NULL;
                 break;
@@ -82,7 +82,7 @@ void vTaskSetPieBlacklisted( TaskHandle_t xTask,
 
     taskEXIT_CRITICAL( &s_pie_blacklist_mux );
 
-    if( xStored == pdFALSE )
+    ако( xStored == pdFALSE )
     {
         ESP_EARLY_LOGE( "FreeRTOS", "PIE blacklist table is full (max %d)", CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST_MAX );
         configASSERT( xStored == pdTRUE );
@@ -91,7 +91,7 @@ void vTaskSetPieBlacklisted( TaskHandle_t xTask,
 
 BaseType_t xTaskGetPieBlacklisted( TaskHandle_t xTask )
 {
-    return prvIsTaskPieBlacklisted( prvResolveTask( xTask ) );
+    врати prvIsTaskPieBlacklisted( prvResolveTask( xTask ) );
 }
 
 #endif /* CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST */

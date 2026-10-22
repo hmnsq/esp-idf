@@ -35,61 +35,61 @@
 #include "linux_port_coop_internal.h"
 #include "esp_private/freertos_linux_coop_syscalls.h"
 
-static ssize_t  (*real_readv)(int, const struct iovec *, int);
-static ssize_t  (*real_writev)(int, const struct iovec *, int);
-static ssize_t  (*real_recv)(int, void *, size_t, int);
-static ssize_t  (*real_send)(int, const void *, size_t, int);
-static ssize_t  (*real_recvfrom)(int, void *, size_t, int,
+static ssize_t  (*real_readv)(цео, const struct iovec *, цео);
+static ssize_t  (*real_writev)(цео, const struct iovec *, цео);
+static ssize_t  (*real_recv)(цео, void *, size_t, цео);
+static ssize_t  (*real_send)(цео, const void *, size_t, цео);
+static ssize_t  (*real_recvfrom)(цео, void *, size_t, цео,
                                  struct sockaddr *, socklen_t *);
-static ssize_t  (*real_sendto)(int, const void *, size_t, int,
+static ssize_t  (*real_sendto)(цео, const void *, size_t, цео,
                                 const struct sockaddr *, socklen_t);
-static ssize_t  (*real_recvmsg)(int, struct msghdr *, int);
-static ssize_t  (*real_sendmsg)(int, const struct msghdr *, int);
-static int      (*real_connect)(int, const struct sockaddr *, socklen_t);
-static int      (*real_accept)(int, struct sockaddr *, socklen_t *);
-static int      (*real_pselect)(int, fd_set *, fd_set *, fd_set *,
+static ssize_t  (*real_recvmsg)(цео, struct msghdr *, цео);
+static ssize_t  (*real_sendmsg)(цео, const struct msghdr *, цео);
+static цео      (*real_connect)(цео, const struct sockaddr *, socklen_t);
+static цео      (*real_accept)(цео, struct sockaddr *, socklen_t *);
+static цео      (*real_pselect)(цео, fd_set *, fd_set *, fd_set *,
                                 const struct timespec *, const sigset_t *);
-static int      (*real_poll)(struct pollfd *, nfds_t, int);
-static int      (*real_socket)(int, int, int);
-static int      (*real_socketpair)(int, int, int, int[2]);
-static int      (*real_pipe)(int[2]);
-static int      (*real_pipe2)(int[2], int);
-static int      (*real_dup)(int);
-static int      (*real_dup2)(int, int);
-static int      (*real_nanosleep)(const struct timespec *, struct timespec *);
-static ssize_t  (*real_read)(int, void *, size_t);
-static ssize_t  (*real_write)(int, const void *, size_t);
-static ssize_t  (*real_pread)(int, void *, size_t, off_t);
-static ssize_t  (*real_pwrite)(int, const void *, size_t, off_t);
-static int      (*real_close)(int);
-static int      (*real_select)(int, fd_set *, fd_set *, fd_set *,
+static цео      (*real_poll)(struct pollfd *, nfds_t, цео);
+static цео      (*real_socket)(цео, цео, цео);
+static цео      (*real_socketpair)(цео, цео, цео, цео[2]);
+static цео      (*real_pipe)(цео[2]);
+static цео      (*real_pipe2)(цео[2], цео);
+static цео      (*real_dup)(цео);
+static цео      (*real_dup2)(цео, цео);
+static цео      (*real_nanosleep)(const struct timespec *, struct timespec *);
+static ssize_t  (*real_read)(цео, void *, size_t);
+static ssize_t  (*real_write)(цео, const void *, size_t);
+static ssize_t  (*real_pread)(цео, void *, size_t, off_t);
+static ssize_t  (*real_pwrite)(цео, const void *, size_t, off_t);
+static цео      (*real_close)(цео);
+static цео      (*real_select)(цео, fd_set *, fd_set *, fd_set *,
                                 struct timeval *);
 
-typedef int (*linux_coop_fcntl_fn_t)(int, int, ...);
+typedef цео (*linux_coop_fcntl_fn_t)(цео, цео, ...);
 static linux_coop_fcntl_fn_t real_fcntl;
 
-typedef int (*linux_coop_open_fn_t)(const char *, int, mode_t);
+typedef цео (*linux_coop_open_fn_t)(const char *, цео, mode_t);
 static linux_coop_open_fn_t real_open;
 
 typedef struct linux_coop_fd_state {
-    int fd;
-    int user_flags;
+    цео fd;
+    цео user_flags;
     struct linux_coop_fd_state *next;
 } linux_coop_fd_state_t;
 
 static linux_coop_fd_state_t *s_fd_state_list;
 static pthread_mutex_t s_fd_state_lock = PTHREAD_MUTEX_INITIALIZER;
 
-static linux_coop_fd_state_t *linux_coop_find_fd_locked(int fd)
+static linux_coop_fd_state_t *linux_coop_find_fd_locked(цео fd)
 {
     linux_coop_fd_state_t *node = s_fd_state_list;
-    while (node != NULL) {
-        if (node->fd == fd) {
-            return node;
+    док (node != NULL) {
+        ако (node->fd == fd) {
+            врати node;
         }
         node = node->next;
     }
-    return NULL;
+    врати NULL;
 }
 
 static void __attribute__((constructor)) linux_coop_resolve_all(void)
@@ -123,32 +123,32 @@ static void __attribute__((constructor)) linux_coop_resolve_all(void)
     LINUX_COOP_RESOLVE(open);
 }
 
-void linux_coop_set_nonblocking(int fd)
+void linux_coop_set_nonblocking(цео fd)
 {
-    if (fd >= 0) {
-        int flags = real_fcntl(fd, F_GETFL, 0);
-        if (flags >= 0) {
+    ако (fd >= 0) {
+        цео flags = real_fcntl(fd, F_GETFL, 0);
+        ако (flags >= 0) {
             real_fcntl(fd, F_SETFL, flags | O_NONBLOCK);
         }
     }
 }
 
-void linux_coop_track_fd(int fd, int user_flags)
+void linux_coop_track_fd(цео fd, цео user_flags)
 {
-    if (fd < 0) {
-        return;
+    ако (fd < 0) {
+        врати;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
     linux_coop_fd_state_t *node = linux_coop_find_fd_locked(fd);
-    if (node != NULL) {
+    ако (node != NULL) {
         node->user_flags = user_flags;
         pthread_mutex_unlock(&s_fd_state_lock);
-        return;
+        врати;
     }
 
     node = calloc(1, sizeof(*node));
-    if (node != NULL) {
+    ако (node != NULL) {
         node->fd = fd;
         node->user_flags = user_flags;
         node->next = s_fd_state_list;
@@ -157,20 +157,20 @@ void linux_coop_track_fd(int fd, int user_flags)
     pthread_mutex_unlock(&s_fd_state_lock);
 }
 
-void linux_coop_untrack_fd(int fd)
+void linux_coop_untrack_fd(цео fd)
 {
-    if (fd < 0) {
-        return;
+    ако (fd < 0) {
+        врати;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
     linux_coop_fd_state_t *prev = NULL;
     linux_coop_fd_state_t *node = s_fd_state_list;
-    while (node != NULL) {
-        if (node->fd == fd) {
-            if (prev == NULL) {
+    док (node != NULL) {
+        ако (node->fd == fd) {
+            ако (prev == NULL) {
                 s_fd_state_list = node->next;
-            } else {
+            } инако {
                 prev->next = node->next;
             }
             free(node);
@@ -182,110 +182,110 @@ void linux_coop_untrack_fd(int fd)
     pthread_mutex_unlock(&s_fd_state_lock);
 }
 
-void linux_coop_set_user_flags(int fd, int user_flags)
+void linux_coop_set_user_flags(цео fd, цео user_flags)
 {
     linux_coop_track_fd(fd, user_flags);
 }
 
-bool linux_coop_get_user_flags(int fd, int *flags)
+bool linux_coop_get_user_flags(цео fd, цео *flags)
 {
-    if (fd < 0 || flags == NULL) {
-        return false;
+    ако (fd < 0 || flags == NULL) {
+        врати false;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
     linux_coop_fd_state_t *node = linux_coop_find_fd_locked(fd);
-    if (node == NULL) {
+    ако (node == NULL) {
         pthread_mutex_unlock(&s_fd_state_lock);
-        return false;
+        врати false;
     }
     *flags = node->user_flags;
     pthread_mutex_unlock(&s_fd_state_lock);
-    return true;
+    врати true;
 }
 
-bool linux_coop_fd_user_nonblocking(int fd)
+bool linux_coop_fd_user_nonblocking(цео fd)
 {
-    int user_flags = 0;
-    if (linux_coop_get_user_flags(fd, &user_flags)) {
-        return (user_flags & O_NONBLOCK) != 0;
+    цео user_flags = 0;
+    ако (linux_coop_get_user_flags(fd, &user_flags)) {
+        врати (user_flags & O_NONBLOCK) != 0;
     }
-    return false;
+    врати false;
 }
 
 
-ssize_t freertos_linux_coop_read(int fd, void *buf, size_t count)
+ssize_t freertos_linux_coop_read(цео fd, void *buf, size_t count)
 {
     LINUX_COOP_IO_LOOP(fd, real_read(fd, buf, count))
 }
 
-ssize_t freertos_linux_coop_write(int fd, const void *buf, size_t count)
+ssize_t freertos_linux_coop_write(цео fd, const void *buf, size_t count)
 {
     LINUX_COOP_IO_LOOP(fd, real_write(fd, buf, count))
 }
 
-ssize_t freertos_linux_coop_pread(int fd, void *buf, size_t count, off_t offset)
+ssize_t freertos_linux_coop_pread(цео fd, void *buf, size_t count, off_t offset)
 {
     LINUX_COOP_IO_LOOP(fd, real_pread(fd, buf, count, offset))
 }
 
-ssize_t freertos_linux_coop_pwrite(int fd, const void *buf, size_t count, off_t offset)
+ssize_t freertos_linux_coop_pwrite(цео fd, const void *buf, size_t count, off_t offset)
 {
     LINUX_COOP_IO_LOOP(fd, real_pwrite(fd, buf, count, offset))
 }
 
-int freertos_linux_coop_open(const char *path, int flags, int mode)
+цео freertos_linux_coop_open(const char *path, цео flags, цео mode)
 {
-    int fd = real_open(path, flags, (mode_t)mode);
+    цео fd = real_open(path, flags, (mode_t)mode);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, flags & O_NONBLOCK);
-    return fd;
+    врати fd;
 }
 
-int freertos_linux_coop_close(int fd)
+цео freertos_linux_coop_close(цео fd)
 {
-    int ret = real_close(fd);
-    if (ret == 0 || errno == EINTR) {
+    цео ret = real_close(fd);
+    ако (ret == 0 || errno == EINTR) {
         /* On Linux, close() always releases the fd even when returning
          * EINTR.  Retrying would risk closing a fd reused by another
          * thread.  Treat EINTR as success. */
         linux_coop_untrack_fd(fd);
-        return 0;
+        врати 0;
     }
-    return -1;
+    врати -1;
 }
 
-int freertos_linux_coop_fcntl(int fd, int cmd, int arg)
+цео freertos_linux_coop_fcntl(цео fd, цео cmd, цео arg)
 {
-    if (cmd == F_GETFL) {
-        int real_flags = real_fcntl(fd, F_GETFL, 0);
-        if (real_flags < 0) {
-            return -1;
+    ако (cmd == F_GETFL) {
+        цео real_flags = real_fcntl(fd, F_GETFL, 0);
+        ако (real_flags < 0) {
+            врати -1;
         }
-        int user_flags = 0;
-        if (linux_coop_get_user_flags(fd, &user_flags)) {
+        цео user_flags = 0;
+        ако (linux_coop_get_user_flags(fd, &user_flags)) {
             real_flags &= ~O_NONBLOCK;
             real_flags |= (user_flags & O_NONBLOCK);
         }
-        return real_flags;
+        врати real_flags;
     }
-    if (cmd == F_SETFL) {
+    ако (cmd == F_SETFL) {
         linux_coop_set_user_flags(fd, arg);
-        int internal_flags = arg | O_NONBLOCK;
-        return real_fcntl(fd, F_SETFL, internal_flags);
+        цео internal_flags = arg | O_NONBLOCK;
+        врати real_fcntl(fd, F_SETFL, internal_flags);
     }
-    return real_fcntl(fd, cmd, arg);
+    врати real_fcntl(fd, cmd, arg);
 }
 
-int freertos_linux_coop_select(int nfds, fd_set *readfds, fd_set *writefds,
+цео freertos_linux_coop_select(цео nfds, fd_set *readfds, fd_set *writefds,
                       fd_set *exceptfds, struct timeval *timeout)
 {
     long timeout_ms = -1;
-    if (timeout != NULL) {
+    ако (timeout != NULL) {
         timeout_ms = (long)timeout->tv_sec * 1000 +
                      (timeout->tv_usec + 999) / 1000;
-        if (timeout_ms == 0) {
-            return real_select(nfds, readfds, writefds, exceptfds, timeout);
+        ако (timeout_ms == 0) {
+            врати real_select(nfds, readfds, writefds, exceptfds, timeout);
         }
     }
 
@@ -294,38 +294,38 @@ int freertos_linux_coop_select(int nfds, fd_set *readfds, fd_set *writefds,
      * iterations we must snapshot the caller's sets and restore them on every
      * loop. */
     fd_set rfds_in, wfds_in, efds_in;
-    if (readfds != NULL) {
+    ако (readfds != NULL) {
         rfds_in = *readfds;
     }
-    if (writefds != NULL) {
+    ако (writefds != NULL) {
         wfds_in = *writefds;
     }
-    if (exceptfds != NULL) {
+    ако (exceptfds != NULL) {
         efds_in = *exceptfds;
     }
 
     long waited_ms = 0;
-    while (1) {
-        if (readfds != NULL) {
+    док (1) {
+        ако (readfds != NULL) {
             *readfds = rfds_in;
         }
-        if (writefds != NULL) {
+        ако (writefds != NULL) {
             *writefds = wfds_in;
         }
-        if (exceptfds != NULL) {
+        ако (exceptfds != NULL) {
             *exceptfds = efds_in;
         }
 
         struct timeval zero_tv = {0, 0};
-        int ret = real_select(nfds, readfds, writefds, exceptfds, &zero_tv);
-        if (ret != 0) {
-            return ret;
+        цео ret = real_select(nfds, readfds, writefds, exceptfds, &zero_tv);
+        ако (ret != 0) {
+            врати ret;
         }
-        if (timeout_ms == 0) {
-            return 0;
+        ако (timeout_ms == 0) {
+            врати 0;
         }
-        if (timeout_ms > 0 && waited_ms >= timeout_ms) {
-            return 0;
+        ако (timeout_ms > 0 && waited_ms >= timeout_ms) {
+            врати 0;
         }
         linux_coop_yield(LINUX_COOP_TICK_MS);
         waited_ms += LINUX_COOP_TICK_MS;
@@ -346,189 +346,189 @@ void freertos_linux_coop_syscalls_init(void)
  * is linked.  When VFS is absent the weak versions provide cooperative
  * behaviour directly via real libc. */
 
-__attribute__((weak)) ssize_t read(int fd, void *buf, size_t count)
+__attribute__((weak)) ssize_t read(цео fd, void *buf, size_t count)
 {
-    return freertos_linux_coop_read(fd, buf, count);
+    врати freertos_linux_coop_read(fd, buf, count);
 }
 
-__attribute__((weak)) ssize_t write(int fd, const void *buf, size_t count)
+__attribute__((weak)) ssize_t write(цео fd, const void *buf, size_t count)
 {
-    return freertos_linux_coop_write(fd, buf, count);
+    врати freertos_linux_coop_write(fd, buf, count);
 }
 
-__attribute__((weak)) ssize_t pread(int fd, void *buf, size_t count, off_t offset)
+__attribute__((weak)) ssize_t pread(цео fd, void *buf, size_t count, off_t offset)
 {
-    return freertos_linux_coop_pread(fd, buf, count, offset);
+    врати freertos_linux_coop_pread(fd, buf, count, offset);
 }
 
-__attribute__((weak)) ssize_t pwrite(int fd, const void *buf, size_t count, off_t offset)
+__attribute__((weak)) ssize_t pwrite(цео fd, const void *buf, size_t count, off_t offset)
 {
-    return freertos_linux_coop_pwrite(fd, buf, count, offset);
+    врати freertos_linux_coop_pwrite(fd, buf, count, offset);
 }
 
-__attribute__((weak)) int open(const char *path, int flags, ...)
+__attribute__((weak)) цео open(const char *path, цео flags, ...)
 {
-    int mode = 0;
-    if (flags & O_CREAT) {
+    цео mode = 0;
+    ако (flags & O_CREAT) {
         va_list ap;
         va_start(ap, flags);
-        mode = va_arg(ap, int);
+        mode = va_arg(ap, цео);
         va_end(ap);
     }
-    return freertos_linux_coop_open(path, flags, mode);
+    врати freertos_linux_coop_open(path, flags, mode);
 }
 
-__attribute__((weak)) int close(int fd)
+__attribute__((weak)) цео close(цео fd)
 {
-    return freertos_linux_coop_close(fd);
+    врати freertos_linux_coop_close(fd);
 }
 
-__attribute__((weak)) int fcntl(int fd, int cmd, ...)
+__attribute__((weak)) цео fcntl(цео fd, цео cmd, ...)
 {
-    int arg = 0;
-    if (cmd != F_GETFL) {
+    цео arg = 0;
+    ако (cmd != F_GETFL) {
         va_list list;
         va_start(list, cmd);
-        arg = va_arg(list, int);
+        arg = va_arg(list, цео);
         va_end(list);
     }
-    return freertos_linux_coop_fcntl(fd, cmd, arg);
+    врати freertos_linux_coop_fcntl(fd, cmd, arg);
 }
 
-__attribute__((weak)) int select(int nfds, fd_set *readfds, fd_set *writefds,
+__attribute__((weak)) цео select(цео nfds, fd_set *readfds, fd_set *writefds,
                                  fd_set *exceptfds, struct timeval *timeout)
 {
-    return freertos_linux_coop_select(nfds, readfds, writefds, exceptfds, timeout);
+    врати freertos_linux_coop_select(nfds, readfds, writefds, exceptfds, timeout);
 }
 
-ssize_t freertos_linux_coop_readv(int fd, const struct iovec *iov, int iovcnt)
+ssize_t freertos_linux_coop_readv(цео fd, const struct iovec *iov, цео iovcnt)
 {
     LINUX_COOP_IO_LOOP(fd, real_readv(fd, iov, iovcnt))
 }
 
-ssize_t freertos_linux_coop_writev(int fd, const struct iovec *iov, int iovcnt)
+ssize_t freertos_linux_coop_writev(цео fd, const struct iovec *iov, цео iovcnt)
 {
     LINUX_COOP_IO_LOOP(fd, real_writev(fd, iov, iovcnt))
 }
 
-ssize_t freertos_linux_coop_recv(int sockfd, void *buf, size_t len, int flags)
+ssize_t freertos_linux_coop_recv(цео sockfd, void *buf, size_t len, цео flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recv(sockfd, buf, len, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_send(int sockfd, const void *buf, size_t len, int flags)
+ssize_t freertos_linux_coop_send(цео sockfd, const void *buf, size_t len, цео flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_send(sockfd, buf, len, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_recvfrom(int sockfd, void *buf, size_t len, int flags,
+ssize_t freertos_linux_coop_recvfrom(цео sockfd, void *buf, size_t len, цео flags,
                  struct sockaddr *src_addr, socklen_t *addrlen)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recvfrom(sockfd, buf, len, flags | MSG_DONTWAIT,
                             src_addr, addrlen))
 }
 
-ssize_t freertos_linux_coop_sendto(int sockfd, const void *buf, size_t len, int flags,
+ssize_t freertos_linux_coop_sendto(цео sockfd, const void *buf, size_t len, цео flags,
                const struct sockaddr *dest_addr, socklen_t addrlen)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_sendto(sockfd, buf, len, flags | MSG_DONTWAIT,
                           dest_addr, addrlen))
 }
 
-ssize_t freertos_linux_coop_recvmsg(int sockfd, struct msghdr *msg, int flags)
+ssize_t freertos_linux_coop_recvmsg(цео sockfd, struct msghdr *msg, цео flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recvmsg(sockfd, msg, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_sendmsg(int sockfd, const struct msghdr *msg, int flags)
+ssize_t freertos_linux_coop_sendmsg(цео sockfd, const struct msghdr *msg, цео flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_sendmsg(sockfd, msg, flags | MSG_DONTWAIT))
 }
 
-__attribute__((weak)) ssize_t readv(int fd, const struct iovec *iov, int iovcnt)
+__attribute__((weak)) ssize_t readv(цео fd, const struct iovec *iov, цео iovcnt)
 {
-    return freertos_linux_coop_readv(fd, iov, iovcnt);
+    врати freertos_linux_coop_readv(fd, iov, iovcnt);
 }
 
-__attribute__((weak)) ssize_t writev(int fd, const struct iovec *iov, int iovcnt)
+__attribute__((weak)) ssize_t writev(цео fd, const struct iovec *iov, цео iovcnt)
 {
-    return freertos_linux_coop_writev(fd, iov, iovcnt);
+    врати freertos_linux_coop_writev(fd, iov, iovcnt);
 }
 
-__attribute__((weak)) ssize_t recv(int sockfd, void *buf, size_t len, int flags)
+__attribute__((weak)) ssize_t recv(цео sockfd, void *buf, size_t len, цео flags)
 {
-    return freertos_linux_coop_recv(sockfd, buf, len, flags);
+    врати freertos_linux_coop_recv(sockfd, buf, len, flags);
 }
 
-__attribute__((weak)) ssize_t send(int sockfd, const void *buf, size_t len, int flags)
+__attribute__((weak)) ssize_t send(цео sockfd, const void *buf, size_t len, цео flags)
 {
-    return freertos_linux_coop_send(sockfd, buf, len, flags);
+    врати freertos_linux_coop_send(sockfd, buf, len, flags);
 }
 
-__attribute__((weak)) ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
+__attribute__((weak)) ssize_t recvfrom(цео sockfd, void *buf, size_t len, цео flags,
                  struct sockaddr *src_addr, socklen_t *addrlen)
 {
-    return freertos_linux_coop_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
+    врати freertos_linux_coop_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
 }
 
-__attribute__((weak)) ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
+__attribute__((weak)) ssize_t sendto(цео sockfd, const void *buf, size_t len, цео flags,
                const struct sockaddr *dest_addr, socklen_t addrlen)
 {
-    return freertos_linux_coop_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
+    врати freertos_linux_coop_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
 }
 
-__attribute__((weak)) ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
+__attribute__((weak)) ssize_t recvmsg(цео sockfd, struct msghdr *msg, цео flags)
 {
-    return freertos_linux_coop_recvmsg(sockfd, msg, flags);
+    врати freertos_linux_coop_recvmsg(sockfd, msg, flags);
 }
 
-__attribute__((weak)) ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags)
+__attribute__((weak)) ssize_t sendmsg(цео sockfd, const struct msghdr *msg, цео flags)
 {
-    return freertos_linux_coop_sendmsg(sockfd, msg, flags);
+    врати freertos_linux_coop_sendmsg(sockfd, msg, flags);
 }
 
-int freertos_linux_coop_connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+цео freertos_linux_coop_connect(цео sockfd, const struct sockaddr *addr, socklen_t addrlen)
 {
-    while (1)
+    док (1)
     {
-        int ret = real_connect(sockfd, addr, addrlen);
-        if (ret == 0) {
-            return ret;
+        цео ret = real_connect(sockfd, addr, addrlen);
+        ако (ret == 0) {
+            врати ret;
         }
 
-        if (errno == EINPROGRESS || errno == EALREADY) {
+        ако (errno == EINPROGRESS || errno == EALREADY) {
             struct pollfd pfd;
             pfd.fd = sockfd;
             pfd.events = POLLOUT;
             pfd.revents = 0;
 
-            int poll_retries = 0;
-            while (1)
+            цео poll_retries = 0;
+            док (1)
             {
-                int press = real_poll(&pfd, 1, 0);
-                if (press > 0) {
-                    int so_err = 0;
+                цео press = real_poll(&pfd, 1, 0);
+                ако (press > 0) {
+                    цео so_err = 0;
                     socklen_t len = sizeof(so_err);
-                    if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
+                    ако (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
                                    &so_err, &len) < 0) {
-                        return -1;
+                        врати -1;
                     }
-                    if (so_err == 0) {
-                        return 0;
-                    } else {
+                    ако (so_err == 0) {
+                        врати 0;
+                    } инако {
                         errno = so_err;
-                        return -1;
+                        врати -1;
                     }
-                } else if (press == 0) {
+                } инако ако (press == 0) {
                     linux_coop_yield(LINUX_COOP_TICK_MS);
                     continue;
-                } else {
-                    if (errno == EINTR) {
+                } инако {
+                    ако (errno == EINTR) {
                         continue;
                     }
                     /* Non-EINTR poll error; bail out after a few retries */
-                    if (++poll_retries > 3) {
-                        return -1;
+                    ако (++poll_retries > 3) {
+                        врати -1;
                     }
                     linux_coop_yield(LINUX_COOP_TICK_MS);
                     continue;
@@ -536,62 +536,62 @@ int freertos_linux_coop_connect(int sockfd, const struct sockaddr *addr, socklen
             }
         }
 
-        if (errno == EINTR) {
-            return -1;
+        ако (errno == EINTR) {
+            врати -1;
         }
 
-        return -1;
+        врати -1;
     }
 }
 
-int freertos_linux_coop_accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+цео freertos_linux_coop_accept(цео sockfd, struct sockaddr *addr, socklen_t *addrlen)
 {
-    while (1)
+    док (1)
     {
-        int fd = real_accept(sockfd, addr, addrlen);
-        if (fd >= 0) {
+        цео fd = real_accept(sockfd, addr, addrlen);
+        ако (fd >= 0) {
             linux_coop_set_nonblocking(fd);
             linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(sockfd) ? O_NONBLOCK : 0);
-            return fd;
+            врати fd;
         }
-        if (errno == EAGAIN || errno == EWOULDBLOCK) {
-            if (linux_coop_fd_user_nonblocking(sockfd)) {
-                return -1;
+        ако (errno == EAGAIN || errno == EWOULDBLOCK) {
+            ако (linux_coop_fd_user_nonblocking(sockfd)) {
+                врати -1;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
             continue;
         }
-        return -1;
+        врати -1;
     }
 }
 
-int freertos_linux_coop_pselect(int nfds, fd_set *readfds, fd_set *writefds,
+цео freertos_linux_coop_pselect(цео nfds, fd_set *readfds, fd_set *writefds,
             fd_set *exceptfds, const struct timespec *timeout,
             const sigset_t *sigmask)
 {
     long timeout_ms = -1;
-    if (timeout != NULL) {
+    ако (timeout != NULL) {
         timeout_ms = (long)timeout->tv_sec * 1000 +
                      (timeout->tv_nsec + 999999) / 1000000;
-        if (timeout_ms == 0) {
-            return real_pselect(nfds, readfds, writefds, exceptfds,
+        ако (timeout_ms == 0) {
+            врати real_pselect(nfds, readfds, writefds, exceptfds,
                                 timeout, sigmask);
         }
     }
 
     long waited_ms = 0;
-    while (1)
+    док (1)
     {
         struct timespec zero_ts = {0, 0};
-        int ret = real_pselect(nfds, readfds, writefds, exceptfds,
+        цео ret = real_pselect(nfds, readfds, writefds, exceptfds,
                                &zero_ts, sigmask);
-        if (ret != 0) {
-            return ret;
+        ако (ret != 0) {
+            врати ret;
         }
 
-        if (timeout_ms == 0 ||
+        ако (timeout_ms == 0 ||
             (timeout_ms > 0 && waited_ms >= timeout_ms)) {
-            return 0;
+            врати 0;
         }
 
         linux_coop_yield(LINUX_COOP_TICK_MS);
@@ -599,197 +599,197 @@ int freertos_linux_coop_pselect(int nfds, fd_set *readfds, fd_set *writefds,
     }
 }
 
-int freertos_linux_coop_poll(struct pollfd *fds, nfds_t nfds, int timeout)
+цео freertos_linux_coop_poll(struct pollfd *fds, nfds_t nfds, цео timeout)
 {
-    if (timeout == 0) {
-        return real_poll(fds, nfds, 0);
+    ако (timeout == 0) {
+        врати real_poll(fds, nfds, 0);
     }
 
     long timeout_ms = -1;
-    if (timeout > 0) {
+    ако (timeout > 0) {
         timeout_ms = timeout;
     }
 
     long waited_ms = 0;
 
-    while (1)
+    док (1)
     {
-        int ret = real_poll(fds, nfds, 0);
-        if (ret > 0) {
-            return ret;
-        } else if (ret == 0) {
-            if (timeout_ms == 0 ||
+        цео ret = real_poll(fds, nfds, 0);
+        ако (ret > 0) {
+            врати ret;
+        } инако ако (ret == 0) {
+            ако (timeout_ms == 0 ||
                 (timeout_ms > 0 && waited_ms >= timeout_ms)) {
-                return 0;
+                врати 0;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
             waited_ms += LINUX_COOP_TICK_MS;
             continue;
-        } else {
-            if (errno == EINTR) {
+        } инако {
+            ако (errno == EINTR) {
                 continue;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
-            if (timeout_ms > 0 && waited_ms >= timeout_ms) {
-                return -1;
+            ако (timeout_ms > 0 && waited_ms >= timeout_ms) {
+                врати -1;
             }
             waited_ms += LINUX_COOP_TICK_MS;
         }
     }
 }
 
-int nanosleep(const struct timespec *req, struct timespec *rem)
+цео nanosleep(const struct timespec *req, struct timespec *rem)
 {
-    if (req == NULL) {
+    ако (req == NULL) {
         errno = EFAULT;
-        return -1;
+        врати -1;
     }
-    if (!linux_port_in_freertos_task()) {
-        return real_nanosleep(req, rem);
+    ако (!linux_port_in_freertos_task()) {
+        врати real_nanosleep(req, rem);
     }
     long ms = req->tv_sec * 1000 + (req->tv_nsec + 999999) / 1000000;
-    if (ms <= 0) {
+    ако (ms <= 0) {
         ms = 1;
     }
     vTaskDelay(ms);
-    if (rem) {
+    ако (rem) {
         rem->tv_sec = 0;
         rem->tv_nsec = 0;
     }
-    return 0;
+    врати 0;
 }
 
-unsigned int sleep(unsigned int seconds)
+unsigned цео sleep(unsigned цео seconds)
 {
     linux_coop_yield(seconds * 1000);
-    return 0;
+    врати 0;
 }
 
-int usleep(useconds_t usec)
+цео usleep(useconds_t usec)
 {
     linux_coop_yield(usec / 1000);
-    return 0;
+    врати 0;
 }
 
-int freertos_linux_coop_socket(int domain, int type, int protocol)
+цео freertos_linux_coop_socket(цео domain, цео type, цео protocol)
 {
-    int fd = real_socket(domain, type, protocol);
+    цео fd = real_socket(domain, type, protocol);
     linux_coop_set_nonblocking(fd);
 #ifdef SOCK_NONBLOCK
-    const int user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
-#else
-    const int user_flags = 0;
+    const цео user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
+#инако
+    const цео user_flags = 0;
 #endif
     linux_coop_track_fd(fd, user_flags);
-    return fd;
+    врати fd;
 }
 
-int freertos_linux_coop_socketpair(int domain, int type, int protocol, int *sv)
+цео freertos_linux_coop_socketpair(цео domain, цео type, цео protocol, цео *sv)
 {
-    int ret = real_socketpair(domain, type, protocol, sv);
-    if (ret == 0) {
+    цео ret = real_socketpair(domain, type, protocol, sv);
+    ако (ret == 0) {
         linux_coop_set_nonblocking(sv[0]);
         linux_coop_set_nonblocking(sv[1]);
 #ifdef SOCK_NONBLOCK
-        const int user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
-#else
-        const int user_flags = 0;
+        const цео user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
+#инако
+        const цео user_flags = 0;
 #endif
         linux_coop_track_fd(sv[0], user_flags);
         linux_coop_track_fd(sv[1], user_flags);
     }
-    return ret;
+    врати ret;
 }
 
-int freertos_linux_coop_pipe(int *fds)
+цео freertos_linux_coop_pipe(цео *fds)
 {
-    int ret = real_pipe(fds);
-    if (ret == 0) {
+    цео ret = real_pipe(fds);
+    ако (ret == 0) {
         linux_coop_set_nonblocking(fds[0]);
         linux_coop_set_nonblocking(fds[1]);
         linux_coop_track_fd(fds[0], 0);
         linux_coop_track_fd(fds[1], 0);
     }
-    return ret;
+    врати ret;
 }
 
-int freertos_linux_coop_pipe2(int *fds, int flags)
+цео freertos_linux_coop_pipe2(цео *fds, цео flags)
 {
-    int ret = real_pipe2(fds, flags);
-    if (ret == 0) {
+    цео ret = real_pipe2(fds, flags);
+    ако (ret == 0) {
         linux_coop_set_nonblocking(fds[0]);
         linux_coop_set_nonblocking(fds[1]);
-        const int user_flags = (flags & O_NONBLOCK) ? O_NONBLOCK : 0;
+        const цео user_flags = (flags & O_NONBLOCK) ? O_NONBLOCK : 0;
         linux_coop_track_fd(fds[0], user_flags);
         linux_coop_track_fd(fds[1], user_flags);
     }
-    return ret;
+    врати ret;
 }
 
-int freertos_linux_coop_dup(int oldfd)
+цео freertos_linux_coop_dup(цео oldfd)
 {
-    int fd = real_dup(oldfd);
+    цео fd = real_dup(oldfd);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(oldfd) ? O_NONBLOCK : 0);
-    return fd;
+    врати fd;
 }
 
-int freertos_linux_coop_dup2(int oldfd, int newfd)
+цео freertos_linux_coop_dup2(цео oldfd, цео newfd)
 {
-    int fd = real_dup2(oldfd, newfd);
+    цео fd = real_dup2(oldfd, newfd);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(oldfd) ? O_NONBLOCK : 0);
-    return fd;
+    врати fd;
 }
 
-__attribute__((weak)) int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+__attribute__((weak)) цео connect(цео sockfd, const struct sockaddr *addr, socklen_t addrlen)
 {
-    return freertos_linux_coop_connect(sockfd, addr, addrlen);
+    врати freertos_linux_coop_connect(sockfd, addr, addrlen);
 }
 
-__attribute__((weak)) int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+__attribute__((weak)) цео accept(цео sockfd, struct sockaddr *addr, socklen_t *addrlen)
 {
-    return freertos_linux_coop_accept(sockfd, addr, addrlen);
+    врати freertos_linux_coop_accept(sockfd, addr, addrlen);
 }
 
-__attribute__((weak)) int pselect(int nfds, fd_set *readfds, fd_set *writefds,
+__attribute__((weak)) цео pselect(цео nfds, fd_set *readfds, fd_set *writefds,
             fd_set *exceptfds, const struct timespec *timeout,
             const sigset_t *sigmask)
 {
-    return freertos_linux_coop_pselect(nfds, readfds, writefds, exceptfds, timeout, sigmask);
+    врати freertos_linux_coop_pselect(nfds, readfds, writefds, exceptfds, timeout, sigmask);
 }
 
-__attribute__((weak)) int poll(struct pollfd *fds, nfds_t nfds, int timeout)
+__attribute__((weak)) цео poll(struct pollfd *fds, nfds_t nfds, цео timeout)
 {
-    return freertos_linux_coop_poll(fds, nfds, timeout);
+    врати freertos_linux_coop_poll(fds, nfds, timeout);
 }
 
-__attribute__((weak)) int socket(int domain, int type, int protocol)
+__attribute__((weak)) цео socket(цео domain, цео type, цео protocol)
 {
-    return freertos_linux_coop_socket(domain, type, protocol);
+    врати freertos_linux_coop_socket(domain, type, protocol);
 }
 
-__attribute__((weak)) int socketpair(int domain, int type, int protocol, int sv[2])
+__attribute__((weak)) цео socketpair(цео domain, цео type, цео protocol, цео sv[2])
 {
-    return freertos_linux_coop_socketpair(domain, type, protocol, sv);
+    врати freertos_linux_coop_socketpair(domain, type, protocol, sv);
 }
 
-__attribute__((weak)) int pipe(int fds[2])
+__attribute__((weak)) цео pipe(цео fds[2])
 {
-    return freertos_linux_coop_pipe(fds);
+    врати freertos_linux_coop_pipe(fds);
 }
 
-__attribute__((weak)) int pipe2(int fds[2], int flags)
+__attribute__((weak)) цео pipe2(цео fds[2], цео flags)
 {
-    return freertos_linux_coop_pipe2(fds, flags);
+    врати freertos_linux_coop_pipe2(fds, flags);
 }
 
-__attribute__((weak)) int dup(int oldfd)
+__attribute__((weak)) цео dup(цео oldfd)
 {
-    return freertos_linux_coop_dup(oldfd);
+    врати freertos_linux_coop_dup(oldfd);
 }
 
-__attribute__((weak)) int dup2(int oldfd, int newfd)
+__attribute__((weak)) цео dup2(цео oldfd, цео newfd)
 {
-    return freertos_linux_coop_dup2(oldfd, newfd);
+    врати freertos_linux_coop_dup2(oldfd, newfd);
 }

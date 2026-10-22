@@ -63,7 +63,7 @@
  * ATOMIC_ENTER_CRITICAL().
  *
  */
-#if defined( portSET_INTERRUPT_MASK_FROM_ISR )
+#ако defined( portSET_INTERRUPT_MASK_FROM_ISR )
 
 /* Nested interrupt scheme is supported in this port. */
     #define ATOMIC_ENTER_CRITICAL() \
@@ -72,7 +72,7 @@
     #define ATOMIC_EXIT_CRITICAL() \
     portCLEAR_INTERRUPT_MASK_FROM_ISR( uxCriticalSectionType )
 
-#else
+#инако
 
 /* Nested interrupt scheme is NOT supported in this port. */
     #define ATOMIC_ENTER_CRITICAL()    portENTER_CRITICAL()
@@ -119,19 +119,19 @@ static portFORCE_INLINE uint32_t Atomic_CompareAndSwap_u32( uint32_t volatile * 
 
     ATOMIC_ENTER_CRITICAL();
     {
-        if( *pulDestination == ulComparand )
+        ако( *pulDestination == ulComparand )
         {
             *pulDestination = ulExchange;
             ulReturnValue = ATOMIC_COMPARE_AND_SWAP_SUCCESS;
         }
-        else
+        инако
         {
             ulReturnValue = ATOMIC_COMPARE_AND_SWAP_FAILURE;
         }
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulReturnValue;
+    врати ulReturnValue;
 }
 /*-----------------------------------------------------------*/
 
@@ -159,7 +159,7 @@ static portFORCE_INLINE void * Atomic_SwapPointers_p32( void * volatile * ppvDes
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return pReturnValue;
+    врати pReturnValue;
 }
 /*-----------------------------------------------------------*/
 
@@ -187,7 +187,7 @@ static portFORCE_INLINE uint32_t Atomic_CompareAndSwapPointers_p32( void * volat
 
     ATOMIC_ENTER_CRITICAL();
     {
-        if( *ppvDestination == pvComparand )
+        ако( *ppvDestination == pvComparand )
         {
             *ppvDestination = pvExchange;
             ulReturnValue = ATOMIC_COMPARE_AND_SWAP_SUCCESS;
@@ -195,7 +195,7 @@ static portFORCE_INLINE uint32_t Atomic_CompareAndSwapPointers_p32( void * volat
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulReturnValue;
+    врати ulReturnValue;
 }
 
 
@@ -224,7 +224,7 @@ static portFORCE_INLINE uint32_t Atomic_Add_u32( uint32_t volatile * pulAddend,
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    врати ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -252,7 +252,7 @@ static portFORCE_INLINE uint32_t Atomic_Subtract_u32( uint32_t volatile * pulAdd
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    врати ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -277,7 +277,7 @@ static portFORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t volatile * pulAd
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    врати ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -302,7 +302,7 @@ static portFORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t volatile * pulAd
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    врати ulCurrent;
 }
 
 /*----------------------------- Bitwise Logical ------------------------------*/
@@ -330,7 +330,7 @@ static portFORCE_INLINE uint32_t Atomic_OR_u32( uint32_t volatile * pulDestinati
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    врати ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -357,7 +357,7 @@ static portFORCE_INLINE uint32_t Atomic_AND_u32( uint32_t volatile * pulDestinat
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    врати ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -384,7 +384,7 @@ static portFORCE_INLINE uint32_t Atomic_NAND_u32( uint32_t volatile * pulDestina
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    врати ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -411,7 +411,7 @@ static portFORCE_INLINE uint32_t Atomic_XOR_u32( uint32_t volatile * pulDestinat
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    врати ulCurrent;
 }
 
 /* *INDENT-OFF* */

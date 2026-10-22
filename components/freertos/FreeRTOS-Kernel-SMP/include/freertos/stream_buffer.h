@@ -61,7 +61,7 @@
 #endif
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
+#ако defined( __cplusplus )
     extern "C" {
 #endif
 /* *INDENT-ON* */
@@ -170,7 +170,7 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
 #define xStreamBufferCreate( xBufferSizeBytes, xTriggerLevelBytes ) \
     xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BUFFER, NULL, NULL )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+#ако ( configUSE_SB_COMPLETED_CALLBACK == 1 )
     #define xStreamBufferCreateWithCallback( xBufferSizeBytes, xTriggerLevelBytes, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
     xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BUFFER, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
 #endif
@@ -270,7 +270,7 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
 #define xStreamBufferCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer ) \
     xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BUFFER, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), NULL, NULL )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+#ако ( configUSE_SB_COMPLETED_CALLBACK == 1 )
     #define xStreamBufferCreateStaticWithCallback( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
     xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BUFFER, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
 #endif
@@ -356,7 +356,7 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
 #define xStreamBatchingBufferCreate( xBufferSizeBytes, xTriggerLevelBytes ) \
     xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BATCHING_BUFFER, NULL, NULL )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+#ако ( configUSE_SB_COMPLETED_CALLBACK == 1 )
     #define xStreamBatchingBufferCreateWithCallback( xBufferSizeBytes, xTriggerLevelBytes, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
     xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BATCHING_BUFFER, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
 #endif
@@ -458,7 +458,7 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
 #define xStreamBatchingBufferCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer ) \
     xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BATCHING_BUFFER, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), NULL, NULL )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+#ако ( configUSE_SB_COMPLETED_CALLBACK == 1 )
     #define xStreamBatchingBufferCreateStaticWithCallback( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
     xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BATCHING_BUFFER, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
 #endif
@@ -492,7 +492,7 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  * \defgroup xStreamBufferGetStaticBuffers xStreamBufferGetStaticBuffers
  * \ingroup StreamBufferManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ако ( configSUPPORT_STATIC_ALLOCATION == 1 )
     BaseType_t xStreamBufferGetStaticBuffers( StreamBufferHandle_t xStreamBuffer,
                                               uint8_t ** ppucStreamBufferStorageArea,
                                               StaticStreamBuffer_t ** ppxStaticStreamBuffer ) PRIVILEGED_FUNCTION;
@@ -1256,7 +1256,7 @@ StreamBufferHandle_t xStreamBufferGenericCreate( size_t xBufferSizeBytes,
                                                  StreamBufferCallbackFunction_t pxSendCompletedCallback,
                                                  StreamBufferCallbackFunction_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ако ( configSUPPORT_STATIC_ALLOCATION == 1 )
     StreamBufferHandle_t xStreamBufferGenericCreateStatic( size_t xBufferSizeBytes,
                                                            size_t xTriggerLevelBytes,
                                                            BaseType_t xStreamBufferType,
@@ -1268,7 +1268,7 @@ StreamBufferHandle_t xStreamBufferGenericCreate( size_t xBufferSizeBytes,
 
 size_t xStreamBufferNextMessageLengthBytes( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
 
-#if ( configUSE_TRACE_FACILITY == 1 )
+#ако ( configUSE_TRACE_FACILITY == 1 )
     void vStreamBufferSetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer,
                                              UBaseType_t uxStreamBufferNumber ) PRIVILEGED_FUNCTION;
     UBaseType_t uxStreamBufferGetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
@@ -1276,7 +1276,7 @@ size_t xStreamBufferNextMessageLengthBytes( StreamBufferHandle_t xStreamBuffer )
 #endif
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
+#ако defined( __cplusplus )
     }
 #endif
 /* *INDENT-ON* */

@@ -98,7 +98,7 @@ TEST_CASE("Test FreeRTOS backported Queue and Semphr functions", "[freertos]")
     //Test static queue
     uint8_t queue_item_to_send[ITEM_SIZE];
     uint8_t queue_item_received[ITEM_SIZE];
-    for (int i = 0; i < ITEM_SIZE; i++) {
+    за (цео i = 0; i < ITEM_SIZE; i++) {
         queue_item_to_send[i] = (0xF << i);
     }
     QueueHandle_t handle = xQueueCreateStatic(NO_OF_ITEMS, ITEM_SIZE, (uint8_t*) &queue_storage_area, &queue_buffer);
@@ -106,7 +106,7 @@ TEST_CASE("Test FreeRTOS backported Queue and Semphr functions", "[freertos]")
     vTaskDelay(1);
     TEST_ASSERT_EQUAL(pdTRUE, xQueueReceive(handle, queue_item_received, DELAY_TICKS));
     vTaskDelay(1);
-    for (int i = 0; i < ITEM_SIZE; i++) {
+    за (цео i = 0; i < ITEM_SIZE; i++) {
         TEST_ASSERT_EQUAL(queue_item_to_send[i], queue_item_received[i]);   //Check received contents are correct
     }
     vQueueDelete(handle);   //Technically not needed as deleting static queue/semphr doesn't clear static memory
@@ -121,12 +121,12 @@ TEST_CASE("Test FreeRTOS backported Queue and Semphr functions", "[freertos]")
 
     //Test static counting semaphore and uxSemaphoreGetCount()
     handle = xSemaphoreCreateCountingStatic(NO_OF_ITEMS, 0, &queue_buffer);
-    for (int i = 0; i < NO_OF_ITEMS; i++) {
+    за (цео i = 0; i < NO_OF_ITEMS; i++) {
         TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGive(handle));
     }
     vTaskDelay(1);
     TEST_ASSERT_EQUAL(NO_OF_ITEMS, uxSemaphoreGetCount(handle));    //Test uxSemaphoreGetCount()
-    for (int i = 0; i < NO_OF_ITEMS; i++) {
+    за (цео i = 0; i < NO_OF_ITEMS; i++) {
         TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTake(handle, DELAY_TICKS));
     }
     vTaskDelay(1);
@@ -145,12 +145,12 @@ TEST_CASE("Test FreeRTOS backported Queue and Semphr functions", "[freertos]")
 
     //Test static mutex recursive
     handle = xSemaphoreCreateRecursiveMutexStatic(&queue_buffer);
-    for (int i = 0; i < NO_OF_ITEMS; i++) {
+    за (цео i = 0; i < NO_OF_ITEMS; i++) {
         TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTakeRecursive(handle, DELAY_TICKS));
     }
     vTaskDelay(1);
     TEST_ASSERT_EQUAL_PTR((void *)xTaskGetCurrentTaskHandle(), xSemaphoreGetMutexHolder(handle));   //Current task should hold mutex
-    for (int i = 0; i < NO_OF_ITEMS; i++) {
+    за (цео i = 0; i < NO_OF_ITEMS; i++) {
         TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGiveRecursive(handle));
     }
     vTaskDelay(1);
@@ -178,7 +178,7 @@ static void task(void *arg)
 
 TEST_CASE("Test FreeRTOS static task allocation", "[freertos]")
 {
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    за (цео core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
         has_run[core] = false;     //Clear has_run flag
         TaskHandle_t handle = xTaskCreateStaticPinnedToCore(task, "static task", STACK_SIZE, NULL,
                                                             UNITY_FREERTOS_PRIORITY + 1, (StackType_t *)&task_stack,
