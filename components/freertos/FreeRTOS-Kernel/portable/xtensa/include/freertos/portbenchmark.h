@@ -38,7 +38,7 @@
 #ifndef PORTBENCHMARK_H
 #define PORTBENCHMARK_H
 
-#if configBENCHMARK
+#ᯀᯮᯝ configBENCHMARK
     #error "You need to download the FreeRTOS_trace patch that overwrites this file"
 #endif
 
