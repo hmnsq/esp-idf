@@ -11,13 +11,13 @@
  * be called internally by other ESP-IDF components.
  */
 
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#ضمن "sdkconfig.h"
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
 
 /* *INDENT-OFF* */
 #ifdef __cplusplus
-    extern "C" {
+    خارجي "C" {
 #endif
 /* *INDENT-ON* */
 
@@ -36,7 +36,7 @@
  *      - Critical sections or disabling interrupts for deterministic operations
  * - SMP will always use critical sections (determinism is not supported)
  */
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#إذا ( !CONFIG_FREERTOS_SMP && ( config_رقم_CORES > 1 ) )
 
 /* Macros that use a critical section when building for SMP */
     #define prvENTER_CRITICAL_OR_SUSPEND_ALL( pxLock )    taskENTER_CRITICAL( ( pxLock ) )
@@ -44,12 +44,12 @@
     #define prvENTER_CRITICAL_OR_MASK_ISR( pxLock, uxStatus ) \
     {                                                         \
         taskENTER_CRITICAL_ISR( ( pxLock ) );                 \
-        ( void ) ( uxStatus );                                \
+        ( فراغ ) ( uxStatus );                                \
     }
     #define prvEXIT_CRITICAL_OR_UNMASK_ISR( pxLock, uxStatus ) \
     {                                                          \
         taskEXIT_CRITICAL_ISR( ( pxLock ) );                   \
-        ( void ) ( uxStatus );                                 \
+        ( فراغ ) ( uxStatus );                                 \
     }
 
 /* Macros that enter/exit a critical section only when building for SMP */
@@ -60,14 +60,14 @@
     #define prvENTER_CRITICAL_SAFE_SMP_ONLY( pxLock )    prvTaskEnterCriticalSafeSMPOnly( pxLock )
     #define prvEXIT_CRITICAL_SAFE_SMP_ONLY( pxLock )     prvTaskExitCriticalSafeSMPOnly( pxLock )
 
-    static inline __attribute__( ( always_inline ) )
-    void prvTaskEnterCriticalSafeSMPOnly( portMUX_TYPE * pxLock )
+    ساكن مضمن __attribute__( ( always_inline ) )
+    فراغ prvTaskEnterCriticalSafeSMPOnly( portMUX_TYPE * pxLock )
     {
-        if( portCHECK_IF_IN_ISR() == pdFALSE )
+        إذا( portCHECK_IF_IN_ISR() == pdFALSE )
         {
             taskENTER_CRITICAL( pxLock );
         }
-        else
+        وإلا
         {
             #ifdef __clang_analyzer__
                 /* Teach clang-tidy that ISR version macro can be different */
@@ -77,14 +77,14 @@
         }
     }
 
-    static inline __attribute__( ( always_inline ) )
-    void prvTaskExitCriticalSafeSMPOnly( portMUX_TYPE * pxLock )
+    ساكن مضمن __attribute__( ( always_inline ) )
+    فراغ prvTaskExitCriticalSafeSMPOnly( portMUX_TYPE * pxLock )
     {
-        if( portCHECK_IF_IN_ISR() == pdFALSE )
+        إذا( portCHECK_IF_IN_ISR() == pdFALSE )
         {
             taskEXIT_CRITICAL( pxLock );
         }
-        else
+        وإلا
         {
             #ifdef __clang_analyzer__
                 /* Teach clang-tidy that ISR version macro can be different */
@@ -102,39 +102,39 @@
     #define prvDISABLE_INTERRUPTS_ISR_SMP_ONLY()             portSET_INTERRUPT_MASK_FROM_ISR()
     #define prvENABLE_INTERRUPTS_ISR_SMP_ONLY( uxStatus )    portCLEAR_INTERRUPT_MASK_FROM_ISR( uxStatus )
 
-#elif ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES == 1 ) )
+#وإلاإذا ( !CONFIG_FREERTOS_SMP && ( config_رقم_CORES == 1 ) )
 
 /* Macros that suspend the scheduler or disables interrupts when building for single-core */
-    #define prvENTER_CRITICAL_OR_SUSPEND_ALL( pxLock )    ( { vTaskSuspendAll(); ( void ) ( pxLock ); } )
+    #define prvENTER_CRITICAL_OR_SUSPEND_ALL( pxLock )    ( { vTaskSuspendAll(); ( فراغ ) ( pxLock ); } )
     #define prvEXIT_CRITICAL_OR_RESUME_ALL( pxLock )      xTaskResumeAll()
     #define prvENTER_CRITICAL_OR_MASK_ISR( pxLock, uxStatus ) \
     {                                                         \
         ( uxStatus ) = portSET_INTERRUPT_MASK_FROM_ISR();     \
-        ( void ) ( pxLock );                                  \
+        ( فراغ ) ( pxLock );                                  \
     }
     #define prvEXIT_CRITICAL_OR_UNMASK_ISR( pxLock, uxStatus ) \
     {                                                          \
         portCLEAR_INTERRUPT_MASK_FROM_ISR( ( uxStatus ) );     \
-        ( void ) ( pxLock );                                   \
+        ( فراغ ) ( pxLock );                                   \
     }
 
 /* Macros that enter/exit a critical section only when building for SMP */
-#if !defined prvENTER_CRITICAL_SMP_ONLY
+#إذا !defined prvENTER_CRITICAL_SMP_ONLY
     #define prvENTER_CRITICAL_SMP_ONLY( pxLock )
 #endif
-#if !defined prvEXIT_CRITICAL_SMP_ONLY
+#إذا !defined prvEXIT_CRITICAL_SMP_ONLY
     #define prvEXIT_CRITICAL_SMP_ONLY( pxLock )
 #endif
-#if !defined prvENTER_CRITICAL_ISR_SMP_ONLY
+#إذا !defined prvENTER_CRITICAL_ISR_SMP_ONLY
     #define prvENTER_CRITICAL_ISR_SMP_ONLY( pxLock )
 #endif
-#if !defined prvEXIT_CRITICAL_ISR_SMP_ONLY
+#إذا !defined prvEXIT_CRITICAL_ISR_SMP_ONLY
     #define prvEXIT_CRITICAL_ISR_SMP_ONLY( pxLock )
 #endif
-#if !defined prvENTER_CRITICAL_SAFE_SMP_ONLY
+#إذا !defined prvENTER_CRITICAL_SAFE_SMP_ONLY
     #define prvENTER_CRITICAL_SAFE_SMP_ONLY( pxLock )
 #endif
-#if !defined prvEXIT_CRITICAL_SAFE_SMP_ONLY
+#إذا !defined prvEXIT_CRITICAL_SAFE_SMP_ONLY
     #define prvEXIT_CRITICAL_SAFE_SMP_ONLY( pxLock )
 #endif
 
@@ -144,7 +144,7 @@
 
 /* Macros that enable/disable interrupts only when building for SMP */
     #define prvDISABLE_INTERRUPTS_ISR_SMP_ONLY()             ( ( UBaseType_t ) 0 )
-    #define prvENABLE_INTERRUPTS_ISR_SMP_ONLY( uxStatus )    ( ( void ) uxStatus )
+    #define prvENABLE_INTERRUPTS_ISR_SMP_ONLY( uxStatus )    ( ( فراغ ) uxStatus )
 
 #endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES == 1 ) ) */
 
@@ -166,14 +166,14 @@
  * (which are kernel data structures). Thus, a wrapper function must be provided
  * to take/release the "xKernelLock" from outside tasks.c.
  */
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#إذا ( !CONFIG_FREERTOS_SMP && ( config_رقم_CORES > 1 ) )
 
-    void prvTakeKernelLock( void );
-    void prvReleaseKernelLock( void );
+    فراغ prvTakeKernelLock( فراغ );
+    فراغ prvReleaseKernelLock( فراغ );
 
 #endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 
-#if ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#إذا ( CONFIG_FREERTOS_SMP && ( config_رقم_CORES > 1 ) )
 
 /**
  * @brief Workaround for non-thread safe multi-core OS startup (see IDF-4524)
@@ -181,7 +181,7 @@
  * This function must be called with interrupts disabled on all cores other than
  * core 0 during startup.
  */
-    void prvStartSchedulerOtherCores( void );
+    فراغ prvStartSchedulerOtherCores( فراغ );
 
 #endif /* ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 
@@ -195,13 +195,13 @@
  * This function will check if the current core requires time slicing, and also
  * call the application tick hook. However, the tick count will remain unchanged.
  */
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#إذا ( !CONFIG_FREERTOS_SMP && ( config_رقم_CORES > 1 ) )
 
-    BaseType_t xTaskIncrementTickOtherCores( void );
+    BaseType_t xTaskIncrementTickOtherCores( فراغ );
 
 #endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 
-#if CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER
+#إذا CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER
 
 /*
  * Reconcile the given core's OS-tick accounting against the free-running counter while its
@@ -215,14 +215,14 @@
  *
  * @return Number of whole OS-tick periods that elapsed while masked.
  */
-    uint32_t xPortSysTickClaimElapsedTicks( int cpu_id );
+    uint32_t xPortSysTickClaimElapsedTicks( صحيح cpu_id );
 
 #endif /* CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER */
 
 /*------------------------------------------------------------------------------
  * TASK UTILITIES (PRIVATE)
  *----------------------------------------------------------------------------*/
-#if ( INCLUDE_vTaskPrioritySet == 1 )
+#إذا ( INCLUDE_vTaskPrioritySet == 1 )
 
 /**
  * @brief Structure to save a task's previous priority
@@ -230,17 +230,17 @@
  * This structure is meant to be used with prvTaskPriorityRaise() and
  * prvTaskPriorityRestore().
  */
-    typedef struct
+    تعريفنوع بنية
     {
         UBaseType_t uxPriority;
-        #if ( configUSE_MUTEXES == 1 )
+        #إذا ( configUSE_MUTEXES == 1 )
             UBaseType_t uxBasePriority;
         #endif
     } prvTaskSavedPriority_t;
 
 #endif /* INCLUDE_vTaskPrioritySet == 1 */
 
-#if ( INCLUDE_vTaskPrioritySet == 1 )
+#إذا ( INCLUDE_vTaskPrioritySet == 1 )
 
 /**
  * INCLUDE_vTaskPrioritySet must be defined as 1 for this function to be
@@ -275,12 +275,12 @@
  * @param uxNewPriority The priority to which the task's priority will be
  * set.
  */
-    void prvTaskPriorityRaise( prvTaskSavedPriority_t * pxSavedPriority,
+    فراغ prvTaskPriorityRaise( prvTaskSavedPriority_t * pxSavedPriority,
                                UBaseType_t uxNewPriority );
 
 #endif /* INCLUDE_vTaskPrioritySet == 1 */
 
-#if ( INCLUDE_vTaskPrioritySet == 1 )
+#إذا ( INCLUDE_vTaskPrioritySet == 1 )
 
 /**
  * INCLUDE_vTaskPrioritySet must be defined as 1 for this function to be
@@ -300,11 +300,11 @@
  * @param pxSavedPriority previously saved base and current priorities that need
  * to be restored
  */
-    void prvTaskPriorityRestore( prvTaskSavedPriority_t * pxSavedPriority );
+    فراغ prvTaskPriorityRestore( prvTaskSavedPriority_t * pxSavedPriority );
 
 #endif /* INCLUDE_vTaskPrioritySet == 1 */
 
-#if CONFIG_SPIRAM
+#إذا CONFIG_SPIRAM
 
 /**
  * Create a new task with stack having the desired heap capabilities and add it to the
@@ -364,24 +364,24 @@
  * @return pdPASS if the task was successfully created and added to a ready
  * list, otherwise an error code defined in the file projdefs.h
  */
-    #if CONFIG_FREERTOS_SMP
+    #إذا CONFIG_FREERTOS_SMP
         BaseType_t prvTaskCreateDynamicAffinitySetWithCaps( TaskFunction_t pxTaskCode,
-                                                            const char * const pcName,
-                                                            const configSTACK_DEPTH_TYPE usStackDepth,
-                                                            void * const pvParameters,
+                                                            ثابت حرف * ثابت pcName,
+                                                            ثابت config_مكدس_DEPTH_TYPE us_مكدس_Depth,
+                                                            فراغ * ثابت pvParameters,
                                                             UBaseType_t uxPriority,
                                                             UBaseType_t uxCoreAffinityMask,
-                                                            UBaseType_t uxStackMemoryCaps,
-                                                            TaskHandle_t * const pxCreatedTask );
-    #else
+                                                            UBaseType_t ux_مكدس_Memory_Caps,
+                                                            TaskHandle_t * ثابت pxCreatedTask );
+    #وإلا
         BaseType_t prvTaskCreateDynamicPinnedToCoreWithCaps( TaskFunction_t pxTaskCode,
-                                                             const char * const pcName,
-                                                             const configSTACK_DEPTH_TYPE usStackDepth,
-                                                             void * const pvParameters,
+                                                             ثابت حرف * ثابت pcName,
+                                                             ثابت config_مكدس_DEPTH_TYPE us_مكدس_Depth,
+                                                             فراغ * ثابت pvParameters,
                                                              UBaseType_t uxPriority,
-                                                             const BaseType_t xCoreID,
-                                                             UBaseType_t uxStackMemoryCaps,
-                                                             TaskHandle_t * const pxCreatedTask );
+                                                             ثابت BaseType_t xCoreID,
+                                                             UBaseType_t ux_مكدس_Memory_Caps,
+                                                             TaskHandle_t * ثابت pxCreatedTask );
     #endif // CONFIG_FREERTOS_SMP
 
 #endif // CONFIG_SPIRAM
