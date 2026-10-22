@@ -8,52 +8,52 @@
  Test for multicore FreeRTOS. This test spins up threads, fiddles with queues etc.
 */
 
-#include <esp_types.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "unity.h"
-#include "test_utils.h"
+#شامل <esp_types.h>
+#شامل <stdio.h>
+#شامل <stdlib.h>
+#شامل "sdkconfig.h"
+#شامل "freertos/FreeRTOS.h"
+#شامل "freertos/task.h"
+#شامل "freertos/semphr.h"
+#شامل "freertos/queue.h"
+#شامل "unity.h"
+#شامل "test_utils.h"
 
-volatile static int done;
-volatile static int error;
+متلون ساکن صحیح مکمل;
+متلون ساکن صحیح error;
 
-static void tskTestRand(void *pvParameters)
+ساکن خالی tskTestRand(خالی *pvParameters)
 {
-    int l;
+    صحیح l;
     srand(0x1234);
-    vTaskDelay((int)pvParameters / portTICK_PERIOD_MS);
+    vTaskDelay((صحیح)pvParameters / پورٹ_TICK_PERIOD_MS);
     l = rand();
-    printf("Rand1: %d\n", l);
-    if (l != 869320854) {
+    لکھو("Rand1: %d\n", l);
+    اگر (l != 869320854) {
         error++;
     }
-    vTaskDelay((int)pvParameters / portTICK_PERIOD_MS);
+    vTaskDelay((صحیح)pvParameters / پورٹ_TICK_PERIOD_MS);
     l = rand();
-    printf("Rand2: %d\n", l);
-    if (l != 1148737841) {
+    لکھو("Rand2: %d\n", l);
+    اگر (l != 1148737841) {
         error++;
     }
-    done++;
-    vTaskDelete(NULL);
+    مکمل++;
+    vTaskDelete(تہی);
 }
 
 // TODO: split this thing into separate orthogonal tests
 TEST_CASE("Test for per-task non-reentrant tasks", "[freertos]")
 {
-    done = 0;
+    مکمل = 0;
     error = 0;
-    const uint32_t stack_size = 3072;
-    xTaskCreatePinnedToCore(tskTestRand, "tsk1", stack_size, (void *)100, 3, NULL, 0);
-    xTaskCreatePinnedToCore(tskTestRand, "tsk2", stack_size, (void *)200, 3, NULL, 0);
-    xTaskCreatePinnedToCore(tskTestRand, "tsk3", stack_size, (void *)300, 3, NULL, CONFIG_FREERTOS_NUMBER_OF_CORES - 1);
-    xTaskCreatePinnedToCore(tskTestRand, "tsk4", stack_size, (void *)400, 3, NULL, 0);
-    while (done != 4) {
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    ثابت uint32_t ڈھیر_سائز_2 = 3072;
+    x_Task_Create_Pinned_مقصد_Core(tskTestRand, "tsk1", ڈھیر_سائز_2, (خالی *)100, 3, تہی, 0);
+    x_Task_Create_Pinned_مقصد_Core(tskTestRand, "tsk2", ڈھیر_سائز_2, (خالی *)200, 3, تہی, 0);
+    x_Task_Create_Pinned_مقصد_Core(tskTestRand, "tsk3", ڈھیر_سائز_2, (خالی *)300, 3, تہی, CONFIG_FREERTOS_نمبر_کا_CORES - 1);
+    x_Task_Create_Pinned_مقصد_Core(tskTestRand, "tsk4", ڈھیر_سائز_2, (خالی *)400, 3, تہی, 0);
+    جب (مکمل != 4) {
+        vTaskDelay(1000 / پورٹ_TICK_PERIOD_MS);
     }
     TEST_ASSERT(error == 0);
 }

@@ -4,71 +4,71 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include "FreeRTOS.h"
-#include "semphr.h"
-#include "freertos_test_utils.h"
+#شامل "sdkconfig.h"
+#شامل "FreeRTOS.h"
+#شامل "semphr.h"
+#شامل "freertos_test_utils.h"
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
+#اگر ( CONFIG_FREERTOS_نمبر_کا_CORES > 1 )
 
-typedef struct {
-    const TestFunction_t pxTestCode;
-    void * const pvTestCodeArg;
-    const SemaphoreHandle_t xTaskDoneSem;
-} TestArgs_t;
+قسمتعریف ساخت {
+    ثابت TestFunction_t px_Test_رمز;
+    خالی * ثابت pv_Test_رمز_Arg;
+    ثابت SemaphoreHandle_t x_Task_مکمل_Sem;
+} Test_دلائل_t;
 
-static void test_func_task(void * pvParameters)
+ساکن خالی test_func_task(خالی * pvParameters)
 {
-    TestArgs_t * pxTestArgs = (TestArgs_t *) pvParameters;
+    Test_دلائل_t * px_Test_دلائل = (Test_دلائل_t *) pvParameters;
     /* Call the test function */
-    pxTestArgs->pxTestCode(pxTestArgs->pvTestCodeArg);
+    px_Test_دلائل->px_Test_رمز(px_Test_دلائل->pv_Test_رمز_Arg);
     /* Indicate completion to the creation task and wait to be deleted. */
-    xSemaphoreGive(pxTestArgs->xTaskDoneSem);
-    vTaskSuspend(NULL);
+    xSemaphoreGive(px_Test_دلائل->x_Task_مکمل_Sem);
+    vTaskSuspend(تہی);
 }
 
-void vTestOnAllCores(TestFunction_t pxTestCode, void * pvTestCodeArg, uint32_t ulStackDepth, UBaseType_t uxPriority)
+خالی vTestOnAllCores(TestFunction_t px_Test_رمز, خالی * pv_Test_رمز_Arg, uint32_t ul_ڈھیر_گہرائی, UBaseType_t ux_ترجیح)
 {
-    SemaphoreHandle_t xTaskDoneSem = xSemaphoreCreateCounting(CONFIG_FREERTOS_NUMBER_OF_CORES, 0);
-    TaskHandle_t xTaskHandles[ CONFIG_FREERTOS_NUMBER_OF_CORES ];
-    TestArgs_t xTestArgs = {
-        .pxTestCode = pxTestCode,
-        .pvTestCodeArg = pvTestCodeArg,
-        .xTaskDoneSem = xTaskDoneSem,
+    SemaphoreHandle_t x_Task_مکمل_Sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_نمبر_کا_CORES, 0);
+    TaskHandle_t xTaskHandles[ CONFIG_FREERTOS_نمبر_کا_CORES ];
+    Test_دلائل_t x_Test_دلائل = {
+        .px_Test_رمز = px_Test_رمز,
+        .pv_Test_رمز_Arg = pv_Test_رمز_Arg,
+        .x_Task_مکمل_Sem = x_Task_مکمل_Sem,
     };
 
     /* Create a separate task on each core to run the test function */
-    for (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_NUMBER_OF_CORES; xCoreID++) {
-#if ( CONFIG_FREERTOS_SMP == 1 )
-        xTaskCreateAffinitySet(test_func_task,
+    برائے (بنیاد_Type_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_نمبر_کا_CORES; xCoreID++) {
+#اگر ( CONFIG_FREERTOS_SMP == 1 )
+        x_Task_Create_Affinity_سیٹ(test_func_task,
                                "task",
-                               ulStackDepth,
-                               (void *) &xTestArgs,
-                               uxPriority,
+                               ul_ڈھیر_گہرائی,
+                               (خالی *) &x_Test_دلائل,
+                               ux_ترجیح,
                                (UBaseType_t)(1 << xCoreID),
                                &(xTaskHandles[ xCoreID ]));
-#else
-        xTaskCreatePinnedToCore(test_func_task,
+#ورنہ
+        x_Task_Create_Pinned_مقصد_Core(test_func_task,
                                 "task",
-                                ulStackDepth,
-                                (void *) &xTestArgs,
-                                uxPriority,
+                                ul_ڈھیر_گہرائی,
+                                (خالی *) &x_Test_دلائل,
+                                ux_ترجیح,
                                 &(xTaskHandles[ xCoreID ]),
                                 xCoreID);
-#endif
+#اگر_ختم
     }
 
     /* Wait for each tasks to complete test */
-    for (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_NUMBER_OF_CORES; xCoreID++) {
-        xSemaphoreTake(xTaskDoneSem, portMAX_DELAY);
+    برائے (بنیاد_Type_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_نمبر_کا_CORES; xCoreID++) {
+        xSemaphoreTake(x_Task_مکمل_Sem, پورٹ_MAX_DELAY);
     }
 
     /* Cleanup */
-    for (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_NUMBER_OF_CORES; xCoreID++) {
+    برائے (بنیاد_Type_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_نمبر_کا_CORES; xCoreID++) {
         vTaskDelete(xTaskHandles[ xCoreID ]);
     }
-    vSemaphoreDelete(xTaskDoneSem);
+    vSemaphoreDelete(x_Task_مکمل_Sem);
     vTaskDelay(10); // Short delay to allow task memory to be freed
 }
 
-#endif /* ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 ) */
+#اگر_ختم /* ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 ) */

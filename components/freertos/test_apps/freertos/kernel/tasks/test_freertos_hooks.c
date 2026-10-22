@@ -4,91 +4,91 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
+#شامل "sdkconfig.h"
 
 /*
 Note: We disable this test when using the FreeRTOS SMP kernel as the port will already provide
 a definition for vApplicationTickHook(). Thus this test cannot be run.
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include <freertos/semphr.h>
-#include "unity.h"
-#include "test_utils.h"
+#شامل <stdio.h>
+#شامل <stdlib.h>
+#شامل "freertos/FreeRTOS.h"
+#شامل "freertos/task.h"
+#شامل <freertos/semphr.h>
+#شامل "unity.h"
+#شامل "test_utils.h"
 
-#if !CONFIG_FREERTOS_SMP
+#اگر !CONFIG_FREERTOS_SMP
 /*
 Test FreeRTOS idle hook. Only compiled in if FreeRTOS idle hooks are enabled.
 */
-#if CONFIG_FREERTOS_USE_IDLE_HOOK
+#اگر CONFIG_FREERTOS_USE_IDLE_HOOK
 
-static volatile unsigned idle_count;
+ساکن متلون غیرعلامتی idle_گنتی;
 
-void vApplicationIdleHook(void)
+خالی vApplicationIdleHook(خالی)
 {
-    idle_count++;
+    idle_گنتی++;
 }
 
 TEST_CASE("FreeRTOS idle hook", "[freertos]")
 {
-    idle_count = 0;
+    idle_گنتی = 0;
     vTaskDelay(10);
-    TEST_ASSERT_NOT_EQUAL(0, idle_count); // The legacy idle hook should be called at least once
+    TEST_ASSERT_NOT_EQUAL(0, idle_گنتی); // The legacy idle hook should be called at least once
 }
 
-#endif // CONFIG_FREERTOS_USE_IDLE_HOOK
+#اگر_ختم // CONFIG_FREERTOS_USE_IDLE_HOOK
 
 /*
 Test the FreeRTOS tick hook. Only compiled in if FreeRTOS tick hooks are enabled.
 */
-#if CONFIG_FREERTOS_USE_TICK_HOOK
+#اگر CONFIG_FREERTOS_USE_TICK_HOOK
 
-static volatile unsigned tick_count;
+ساکن متلون غیرعلامتی tick_گنتی;
 
-void vApplicationTickHook(void)
+خالی vApplicationTickHook(خالی)
 {
-    tick_count++;
+    tick_گنتی++;
 }
 
 TEST_CASE("FreeRTOS tick hook", "[freertos]")
 {
-    unsigned before = xTaskGetTickCount();
-    const unsigned SLEEP_FOR = 20;
-    tick_count = before;
+    غیرعلامتی before = x_Task_Get_Tick_گنتی();
+    ثابت غیرعلامتی SLEEP_FOR = 20;
+    tick_گنتی = before;
     vTaskDelay(SLEEP_FOR);
-    TEST_ASSERT_UINT32_WITHIN_MESSAGE(3 * CONFIG_FREERTOS_NUMBER_OF_CORES, before + SLEEP_FOR * CONFIG_FREERTOS_NUMBER_OF_CORES, tick_count,
+    TEST_ASSERT_UINT32_WITHIN_پیغام(3 * CONFIG_FREERTOS_نمبر_کا_CORES, before + SLEEP_FOR * CONFIG_FREERTOS_نمبر_کا_CORES, tick_گنتی,
                                       "The FreeRTOS tick hook should have been called approx 1 time per tick per CPU");
 }
 
-#endif // CONFIG_FREERTOS_USE_TICK_HOOK
-#endif // !CONFIG_FREERTOS_SMP
+#اگر_ختم // CONFIG_FREERTOS_USE_TICK_HOOK
+#اگر_ختم // !CONFIG_FREERTOS_SMP
 
-#if CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK
+#اگر CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK
 
-static volatile void *deleted_tcb;
+ساکن متلون خالی *deleted_tcb;
 
-static void taskDeletesItself(void *ignored)
+ساکن خالی taskDeletesItself(خالی *ignored)
 {
-    vTaskDelete(NULL);
+    vTaskDelete(تہی);
 }
 
-void vTaskPreDeletionHook(void *pxTCB)
+خالی vTaskPreDeletionHook(خالی *pxTCB)
 {
     deleted_tcb = pxTCB;
 }
 
 TEST_CASE("static task cleanup hook is called based on config", "[freertos]")
 {
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        printf("Creating task CPU %d\n", i);
-        TaskHandle_t new_task = NULL;
-        deleted_tcb = NULL;
-        xTaskCreatePinnedToCore(taskDeletesItself, "delete", 2048, NULL, UNITY_FREERTOS_PRIORITY, &new_task, i);
+    برائے (صحیح i = 0; i < CONFIG_FREERTOS_نمبر_کا_CORES; i++) {
+        لکھو("Creating task CPU %d\n", i);
+        TaskHandle_t new_task = تہی;
+        deleted_tcb = تہی;
+        x_Task_Create_Pinned_مقصد_Core(taskDeletesItself, "delete", 2048, تہی, UNITY_FREERTOS_ترجیح, &new_task, i);
         vTaskDelay(5);
         TEST_ASSERT_EQUAL_PTR(deleted_tcb, new_task); // TCB & TaskHandle are the same in FreeRTOS
     }
 }
 
-#endif // CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK
+#اگر_ختم // CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK

@@ -31,21 +31,21 @@
  *
  */
 
-#ifndef _WAIT_FOR_EVENT_H_
-#define _WAIT_FOR_EVENT_H_
+#اگر_غیر_تعریف_شدہ _WAIT_FOR_EVENT_H_
+#تعریف_کرو _WAIT_FOR_EVENT_H_
 
-#include <stdbool.h>
-#include <time.h>
+#شامل <stdbool.h>
+#شامل <time.h>
 
-struct event;
+ساخت event;
 
-struct event * event_create(void);
-void event_delete( struct event * );
-bool event_wait( struct event * ev );
-bool event_wait_timed( struct event * ev,
+ساخت event * event_create(خالی);
+خالی event_delete( ساخت event * );
+bool event_wait( ساخت event * ev );
+bool event_wait_timed( ساخت event * ev,
                        time_t ms );
-void event_signal( struct event * ev );
+خالی event_signal( ساخت event * ev );
 
 
 
-#endif /* ifndef _WAIT_FOR_EVENT_H_ */
+#اگر_ختم /* ifndef _WAIT_FOR_EVENT_H_ */

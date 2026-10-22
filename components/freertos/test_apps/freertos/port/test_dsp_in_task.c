@@ -4,23 +4,23 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <math.h>
-#include "soc/soc_caps.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "unity.h"
-#include "test_utils.h"
+#شامل "sdkconfig.h"
+#شامل <math.h>
+#شامل "soc/soc_caps.h"
+#شامل "freertos/FreeRTOS.h"
+#شامل "freertos/task.h"
+#شامل "freertos/semphr.h"
+#شامل "unity.h"
+#شامل "test_utils.h"
 
-#if SOC_CPU_HAS_DSP
+#اگر SOC_CPU_HAS_DSP
 
-#define TEST_NUM_TASKS       4
+#تعریف_کرو TEST_عدد_TASKS       4
 
-typedef struct {
+قسمتعریف ساخت {
     int32_t  id;
-    uint32_t result;
-    TaskHandle_t main;
+    uint32_t نتیجہ;
+    TaskHandle_t مین;
     SemaphoreHandle_t sem;
 } dsp_params_t;
 
@@ -35,67 +35,67 @@ uint32_t dsp_id_mul(uint32_t id);
  * @brief DSP Assembly routine need to access this constant, make it public.
  * It will be used as a multiplier.
  */
-const uint32_t g_dsp_constant = 100000;
+ثابت uint32_t g_dsp_constant = 100000;
 
-static void pinned_task(void *arg)
+ساکن خالی pinned_task(خالی *arg)
 {
     dsp_params_t *param = (dsp_params_t*) arg;
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, پورٹ_MAX_DELAY);
 
-    param->result = dsp_id_mul(param->id);
+    param->نتیجہ = dsp_id_mul(param->id);
 
     /* Indicate done and wait to be deleted */
     xSemaphoreGive((SemaphoreHandle_t)param->sem);
-    vTaskSuspend(NULL);
+    vTaskSuspend(تہی);
 }
 
 TEST_CASE("DSP: Usage in task", "[freertos]")
 {
-    TaskHandle_t task_handles[CONFIG_FREERTOS_NUMBER_OF_CORES][TEST_NUM_TASKS];
-    dsp_params_t params[CONFIG_FREERTOS_NUMBER_OF_CORES][TEST_NUM_TASKS];
+    TaskHandle_t task_handles[CONFIG_FREERTOS_نمبر_کا_CORES][TEST_عدد_TASKS];
+    dsp_params_t params[CONFIG_FREERTOS_نمبر_کا_CORES][TEST_عدد_TASKS];
 
-    SemaphoreHandle_t done_sem = xSemaphoreCreateCounting(TEST_NUM_TASKS, 0);
-    TEST_ASSERT_NOT_EQUAL(NULL, done_sem);
+    SemaphoreHandle_t مکمل_sem = xSemaphoreCreateCounting(TEST_عدد_TASKS, 0);
+    TEST_ASSERT_NOT_EQUAL(تہی, مکمل_sem);
 
     // Create test tasks for each core
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        for (int j = 0; j < TEST_NUM_TASKS; j++) {
+    برائے (صحیح i = 0; i < CONFIG_FREERTOS_نمبر_کا_CORES; i++) {
+        برائے (صحیح j = 0; j < TEST_عدد_TASKS; j++) {
             params[i][j] = (dsp_params_t) {
-                .id = i * TEST_NUM_TASKS + j + 1,
-                .sem = done_sem,
+                .id = i * TEST_عدد_TASKS + j + 1,
+                .sem = مکمل_sem,
             };
-            TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(pinned_task, "task", 4096, (void *) &params[i][j], UNITY_FREERTOS_PRIORITY + 1, &task_handles[i][j], i));
+            TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_مقصد_Core(pinned_task, "task", 4096, (خالی *) &params[i][j], UNITY_FREERTOS_ترجیح + 1, &task_handles[i][j], i));
         }
     }
 
     // Start the created tasks
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        for (int j = 0; j < TEST_NUM_TASKS; j++) {
+    برائے (صحیح i = 0; i < CONFIG_FREERTOS_نمبر_کا_CORES; i++) {
+        برائے (صحیح j = 0; j < TEST_عدد_TASKS; j++) {
             xTaskNotifyGive(task_handles[i][j]);
         }
     }
 
     // Wait for the tasks to complete
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES * TEST_NUM_TASKS; i++) {
-        xSemaphoreTake(done_sem, portMAX_DELAY);
+    برائے (صحیح i = 0; i < CONFIG_FREERTOS_نمبر_کا_CORES * TEST_عدد_TASKS; i++) {
+        xSemaphoreTake(مکمل_sem, پورٹ_MAX_DELAY);
     }
 
     // Delete the tasks
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        for (int j = 0; j < TEST_NUM_TASKS; j++) {
+    برائے (صحیح i = 0; i < CONFIG_FREERTOS_نمبر_کا_CORES; i++) {
+        برائے (صحیح j = 0; j < TEST_عدد_TASKS; j++) {
             vTaskDelete(task_handles[i][j]);
         }
     }
 
     // Check the values
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        for (int j = 0; j < TEST_NUM_TASKS; j++) {
+    برائے (صحیح i = 0; i < CONFIG_FREERTOS_نمبر_کا_CORES; i++) {
+        برائے (صحیح j = 0; j < TEST_عدد_TASKS; j++) {
             dsp_params_t* param = &params[i][j];
-            TEST_ASSERT_EQUAL(param->id * g_dsp_constant, param->result);
+            TEST_ASSERT_EQUAL(param->id * g_dsp_constant, param->نتیجہ);
         }
     }
 
-    vSemaphoreDelete(done_sem);
+    vSemaphoreDelete(مکمل_sem);
 }
 
-#endif /* SOC_CPU_HAS_DSP */
+#اگر_ختم /* SOC_CPU_HAS_DSP */

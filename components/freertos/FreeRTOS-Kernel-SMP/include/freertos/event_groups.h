@@ -30,40 +30,40 @@
  *
  */
 
-#ifndef EVENT_GROUPS_H
-#define EVENT_GROUPS_H
+#اگر_غیر_تعریف_شدہ EVENT_GROUPS_H
+#تعریف_کرو EVENT_GROUPS_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h" must appear in source files before "include event_groups.h"
-#endif
+#اگر_غیر_تعریف_شدہ INC_FREERTOS_H
+    #غلطی "include FreeRTOS.h" must appear اندر ماخذ files before "include event_groups.h"
+#اگر_ختم
 
 /* FreeRTOS includes. */
-#include "timers.h"
+#شامل "timers.h"
 
 /* The following bit fields convey control information in a task's event list
  * item value.  It is important they don't clash with the
  * taskEVENT_LIST_ITEM_VALUE_IN_USE definition. */
-#if ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS )
-    #define eventCLEAR_EVENTS_ON_EXIT_BIT    ( ( uint16_t ) 0x0100U )
-    #define eventUNBLOCKED_DUE_TO_BIT_SET    ( ( uint16_t ) 0x0200U )
-    #define eventWAIT_FOR_ALL_BITS           ( ( uint16_t ) 0x0400U )
-    #define eventEVENT_BITS_CONTROL_BYTES    ( ( uint16_t ) 0xff00U )
-#elif ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_32_BITS )
-    #define eventCLEAR_EVENTS_ON_EXIT_BIT    ( ( uint32_t ) 0x01000000U )
-    #define eventUNBLOCKED_DUE_TO_BIT_SET    ( ( uint32_t ) 0x02000000U )
-    #define eventWAIT_FOR_ALL_BITS           ( ( uint32_t ) 0x04000000U )
-    #define eventEVENT_BITS_CONTROL_BYTES    ( ( uint32_t ) 0xff000000U )
-#elif ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_64_BITS )
-    #define eventCLEAR_EVENTS_ON_EXIT_BIT    ( ( uint64_t ) 0x0100000000000000U )
-    #define eventUNBLOCKED_DUE_TO_BIT_SET    ( ( uint64_t ) 0x0200000000000000U )
-    #define eventWAIT_FOR_ALL_BITS           ( ( uint64_t ) 0x0400000000000000U )
-    #define eventEVENT_BITS_CONTROL_BYTES    ( ( uint64_t ) 0xff00000000000000U )
-#endif /* if ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS ) */
+#اگر ( config_TICK_TYPE_چوڑائی_اندر_بٹ == TICK_TYPE_چوڑائی_16_بٹ )
+    #تعریف_کرو event_CLEAR_EVENTS_ON_EXIT_ثنائی_ہندسہ    ( ( uint16_t ) 0x0100U )
+    #تعریف_کرو event_UNBLOCKED_DUE_مقصد_ثنائی_ہندسہ_سیٹ    ( ( uint16_t ) 0x0200U )
+    #تعریف_کرو event_WAIT_FOR_ALL_بٹ           ( ( uint16_t ) 0x0400U )
+    #تعریف_کرو event_EVENT_بٹ_CONTROL_بائٹیں    ( ( uint16_t ) 0xff00U )
+#وگرنہ_اگر ( config_TICK_TYPE_چوڑائی_اندر_بٹ == TICK_TYPE_چوڑائی_32_بٹ )
+    #تعریف_کرو event_CLEAR_EVENTS_ON_EXIT_ثنائی_ہندسہ    ( ( uint32_t ) 0x01000000U )
+    #تعریف_کرو event_UNBLOCKED_DUE_مقصد_ثنائی_ہندسہ_سیٹ    ( ( uint32_t ) 0x02000000U )
+    #تعریف_کرو event_WAIT_FOR_ALL_بٹ           ( ( uint32_t ) 0x04000000U )
+    #تعریف_کرو event_EVENT_بٹ_CONTROL_بائٹیں    ( ( uint32_t ) 0xff000000U )
+#وگرنہ_اگر ( config_TICK_TYPE_چوڑائی_اندر_بٹ == TICK_TYPE_چوڑائی_64_بٹ )
+    #تعریف_کرو event_CLEAR_EVENTS_ON_EXIT_ثنائی_ہندسہ    ( ( uint64_t ) 0x0100000000000000U )
+    #تعریف_کرو event_UNBLOCKED_DUE_مقصد_ثنائی_ہندسہ_سیٹ    ( ( uint64_t ) 0x0200000000000000U )
+    #تعریف_کرو event_WAIT_FOR_ALL_بٹ           ( ( uint64_t ) 0x0400000000000000U )
+    #تعریف_کرو event_EVENT_بٹ_CONTROL_بائٹیں    ( ( uint64_t ) 0xff00000000000000U )
+#اگر_ختم /* if ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS ) */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#اگر_تعریف_شدہ __cplusplus
+    خارجی "C" {
+#اگر_ختم
 /* *INDENT-ON* */
 
 /**
@@ -103,8 +103,8 @@
  * \defgroup EventGroupHandle_t EventGroupHandle_t
  * \ingroup EventGroup
  */
-struct EventGroupDef_t;
-typedef struct EventGroupDef_t   * EventGroupHandle_t;
+ساخت Event_گروہ_Def_t;
+قسمتعریف ساخت Event_گروہ_Def_t   * Event_گروہ_Handle_t;
 
 /*
  * The type that holds event bits always matches TickType_t - therefore the
@@ -114,7 +114,7 @@ typedef struct EventGroupDef_t   * EventGroupHandle_t;
  * \defgroup EventBits_t EventBits_t
  * \ingroup EventGroup
  */
-typedef TickType_t               EventBits_t;
+قسمتعریف TickType_t               Event_بٹ_t;
 
 /**
  * event_groups.h
@@ -172,9 +172,9 @@ typedef TickType_t               EventBits_t;
  * \defgroup xEventGroupCreate xEventGroupCreate
  * \ingroup EventGroup
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    EventGroupHandle_t xEventGroupCreate( void ) PRIVILEGED_FUNCTION;
-#endif
+#اگر ( config_SUPPORT_DYNAMIC_تخصیص == 1 )
+    Event_گروہ_Handle_t x_Event_گروہ_Create( خالی ) PRIVILEGED_FUNCTION;
+#اگر_ختم
 
 /**
  * event_groups.h
@@ -229,9 +229,9 @@ typedef TickType_t               EventBits_t;
  *  xEventGroup = xEventGroupCreateStatic( &xEventGroupBuffer );
  * @endcode
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    EventGroupHandle_t xEventGroupCreateStatic( StaticEventGroup_t * pxEventGroupBuffer ) PRIVILEGED_FUNCTION;
-#endif
+#اگر ( config_SUPPORT_STATIC_تخصیص == 1 )
+    Event_گروہ_Handle_t x_Event_گروہ_Create_Static( Static_Event_گروہ_t * px_Event_گروہ_بفر ) PRIVILEGED_FUNCTION;
+#اگر_ختم
 
 /**
  * event_groups.h
@@ -329,11 +329,11 @@ typedef TickType_t               EventBits_t;
  * \defgroup xEventGroupWaitBits xEventGroupWaitBits
  * \ingroup EventGroup
  */
-EventBits_t xEventGroupWaitBits( EventGroupHandle_t xEventGroup,
-                                 const EventBits_t uxBitsToWaitFor,
-                                 const BaseType_t xClearOnExit,
-                                 const BaseType_t xWaitForAllBits,
-                                 TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+Event_بٹ_t x_Event_گروہ_Wait_بٹ( Event_گروہ_Handle_t x_Event_گروہ,
+                                 ثابت Event_بٹ_t ux_بٹ_مقصد_Wait_For,
+                                 ثابت بنیاد_Type_t xClearOnExit,
+                                 ثابت بنیاد_Type_t x_Wait_For_All_بٹ,
+                                 TickType_t x_Ticks_مقصد_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -393,8 +393,8 @@ EventBits_t xEventGroupWaitBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupClearBits xEventGroupClearBits
  * \ingroup EventGroup
  */
-EventBits_t xEventGroupClearBits( EventGroupHandle_t xEventGroup,
-                                  const EventBits_t uxBitsToClear ) PRIVILEGED_FUNCTION;
+Event_بٹ_t x_Event_گروہ_Clear_بٹ( Event_گروہ_Handle_t x_Event_گروہ,
+                                  ثابت Event_بٹ_t ux_بٹ_مقصد_Clear ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -456,13 +456,13 @@ EventBits_t xEventGroupClearBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupClearBitsFromISR xEventGroupClearBitsFromISR
  * \ingroup EventGroup
  */
-#if ( configUSE_TRACE_FACILITY == 1 )
-    BaseType_t xEventGroupClearBitsFromISR( EventGroupHandle_t xEventGroup,
-                                            const EventBits_t uxBitsToClear ) PRIVILEGED_FUNCTION;
-#else
-    #define xEventGroupClearBitsFromISR( xEventGroup, uxBitsToClear ) \
-    xTimerPendFunctionCallFromISR( vEventGroupClearBitsCallback, ( void * ) ( xEventGroup ), ( uint32_t ) ( uxBitsToClear ), NULL )
-#endif
+#اگر ( configUSE_TRACE_FACILITY == 1 )
+    بنیاد_Type_t x_Event_گروہ_Clear_بٹ_From_ISR( Event_گروہ_Handle_t x_Event_گروہ,
+                                            ثابت Event_بٹ_t ux_بٹ_مقصد_Clear ) PRIVILEGED_FUNCTION;
+#ورنہ
+    #تعریف_کرو x_Event_گروہ_Clear_بٹ_From_ISR( x_Event_گروہ, ux_بٹ_مقصد_Clear ) \
+    xTimerPendFunctionCallFromISR( v_Event_گروہ_Clear_بٹ_Callback, ( خالی * ) ( x_Event_گروہ ), ( uint32_t ) ( ux_بٹ_مقصد_Clear ), تہی )
+#اگر_ختم
 
 /**
  * event_groups.h
@@ -539,8 +539,8 @@ EventBits_t xEventGroupClearBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupSetBits xEventGroupSetBits
  * \ingroup EventGroup
  */
-EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
-                                const EventBits_t uxBitsToSet ) PRIVILEGED_FUNCTION;
+Event_بٹ_t x_Event_گروہ_سیٹ_بٹ( Event_گروہ_Handle_t x_Event_گروہ,
+                                ثابت Event_بٹ_t ux_بٹ_مقصد_سیٹ ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -614,14 +614,14 @@ EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupSetBitsFromISR xEventGroupSetBitsFromISR
  * \ingroup EventGroup
  */
-#if ( configUSE_TRACE_FACILITY == 1 )
-    BaseType_t xEventGroupSetBitsFromISR( EventGroupHandle_t xEventGroup,
-                                          const EventBits_t uxBitsToSet,
-                                          BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
-#else
-    #define xEventGroupSetBitsFromISR( xEventGroup, uxBitsToSet, pxHigherPriorityTaskWoken ) \
-    xTimerPendFunctionCallFromISR( vEventGroupSetBitsCallback, ( void * ) ( xEventGroup ), ( uint32_t ) ( uxBitsToSet ), ( pxHigherPriorityTaskWoken ) )
-#endif
+#اگر ( configUSE_TRACE_FACILITY == 1 )
+    بنیاد_Type_t x_Event_گروہ_سیٹ_بٹ_From_ISR( Event_گروہ_Handle_t x_Event_گروہ,
+                                          ثابت Event_بٹ_t ux_بٹ_مقصد_سیٹ,
+                                          بنیاد_Type_t * px_Higher_ترجیح_Task_Woken ) PRIVILEGED_FUNCTION;
+#ورنہ
+    #تعریف_کرو x_Event_گروہ_سیٹ_بٹ_From_ISR( x_Event_گروہ, ux_بٹ_مقصد_سیٹ, px_Higher_ترجیح_Task_Woken ) \
+    xTimerPendFunctionCallFromISR( v_Event_گروہ_سیٹ_بٹ_Callback, ( خالی * ) ( x_Event_گروہ ), ( uint32_t ) ( ux_بٹ_مقصد_سیٹ ), ( px_Higher_ترجیح_Task_Woken ) )
+#اگر_ختم
 
 /**
  * event_groups.h
@@ -750,10 +750,10 @@ EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupSync xEventGroupSync
  * \ingroup EventGroup
  */
-EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
-                             const EventBits_t uxBitsToSet,
-                             const EventBits_t uxBitsToWaitFor,
-                             TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+Event_بٹ_t x_Event_گروہ_Sync( Event_گروہ_Handle_t x_Event_گروہ,
+                             ثابت Event_بٹ_t ux_بٹ_مقصد_سیٹ,
+                             ثابت Event_بٹ_t ux_بٹ_مقصد_Wait_For,
+                             TickType_t x_Ticks_مقصد_Wait ) PRIVILEGED_FUNCTION;
 
 
 /**
@@ -775,7 +775,7 @@ EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupGetBits xEventGroupGetBits
  * \ingroup EventGroup
  */
-#define xEventGroupGetBits( xEventGroup )    xEventGroupClearBits( ( xEventGroup ), 0 )
+#تعریف_کرو x_Event_گروہ_Get_بٹ( x_Event_گروہ )    x_Event_گروہ_Clear_بٹ( ( x_Event_گروہ ), 0 )
 
 /**
  * event_groups.h
@@ -795,7 +795,7 @@ EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
  * \defgroup xEventGroupGetBitsFromISR xEventGroupGetBitsFromISR
  * \ingroup EventGroup
  */
-EventBits_t xEventGroupGetBitsFromISR( EventGroupHandle_t xEventGroup ) PRIVILEGED_FUNCTION;
+Event_بٹ_t x_Event_گروہ_Get_بٹ_From_ISR( Event_گروہ_Handle_t x_Event_گروہ ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -812,7 +812,7 @@ EventBits_t xEventGroupGetBitsFromISR( EventGroupHandle_t xEventGroup ) PRIVILEG
  *
  * @param xEventGroup The event group being deleted.
  */
-void vEventGroupDelete( EventGroupHandle_t xEventGroup ) PRIVILEGED_FUNCTION;
+خالی v_Event_گروہ_Delete( Event_گروہ_Handle_t x_Event_گروہ ) PRIVILEGED_FUNCTION;
 
 /**
  * event_groups.h
@@ -834,28 +834,28 @@ void vEventGroupDelete( EventGroupHandle_t xEventGroup ) PRIVILEGED_FUNCTION;
  *
  * @return pdTRUE if the buffer was retrieved, pdFALSE otherwise.
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    BaseType_t xEventGroupGetStaticBuffer( EventGroupHandle_t xEventGroup,
-                                           StaticEventGroup_t ** ppxEventGroupBuffer ) PRIVILEGED_FUNCTION;
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#اگر ( config_SUPPORT_STATIC_تخصیص == 1 )
+    بنیاد_Type_t x_Event_گروہ_Get_Static_بفر( Event_گروہ_Handle_t x_Event_گروہ,
+                                           Static_Event_گروہ_t ** ppx_Event_گروہ_بفر ) PRIVILEGED_FUNCTION;
+#اگر_ختم /* configSUPPORT_STATIC_ALLOCATION */
 
 /* For internal use only. */
-void vEventGroupSetBitsCallback( void * pvEventGroup,
-                                 uint32_t ulBitsToSet ) PRIVILEGED_FUNCTION;
-void vEventGroupClearBitsCallback( void * pvEventGroup,
-                                   uint32_t ulBitsToClear ) PRIVILEGED_FUNCTION;
+خالی v_Event_گروہ_سیٹ_بٹ_Callback( خالی * pv_Event_گروہ,
+                                 uint32_t ul_بٹ_مقصد_سیٹ ) PRIVILEGED_FUNCTION;
+خالی v_Event_گروہ_Clear_بٹ_Callback( خالی * pv_Event_گروہ,
+                                   uint32_t ul_بٹ_مقصد_Clear ) PRIVILEGED_FUNCTION;
 
 
-#if ( configUSE_TRACE_FACILITY == 1 )
-    UBaseType_t uxEventGroupGetNumber( void * xEventGroup ) PRIVILEGED_FUNCTION;
-    void vEventGroupSetNumber( void * xEventGroup,
-                               UBaseType_t uxEventGroupNumber ) PRIVILEGED_FUNCTION;
-#endif
+#اگر ( configUSE_TRACE_FACILITY == 1 )
+    UBaseType_t ux_Event_گروہ_Get_نمبر( خالی * x_Event_گروہ ) PRIVILEGED_FUNCTION;
+    خالی v_Event_گروہ_سیٹ_نمبر( خالی * x_Event_گروہ,
+                               UBaseType_t ux_Event_گروہ_نمبر ) PRIVILEGED_FUNCTION;
+#اگر_ختم
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#اگر_تعریف_شدہ __cplusplus
     }
-#endif
+#اگر_ختم
 /* *INDENT-ON* */
 
-#endif /* EVENT_GROUPS_H */
+#اگر_ختم /* EVENT_GROUPS_H */

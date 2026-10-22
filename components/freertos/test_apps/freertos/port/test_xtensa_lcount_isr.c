@@ -4,46 +4,46 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
+#شامل "sdkconfig.h"
 
-#if CONFIG_IDF_TARGET_ARCH_XTENSA
+#اگر CONFIG_IDF_ہدف_ARCH_XTENSA
 
-#include <stdint.h>
-#include "esp_intr_alloc.h"
-#include "esp_rom_sys.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "unity.h"
-#include "xtensa/config/core-isa.h"
-#include "xtensa/xt_specreg.h"
-#include "xtensa_api.h"
+#شامل <stdint.h>
+#شامل "esp_intr_alloc.h"
+#شامل "esp_rom_sys.h"
+#شامل "freertos/FreeRTOS.h"
+#شامل "freertos/task.h"
+#شامل "unity.h"
+#شامل "xtensa/config/core-isa.h"
+#شامل "xtensa/xt_specreg.h"
+#شامل "xtensa_api.h"
 
-#if XCHAL_HAVE_LOOPS
+#اگر XCHAL_HAVE_LOOPS
 
-#define SW_ISR_LEVEL_1      7
-#define SW_ISR_MASK         (1U << SW_ISR_LEVEL_1)
+#تعریف_کرو SW_ISR_LEVEL_1      7
+#تعریف_کرو SW_ISR_نقاب         (1U << SW_ISR_LEVEL_1)
 
-static volatile uint32_t s_isr_body_hits;
+ساکن متلون uint32_t s_isr_body_کامیابیاں;
 
-static inline uint32_t read_lbeg(void)
+ساکن اندرونی uint32_t read_lbeg(خالی)
 {
     uint32_t val;
-    __asm__ volatile("rsr.lbeg %0" : "=r"(val));
-    return val;
+    __asm__ متلون("rsr.lbeg %0" : "=r"(val));
+    واپس val;
 }
 
-static inline uint32_t read_lend(void)
+ساکن اندرونی uint32_t read_lend(خالی)
 {
     uint32_t val;
-    __asm__ volatile("rsr.lend %0" : "=r"(val));
-    return val;
+    __asm__ متلون("rsr.lend %0" : "=r"(val));
+    واپس val;
 }
 
-static inline uint32_t read_lcount(void)
+ساکن اندرونی uint32_t read_lcount(خالی)
 {
     uint32_t val;
-    __asm__ volatile("rsr.lcount %0" : "=r"(val));
-    return val;
+    __asm__ متلون("rsr.lcount %0" : "=r"(val));
+    واپس val;
 }
 
 /*
@@ -52,16 +52,16 @@ static inline uint32_t read_lcount(void)
  * - ISR call: enter same function but skip loopnez (do not program loop regs).
  *   If stale LCOUNT/LBEG/LEND leaked into ISR, reaching old LEND will loop.
  */
-static uint32_t IRAM_ATTR __attribute__((noinline, noclone)) zol_reentry_probe(uint32_t setup_loop)
+ساکن uint32_t IRAM_ATTR __attribute__((noinline, noclone)) zol_reentry_probe(uint32_t تیاری_loop)
 {
-    uint32_t body_hits = 0;
-    uint32_t loop_count = 256;
-    uint32_t trigger_once = setup_loop == 1;
+    uint32_t body_کامیابیاں = 0;
+    uint32_t loop_گنتی = 256;
+    uint32_t trigger_once = تیاری_loop == 1;
 
-    esp_rom_printf("From %s: setup_loop=%u\n", xPortInIsrContext() ? "ISR" : "TASK", setup_loop);
+    esp_rom_printf("From %s: setup_loop=%u\n", x_پورٹ_اندر_Isr_Context() ? "ISR" : "TASK", تیاری_loop);
     esp_rom_printf("LBEG=0x%08x LEND=0x%08x LCOUNT=0x%08x\n", read_lbeg(), read_lend(), read_lcount());
 
-    __asm__ volatile(
+    __asm__ متلون(
         "beqz   %[setup], 1f\n"
         "loopnez %[cnt], .loopEnd\n"
         "addi   %[hits], %[hits], 1\n"
@@ -71,49 +71,49 @@ static uint32_t IRAM_ATTR __attribute__((noinline, noclone)) zol_reentry_probe(u
         "1:\n"  // if setup == 0, skip loopnez and LCOUNT should be 0.
         "nop\n"
         ".loopEnd:\n"
-        : [hits] "+r"(body_hits),
-        [cnt] "+r"(loop_count),
+        : [کامیابیاں] "+r"(body_کامیابیاں),
+        [cnt] "+r"(loop_گنتی),
         [trigger] "+r"(trigger_once)
-        : [setup] "r"(setup_loop),
-        [int_mask] "r"(SW_ISR_MASK)
+        : [تیاری] "r"(تیاری_loop),
+        [int_نقاب] "r"(SW_ISR_نقاب)
         : "memory"
     );
 
-    return body_hits;
+    واپس body_کامیابیاں;
 }
 
-static void IRAM_ATTR lcount_probe_isr(void *arg)
+ساکن خالی IRAM_ATTR lcount_probe_isr(خالی *arg)
 {
     TaskHandle_t waiter_task = (TaskHandle_t)arg;
-    BaseType_t should_yield = pdFALSE;
+    بنیاد_Type_t should_yield = pdFALSE;
 
-    xt_set_intclear(SW_ISR_MASK);
-    s_isr_body_hits = zol_reentry_probe(0);
+    xt_سیٹ_intclear(SW_ISR_نقاب);
+    s_isr_body_کامیابیاں = zol_reentry_probe(0);
 
     vTaskNotifyGiveFromISR(waiter_task, &should_yield);
-    if (should_yield == pdTRUE) {
-        portYIELD_FROM_ISR();
+    اگر (should_yield == pdTRUE) {
+        پورٹ_YIELD_FROM_ISR();
     }
 }
 
 TEST_CASE("Xtensa: ISR does not inherit active ZOL state", "[freertos]")
 {
-    intr_handle_t isr_handle = NULL;
+    intr_handle_t isr_handle = تہی;
     TaskHandle_t this_task = xTaskGetCurrentTaskHandle();
 
-    xt_set_intclear(SW_ISR_MASK);
-    TEST_ESP_OK(esp_intr_alloc(ETS_INTERNAL_SW0_INTR_SOURCE, ESP_INTR_FLAG_LEVEL1, lcount_probe_isr, (void *)this_task, &isr_handle));
+    xt_سیٹ_intclear(SW_ISR_نقاب);
+    TEST_ESP_OK(esp_intr_alloc(ETS_اندرونی_SW0_INTR_ماخذ, ESP_INTR_FLAG_LEVEL1, lcount_probe_isr, (خالی *)this_task, &isr_handle));
 
-    s_isr_body_hits = 0xFFFF;
-    uint32_t task_body_hits = zol_reentry_probe(1);
+    s_isr_body_کامیابیاں = 0xFFFF;
+    uint32_t task_body_کامیابیاں = zol_reentry_probe(1);
 
-    TEST_ASSERT_NOT_EQUAL(0, ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(1000)));
+    TEST_ASSERT_NOT_EQUAL(0, ulTaskNotifyTake(pdTRUE, pd_MS_مقصد_TICKS(1000)));
     TEST_ESP_OK(esp_intr_free(isr_handle));
 
-    TEST_ASSERT_EQUAL_UINT32(0, s_isr_body_hits);
-    TEST_ASSERT_EQUAL_UINT32(256, task_body_hits);
+    TEST_ASSERT_EQUAL_UINT32(0, s_isr_body_کامیابیاں);
+    TEST_ASSERT_EQUAL_UINT32(256, task_body_کامیابیاں);
     vTaskDelay(10); // Short delay to allow task memory to be freed
 }
 
-#endif /* XCHAL_HAVE_LOOPS */
-#endif /* CONFIG_IDF_TARGET_ARCH_XTENSA */
+#اگر_ختم /* XCHAL_HAVE_LOOPS */
+#اگر_ختم /* CONFIG_IDF_TARGET_ARCH_XTENSA */

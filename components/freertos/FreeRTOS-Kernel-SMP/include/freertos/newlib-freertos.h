@@ -30,8 +30,8 @@
  *
  */
 
-#ifndef INC_NEWLIB_FREERTOS_H
-#define INC_NEWLIB_FREERTOS_H
+#اگر_غیر_تعریف_شدہ INC_NEWLIB_FREERTOS_H
+#تعریف_کرو INC_NEWLIB_FREERTOS_H
 
 /* Note Newlib support has been included by popular demand, but is not
  * used by the FreeRTOS maintainers themselves.  FreeRTOS is not
@@ -43,24 +43,24 @@
  * See the third party link http://www.nadler.com/embedded/newlibAndFreeRTOS.html
  * for additional information. */
 
-#include <reent.h>
+#شامل <reent.h>
 
-#define configUSE_C_RUNTIME_TLS_SUPPORT    1
+#تعریف_کرو configUSE_C_RUNTIME_TLS_SUPPORT    1
 
-#ifndef configTLS_BLOCK_TYPE
-    #define configTLS_BLOCK_TYPE           struct _reent
-#endif
+#اگر_غیر_تعریف_شدہ config_TLS_بلاک_TYPE
+    #تعریف_کرو config_TLS_بلاک_TYPE           ساخت _reent
+#اگر_ختم
 
-#ifndef configINIT_TLS_BLOCK
-    #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )    _REENT_INIT_PTR( &( xTLSBlock ) )
-#endif
+#اگر_غیر_تعریف_شدہ config_INIT_TLS_بلاک
+    #تعریف_کرو config_INIT_TLS_بلاک( xTLSBlock, px_چوٹی_کا_ڈھیر )    _REENT_INIT_PTR( &( xTLSBlock ) )
+#اگر_ختم
 
-#ifndef configSET_TLS_BLOCK
-    #define configSET_TLS_BLOCK( xTLSBlock )    ( _impure_ptr = &( xTLSBlock ) )
-#endif
+#اگر_غیر_تعریف_شدہ config_سیٹ_TLS_بلاک
+    #تعریف_کرو config_سیٹ_TLS_بلاک( xTLSBlock )    ( _impure_ptr = &( xTLSBlock ) )
+#اگر_ختم
 
-#ifndef configDEINIT_TLS_BLOCK
-    #define configDEINIT_TLS_BLOCK( xTLSBlock )    _reclaim_reent( &( xTLSBlock ) )
-#endif
+#اگر_غیر_تعریف_شدہ config_DEINIT_TLS_بلاک
+    #تعریف_کرو config_DEINIT_TLS_بلاک( xTLSBlock )    _reclaim_reent( &( xTLSBlock ) )
+#اگر_ختم
 
-#endif /* INC_NEWLIB_FREERTOS_H */
+#اگر_ختم /* INC_NEWLIB_FREERTOS_H */

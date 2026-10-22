@@ -30,20 +30,20 @@
  *
  */
 
-#ifndef SEMAPHORE_H
-#define SEMAPHORE_H
+#اگر_غیر_تعریف_شدہ SEMAPHORE_H
+#تعریف_کرو SEMAPHORE_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h" must appear in source files before "include semphr.h"
-#endif
+#اگر_غیر_تعریف_شدہ INC_FREERTOS_H
+    #غلطی "include FreeRTOS.h" must appear اندر ماخذ files before "include semphr.h"
+#اگر_ختم
 
-#include "queue.h"
+#شامل "queue.h"
 
-typedef QueueHandle_t SemaphoreHandle_t;
+قسمتعریف قطار_Handle_t SemaphoreHandle_t;
 
-#define semBINARY_SEMAPHORE_QUEUE_LENGTH    ( ( uint8_t ) 1U )
-#define semSEMAPHORE_QUEUE_ITEM_LENGTH      ( ( uint8_t ) 0U )
-#define semGIVE_BLOCK_TIME                  ( ( TickType_t ) 0U )
+#تعریف_کرو sem_ثنائی_SEMAPHORE_قطار_لمبائی    ( ( uint8_t ) 1U )
+#تعریف_کرو sem_SEMAPHORE_قطار_شے_لمبائی      ( ( uint8_t ) 0U )
+#تعریف_کرو sem_GIVE_بلاک_وقت                  ( ( TickType_t ) 0U )
 
 
 /**
@@ -97,16 +97,16 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup vSemaphoreCreateBinary vSemaphoreCreateBinary
  * \ingroup Semaphores
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    #define vSemaphoreCreateBinary( xSemaphore )                                                                                     \
-    do {                                                                                                                             \
-        ( xSemaphore ) = xQueueGenericCreate( ( UBaseType_t ) 1, semSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_BINARY_SEMAPHORE ); \
-        if( ( xSemaphore ) != NULL )                                                                                                 \
+#اگر ( config_SUPPORT_DYNAMIC_تخصیص == 1 )
+    #تعریف_کرو v_Semaphore_Create_ثنائی( xSemaphore )                                                                                     \
+    کرو {                                                                                                                             \
+        ( xSemaphore ) = x_قطار_Generic_Create( ( UBaseType_t ) 1, sem_SEMAPHORE_قطار_شے_لمبائی, قطار_قطار_TYPE_ثنائی_SEMAPHORE ); \
+        اگر( ( xSemaphore ) != تہی )                                                                                                 \
         {                                                                                                                            \
-            ( void ) xSemaphoreGive( ( xSemaphore ) );                                                                               \
+            ( خالی ) xSemaphoreGive( ( xSemaphore ) );                                                                               \
         }                                                                                                                            \
-    } while( 0 )
-#endif
+    } جب( 0 )
+#اگر_ختم
 
 /**
  * semphr. h
@@ -167,9 +167,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreCreateBinary xSemaphoreCreateBinary
  * \ingroup Semaphores
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    #define xSemaphoreCreateBinary()    xQueueGenericCreate( ( UBaseType_t ) 1, semSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_BINARY_SEMAPHORE )
-#endif
+#اگر ( config_SUPPORT_DYNAMIC_تخصیص == 1 )
+    #تعریف_کرو x_Semaphore_Create_ثنائی()    x_قطار_Generic_Create( ( UBaseType_t ) 1, sem_SEMAPHORE_قطار_شے_لمبائی, قطار_قطار_TYPE_ثنائی_SEMAPHORE )
+#اگر_ختم
 
 /**
  * semphr. h
@@ -228,9 +228,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreCreateBinaryStatic xSemaphoreCreateBinaryStatic
  * \ingroup Semaphores
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xSemaphoreCreateBinaryStatic( pxStaticSemaphore )    xQueueGenericCreateStatic( ( UBaseType_t ) 1, semSEMAPHORE_QUEUE_ITEM_LENGTH, NULL, ( pxStaticSemaphore ), queueQUEUE_TYPE_BINARY_SEMAPHORE )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#اگر ( config_SUPPORT_STATIC_تخصیص == 1 )
+    #تعریف_کرو x_Semaphore_Create_ثنائی_Static( pxStaticSemaphore )    x_قطار_Generic_Create_Static( ( UBaseType_t ) 1, sem_SEMAPHORE_قطار_شے_لمبائی, تہی, ( pxStaticSemaphore ), قطار_قطار_TYPE_ثنائی_SEMAPHORE )
+#اگر_ختم /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  * semphr. h
@@ -299,7 +299,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreTake xSemaphoreTake
  * \ingroup Semaphores
  */
-#define xSemaphoreTake( xSemaphore, xBlockTime )    xQueueSemaphoreTake( ( xSemaphore ), ( xBlockTime ) )
+#تعریف_کرو xSemaphoreTake( xSemaphore, x_بلاک_وقت )    x_قطار_Semaphore_Take( ( xSemaphore ), ( x_بلاک_وقت ) )
 
 /**
  * semphr. h
@@ -394,9 +394,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreTakeRecursive xSemaphoreTakeRecursive
  * \ingroup Semaphores
  */
-#if ( configUSE_RECURSIVE_MUTEXES == 1 )
-    #define xSemaphoreTakeRecursive( xMutex, xBlockTime )    xQueueTakeMutexRecursive( ( xMutex ), ( xBlockTime ) )
-#endif
+#اگر ( configUSE_RECURSIVE_MUTEXES == 1 )
+    #تعریف_کرو xSemaphoreTakeRecursive( xMutex, x_بلاک_وقت )    x_قطار_Take_Mutex_Recursive( ( xMutex ), ( x_بلاک_وقت ) )
+#اگر_ختم
 
 /**
  * semphr. h
@@ -461,7 +461,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreGive xSemaphoreGive
  * \ingroup Semaphores
  */
-#define xSemaphoreGive( xSemaphore )    xQueueGenericSend( ( QueueHandle_t ) ( xSemaphore ), NULL, semGIVE_BLOCK_TIME, queueSEND_TO_BACK )
+#تعریف_کرو xSemaphoreGive( xSemaphore )    x_قطار_Generic_Send( ( قطار_Handle_t ) ( xSemaphore ), تہی, sem_GIVE_بلاک_وقت, قطار_SEND_مقصد_عقب )
 
 /**
  * semphr. h
@@ -547,9 +547,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreGiveRecursive xSemaphoreGiveRecursive
  * \ingroup Semaphores
  */
-#if ( configUSE_RECURSIVE_MUTEXES == 1 )
-    #define xSemaphoreGiveRecursive( xMutex )    xQueueGiveMutexRecursive( ( xMutex ) )
-#endif
+#اگر ( configUSE_RECURSIVE_MUTEXES == 1 )
+    #تعریف_کرو xSemaphoreGiveRecursive( xMutex )    x_قطار_Give_Mutex_Recursive( ( xMutex ) )
+#اگر_ختم
 
 /**
  * semphr. h
@@ -641,7 +641,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreGiveFromISR xSemaphoreGiveFromISR
  * \ingroup Semaphores
  */
-#define xSemaphoreGiveFromISR( xSemaphore, pxHigherPriorityTaskWoken )    xQueueGiveFromISR( ( QueueHandle_t ) ( xSemaphore ), ( pxHigherPriorityTaskWoken ) )
+#تعریف_کرو xSemaphoreGiveFromISR( xSemaphore, px_Higher_ترجیح_Task_Woken )    x_قطار_Give_From_ISR( ( قطار_Handle_t ) ( xSemaphore ), ( px_Higher_ترجیح_Task_Woken ) )
 
 /**
  * semphr. h
@@ -676,7 +676,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @return pdTRUE if the semaphore was successfully taken, otherwise
  * pdFALSE
  */
-#define xSemaphoreTakeFromISR( xSemaphore, pxHigherPriorityTaskWoken )    xQueueReceiveFromISR( ( QueueHandle_t ) ( xSemaphore ), NULL, ( pxHigherPriorityTaskWoken ) )
+#تعریف_کرو xSemaphoreTakeFromISR( xSemaphore, px_Higher_ترجیح_Task_Woken )    x_قطار_Receive_From_ISR( ( قطار_Handle_t ) ( xSemaphore ), تہی, ( px_Higher_ترجیح_Task_Woken ) )
 
 /**
  * semphr. h
@@ -735,9 +735,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreCreateMutex xSemaphoreCreateMutex
  * \ingroup Semaphores
  */
-#if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configUSE_MUTEXES == 1 ) )
-    #define xSemaphoreCreateMutex()    xQueueCreateMutex( queueQUEUE_TYPE_MUTEX )
-#endif
+#اگر ( ( config_SUPPORT_DYNAMIC_تخصیص == 1 ) && ( configUSE_MUTEXES == 1 ) )
+    #تعریف_کرو xSemaphoreCreateMutex()    x_قطار_Create_Mutex( قطار_قطار_TYPE_MUTEX )
+#اگر_ختم
 
 /**
  * semphr. h
@@ -798,9 +798,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreCreateMutexStatic xSemaphoreCreateMutexStatic
  * \ingroup Semaphores
  */
-#if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configUSE_MUTEXES == 1 ) )
-    #define xSemaphoreCreateMutexStatic( pxMutexBuffer )    xQueueCreateMutexStatic( queueQUEUE_TYPE_MUTEX, ( pxMutexBuffer ) )
-#endif
+#اگر ( ( config_SUPPORT_STATIC_تخصیص == 1 ) && ( configUSE_MUTEXES == 1 ) )
+    #تعریف_کرو xSemaphoreCreateMutexStatic( px_Mutex_بفر )    x_قطار_Create_Mutex_Static( قطار_قطار_TYPE_MUTEX, ( px_Mutex_بفر ) )
+#اگر_ختم
 
 
 /**
@@ -868,9 +868,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreCreateRecursiveMutex xSemaphoreCreateRecursiveMutex
  * \ingroup Semaphores
  */
-#if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configUSE_RECURSIVE_MUTEXES == 1 ) )
-    #define xSemaphoreCreateRecursiveMutex()    xQueueCreateMutex( queueQUEUE_TYPE_RECURSIVE_MUTEX )
-#endif
+#اگر ( ( config_SUPPORT_DYNAMIC_تخصیص == 1 ) && ( configUSE_RECURSIVE_MUTEXES == 1 ) )
+    #تعریف_کرو xSemaphoreCreateRecursiveMutex()    x_قطار_Create_Mutex( قطار_قطار_TYPE_RECURSIVE_MUTEX )
+#اگر_ختم
 
 /**
  * semphr. h
@@ -943,9 +943,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreCreateRecursiveMutexStatic xSemaphoreCreateRecursiveMutexStatic
  * \ingroup Semaphores
  */
-#if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configUSE_RECURSIVE_MUTEXES == 1 ) )
-    #define xSemaphoreCreateRecursiveMutexStatic( pxStaticSemaphore )    xQueueCreateMutexStatic( queueQUEUE_TYPE_RECURSIVE_MUTEX, ( pxStaticSemaphore ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#اگر ( ( config_SUPPORT_STATIC_تخصیص == 1 ) && ( configUSE_RECURSIVE_MUTEXES == 1 ) )
+    #تعریف_کرو xSemaphoreCreateRecursiveMutexStatic( pxStaticSemaphore )    x_قطار_Create_Mutex_Static( قطار_قطار_TYPE_RECURSIVE_MUTEX, ( pxStaticSemaphore ) )
+#اگر_ختم /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  * semphr. h
@@ -1025,9 +1025,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreCreateCounting xSemaphoreCreateCounting
  * \ingroup Semaphores
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    #define xSemaphoreCreateCounting( uxMaxCount, uxInitialCount )    xQueueCreateCountingSemaphore( ( uxMaxCount ), ( uxInitialCount ) )
-#endif
+#اگر ( config_SUPPORT_DYNAMIC_تخصیص == 1 )
+    #تعریف_کرو xSemaphoreCreateCounting( ux_Max_گنتی, ux_Initial_گنتی )    x_قطار_Create_Counting_Semaphore( ( ux_Max_گنتی ), ( ux_Initial_گنتی ) )
+#اگر_ختم
 
 /**
  * semphr. h
@@ -1112,9 +1112,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreCreateCountingStatic xSemaphoreCreateCountingStatic
  * \ingroup Semaphores
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xSemaphoreCreateCountingStatic( uxMaxCount, uxInitialCount, pxSemaphoreBuffer )    xQueueCreateCountingSemaphoreStatic( ( uxMaxCount ), ( uxInitialCount ), ( pxSemaphoreBuffer ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#اگر ( config_SUPPORT_STATIC_تخصیص == 1 )
+    #تعریف_کرو xSemaphoreCreateCountingStatic( ux_Max_گنتی, ux_Initial_گنتی, px_Semaphore_بفر )    x_قطار_Create_Counting_Semaphore_Static( ( ux_Max_گنتی ), ( ux_Initial_گنتی ), ( px_Semaphore_بفر ) )
+#اگر_ختم /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  * semphr. h
@@ -1130,7 +1130,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup vSemaphoreDelete vSemaphoreDelete
  * \ingroup Semaphores
  */
-#define vSemaphoreDelete( xSemaphore )    vQueueDelete( ( QueueHandle_t ) ( xSemaphore ) )
+#تعریف_کرو vSemaphoreDelete( xSemaphore )    v_قطار_Delete( ( قطار_Handle_t ) ( xSemaphore ) )
 
 /**
  * semphr.h
@@ -1147,9 +1147,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * the holder may change between the function exiting and the returned value
  * being tested.
  */
-#if ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
-    #define xSemaphoreGetMutexHolder( xSemaphore )    xQueueGetMutexHolder( ( xSemaphore ) )
-#endif
+#اگر ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
+    #تعریف_کرو xSemaphoreGetMutexHolder( xSemaphore )    x_قطار_Get_Mutex_Holder( ( xSemaphore ) )
+#اگر_ختم
 
 /**
  * semphr.h
@@ -1162,9 +1162,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * by a task), return NULL.
  *
  */
-#if ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
-    #define xSemaphoreGetMutexHolderFromISR( xSemaphore )    xQueueGetMutexHolderFromISR( ( xSemaphore ) )
-#endif
+#اگر ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
+    #تعریف_کرو xSemaphoreGetMutexHolderFromISR( xSemaphore )    x_قطار_Get_Mutex_Holder_From_ISR( ( xSemaphore ) )
+#اگر_ختم
 
 /**
  * semphr.h
@@ -1178,7 +1178,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * semaphore is not available.
  *
  */
-#define uxSemaphoreGetCount( xSemaphore )           uxQueueMessagesWaiting( ( QueueHandle_t ) ( xSemaphore ) )
+#تعریف_کرو ux_Semaphore_Get_گنتی( xSemaphore )           ux_قطار_Messages_انتظار( ( قطار_Handle_t ) ( xSemaphore ) )
 
 /**
  * semphr.h
@@ -1192,7 +1192,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * semaphore is not available.
  *
  */
-#define uxSemaphoreGetCountFromISR( xSemaphore )    uxQueueMessagesWaitingFromISR( ( QueueHandle_t ) ( xSemaphore ) )
+#تعریف_کرو ux_Semaphore_Get_گنتی_From_ISR( xSemaphore )    ux_قطار_Messages_انتظار_From_ISR( ( قطار_Handle_t ) ( xSemaphore ) )
 
 /**
  * semphr.h
@@ -1212,8 +1212,8 @@ typedef QueueHandle_t SemaphoreHandle_t;
  *
  * @return pdTRUE if buffer was retrieved, pdFALSE otherwise.
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xSemaphoreGetStaticBuffer( xSemaphore, ppxSemaphoreBuffer )    xQueueGenericGetStaticBuffers( ( QueueHandle_t ) ( xSemaphore ), NULL, ( ppxSemaphoreBuffer ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#اگر ( config_SUPPORT_STATIC_تخصیص == 1 )
+    #تعریف_کرو x_Semaphore_Get_Static_بفر( xSemaphore, ppx_Semaphore_بفر )    x_قطار_Generic_Get_Static_Buffers( ( قطار_Handle_t ) ( xSemaphore ), تہی, ( ppx_Semaphore_بفر ) )
+#اگر_ختم /* configSUPPORT_STATIC_ALLOCATION */
 
-#endif /* SEMAPHORE_H */
+#اگر_ختم /* SEMAPHORE_H */

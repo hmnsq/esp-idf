@@ -3,33 +3,33 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-#include <pthread.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <assert.h>
-#include "wait_for_event.h"
+#شامل <pthread.h>
+#شامل <stdlib.h>
+#شامل <errno.h>
+#شامل <assert.h>
+#شامل "wait_for_event.h"
 
 /*-----------------------------------------------------------*/
 /* Create a new event */
-event_t *event_create(void)
+event_t *event_create(خالی)
 {
-    event_t * ev = malloc(sizeof(event_t));
-    assert(ev != NULL);
+    event_t * ev = حافظہ_دو(حجم(event_t));
+    أكد(ev != تہی);
 
     ev->event_triggered = false;
-    pthread_mutex_init(&ev->mutex, NULL);
-    pthread_cond_init(&ev->cond, NULL);
+    pthread_mutex_init(&ev->mutex, تہی);
+    pthread_cond_init(&ev->cond, تہی);
 
-    return ev;
+    واپس ev;
 }
 
 /*-----------------------------------------------------------*/
 /* Delete an event */
-void event_delete(event_t *ev)
+خالی event_delete(event_t *ev)
 {
     pthread_mutex_destroy(&ev->mutex);
     pthread_cond_destroy(&ev->cond);
-    free(ev);
+    آزاد(ev);
 }
 
 /*-----------------------------------------------------------*/
@@ -38,54 +38,54 @@ bool event_wait(event_t *ev)
 {
     pthread_mutex_lock(&ev->mutex);
 
-    while (!ev->event_triggered)
+    جب (!ev->event_triggered)
     {
         pthread_cond_wait(&ev->cond, &ev->mutex);
     }
 
     ev->event_triggered = false;
     pthread_mutex_unlock(&ev->mutex);
-    return true;
+    واپس true;
 }
 
 /*-----------------------------------------------------------*/
 /* Wait for event with timeout (milliseconds) */
 bool event_wait_timed(event_t *ev, time_t ms)
 {
-    struct timespec ts;
-    int ret = 0;
+    ساخت timespec ts;
+    صحیح ret = 0;
 
     clock_gettime(CLOCK_REALTIME, &ts);
     ts.tv_sec  += ms / 1000;
     ts.tv_nsec += (ms % 1000) * 1000000;
 
     /* Normalize tv_nsec in case it exceeds 1,000,000,000 */
-    if (ts.tv_nsec >= 1000000000L) {
+    اگر (ts.tv_nsec >= 1000000000L) {
         ts.tv_sec += ts.tv_nsec / 1000000000L;
         ts.tv_nsec = ts.tv_nsec % 1000000000L;
     }
 
     pthread_mutex_lock(&ev->mutex);
 
-    while (!ev->event_triggered && ret == 0)
+    جب (!ev->event_triggered && ret == 0)
     {
         ret = pthread_cond_timedwait(&ev->cond, &ev->mutex, &ts);
-        if (ret == ETIMEDOUT)
+        اگر (ret == ETIMEDOUT)
         {
             ev->event_triggered = false;
             pthread_mutex_unlock(&ev->mutex);
-            return false;
+            واپس false;
         }
     }
 
     ev->event_triggered = false;
     pthread_mutex_unlock(&ev->mutex);
-    return true;
+    واپس true;
 }
 
 /*-----------------------------------------------------------*/
 /* Signal / resume an event */
-void event_signal(event_t *ev)
+خالی event_signal(event_t *ev)
 {
     pthread_mutex_lock(&ev->mutex);
     ev->event_triggered = true;
@@ -95,7 +95,7 @@ void event_signal(event_t *ev)
 
 /*-----------------------------------------------------------*/
 /* Discard a pending signal that was never consumed by a wait */
-void event_clear(event_t *ev)
+خالی event_clear(event_t *ev)
 {
     pthread_mutex_lock(&ev->mutex);
     ev->event_triggered = false;

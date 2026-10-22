@@ -8,28 +8,28 @@
  Unit tests for FreeRTOS preemption
 */
 
-#include <esp_types.h>
-#include <stdio.h>
-#include <inttypes.h>
+#شامل <esp_types.h>
+#شامل <stdio.h>
+#شامل <inttypes.h>
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "unity.h"
-#include "esp_cpu.h"
-#include "test_utils.h"
-#include "sdkconfig.h"
+#شامل "freertos/FreeRTOS.h"
+#شامل "freertos/task.h"
+#شامل "freertos/semphr.h"
+#شامل "freertos/queue.h"
+#شامل "unity.h"
+#شامل "esp_cpu.h"
+#شامل "test_utils.h"
+#شامل "sdkconfig.h"
 
-static volatile bool trigger;
-static volatile bool flag;
+ساکن متلون bool trigger;
+ساکن متلون bool flag;
 
-#ifndef CONFIG_FREERTOS_SMP
-#define MAX_YIELD_COUNT 10000
-#else
+#اگر_غیر_تعریف_شدہ CONFIG_FREERTOS_SMP
+#تعریف_کرو MAX_YIELD_گنتی 10000
+#ورنہ
 //TODO: IDF-5081
-#define MAX_YIELD_COUNT 17000
-#endif // CONFIG_FREERTOS_SMP
+#تعریف_کرو MAX_YIELD_گنتی 17000
+#اگر_ختم // CONFIG_FREERTOS_SMP
 
 /* Task:
    - Waits for 'trigger' variable to be set
@@ -37,87 +37,87 @@ static volatile bool flag;
    - Pushes it into a queue supplied as a param
    - Busy-waits until the main task terminates it
 */
-static void task_send_to_queue(void *param)
+ساکن خالی task_send_مقصد_قطار(خالی *param)
 {
-    QueueHandle_t queue = (QueueHandle_t) param;
+    قطار_Handle_t قطار = (قطار_Handle_t) param;
     uint32_t ccount;
 
-    while (!trigger) {}
+    جب (!trigger) {}
 
-    ccount = esp_cpu_get_cycle_count();
+    ccount = esp_cpu_get_چکر_گنتی();
     flag = true;
-    xQueueSendToBack(queue, &ccount, 0);
+    x_قطار_Send_مقصد_عقب(قطار, &ccount, 0);
     /* This is to ensure that higher priority task
        won't wake anyhow, due to this task terminating.
 
        The task runs until terminated by the main task.
     */
-    while (1) {}
+    جب (1) {}
 }
 
 TEST_CASE("Yield from lower priority task, same CPU", "[freertos]")
 {
     /* Do this 3 times, mostly for the benchmark value - the first
        run includes a cache miss so uses more cycles than it should. */
-    for (int i = 0; i < 3; i++) {
+    برائے (صحیح i = 0; i < 3; i++) {
         TaskHandle_t sender_task;
-        QueueHandle_t queue = xQueueCreate(1, sizeof(uint32_t));
+        قطار_Handle_t قطار = x_قطار_Create(1, حجم(uint32_t));
         flag = false;
         trigger = false;
 
         /* "yield" task sits on our CPU, lower priority to us */
-        xTaskCreatePinnedToCore(task_send_to_queue, "YIELD", 2048, (void *)queue, UNITY_FREERTOS_PRIORITY - 1, &sender_task, UNITY_FREERTOS_CPU);
+        x_Task_Create_Pinned_مقصد_Core(task_send_مقصد_قطار, "YIELD", 2048, (خالی *)قطار, UNITY_FREERTOS_ترجیح - 1, &sender_task, UNITY_FREERTOS_CPU);
 
         vTaskDelay(1); /* make sure everything is set up */
         trigger = true;
 
         uint32_t yield_ccount, now_ccount, delta;
-        TEST_ASSERT(xQueueReceive(queue, &yield_ccount, 100 / portTICK_PERIOD_MS));
-        now_ccount = esp_cpu_get_cycle_count();
+        TEST_ASSERT(x_قطار_Receive(قطار, &yield_ccount, 100 / پورٹ_TICK_PERIOD_MS));
+        now_ccount = esp_cpu_get_چکر_گنتی();
         TEST_ASSERT(flag);
 
         delta = now_ccount - yield_ccount;
-        printf("Yielding from lower priority task took %"PRIu32" cycles\n", delta);
-        TEST_ASSERT(delta < MAX_YIELD_COUNT);
+        لکھو("Yielding from lower priority task took %"PRIu32" cycles\n", delta);
+        TEST_ASSERT(delta < MAX_YIELD_گنتی);
 
         vTaskDelete(sender_task);
-        vQueueDelete(queue);
+        v_قطار_Delete(قطار);
     }
 }
 
-#if (CONFIG_FREERTOS_NUMBER_OF_CORES == 2) && CONFIG_FREERTOS_IN_IRAM
+#اگر (CONFIG_FREERTOS_نمبر_کا_CORES == 2) && CONFIG_FREERTOS_اندر_IRAM
 TEST_CASE("Yield from lower priority task, other CPU", "[freertos]")
 {
     uint32_t trigger_ccount, yield_ccount, now_ccount, delta;
 
     /* Do this 3 times, mostly for the benchmark value - the first
        run includes a cache miss so uses more cycles than it should. */
-    for (int i = 0; i < 3; i++) {
+    برائے (صحیح i = 0; i < 3; i++) {
         TaskHandle_t sender_task;
-        QueueHandle_t queue = xQueueCreate(1, sizeof(uint32_t));
+        قطار_Handle_t قطار = x_قطار_Create(1, حجم(uint32_t));
         trigger = false;
         flag = false;
 
         /* "send_to_queue" task sits on the other CPU, lower priority to us */
-        xTaskCreatePinnedToCore(task_send_to_queue, "YIELD", 2048, (void *)queue, UNITY_FREERTOS_PRIORITY - 1,
+        x_Task_Create_Pinned_مقصد_Core(task_send_مقصد_قطار, "YIELD", 2048, (خالی *)قطار, UNITY_FREERTOS_ترجیح - 1,
                                 &sender_task, !UNITY_FREERTOS_CPU);
 
         vTaskDelay(2); /* make sure everything is set up */
         trigger = true;
-        trigger_ccount = esp_cpu_get_cycle_count();
+        trigger_ccount = esp_cpu_get_چکر_گنتی();
 
         // yield_ccount is not useful in this test as it's the other core's CCOUNT
         // so we use trigger_ccount instead
-        TEST_ASSERT(xQueueReceive(queue, &yield_ccount, 100 / portTICK_PERIOD_MS));
-        now_ccount = esp_cpu_get_cycle_count();
+        TEST_ASSERT(x_قطار_Receive(قطار, &yield_ccount, 100 / پورٹ_TICK_PERIOD_MS));
+        now_ccount = esp_cpu_get_چکر_گنتی();
         TEST_ASSERT(flag);
 
         delta = now_ccount - trigger_ccount;
-        printf("Yielding from task on other core took %"PRIu32" cycles\n", delta);
-        TEST_ASSERT(delta < MAX_YIELD_COUNT);
+        لکھو("Yielding from task on other core took %"PRIu32" cycles\n", delta);
+        TEST_ASSERT(delta < MAX_YIELD_گنتی);
 
-        vQueueDelete(queue);
+        v_قطار_Delete(قطار);
         vTaskDelete(sender_task);
     }
 }
-#endif
+#اگر_ختم

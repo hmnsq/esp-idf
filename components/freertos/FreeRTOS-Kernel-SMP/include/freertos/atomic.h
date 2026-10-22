@@ -47,20 +47,20 @@
  * atomics in ISRs.
  */
 
-#ifndef ATOMIC_H
-#define ATOMIC_H
+#اگر_غیر_تعریف_شدہ ATOMIC_H
+#تعریف_کرو ATOMIC_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h must appear in source files before include atomic.h"
-#endif
+#اگر_غیر_تعریف_شدہ INC_FREERTOS_H
+    #غلطی "include FreeRTOS.h must appear in source files before include atomic.h"
+#اگر_ختم
 
 /* Standard includes. */
-#include <stdint.h>
+#شامل <stdint.h>
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#اگر_تعریف_شدہ __cplusplus
+    خارجی "C" {
+#اگر_ختم
 /* *INDENT-ON* */
 
 /*
@@ -71,22 +71,22 @@
  * ATOMIC_ENTER_CRITICAL().
  *
  */
-#if ( portHAS_NESTED_INTERRUPTS == 1 )
+#اگر ( پورٹ_HAS_NESTED_INTERRUPTS == 1 )
 
 /* Nested interrupt scheme is supported in this port. */
-    #define ATOMIC_ENTER_CRITICAL() \
-    UBaseType_t uxCriticalSectionType = portSET_INTERRUPT_MASK_FROM_ISR()
+    #تعریف_کرو ATOMIC_ENTER_CRITICAL() \
+    UBaseType_t uxCriticalSectionType = پورٹ_سیٹ_مداخلت_نقاب_FROM_ISR()
 
-    #define ATOMIC_EXIT_CRITICAL() \
-    portCLEAR_INTERRUPT_MASK_FROM_ISR( uxCriticalSectionType )
+    #تعریف_کرو ATOMIC_EXIT_CRITICAL() \
+    پورٹ_CLEAR_مداخلت_نقاب_FROM_ISR( uxCriticalSectionType )
 
-#else
+#ورنہ
 
 /* Nested interrupt scheme is NOT supported in this port. */
-    #define ATOMIC_ENTER_CRITICAL()    portENTER_CRITICAL()
-    #define ATOMIC_EXIT_CRITICAL()     portEXIT_CRITICAL()
+    #تعریف_کرو ATOMIC_ENTER_CRITICAL()    پورٹ_ENTER_CRITICAL()
+    #تعریف_کرو ATOMIC_EXIT_CRITICAL()     پورٹ_EXIT_CRITICAL()
 
-#endif /* portSET_INTERRUPT_MASK_FROM_ISR() */
+#اگر_ختم /* portSET_INTERRUPT_MASK_FROM_ISR() */
 
 /*
  * Port specific definition -- "always inline".
@@ -95,12 +95,12 @@
  * for atomic.  Thus, if portFORCE_INLINE is not provided by portmacro.h,
  * instead of resulting error, simply define it away.
  */
-#ifndef portFORCE_INLINE
-    #define portFORCE_INLINE
-#endif
+#اگر_غیر_تعریف_شدہ پورٹ_FORCE_INLINE
+    #تعریف_کرو پورٹ_FORCE_INLINE
+#اگر_ختم
 
-#define ATOMIC_COMPARE_AND_SWAP_SUCCESS    0x1U     /**< Compare and swap succeeded, swapped. */
-#define ATOMIC_COMPARE_AND_SWAP_FAILURE    0x0U     /**< Compare and swap failed, did not swap. */
+#تعریف_کرو ATOMIC_COMPARE_AND_تبادلہ_SUCCESS    0x1U     /**< Compare and swap succeeded, swapped. */
+#تعریف_کرو ATOMIC_COMPARE_AND_تبادلہ_FAILURE    0x0U     /**< Compare and swap failed, did not swap. */
 
 /*----------------------------- Swap && CAS ------------------------------*/
 
@@ -119,27 +119,27 @@
  * @note This function only swaps *pulDestination with ulExchange, if previous
  *       *pulDestination value equals ulComparand.
  */
-static portFORCE_INLINE uint32_t Atomic_CompareAndSwap_u32( uint32_t volatile * pulDestination,
+ساکن پورٹ_FORCE_INLINE uint32_t Atomic_Compare_And_تبادلہ_u32( uint32_t متلون * pulDestination,
                                                             uint32_t ulExchange,
                                                             uint32_t ulComparand )
 {
-    uint32_t ulReturnValue;
+    uint32_t ul_Return_قدر;
 
     ATOMIC_ENTER_CRITICAL();
     {
-        if( *pulDestination == ulComparand )
+        اگر( *pulDestination == ulComparand )
         {
             *pulDestination = ulExchange;
-            ulReturnValue = ATOMIC_COMPARE_AND_SWAP_SUCCESS;
+            ul_Return_قدر = ATOMIC_COMPARE_AND_تبادلہ_SUCCESS;
         }
-        else
+        ورنہ
         {
-            ulReturnValue = ATOMIC_COMPARE_AND_SWAP_FAILURE;
+            ul_Return_قدر = ATOMIC_COMPARE_AND_تبادلہ_FAILURE;
         }
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulReturnValue;
+    واپس ul_Return_قدر;
 }
 /*-----------------------------------------------------------*/
 
@@ -155,19 +155,19 @@ static portFORCE_INLINE uint32_t Atomic_CompareAndSwap_u32( uint32_t volatile * 
  *
  * @return The initial value of *ppvDestination.
  */
-static portFORCE_INLINE void * Atomic_SwapPointers_p32( void * volatile * ppvDestination,
-                                                        void * pvExchange )
+ساکن پورٹ_FORCE_INLINE خالی * Atomic_تبادلہ_اشارے_p32( خالی * متلون * ppvDestination,
+                                                        خالی * pvExchange )
 {
-    void * pReturnValue;
+    خالی * p_Return_قدر;
 
     ATOMIC_ENTER_CRITICAL();
     {
-        pReturnValue = *ppvDestination;
+        p_Return_قدر = *ppvDestination;
         *ppvDestination = pvExchange;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return pReturnValue;
+    واپس p_Return_قدر;
 }
 /*-----------------------------------------------------------*/
 
@@ -187,23 +187,23 @@ static portFORCE_INLINE void * Atomic_SwapPointers_p32( void * volatile * ppvDes
  * @note This function only swaps *ppvDestination with pvExchange, if previous
  *       *ppvDestination value equals pvComparand.
  */
-static portFORCE_INLINE uint32_t Atomic_CompareAndSwapPointers_p32( void * volatile * ppvDestination,
-                                                                    void * pvExchange,
-                                                                    void * pvComparand )
+ساکن پورٹ_FORCE_INLINE uint32_t Atomic_Compare_And_تبادلہ_اشارے_p32( خالی * متلون * ppvDestination,
+                                                                    خالی * pvExchange,
+                                                                    خالی * pvComparand )
 {
-    uint32_t ulReturnValue = ATOMIC_COMPARE_AND_SWAP_FAILURE;
+    uint32_t ul_Return_قدر = ATOMIC_COMPARE_AND_تبادلہ_FAILURE;
 
     ATOMIC_ENTER_CRITICAL();
     {
-        if( *ppvDestination == pvComparand )
+        اگر( *ppvDestination == pvComparand )
         {
             *ppvDestination = pvExchange;
-            ulReturnValue = ATOMIC_COMPARE_AND_SWAP_SUCCESS;
+            ul_Return_قدر = ATOMIC_COMPARE_AND_تبادلہ_SUCCESS;
         }
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulReturnValue;
+    واپس ul_Return_قدر;
 }
 
 
@@ -220,19 +220,19 @@ static portFORCE_INLINE uint32_t Atomic_CompareAndSwapPointers_p32( void * volat
  *
  * @return previous *pulAddend value.
  */
-static portFORCE_INLINE uint32_t Atomic_Add_u32( uint32_t volatile * pulAddend,
-                                                 uint32_t ulCount )
+ساکن پورٹ_FORCE_INLINE uint32_t Atomic_جوڑو_u32( uint32_t متلون * pulAddend,
+                                                 uint32_t ul_گنتی )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulAddend;
-        *pulAddend += ulCount;
+        *pulAddend += ul_گنتی;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    واپس ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -248,19 +248,19 @@ static portFORCE_INLINE uint32_t Atomic_Add_u32( uint32_t volatile * pulAddend,
  *
  * @return previous *pulAddend value.
  */
-static portFORCE_INLINE uint32_t Atomic_Subtract_u32( uint32_t volatile * pulAddend,
-                                                      uint32_t ulCount )
+ساکن پورٹ_FORCE_INLINE uint32_t Atomic_تفریق_u32( uint32_t متلون * pulAddend,
+                                                      uint32_t ul_گنتی )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulAddend;
-        *pulAddend -= ulCount;
+        *pulAddend -= ul_گنتی;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    واپس ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -274,7 +274,7 @@ static portFORCE_INLINE uint32_t Atomic_Subtract_u32( uint32_t volatile * pulAdd
  *
  * @return *pulAddend value before increment.
  */
-static portFORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t volatile * pulAddend )
+ساکن پورٹ_FORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t متلون * pulAddend )
 {
     uint32_t ulCurrent;
 
@@ -285,7 +285,7 @@ static portFORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t volatile * pulAd
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    واپس ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -299,7 +299,7 @@ static portFORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t volatile * pulAd
  *
  * @return *pulAddend value before decrement.
  */
-static portFORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t volatile * pulAddend )
+ساکن پورٹ_FORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t متلون * pulAddend )
 {
     uint32_t ulCurrent;
 
@@ -310,7 +310,7 @@ static portFORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t volatile * pulAd
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    واپس ulCurrent;
 }
 
 /*----------------------------- Bitwise Logical ------------------------------*/
@@ -326,19 +326,19 @@ static portFORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t volatile * pulAd
  *
  * @return The original value of *pulDestination.
  */
-static portFORCE_INLINE uint32_t Atomic_OR_u32( uint32_t volatile * pulDestination,
-                                                uint32_t ulValue )
+ساکن پورٹ_FORCE_INLINE uint32_t Atomic_OR_u32( uint32_t متلون * pulDestination,
+                                                uint32_t ul_قدر )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulDestination;
-        *pulDestination |= ulValue;
+        *pulDestination |= ul_قدر;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    واپس ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -353,19 +353,19 @@ static portFORCE_INLINE uint32_t Atomic_OR_u32( uint32_t volatile * pulDestinati
  *
  * @return The original value of *pulDestination.
  */
-static portFORCE_INLINE uint32_t Atomic_AND_u32( uint32_t volatile * pulDestination,
-                                                 uint32_t ulValue )
+ساکن پورٹ_FORCE_INLINE uint32_t Atomic_AND_u32( uint32_t متلون * pulDestination,
+                                                 uint32_t ul_قدر )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulDestination;
-        *pulDestination &= ulValue;
+        *pulDestination &= ul_قدر;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    واپس ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -380,19 +380,19 @@ static portFORCE_INLINE uint32_t Atomic_AND_u32( uint32_t volatile * pulDestinat
  *
  * @return The original value of *pulDestination.
  */
-static portFORCE_INLINE uint32_t Atomic_NAND_u32( uint32_t volatile * pulDestination,
-                                                  uint32_t ulValue )
+ساکن پورٹ_FORCE_INLINE uint32_t Atomic_NAND_u32( uint32_t متلون * pulDestination,
+                                                  uint32_t ul_قدر )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulDestination;
-        *pulDestination = ~( ulCurrent & ulValue );
+        *pulDestination = ~( ulCurrent & ul_قدر );
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    واپس ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -407,25 +407,25 @@ static portFORCE_INLINE uint32_t Atomic_NAND_u32( uint32_t volatile * pulDestina
  *
  * @return The original value of *pulDestination.
  */
-static portFORCE_INLINE uint32_t Atomic_XOR_u32( uint32_t volatile * pulDestination,
-                                                 uint32_t ulValue )
+ساکن پورٹ_FORCE_INLINE uint32_t Atomic_XOR_u32( uint32_t متلون * pulDestination,
+                                                 uint32_t ul_قدر )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulDestination;
-        *pulDestination ^= ulValue;
+        *pulDestination ^= ul_قدر;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    واپس ulCurrent;
 }
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#اگر_تعریف_شدہ __cplusplus
     }
-#endif
+#اگر_ختم
 /* *INDENT-ON* */
 
-#endif /* ATOMIC_H */
+#اگر_ختم /* ATOMIC_H */

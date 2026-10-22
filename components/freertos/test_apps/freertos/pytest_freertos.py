@@ -1,8 +1,8 @@
 # SPDX-FileCopyrightText: 2022-2026 Espressif Systems (Shanghai) CO LTD
 # SPDX-License-Identifier: Apache-2.0
-import pytest
-from pytest_embedded import Dut
-from pytest_embedded_idf.utils import idf_parametrize
+درآمد pytest
+سے pytest_embedded درآمد Dut
+سے pytest_embedded_idf.utils درآمد idf_parametrize
 
 
 # Test strategy for FreeRTOS coverage (all single board tests):
@@ -43,59 +43,59 @@ from pytest_embedded_idf.utils import idf_parametrize
         # IRAM as 8-bit accessible memory
         ('iram_as_8bit_access_mem', 'esp32'),
     ],
-    indirect=['config', 'target'],
+    بالواسطہ=['config', 'target'],
 )
-def test_freertos(dut: Dut) -> None:
-    dut.run_all_single_board_cases()
+تعریف test_freertos(dut: Dut) -> کچھ_نہیں:
+    dut.تسلسل_all_single_board_cases()
 
 
 # Assertion failure tests (Distributed to targets with minimal coverage)
 @pytest.mark.generic
-@pytest.mark.parametrize('config', ['freertos_options'], indirect=True)
+@pytest.mark.parametrize('config', ['freertos_options'], بالواسطہ=سچ)
 @idf_parametrize(
     'target',
     [
         'esp32c2',
     ],
-    indirect=['target'],
+    بالواسطہ=['target'],
 )
-def test_task_notify_too_high_index_fails(dut: Dut) -> None:
+تعریف test_task_notify_too_بلند_اشاریہ_fails(dut: Dut) -> کچھ_نہیں:
     dut.expect_exact('Press ENTER to see the list of tests.')
-    dut.write('"Notify too high index fails"')
+    dut.اكتب('"Notify too high index fails"')
     dut.expect('assert failed: xTaskGenericNotify', timeout=5)
     dut.expect('uxIndexToNotify < [0-9]+')
     dut.expect_exact('Rebooting...')
 
 
 @pytest.mark.generic
-@pytest.mark.parametrize('config', ['freertos_options'], indirect=True)
+@pytest.mark.parametrize('config', ['freertos_options'], بالواسطہ=سچ)
 @idf_parametrize(
     'target',
     [
         'esp32s2',
     ],
-    indirect=['target'],
+    بالواسطہ=['target'],
 )
-def test_task_notify_wait_too_high_index_fails(dut: Dut) -> None:
+تعریف test_task_notify_wait_too_بلند_اشاریہ_fails(dut: Dut) -> کچھ_نہیں:
     dut.expect_exact('Press ENTER to see the list of tests.')
-    dut.write('"Notify Wait too high index fails"')
+    dut.اكتب('"Notify Wait too high index fails"')
     dut.expect('assert failed: xTaskGenericNotifyWait', timeout=5)
     dut.expect('uxIndexToWait < [0-9]+', timeout=5)
     dut.expect_exact('Rebooting...')
 
 
 @pytest.mark.generic
-@pytest.mark.parametrize('config', ['default'], indirect=True)
+@pytest.mark.parametrize('config', ['default'], بالواسطہ=سچ)
 @idf_parametrize(
     'target',
     [
         'esp32s3',  # Xtensa
         'esp32p4',  # RISC-V
     ],
-    indirect=['target'],
+    بالواسطہ=['target'],
 )
-def test_port_must_assert_in_isr(dut: Dut) -> None:
+تعریف test_پورٹ_must_assert_اندر_isr(dut: Dut) -> کچھ_نہیں:
     dut.expect_exact('Press ENTER to see the list of tests.')
-    dut.write('"port must assert if in ISR context"')
+    dut.اكتب('"port must assert if in ISR context"')
     dut.expect('assert failed: vPortAssertIfInISR', timeout=5)
     dut.expect_exact('Rebooting...')

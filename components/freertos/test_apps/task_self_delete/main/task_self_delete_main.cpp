@@ -18,63 +18,63 @@
  * A lower-priority heartbeat is created after PASS and must keep printing
  * if that second delete did not panic.
  */
-#include <array>
-#include <cstdio>
+#شامل <array>
+#شامل <cstdio>
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#شامل "freertos/FreeRTOS.h"
+#شامل "freertos/task.h"
 
-namespace {
+نامخلا {
 
 StaticTask_t s_self_tcb;
 StaticTask_t s_heartbeat_tcb;
-std::array<StackType_t, 4096> s_self_stack;
-std::array<StackType_t, 4096> s_heartbeat_stack;
+std::array<ڈھیر_Type_t, 4096> s_self_ڈھیر;
+std::array<ڈھیر_Type_t, 4096> s_heartbeat_ڈھیر;
 
-void self_delete_must_not_return(void *arg)
+خالی self_delete_must_not_return(خالی *arg)
 {
-    (void)arg;
-    vTaskDelete(nullptr);
+    (خالی)arg;
+    vTaskDelete(خالی_اشاریہ);
 }
 
-void heartbeat(void *arg)
+خالی heartbeat(خالی *arg)
 {
-    (void)arg;
-    for (;;) {
-        std::printf("task_self_delete: still running\n");
-        vTaskDelay(pdMS_TO_TICKS(100));
+    (خالی)arg;
+    برائے (;;) {
+        std::لکھو("task_self_delete: still running\n");
+        vTaskDelay(pd_MS_مقصد_TICKS(100));
     }
 }
 
 } // namespace
 
-extern "C" void app_main(void)
+خارجی "C" خالی app_main(خالی)
 {
     TaskHandle_t self_del = xTaskCreateStatic(self_delete_must_not_return,
                                               "self_del",
-                                              s_self_stack.size(),
-                                              nullptr,
+                                              s_self_ڈھیر.size(),
+                                              خالی_اشاریہ,
                                               configMAX_PRIORITIES - 1,
-                                              s_self_stack.data(),
+                                              s_self_ڈھیر.data(),
                                               &s_self_tcb);
-    if (self_del == nullptr) {
-        std::printf("task_self_delete: FAIL create\n");
-        return;
+    اگر (self_del == خالی_اشاریہ) {
+        std::لکھو("task_self_delete: FAIL create\n");
+        واپس;
     }
 
     /* Child was higher priority, so it has already run. Surviving to here
      * means it did not fall off its entry after vTaskDelete(). */
-    std::printf("task_self_delete: PASS\n");
+    std::لکھو("task_self_delete: PASS\n");
 
     TaskHandle_t hb = xTaskCreateStatic(heartbeat,
                                         "hb",
-                                        s_heartbeat_stack.size(),
-                                        nullptr,
-                                        tskIDLE_PRIORITY + 1,
-                                        s_heartbeat_stack.data(),
+                                        s_heartbeat_ڈھیر.size(),
+                                        خالی_اشاریہ,
+                                        tsk_IDLE_ترجیح + 1,
+                                        s_heartbeat_ڈھیر.data(),
                                         &s_heartbeat_tcb);
-    if (hb == nullptr) {
-        std::printf("task_self_delete: FAIL create\n");
-        return;
+    اگر (hb == خالی_اشاریہ) {
+        std::لکھو("task_self_delete: FAIL create\n");
+        واپس;
     }
 }
