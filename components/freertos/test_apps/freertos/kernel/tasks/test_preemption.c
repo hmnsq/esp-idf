@@ -8,25 +8,25 @@
  Unit tests for FreeRTOS preemption
 */
 
-#include <esp_types.h>
-#include <stdio.h>
-#include <inttypes.h>
+#ضمن <esp_types.h>
+#ضمن <stdio.h>
+#ضمن <inttypes.h>
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "unity.h"
-#include "esp_cpu.h"
-#include "test_utils.h"
-#include "sdkconfig.h"
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
+#ضمن "freertos/semphr.h"
+#ضمن "freertos/queue.h"
+#ضمن "unity.h"
+#ضمن "esp_cpu.h"
+#ضمن "test_utils.h"
+#ضمن "sdkconfig.h"
 
-static volatile bool trigger;
-static volatile bool flag;
+ساكن متطاير bool trigger;
+ساكن متطاير bool flag;
 
 #ifndef CONFIG_FREERTOS_SMP
 #define MAX_YIELD_COUNT 10000
-#else
+#אחרת
 //TODO: IDF-5081
 #define MAX_YIELD_COUNT 17000
 #endif // CONFIG_FREERTOS_SMP
@@ -37,12 +37,12 @@ static volatile bool flag;
    - Pushes it into a queue supplied as a param
    - Busy-waits until the main task terminates it
 */
-static void task_send_to_queue(void *param)
+ساكن فراغ task_send_to_queue(فراغ *param)
 {
     QueueHandle_t queue = (QueueHandle_t) param;
     uint32_t ccount;
 
-    while (!trigger) {}
+    כלעוד (!trigger) {}
 
     ccount = esp_cpu_get_cycle_count();
     flag = true;
@@ -52,21 +52,21 @@ static void task_send_to_queue(void *param)
 
        The task runs until terminated by the main task.
     */
-    while (1) {}
+    כלעוד (1) {}
 }
 
 TEST_CASE("Yield from lower priority task, same CPU", "[freertos]")
 {
     /* Do this 3 times, mostly for the benchmark value - the first
        run includes a cache miss so uses more cycles than it should. */
-    for (int i = 0; i < 3; i++) {
+    עבור (صحيح i = 0; i < 3; i++) {
         TaskHandle_t sender_task;
-        QueueHandle_t queue = xQueueCreate(1, sizeof(uint32_t));
+        QueueHandle_t queue = xQueueCreate(1, حجم(uint32_t));
         flag = false;
         trigger = false;
 
         /* "yield" task sits on our CPU, lower priority to us */
-        xTaskCreatePinnedToCore(task_send_to_queue, "YIELD", 2048, (void *)queue, UNITY_FREERTOS_PRIORITY - 1, &sender_task, UNITY_FREERTOS_CPU);
+        xTaskCreatePinnedToCore(task_send_to_queue, "YIELD", 2048, (فراغ *)queue, UNITY_FREERTOS_PRIORITY - 1, &sender_task, UNITY_FREERTOS_CPU);
 
         vTaskDelay(1); /* make sure everything is set up */
         trigger = true;
@@ -85,21 +85,21 @@ TEST_CASE("Yield from lower priority task, same CPU", "[freertos]")
     }
 }
 
-#if (CONFIG_FREERTOS_NUMBER_OF_CORES == 2) && CONFIG_FREERTOS_IN_IRAM
+#אם (CONFIG_FREERTOS_NUMBER_OF_CORES == 2) && CONFIG_FREERTOS_IN_IRAM
 TEST_CASE("Yield from lower priority task, other CPU", "[freertos]")
 {
     uint32_t trigger_ccount, yield_ccount, now_ccount, delta;
 
     /* Do this 3 times, mostly for the benchmark value - the first
        run includes a cache miss so uses more cycles than it should. */
-    for (int i = 0; i < 3; i++) {
+    עבור (صحيح i = 0; i < 3; i++) {
         TaskHandle_t sender_task;
-        QueueHandle_t queue = xQueueCreate(1, sizeof(uint32_t));
+        QueueHandle_t queue = xQueueCreate(1, حجم(uint32_t));
         trigger = false;
         flag = false;
 
         /* "send_to_queue" task sits on the other CPU, lower priority to us */
-        xTaskCreatePinnedToCore(task_send_to_queue, "YIELD", 2048, (void *)queue, UNITY_FREERTOS_PRIORITY - 1,
+        xTaskCreatePinnedToCore(task_send_to_queue, "YIELD", 2048, (فراغ *)queue, UNITY_FREERTOS_PRIORITY - 1,
                                 &sender_task, !UNITY_FREERTOS_CPU);
 
         vTaskDelay(2); /* make sure everything is set up */
