@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <string.h>
-#include "soc/soc_caps.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "unity.h"
+#અન્તર્ભાવ "sdkconfig.h"
+#અન્તર્ભાવ <string.h>
+#અન્તર્ભાવ "soc/soc_caps.h"
+#અન્તર્ભાવ "freertos/FreeRTOS.h"
+#અન્તર્ભાવ "freertos/task.h"
+#અન્તર્ભાવ "unity.h"
 
 #define TASKS_STATUS_ARRAY_LEN  16
 
@@ -19,7 +19,7 @@
  * As such, the port layer of FreeRTOS will adjust the lowest address of the stack when a coprocessor
  * context is saved.
  */
-#if SOC_CPU_HAS_PIE
+#જો SOC_CPU_HAS_PIE
 
 /**
  * @brief Performs the signed sum of two 4-word vectors using the PIE.
@@ -28,20 +28,20 @@
  * @param b Second vector
  * @param dst Destination to store the sum
  */
-void pie_vector_unsigned_add(const uint32_t a[4], const uint32_t b[4], uint32_t dst[4]);
+શૂન્ય pie_vector_unsigned_add(અચલ uint32_t a[4], અચલ uint32_t b[4], uint32_t dst[4]);
 
-static void other_task(void* arg)
+સ્થિર શૂન્ય other_task(શૂન્ય* arg)
 {
     uint32_t a[4] = { 1, 2, 3, 4};
     uint32_t b[4] = { 42, 43, 44, 45};
     uint32_t dst[4] = { 0 };
-    const TaskHandle_t main_task = (TaskHandle_t) arg;
+    અચલ TaskHandle_t main_task = (TaskHandle_t) arg;
 
     /* This task must also use the PIE coprocessor to force a PIE context flush on the main task */
     pie_vector_unsigned_add(a, b, dst);
 
     xTaskNotifyGive(main_task);
-    vTaskDelete(NULL);
+    vTaskDelete(ખાલી);
 }
 
 TEST_CASE("PIE: Context save does not affect stack watermark", "[freertos]")
@@ -54,11 +54,11 @@ TEST_CASE("PIE: Context save does not affect stack watermark", "[freertos]")
     TaskHandle_t pvCreatedTask;
     /* Force the FreeRTOS port layer to store a PIE context in the current task.
      * So let's use the PIE and make sure another task, on the SAME CORE, also uses it */
-    const int core_id = xPortGetCoreID();
-    const TaskHandle_t current_handle = xTaskGetCurrentTaskHandle();
+    અચલ પૂર્ણાંક core_id = xPortGetCoreID();
+    અચલ TaskHandle_t current_handle = xTaskGetCurrentTaskHandle();
 
     /* Get the current stack watermark */
-    const UBaseType_t before_watermark = uxTaskGetStackHighWaterMark(current_handle);
+    અચલ UBaseType_t before_watermark = ux_Task_Get_ઢગલો_ઉપલું_Water_Mark(current_handle);
 
     /* Use the PIE unit, the context will NOT be flushed until another task starts using it */
     pie_vector_unsigned_add(a, b, dst);
@@ -66,7 +66,7 @@ TEST_CASE("PIE: Context save does not affect stack watermark", "[freertos]")
     xTaskCreatePinnedToCore(other_task,
                             "OtherTask",
                             2048,
-                            (void*) current_handle,
+                            (શૂન્ય*) current_handle,
                             CONFIG_UNITY_FREERTOS_PRIORITY - 1,
                             &pvCreatedTask,
                             core_id);
@@ -76,7 +76,7 @@ TEST_CASE("PIE: Context save does not affect stack watermark", "[freertos]")
     /* Wait for other task to complete */
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
-    const UBaseType_t after_watermark = uxTaskGetStackHighWaterMark(current_handle);
+    અચલ UBaseType_t after_watermark = ux_Task_Get_ઢગલો_ઉપલું_Water_Mark(current_handle);
 
     /* The current task has seen a PIE registers context save, so we have at least 8 16-byte registers saved on the
      * stack, which represents 128 bytes. In practice, it may be very different, for example a call to printf would

@@ -4,92 +4,92 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <esp_types.h>
-#include <stdio.h>
-#include <inttypes.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "esp_intr_alloc.h"
-#include "esp_cpu.h"
-#include "unity.h"
-#include "test_utils.h"
-#include "freertos_performance.h"
+#અન્તર્ભાવ <esp_types.h>
+#અન્તર્ભાવ <stdio.h>
+#અન્તર્ભાવ <inttypes.h>
+#અન્તર્ભાવ "freertos/FreeRTOS.h"
+#અન્તર્ભાવ "freertos/task.h"
+#અન્તર્ભાવ "freertos/semphr.h"
+#અન્તર્ભાવ "freertos/queue.h"
+#અન્તર્ભાવ "esp_intr_alloc.h"
+#અન્તર્ભાવ "esp_cpu.h"
+#અન્તર્ભાવ "unity.h"
+#અન્તર્ભાવ "test_utils.h"
+#અન્તર્ભાવ "freertos_performance.h"
 
-#define NUMBER_OF_ITERATIONS 1023
+#define સંખ્યા_OF_ITERATIONS 1023
 
-static int compare_uint32(const void *a, const void *b)
+સ્થિર પૂર્ણાંક compare_uint32(અચલ શૂન્ય *a, અચલ શૂન્ય *b)
 {
-    return (*(uint32_t *)a - * (uint32_t *)b);
+    પાછા (*(uint32_t *)a - * (uint32_t *)b);
 }
 
-static uint32_t calculate_median(uint32_t *values, int size)
+સ્થિર uint32_t calculate_median(uint32_t *કિંમતો, પૂર્ણાંક size)
 {
     /* Sort the array of values containing the scheduling time of each iteration */
-    qsort(values, size, sizeof(uint32_t), compare_uint32);
+    qsort(કિંમતો, size, કદ(uint32_t), compare_uint32);
 
     /* Return the median value. (size is an odd number) */
-    return values[size / 2];
+    પાછા કિંમતો[size / 2];
 }
 
-typedef struct {
+પ્રકારવ્યાખ્યા સંરચના {
     SemaphoreHandle_t end_sema;
     uint32_t before_sched;
-    uint32_t cycles_to_sched[NUMBER_OF_ITERATIONS];
+    uint32_t cycles_to_sched[સંખ્યા_OF_ITERATIONS];
     TaskHandle_t t1_handle;
 } test_context_t;
 
-static void test_task_1(void *arg)
+સ્થિર શૂન્ય test_task_1(શૂન્ય *arg)
 {
     test_context_t *context = (test_context_t *)arg;
 
-    for (;;) {
-        context->before_sched = esp_cpu_get_cycle_count();
+    માટે (;;) {
+        context->before_sched = esp_cpu_get_cycle_ગણતરી();
         taskYIELD();
     }
 
-    vTaskDelete(NULL);
+    vTaskDelete(ખાલી);
 }
 
-static void test_task_2(void *arg)
+સ્થિર શૂન્ય test_task_2(શૂન્ય *arg)
 {
     test_context_t *context = (test_context_t *)arg;
 
-    vTaskPrioritySet(NULL, CONFIG_UNITY_FREERTOS_PRIORITY + 1);
+    vTaskPrioritySet(ખાલી, CONFIG_UNITY_FREERTOS_PRIORITY + 1);
     vTaskPrioritySet(context->t1_handle, CONFIG_UNITY_FREERTOS_PRIORITY + 1);
     taskYIELD();
 
-    for (int i = 0; i < NUMBER_OF_ITERATIONS; i++) {
-        context->cycles_to_sched[i] = esp_cpu_get_cycle_count() - context->before_sched;
+    માટે (પૂર્ણાંક i = 0; i < સંખ્યા_OF_ITERATIONS; i++) {
+        context->cycles_to_sched[i] = esp_cpu_get_cycle_ગણતરી() - context->before_sched;
         taskYIELD();
     }
 
     xSemaphoreGive(context->end_sema);
     vTaskDelete(context->t1_handle);
-    vTaskDelete(NULL);
+    vTaskDelete(ખાલી);
 }
 
 TEST_CASE("scheduling time test", "[freertos]")
 {
     test_context_t context;
 
-    context.end_sema = xSemaphoreCreateBinary();
-    TEST_ASSERT(context.end_sema != NULL);
+    context.end_sema = x_Semaphore_Create_દ્વિઅંકી();
+    TEST_ASSERT(context.end_sema != ખાલી);
 
-#if !CONFIG_FREERTOS_UNICORE
+#જો !CONFIG_FREERTOS_UNICORE
     xTaskCreatePinnedToCore(test_task_1, "test1", 4096, &context, CONFIG_UNITY_FREERTOS_PRIORITY - 1, &context.t1_handle, 1);
-    xTaskCreatePinnedToCore(test_task_2, "test2", 4096, &context, CONFIG_UNITY_FREERTOS_PRIORITY - 1, NULL, 1);
-#else
+    xTaskCreatePinnedToCore(test_task_2, "test2", 4096, &context, CONFIG_UNITY_FREERTOS_PRIORITY - 1, ખાલી, 1);
+#નહીંતર
     xTaskCreatePinnedToCore(test_task_1, "test1", 4096, &context, CONFIG_UNITY_FREERTOS_PRIORITY - 1, &context.t1_handle, 0);
-    xTaskCreatePinnedToCore(test_task_2, "test2", 4096, &context, CONFIG_UNITY_FREERTOS_PRIORITY - 1, NULL, 0);
+    xTaskCreatePinnedToCore(test_task_2, "test2", 4096, &context, CONFIG_UNITY_FREERTOS_PRIORITY - 1, ખાલી, 0);
 #endif
 
     BaseType_t result = xSemaphoreTake(context.end_sema, portMAX_DELAY);
     TEST_ASSERT_EQUAL_HEX32(pdTRUE, result);
 
     /* We calculate the median instead of the average to avoid outliers which may occur due to cache speed variabilities */
-    uint32_t median_cycles = calculate_median(context.cycles_to_sched, NUMBER_OF_ITERATIONS);
+    uint32_t median_cycles = calculate_median(context.cycles_to_sched, સંખ્યા_OF_ITERATIONS);
     TEST_PERFORMANCE_LESS_THAN(SCHEDULING_TIME, "%"PRIu32" cycles", median_cycles);
 
     /* Cleanup */

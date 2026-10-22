@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include "esp_assert.h"
-#include "esp_heap_caps.h"
-#include "esp_compiler.h"
-#include "freertos/idf_additions.h"
-#include "freertos/freertos_debug.h"
-#include "esp_private/freertos_idf_additions_priv.h"
+#અન્તર્ભાવ "sdkconfig.h"
+#અન્તર્ભાવ "esp_assert.h"
+#અન્તર્ભાવ "esp_heap_caps.h"
+#અન્તર્ભાવ "esp_compiler.h"
+#અન્તર્ભાવ "freertos/idf_additions.h"
+#અન્તર્ભાવ "freertos/freertos_debug.h"
+#અન્તર્ભાવ "esp_private/freertos_idf_additions_priv.h"
 
 /**
  * This file will be included in `tasks.c` file, thus, it is treated as a source
@@ -26,20 +26,20 @@
  * Both StaticTask_t and TCB_t structures are provided by FreeRTOS sources.
  * This is just an additional check of the consistency of these structures.
  */
-_Static_assert( offsetof( StaticTask_t, pxDummy6 ) == offsetof( TCB_t, pxStack ) );
-_Static_assert( offsetof( StaticTask_t, pxDummy8 ) == offsetof( TCB_t, pxEndOfStack ) );
-#if !CONFIG_IDF_TARGET_LINUX    // Disabled for linux builds due to differences in types
+_Static_assert( offsetof( StaticTask_t, pxDummy6 ) == offsetof( TCB_t, px_ઢગલો ) );
+_Static_assert( offsetof( StaticTask_t, pxDummy8 ) == offsetof( TCB_t, px_End_Of_ઢગલો ) );
+#જો !CONFIG_IDF_TARGET_LINUX    // Disabled for linux builds due to differences in types
 _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "CONFIG_FREERTOS_NO_AFFINITY must be the same as tskNO_AFFINITY" );
 #endif
 
 /* ------------------------------------------------- Kernel Control ------------------------------------------------- */
 
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#જો ( !CONFIG_FREERTOS_SMP && ( config_અંક_CORES > 1 ) )
 
 /*
  * Wrapper function to take "xKerneLock"
  */
-    void prvTakeKernelLock( void )
+    શૂન્ય prvTakeKernelLock( શૂન્ય )
     {
         /* We call the tasks.c critical section macro to take xKernelLock */
         taskENTER_CRITICAL( &xKernelLock );
@@ -48,12 +48,12 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
 #endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 /*----------------------------------------------------------*/
 
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#જો ( !CONFIG_FREERTOS_SMP && ( config_અંક_CORES > 1 ) )
 
 /*
  * Wrapper function to release "xKerneLock"
  */
-    void prvReleaseKernelLock( void )
+    શૂન્ય prvReleaseKernelLock( શૂન્ય )
     {
         /* We call the tasks.c critical section macro to release xKernelLock */
         taskEXIT_CRITICAL( &xKernelLock );
@@ -62,12 +62,12 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
 #endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 /*----------------------------------------------------------*/
 
-#if ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#જો ( CONFIG_FREERTOS_SMP && ( config_અંક_CORES > 1 ) )
 
 /*
  * Workaround for non-thread safe multi-core OS startup (see IDF-4524)
  */
-    void prvStartSchedulerOtherCores( void )
+    શૂન્ય prvStartSchedulerOtherCores( શૂન્ય )
     {
         /* This function is always called with interrupts disabled*/
         xSchedulerRunning = pdTRUE;
@@ -76,9 +76,9 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
 #endif /* ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 /*----------------------------------------------------------*/
 
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#જો ( !CONFIG_FREERTOS_SMP && ( config_અંક_CORES > 1 ) )
 
-    BaseType_t xTaskIncrementTickOtherCores( void )
+    BaseType_t xTaskIncrementTickOtherCores( શૂન્ય )
     {
         /* Minor optimization. This function can never switch cores mid
          * execution */
@@ -90,9 +90,9 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
 
         /* Called by the portable layer each time a tick interrupt occurs
          * on a core other than core 0. */
-        traceTASK_INCREMENT_TICK( xTickCount );
+        traceTASK_INCREMENT_TICK( x_Tick_ગણતરી );
 
-        if( uxSchedulerSuspended[ xCoreID ] == ( UBaseType_t ) 0U )
+        જો( uxSchedulerSuspended[ xCoreID ] == ( UBaseType_t ) 0U )
         {
             /* We need take the kernel lock here as we are about to access
              * kernel data structures. */
@@ -101,13 +101,13 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
             /* Tasks of equal priority to the currently running task will share
              * processing time (time slice) if preemption is on, and the application
              * writer has not explicitly turned time slicing off. */
-            #if ( ( configUSE_PREEMPTION == 1 ) && ( configUSE_TIME_SLICING == 1 ) )
+            #જો ( ( configUSE_PREEMPTION == 1 ) && ( configUSE_TIME_SLICING == 1 ) )
             {
-                if( listCURRENT_LIST_LENGTH( &( pxReadyTasksLists[ pxCurrentTCBs[ xCoreID ]->uxPriority ] ) ) > ( UBaseType_t ) 1 )
+                જો( listCURRENT_LIST_LENGTH( &( pxReadyTasksLists[ pxCurrentTCBs[ xCoreID ]->uxPriority ] ) ) > ( UBaseType_t ) 1 )
                 {
                     xSwitchRequired = pdTRUE;
                 }
-                else
+                નહીંતર
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
@@ -118,13 +118,13 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
              * accessing the kernel data structures. */
             taskEXIT_CRITICAL_ISR( &xKernelLock );
 
-            #if ( configUSE_PREEMPTION == 1 )
+            #જો ( configUSE_PREEMPTION == 1 )
             {
-                if( xYieldPending[ xCoreID ] != pdFALSE )
+                જો( xYieldPending[ xCoreID ] != pdFALSE )
                 {
                     xSwitchRequired = pdTRUE;
                 }
-                else
+                નહીંતર
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
@@ -132,13 +132,13 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
             #endif /* configUSE_PREEMPTION */
         }
 
-        #if ( configUSE_TICK_HOOK == 1 )
+        #જો ( configUSE_TICK_HOOK == 1 )
         {
             vApplicationTickHook();
         }
         #endif
 
-        return xSwitchRequired;
+        પાછા xSwitchRequired;
     }
 
 #endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
@@ -146,236 +146,236 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
 
 /* -------------------------------------------------- Task Creation ------------------------------------------------- */
 
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+#જો ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
 
     BaseType_t xTaskCreatePinnedToCore( TaskFunction_t pxTaskCode,
-                                        const char * const pcName,
-                                        const uint32_t usStackDepth,
-                                        void * const pvParameters,
+                                        અચલ અક્ષર * અચલ pcName,
+                                        અચલ uint32_t us_ઢગલો_Depth,
+                                        શૂન્ય * અચલ pvParameters,
                                         UBaseType_t uxPriority,
-                                        TaskHandle_t * const pxCreatedTask,
-                                        const BaseType_t xCoreID )
+                                        TaskHandle_t * અચલ pxCreatedTask,
+                                        અચલ BaseType_t xCoreID )
     {
         BaseType_t xReturn;
 
         configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE || xCoreID == tskNO_AFFINITY );
 
-        #if CONFIG_FREERTOS_SMP
+        #જો CONFIG_FREERTOS_SMP
         {
             /* If using Amazon SMP FreeRTOS. This function is just a wrapper around
              * xTaskCreate() or xTaskCreateAffinitySet(). */
-            #if ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+            #જો ( ( config_અંક_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
             {
                 /* Convert xCoreID into an affinity mask */
                 UBaseType_t uxCoreAffinityMask;
 
                 /* Bit shifting << xCoreID is only valid if we have less than
                  * 32 cores. */
-                ESP_STATIC_ASSERT( configNUM_CORES < 32 );
+                ESP_STATIC_ASSERT( config_અંક_CORES < 32 );
 
-                if( xCoreID == tskNO_AFFINITY )
+                જો( xCoreID == tskNO_AFFINITY )
                 {
                     uxCoreAffinityMask = tskNO_AFFINITY;
                 }
-                else
+                નહીંતર
                 {
                     uxCoreAffinityMask = ( 1 << xCoreID );
                 }
 
-                xReturn = xTaskCreateAffinitySet( pxTaskCode, pcName, usStackDepth, pvParameters, uxPriority, uxCoreAffinityMask, pxCreatedTask );
+                xReturn = xTaskCreateAffinitySet( pxTaskCode, pcName, us_ઢગલો_Depth, pvParameters, uxPriority, uxCoreAffinityMask, pxCreatedTask );
             }
-            #else /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
+            #નહીંતર /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
             {
-                xReturn = xTaskCreate( pxTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pxCreatedTask );
+                xReturn = xTaskCreate( pxTaskCode, pcName, us_ઢગલો_Depth, pvParameters, uxPriority, pxCreatedTask );
             }
             #endif /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
         }
-        #else /* CONFIG_FREERTOS_SMP */
+        #નહીંતર /* CONFIG_FREERTOS_SMP */
         {
             TCB_t * pxNewTCB;
 
             /* If the stack grows down then allocate the stack then the TCB so the
              * stack does not grow into the TCB.  Likewise if the stack grows up
              * then allocate the TCB then the stack. */
-            #if ( portSTACK_GROWTH > 0 )
+            #જો ( port_ઢગલો_GROWTH > 0 )
             {
                 /* Allocate space for the TCB.  Where the memory comes from depends on
                  * the implementation of the port malloc function and whether or not static
                  * allocation is being used. */
-                pxNewTCB = ( TCB_t * ) pvPortMalloc( sizeof( TCB_t ) );
+                pxNewTCB = ( TCB_t * ) pvPortMalloc( કદ( TCB_t ) );
 
-                if( pxNewTCB != NULL )
+                જો( pxNewTCB != ખાલી )
                 {
-                    memset( ( void * ) pxNewTCB, 0x00, sizeof( TCB_t ) );
+                    memset( ( શૂન્ય * ) pxNewTCB, 0x00, કદ( TCB_t ) );
 
                     /* Allocate space for the stack used by the task being created.
                      * The base of the stack memory stored in the TCB so the task can
                      * be deleted later if required. */
-                    pxNewTCB->pxStack = ( StackType_t * ) pvPortMallocStack( ( ( ( size_t ) usStackDepth ) * sizeof( StackType_t ) ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
+                    pxNewTCB->px_ઢગલો = ( ઢગલો_Type_t * ) pv_Port_Malloc_ઢગલો( ( ( ( size_t ) us_ઢગલો_Depth ) * કદ( ઢગલો_Type_t ) ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
 
-                    if( pxNewTCB->pxStack == NULL )
+                    જો( pxNewTCB->px_ઢગલો == ખાલી )
                     {
                         /* Could not allocate the stack.  Delete the allocated TCB. */
                         vPortFree( pxNewTCB );
-                        pxNewTCB = NULL;
+                        pxNewTCB = ખાલી;
                     }
                 }
             }
-            #else /* portSTACK_GROWTH */
+            #નહીંતર /* portSTACK_GROWTH */
             {
-                StackType_t * pxStack;
+                ઢગલો_Type_t * px_ઢગલો;
 
                 /* Allocate space for the stack used by the task being created. */
-                pxStack = pvPortMallocStack( ( ( ( size_t ) usStackDepth ) * sizeof( StackType_t ) ) ); /*lint !e9079 All values returned by pvPortMalloc() have at least the alignment required by the MCU's stack and this allocation is the stack. */
+                px_ઢગલો = pv_Port_Malloc_ઢગલો( ( ( ( size_t ) us_ઢગલો_Depth ) * કદ( ઢગલો_Type_t ) ) ); /*lint !e9079 All values returned by pvPortMalloc() have at least the alignment required by the MCU's stack and this allocation is the stack. */
 
-                if( pxStack != NULL )
+                જો( px_ઢગલો != ખાલી )
                 {
                     /* Allocate space for the TCB. */
-                    pxNewTCB = ( TCB_t * ) pvPortMalloc( sizeof( TCB_t ) ); /*lint !e9087 !e9079 All values returned by pvPortMalloc() have at least the alignment required by the MCU's stack, and the first member of TCB_t is always a pointer to the task's stack. */
+                    pxNewTCB = ( TCB_t * ) pvPortMalloc( કદ( TCB_t ) ); /*lint !e9087 !e9079 All values returned by pvPortMalloc() have at least the alignment required by the MCU's stack, and the first member of TCB_t is always a pointer to the task's stack. */
 
-                    if( pxNewTCB != NULL )
+                    જો( pxNewTCB != ખાલી )
                     {
-                        memset( ( void * ) pxNewTCB, 0x00, sizeof( TCB_t ) );
+                        memset( ( શૂન્ય * ) pxNewTCB, 0x00, કદ( TCB_t ) );
 
                         /* Store the stack location in the TCB. */
-                        pxNewTCB->pxStack = pxStack;
+                        pxNewTCB->px_ઢગલો = px_ઢગલો;
                     }
-                    else
+                    નહીંતર
                     {
                         /* The stack cannot be used as the TCB was not created.  Free
                          * it again. */
-                        vPortFreeStack( pxStack );
+                        v_Port_Free_ઢગલો( px_ઢગલો );
                     }
                 }
-                else
+                નહીંતર
                 {
-                    pxNewTCB = NULL;
+                    pxNewTCB = ખાલી;
                 }
             }
             #endif /* portSTACK_GROWTH */
 
-            if( pxNewTCB != NULL )
+            જો( pxNewTCB != ખાલી )
             {
-                #if ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 ) /*lint !e9029 !e731 Macro has been consolidated for readability reasons. */
+                #જો ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 ) /*lint !e9029 !e731 Macro has been consolidated for readability reasons. */
                 {
                     /* Tasks can be created statically or dynamically, so note this
                      * task was created dynamically in case it is later deleted. */
-                    pxNewTCB->ucStaticallyAllocated = tskDYNAMICALLY_ALLOCATED_STACK_AND_TCB;
+                    pxNewTCB->ucStaticallyAllocated = tsk_DYNAMICALLY_ALLOCATED_ઢગલો_AND_TCB;
                 }
                 #endif /* tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE */
 
-                prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) usStackDepth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL, xCoreID );
+                prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) us_ઢગલો_Depth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, ખાલી, xCoreID );
                 prvAddNewTaskToReadyList( pxNewTCB );
                 xReturn = pdPASS;
             }
-            else
+            નહીંતર
             {
                 xReturn = errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY;
             }
         }
         #endif /* CONFIG_FREERTOS_SMP */
 
-        return xReturn;
+        પાછા xReturn;
     }
 
 #endif /* ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#જો ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
     TaskHandle_t xTaskCreateStaticPinnedToCore( TaskFunction_t pxTaskCode,
-                                                const char * const pcName,
-                                                const uint32_t ulStackDepth,
-                                                void * const pvParameters,
+                                                અચલ અક્ષર * અચલ pcName,
+                                                અચલ uint32_t ul_ઢગલો_Depth,
+                                                શૂન્ય * અચલ pvParameters,
                                                 UBaseType_t uxPriority,
-                                                StackType_t * const puxStackBuffer,
-                                                StaticTask_t * const pxTaskBuffer,
-                                                const BaseType_t xCoreID )
+                                                ઢગલો_Type_t * અચલ pux_ઢગલો_Buffer,
+                                                StaticTask_t * અચલ pxTaskBuffer,
+                                                અચલ BaseType_t xCoreID )
     {
         TaskHandle_t xReturn;
 
-        configASSERT( portVALID_STACK_MEM( puxStackBuffer ) );
+        configASSERT( port_VALID_ઢગલો_MEM( pux_ઢગલો_Buffer ) );
         configASSERT( portVALID_TCB_MEM( pxTaskBuffer ) );
         configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE || xCoreID == tskNO_AFFINITY );
 
-        #if CONFIG_FREERTOS_SMP
+        #જો CONFIG_FREERTOS_SMP
         {
             /* If using Amazon SMP FreeRTOS. This function is just a wrapper around
              * xTaskCreateStatic() or xTaskCreateStaticAffinitySet(). */
-            #if ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+            #જો ( ( config_અંક_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
             {
                 /* Convert xCoreID into an affinity mask */
                 UBaseType_t uxCoreAffinityMask;
 
                 /* Bit shifting << xCoreID is only valid if we have less than
                  * 32 cores. */
-                ESP_STATIC_ASSERT( configNUM_CORES < 32 );
+                ESP_STATIC_ASSERT( config_અંક_CORES < 32 );
 
-                if( xCoreID == tskNO_AFFINITY )
+                જો( xCoreID == tskNO_AFFINITY )
                 {
                     uxCoreAffinityMask = tskNO_AFFINITY;
                 }
-                else
+                નહીંતર
                 {
                     uxCoreAffinityMask = ( 1 << xCoreID );
                 }
 
-                xReturn = xTaskCreateStaticAffinitySet( pxTaskCode, pcName, ulStackDepth, pvParameters, uxPriority, puxStackBuffer, pxTaskBuffer, uxCoreAffinityMask );
+                xReturn = xTaskCreateStaticAffinitySet( pxTaskCode, pcName, ul_ઢગલો_Depth, pvParameters, uxPriority, pux_ઢગલો_Buffer, pxTaskBuffer, uxCoreAffinityMask );
             }
-            #else /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
+            #નહીંતર /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
             {
-                xReturn = xTaskCreateStatic( pxTaskCode, pcName, ulStackDepth, pvParameters, uxPriority, puxStackBuffer, pxTaskBuffer );
+                xReturn = xTaskCreateStatic( pxTaskCode, pcName, ul_ઢગલો_Depth, pvParameters, uxPriority, pux_ઢગલો_Buffer, pxTaskBuffer );
             }
             #endif /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
         }
-        #else /* CONFIG_FREERTOS_SMP */
+        #નહીંતર /* CONFIG_FREERTOS_SMP */
         {
             TCB_t * pxNewTCB;
 
-            #if ( configASSERT_DEFINED == 1 )
+            #જો ( configASSERT_DEFINED == 1 )
             {
                 /* Sanity check that the size of the structure used to declare a
                  * variable of type StaticTask_t equals the size of the real task
                  * structure. */
-                volatile size_t xSize = sizeof( StaticTask_t );
-                configASSERT( xSize == sizeof( TCB_t ) );
-                ( void ) xSize; /* Prevent lint warning when configASSERT() is not used. */
+                અસ્થિર size_t xSize = કદ( StaticTask_t );
+                configASSERT( xSize == કદ( TCB_t ) );
+                ( શૂન્ય ) xSize; /* Prevent lint warning when configASSERT() is not used. */
             }
             #endif /* configASSERT_DEFINED */
 
-            if( ( pxTaskBuffer != NULL ) && ( puxStackBuffer != NULL ) )
+            જો( ( pxTaskBuffer != ખાલી ) && ( pux_ઢગલો_Buffer != ખાલી ) )
             {
                 /* The memory used for the task's TCB and stack are passed into this
                  * function - use them. */
                 pxNewTCB = ( TCB_t * ) pxTaskBuffer; /*lint !e740 !e9087 Unusual cast is ok as the structures are designed to have the same alignment, and the size is checked by an assert. */
-                memset( ( void * ) pxNewTCB, 0x00, sizeof( TCB_t ) );
-                pxNewTCB->pxStack = ( StackType_t * ) puxStackBuffer;
+                memset( ( શૂન્ય * ) pxNewTCB, 0x00, કદ( TCB_t ) );
+                pxNewTCB->px_ઢગલો = ( ઢગલો_Type_t * ) pux_ઢગલો_Buffer;
 
-                #if ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 ) /*lint !e731 !e9029 Macro has been consolidated for readability reasons. */
+                #જો ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 ) /*lint !e731 !e9029 Macro has been consolidated for readability reasons. */
                 {
                     /* Tasks can be created statically or dynamically, so note this
                      * task was created statically in case the task is later deleted. */
-                    pxNewTCB->ucStaticallyAllocated = tskSTATICALLY_ALLOCATED_STACK_AND_TCB;
+                    pxNewTCB->ucStaticallyAllocated = tsk_STATICALLY_ALLOCATED_ઢગલો_AND_TCB;
                 }
                 #endif /* tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE */
 
-                prvInitialiseNewTask( pxTaskCode, pcName, ulStackDepth, pvParameters, uxPriority, &xReturn, pxNewTCB, NULL, xCoreID );
+                prvInitialiseNewTask( pxTaskCode, pcName, ul_ઢગલો_Depth, pvParameters, uxPriority, &xReturn, pxNewTCB, ખાલી, xCoreID );
                 prvAddNewTaskToReadyList( pxNewTCB );
             }
-            else
+            નહીંતર
             {
-                xReturn = NULL;
+                xReturn = ખાલી;
             }
         }
         #endif /* CONFIG_FREERTOS_SMP */
 
-        return xReturn;
+        પાછા xReturn;
     }
 
 #endif /* ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configUSE_TIMERS == 1 )
+#જો ( configUSE_TIMERS == 1 )
 
 /*
  * In ESP-IDF, configUSE_TIMERS is always defined as 1 (i.e., not user configurable).
@@ -388,9 +388,9 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
  * Thus we can save some text/RAM as timers.c will not be linked and the timer
  * task never created.
  */
-    BaseType_t __attribute__( ( weak ) ) xTimerCreateTimerTask( void )
+    BaseType_t __attribute__( ( weak ) ) xTimerCreateTimerTask( શૂન્ય )
     {
-        return pdPASS;
+        પાછા pdPASS;
     }
 
 #endif /* configUSE_TIMERS */
@@ -402,26 +402,26 @@ BaseType_t xTaskGetCoreID( TaskHandle_t xTask )
 {
     BaseType_t xReturn;
 
-    #if ( configNUM_CORES > 1 )
+    #જો ( config_અંક_CORES > 1 )
     {
-        #if CONFIG_FREERTOS_SMP
+        #જો CONFIG_FREERTOS_SMP
             UBaseType_t uxCoreAffinityMask;
 
             /* Get the core affinity mask and convert it to an ID */
             uxCoreAffinityMask = vTaskCoreAffinityGet( xTask );
 
             /* If the task is not pinned to a particular core, treat it as tskNO_AFFINITY */
-            if( uxCoreAffinityMask & ( uxCoreAffinityMask - 1 ) ) /* If more than one bit set */
+            જો( uxCoreAffinityMask & ( uxCoreAffinityMask - 1 ) ) /* If more than one bit set */
             {
                 xReturn = tskNO_AFFINITY;
             }
-            else
+            નહીંતર
             {
-                int iIndexPlusOne = __builtin_ffs( uxCoreAffinityMask );
-                assert( iIndexPlusOne >= 1 );
+                પૂર્ણાંક iIndexPlusOne = __builtin_ffs( uxCoreAffinityMask );
+                પ્રતિજ્ઞા( iIndexPlusOne >= 1 );
                 xReturn = iIndexPlusOne - 1;
             }
-        #else /* CONFIG_FREERTOS_SMP */
+        #નહીંતર /* CONFIG_FREERTOS_SMP */
             TCB_t * pxTCB;
 
             pxTCB = prvGetTCBFromHandle( xTask );
@@ -429,32 +429,32 @@ BaseType_t xTaskGetCoreID( TaskHandle_t xTask )
             xReturn = pxTCB->xCoreID;
         #endif /* CONFIG_FREERTOS_SMP */
     }
-    #else /* configNUM_CORES > 1 */
+    #નહીંતર /* configNUM_CORES > 1 */
     {
         /* Single-core. Just return a core ID of 0 */
         xReturn = 0;
     }
     #endif /* configNUM_CORES > 1 */
 
-    return xReturn;
+    પાછા xReturn;
 }
 /*----------------------------------------------------------*/
 
-#if ( ( !CONFIG_FREERTOS_SMP ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
+#જો ( ( !CONFIG_FREERTOS_SMP ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
 
     TaskHandle_t xTaskGetIdleTaskHandleForCore( BaseType_t xCoreID )
     {
         /* If xTaskGetIdleTaskHandle() is called before the scheduler has been
          * started, then xIdleTaskHandle will be NULL. */
         configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE );
-        configASSERT( ( xIdleTaskHandle[ xCoreID ] != NULL ) );
-        return xIdleTaskHandle[ xCoreID ];
+        configASSERT( ( xIdleTaskHandle[ xCoreID ] != ખાલી ) );
+        પાછા xIdleTaskHandle[ xCoreID ];
     }
 
 #endif /* ( ( !CONFIG_FREERTOS_SMP ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) ) */
 /*----------------------------------------------------------*/
 
-#if ( ( !CONFIG_FREERTOS_SMP ) && ( ( INCLUDE_xTaskGetCurrentTaskHandle == 1 ) || ( configUSE_MUTEXES == 1 ) ) )
+#જો ( ( !CONFIG_FREERTOS_SMP ) && ( ( INCLUDE_xTaskGetCurrentTaskHandle == 1 ) || ( configUSE_MUTEXES == 1 ) ) )
 
     TaskHandle_t xTaskGetCurrentTaskHandleForCore( BaseType_t xCoreID )
     {
@@ -462,11 +462,11 @@ BaseType_t xTaskGetCoreID( TaskHandle_t xTask )
 
         configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE );
 
-        #if ( CONFIG_FREERTOS_SMP )
+        #જો ( CONFIG_FREERTOS_SMP )
         {
             xReturn = xTaskGetCurrentTaskHandleCPU( ( UBaseType_t ) xCoreID );
         }
-        #else /* CONFIG_FREERTOS_SMP */
+        #નહીંતર /* CONFIG_FREERTOS_SMP */
         {
             /* A critical section is not required as this function does not
              * guarantee that the TCB will still be valid when this function
@@ -475,13 +475,13 @@ BaseType_t xTaskGetCoreID( TaskHandle_t xTask )
         }
         #endif /* CONFIG_FREERTOS_SMP */
 
-        return xReturn;
+        પાછા xReturn;
     }
 
 #endif /* ( ( !CONFIG_FREERTOS_SMP ) && ( ( INCLUDE_xTaskGetCurrentTaskHandle == 1 ) || ( configUSE_MUTEXES == 1 ) ) ) */
 /*----------------------------------------------------------*/
 
-#if ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
+#જો ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
 
     configRUN_TIME_COUNTER_TYPE ulTaskGetIdleRunTimeCounterForCore( BaseType_t xCoreID )
     {
@@ -498,13 +498,13 @@ BaseType_t xTaskGetCoreID( TaskHandle_t xTask )
         /* Release the previously taken kernel lock. */
         prvEXIT_CRITICAL_SMP_ONLY( &xKernelLock );
 
-        return ulRunTimeCounter;
+        પાછા ulRunTimeCounter;
     }
 
 #endif /* ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) ) */
 /*----------------------------------------------------------*/
 
-#if ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
+#જો ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
 
     configRUN_TIME_COUNTER_TYPE ulTaskGetIdleRunTimePercentForCore( BaseType_t xCoreID )
     {
@@ -512,17 +512,17 @@ BaseType_t xTaskGetCoreID( TaskHandle_t xTask )
 
         configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE );
 
-        #ifdef portALT_GET_RUN_TIME_COUNTER_VALUE
-            portALT_GET_RUN_TIME_COUNTER_VALUE( ulTotalTime );
-        #else
-            ulTotalTime = portGET_RUN_TIME_COUNTER_VALUE();
+        #ifdef port_ALT_GET_RUN_TIME_COUNTER_કિંમત
+            port_ALT_GET_RUN_TIME_COUNTER_કિંમત( ulTotalTime );
+        #નહીંતર
+            ulTotalTime = port_GET_RUN_TIME_COUNTER_કિંમત();
         #endif
 
         /* For percentage calculations. */
         ulTotalTime /= ( configRUN_TIME_COUNTER_TYPE ) 100;
 
         /* Avoid divide by zero errors. */
-        if( ulTotalTime > ( configRUN_TIME_COUNTER_TYPE ) 0 )
+        જો( ulTotalTime > ( configRUN_TIME_COUNTER_TYPE ) 0 )
         {
             /* For SMP, we need to take the kernel lock here as we are about
              * to access kernel data structures. */
@@ -533,35 +533,35 @@ BaseType_t xTaskGetCoreID( TaskHandle_t xTask )
             /* Release the previously taken kernel lock. */
             prvEXIT_CRITICAL_SMP_ONLY( &xKernelLock );
         }
-        else
+        નહીંતર
         {
             ulReturn = 0;
         }
 
-        return ulReturn;
+        પાછા ulReturn;
     }
 
 #endif /* ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-StackType_t * xTaskGetStackStart( TaskHandle_t xTask )
+ઢગલો_Type_t * x_Task_Get_ઢગલો_Start( TaskHandle_t xTask )
 {
     TCB_t * pxTCB;
 
     pxTCB = prvGetTCBFromHandle( xTask );
-    return pxTCB->pxStack;
+    પાછા pxTCB->px_ઢગલો;
 }
 /*----------------------------------------------------------*/
 
-uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
+uint8_t * px_Task_Get_ઢગલો_Start( TaskHandle_t xTask )
 {
-    return (uint8_t *)xTaskGetStackStart( xTask );
+    પાછા (uint8_t *)x_Task_Get_ઢગલો_Start( xTask );
 }
 /*----------------------------------------------------------*/
 
-#if ( INCLUDE_vTaskPrioritySet == 1 )
+#જો ( INCLUDE_vTaskPrioritySet == 1 )
 
-    void prvTaskPriorityRaise( prvTaskSavedPriority_t * pxSavedPriority,
+    શૂન્ય prvTaskPriorityRaise( prvTaskSavedPriority_t * pxSavedPriority,
                                UBaseType_t uxNewPriority )
     {
         TCB_t * pxTCB;
@@ -570,27 +570,27 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
         configASSERT( ( uxNewPriority < configMAX_PRIORITIES ) );
 
         /* Ensure the new priority is valid. */
-        if( uxNewPriority >= ( UBaseType_t ) configMAX_PRIORITIES )
+        જો( uxNewPriority >= ( UBaseType_t ) configMAX_PRIORITIES )
         {
             uxNewPriority = ( UBaseType_t ) configMAX_PRIORITIES - ( UBaseType_t ) 1U;
         }
 
-        #if CONFIG_FREERTOS_SMP
+        #જો CONFIG_FREERTOS_SMP
             taskENTER_CRITICAL();
-        #else
+        #નહીંતર
             taskENTER_CRITICAL( &xKernelLock );
         #endif
         {
-            pxTCB = prvGetTCBFromHandle( NULL );
+            pxTCB = prvGetTCBFromHandle( ખાલી );
 
-            #if ( configUSE_MUTEXES == 1 )
+            #જો ( configUSE_MUTEXES == 1 )
             {
                 pxSavedPriority->uxPriority = pxTCB->uxPriority;
                 pxSavedPriority->uxBasePriority = pxTCB->uxBasePriority;
 
                 /* If uxNewPriority < uxBasePriority, then there is nothing else to
                  * do, as uxBasePriority is always <= uxPriority. */
-                if( uxNewPriority > pxTCB->uxBasePriority )
+                જો( uxNewPriority > pxTCB->uxBasePriority )
                 {
                     pxTCB->uxBasePriority = uxNewPriority;
 
@@ -600,32 +600,32 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
                      * for the taskRESET_READY_PRIORITY() macro to function correctly. */
                     uxPriorityUsedOnEntry = pxTCB->uxPriority;
 
-                    if( uxNewPriority > pxTCB->uxPriority )
+                    જો( uxNewPriority > pxTCB->uxPriority )
                     {
                         pxTCB->uxPriority = uxNewPriority;
 
                         /* Only reset the event list item value if the value is not
                          * being used for anything else. */
-                        if( ( listGET_LIST_ITEM_VALUE( &( pxTCB->xEventListItem ) ) & taskEVENT_LIST_ITEM_VALUE_IN_USE ) == 0UL )
+                        જો( ( list_GET_LIST_ITEM_કિંમત( &( pxTCB->xEventListItem ) ) & task_EVENT_LIST_ITEM_કિંમત_IN_USE ) == 0UL )
                         {
-                            listSET_LIST_ITEM_VALUE( &( pxTCB->xEventListItem ), ( ( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) uxNewPriority ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
+                            list_SET_LIST_ITEM_કિંમત( &( pxTCB->xEventListItem ), ( ( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) uxNewPriority ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
                         }
 
                         /* If the task is in the blocked or suspended list we need do
                          * nothing more than change its priority variable. However, if
                          * the task is in a ready list it needs to be removed and placed
                          * in the list appropriate to its new priority. */
-                        if( listIS_CONTAINED_WITHIN( &( pxReadyTasksLists[ uxPriorityUsedOnEntry ] ), &( pxTCB->xStateListItem ) ) != pdFALSE )
+                        જો( listIS_CONTAINED_WITHIN( &( pxReadyTasksLists[ uxPriorityUsedOnEntry ] ), &( pxTCB->xStateListItem ) ) != pdFALSE )
                         {
                             /* The task is currently in its ready list - remove before
                              * adding it to its new ready list.  As we are in a critical
                              * section we can do this even if the scheduler is suspended. */
-                            if( uxListRemove( &( pxTCB->xStateListItem ) ) == ( UBaseType_t ) 0 )
+                            જો( uxListRemove( &( pxTCB->xStateListItem ) ) == ( UBaseType_t ) 0 )
                             {
                                 /* It is known that the task is in its ready list so
                                  * there is no need to check again and the port level
                                  * reset macro can be called directly. */
-                                portRESET_READY_PRIORITY( uxPriorityUsedOnEntry, uxTopReadyPriority );
+                                portRESET_READY_PRIORITY( uxPriorityUsedOnEntry, ux_ટોચ_Ready_Priority );
                             }
 
                             prvAddTaskToReadyList( pxTCB );
@@ -633,20 +633,20 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
                     }
                 }
             }
-            #else /* if ( configUSE_MUTEXES == 1 ) */
+            #નહીંતર /* if ( configUSE_MUTEXES == 1 ) */
             {
                 pxSavedPriority->uxPriority = pxTCB->uxPriority;
 
-                if( uxNewPriority > pxTCB->uxPriority )
+                જો( uxNewPriority > pxTCB->uxPriority )
                 {
-                    vTaskPrioritySet( NULL, uxNewPriority );
+                    vTaskPrioritySet( ખાલી, uxNewPriority );
                 }
             }
             #endif /* if ( configUSE_MUTEXES == 1 ) */
         }
-        #if CONFIG_FREERTOS_SMP
+        #જો CONFIG_FREERTOS_SMP
             taskEXIT_CRITICAL();
-        #else
+        #નહીંતર
             taskEXIT_CRITICAL( &xKernelLock );
         #endif
     }
@@ -654,9 +654,9 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
 #endif /* INCLUDE_vTaskPrioritySet == 1 */
 /*----------------------------------------------------------*/
 
-#if ( INCLUDE_vTaskPrioritySet == 1 )
+#જો ( INCLUDE_vTaskPrioritySet == 1 )
 
-    void prvTaskPriorityRestore( prvTaskSavedPriority_t * pxSavedPriority )
+    શૂન્ય prvTaskPriorityRestore( prvTaskSavedPriority_t * pxSavedPriority )
     {
         TCB_t * pxTCB;
         UBaseType_t uxNewPriority;
@@ -664,20 +664,20 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
         UBaseType_t uxBasePriorityUsedOnEntry;
         BaseType_t xYieldRequired = pdFALSE;
 
-        #if CONFIG_FREERTOS_SMP
+        #જો CONFIG_FREERTOS_SMP
             taskENTER_CRITICAL();
-        #else
+        #નહીંતર
             taskENTER_CRITICAL( &xKernelLock );
         #endif
         {
-            pxTCB = prvGetTCBFromHandle( NULL );
+            pxTCB = prvGetTCBFromHandle( ખાલી );
 
-            #if ( configUSE_MUTEXES == 1 )
+            #જો ( configUSE_MUTEXES == 1 )
             {
                 /* If the saved uxBasePriority == the task's uxBasePriority, it means
                  * that prvTaskPriorityRaise() never raised the task's uxBasePriority.
                  * In that case, there is nothing else to do. */
-                if( pxSavedPriority->uxBasePriority != pxTCB->uxBasePriority )
+                જો( pxSavedPriority->uxBasePriority != pxTCB->uxBasePriority )
                 {
                     uxBasePriorityUsedOnEntry = pxTCB->uxBasePriority;
                     pxTCB->uxBasePriority = pxSavedPriority->uxBasePriority;
@@ -691,9 +691,9 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
                     /* Check if the task inherited a priority after prvTaskPriorityRaise().
                      * If this is the case, there is nothing else to do. The priority
                      * will be restored when the task disinherits its priority. */
-                    if( pxTCB->uxPriority == uxBasePriorityUsedOnEntry )
+                    જો( pxTCB->uxPriority == uxBasePriorityUsedOnEntry )
                     {
-                        if( pxTCB->uxMutexesHeld == 0 )
+                        જો( pxTCB->uxMutexesHeld == 0 )
                         {
                             /* The task may have inherited a priority before prvTaskPriorityRaise()
                              * then disinherited a priority after prvTaskPriorityRaise().
@@ -702,7 +702,7 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
                              * before any inheritance or raising. */
                             pxTCB->uxPriority = pxSavedPriority->uxBasePriority;
                         }
-                        else
+                        નહીંતર
                         {
                             /* The task may have inherited a priority before prvTaskPriorityRaise()
                              * was called. Thus, we need to restore uxPriority to the
@@ -713,7 +713,7 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
 
                         uxNewPriority = pxTCB->uxPriority;
 
-                        if( uxNewPriority < uxPriorityUsedOnEntry )
+                        જો( uxNewPriority < uxPriorityUsedOnEntry )
                         {
                             /* Setting the priority of the running task down means
                              * there may now be another task of higher priority that
@@ -723,51 +723,51 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
 
                         /* Only reset the event list item value if the value is not
                          * being used for anything else. */
-                        if( ( listGET_LIST_ITEM_VALUE( &( pxTCB->xEventListItem ) ) & taskEVENT_LIST_ITEM_VALUE_IN_USE ) == 0UL )
+                        જો( ( list_GET_LIST_ITEM_કિંમત( &( pxTCB->xEventListItem ) ) & task_EVENT_LIST_ITEM_કિંમત_IN_USE ) == 0UL )
                         {
-                            listSET_LIST_ITEM_VALUE( &( pxTCB->xEventListItem ), ( ( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) uxNewPriority ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
+                            list_SET_LIST_ITEM_કિંમત( &( pxTCB->xEventListItem ), ( ( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) uxNewPriority ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
                         }
 
                         /* If the task is in the blocked or suspended list we need do
                          * nothing more than change its priority variable. However, if
                          * the task is in a ready list it needs to be removed and placed
                          * in the list appropriate to its new priority. */
-                        if( listIS_CONTAINED_WITHIN( &( pxReadyTasksLists[ uxPriorityUsedOnEntry ] ), &( pxTCB->xStateListItem ) ) != pdFALSE )
+                        જો( listIS_CONTAINED_WITHIN( &( pxReadyTasksLists[ uxPriorityUsedOnEntry ] ), &( pxTCB->xStateListItem ) ) != pdFALSE )
                         {
                             /* The task is currently in its ready list - remove before
                              * adding it to its new ready list.  As we are in a critical
                              * section we can do this even if the scheduler is suspended. */
-                            if( uxListRemove( &( pxTCB->xStateListItem ) ) == ( UBaseType_t ) 0 )
+                            જો( uxListRemove( &( pxTCB->xStateListItem ) ) == ( UBaseType_t ) 0 )
                             {
                                 /* It is known that the task is in its ready list so
                                  * there is no need to check again and the port level
                                  * reset macro can be called directly. */
-                                portRESET_READY_PRIORITY( uxPriorityUsedOnEntry, uxTopReadyPriority );
+                                portRESET_READY_PRIORITY( uxPriorityUsedOnEntry, ux_ટોચ_Ready_Priority );
                             }
 
                             prvAddTaskToReadyList( pxTCB );
                         }
 
-                        if( xYieldRequired != pdFALSE )
+                        જો( xYieldRequired != pdFALSE )
                         {
-                            #if CONFIG_FREERTOS_SMP
+                            #જો CONFIG_FREERTOS_SMP
                                 taskYIELD_TASK_CORE_IF_USING_PREEMPTION( pxTCB );
-                            #else
+                            #નહીંતર
                                 taskYIELD_IF_USING_PREEMPTION();
                             #endif
                         }
                     }
                 }
             }
-            #else /* if ( configUSE_MUTEXES == 1 ) */
+            #નહીંતર /* if ( configUSE_MUTEXES == 1 ) */
             {
-                vTaskPrioritySet( NULL, pxSavedPriority->uxPriority );
+                vTaskPrioritySet( ખાલી, pxSavedPriority->uxPriority );
             }
             #endif /* if ( configUSE_MUTEXES == 1 ) */
         }
-        #if CONFIG_FREERTOS_SMP
+        #જો CONFIG_FREERTOS_SMP
             taskEXIT_CRITICAL();
-        #else
+        #નહીંતર
             taskEXIT_CRITICAL( &xKernelLock );
         #endif
     }
@@ -777,29 +777,29 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
 
 /* --------------------------------------------- TLSP Deletion Callbacks -------------------------------------------- */
 
-#if CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
+#જો CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
 
-    void vTaskSetThreadLocalStoragePointerAndDelCallback( TaskHandle_t xTaskToSet,
+    શૂન્ય vTaskSetThreadLocalStoragePointerAndDelCallback( TaskHandle_t xTaskToSet,
                                                           BaseType_t xIndex,
-                                                          void * pvValue,
+                                                          શૂન્ય * pv_કિંમત,
                                                           TlsDeleteCallbackFunction_t pvDelCallback )
     {
         /* If TLSP deletion callbacks are enabled, then configNUM_THREAD_LOCAL_STORAGE_POINTERS
          * is doubled in size so that the latter half of the pvThreadLocalStoragePointers
          * stores the deletion callbacks. */
-        if( xIndex < ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ) )
+        જો( xIndex < ( config_અંક_THREAD_LOCAL_STORAGE_POINTERS / 2 ) )
         {
             TCB_t * pxTCB;
 
-            #if ( configNUM_CORES > 1 )
+            #જો ( config_અંક_CORES > 1 )
             {
                 /* For SMP, we need a critical section as another core could also
                  * update this task's TLSP at the same time. */
-                #if CONFIG_FREERTOS_SMP
+                #જો CONFIG_FREERTOS_SMP
                 {
                     taskENTER_CRITICAL();
                 }
-                #else /* CONFIG_FREERTOS_SMP */
+                #નહીંતર /* CONFIG_FREERTOS_SMP */
                 {
                     taskENTER_CRITICAL( &xKernelLock );
                 }
@@ -809,19 +809,19 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
 
             pxTCB = prvGetTCBFromHandle( xTaskToSet );
             /* Store the TLSP by indexing the first half of the array */
-            pxTCB->pvThreadLocalStoragePointers[ xIndex ] = pvValue;
+            pxTCB->pvThreadLocalStoragePointers[ xIndex ] = pv_કિંમત;
 
             /* Store the TLSP deletion callback by indexing the second half
              * of the array. */
-            pxTCB->pvThreadLocalStoragePointers[ ( xIndex + ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ) ) ] = ( void * ) pvDelCallback;
+            pxTCB->pvThreadLocalStoragePointers[ ( xIndex + ( config_અંક_THREAD_LOCAL_STORAGE_POINTERS / 2 ) ) ] = ( શૂન્ય * ) pvDelCallback;
 
-            #if ( configNUM_CORES > 1 )
+            #જો ( config_અંક_CORES > 1 )
             {
-                #if CONFIG_FREERTOS_SMP
+                #જો CONFIG_FREERTOS_SMP
                 {
                     taskEXIT_CRITICAL();
                 }
-                #else /* CONFIG_FREERTOS_SMP */
+                #નહીંતર /* CONFIG_FREERTOS_SMP */
                 {
                     taskEXIT_CRITICAL( &xKernelLock );
                 }
@@ -836,7 +836,7 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
 
 /* ----------------------------------------------------- Newlib ----------------------------------------------------- */
 
-#if ( configUSE_NEWLIB_REENTRANT == 1 )
+#જો ( configUSE_NEWLIB_REENTRANT == 1 )
 
 /**
  * @brief Get reentrancy structure of the current task
@@ -847,24 +847,24 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
  *
  * @return Pointer to a the (current taks's)/(global) reent struct
  */
-    struct _reent * __getreent( void )
+    સંરચના _reent * __getreent( શૂન્ય )
     {
         /* No lock needed because if this changes, we won't be running anymore. */
         TCB_t * pxCurTask = ( TCB_t * ) xTaskGetCurrentTaskHandle();
-        struct _reent * ret;
+        સંરચના _reent * ret;
 
-        if( pxCurTask == NULL )
+        જો( pxCurTask == ખાલી )
         {
             /* No task running. Return global struct. */
             ret = _GLOBAL_REENT;
         }
-        else
+        નહીંતર
         {
             /* We have a currently executing task. Return its reentrant struct. */
             ret = &pxCurTask->xTLSBlock;
         }
 
-        return ret;
+        પાછા ret;
     }
 
 #endif /* configUSE_NEWLIB_REENTRANT == 1 */
@@ -876,11 +876,11 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
  *
  * @note There are currently differing number of task list between SMP FreeRTOS and ESP-IDF FreeRTOS
  */
-static List_t * non_ready_task_lists[] =
+સ્થિર List_t * non_ready_task_lists[] =
 {
     #ifdef CONFIG_FREERTOS_SMP
         &xPendingReadyList,
-    #else /* CONFIG_FREERTOS_SMP */
+    #નહીંતર /* CONFIG_FREERTOS_SMP */
         &xPendingReadyList[ 0 ],
         #ifndef CONFIG_FREERTOS_UNICORE
             &xPendingReadyList[ 1 ],
@@ -888,10 +888,10 @@ static List_t * non_ready_task_lists[] =
     #endif /* CONFIG_FREERTOS_SMP */
     &xDelayedTaskList1,
     &xDelayedTaskList2,
-    #if ( INCLUDE_vTaskDelete == 1 )
+    #જો ( INCLUDE_vTaskDelete == 1 )
         &xTasksWaitingTermination,
     #endif
-    #if ( INCLUDE_vTaskSuspend == 1 )
+    #જો ( INCLUDE_vTaskSuspend == 1 )
         &xSuspendedTaskList,
     #endif
 };
@@ -913,34 +913,34 @@ static List_t * non_ready_task_lists[] =
  * @return A pointer to the task list at the specified index.
  *         Returns NULL if the index is out of bounds or list is corrupted.
  */
-static List_t * pxGetTaskListByIndex( UBaseType_t uxListIndex )
+સ્થિર List_t * pxGetTaskListByIndex( UBaseType_t uxListIndex )
 {
     List_t * pxTaskList;
-    const size_t xNonReadyTaskListsCnt = ( sizeof( non_ready_task_lists ) / sizeof( List_t * ) );
+    અચલ size_t xNonReadyTaskListsCnt = ( કદ( non_ready_task_lists ) / કદ( List_t * ) );
 
-    if( uxListIndex < configMAX_PRIORITIES )
+    જો( uxListIndex < configMAX_PRIORITIES )
     {
         pxTaskList = &pxReadyTasksLists[ configMAX_PRIORITIES - 1 - uxListIndex ];
     }
-    else if( uxListIndex < configMAX_PRIORITIES + xNonReadyTaskListsCnt )
+    નહીંતર જો( uxListIndex < configMAX_PRIORITIES + xNonReadyTaskListsCnt )
     {
         pxTaskList = non_ready_task_lists[ uxListIndex - configMAX_PRIORITIES ];
     }
-    else
+    નહીંતર
     {
-        pxTaskList = NULL;
+        pxTaskList = ખાલી;
     }
 
     /* sanity check */
-    if( pxTaskList )
+    જો( pxTaskList )
     {
-        if( !portVALID_LIST_MEM( pxTaskList ) )
+        જો( !portVALID_LIST_MEM( pxTaskList ) )
         {
-            pxTaskList = NULL;
+            pxTaskList = ખાલી;
         }
     }
 
-    return pxTaskList;
+    પાછા pxTaskList;
 }
 /*----------------------------------------------------------*/
 
@@ -952,9 +952,9 @@ static List_t * pxGetTaskListByIndex( UBaseType_t uxListIndex )
  * @return The total count of task lists.
  *
  */
-static inline UBaseType_t pxGetTaskListCount( void )
+સ્થિર અંતઃરેખ UBaseType_t px_Get_Task_List_ગણતરી( શૂન્ય )
 {
-    return configMAX_PRIORITIES + ( sizeof( non_ready_task_lists ) / sizeof( List_t * ) );
+    પાછા configMAX_PRIORITIES + ( કદ( non_ready_task_lists ) / કદ( List_t * ) );
 }
 /*----------------------------------------------------------*/
 
@@ -972,29 +972,29 @@ static inline UBaseType_t pxGetTaskListCount( void )
  *       When all tasks have been traversed, this function returns -1.
  *       If a broken or corrupted task is encountered, the task handle is set to NULL.
  */
-int xTaskGetNext( TaskIterator_t * xIterator )
+પૂર્ણાંક xTaskGetNext( TaskIterator_t * xIterator )
 {
-    if( !xIterator )
+    જો( !xIterator )
     {
-        return -1;
+        પાછા -1;
     }
 
     ListItem_t * pxNextListItem = xIterator->pxNextListItem;
     UBaseType_t uxCurListIdx = xIterator->uxCurrentListIndex;
-    UBaseType_t uxMaxListIdx = pxGetTaskListCount();
+    UBaseType_t uxMaxListIdx = px_Get_Task_List_ગણતરી();
 
-    for( ; uxCurListIdx < uxMaxListIdx; ++uxCurListIdx )
+    માટે( ; uxCurListIdx < uxMaxListIdx; ++uxCurListIdx )
     {
         List_t * pxCurrentTaskList = pxGetTaskListByIndex( uxCurListIdx );
 
-        if( !pxCurrentTaskList || ( listCURRENT_LIST_LENGTH( pxCurrentTaskList ) == 0 ) )
+        જો( !pxCurrentTaskList || ( listCURRENT_LIST_LENGTH( pxCurrentTaskList ) == 0 ) )
         {
-            continue;
+            ચાલુ;
         }
 
-        const ListItem_t * pxCurrListItem = listGET_END_MARKER( pxCurrentTaskList );
+        અચલ ListItem_t * pxCurrListItem = listGET_END_MARKER( pxCurrentTaskList );
 
-        if( !pxNextListItem )
+        જો( !pxNextListItem )
         {
             /* We are here if the traversal starts from the beginning or when we finish traversing
              * for one of the state lists
@@ -1002,40 +1002,40 @@ int xTaskGetNext( TaskIterator_t * xIterator )
             pxNextListItem = listGET_NEXT( pxCurrListItem );
         }
 
-        if( !portVALID_LIST_MEM( pxNextListItem ) )
+        જો( !portVALID_LIST_MEM( pxNextListItem ) )
         {
             /* Nothing to do with the corrupted list item. We will skip to the next task state list.
              * pxNextListItem should be NULL at the beginning of each task list.
              */
-            pxNextListItem = NULL;
-            continue;
+            pxNextListItem = ખાલી;
+            ચાલુ;
         }
 
         TCB_t * pxTCB = ( TCB_t * ) listGET_LIST_ITEM_OWNER( pxNextListItem );
 
-        if( !portVALID_TCB_MEM( pxTCB ) )
+        જો( !portVALID_TCB_MEM( pxTCB ) )
         {
-            pxTCB = NULL;
+            pxTCB = ખાલી;
         }
 
         xIterator->pxTaskHandle = pxTCB;
         xIterator->uxCurrentListIndex = uxCurListIdx;
 
-        if( pxCurrListItem->pxPrevious == pxNextListItem )
+        જો( pxCurrListItem->pxPrevious == pxNextListItem )
         {
             /* If this is the last item of the current state list */
             xIterator->uxCurrentListIndex++;
-            xIterator->pxNextListItem = NULL;
+            xIterator->pxNextListItem = ખાલી;
         }
-        else
+        નહીંતર
         {
             xIterator->pxNextListItem = listGET_NEXT( pxNextListItem );
         }
 
-        return uxCurListIdx;
+        પાછા uxCurListIdx;
     }
 
-    return -1; /* end of the task list */
+    પાછા -1; /* end of the task list */
 }
 /*----------------------------------------------------------*/
 
@@ -1044,91 +1044,91 @@ BaseType_t vTaskGetSnapshot( TaskHandle_t pxTask,
 {
     ESP_STATIC_ANALYZER_CHECK(!pxTask, pdFALSE);
 
-    if( ( portVALID_TCB_MEM( pxTask ) == false ) || ( pxTaskSnapshot == NULL ) )
+    જો( ( portVALID_TCB_MEM( pxTask ) == false ) || ( pxTaskSnapshot == ખાલી ) )
     {
-        return pdFALSE;
+        પાછા pdFALSE;
     }
 
     TCB_t * pxTCB = ( TCB_t * ) pxTask;
     pxTaskSnapshot->pxTCB = pxTCB;
-    pxTaskSnapshot->pxTopOfStack = ( StackType_t * ) pxTCB->pxTopOfStack;
-    pxTaskSnapshot->pxEndOfStack = ( StackType_t * ) pxTCB->pxEndOfStack;
-    return pdTRUE;
+    pxTaskSnapshot->px_ટોચ_Of_ઢગલો = ( ઢગલો_Type_t * ) pxTCB->px_ટોચ_Of_ઢગલો;
+    pxTaskSnapshot->px_End_Of_ઢગલો = ( ઢગલો_Type_t * ) pxTCB->px_End_Of_ઢગલો;
+    પાછા pdTRUE;
 }
 /*----------------------------------------------------------*/
 
-UBaseType_t uxTaskGetSnapshotAll( TaskSnapshot_t * const pxTaskSnapshotArray,
-                                  const UBaseType_t uxArrayLength,
-                                  UBaseType_t * const pxTCBSize )
+UBaseType_t uxTaskGetSnapshotAll( TaskSnapshot_t * અચલ pxTaskSnapshotArray,
+                                  અચલ UBaseType_t uxArrayLength,
+                                  UBaseType_t * અચલ pxTCBSize )
 {
-    UBaseType_t uxArrayNumFilled = 0;
+    UBaseType_t ux_Array_અંક_Filled = 0;
 
     /* Traverse all of the tasks lists */
     TaskIterator_t xTaskIter = { 0 }; /* Point to the first task list */
 
-    while( xTaskGetNext( &xTaskIter ) != -1 && uxArrayNumFilled < uxArrayLength )
+    જ્યારે( xTaskGetNext( &xTaskIter ) != -1 && ux_Array_અંક_Filled < uxArrayLength )
     {
-        vTaskGetSnapshot( xTaskIter.pxTaskHandle, &pxTaskSnapshotArray[ uxArrayNumFilled ] );
-        uxArrayNumFilled++;
+        vTaskGetSnapshot( xTaskIter.pxTaskHandle, &pxTaskSnapshotArray[ ux_Array_અંક_Filled ] );
+        ux_Array_અંક_Filled++;
     }
 
-    if( pxTCBSize != NULL )
+    જો( pxTCBSize != ખાલી )
     {
-        *pxTCBSize = sizeof( TCB_t );
+        *pxTCBSize = કદ( TCB_t );
     }
 
-    return uxArrayNumFilled;
+    પાછા ux_Array_અંક_Filled;
 }
 /*----------------------------------------------------------*/
 
 /* ----------------------------------------------------- Misc ----------------------------------------------------- */
 
-void * pvTaskGetCurrentTCBForCore( BaseType_t xCoreID )
+શૂન્ય * pvTaskGetCurrentTCBForCore( BaseType_t xCoreID )
 {
-    void * pvRet;
+    શૂન્ય * pvRet;
 
     configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE );
 
-    #if CONFIG_FREERTOS_SMP
+    #જો CONFIG_FREERTOS_SMP
         /* SMP FreeRTOS defines pxCurrentTCB as a macro function call */
-        pvRet = ( void * ) pxCurrentTCB;
-    #else /* CONFIG_FREERTOS_SMP */
-        pvRet = ( void * ) pxCurrentTCBs[ xCoreID ];
+        pvRet = ( શૂન્ય * ) pxCurrentTCB;
+    #નહીંતર /* CONFIG_FREERTOS_SMP */
+        pvRet = ( શૂન્ય * ) pxCurrentTCBs[ xCoreID ];
     #endif /* CONFIG_FREERTOS_SMP */
-    return pvRet;
+    પાછા pvRet;
 }
 
 /* ----------------------------------------------------- OpenOCD ---------------------------------------------------- */
 
-#if CONFIG_FREERTOS_DEBUG_OCDAWARE
+#જો CONFIG_FREERTOS_DEBUG_OCDAWARE
 
 /**
  * Debug param indexes. DO NOT change the order. OpenOCD uses the same indexes
  * Entries in FreeRTOS_openocd_params must match the order of these indexes
  */
-    enum
+    ગણના
     {
         ESP_FREERTOS_DEBUG_TABLE_SIZE = 0,
         ESP_FREERTOS_DEBUG_TABLE_VERSION,
         ESP_FREERTOS_DEBUG_KERNEL_VER_MAJOR,
         ESP_FREERTOS_DEBUG_KERNEL_VER_MINOR,
         ESP_FREERTOS_DEBUG_KERNEL_VER_BUILD,
-        ESP_FREERTOS_DEBUG_UX_TOP_USED_PIORITY,
-        ESP_FREERTOS_DEBUG_PX_TOP_OF_STACK,
+        ESP_FREERTOS_DEBUG_UX_ટોચ_USED_PIORITY,
+        ESP_FREERTOS_DEBUG_PX_ટોચ_OF_ઢગલો,
         ESP_FREERTOS_DEBUG_PC_TASK_NAME,
         ESP_FREERTOS_DEBUG_LIST_SIZE,
-        ESP_FREERTOS_DEBUG_LIST_NUM_ITEMS,
+        ESP_FREERTOS_DEBUG_LIST_અંક_વસ્તુઓ,
         ESP_FREERTOS_DEBUG_LIST_END,
         ESP_FREERTOS_DEBUG_LIST_END_PREV,
         ESP_FREERTOS_DEBUG_LIST_ITEM_PREV,
         ESP_FREERTOS_DEBUG_LIST_ITEM_OWNER,
-        ESP_FREERTOS_DEBUG_TASK_COUNT_WIDTH,
+        ESP_FREERTOS_DEBUG_TASK_ગણતરી_WIDTH,
         ESP_FREERTOS_DEBUG_PTR_WIDTH,
         /* New entries must be inserted here */
         ESP_FREERTOS_DEBUG_TABLE_END,
     };
 
-    const DRAM_ATTR uint8_t FreeRTOS_openocd_params[ ESP_FREERTOS_DEBUG_TABLE_END ] =
+    અચલ DRAM_ATTR uint8_t FreeRTOS_openocd_params[ ESP_FREERTOS_DEBUG_TABLE_END ] =
     {
         ESP_FREERTOS_DEBUG_TABLE_END, /* table size */
         1,                            /* table version */
@@ -1136,16 +1136,16 @@ void * pvTaskGetCurrentTCBForCore( BaseType_t xCoreID )
         tskKERNEL_VERSION_MINOR,
         tskKERNEL_VERSION_BUILD,
         configMAX_PRIORITIES - 1,                   /* uxTopUsedPriority */
-        offsetof( TCB_t, pxTopOfStack ),            /* thread_stack_offset; */
+        offsetof( TCB_t, px_ટોચ_Of_ઢગલો ),            /* thread_stack_offset; */
         offsetof( TCB_t, pcTaskName ),              /* thread_name_offset; */
-        sizeof( List_t ),                           /* list_width */
-        offsetof( List_t, uxNumberOfItems ),        /* list_item_num */
+        કદ( List_t ),                           /* list_width */
+        offsetof( List_t, ux_સંખ્યા_Of_વસ્તુઓ ),        /* list_item_num */
         offsetof( List_t, xListEnd ),               /* list_end_offset */
         offsetof( List_t, xListEnd.pxPrevious ),    /* list_next_offset */
         offsetof( ListItem_t, pxPrevious ),         /* list_elem_next_offset */
         offsetof( ListItem_t, pvOwner ),            /* list_elem_content_offset */
-        sizeof( UBaseType_t ),                      /* task_count_width */
-        sizeof( void * )                            /* ptr_width */
+        કદ( UBaseType_t ),                      /* task_count_width */
+        કદ( શૂન્ય * )                            /* ptr_width */
     };
 
 #endif /* CONFIG_FREERTOS_DEBUG_OCDAWARE */
@@ -1153,103 +1153,103 @@ void * pvTaskGetCurrentTCBForCore( BaseType_t xCoreID )
 
 /* ----------------------------------------------------- PSRAM ---------------------------------------------------- */
 
-#if CONFIG_SPIRAM
+#જો CONFIG_SPIRAM
 
-    #if CONFIG_FREERTOS_SMP
+    #જો CONFIG_FREERTOS_SMP
         BaseType_t prvTaskCreateDynamicAffinitySetWithCaps( TaskFunction_t pxTaskCode,
-                                                            const char * const pcName,
-                                                            const configSTACK_DEPTH_TYPE usStackDepth,
-                                                            void * const pvParameters,
+                                                            અચલ અક્ષર * અચલ pcName,
+                                                            અચલ config_ઢગલો_DEPTH_TYPE us_ઢગલો_Depth,
+                                                            શૂન્ય * અચલ pvParameters,
                                                             UBaseType_t uxPriority,
                                                             UBaseType_t uxCoreAffinityMask,
-                                                            UBaseType_t uxStackMemoryCaps,
-                                                            TaskHandle_t * const pxCreatedTask )
-    #else /* CONFIG_FREERTOS_SMP */
+                                                            UBaseType_t ux_ઢગલો_Memory_Caps,
+                                                            TaskHandle_t * અચલ pxCreatedTask )
+    #નહીંતર /* CONFIG_FREERTOS_SMP */
         BaseType_t prvTaskCreateDynamicPinnedToCoreWithCaps( TaskFunction_t pxTaskCode,
-                                                             const char * const pcName,
-                                                             const configSTACK_DEPTH_TYPE usStackDepth,
-                                                             void * const pvParameters,
+                                                             અચલ અક્ષર * અચલ pcName,
+                                                             અચલ config_ઢગલો_DEPTH_TYPE us_ઢગલો_Depth,
+                                                             શૂન્ય * અચલ pvParameters,
                                                              UBaseType_t uxPriority,
-                                                             const BaseType_t xCoreID,
-                                                             UBaseType_t uxStackMemoryCaps,
-                                                             TaskHandle_t * const pxCreatedTask )
+                                                             અચલ BaseType_t xCoreID,
+                                                             UBaseType_t ux_ઢગલો_Memory_Caps,
+                                                             TaskHandle_t * અચલ pxCreatedTask )
     #endif /* CONFIG_FREERTOS_SMP */
     {
         TCB_t * pxNewTCB;
         BaseType_t xReturn;
 
-        StackType_t * pxStack;
+        ઢગલો_Type_t * px_ઢગલો;
 
-        configASSERT( uxStackMemoryCaps & ( MALLOC_CAP_8BIT ) );
-        configASSERT( ( uxStackMemoryCaps & MALLOC_CAP_SPIRAM ) ||
-                      ( uxStackMemoryCaps & MALLOC_CAP_INTERNAL ) );
-        #if ( !CONFIG_FREERTOS_SMP )
+        configASSERT( ux_ઢગલો_Memory_Caps & ( MALLOC_CAP_8BIT ) );
+        configASSERT( ( ux_ઢગલો_Memory_Caps & MALLOC_CAP_SPIRAM ) ||
+                      ( ux_ઢગલો_Memory_Caps & MALLOC_CAP_INTERNAL ) );
+        #જો ( !CONFIG_FREERTOS_SMP )
         {
             configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE || xCoreID == tskNO_AFFINITY );
         }
         #endif /* !CONFIG_FREERTOS_SMP */
 
         /* Allocate space for the stack used by the task being created. */
-        pxStack = heap_caps_malloc( ( ( ( size_t ) usStackDepth ) * sizeof( StackType_t ) ), uxStackMemoryCaps );
+        px_ઢગલો = heap_caps_malloc( ( ( ( size_t ) us_ઢગલો_Depth ) * કદ( ઢગલો_Type_t ) ), ux_ઢગલો_Memory_Caps );
 
-        if( pxStack != NULL )
+        જો( px_ઢગલો != ખાલી )
         {
             /* Allocate space for the TCB. */
-            pxNewTCB = ( TCB_t * ) pvPortMalloc( sizeof( TCB_t ) );
+            pxNewTCB = ( TCB_t * ) pvPortMalloc( કદ( TCB_t ) );
 
-            if( pxNewTCB != NULL )
+            જો( pxNewTCB != ખાલી )
             {
-                memset( ( void * ) pxNewTCB, 0x00, sizeof( TCB_t ) );
+                memset( ( શૂન્ય * ) pxNewTCB, 0x00, કદ( TCB_t ) );
 
                 /* Store the stack location in the TCB. */
-                pxNewTCB->pxStack = pxStack;
+                pxNewTCB->px_ઢગલો = px_ઢગલો;
             }
-            else
+            નહીંતર
             {
                 /* The stack cannot be used as the TCB has not been created. Free it. */
-                heap_caps_free( pxStack );
+                heap_caps_free( px_ઢગલો );
             }
         }
-        else
+        નહીંતર
         {
-            pxNewTCB = NULL;
+            pxNewTCB = ખાલી;
         }
 
-        if( pxNewTCB != NULL )
+        જો( pxNewTCB != ખાલી )
         {
-            #if ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )
+            #જો ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )
             {
                 /* Tasks can be created statically or dynamically, so note this
                  * task was created dynamically in case it is later deleted. */
-                pxNewTCB->ucStaticallyAllocated = tskDYNAMICALLY_ALLOCATED_STACK_AND_TCB;
+                pxNewTCB->ucStaticallyAllocated = tsk_DYNAMICALLY_ALLOCATED_ઢગલો_AND_TCB;
             }
             #endif /* tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE */
 
-            #if CONFIG_FREERTOS_SMP
+            #જો CONFIG_FREERTOS_SMP
             {
-                prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) usStackDepth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL );
-                #if ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+                prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) us_ઢગલો_Depth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, ખાલી );
+                #જો ( ( config_અંક_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
                 {
                     /* Set the task's affinity before scheduling it */
                     pxNewTCB->uxCoreAffinityMask = uxCoreAffinityMask;
                 }
                 #endif /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
             }
-            #else /* CONFIG_FREERTOS_SMP */
+            #નહીંતર /* CONFIG_FREERTOS_SMP */
             {
-                prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) usStackDepth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL, xCoreID );
+                prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) us_ઢગલો_Depth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, ખાલી, xCoreID );
             }
             #endif /* CONFIG_FREERTOS_SMP */
 
             prvAddNewTaskToReadyList( pxNewTCB );
             xReturn = pdPASS;
         }
-        else
+        નહીંતર
         {
             xReturn = errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY;
         }
 
-        return xReturn;
+        પાછા xReturn;
     }
 
 #endif /* CONFIG_SPIRAM */

@@ -12,38 +12,38 @@
  *
  */
 
-#include "sdkconfig.h"
-#include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "unity.h"
-#include "test_utils.h"
+#અન્તર્ભાવ "sdkconfig.h"
+#અન્તર્ભાવ <stdio.h>
+#અન્તર્ભાવ "freertos/FreeRTOS.h"
+#અન્તર્ભાવ "freertos/task.h"
+#અન્તર્ભાવ "freertos/semphr.h"
+#અન્તર્ભાવ "freertos/queue.h"
+#અન્તર્ભાવ "unity.h"
+#અન્તર્ભાવ "test_utils.h"
 
-#if (CONFIG_FREERTOS_QUEUE_REGISTRY_SIZE > 0)
-#define NO_OF_QUEUES_PER_CORE  ((int)((CONFIG_FREERTOS_QUEUE_REGISTRY_SIZE - 3)/CONFIG_FREERTOS_NUMBER_OF_CORES))     //Save space for some preallocated tasks
-#define NO_OF_QUEUES_TOTAL    (NO_OF_QUEUES_PER_CORE * CONFIG_FREERTOS_NUMBER_OF_CORES)
+#જો (CONFIG_FREERTOS_QUEUE_REGISTRY_SIZE > 0)
+#define NO_OF_QUEUES_PER_CORE  ((પૂર્ણાંક)((CONFIG_FREERTOS_QUEUE_REGISTRY_SIZE - 3)/CONFIG_FREERTOS_સંખ્યા_OF_CORES))     //Save space for some preallocated tasks
+#define NO_OF_QUEUES_TOTAL    (NO_OF_QUEUES_PER_CORE * CONFIG_FREERTOS_સંખ્યા_OF_CORES)
 #define QUEUE_NAME_MAX_LENGTH    30
 
-static SemaphoreHandle_t start_sem[CONFIG_FREERTOS_NUMBER_OF_CORES];
-static SemaphoreHandle_t done_sem = NULL;
-static char *names[NO_OF_QUEUES_TOTAL];
-static QueueHandle_t handles[NO_OF_QUEUES_TOTAL];
+સ્થિર SemaphoreHandle_t start_sem[CONFIG_FREERTOS_સંખ્યા_OF_CORES];
+સ્થિર SemaphoreHandle_t done_sem = ખાલી;
+સ્થિર અક્ષર *names[NO_OF_QUEUES_TOTAL];
+સ્થિર QueueHandle_t handles[NO_OF_QUEUES_TOTAL];
 
-void test_queue_registry_task(void *arg)
+શૂન્ય test_queue_registry_task(શૂન્ય *arg)
 {
-    int core = xPortGetCoreID();
-    int offset = core * NO_OF_QUEUES_PER_CORE;
+    પૂર્ણાંક core = xPortGetCoreID();
+    પૂર્ણાંક offset = core * NO_OF_QUEUES_PER_CORE;
     //Create queues and accompanying queue names
-    for (int i = 0; i < NO_OF_QUEUES_PER_CORE; i++) {
+    માટે (પૂર્ણાંક i = 0; i < NO_OF_QUEUES_PER_CORE; i++) {
         handles[i + offset] = xQueueCreate(1, 1);  //Create queues
-        names[i + offset] = calloc(QUEUE_NAME_MAX_LENGTH, sizeof(char));
+        names[i + offset] = calloc(QUEUE_NAME_MAX_LENGTH, કદ(અક્ષર));
         sprintf(names[i + offset], "Queue%d%d", core, i);
     }
 
     xSemaphoreTake(start_sem[core], portMAX_DELAY);   //Wait for start vQueueAddToRegistry()
-    for (int i = 0; i < NO_OF_QUEUES_PER_CORE; i++) {
+    માટે (પૂર્ણાંક i = 0; i < NO_OF_QUEUES_PER_CORE; i++) {
         vQueueAddToRegistry(handles[i + offset], names[i + offset]);    //Register queues to queue registry
     }
     xSemaphoreGive(done_sem);   //Signal that vQueueAddToRegistry() has completed
@@ -51,60 +51,60 @@ void test_queue_registry_task(void *arg)
     vTaskDelay(1);
 
     xSemaphoreTake(start_sem[core], portMAX_DELAY);   //Wait to start vQueueUnregisterQueue()
-    for (int i = 0; i < NO_OF_QUEUES_PER_CORE; i++) {
+    માટે (પૂર્ણાંક i = 0; i < NO_OF_QUEUES_PER_CORE; i++) {
         vQueueDelete(handles[i + offset]);  //Internally calls vQueueUnregisterQueue
     }
     xSemaphoreGive(done_sem);   //Signal done
 
-    vTaskDelete(NULL);  //Delete self
+    vTaskDelete(ખાલી);  //Delete self
 }
 
 TEST_CASE("Test FreeRTOS Queue Registry", "[freertos]")
 {
     //Create synchronization semaphores and tasks to test queue registry
-    done_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_NUMBER_OF_CORES, 0);
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        start_sem[i] = xSemaphoreCreateBinary();
-        xTaskCreatePinnedToCore(test_queue_registry_task, "testing task", 4096, NULL, UNITY_FREERTOS_PRIORITY + 1, NULL, i);
+    done_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_સંખ્યા_OF_CORES, 0);
+    માટે (પૂર્ણાંક i = 0; i < CONFIG_FREERTOS_સંખ્યા_OF_CORES; i++) {
+        start_sem[i] = x_Semaphore_Create_દ્વિઅંકી();
+        xTaskCreatePinnedToCore(test_queue_registry_task, "testing task", 4096, ખાલી, UNITY_FREERTOS_PRIORITY + 1, ખાલી, i);
     }
 
     portDISABLE_INTERRUPTS();
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    માટે (પૂર્ણાંક i = 0; i < CONFIG_FREERTOS_સંખ્યા_OF_CORES; i++) {
         xSemaphoreGive(start_sem[i]);  //Trigger start
     }
     portENABLE_INTERRUPTS();
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    માટે (પૂર્ણાંક i = 0; i < CONFIG_FREERTOS_સંખ્યા_OF_CORES; i++) {
         xSemaphoreTake(done_sem, portMAX_DELAY);    //Wait for tasks to complete vQueueAddToRegistry
     }
-    for (int i = 0; i < NO_OF_QUEUES_TOTAL; i++) {
-        const char *addr = pcQueueGetName(handles[i]);
+    માટે (પૂર્ણાંક i = 0; i < NO_OF_QUEUES_TOTAL; i++) {
+        અચલ અક્ષર *addr = pcQueueGetName(handles[i]);
         TEST_ASSERT(addr == names[i]);   //Check vQueueAddToRegistry was successful
     }
 
     portDISABLE_INTERRUPTS();
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    માટે (પૂર્ણાંક i = 0; i < CONFIG_FREERTOS_સંખ્યા_OF_CORES; i++) {
         xSemaphoreGive(start_sem[i]);  //Trigger start
     }
     portENABLE_INTERRUPTS();
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    માટે (પૂર્ણાંક i = 0; i < CONFIG_FREERTOS_સંખ્યા_OF_CORES; i++) {
         xSemaphoreTake(done_sem, portMAX_DELAY);    //Wait for tasks to complete vQueueUnregisterQueue
     }
-    for (int i = 0; i <  NO_OF_QUEUES_TOTAL; i++) {
-        const char *addr = pcQueueGetName(handles[i]);
-        TEST_ASSERT(addr == NULL);   //Check vQueueUnregisterQueue was successful
-        handles[i] = NULL;
+    માટે (પૂર્ણાંક i = 0; i <  NO_OF_QUEUES_TOTAL; i++) {
+        અચલ અક્ષર *addr = pcQueueGetName(handles[i]);
+        TEST_ASSERT(addr == ખાલી);   //Check vQueueUnregisterQueue was successful
+        handles[i] = ખાલી;
     }
 
     //Cleanup
-    for (int i = 0; i < NO_OF_QUEUES_TOTAL; i++) {
-        free(names[i]);
-        names[i] = NULL;
+    માટે (પૂર્ણાંક i = 0; i < NO_OF_QUEUES_TOTAL; i++) {
+        મુક્ત(names[i]);
+        names[i] = ખાલી;
     }
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    માટે (પૂર્ણાંક i = 0; i < CONFIG_FREERTOS_સંખ્યા_OF_CORES; i++) {
         vSemaphoreDelete(start_sem[i]);
-        start_sem[i] = NULL;
+        start_sem[i] = ખાલી;
     }
     vSemaphoreDelete(done_sem);
-    done_sem = NULL;
+    done_sem = ખાલી;
 }
 #endif      //(CONFIG_FREERTOS_QUEUE_REGISTRY_SIZE > 0)

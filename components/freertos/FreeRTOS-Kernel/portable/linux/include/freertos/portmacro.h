@@ -31,10 +31,10 @@
 #ifndef PORTMACRO_H
 #define PORTMACRO_H
 
-#include <limits.h>
+#અન્તર્ભાવ <limits.h>
 
 #ifdef __cplusplus
-extern "C" {
+બાહ્ય "C" {
 #endif
 
 /*-----------------------------------------------------------
@@ -48,20 +48,20 @@ extern "C" {
  */
 
 /* Type definitions. */
-#define portCHAR        char
-#define portFLOAT       float
-#define portDOUBLE      double
+#define portCHAR        અક્ષર
+#define portFLOAT       દશાંશ
+#define portDOUBLE      દ્વિગુણ
 #define portLONG        long
 #define portSHORT       short
-#define portSTACK_TYPE  unsigned long
+#define port_ઢગલો_TYPE  unsigned long
 #define portBASE_TYPE   long
 #define portPOINTER_SIZE_TYPE intptr_t
 
-typedef portSTACK_TYPE StackType_t;
-typedef portBASE_TYPE BaseType_t;
-typedef unsigned portBASE_TYPE UBaseType_t;
+પ્રકારવ્યાખ્યા port_ઢગલો_TYPE ઢગલો_Type_t;
+પ્રકારવ્યાખ્યા portBASE_TYPE BaseType_t;
+પ્રકારવ્યાખ્યા unsigned portBASE_TYPE UBaseType_t;
 
-typedef unsigned long TickType_t;
+પ્રકારવ્યાખ્યા unsigned long TickType_t;
 #define portMAX_DELAY ( TickType_t ) ULONG_MAX
 
 #define portTICK_TYPE_IS_ATOMIC 1
@@ -69,62 +69,62 @@ typedef unsigned long TickType_t;
 /*-----------------------------------------------------------*/
 
 /* Architecture specifics. */
-#define portSTACK_GROWTH            ( -1 )
-#define portHAS_STACK_OVERFLOW_CHECKING ( 1 )
+#define port_ઢગલો_GROWTH            ( -1 )
+#define port_HAS_ઢગલો_OVERFLOW_CHECKING ( 1 )
 #define portTICK_PERIOD_MS          ( ( TickType_t ) 1000 / configTICK_RATE_HZ )
 #define portTICK_RATE_MICROSECONDS  ( ( TickType_t ) 1000000 / configTICK_RATE_HZ )
 #define portBYTE_ALIGNMENT          8
 /*-----------------------------------------------------------*/
 
 /* Scheduler utilities. */
-extern void vPortYieldWithinApi( void );
+બાહ્ય શૂન્ય vPortYieldWithinApi( શૂન્ય );
 #define portYIELD_WITHIN_API() vPortYieldWithinApi()
 
-extern void vPortYield( void );
+બાહ્ય શૂન્ય vPortYield( શૂન્ય );
 #define portYIELD() vPortYield()
 
-#define portEND_SWITCHING_ISR( xSwitchRequired ) if( (xSwitchRequired) != pdFALSE ) vPortYield()
+#define portEND_SWITCHING_ISR( xSwitchRequired ) જો( (xSwitchRequired) != pdFALSE ) vPortYield()
 #define portYIELD_FROM_ISR( x ) portEND_SWITCHING_ISR( x )
 /*-----------------------------------------------------------*/
 
 /* Critical section management. */
-extern void vPortDisableInterrupts( void );
-extern void vPortEnableInterrupts( void );
+બાહ્ય શૂન્ય vPortDisableInterrupts( શૂન્ય );
+બાહ્ય શૂન્ય vPortEnableInterrupts( શૂન્ય );
 #define portSET_INTERRUPT_MASK()        ( vPortDisableInterrupts() )
 #define portCLEAR_INTERRUPT_MASK()      ( vPortEnableInterrupts() )
 
-extern BaseType_t xPortSetInterruptMask( void );
-extern void vPortClearInterruptMask( BaseType_t xMask );
+બાહ્ય BaseType_t xPortSetInterruptMask( શૂન્ય );
+બાહ્ય શૂન્ય vPortClearInterruptMask( BaseType_t xMask );
 
-void vPortEnterCritical( void );
-void vPortExitCritical( void );
+શૂન્ય vPortEnterCritical( શૂન્ય );
+શૂન્ય vPortExitCritical( શૂન્ય );
 #define portSET_INTERRUPT_MASK_FROM_ISR()       xPortSetInterruptMask()
 #define portCLEAR_INTERRUPT_MASK_FROM_ISR(x)    vPortClearInterruptMask(x)
 #define portDISABLE_INTERRUPTS()                portSET_INTERRUPT_MASK()
 #define portENABLE_INTERRUPTS()                 portCLEAR_INTERRUPT_MASK()
-#define portENTER_CRITICAL(mux)                 {(void)mux;  vPortEnterCritical();}
-#define portEXIT_CRITICAL(mux)                  {(void)mux;  vPortExitCritical();}
-#define portENTER_CRITICAL_SAFE(mux)            {(void)mux;  vPortEnterCritical();}
-#define portEXIT_CRITICAL_SAFE(mux)             {(void)mux;  vPortExitCritical();}
+#define portENTER_CRITICAL(mux)                 {(શૂન્ય)mux;  vPortEnterCritical();}
+#define portEXIT_CRITICAL(mux)                  {(શૂન્ય)mux;  vPortExitCritical();}
+#define portENTER_CRITICAL_SAFE(mux)            {(શૂન્ય)mux;  vPortEnterCritical();}
+#define portEXIT_CRITICAL_SAFE(mux)             {(શૂન્ય)mux;  vPortExitCritical();}
 #define portENTER_CRITICAL_ISR(mux)             portENTER_CRITICAL(mux)
 #define portEXIT_CRITICAL_ISR(mux)              portEXIT_CRITICAL(mux)
 
 #define prvENTER_CRITICAL_SMP_ONLY( pxLock )         portENTER_CRITICAL( pxLock )
 #define prvEXIT_CRITICAL_SMP_ONLY( pxLock )          portEXIT_CRITICAL( pxLock )
 
-extern void vPortSuspendScheduler(void);
+બાહ્ય શૂન્ય vPortSuspendScheduler(શૂન્ય);
 #define portSOFTWARE_BARRIER() vPortSuspendScheduler()
 
 /*-----------------------------------------------------------*/
 
-extern void vPortThreadDying( void *pxTaskToDelete, volatile BaseType_t *pxPendYield );
-extern void vPortCancelThread( void *pxTaskToDelete );
+બાહ્ય શૂન્ય vPortThreadDying( શૂન્ય *pxTaskToDelete, અસ્થિર BaseType_t *pxPendYield );
+બાહ્ય શૂન્ય vPortCancelThread( શૂન્ય *pxTaskToDelete );
 #define portPRE_TASK_DELETE_HOOK( pvTaskToDelete, pxPendYield ) vPortThreadDying( ( pvTaskToDelete ), ( pxPendYield ) )
 #define portCLEAN_UP_TCB( pxTCB )   vPortCancelThread( pxTCB )
 /*-----------------------------------------------------------*/
 
-#define portTASK_FUNCTION_PROTO( vFunction, pvParameters ) void vFunction( void *pvParameters )
-#define portTASK_FUNCTION( vFunction, pvParameters ) void vFunction( void *pvParameters )
+#define portTASK_FUNCTION_PROTO( vFunction, pvParameters ) શૂન્ય vFunction( શૂન્ય *pvParameters )
+#define portTASK_FUNCTION( vFunction, pvParameters ) શૂન્ય vFunction( શૂન્ય *pvParameters )
 /*-----------------------------------------------------------*/
 
 /*
@@ -135,12 +135,12 @@ extern void vPortCancelThread( void *pxTaskToDelete );
  * Thus, only a compiler barrier is needed to prevent the compiler
  * reordering.
  */
-#define portMEMORY_BARRIER() __asm volatile( "" ::: "memory" )
+#define portMEMORY_BARRIER() __asm અસ્થિર( "" ::: "memory" )
 
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() /* no-op */
-#if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
-configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
-#define portGET_RUN_TIME_COUNTER_VALUE()         xPortGetRunTimeCounterValue()
+#જો ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
+configRUN_TIME_COUNTER_TYPE x_Port_Get_Run_Time_Counter_કિંમત( શૂન્ય );
+#define port_GET_RUN_TIME_COUNTER_કિંમત()         x_Port_Get_Run_Time_Counter_કિંમત()
 #endif
 
 #ifdef __cplusplus
@@ -148,8 +148,8 @@ configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
 #endif
 
 // We need additional definitions for ESP-IDF code
-#include "portmacro_idf.h"
+#અન્તર્ભાવ "portmacro_idf.h"
 
-void vPortSetStackWatchpoint(void *pxStackStart);
+શૂન્ય v_Port_Set_ઢગલો_Watchpoint(શૂન્ય *px_ઢગલો_Start);
 
 #endif /* PORTMACRO_H */

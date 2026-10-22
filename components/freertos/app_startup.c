@@ -4,15 +4,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <stddef.h>
-#include <assert.h>
-#include "esp_task.h"
-#include "esp_log.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/portmacro.h"
-#include "esp_private/esp_sys_event_internal.h"
+#અન્તર્ભાવ "sdkconfig.h"
+#અન્તર્ભાવ <stddef.h>
+#અન્તર્ભાવ <assert.h>
+#અન્તર્ભાવ "esp_task.h"
+#અન્તર્ભાવ "esp_log.h"
+#અન્તર્ભાવ "freertos/FreeRTOS.h"
+#અન્તર્ભાવ "freertos/task.h"
+#અન્તર્ભાવ "freertos/portmacro.h"
+#અન્તર્ભાવ "esp_private/esp_sys_event_internal.h"
 
 /* ------------------------------------------------- App/OS Startup ----------------------------------------------------
  * - Functions related to application and FreeRTOS startup
@@ -34,33 +34,33 @@
 For now, AMP is not supported (i.e., running FreeRTOS on one core and a bare metal/other OS on the other). Therefore,
 CONFIG_FREERTOS_UNICORE and CONFIG_ESP_SYSTEM_SINGLE_CORE_MODE should be identical. We add a check for this here.
 */
-#if CONFIG_FREERTOS_UNICORE != CONFIG_ESP_SYSTEM_SINGLE_CORE_MODE
+#જો CONFIG_FREERTOS_UNICORE != CONFIG_ESP_SYSTEM_SINGLE_CORE_MODE
 #error "AMP not supported. FreeRTOS number of cores and system number of cores must be identical"
 #endif
 
 // -------------------- Declarations -----------------------
 
-static void main_task(void* args);
+સ્થિર શૂન્ય main_task(શૂન્ય* args);
 ESP_LOG_ATTR_TAG(APP_START_TAG, "app_start");
 
-static void run_app_startup_event(esp_sys_event_id_t id)
+સ્થિર શૂન્ય run_app_startup_event(esp_sys_event_id_t id)
 {
     ESP_SYS_EVENT_FOREACH(handler, id) {
-        ESP_ERROR_CHECK(handler->handler(NULL, NULL));
+        ESP_ERROR_CHECK(handler->handler(ખાલી, ખાલી));
     }
 }
 
 // ------------------ CPU0 App Startup ---------------------
 
-void esp_startup_start_app(void)
+શૂન્ય esp_startup_start_app(શૂન્ય)
 {
     run_app_startup_event(ESP_SYS_EVENT_PRE_SCHEDULER);
 
     BaseType_t res = xTaskCreatePinnedToCore(main_task, "main",
-                                             ESP_TASK_MAIN_STACK, NULL,
-                                             ESP_TASK_MAIN_PRIO, NULL, ESP_TASK_MAIN_CORE);
-    assert(res == pdTRUE);
-    (void)res;
+                                             ESP_TASK_MAIN_ઢગલો, ખાલી,
+                                             ESP_TASK_MAIN_PRIO, ખાલી, ESP_TASK_MAIN_CORE);
+    પ્રતિજ્ઞા(res == pdTRUE);
+    (શૂન્ય)res;
 
     /*
     If a particular FreeRTOS port has port/arch specific OS startup behavior, they can implement a function of type
@@ -70,17 +70,17 @@ void esp_startup_start_app(void)
     Deprecated: Register a PRE_SCHEDULER handler with priority 999 to preserve this ordering.
     */
     // TODO: IDF-16135
-    void __attribute__((weak, deprecated("port_start_app_hook is deprecated and will be removed in IDF 7.0. Use ESP_PRE_SCHEDULER_HANDLER_REGISTER instead.")))
-    port_start_app_hook(void);
-#pragma GCC diagnostic push
+    શૂન્ય __attribute__((weak, deprecated("port_start_app_hook is deprecated and will be removed in IDF 7.0. Use ESP_PRE_SCHEDULER_HANDLER_REGISTER instead.")))
+    port_start_app_hook(શૂન્ય);
+#pragma GCC diagnostic ધકેલો
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-    if (port_start_app_hook != NULL) {
+    જો (port_start_app_hook != ખાલી) {
         ESP_EARLY_LOGW(APP_START_TAG,
                        "port_start_app_hook is deprecated and will be removed in IDF 7.0. "
                        "Use ESP_PRE_SCHEDULER_HANDLER_REGISTER instead.");
         port_start_app_hook();
     }
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic કાઢો
 
     ESP_EARLY_LOGD(APP_START_TAG, "Starting scheduler on CPU0");
     vTaskStartScheduler();
@@ -88,17 +88,17 @@ void esp_startup_start_app(void)
 
 // --------------- CPU[1:N-1] App Startup ------------------
 
-#if !CONFIG_FREERTOS_UNICORE
-void esp_startup_start_app_other_cores(void)
+#જો !CONFIG_FREERTOS_UNICORE
+શૂન્ય esp_startup_start_app_other_cores(શૂન્ય)
 {
     // For now, we only support up to two core: 0 and 1.
-    if (xPortGetCoreID() >= 2) {
+    જો (xPortGetCoreID() >= 2) {
         abort();
     }
 
     // Wait for CPU0 to start FreeRTOS before progressing
-    extern volatile unsigned port_xSchedulerRunning[CONFIG_FREERTOS_NUMBER_OF_CORES];
-    while (port_xSchedulerRunning[0] == 0) {
+    બાહ્ય અસ્થિર unsigned port_xSchedulerRunning[CONFIG_FREERTOS_સંખ્યા_OF_CORES];
+    જ્યારે (port_xSchedulerRunning[0] == 0) {
         ;
     }
 
@@ -123,23 +123,23 @@ ESP_LOG_ATTR_TAG(MAIN_TAG, "main_task");
 /* This function has to guarantee that all CPUs have finished the FreeRTOS initialization
 * and the startup stack is not in use.
 */
-static void wait_for_all_cores_ready(void)
+સ્થિર શૂન્ય wait_for_all_cores_ready(શૂન્ય)
 {
-#if !CONFIG_FREERTOS_UNICORE
-    extern volatile unsigned port_uxCoreStartupDone[CONFIG_FREERTOS_NUMBER_OF_CORES];
+#જો !CONFIG_FREERTOS_UNICORE
+    બાહ્ય અસ્થિર unsigned port_uxCoreStartupDone[CONFIG_FREERTOS_સંખ્યા_OF_CORES];
     bool all_cpus_has_been_started;
-    do {
+    કરો {
         all_cpus_has_been_started = true;
-        for (int cpu = 0; cpu < CONFIG_FREERTOS_NUMBER_OF_CORES; cpu++) {
+        માટે (પૂર્ણાંક cpu = 0; cpu < CONFIG_FREERTOS_સંખ્યા_OF_CORES; cpu++) {
             all_cpus_has_been_started &= port_uxCoreStartupDone[cpu] != 0;
         }
-    } while (!all_cpus_has_been_started);
+    } જ્યારે (!all_cpus_has_been_started);
 #endif // !CONFIG_FREERTOS_UNICORE
 }
 
-static void main_task(void* args)
+સ્થિર શૂન્ય main_task(શૂન્ય* args)
 {
-    ESP_LOGI(MAIN_TAG, "Started on CPU%d", (int)xPortGetCoreID());
+    ESP_LOGI(MAIN_TAG, "Started on CPU%d", (પૂર્ણાંક)xPortGetCoreID());
 
     wait_for_all_cores_ready();
 
@@ -150,8 +150,8 @@ static void main_task(void* args)
     start-of-application marker.
     */
     ESP_LOGI(MAIN_TAG, "Calling app_main()");
-    extern void app_main(void);
+    બાહ્ય શૂન્ય app_main(શૂન્ય);
     app_main();
     ESP_LOGI(MAIN_TAG, "Returned from app_main()");
-    vTaskDelete(NULL);
+    vTaskDelete(ખાલી);
 }
