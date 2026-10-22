@@ -318,7 +318,7 @@ EventBits_t MPU_xEventGroupSync( EventGroupHandle_t xEventGroup,
                                  const EventBits_t uxBitsToSet,
                                  const EventBits_t uxBitsToWaitFor,
                                  TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-#if ( configUSE_TRACE_FACILITY == 1 )
+#만약 ( configUSE_TRACE_FACILITY == 1 )
     UBaseType_t MPU_uxEventGroupGetNumber( void * xEventGroup ) FREERTOS_SYSTEM_CALL;
     void MPU_vEventGroupSetNumber( void * xEventGroup,
                                    UBaseType_t uxEventGroupNumber ) FREERTOS_SYSTEM_CALL;

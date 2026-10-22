@@ -35,61 +35,61 @@
 #include "linux_port_coop_internal.h"
 #include "esp_private/freertos_linux_coop_syscalls.h"
 
-static ssize_t  (*real_readv)(int, const struct iovec *, int);
-static ssize_t  (*real_writev)(int, const struct iovec *, int);
-static ssize_t  (*real_recv)(int, void *, size_t, int);
-static ssize_t  (*real_send)(int, const void *, size_t, int);
-static ssize_t  (*real_recvfrom)(int, void *, size_t, int,
+static ssize_t  (*real_readv)(정수, const struct iovec *, 정수);
+static ssize_t  (*real_writev)(정수, const struct iovec *, 정수);
+static ssize_t  (*real_recv)(정수, void *, size_t, 정수);
+static ssize_t  (*real_send)(정수, const void *, size_t, 정수);
+static ssize_t  (*real_recvfrom)(정수, void *, size_t, 정수,
                                  struct sockaddr *, socklen_t *);
-static ssize_t  (*real_sendto)(int, const void *, size_t, int,
+static ssize_t  (*real_sendto)(정수, const void *, size_t, 정수,
                                 const struct sockaddr *, socklen_t);
-static ssize_t  (*real_recvmsg)(int, struct msghdr *, int);
-static ssize_t  (*real_sendmsg)(int, const struct msghdr *, int);
-static int      (*real_connect)(int, const struct sockaddr *, socklen_t);
-static int      (*real_accept)(int, struct sockaddr *, socklen_t *);
-static int      (*real_pselect)(int, fd_set *, fd_set *, fd_set *,
+static ssize_t  (*real_recvmsg)(정수, struct msghdr *, 정수);
+static ssize_t  (*real_sendmsg)(정수, const struct msghdr *, 정수);
+static 정수      (*real_connect)(정수, const struct sockaddr *, socklen_t);
+static 정수      (*real_accept)(정수, struct sockaddr *, socklen_t *);
+static 정수      (*real_pselect)(정수, fd_set *, fd_set *, fd_set *,
                                 const struct timespec *, const sigset_t *);
-static int      (*real_poll)(struct pollfd *, nfds_t, int);
-static int      (*real_socket)(int, int, int);
-static int      (*real_socketpair)(int, int, int, int[2]);
-static int      (*real_pipe)(int[2]);
-static int      (*real_pipe2)(int[2], int);
-static int      (*real_dup)(int);
-static int      (*real_dup2)(int, int);
-static int      (*real_nanosleep)(const struct timespec *, struct timespec *);
-static ssize_t  (*real_read)(int, void *, size_t);
-static ssize_t  (*real_write)(int, const void *, size_t);
-static ssize_t  (*real_pread)(int, void *, size_t, off_t);
-static ssize_t  (*real_pwrite)(int, const void *, size_t, off_t);
-static int      (*real_close)(int);
-static int      (*real_select)(int, fd_set *, fd_set *, fd_set *,
+static 정수      (*real_poll)(struct pollfd *, nfds_t, 정수);
+static 정수      (*real_socket)(정수, 정수, 정수);
+static 정수      (*real_socketpair)(정수, 정수, 정수, 정수[2]);
+static 정수      (*real_pipe)(정수[2]);
+static 정수      (*real_pipe2)(정수[2], 정수);
+static 정수      (*real_dup)(정수);
+static 정수      (*real_dup2)(정수, 정수);
+static 정수      (*real_nanosleep)(const struct timespec *, struct timespec *);
+static ssize_t  (*real_read)(정수, void *, size_t);
+static ssize_t  (*real_write)(정수, const void *, size_t);
+static ssize_t  (*real_pread)(정수, void *, size_t, off_t);
+static ssize_t  (*real_pwrite)(정수, const void *, size_t, off_t);
+static 정수      (*real_close)(정수);
+static 정수      (*real_select)(정수, fd_set *, fd_set *, fd_set *,
                                 struct timeval *);
 
-typedef int (*linux_coop_fcntl_fn_t)(int, int, ...);
+typedef 정수 (*linux_coop_fcntl_fn_t)(정수, 정수, ...);
 static linux_coop_fcntl_fn_t real_fcntl;
 
-typedef int (*linux_coop_open_fn_t)(const char *, int, mode_t);
+typedef 정수 (*linux_coop_open_fn_t)(const char *, 정수, mode_t);
 static linux_coop_open_fn_t real_open;
 
 typedef struct linux_coop_fd_state {
-    int fd;
-    int user_flags;
+    정수 fd;
+    정수 user_flags;
     struct linux_coop_fd_state *next;
 } linux_coop_fd_state_t;
 
 static linux_coop_fd_state_t *s_fd_state_list;
 static pthread_mutex_t s_fd_state_lock = PTHREAD_MUTEX_INITIALIZER;
 
-static linux_coop_fd_state_t *linux_coop_find_fd_locked(int fd)
+static linux_coop_fd_state_t *linux_coop_find_fd_locked(정수 fd)
 {
     linux_coop_fd_state_t *node = s_fd_state_list;
-    while (node != NULL) {
-        if (node->fd == fd) {
-            return node;
+    동안 (node != NULL) {
+        만약 (node->fd == fd) {
+            반환 node;
         }
         node = node->next;
     }
-    return NULL;
+    반환 NULL;
 }
 
 static void __attribute__((constructor)) linux_coop_resolve_all(void)
@@ -123,32 +123,32 @@ static void __attribute__((constructor)) linux_coop_resolve_all(void)
     LINUX_COOP_RESOLVE(open);
 }
 
-void linux_coop_set_nonblocking(int fd)
+void linux_coop_set_nonblocking(정수 fd)
 {
-    if (fd >= 0) {
-        int flags = real_fcntl(fd, F_GETFL, 0);
-        if (flags >= 0) {
+    만약 (fd >= 0) {
+        정수 flags = real_fcntl(fd, F_GETFL, 0);
+        만약 (flags >= 0) {
             real_fcntl(fd, F_SETFL, flags | O_NONBLOCK);
         }
     }
 }
 
-void linux_coop_track_fd(int fd, int user_flags)
+void linux_coop_track_fd(정수 fd, 정수 user_flags)
 {
-    if (fd < 0) {
-        return;
+    만약 (fd < 0) {
+        반환;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
     linux_coop_fd_state_t *node = linux_coop_find_fd_locked(fd);
-    if (node != NULL) {
+    만약 (node != NULL) {
         node->user_flags = user_flags;
         pthread_mutex_unlock(&s_fd_state_lock);
-        return;
+        반환;
     }
 
     node = calloc(1, sizeof(*node));
-    if (node != NULL) {
+    만약 (node != NULL) {
         node->fd = fd;
         node->user_flags = user_flags;
         node->next = s_fd_state_list;
@@ -157,20 +157,20 @@ void linux_coop_track_fd(int fd, int user_flags)
     pthread_mutex_unlock(&s_fd_state_lock);
 }
 
-void linux_coop_untrack_fd(int fd)
+void linux_coop_untrack_fd(정수 fd)
 {
-    if (fd < 0) {
-        return;
+    만약 (fd < 0) {
+        반환;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
     linux_coop_fd_state_t *prev = NULL;
     linux_coop_fd_state_t *node = s_fd_state_list;
-    while (node != NULL) {
-        if (node->fd == fd) {
-            if (prev == NULL) {
+    동안 (node != NULL) {
+        만약 (node->fd == fd) {
+            만약 (prev == NULL) {
                 s_fd_state_list = node->next;
-            } else {
+            } 아니면 {
                 prev->next = node->next;
             }
             free(node);
@@ -182,110 +182,110 @@ void linux_coop_untrack_fd(int fd)
     pthread_mutex_unlock(&s_fd_state_lock);
 }
 
-void linux_coop_set_user_flags(int fd, int user_flags)
+void linux_coop_set_user_flags(정수 fd, 정수 user_flags)
 {
     linux_coop_track_fd(fd, user_flags);
 }
 
-bool linux_coop_get_user_flags(int fd, int *flags)
+bool linux_coop_get_user_flags(정수 fd, 정수 *flags)
 {
-    if (fd < 0 || flags == NULL) {
-        return false;
+    만약 (fd < 0 || flags == NULL) {
+        반환 false;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
     linux_coop_fd_state_t *node = linux_coop_find_fd_locked(fd);
-    if (node == NULL) {
+    만약 (node == NULL) {
         pthread_mutex_unlock(&s_fd_state_lock);
-        return false;
+        반환 false;
     }
     *flags = node->user_flags;
     pthread_mutex_unlock(&s_fd_state_lock);
-    return true;
+    반환 true;
 }
 
-bool linux_coop_fd_user_nonblocking(int fd)
+bool linux_coop_fd_user_nonblocking(정수 fd)
 {
-    int user_flags = 0;
-    if (linux_coop_get_user_flags(fd, &user_flags)) {
-        return (user_flags & O_NONBLOCK) != 0;
+    정수 user_flags = 0;
+    만약 (linux_coop_get_user_flags(fd, &user_flags)) {
+        반환 (user_flags & O_NONBLOCK) != 0;
     }
-    return false;
+    반환 false;
 }
 
 
-ssize_t freertos_linux_coop_read(int fd, void *buf, size_t count)
+ssize_t freertos_linux_coop_read(정수 fd, void *buf, size_t count)
 {
     LINUX_COOP_IO_LOOP(fd, real_read(fd, buf, count))
 }
 
-ssize_t freertos_linux_coop_write(int fd, const void *buf, size_t count)
+ssize_t freertos_linux_coop_write(정수 fd, const void *buf, size_t count)
 {
     LINUX_COOP_IO_LOOP(fd, real_write(fd, buf, count))
 }
 
-ssize_t freertos_linux_coop_pread(int fd, void *buf, size_t count, off_t offset)
+ssize_t freertos_linux_coop_pread(정수 fd, void *buf, size_t count, off_t offset)
 {
     LINUX_COOP_IO_LOOP(fd, real_pread(fd, buf, count, offset))
 }
 
-ssize_t freertos_linux_coop_pwrite(int fd, const void *buf, size_t count, off_t offset)
+ssize_t freertos_linux_coop_pwrite(정수 fd, const void *buf, size_t count, off_t offset)
 {
     LINUX_COOP_IO_LOOP(fd, real_pwrite(fd, buf, count, offset))
 }
 
-int freertos_linux_coop_open(const char *path, int flags, int mode)
+정수 freertos_linux_coop_open(const char *path, 정수 flags, 정수 mode)
 {
-    int fd = real_open(path, flags, (mode_t)mode);
+    정수 fd = real_open(path, flags, (mode_t)mode);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, flags & O_NONBLOCK);
-    return fd;
+    반환 fd;
 }
 
-int freertos_linux_coop_close(int fd)
+정수 freertos_linux_coop_close(정수 fd)
 {
-    int ret = real_close(fd);
-    if (ret == 0 || errno == EINTR) {
+    정수 ret = real_close(fd);
+    만약 (ret == 0 || errno == EINTR) {
         /* On Linux, close() always releases the fd even when returning
          * EINTR.  Retrying would risk closing a fd reused by another
          * thread.  Treat EINTR as success. */
         linux_coop_untrack_fd(fd);
-        return 0;
+        반환 0;
     }
-    return -1;
+    반환 -1;
 }
 
-int freertos_linux_coop_fcntl(int fd, int cmd, int arg)
+정수 freertos_linux_coop_fcntl(정수 fd, 정수 cmd, 정수 arg)
 {
-    if (cmd == F_GETFL) {
-        int real_flags = real_fcntl(fd, F_GETFL, 0);
-        if (real_flags < 0) {
-            return -1;
+    만약 (cmd == F_GETFL) {
+        정수 real_flags = real_fcntl(fd, F_GETFL, 0);
+        만약 (real_flags < 0) {
+            반환 -1;
         }
-        int user_flags = 0;
-        if (linux_coop_get_user_flags(fd, &user_flags)) {
+        정수 user_flags = 0;
+        만약 (linux_coop_get_user_flags(fd, &user_flags)) {
             real_flags &= ~O_NONBLOCK;
             real_flags |= (user_flags & O_NONBLOCK);
         }
-        return real_flags;
+        반환 real_flags;
     }
-    if (cmd == F_SETFL) {
+    만약 (cmd == F_SETFL) {
         linux_coop_set_user_flags(fd, arg);
-        int internal_flags = arg | O_NONBLOCK;
-        return real_fcntl(fd, F_SETFL, internal_flags);
+        정수 internal_flags = arg | O_NONBLOCK;
+        반환 real_fcntl(fd, F_SETFL, internal_flags);
     }
-    return real_fcntl(fd, cmd, arg);
+    반환 real_fcntl(fd, cmd, arg);
 }
 
-int freertos_linux_coop_select(int nfds, fd_set *readfds, fd_set *writefds,
+정수 freertos_linux_coop_select(정수 nfds, fd_set *readfds, fd_set *writefds,
                       fd_set *exceptfds, struct timeval *timeout)
 {
     long timeout_ms = -1;
-    if (timeout != NULL) {
+    만약 (timeout != NULL) {
         timeout_ms = (long)timeout->tv_sec * 1000 +
                      (timeout->tv_usec + 999) / 1000;
-        if (timeout_ms == 0) {
-            return real_select(nfds, readfds, writefds, exceptfds, timeout);
+        만약 (timeout_ms == 0) {
+            반환 real_select(nfds, readfds, writefds, exceptfds, timeout);
         }
     }
 
@@ -294,38 +294,38 @@ int freertos_linux_coop_select(int nfds, fd_set *readfds, fd_set *writefds,
      * iterations we must snapshot the caller's sets and restore them on every
      * loop. */
     fd_set rfds_in, wfds_in, efds_in;
-    if (readfds != NULL) {
+    만약 (readfds != NULL) {
         rfds_in = *readfds;
     }
-    if (writefds != NULL) {
+    만약 (writefds != NULL) {
         wfds_in = *writefds;
     }
-    if (exceptfds != NULL) {
+    만약 (exceptfds != NULL) {
         efds_in = *exceptfds;
     }
 
     long waited_ms = 0;
-    while (1) {
-        if (readfds != NULL) {
+    동안 (1) {
+        만약 (readfds != NULL) {
             *readfds = rfds_in;
         }
-        if (writefds != NULL) {
+        만약 (writefds != NULL) {
             *writefds = wfds_in;
         }
-        if (exceptfds != NULL) {
+        만약 (exceptfds != NULL) {
             *exceptfds = efds_in;
         }
 
         struct timeval zero_tv = {0, 0};
-        int ret = real_select(nfds, readfds, writefds, exceptfds, &zero_tv);
-        if (ret != 0) {
-            return ret;
+        정수 ret = real_select(nfds, readfds, writefds, exceptfds, &zero_tv);
+        만약 (ret != 0) {
+            반환 ret;
         }
-        if (timeout_ms == 0) {
-            return 0;
+        만약 (timeout_ms == 0) {
+            반환 0;
         }
-        if (timeout_ms > 0 && waited_ms >= timeout_ms) {
-            return 0;
+        만약 (timeout_ms > 0 && waited_ms >= timeout_ms) {
+            반환 0;
         }
         linux_coop_yield(LINUX_COOP_TICK_MS);
         waited_ms += LINUX_COOP_TICK_MS;
@@ -346,189 +346,189 @@ void freertos_linux_coop_syscalls_init(void)
  * is linked.  When VFS is absent the weak versions provide cooperative
  * behaviour directly via real libc. */
 
-__attribute__((weak)) ssize_t read(int fd, void *buf, size_t count)
+__attribute__((weak)) ssize_t read(정수 fd, void *buf, size_t count)
 {
-    return freertos_linux_coop_read(fd, buf, count);
+    반환 freertos_linux_coop_read(fd, buf, count);
 }
 
-__attribute__((weak)) ssize_t write(int fd, const void *buf, size_t count)
+__attribute__((weak)) ssize_t write(정수 fd, const void *buf, size_t count)
 {
-    return freertos_linux_coop_write(fd, buf, count);
+    반환 freertos_linux_coop_write(fd, buf, count);
 }
 
-__attribute__((weak)) ssize_t pread(int fd, void *buf, size_t count, off_t offset)
+__attribute__((weak)) ssize_t pread(정수 fd, void *buf, size_t count, off_t offset)
 {
-    return freertos_linux_coop_pread(fd, buf, count, offset);
+    반환 freertos_linux_coop_pread(fd, buf, count, offset);
 }
 
-__attribute__((weak)) ssize_t pwrite(int fd, const void *buf, size_t count, off_t offset)
+__attribute__((weak)) ssize_t pwrite(정수 fd, const void *buf, size_t count, off_t offset)
 {
-    return freertos_linux_coop_pwrite(fd, buf, count, offset);
+    반환 freertos_linux_coop_pwrite(fd, buf, count, offset);
 }
 
-__attribute__((weak)) int open(const char *path, int flags, ...)
+__attribute__((weak)) 정수 open(const char *path, 정수 flags, ...)
 {
-    int mode = 0;
-    if (flags & O_CREAT) {
+    정수 mode = 0;
+    만약 (flags & O_CREAT) {
         va_list ap;
         va_start(ap, flags);
-        mode = va_arg(ap, int);
+        mode = va_arg(ap, 정수);
         va_end(ap);
     }
-    return freertos_linux_coop_open(path, flags, mode);
+    반환 freertos_linux_coop_open(path, flags, mode);
 }
 
-__attribute__((weak)) int close(int fd)
+__attribute__((weak)) 정수 close(정수 fd)
 {
-    return freertos_linux_coop_close(fd);
+    반환 freertos_linux_coop_close(fd);
 }
 
-__attribute__((weak)) int fcntl(int fd, int cmd, ...)
+__attribute__((weak)) 정수 fcntl(정수 fd, 정수 cmd, ...)
 {
-    int arg = 0;
-    if (cmd != F_GETFL) {
+    정수 arg = 0;
+    만약 (cmd != F_GETFL) {
         va_list list;
         va_start(list, cmd);
-        arg = va_arg(list, int);
+        arg = va_arg(list, 정수);
         va_end(list);
     }
-    return freertos_linux_coop_fcntl(fd, cmd, arg);
+    반환 freertos_linux_coop_fcntl(fd, cmd, arg);
 }
 
-__attribute__((weak)) int select(int nfds, fd_set *readfds, fd_set *writefds,
+__attribute__((weak)) 정수 select(정수 nfds, fd_set *readfds, fd_set *writefds,
                                  fd_set *exceptfds, struct timeval *timeout)
 {
-    return freertos_linux_coop_select(nfds, readfds, writefds, exceptfds, timeout);
+    반환 freertos_linux_coop_select(nfds, readfds, writefds, exceptfds, timeout);
 }
 
-ssize_t freertos_linux_coop_readv(int fd, const struct iovec *iov, int iovcnt)
+ssize_t freertos_linux_coop_readv(정수 fd, const struct iovec *iov, 정수 iovcnt)
 {
     LINUX_COOP_IO_LOOP(fd, real_readv(fd, iov, iovcnt))
 }
 
-ssize_t freertos_linux_coop_writev(int fd, const struct iovec *iov, int iovcnt)
+ssize_t freertos_linux_coop_writev(정수 fd, const struct iovec *iov, 정수 iovcnt)
 {
     LINUX_COOP_IO_LOOP(fd, real_writev(fd, iov, iovcnt))
 }
 
-ssize_t freertos_linux_coop_recv(int sockfd, void *buf, size_t len, int flags)
+ssize_t freertos_linux_coop_recv(정수 sockfd, void *buf, size_t len, 정수 flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recv(sockfd, buf, len, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_send(int sockfd, const void *buf, size_t len, int flags)
+ssize_t freertos_linux_coop_send(정수 sockfd, const void *buf, size_t len, 정수 flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_send(sockfd, buf, len, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_recvfrom(int sockfd, void *buf, size_t len, int flags,
+ssize_t freertos_linux_coop_recvfrom(정수 sockfd, void *buf, size_t len, 정수 flags,
                  struct sockaddr *src_addr, socklen_t *addrlen)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recvfrom(sockfd, buf, len, flags | MSG_DONTWAIT,
                             src_addr, addrlen))
 }
 
-ssize_t freertos_linux_coop_sendto(int sockfd, const void *buf, size_t len, int flags,
+ssize_t freertos_linux_coop_sendto(정수 sockfd, const void *buf, size_t len, 정수 flags,
                const struct sockaddr *dest_addr, socklen_t addrlen)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_sendto(sockfd, buf, len, flags | MSG_DONTWAIT,
                           dest_addr, addrlen))
 }
 
-ssize_t freertos_linux_coop_recvmsg(int sockfd, struct msghdr *msg, int flags)
+ssize_t freertos_linux_coop_recvmsg(정수 sockfd, struct msghdr *msg, 정수 flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recvmsg(sockfd, msg, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_sendmsg(int sockfd, const struct msghdr *msg, int flags)
+ssize_t freertos_linux_coop_sendmsg(정수 sockfd, const struct msghdr *msg, 정수 flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_sendmsg(sockfd, msg, flags | MSG_DONTWAIT))
 }
 
-__attribute__((weak)) ssize_t readv(int fd, const struct iovec *iov, int iovcnt)
+__attribute__((weak)) ssize_t readv(정수 fd, const struct iovec *iov, 정수 iovcnt)
 {
-    return freertos_linux_coop_readv(fd, iov, iovcnt);
+    반환 freertos_linux_coop_readv(fd, iov, iovcnt);
 }
 
-__attribute__((weak)) ssize_t writev(int fd, const struct iovec *iov, int iovcnt)
+__attribute__((weak)) ssize_t writev(정수 fd, const struct iovec *iov, 정수 iovcnt)
 {
-    return freertos_linux_coop_writev(fd, iov, iovcnt);
+    반환 freertos_linux_coop_writev(fd, iov, iovcnt);
 }
 
-__attribute__((weak)) ssize_t recv(int sockfd, void *buf, size_t len, int flags)
+__attribute__((weak)) ssize_t recv(정수 sockfd, void *buf, size_t len, 정수 flags)
 {
-    return freertos_linux_coop_recv(sockfd, buf, len, flags);
+    반환 freertos_linux_coop_recv(sockfd, buf, len, flags);
 }
 
-__attribute__((weak)) ssize_t send(int sockfd, const void *buf, size_t len, int flags)
+__attribute__((weak)) ssize_t send(정수 sockfd, const void *buf, size_t len, 정수 flags)
 {
-    return freertos_linux_coop_send(sockfd, buf, len, flags);
+    반환 freertos_linux_coop_send(sockfd, buf, len, flags);
 }
 
-__attribute__((weak)) ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
+__attribute__((weak)) ssize_t recvfrom(정수 sockfd, void *buf, size_t len, 정수 flags,
                  struct sockaddr *src_addr, socklen_t *addrlen)
 {
-    return freertos_linux_coop_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
+    반환 freertos_linux_coop_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
 }
 
-__attribute__((weak)) ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
+__attribute__((weak)) ssize_t sendto(정수 sockfd, const void *buf, size_t len, 정수 flags,
                const struct sockaddr *dest_addr, socklen_t addrlen)
 {
-    return freertos_linux_coop_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
+    반환 freertos_linux_coop_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
 }
 
-__attribute__((weak)) ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
+__attribute__((weak)) ssize_t recvmsg(정수 sockfd, struct msghdr *msg, 정수 flags)
 {
-    return freertos_linux_coop_recvmsg(sockfd, msg, flags);
+    반환 freertos_linux_coop_recvmsg(sockfd, msg, flags);
 }
 
-__attribute__((weak)) ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags)
+__attribute__((weak)) ssize_t sendmsg(정수 sockfd, const struct msghdr *msg, 정수 flags)
 {
-    return freertos_linux_coop_sendmsg(sockfd, msg, flags);
+    반환 freertos_linux_coop_sendmsg(sockfd, msg, flags);
 }
 
-int freertos_linux_coop_connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+정수 freertos_linux_coop_connect(정수 sockfd, const struct sockaddr *addr, socklen_t addrlen)
 {
-    while (1)
+    동안 (1)
     {
-        int ret = real_connect(sockfd, addr, addrlen);
-        if (ret == 0) {
-            return ret;
+        정수 ret = real_connect(sockfd, addr, addrlen);
+        만약 (ret == 0) {
+            반환 ret;
         }
 
-        if (errno == EINPROGRESS || errno == EALREADY) {
+        만약 (errno == EINPROGRESS || errno == EALREADY) {
             struct pollfd pfd;
             pfd.fd = sockfd;
             pfd.events = POLLOUT;
             pfd.revents = 0;
 
-            int poll_retries = 0;
-            while (1)
+            정수 poll_retries = 0;
+            동안 (1)
             {
-                int press = real_poll(&pfd, 1, 0);
-                if (press > 0) {
-                    int so_err = 0;
+                정수 press = real_poll(&pfd, 1, 0);
+                만약 (press > 0) {
+                    정수 so_err = 0;
                     socklen_t len = sizeof(so_err);
-                    if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
+                    만약 (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
                                    &so_err, &len) < 0) {
-                        return -1;
+                        반환 -1;
                     }
-                    if (so_err == 0) {
-                        return 0;
-                    } else {
+                    만약 (so_err == 0) {
+                        반환 0;
+                    } 아니면 {
                         errno = so_err;
-                        return -1;
+                        반환 -1;
                     }
-                } else if (press == 0) {
+                } 아니면 만약 (press == 0) {
                     linux_coop_yield(LINUX_COOP_TICK_MS);
                     continue;
-                } else {
-                    if (errno == EINTR) {
+                } 아니면 {
+                    만약 (errno == EINTR) {
                         continue;
                     }
                     /* Non-EINTR poll error; bail out after a few retries */
-                    if (++poll_retries > 3) {
-                        return -1;
+                    만약 (++poll_retries > 3) {
+                        반환 -1;
                     }
                     linux_coop_yield(LINUX_COOP_TICK_MS);
                     continue;
@@ -536,62 +536,62 @@ int freertos_linux_coop_connect(int sockfd, const struct sockaddr *addr, socklen
             }
         }
 
-        if (errno == EINTR) {
-            return -1;
+        만약 (errno == EINTR) {
+            반환 -1;
         }
 
-        return -1;
+        반환 -1;
     }
 }
 
-int freertos_linux_coop_accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+정수 freertos_linux_coop_accept(정수 sockfd, struct sockaddr *addr, socklen_t *addrlen)
 {
-    while (1)
+    동안 (1)
     {
-        int fd = real_accept(sockfd, addr, addrlen);
-        if (fd >= 0) {
+        정수 fd = real_accept(sockfd, addr, addrlen);
+        만약 (fd >= 0) {
             linux_coop_set_nonblocking(fd);
             linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(sockfd) ? O_NONBLOCK : 0);
-            return fd;
+            반환 fd;
         }
-        if (errno == EAGAIN || errno == EWOULDBLOCK) {
-            if (linux_coop_fd_user_nonblocking(sockfd)) {
-                return -1;
+        만약 (errno == EAGAIN || errno == EWOULDBLOCK) {
+            만약 (linux_coop_fd_user_nonblocking(sockfd)) {
+                반환 -1;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
             continue;
         }
-        return -1;
+        반환 -1;
     }
 }
 
-int freertos_linux_coop_pselect(int nfds, fd_set *readfds, fd_set *writefds,
+정수 freertos_linux_coop_pselect(정수 nfds, fd_set *readfds, fd_set *writefds,
             fd_set *exceptfds, const struct timespec *timeout,
             const sigset_t *sigmask)
 {
     long timeout_ms = -1;
-    if (timeout != NULL) {
+    만약 (timeout != NULL) {
         timeout_ms = (long)timeout->tv_sec * 1000 +
                      (timeout->tv_nsec + 999999) / 1000000;
-        if (timeout_ms == 0) {
-            return real_pselect(nfds, readfds, writefds, exceptfds,
+        만약 (timeout_ms == 0) {
+            반환 real_pselect(nfds, readfds, writefds, exceptfds,
                                 timeout, sigmask);
         }
     }
 
     long waited_ms = 0;
-    while (1)
+    동안 (1)
     {
         struct timespec zero_ts = {0, 0};
-        int ret = real_pselect(nfds, readfds, writefds, exceptfds,
+        정수 ret = real_pselect(nfds, readfds, writefds, exceptfds,
                                &zero_ts, sigmask);
-        if (ret != 0) {
-            return ret;
+        만약 (ret != 0) {
+            반환 ret;
         }
 
-        if (timeout_ms == 0 ||
+        만약 (timeout_ms == 0 ||
             (timeout_ms > 0 && waited_ms >= timeout_ms)) {
-            return 0;
+            반환 0;
         }
 
         linux_coop_yield(LINUX_COOP_TICK_MS);
@@ -599,197 +599,197 @@ int freertos_linux_coop_pselect(int nfds, fd_set *readfds, fd_set *writefds,
     }
 }
 
-int freertos_linux_coop_poll(struct pollfd *fds, nfds_t nfds, int timeout)
+정수 freertos_linux_coop_poll(struct pollfd *fds, nfds_t nfds, 정수 timeout)
 {
-    if (timeout == 0) {
-        return real_poll(fds, nfds, 0);
+    만약 (timeout == 0) {
+        반환 real_poll(fds, nfds, 0);
     }
 
     long timeout_ms = -1;
-    if (timeout > 0) {
+    만약 (timeout > 0) {
         timeout_ms = timeout;
     }
 
     long waited_ms = 0;
 
-    while (1)
+    동안 (1)
     {
-        int ret = real_poll(fds, nfds, 0);
-        if (ret > 0) {
-            return ret;
-        } else if (ret == 0) {
-            if (timeout_ms == 0 ||
+        정수 ret = real_poll(fds, nfds, 0);
+        만약 (ret > 0) {
+            반환 ret;
+        } 아니면 만약 (ret == 0) {
+            만약 (timeout_ms == 0 ||
                 (timeout_ms > 0 && waited_ms >= timeout_ms)) {
-                return 0;
+                반환 0;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
             waited_ms += LINUX_COOP_TICK_MS;
             continue;
-        } else {
-            if (errno == EINTR) {
+        } 아니면 {
+            만약 (errno == EINTR) {
                 continue;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
-            if (timeout_ms > 0 && waited_ms >= timeout_ms) {
-                return -1;
+            만약 (timeout_ms > 0 && waited_ms >= timeout_ms) {
+                반환 -1;
             }
             waited_ms += LINUX_COOP_TICK_MS;
         }
     }
 }
 
-int nanosleep(const struct timespec *req, struct timespec *rem)
+정수 nanosleep(const struct timespec *req, struct timespec *rem)
 {
-    if (req == NULL) {
+    만약 (req == NULL) {
         errno = EFAULT;
-        return -1;
+        반환 -1;
     }
-    if (!linux_port_in_freertos_task()) {
-        return real_nanosleep(req, rem);
+    만약 (!linux_port_in_freertos_task()) {
+        반환 real_nanosleep(req, rem);
     }
     long ms = req->tv_sec * 1000 + (req->tv_nsec + 999999) / 1000000;
-    if (ms <= 0) {
+    만약 (ms <= 0) {
         ms = 1;
     }
     vTaskDelay(ms);
-    if (rem) {
+    만약 (rem) {
         rem->tv_sec = 0;
         rem->tv_nsec = 0;
     }
-    return 0;
+    반환 0;
 }
 
-unsigned int sleep(unsigned int seconds)
+unsigned 정수 sleep(unsigned 정수 seconds)
 {
     linux_coop_yield(seconds * 1000);
-    return 0;
+    반환 0;
 }
 
-int usleep(useconds_t usec)
+정수 usleep(useconds_t usec)
 {
     linux_coop_yield(usec / 1000);
-    return 0;
+    반환 0;
 }
 
-int freertos_linux_coop_socket(int domain, int type, int protocol)
+정수 freertos_linux_coop_socket(정수 domain, 정수 type, 정수 protocol)
 {
-    int fd = real_socket(domain, type, protocol);
+    정수 fd = real_socket(domain, type, protocol);
     linux_coop_set_nonblocking(fd);
 #ifdef SOCK_NONBLOCK
-    const int user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
-#else
-    const int user_flags = 0;
+    const 정수 user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
+#아니면
+    const 정수 user_flags = 0;
 #endif
     linux_coop_track_fd(fd, user_flags);
-    return fd;
+    반환 fd;
 }
 
-int freertos_linux_coop_socketpair(int domain, int type, int protocol, int *sv)
+정수 freertos_linux_coop_socketpair(정수 domain, 정수 type, 정수 protocol, 정수 *sv)
 {
-    int ret = real_socketpair(domain, type, protocol, sv);
-    if (ret == 0) {
+    정수 ret = real_socketpair(domain, type, protocol, sv);
+    만약 (ret == 0) {
         linux_coop_set_nonblocking(sv[0]);
         linux_coop_set_nonblocking(sv[1]);
 #ifdef SOCK_NONBLOCK
-        const int user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
-#else
-        const int user_flags = 0;
+        const 정수 user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
+#아니면
+        const 정수 user_flags = 0;
 #endif
         linux_coop_track_fd(sv[0], user_flags);
         linux_coop_track_fd(sv[1], user_flags);
     }
-    return ret;
+    반환 ret;
 }
 
-int freertos_linux_coop_pipe(int *fds)
+정수 freertos_linux_coop_pipe(정수 *fds)
 {
-    int ret = real_pipe(fds);
-    if (ret == 0) {
+    정수 ret = real_pipe(fds);
+    만약 (ret == 0) {
         linux_coop_set_nonblocking(fds[0]);
         linux_coop_set_nonblocking(fds[1]);
         linux_coop_track_fd(fds[0], 0);
         linux_coop_track_fd(fds[1], 0);
     }
-    return ret;
+    반환 ret;
 }
 
-int freertos_linux_coop_pipe2(int *fds, int flags)
+정수 freertos_linux_coop_pipe2(정수 *fds, 정수 flags)
 {
-    int ret = real_pipe2(fds, flags);
-    if (ret == 0) {
+    정수 ret = real_pipe2(fds, flags);
+    만약 (ret == 0) {
         linux_coop_set_nonblocking(fds[0]);
         linux_coop_set_nonblocking(fds[1]);
-        const int user_flags = (flags & O_NONBLOCK) ? O_NONBLOCK : 0;
+        const 정수 user_flags = (flags & O_NONBLOCK) ? O_NONBLOCK : 0;
         linux_coop_track_fd(fds[0], user_flags);
         linux_coop_track_fd(fds[1], user_flags);
     }
-    return ret;
+    반환 ret;
 }
 
-int freertos_linux_coop_dup(int oldfd)
+정수 freertos_linux_coop_dup(정수 oldfd)
 {
-    int fd = real_dup(oldfd);
+    정수 fd = real_dup(oldfd);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(oldfd) ? O_NONBLOCK : 0);
-    return fd;
+    반환 fd;
 }
 
-int freertos_linux_coop_dup2(int oldfd, int newfd)
+정수 freertos_linux_coop_dup2(정수 oldfd, 정수 newfd)
 {
-    int fd = real_dup2(oldfd, newfd);
+    정수 fd = real_dup2(oldfd, newfd);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(oldfd) ? O_NONBLOCK : 0);
-    return fd;
+    반환 fd;
 }
 
-__attribute__((weak)) int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+__attribute__((weak)) 정수 connect(정수 sockfd, const struct sockaddr *addr, socklen_t addrlen)
 {
-    return freertos_linux_coop_connect(sockfd, addr, addrlen);
+    반환 freertos_linux_coop_connect(sockfd, addr, addrlen);
 }
 
-__attribute__((weak)) int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+__attribute__((weak)) 정수 accept(정수 sockfd, struct sockaddr *addr, socklen_t *addrlen)
 {
-    return freertos_linux_coop_accept(sockfd, addr, addrlen);
+    반환 freertos_linux_coop_accept(sockfd, addr, addrlen);
 }
 
-__attribute__((weak)) int pselect(int nfds, fd_set *readfds, fd_set *writefds,
+__attribute__((weak)) 정수 pselect(정수 nfds, fd_set *readfds, fd_set *writefds,
             fd_set *exceptfds, const struct timespec *timeout,
             const sigset_t *sigmask)
 {
-    return freertos_linux_coop_pselect(nfds, readfds, writefds, exceptfds, timeout, sigmask);
+    반환 freertos_linux_coop_pselect(nfds, readfds, writefds, exceptfds, timeout, sigmask);
 }
 
-__attribute__((weak)) int poll(struct pollfd *fds, nfds_t nfds, int timeout)
+__attribute__((weak)) 정수 poll(struct pollfd *fds, nfds_t nfds, 정수 timeout)
 {
-    return freertos_linux_coop_poll(fds, nfds, timeout);
+    반환 freertos_linux_coop_poll(fds, nfds, timeout);
 }
 
-__attribute__((weak)) int socket(int domain, int type, int protocol)
+__attribute__((weak)) 정수 socket(정수 domain, 정수 type, 정수 protocol)
 {
-    return freertos_linux_coop_socket(domain, type, protocol);
+    반환 freertos_linux_coop_socket(domain, type, protocol);
 }
 
-__attribute__((weak)) int socketpair(int domain, int type, int protocol, int sv[2])
+__attribute__((weak)) 정수 socketpair(정수 domain, 정수 type, 정수 protocol, 정수 sv[2])
 {
-    return freertos_linux_coop_socketpair(domain, type, protocol, sv);
+    반환 freertos_linux_coop_socketpair(domain, type, protocol, sv);
 }
 
-__attribute__((weak)) int pipe(int fds[2])
+__attribute__((weak)) 정수 pipe(정수 fds[2])
 {
-    return freertos_linux_coop_pipe(fds);
+    반환 freertos_linux_coop_pipe(fds);
 }
 
-__attribute__((weak)) int pipe2(int fds[2], int flags)
+__attribute__((weak)) 정수 pipe2(정수 fds[2], 정수 flags)
 {
-    return freertos_linux_coop_pipe2(fds, flags);
+    반환 freertos_linux_coop_pipe2(fds, flags);
 }
 
-__attribute__((weak)) int dup(int oldfd)
+__attribute__((weak)) 정수 dup(정수 oldfd)
 {
-    return freertos_linux_coop_dup(oldfd);
+    반환 freertos_linux_coop_dup(oldfd);
 }
 
-__attribute__((weak)) int dup2(int oldfd, int newfd)
+__attribute__((weak)) 정수 dup2(정수 oldfd, 정수 newfd)
 {
-    return freertos_linux_coop_dup2(oldfd, newfd);
+    반환 freertos_linux_coop_dup2(oldfd, newfd);
 }

@@ -55,23 +55,23 @@
 #include "esp_log.h"
 #include "FreeRTOS.h"       /* This pulls in portmacro.h */
 #include "task.h"
-#if CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
+#만약 CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
 #include "freertos/idf_additions.h"
 #endif
 #include "portmacro.h"
 #include "port_systick.h"
 #include "esp_memory_utils.h"
 #include "esp_macros.h"
-#if CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
+#만약 CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
 #include "esp_timer.h"
 #endif
 
-#if SOC_CPU_HAS_HWLOOP
+#만약 SOC_CPU_HAS_HWLOOP
 #include "riscv/csr.h"
 #include "riscv/csr_hwlp.h"
 #endif
 
-#if ( SOC_CPU_COPROC_NUM > 0 )
+#만약 ( SOC_CPU_COPROC_NUM > 0 )
 
 #include "esp_private/panic_internal.h"
 
@@ -84,7 +84,7 @@
 
 
 _Static_assert(portBYTE_ALIGNMENT == 16, "portBYTE_ALIGNMENT must be set to 16");
-#if CONFIG_ESP_SYSTEM_HW_STACK_GUARD
+#만약 CONFIG_ESP_SYSTEM_HW_STACK_GUARD
 /**
  * offsetof() can not be used in asm code. Then we need make sure that
  * PORT_OFFSET_PX_STACK and PORT_OFFSET_PX_END_OF_STACK have expected values.
@@ -103,14 +103,14 @@ _Static_assert(offsetof( StaticTask_t, pxDummy8 ) == PORT_OFFSET_PX_END_OF_STACK
 volatile UBaseType_t port_xSchedulerRunning[portNUM_PROCESSORS] = {0}; // Indicates whether scheduler is running on a per-core basis
 volatile UBaseType_t port_uxInterruptNesting[portNUM_PROCESSORS] = {0};  // Interrupt nesting level. Increased/decreased in portasm.c
 volatile UBaseType_t port_uxCriticalNesting[portNUM_PROCESSORS] = {0};
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+#만약 CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
 volatile bool port_xThreadSafeClaimed = false;
 #endif
 volatile UBaseType_t port_uxOldInterruptState[portNUM_PROCESSORS] = {0};
 volatile UBaseType_t xPortSwitchFlag[portNUM_PROCESSORS] = {0};
 volatile UBaseType_t port_uxCoreStartupDone[portNUM_PROCESSORS] = {0};  // Indicates whether the core has completed its startup sequence
 
-#if ( SOC_CPU_COPROC_NUM > 0 )
+#만약 ( SOC_CPU_COPROC_NUM > 0 )
 
 /* Current owner of the coprocessors for each core */
 StaticTask_t* port_uxCoprocOwner[portNUM_PROCESSORS][SOC_CPU_COPROC_NUM];
@@ -126,7 +126,7 @@ StaticTask_t* port_uxCoprocOwner[portNUM_PROCESSORS][SOC_CPU_COPROC_NUM];
 __attribute__((aligned(16))) StackType_t xIsrStack[portNUM_PROCESSORS][configISR_STACK_SIZE];
 StackType_t *xIsrStackTop[portNUM_PROCESSORS] = {0};
 
-#if CONFIG_ESP_SYSTEM_HW_STACK_GUARD
+#만약 CONFIG_ESP_SYSTEM_HW_STACK_GUARD
 StackType_t *xIsrStackBottom[portNUM_PROCESSORS] = {0};
 #endif
 
@@ -139,23 +139,23 @@ StackType_t *xIsrStackBottom[portNUM_PROCESSORS] = {0};
 
 BaseType_t xPortStartScheduler(void)
 {
-#if ( SOC_CPU_COPROC_NUM > 0 )
+#만약 ( SOC_CPU_COPROC_NUM > 0 )
 
-#if SOC_CPU_HAS_FPU
+#만약 SOC_CPU_HAS_FPU
     /* Disable FPU so that the first task to use it will trigger an exception */
     rv_utils_disable_fpu();
 #endif /* SOC_CPU_HAS_FPU */
 
-#if SOC_CPU_HAS_PIE
+#만약 SOC_CPU_HAS_PIE
     /* Similarly, disable PIE */
     rv_utils_disable_pie();
 #endif /* SOC_CPU_HAS_PIE */
 
-#if SOC_CPU_HAS_DSP
+#만약 SOC_CPU_HAS_DSP
     rv_utils_disable_dsp();
 #endif /* SOC_CPU_HAS_DSP */
 
-#if SOC_CPU_HAS_HWLOOP
+#만약 SOC_CPU_HAS_HWLOOP
     /* Initialize the Hardware loop feature */
     RV_WRITE_CSR(CSR_HWLP_STATE_REG, HWLP_INITIAL_STATE);
 #endif /* SOC_CPU_HAS_HWLOOP */
@@ -165,16 +165,16 @@ BaseType_t xPortStartScheduler(void)
     BaseType_t coreID = xPortGetCoreID();
     port_uxInterruptNesting[coreID] = 0;
     port_uxCriticalNesting[coreID] = 0;
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+#만약 CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
     port_xThreadSafeClaimed = false;
 #endif
     port_xSchedulerRunning[coreID] = 0;
     port_uxCoreStartupDone[coreID] = 0;
 
     /* Initialize ISR Stack(s) */
-    for (int i = 0; i < portNUM_PROCESSORS; i++) {
+    위해 (정수 i = 0; i < portNUM_PROCESSORS; i++) {
         xIsrStackTop[i] = &xIsrStack[i][0] + (configISR_STACK_SIZE & (~((portPOINTER_SIZE_TYPE)portBYTE_ALIGNMENT_MASK)));
-#if CONFIG_ESP_SYSTEM_HW_STACK_GUARD
+#만약 CONFIG_ESP_SYSTEM_HW_STACK_GUARD
         xIsrStackBottom[i] = &xIsrStack[i][0];
 #endif
     }
@@ -188,7 +188,7 @@ BaseType_t xPortStartScheduler(void)
     vPortYield();
 
     /* Should not get here */
-    return pdTRUE;
+    반환 pdTRUE;
 }
 
 void vPortEndScheduler(void)
@@ -255,10 +255,10 @@ FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackTLS(UBaseType_t uxStackPointer, u
 
     // Save tls start address
     *ret_threadptr_reg_init = (uint32_t)uxStackPointer;
-    return uxStackPointer;
+    반환 uxStackPointer;
 }
 
-#if CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
+#만약 CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
 static void vPortTaskWrapper(TaskFunction_t pxCode, void *pvParameters)
 {
     __asm__ volatile(".cfi_undefined ra");  // tell to debugger that it's outermost (initial) frame
@@ -274,7 +274,7 @@ static void vPortTaskWrapper(TaskFunction_t pxCode, void *pvParameters)
 #endif // CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
 
 
-#if ( SOC_CPU_COPROC_NUM > 0 )
+#만약 ( SOC_CPU_COPROC_NUM > 0 )
 
 /**
  * @brief Retrieve or allocate coprocessors save area from the given pxTopOfStack address.
@@ -283,7 +283,7 @@ static void vPortTaskWrapper(TaskFunction_t pxCode, void *pvParameters)
  */
 FORCE_INLINE_ATTR RvCoprocSaveArea* pxRetrieveCoprocSaveAreaFromStackPointer(UBaseType_t pxTopOfStack)
 {
-    return (RvCoprocSaveArea*) ESP_ALIGN_DOWN(pxTopOfStack - sizeof(RvCoprocSaveArea), 16);
+    반환 (RvCoprocSaveArea*) ESP_ALIGN_DOWN(pxTopOfStack - sizeof(RvCoprocSaveArea), 16);
 }
 
 /**
@@ -297,7 +297,7 @@ FORCE_INLINE_ATTR UBaseType_t uxInitialiseCoprocSaveArea(UBaseType_t uxStackPoin
 {
     RvCoprocSaveArea* sa = pxRetrieveCoprocSaveAreaFromStackPointer(uxStackPointer);
     memset(sa, 0, sizeof(RvCoprocSaveArea));
-    return (UBaseType_t) sa;
+    반환 (UBaseType_t) sa;
 }
 
 
@@ -310,23 +310,23 @@ static void vPortCleanUpCoprocArea(void *pvTCB)
     RvCoprocSaveArea* sa = pxRetrieveCoprocSaveAreaFromStackPointer(bottomstack);
 
     /* If the Task ever saved the original stack pointer, restore it before returning */
-    if (sa->sa_allocator != 0) {
+    만약 (sa->sa_allocator != 0) {
         /* Restore the original lowest address of the stack in the TCB */
         task->pxDummy6 = sa->sa_tcbstack;
 
         /* Get the core the task is pinned on */
-        #if ( configNUM_CORES > 1 )
+        #만약 ( configNUM_CORES > 1 )
             const BaseType_t coreID = task->xDummyCoreID;
             /* If the task is not pinned on any core, it didn't use any coprocessor than need to be freed (FPU or PIE).
              * If it used the HWLP coprocessor, it has nothing to clear since there is no "owner" for it. */
-            if (coreID == tskNO_AFFINITY) {
-                return;
+            만약 (coreID == tskNO_AFFINITY) {
+                반환;
             }
-        #else /* configNUM_CORES > 1 */
+        #아니면 /* configNUM_CORES > 1 */
             const BaseType_t coreID = 0;
         #endif /* configNUM_CORES > 1 */
 
-        for (int i = 0; i < SOC_CPU_COPROC_NUM; i++) {
+        위해 (정수 i = 0; i < SOC_CPU_COPROC_NUM; i++) {
             StaticTask_t** owner = &port_uxCoprocOwner[coreID][i];
             /* If the owner is `task`, replace it with NULL atomically */
             Atomic_CompareAndSwapPointers_p32((void**) owner, NULL, task);
@@ -366,18 +366,18 @@ FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackFrame(UBaseType_t uxStackPointer,
 
     /* Initialize the stack frame. */
     extern uint32_t __global_pointer$;
-    #if CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
+    #만약 CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
         frame->mepc = (UBaseType_t)vPortTaskWrapper;
         frame->a0 = (UBaseType_t)pxCode;
         frame->a1 = (UBaseType_t)pvParameters;
-    #else
+    #아니면
         frame->mepc = (UBaseType_t)pxCode;
         frame->a0 = (UBaseType_t)pvParameters;
     #endif // CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
     frame->gp = (UBaseType_t)&__global_pointer$;
     frame->tp = (UBaseType_t)threadptr_reg_init;
 
-    return uxStackPointer;
+    반환 uxStackPointer;
 }
 
 StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack, TaskFunction_t pxCode, void *pvParameters)
@@ -429,7 +429,7 @@ StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack, TaskFunction_t pxC
     UBaseType_t uxStackPointer = (UBaseType_t)pxTopOfStack;
     configASSERT((uxStackPointer & portBYTE_ALIGNMENT_MASK) == 0);
 
-#if ( SOC_CPU_COPROC_NUM > 0 )
+#만약 ( SOC_CPU_COPROC_NUM > 0 )
     // Initialize the coprocessors save area
     uxStackPointer = uxInitialiseCoprocSaveArea(uxStackPointer);
     configASSERT((uxStackPointer & portBYTE_ALIGNMENT_MASK) == 0);
@@ -445,7 +445,7 @@ StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack, TaskFunction_t pxC
     configASSERT((uxStackPointer & portBYTE_ALIGNMENT_MASK) == 0);
 
     // Return the task's current stack pointer address which should point to the starting interrupt stack frame
-    return (StackType_t *)uxStackPointer;
+    반환 (StackType_t *)uxStackPointer;
 }
 
 
@@ -458,8 +458,8 @@ StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack, TaskFunction_t pxC
 
 BaseType_t xPortInIsrContext(void)
 {
-#if (configNUM_CORES > 1)
-    unsigned int irqStatus;
+#만약 (configNUM_CORES > 1)
+    unsigned 정수 irqStatus;
     BaseType_t ret;
 
     /* Disable interrupts to fetch the coreID atomically */
@@ -471,10 +471,10 @@ BaseType_t xPortInIsrContext(void)
     /* Restore interrupts */
     portCLEAR_INTERRUPT_MASK_FROM_ISR(irqStatus);
 
-    return ret;
-#else
+    반환 ret;
+#아니면
     /* Optimize the call for single-core targets */
-    return port_uxInterruptNesting[0];
+    반환 port_uxInterruptNesting[0];
 #endif /* (configNUM_CORES > 1) */
 }
 
@@ -487,20 +487,20 @@ void vPortAssertIfInISR(void)
 BaseType_t xPortInterruptedFromISRContext(void)
 {
     /* Return the interrupt nesting counter for this core */
-    return port_uxInterruptNesting[xPortGetCoreID()];
+    반환 port_uxInterruptNesting[xPortGetCoreID()];
 }
 
 UBaseType_t xPortSetInterruptMaskFromISR(void)
 {
     UBaseType_t prev_int_level = 0, int_level = 0;
-#if !SOC_INT_CLIC_SUPPORTED
+#만약 !SOC_INT_CLIC_SUPPORTED
     int_level = RVHAL_EXCM_LEVEL;
-#else
+#아니면
     int_level = RVHAL_EXCM_LEVEL_CLIC;
 #endif
 
     prev_int_level = rv_utils_set_intlevel_regval(int_level);
-    return prev_int_level;
+    반환 prev_int_level;
 }
 
 void vPortClearInterruptMaskFromISR(UBaseType_t prev_int_level)
@@ -528,12 +528,12 @@ void vPortClearInterruptMaskFromISR(UBaseType_t prev_int_level)
 
 // ------------------ Critical Sections --------------------
 
-#if (configNUM_CORES > 1)
+#만약 (configNUM_CORES > 1)
 BaseType_t __attribute__((optimize("-O3"))) xPortEnterCriticalTimeout(portMUX_TYPE *mux, BaseType_t timeout)
 {
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-    if (unlikely(port_xThreadSafeClaimed)) {
-        return pdPASS;
+#만약 CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+    만약 (unlikely(port_xThreadSafeClaimed)) {
+        반환 pdPASS;
     }
 #endif
     /* Interrupts may already be disabled (if this function is called in nested
@@ -550,26 +550,26 @@ BaseType_t __attribute__((optimize("-O3"))) xPortEnterCriticalTimeout(portMUX_TY
      * stay masked for the whole critical section (to the same level the spinlock would
      * use), so the spinlock does not need to disable them again. */
     BaseType_t coreID = xPortGetCoreID();
-    if (!spinlock_acquire_impl(mux, timeout, spinlock_owner_id_for_core(coreID))) {
+    만약 (!spinlock_acquire_impl(mux, timeout, spinlock_owner_id_for_core(coreID))) {
         //Timed out attempting to get spinlock. Restore previous interrupt level and return
         portCLEAR_INTERRUPT_MASK_FROM_ISR(xOldInterruptLevel);
-        return pdFAIL;
+        반환 pdFAIL;
     }
     //Spinlock acquired. Increment the critical nesting count.
     BaseType_t newNesting = port_uxCriticalNesting[coreID] + 1;
     port_uxCriticalNesting[coreID] = newNesting;
     //If this is the first entry to a critical section. Save the old interrupt level.
-    if ( newNesting == 1 ) {
+    만약 ( newNesting == 1 ) {
         port_uxOldInterruptState[coreID] = xOldInterruptLevel;
     }
-    return pdPASS;
+    반환 pdPASS;
 }
 
 void __attribute__((optimize("-O3"))) vPortExitCriticalMultiCore(portMUX_TYPE *mux)
 {
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-    if (unlikely(port_xThreadSafeClaimed)) {
-        return;
+#만약 CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+    만약 (unlikely(port_xThreadSafeClaimed)) {
+        반환;
     }
 #endif
     /* This function may be called in a nested manner. Therefore, we only need
@@ -586,12 +586,12 @@ void __attribute__((optimize("-O3"))) vPortExitCriticalMultiCore(portMUX_TYPE *m
     /* Critical section nesting count must never be negative */
     configASSERT( nesting > 0 );
 
-    if (nesting > 0) {
+    만약 (nesting > 0) {
         nesting--;
         port_uxCriticalNesting[coreID] = nesting;
 
         //This is the last exit call, restore the saved interrupt level
-        if ( nesting == 0 ) {
+        만약 ( nesting == 0 ) {
             portCLEAR_INTERRUPT_MASK_FROM_ISR(port_uxOldInterruptState[coreID]);
         }
     }
@@ -601,28 +601,28 @@ void __attribute__((optimize("-O3"))) vPortExitCriticalMultiCore(portMUX_TYPE *m
 BaseType_t xPortEnterCriticalTimeoutCompliance(portMUX_TYPE *mux, BaseType_t timeout)
 {
     BaseType_t ret;
-    if (!xPortInIsrContext()) {
+    만약 (!xPortInIsrContext()) {
         ret = xPortEnterCriticalTimeout(mux, timeout);
-    } else {
+    } 아니면 {
         esp_rom_printf("port*_CRITICAL called from ISR context. Aborting!\n");
         abort();
         ret = pdFAIL;
     }
-    return ret;
+    반환 ret;
 }
 
 void vPortExitCriticalCompliance(portMUX_TYPE *mux)
 {
-    if (!xPortInIsrContext()) {
+    만약 (!xPortInIsrContext()) {
         vPortExitCriticalMultiCore(mux);
-    } else {
+    } 아니면 {
         esp_rom_printf("port*_CRITICAL called from ISR context. Aborting!\n");
         abort();
     }
 }
 #endif /* (configNUM_CORES > 1) */
 
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+#만약 CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
 void xPortThreadSafeClaim(void)
 {
     configASSERT(!xPortCanYield());
@@ -640,42 +640,42 @@ void xPortThreadSafeDisclaim(void)
 
 void vPortEnterCritical(void)
 {
-#if (configNUM_CORES > 1)
+#만약 (configNUM_CORES > 1)
         esp_rom_printf("vPortEnterCritical(void) is not supported on multi-core targets. Please use vPortEnterCriticalMultiCore(portMUX_TYPE *mux) instead.\n");
         abort();
 #endif /* (configNUM_CORES > 1) */
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-    if (unlikely(port_xThreadSafeClaimed)) {
-        return;
+#만약 CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+    만약 (unlikely(port_xThreadSafeClaimed)) {
+        반환;
     }
 #endif
     BaseType_t state = portSET_INTERRUPT_MASK_FROM_ISR();
     port_uxCriticalNesting[0]++;
 
-    if (port_uxCriticalNesting[0] == 1) {
+    만약 (port_uxCriticalNesting[0] == 1) {
         port_uxOldInterruptState[0] = state;
     }
 }
 
 void vPortExitCritical(void)
 {
-#if (configNUM_CORES > 1)
+#만약 (configNUM_CORES > 1)
         esp_rom_printf("vPortExitCritical(void) is not supported on multi-core targets. Please use vPortExitCriticalMultiCore(portMUX_TYPE *mux) instead.\n");
         abort();
 #endif /* (configNUM_CORES > 1) */
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-    if (unlikely(port_xThreadSafeClaimed)) {
-        return;
+#만약 CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+    만약 (unlikely(port_xThreadSafeClaimed)) {
+        반환;
     }
 #endif
 
     /* Critical section nesting count must never be negative */
     configASSERT( port_uxCriticalNesting[0] > 0 );
 
-    if (port_uxCriticalNesting[0] > 0) {
+    만약 (port_uxCriticalNesting[0] > 0) {
         port_uxCriticalNesting[0]--;
 
-        if (port_uxCriticalNesting[0] == 0) {
+        만약 (port_uxCriticalNesting[0] == 0) {
             portCLEAR_INTERRUPT_MASK_FROM_ISR(port_uxOldInterruptState[0]);
         }
     }
@@ -687,9 +687,9 @@ void vPortYield(void)
 {
     BaseType_t coreID = xPortGetCoreID();
 
-    if (port_uxInterruptNesting[coreID]) {
+    만약 (port_uxInterruptNesting[coreID]) {
         vPortYieldFromISR();
-    } else {
+    } 아니면 {
         esp_crosscore_int_send_yield(coreID);
         /* There are 3-4 instructions of latency between triggering the software
            interrupt and the CPU interrupt happening. Make sure it happened before
@@ -701,7 +701,7 @@ void vPortYield(void)
            for an instant yield, and if that happens then the WFI would be
            waiting for the next interrupt to occur...)
         */
-        while (port_xSchedulerRunning[coreID] && port_uxCriticalNesting[coreID] == 0 && crosscore_int_ll_get_state(coreID) != 0) {}
+        동안 (port_xSchedulerRunning[coreID] && port_uxCriticalNesting[coreID] == 0 && crosscore_int_ll_get_state(coreID) != 0) {}
     }
 }
 
@@ -729,7 +729,7 @@ void __attribute__((weak)) vApplicationStackOverflowHook(TaskHandle_t xTask, cha
     char buf[sizeof(ERR_STR1) + CONFIG_FREERTOS_MAX_TASK_NAME_LEN + sizeof(ERR_STR2) + 1 /* null char */] = {0};
 
     char *dest = buf;
-    for (int i = 0; i < sizeof(str) / sizeof(str[0]); i++) {
+    위해 (정수 i = 0; i < sizeof(str) / sizeof(str[0]); i++) {
         dest = strcat(dest, str[i]);
     }
     esp_system_abort(buf);
@@ -739,7 +739,7 @@ void __attribute__((weak)) vApplicationStackOverflowHook(TaskHandle_t xTask, cha
 
 uint32_t xPortGetTickRateHz(void)
 {
-    return (uint32_t)configTICK_RATE_HZ;
+    반환 (uint32_t)configTICK_RATE_HZ;
 }
 
 #define STACK_WATCH_AREA_SIZE 32
@@ -754,7 +754,7 @@ void vPortSetStackWatchpoint(void *pxStackStart)
 
 // --------------------- TCB Cleanup -----------------------
 
-#if ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
+#만약 ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
 static void vPortTLSPointersDelCb( void *pxTCB )
 {
     /* Typecast pxTCB to StaticTask_t type to access TCB struct members.
@@ -768,10 +768,10 @@ static void vPortTLSPointersDelCb( void *pxTCB )
     /* We need to iterate over half the depth of the pvThreadLocalStoragePointers area
      * to access all TLS pointers and their respective TLS deletion callbacks.
      */
-    for ( int x = 0; x < ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ); x++ ) {
-        if ( pvThreadLocalStoragePointersDelCallback[ x ] != NULL ) {  //If del cb is set
+    위해 ( 정수 x = 0; x < ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ); x++ ) {
+        만약 ( pvThreadLocalStoragePointersDelCallback[ x ] != NULL ) {  //If del cb is set
             /* In case the TLSP deletion callback has been overwritten by a TLS pointer, gracefully abort. */
-            if ( !esp_ptr_executable( pvThreadLocalStoragePointersDelCallback[ x ] ) ) {
+            만약 ( !esp_ptr_executable( pvThreadLocalStoragePointersDelCallback[ x ] ) ) {
                 ESP_EARLY_LOGE("FreeRTOS", "Fatal error: TLSP deletion callback at index %d overwritten with non-excutable pointer %p", x, pvThreadLocalStoragePointersDelCallback[ x ]);
                 abort();
             }
@@ -784,31 +784,31 @@ static void vPortTLSPointersDelCb( void *pxTCB )
 
 void vPortTCBPreDeleteHook( void *pxTCB )
 {
-    #if ( CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK )
+    #만약 ( CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK )
         /* Call the user defined task pre-deletion hook */
         extern void vTaskPreDeletionHook( void * pxTCB );
         vTaskPreDeletionHook( pxTCB );
     #endif /* CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK */
 
-    #if ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
+    #만약 ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
         /* Call TLS pointers deletion callbacks */
         vPortTLSPointersDelCb( pxTCB );
     #endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 
-    #if ( CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST )
-        if (pxTCB != NULL) {
+    #만약 ( CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST )
+        만약 (pxTCB != NULL) {
             vTaskSetPieBlacklisted((TaskHandle_t)pxTCB, pdFALSE);
         }
     #endif /* CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST */
 
-    #if ( SOC_CPU_COPROC_NUM > 0 )
+    #만약 ( SOC_CPU_COPROC_NUM > 0 )
         /* Cleanup coproc save area */
         vPortCleanUpCoprocArea( pxTCB );
     #endif /* SOC_CPU_COPROC_NUM > 0 */
 }
 
 
-#if ( SOC_CPU_COPROC_NUM > 0 )
+#만약 ( SOC_CPU_COPROC_NUM > 0 )
 
 // ----------------------- Coprocessors --------------------------
 
@@ -819,8 +819,8 @@ void vPortTCBPreDeleteHook( void *pxTCB )
  * are saved lazily, as soon as a task starts using one, it must always be scheduled on the core
  * it is currently executing on.
  */
-#if ( configNUM_CORES > 1 )
-void vPortTaskPinToCore(StaticTask_t* task, int coreid)
+#만약 ( configNUM_CORES > 1 )
+void vPortTaskPinToCore(StaticTask_t* task, 정수 coreid)
 {
     task->xDummyCoreID = coreid;
 }
@@ -841,7 +841,7 @@ extern void xt_unhandled_exception(void *frame);
  *                 When false, the coprocessor memory will be left as NULL if not allocated.
  * @param coproc Coprocessor number to allocate memory for
  */
-RvCoprocSaveArea* pxPortGetCoprocArea(StaticTask_t* task, bool allocate, int coproc)
+RvCoprocSaveArea* pxPortGetCoprocArea(StaticTask_t* task, bool allocate, 정수 coproc)
 {
     assert(coproc < SOC_CPU_COPROC_NUM);
 
@@ -849,14 +849,14 @@ RvCoprocSaveArea* pxPortGetCoprocArea(StaticTask_t* task, bool allocate, int cop
     RvCoprocSaveArea* sa = pxRetrieveCoprocSaveAreaFromStackPointer(bottomstack);
     /* Check if the allocator is NULL. Since we don't have a way to get the end of the stack
      * during its initialization, we have to do this here */
-    if (sa->sa_allocator == 0) {
+    만약 (sa->sa_allocator == 0) {
         /* Since the lowest stack address shall not be used as `sp` anymore, we will modify it */
         sa->sa_tcbstack = task->pxDummy6;
         sa->sa_allocator = (UBaseType_t) task->pxDummy6;
     }
 
     /* Check if coprocessor area is allocated */
-    if (allocate && sa->sa_coprocs[coproc] == NULL) {
+    만약 (allocate && sa->sa_coprocs[coproc] == NULL) {
         const uint32_t coproc_sa_sizes[] = {
             RV_COPROC0_SIZE, RV_COPROC1_SIZE, RV_COPROC2_SIZE
         };
@@ -873,7 +873,7 @@ RvCoprocSaveArea* pxPortGetCoprocArea(StaticTask_t* task, bool allocate, int cop
         /* Make sure the Task stack pointer is not pointing to the coprocessor context area, in other words, make
          * sure we don't have a stack overflow */
         void* task_sp = task->pxDummy1;
-        if (task_sp <= task->pxDummy6) {
+        만약 (task_sp <= task->pxDummy6) {
             /* In theory we need to call vApplicationStackOverflowHook to trigger the stack overflow callback,
              * but in practice, since we are already in an exception handler, this won't work, so let's manually
              * trigger an exception with the previous coprocessor owner's TCB */
@@ -882,7 +882,7 @@ RvCoprocSaveArea* pxPortGetCoprocArea(StaticTask_t* task, bool allocate, int cop
             xt_unhandled_exception(task_sp);
         }
     }
-    return sa;
+    반환 sa;
 }
 
 
@@ -901,7 +901,7 @@ RvCoprocSaveArea* pxPortGetCoprocArea(StaticTask_t* task, bool allocate, int cop
  * @returns Coprocessor former owner's save area, can be NULL if there was no owner yet, can be -1 if
  *          the former owner is the same as the new owner.
  */
-RvCoprocSaveArea* pxPortUpdateCoprocOwner(int coreid, int coproc, StaticTask_t* owner)
+RvCoprocSaveArea* pxPortUpdateCoprocOwner(정수 coreid, 정수 coproc, StaticTask_t* owner)
 {
     RvCoprocSaveArea* sa = NULL;
     /* Address of coprocessor owner */
@@ -910,13 +910,13 @@ RvCoprocSaveArea* pxPortUpdateCoprocOwner(int coreid, int coproc, StaticTask_t* 
     StaticTask_t* former = Atomic_SwapPointers_p32((void**) owner_addr, owner);
     /* Get the save area of former owner. small optimization here, if the former owner is the new owner,
      * return -1. This will simplify the assembly code while making it faster. */
-    if (former == owner) {
+    만약 (former == owner) {
         sa = (void*) -1;
-    } else if (former != NULL) {
+    } 아니면 만약 (former != NULL) {
         /* Allocate coprocessor memory if not available yet */
         sa = pxPortGetCoprocArea(former, true, coproc);
     }
-    return sa;
+    반환 sa;
 }
 
 
@@ -933,7 +933,7 @@ void vPortCoprocUsedInISR(void* frame)
     xt_unhandled_exception(frame);
 }
 
-#if CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
+#만약 CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
 /**
  * @brief Abort if the given task is blacklisted from using the PIE coprocessor.
  *
@@ -942,7 +942,7 @@ void vPortCoprocUsedInISR(void* frame)
  */
 void vPortAbortIfTaskPieBlacklisted(StaticTask_t *task, void *frame)
 {
-    if (task != NULL && xTaskGetPieBlacklisted((TaskHandle_t)task) != pdFALSE) {
+    만약 (task != NULL && xTaskGetPieBlacklisted((TaskHandle_t)task) != pdFALSE) {
         g_panic_abort = true;
         g_panic_abort_details = (char *) "ERROR: Blacklisted task executed a PIE instruction!\n";
         xt_unhandled_exception(frame);
@@ -950,7 +950,7 @@ void vPortAbortIfTaskPieBlacklisted(StaticTask_t *task, void *frame)
 }
 #endif /* CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST */
 
-#if CONFIG_IDF_TARGET_ESP32S31
+#만약 CONFIG_IDF_TARGET_ESP32S31
 /* On the ESP32-S31, the PIE is only available on core 1, so we need to perform a few checks when core 0 uses a PIE instruction.
  * the functions here will help us with that. */
 
@@ -965,24 +965,24 @@ void vPortAbortIfTaskPieBlacklisted(StaticTask_t *task, void *frame)
  */
 void* vPortTaskUsedPIEOnCPU0(StaticTask_t* task, void* frame)
 {
-#if CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
+#만약 CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
     vPortAbortIfTaskPieBlacklisted(task, frame);
 #endif
-#if CONFIG_FREERTOS_UNICORE
+#만약 CONFIG_FREERTOS_UNICORE
     g_panic_abort = true;
     g_panic_abort_details = (char *) "ERROR: PIE coprocessor is not supported in unicore configuration!\n";
     xt_unhandled_exception(frame);
-    return NULL;
-#else
+    반환 NULL;
+#아니면
     void* context_to_save = NULL;
     /* Make sure we are not in an interrupt context nor in a critical section */
-    if (xPortInIsrContext()) {
+    만약 (xPortInIsrContext()) {
         /* We are in an interrupt context, abort */
         vPortCoprocUsedInISR(frame);
     }
     /* Since we count on crosscore interrupt to reschedule the current task, we must not be in a
      * critical section. In other words, we must be able to yield */
-    if (!xPortCanYield()) {
+    만약 (!xPortCanYield()) {
         g_panic_abort = true;
         g_panic_abort_details = (char *) "ERROR: PIE coprocessor must not be used in critical sections!\n";
         xt_unhandled_exception(frame);
@@ -990,7 +990,7 @@ void* vPortTaskUsedPIEOnCPU0(StaticTask_t* task, void* frame)
 
     /* Check if the current task is the owner of the FPU on the current core. No need to make the following two instructions
      * atomic since we are in an exception context, we can't be interrupted by an interrupt. */
-    if (port_uxCoprocOwner[0][FPU_COPROC_IDX] == task) {
+    만약 (port_uxCoprocOwner[0][FPU_COPROC_IDX] == task) {
         /* Task is the owner of the FPU on the current core, set the new owner to NULL and return the save area to fill */
         RvCoprocSaveArea* sa = pxPortUpdateCoprocOwner(0, FPU_COPROC_IDX, NULL);
         /* `sa` is not NULL here for sure */
@@ -999,7 +999,7 @@ void* vPortTaskUsedPIEOnCPU0(StaticTask_t* task, void* frame)
     /* Migrate the task to core 1. NOTE: This will override any existing pinning of the task */
     vPortTaskPinToCore(task, 1);
     /* Raised an error if the scheduler is NOT running on core 0 */
-    if (!port_xSchedulerRunning[0]) {
+    만약 (!port_xSchedulerRunning[0]) {
         /* Scheduler is not running on core 0, raise an error */
         g_panic_abort = true;
         g_panic_abort_details = (char *) "ERROR: Scheduler is not running on core 0, task must migrate to core 1!\n";
@@ -1007,7 +1007,7 @@ void* vPortTaskUsedPIEOnCPU0(StaticTask_t* task, void* frame)
     }
     /* Send a cross-core interrupt on the current core, it won't be triggered until we return from the exception handler */
     esp_crosscore_int_send_yield(0);
-    return context_to_save;
+    반환 context_to_save;
 #endif /* CONFIG_FREERTOS_UNICORE */
 }
 
@@ -1018,14 +1018,14 @@ void* vPortTaskUsedPIEOnCPU0(StaticTask_t* task, void* frame)
 
 /* ------------------------------------------------ Run Time Stats ------------------------------------------------- */
 
-#if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
+#만약 ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
 
 configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void )
 {
 #ifdef CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
-    return (configRUN_TIME_COUNTER_TYPE) esp_timer_get_time();
-#else
-    return 0;
+    반환 (configRUN_TIME_COUNTER_TYPE) esp_timer_get_time();
+#아니면
+    반환 0;
 #endif // CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
 }
 
@@ -1034,9 +1034,9 @@ configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void )
 /* ---------------------------------------------- Misc Implementations -------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------------------------------ */
-#if (SOC_CPU_COPROC_NUM > 0) && SOC_CPU_HAS_FPU && SOC_PM_FPU_RETENTION_BY_SW
+#만약 (SOC_CPU_COPROC_NUM > 0) && SOC_CPU_HAS_FPU && SOC_PM_FPU_RETENTION_BY_SW
 BaseType_t xPortFPUContextIsDirty(BaseType_t core_id)
 {
-    return (BaseType_t)(port_uxCoprocOwner[core_id][FPU_COPROC_IDX] != NULL);
+    반환 (BaseType_t)(port_uxCoprocOwner[core_id][FPU_COPROC_IDX] != NULL);
 }
 #endif /* (SOC_CPU_COPROC_NUM > 0) && SOC_CPU_HAS_FPU && SOC_PM_FPU_RETENTION_BY_SW */

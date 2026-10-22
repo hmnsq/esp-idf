@@ -52,7 +52,7 @@ struct event * event_create()
     ev->event_triggered = false;
     pthread_mutex_init( &ev->mutex, NULL );
     pthread_cond_init( &ev->cond, NULL );
-    return ev;
+    반환 ev;
 }
 
 void event_delete( struct event * ev )
@@ -66,39 +66,39 @@ bool event_wait( struct event * ev )
 {
     pthread_mutex_lock( &ev->mutex );
 
-    while( ev->event_triggered == false )
+    동안( ev->event_triggered == false )
     {
         pthread_cond_wait( &ev->cond, &ev->mutex );
     }
 
     ev->event_triggered = false;
     pthread_mutex_unlock( &ev->mutex );
-    return true;
+    반환 true;
 }
 bool event_wait_timed( struct event * ev,
                        time_t ms )
 {
     struct timespec ts;
-    int ret = 0;
+    정수 ret = 0;
 
     clock_gettime( CLOCK_REALTIME, &ts );
     ts.tv_sec += ms / 1000;
     ts.tv_nsec += ((ms % 1000) * 1000000);
     pthread_mutex_lock( &ev->mutex );
 
-    while( (ev->event_triggered == false) && (ret == 0) )
+    동안( (ev->event_triggered == false) && (ret == 0) )
     {
         ret = pthread_cond_timedwait( &ev->cond, &ev->mutex, &ts );
 
-        if( ( ret == -1 ) && ( errno == ETIMEDOUT ) )
+        만약( ( ret == -1 ) && ( errno == ETIMEDOUT ) )
         {
-            return false;
+            반환 false;
         }
     }
 
     ev->event_triggered = false;
     pthread_mutex_unlock( &ev->mutex );
-    return true;
+    반환 true;
 }
 
 void event_signal( struct event * ev )

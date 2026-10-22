@@ -18,11 +18,11 @@ a definition for vApplicationTickHook(). Thus this test cannot be run.
 #include "unity.h"
 #include "test_utils.h"
 
-#if !CONFIG_FREERTOS_SMP
+#만약 !CONFIG_FREERTOS_SMP
 /*
 Test FreeRTOS idle hook. Only compiled in if FreeRTOS idle hooks are enabled.
 */
-#if CONFIG_FREERTOS_USE_IDLE_HOOK
+#만약 CONFIG_FREERTOS_USE_IDLE_HOOK
 
 static volatile unsigned idle_count;
 
@@ -43,7 +43,7 @@ TEST_CASE("FreeRTOS idle hook", "[freertos]")
 /*
 Test the FreeRTOS tick hook. Only compiled in if FreeRTOS tick hooks are enabled.
 */
-#if CONFIG_FREERTOS_USE_TICK_HOOK
+#만약 CONFIG_FREERTOS_USE_TICK_HOOK
 
 static volatile unsigned tick_count;
 
@@ -65,7 +65,7 @@ TEST_CASE("FreeRTOS tick hook", "[freertos]")
 #endif // CONFIG_FREERTOS_USE_TICK_HOOK
 #endif // !CONFIG_FREERTOS_SMP
 
-#if CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK
+#만약 CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK
 
 static volatile void *deleted_tcb;
 
@@ -81,7 +81,7 @@ void vTaskPreDeletionHook(void *pxTCB)
 
 TEST_CASE("static task cleanup hook is called based on config", "[freertos]")
 {
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    위해 (정수 i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         printf("Creating task CPU %d\n", i);
         TaskHandle_t new_task = NULL;
         deleted_tcb = NULL;

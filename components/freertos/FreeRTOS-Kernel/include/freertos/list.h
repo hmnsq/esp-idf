@@ -109,7 +109,7 @@
  * the application.   These may catch the list data structures being overwritten in
  * memory.  They will not catch data errors caused by incorrect configuration or
  * use of FreeRTOS.*/
-#if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 )
+#만약 ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 )
     /* Define the macros to do nothing. */
     #define listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE
     #define listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE
@@ -121,7 +121,7 @@
     #define listSET_LIST_INTEGRITY_CHECK_2_VALUE( pxList )
     #define listTEST_LIST_ITEM_INTEGRITY( pxItem )
     #define listTEST_LIST_INTEGRITY( pxList )
-#else /* if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 ) */
+#아니면 /* if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 ) */
     /* Define macros that add new members into the list structures. */
     #define listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE     TickType_t xListItemIntegrityValue1;
     #define listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE    TickType_t xListItemIntegrityValue2;
@@ -157,7 +157,7 @@ struct xLIST_ITEM
 };
 typedef struct xLIST_ITEM ListItem_t;                   /* For some reason lint wants this as two separate definitions. */
 
-#if ( configUSE_MINI_LIST_ITEM == 1 )
+#만약 ( configUSE_MINI_LIST_ITEM == 1 )
     struct xMINI_LIST_ITEM
     {
         listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE /*< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
@@ -166,7 +166,7 @@ typedef struct xLIST_ITEM ListItem_t;                   /* For some reason lint 
         struct xLIST_ITEM * configLIST_VOLATILE pxPrevious;
     };
     typedef struct xMINI_LIST_ITEM MiniListItem_t;
-#else
+#아니면
     typedef struct xLIST_ITEM      MiniListItem_t;
 #endif
 
@@ -292,7 +292,7 @@ typedef struct xLIST
         /* Increment the index to the next item and return the item, ensuring */               \
         /* we don't return the marker used at the end of the list.  */                         \
         ( pxConstList )->pxIndex = ( pxConstList )->pxIndex->pxNext;                           \
-        if( ( void * ) ( pxConstList )->pxIndex == ( void * ) &( ( pxConstList )->xListEnd ) ) \
+        만약( ( void * ) ( pxConstList )->pxIndex == ( void * ) &( ( pxConstList )->xListEnd ) ) \
         {                                                                                      \
             ( pxConstList )->pxIndex = ( pxConstList )->pxIndex->pxNext;                       \
         }                                                                                      \
@@ -324,7 +324,7 @@ typedef struct xLIST
         ( pxItemToRemove )->pxNext->pxPrevious = ( pxItemToRemove )->pxPrevious; \
         ( pxItemToRemove )->pxPrevious->pxNext = ( pxItemToRemove )->pxNext;     \
         /* Make sure the index is left pointing to a valid item. */              \
-        if( pxList->pxIndex == ( pxItemToRemove ) )                              \
+        만약( pxList->pxIndex == ( pxItemToRemove ) )                              \
         {                                                                        \
             pxList->pxIndex = ( pxItemToRemove )->pxPrevious;                    \
         }                                                                        \
