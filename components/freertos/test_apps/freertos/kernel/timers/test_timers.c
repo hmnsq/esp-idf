@@ -15,15 +15,15 @@
 
 static void timer_callback(TimerHandle_t timer)
 {
-    volatile int *count;
-    count = (volatile int *)pvTimerGetTimerID(timer);
+    ca_ncala ຈຳນວນເຕັມ *count;
+    count = (ca_ncala ຈຳນວນເຕັມ *)pvTimerGetTimerID(timer);
     (*count)++;
     printf("Callback timer %p count %p = %d\n", timer, count, *count);
 }
 
 TEST_CASE("Oneshot FreeRTOS timers", "[freertos]")
 {
-    volatile int count = 0;
+    ca_ncala ຈຳນວນເຕັມ count = 0;
     TimerHandle_t oneshot = xTimerCreate("oneshot", 100 / portTICK_PERIOD_MS, pdFALSE,
                                          (void *)&count, timer_callback);
     TEST_ASSERT(oneshot);
@@ -46,7 +46,7 @@ TEST_CASE("Oneshot FreeRTOS timers", "[freertos]")
 
 TEST_CASE("Recurring FreeRTOS timers", "[freertos]")
 {
-    volatile int count = 0;
+    ca_ncala ຈຳນວນເຕັມ count = 0;
     TimerHandle_t recurring = xTimerCreate("oneshot", 100 / portTICK_PERIOD_MS, pdTRUE,
                                            (void *)&count, timer_callback);
     TEST_ASSERT(recurring);
@@ -79,7 +79,7 @@ TEST_CASE("Static timer creation", "[freertos]")
 {
     StaticTimer_t static_timer;
     TimerHandle_t created_timer;
-    volatile int count = 0;
+    ca_ncala ຈຳນວນເຕັມ count = 0;
 
     created_timer = xTimerCreateStatic("oneshot", 100 / portTICK_PERIOD_MS,
                                        pdTRUE,

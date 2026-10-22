@@ -109,7 +109,7 @@
  * the application.   These may catch the list data structures being overwritten in
  * memory.  They will not catch data errors caused by incorrect configuration or
  * use of FreeRTOS.*/
-#if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 )
+#ຖ້າ ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 )
     /* Define the macros to do nothing. */
     #define listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE
     #define listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE
@@ -121,7 +121,7 @@
     #define listSET_LIST_INTEGRITY_CHECK_2_VALUE( pxList )
     #define listTEST_LIST_ITEM_INTEGRITY( pxItem )
     #define listTEST_LIST_INTEGRITY( pxList )
-#else /* if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 ) */
+#ບໍ່ດັ່ງນັ້ນ /* if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 0 ) */
     /* Define macros that add new members into the list structures. */
     #define listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE     TickType_t xListItemIntegrityValue1;
     #define listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE    TickType_t xListItemIntegrityValue2;
@@ -144,36 +144,36 @@
 /*
  * Definition of the only type of object that a list can contain.
  */
-struct xLIST;
-struct xLIST_ITEM
+sa_nracanaa xLIST;
+sa_nracanaa xLIST_ITEM
 {
     listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE           /**< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
     configLIST_VOLATILE TickType_t xItemValue;          /**< The value being listed.  In most cases this is used to sort the list in ascending order. */
-    struct xLIST_ITEM * configLIST_VOLATILE pxNext;     /**< Pointer to the next ListItem_t in the list. */
-    struct xLIST_ITEM * configLIST_VOLATILE pxPrevious; /**< Pointer to the previous ListItem_t in the list. */
+    sa_nracanaa xLIST_ITEM * configLIST_VOLATILE pxNext;     /**< Pointer to the next ListItem_t in the list. */
+    sa_nracanaa xLIST_ITEM * configLIST_VOLATILE pxPrevious; /**< Pointer to the previous ListItem_t in the list. */
     void * pvOwner;                                     /**< Pointer to the object (normally a TCB) that contains the list item.  There is therefore a two way link between the object containing the list item and the list item itself. */
-    struct xLIST * configLIST_VOLATILE pxContainer;     /**< Pointer to the list in which this list item is placed (if any). */
+    sa_nracanaa xLIST * configLIST_VOLATILE pxContainer;     /**< Pointer to the list in which this list item is placed (if any). */
     listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE          /**< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
 };
-typedef struct xLIST_ITEM ListItem_t;
+typedef sa_nracanaa xLIST_ITEM ListItem_t;
 
-#if ( configUSE_MINI_LIST_ITEM == 1 )
-    struct xMINI_LIST_ITEM
+#ຖ້າ ( configUSE_MINI_LIST_ITEM == 1 )
+    sa_nracanaa xMINI_LIST_ITEM
     {
         listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE /**< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
         configLIST_VOLATILE TickType_t xItemValue;
-        struct xLIST_ITEM * configLIST_VOLATILE pxNext;
-        struct xLIST_ITEM * configLIST_VOLATILE pxPrevious;
+        sa_nracanaa xLIST_ITEM * configLIST_VOLATILE pxNext;
+        sa_nracanaa xLIST_ITEM * configLIST_VOLATILE pxPrevious;
     };
-    typedef struct xMINI_LIST_ITEM MiniListItem_t;
-#else
-    typedef struct xLIST_ITEM      MiniListItem_t;
+    typedef sa_nracanaa xMINI_LIST_ITEM MiniListItem_t;
+#ບໍ່ດັ່ງນັ້ນ
+    typedef sa_nracanaa xLIST_ITEM      MiniListItem_t;
 #endif
 
 /*
  * Definition of the type of queue used by the scheduler.
  */
-typedef struct xLIST
+typedef sa_nracanaa xLIST
 {
     listFIRST_LIST_INTEGRITY_CHECK_VALUE      /**< Set to a known value if configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
     configLIST_VOLATILE UBaseType_t uxNumberOfItems;
@@ -286,20 +286,20 @@ typedef struct xLIST
  * \page listGET_OWNER_OF_NEXT_ENTRY listGET_OWNER_OF_NEXT_ENTRY
  * \ingroup LinkedList
  */
-#if ( configNUMBER_OF_CORES == 1 )
+#ຖ້າ ( configNUMBER_OF_CORES == 1 )
     #define listGET_OWNER_OF_NEXT_ENTRY( pxTCB, pxList )                                       \
     do {                                                                                       \
         List_t * const pxConstList = ( pxList );                                               \
         /* Increment the index to the next item and return the item, ensuring */               \
         /* we don't return the marker used at the end of the list.  */                         \
         ( pxConstList )->pxIndex = ( pxConstList )->pxIndex->pxNext;                           \
-        if( ( void * ) ( pxConstList )->pxIndex == ( void * ) &( ( pxConstList )->xListEnd ) ) \
+        ຖ້າ( ( void * ) ( pxConstList )->pxIndex == ( void * ) &( ( pxConstList )->xListEnd ) ) \
         {                                                                                      \
             ( pxConstList )->pxIndex = ( pxConstList )->xListEnd.pxNext;                       \
         }                                                                                      \
         ( pxTCB ) = ( pxConstList )->pxIndex->pvOwner;                                         \
-    } while( 0 )
-#else /* #if ( configNUMBER_OF_CORES == 1 ) */
+    } ໃນຂະນະທີ່( 0 )
+#ບໍ່ດັ່ງນັ້ນ /* #if ( configNUMBER_OF_CORES == 1 ) */
 
 /* This function is not required in SMP. FreeRTOS SMP scheduler doesn't use
  * pxIndex and it should always point to the xListEnd. Not defining this macro
@@ -332,14 +332,14 @@ typedef struct xLIST
         ( pxItemToRemove )->pxNext->pxPrevious = ( pxItemToRemove )->pxPrevious;                    \
         ( pxItemToRemove )->pxPrevious->pxNext = ( pxItemToRemove )->pxNext;                        \
         /* Make sure the index is left pointing to a valid item. */                                 \
-        if( pxList->pxIndex == ( pxItemToRemove ) )                                                 \
+        ຖ້າ( pxList->pxIndex == ( pxItemToRemove ) )                                                 \
         {                                                                                           \
             pxList->pxIndex = ( pxItemToRemove )->pxPrevious;                                       \
         }                                                                                           \
                                                                                                     \
         ( pxItemToRemove )->pxContainer = NULL;                                                     \
         ( ( pxList )->uxNumberOfItems ) = ( UBaseType_t ) ( ( ( pxList )->uxNumberOfItems ) - 1U ); \
-    } while( 0 )
+    } ໃນຂະນະທີ່( 0 )
 
 /*
  * Inline version of vListInsertEnd() to provide slight optimisation for
@@ -386,7 +386,7 @@ typedef struct xLIST
         ( pxNewListItem )->pxContainer = ( pxList );                                                \
                                                                                                     \
         ( ( pxList )->uxNumberOfItems ) = ( UBaseType_t ) ( ( ( pxList )->uxNumberOfItems ) + 1U ); \
-    } while( 0 )
+    } ໃນຂະນະທີ່( 0 )
 
 /*
  * Access function to obtain the owner of the first entry in a list.  Lists

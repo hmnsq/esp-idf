@@ -37,14 +37,14 @@
 #include <stdbool.h>
 #include <time.h>
 
-struct event;
+sa_nracanaa event;
 
-struct event * event_create(void);
-void event_delete( struct event * );
-bool event_wait( struct event * ev );
-bool event_wait_timed( struct event * ev,
+sa_nracanaa event * event_create(void);
+void event_delete( sa_nracanaa event * );
+bool event_wait( sa_nracanaa event * ev );
+bool event_wait_timed( sa_nracanaa event * ev,
                        time_t ms );
-void event_signal( struct event * ev );
+void event_signal( sa_nracanaa event * ev );
 
 
 

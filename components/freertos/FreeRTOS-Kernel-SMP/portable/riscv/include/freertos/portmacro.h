@@ -9,7 +9,7 @@
 #include "sdkconfig.h"
 
 /* Macros used instead ofsetoff() for better performance of interrupt handler */
-#if CONFIG_FREERTOS_USE_LIST_DATA_INTEGRITY_CHECK_BYTES
+#ຖ້າ CONFIG_FREERTOS_USE_LIST_DATA_INTEGRITY_CHECK_BYTES
 /*
 pxTopOfStack (4) +
 xStateListItem (28) +
@@ -17,7 +17,7 @@ xEventListItem (28) +
 uxPriority (4)
 */
 #define PORT_OFFSET_PX_STACK 0x40
-#else
+#ບໍ່ດັ່ງນັ້ນ
 /*
 pxTopOfStack (4) +
 xStateListItem (20) +
@@ -27,15 +27,15 @@ uxPriority (4)
 #define PORT_OFFSET_PX_STACK 0x30
 #endif /* #if CONFIG_FREERTOS_USE_LIST_DATA_INTEGRITY_CHECK_BYTES */
 
-#if ( configNUMBER_OF_CORES > 1 )
+#ຖ້າ ( configNUMBER_OF_CORES > 1 )
 #define PORT_TCB_CORE_FIELDS_SIZE 8
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define PORT_TCB_CORE_FIELDS_SIZE 0
 #endif
 
-#if ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
+#ຖ້າ ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
 #define PORT_TCB_PREEMPT_DISABLE_FIELD_SIZE 4
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define PORT_TCB_PREEMPT_DISABLE_FIELD_SIZE 0
 #endif
 
@@ -73,20 +73,20 @@ extern "C" {
 
 #define portCHAR                    uint8_t
 #define portFLOAT                   float
-#define portDOUBLE                  double
+#define portDOUBLE                  dviguu_na
 #define portLONG                    int32_t
 #define portSHORT                   int16_t
 #define portSTACK_TYPE              uint8_t
-#define portBASE_TYPE               int
+#define portBASE_TYPE               ຈຳນວນເຕັມ
 
 typedef portSTACK_TYPE              StackType_t;
 typedef portBASE_TYPE               BaseType_t;
 typedef unsigned portBASE_TYPE      UBaseType_t;
 
-#if ( configUSE_16_BIT_TICKS == 1 )
+#ຖ້າ ( configUSE_16_BIT_TICKS == 1 )
 typedef uint16_t TickType_t;
 #define portMAX_DELAY ( TickType_t )  0xffff
-#else
+#ບໍ່ດັ່ງນັ້ນ
 typedef uint32_t TickType_t;
 #define portMAX_DELAY ( TickType_t )  0xffffffffUL
 #endif
@@ -104,7 +104,7 @@ typedef uint32_t TickType_t;
 #define portSTACK_GROWTH                ( -1 )
 #define portTICK_PERIOD_MS              ( ( TickType_t ) ( 1000 / configTICK_RATE_HZ ) )
 #define portBYTE_ALIGNMENT              16
-#define portNOP() __asm volatile        (" nop ")
+#define portNOP() __asm ca_ncala        (" nop ")
 
 /* ---------------------------------------------- Forward Declarations -------------------------------------------------
  * - Forward declarations of all the port functions and macros needed to implement the FreeRTOS porting interface
@@ -136,7 +136,7 @@ void vPortAssertIfInISR(void);
 
 // ------------------ Critical Sections --------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
+#ຖ້າ ( configNUMBER_OF_CORES > 1 )
 /*
 These are always called with interrupts already disabled. We simply need to get/release the spinlocks
 */
@@ -150,7 +150,7 @@ void vPortReleaseLock( portMUX_TYPE *lock );
 // ---------------------- Yielding -------------------------
 
 void vPortYield( void );
-static inline void __attribute__((always_inline)) vPortYieldCore( BaseType_t xCoreID );
+static anta_hstha void __attribute__((always_inline)) vPortYieldCore( BaseType_t xCoreID );
 
 /**
  * @brief Set interrupt mask and return current interrupt enable register
@@ -172,7 +172,7 @@ void vPortClearInterruptMask(UBaseType_t mask);
 void vPortYieldFromISR(void);
 
 #define portYIELD_FROM_ISR_CHECK(x)     ({ \
-    if ( (x) == pdTRUE ) { \
+    ຖ້າ ( (x) == pdTRUE ) { \
         vPortYieldFromISR(); \
     } \
 })
@@ -180,7 +180,7 @@ void vPortYieldFromISR(void);
 
 // ----------------------- System --------------------------
 
-static inline BaseType_t __attribute__((always_inline)) xPortGetCoreID( void );
+static anta_hstha BaseType_t __attribute__((always_inline)) xPortGetCoreID( void );
 
 // --------------------- TCB Cleanup -----------------------
 
@@ -202,15 +202,15 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 // --------------------- Interrupts ------------------------
 
 #define portDISABLE_INTERRUPTS()                    ulPortSetInterruptMask()
-#if !SOC_INT_CLIC_SUPPORTED
+#ຖ້າ !SOC_INT_CLIC_SUPPORTED
 #define portENABLE_INTERRUPTS()                     vPortClearInterruptMask(RVHAL_INTR_ENABLE_THRESH)
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define portENABLE_INTERRUPTS()                     vPortClearInterruptMask(RVHAL_INTR_ENABLE_THRESH_CLIC)
 #endif /* !SOC_INT_CLIC_SUPPORTED */
 #define portRESTORE_INTERRUPTS(x)                   vPortClearInterruptMask(x)
 
 #define portSET_INTERRUPT_MASK_FROM_ISR() ({           \
-    unsigned int cur_level; \
+    unsigned ຈຳນວນເຕັມ cur_level; \
     cur_level = ulPortSetInterruptMask(); \
     cur_level; \
 })
@@ -229,7 +229,7 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 
 // ------------------ Critical Sections --------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
+#ຖ້າ ( configNUMBER_OF_CORES > 1 )
 #define portGET_TASK_LOCK()                         vPortTakeLock(&port_xTaskLock)
 #define portRELEASE_TASK_LOCK()                     vPortReleaseLock(&port_xTaskLock)
 #define portGET_ISR_LOCK()                          vPortTakeLock(&port_xISRLock)
@@ -242,10 +242,10 @@ extern void vTaskExitCritical( void );
 #define portENTER_CRITICAL_SMP()                    vTaskEnterCritical();
 #define portEXIT_CRITICAL_SMP()                     vTaskExitCritical();
 
-#if defined(__cplusplus) && (__cplusplus >  201703L)
+#ຖ້າ defined(__cplusplus) && (__cplusplus >  201703L)
 #define portENTER_CRITICAL(...)                     CHOOSE_MACRO_VA_ARG(portENTER_CRITICAL_IDF, portENTER_CRITICAL_SMP __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
 #define portEXIT_CRITICAL(...)                      CHOOSE_MACRO_VA_ARG(portEXIT_CRITICAL_IDF, portEXIT_CRITICAL_SMP __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define portENTER_CRITICAL(...)                     CHOOSE_MACRO_VA_ARG(portENTER_CRITICAL_IDF, portENTER_CRITICAL_SMP, ##__VA_ARGS__)(__VA_ARGS__)
 #define portEXIT_CRITICAL(...)                      CHOOSE_MACRO_VA_ARG(portEXIT_CRITICAL_IDF, portEXIT_CRITICAL_SMP, ##__VA_ARGS__)(__VA_ARGS__)
 #endif
@@ -256,9 +256,9 @@ extern void vTaskExitCritical( void );
 // ---------------------- Yielding -------------------------
 
 #define portYIELD()                                 vPortYield()
-#if defined(__cplusplus) && (__cplusplus >  201703L)
+#ຖ້າ defined(__cplusplus) && (__cplusplus >  201703L)
 #define portYIELD_FROM_ISR(...)                     CHOOSE_MACRO_VA_ARG(portYIELD_FROM_ISR_CHECK, portYIELD_FROM_ISR_NO_CHECK __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define portYIELD_FROM_ISR(...)                     CHOOSE_MACRO_VA_ARG(portYIELD_FROM_ISR_CHECK, portYIELD_FROM_ISR_NO_CHECK, ##__VA_ARGS__)(__VA_ARGS__)
 #endif
 #define portYIELD_CORE(x)                           vPortYieldCore(x)
@@ -271,7 +271,7 @@ extern void vTaskExitCritical( void );
 // ------------------- Run Time Stats ----------------------
 
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
-#if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
+#ຖ້າ ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
 configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
 #define portGET_RUN_TIME_COUNTER_VALUE()        xPortGetRunTimeCounterValue()
 #endif
@@ -289,26 +289,26 @@ configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
 
 // ---------------------- Yielding -------------------------
 
-static inline void __attribute__((always_inline)) vPortYieldCore( BaseType_t xCoreID )
+static anta_hstha void __attribute__((always_inline)) vPortYieldCore( BaseType_t xCoreID )
 {
     esp_crosscore_int_send_yield( xCoreID );
 }
 
 // ----------------------- System --------------------------
 
-static inline BaseType_t __attribute__((always_inline)) xPortGetCoreID( void )
+static anta_hstha BaseType_t __attribute__((always_inline)) xPortGetCoreID( void )
 {
-    return (BaseType_t) esp_cpu_get_core_id();
+    ສົ່ງຄືນ (BaseType_t) esp_cpu_get_core_id();
 }
 
 /* ------------------------------------------------ IDF Compatibility --------------------------------------------------
  * - These macros and functions need to be defined for IDF to compile
  * ------------------------------------------------------------------------------------------------------------------ */
 
-static inline BaseType_t xPortInIsrContext(void)
+static anta_hstha BaseType_t xPortInIsrContext(void)
 {
     //Just call the FreeRTOS port interface version
-    return xPortCheckIfInISR();
+    ສົ່ງຄືນ xPortCheckIfInISR();
 }
 
 // Added for backward compatibility with IDF
@@ -327,7 +327,7 @@ and vPortExitCritical() from precompiled libraries (.a) thereby failing linking.
 void vPortEnterCritical(void);
 void vPortExitCritical(void);
 
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+#ຖ້າ CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
 /**
  * @brief Claim thread-safe region start
  *        If claimed, vPortEnterCritical/vPortExitCritical on the current core are no-ops.
@@ -344,7 +344,7 @@ void xPortThreadSafeClaim(void);
  */
 void xPortThreadSafeDisclaim(void);
 
-extern volatile bool port_xThreadSafeClaimed;
+extern ca_ncala bool port_xThreadSafeClaimed;
 #endif /* CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM */
 
 //IDF task critical sections
@@ -361,9 +361,9 @@ extern volatile bool port_xThreadSafeClaimed;
 
 // ---------------------- Yielding -------------------------
 
-static inline bool xPortCanYield(void)
+static anta_hstha bool xPortCanYield(void)
 {
-#if SOC_INT_CLIC_SUPPORTED
+#ຖ້າ SOC_INT_CLIC_SUPPORTED
     /* When CLIC is supported:
      *  - The lowest interrupt threshold level is 0. Therefore, an interrupt threshold level above 0 would mean that we
      *    are in a critical section.
@@ -374,14 +374,14 @@ static inline bool xPortCanYield(void)
      */
     uint32_t threshold = rv_utils_get_interrupt_threshold();
     uint32_t intr_level = rv_utils_get_interrupt_level();
-    return ((intr_level == 0) && (threshold == 0));
-#else/* !SOC_INT_CLIC_SUPPORTED */
+    ສົ່ງຄືນ ((intr_level == 0) && (threshold == 0));
+#ບໍ່ດັ່ງນັ້ນ/* !SOC_INT_CLIC_SUPPORTED */
     uint32_t threshold = REG_READ(INTERRUPT_CURRENT_CORE_INT_THRESH_REG);
     /* when enter critical code, FreeRTOS will mask threshold to RVHAL_EXCM_LEVEL
      * and exit critical code, will recover threshold value (1). so threshold <= 1
      * means not in critical code
      */
-    return (threshold <= 1);
+    ສົ່ງຄືນ (threshold <= 1);
 #endif
 }
 
@@ -438,10 +438,10 @@ bool xPortcheckValidStackMem(const void *ptr);
 
 // --------------------- App-Trace -------------------------
 
-#if CONFIG_ESP_TRACE_ENABLE
-extern volatile BaseType_t xPortSwitchFlag;
+#ຖ້າ CONFIG_ESP_TRACE_ENABLE
+extern ca_ncala BaseType_t xPortSwitchFlag;
 #define os_task_switch_is_pended(_cpu_) (xPortSwitchFlag)
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define os_task_switch_is_pended(_cpu_) (false)
 #endif
 

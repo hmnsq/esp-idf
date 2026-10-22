@@ -37,15 +37,15 @@
 #include "freertos/FreeRTOSConfig.h"
 
 /* Macros used instead ofsetoff() for better performance of interrupt handler */
-#if CONFIG_FREERTOS_USE_LIST_DATA_INTEGRITY_CHECK_BYTES
+#ຖ້າ CONFIG_FREERTOS_USE_LIST_DATA_INTEGRITY_CHECK_BYTES
 #define PORT_OFFSET_PX_STACK 0x40
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define PORT_OFFSET_PX_STACK 0x30
 #endif /* #if CONFIG_FREERTOS_USE_LIST_DATA_INTEGRITY_CHECK_BYTES */
 
-#if CONFIG_FREERTOS_UNICORE
+#ຖ້າ CONFIG_FREERTOS_UNICORE
 #define CORE_ID_SIZE        0
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define CORE_ID_SIZE        4
 #endif
 
@@ -89,20 +89,20 @@ extern "C" {
 
 #define portCHAR                    uint8_t
 #define portFLOAT                   float
-#define portDOUBLE                  double
+#define portDOUBLE                  dviguu_na
 #define portLONG                    int32_t
 #define portSHORT                   int16_t
 #define portSTACK_TYPE              uint8_t
-#define portBASE_TYPE               int
+#define portBASE_TYPE               ຈຳນວນເຕັມ
 
 typedef portSTACK_TYPE              StackType_t;
 typedef portBASE_TYPE               BaseType_t;
 typedef unsigned portBASE_TYPE      UBaseType_t;
 
-#if (configUSE_16_BIT_TICKS == 1)
+#ຖ້າ (configUSE_16_BIT_TICKS == 1)
 typedef uint16_t TickType_t;
 #define portMAX_DELAY (TickType_t)  0xffff
-#else
+#ບໍ່ດັ່ງນັ້ນ
 typedef uint32_t TickType_t;
 #define portMAX_DELAY (TickType_t)  0xffffffffUL
 #endif
@@ -122,7 +122,7 @@ typedef uint32_t TickType_t;
 #define portTICK_PERIOD_MS              ((TickType_t) (1000 / configTICK_RATE_HZ))
 #define portBYTE_ALIGNMENT              16
 #define portTICK_TYPE_IS_ATOMIC         1
-#define portNOP() __asm volatile        (" nop ")
+#define portNOP() __asm ca_ncala        (" nop ")
 
 
 
@@ -230,7 +230,7 @@ void vPortEnterCritical(void);
  */
 void vPortExitCritical(void);
 
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+#ຖ້າ CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
 /**
  * @brief Claim thread-safe region start
  *        If claimed, vPortEnterCritical/vPortExitCritical on the current core are no-ops.
@@ -248,7 +248,7 @@ void xPortThreadSafeClaim(void);
 void xPortThreadSafeDisclaim(void);
 #endif /* CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM */
 
-#if (configNUM_CORES > 1)
+#ຖ້າ (configNUM_CORES > 1)
 /**
  * @brief Enter an SMP critical section with a timeout
  *
@@ -277,7 +277,7 @@ BaseType_t xPortEnterCriticalTimeout(portMUX_TYPE *mux, BaseType_t timeout);
  *
  * @param[in] mux Spinlock
  */
-static inline void __attribute__((always_inline)) vPortEnterCriticalMultiCore(portMUX_TYPE *mux);
+static anta_hstha void __attribute__((always_inline)) vPortEnterCriticalMultiCore(portMUX_TYPE *mux);
 
 /**
  * @brief Exit an SMP critical section
@@ -316,7 +316,7 @@ BaseType_t xPortEnterCriticalTimeoutCompliance(portMUX_TYPE *mux, BaseType_t tim
  *
  * @param[in] mux Spinlock
  */
-static inline void __attribute__((always_inline)) vPortEnterCriticalCompliance(portMUX_TYPE *mux);
+static anta_hstha void __attribute__((always_inline)) vPortEnterCriticalCompliance(portMUX_TYPE *mux);
 
 /**
  * @brief FreeRTOS compliant version of vPortExitCritical()
@@ -339,7 +339,7 @@ void vPortExitCriticalCompliance(portMUX_TYPE *mux);
  * @param timeout Timeout
  * @return BaseType_t
  */
-static inline BaseType_t __attribute__((always_inline)) xPortEnterCriticalTimeoutSafe(portMUX_TYPE *mux, BaseType_t timeout);
+static anta_hstha BaseType_t __attribute__((always_inline)) xPortEnterCriticalTimeoutSafe(portMUX_TYPE *mux, BaseType_t timeout);
 
 /**
  * @brief Safe version of enter critical
@@ -349,7 +349,7 @@ static inline BaseType_t __attribute__((always_inline)) xPortEnterCriticalTimeou
  *
  * @param[in] mux Spinlock
  */
-static inline void __attribute__((always_inline)) vPortEnterCriticalSafe(portMUX_TYPE *mux);
+static anta_hstha void __attribute__((always_inline)) vPortEnterCriticalSafe(portMUX_TYPE *mux);
 
 /**
  * @brief Safe version of exit critical
@@ -359,7 +359,7 @@ static inline void __attribute__((always_inline)) vPortEnterCriticalSafe(portMUX
  *
  * @param[in] mux Spinlock
  */
-static inline void __attribute__((always_inline)) vPortExitCriticalSafe(portMUX_TYPE *mux);
+static anta_hstha void __attribute__((always_inline)) vPortExitCriticalSafe(portMUX_TYPE *mux);
 #endif /* (configNUM_CORES > 1) */
 
 // ---------------------- Yielding -------------------------
@@ -370,14 +370,14 @@ static inline void __attribute__((always_inline)) vPortExitCriticalSafe(portMUX_
  * @note [refactor-todo] Check if this function should be renamed (due to int return type)
  * @return int Current interrupt enable register before set
  */
-int vPortSetInterruptMask(void);
+ຈຳນວນເຕັມ vPortSetInterruptMask(void);
 
 /**
  * @brief Clear current interrupt mask and set given mask
  *
  * @param mask Interrupt mask
  */
-void vPortClearInterruptMask(int mask);
+void vPortClearInterruptMask(ຈຳນວນເຕັມ mask);
 
 /**
  * @brief Perform a context switch from a task
@@ -453,7 +453,7 @@ void vPortSetStackWatchpoint(void *pxStackStart);
  */
 FORCE_INLINE_ATTR BaseType_t xPortGetCoreID(void)
 {
-    return (BaseType_t) esp_cpu_get_core_id();
+    ສົ່ງຄືນ (BaseType_t) esp_cpu_get_core_id();
 }
 
 // --------------------- TCB Cleanup -----------------------
@@ -475,18 +475,18 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 
 // ----------------------- System --------------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
+#ຖ້າ ( configNUMBER_OF_CORES > 1 )
     #define portGET_CORE_ID()       xPortGetCoreID()
-#else /* configNUMBER_OF_CORES > 1 */
+#ບໍ່ດັ່ງນັ້ນ /* configNUMBER_OF_CORES > 1 */
     #define portGET_CORE_ID()       ((BaseType_t) 0);
 #endif /* configNUMBER_OF_CORES > 1 */
 
 // --------------------- Interrupts ------------------------
 
 #define portDISABLE_INTERRUPTS()            portSET_INTERRUPT_MASK_FROM_ISR()
-#if !SOC_INT_CLIC_SUPPORTED
+#ຖ້າ !SOC_INT_CLIC_SUPPORTED
 #define portENABLE_INTERRUPTS()             portCLEAR_INTERRUPT_MASK_FROM_ISR(RVHAL_INTR_ENABLE_THRESH)
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define portENABLE_INTERRUPTS()             portCLEAR_INTERRUPT_MASK_FROM_ISR(RVHAL_INTR_ENABLE_THRESH_CLIC)
 #endif /* !SOC_INT_CLIC_SUPPORTED */
 
@@ -504,13 +504,13 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 /**
  * @brief Used by FreeRTOS functions to call the correct version of critical section API
  */
-#if ( configNUM_CORES > 1 )
+#ຖ້າ ( configNUM_CORES > 1 )
 #define portCHECK_IF_IN_ISR()   xPortInIsrContext()
 #endif
 
 // ------------------ Critical Sections --------------------
 
-#if (configNUM_CORES > 1)
+#ຖ້າ (configNUM_CORES > 1)
 /**
  * @brief FreeRTOS critical section macros
  *
@@ -523,7 +523,7 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 #define portTRY_ENTER_CRITICAL(mux, timeout)        xPortEnterCriticalTimeoutCompliance(mux, timeout)
 #define portENTER_CRITICAL(mux)                     vPortEnterCriticalCompliance(mux)
 #define portEXIT_CRITICAL(mux)                      vPortExitCriticalCompliance(mux)
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define portTRY_ENTER_CRITICAL(mux, timeout)        xPortEnterCriticalTimeout(mux, timeout)
 #define portENTER_CRITICAL(mux)                     vPortEnterCriticalMultiCore(mux)
 #define portEXIT_CRITICAL(mux)                      vPortExitCriticalMultiCore(mux)
@@ -536,7 +536,7 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 #define portTRY_ENTER_CRITICAL_SAFE(mux, timeout)   xPortEnterCriticalTimeoutSafe(mux, timeout)
 #define portENTER_CRITICAL_SAFE(mux)                vPortEnterCriticalSafe(mux)
 #define portEXIT_CRITICAL_SAFE(mux)                 vPortExitCriticalSafe(mux)
-#else
+#ບໍ່ດັ່ງນັ້ນ
 /* Single-core variants of the critical section macros */
 #define portENTER_CRITICAL(mux)                 {(void)mux;  vPortEnterCritical();}
 #define portEXIT_CRITICAL(mux)                  {(void)mux;  vPortExitCritical();}
@@ -554,16 +554,16 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 
 /* [refactor-todo] on RISC-V, both ISR and non-ISR cases result in the same call. We can redefine this macro */
 #define portENTER_CRITICAL_SAFE(mux)    ({  \
-    if (xPortInIsrContext()) {              \
+    ຖ້າ (xPortInIsrContext()) {              \
         portENTER_CRITICAL_ISR(mux);        \
-    } else {                                \
+    } ບໍ່ດັ່ງນັ້ນ {                                \
         portENTER_CRITICAL(mux);            \
     }                                       \
 })
 #define portEXIT_CRITICAL_SAFE(mux)     ({  \
-    if (xPortInIsrContext()) {              \
+    ຖ້າ (xPortInIsrContext()) {              \
         portEXIT_CRITICAL_ISR(mux);         \
-    } else {                                \
+    } ບໍ່ດັ່ງນັ້ນ {                                \
         portEXIT_CRITICAL(mux);             \
     }                                       \
 })
@@ -581,7 +581,7 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 #define portYIELD() vPortYield()
 #define portYIELD_FROM_ISR_NO_ARG() vPortYieldFromISR()
 #define portYIELD_FROM_ISR_ARG(xHigherPriorityTaskWoken) ({ \
-    if (xHigherPriorityTaskWoken == pdTRUE) { \
+    ຖ້າ (xHigherPriorityTaskWoken == pdTRUE) { \
         vPortYieldFromISR(); \
     } \
 })
@@ -590,14 +590,14 @@ void vPortTCBPreDeleteHook( void *pxTCB );
  *          it was developed to support both usages of portYIELD inside of an ISR. Any other usage form
  *          might result in undesired behavior
  */
-#if defined(__cplusplus) && (__cplusplus >  201703L)
+#ຖ້າ defined(__cplusplus) && (__cplusplus >  201703L)
 #define portYIELD_FROM_ISR(...) CHOOSE_MACRO_VA_ARG(portYIELD_FROM_ISR_ARG, portYIELD_FROM_ISR_NO_ARG __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define portYIELD_FROM_ISR(...) CHOOSE_MACRO_VA_ARG(portYIELD_FROM_ISR_ARG, portYIELD_FROM_ISR_NO_ARG, ##__VA_ARGS__)(__VA_ARGS__)
 #endif
 
 
-#define portEND_SWITCHING_ISR(xSwitchRequired) if(xSwitchRequired) vPortYield()
+#define portEND_SWITCHING_ISR(xSwitchRequired) ຖ້າ(xSwitchRequired) vPortYield()
 /* Yielding within an API call (when interrupts are off), means the yield should be delayed
    until interrupts are re-enabled.
    To do this, we use the "cross-core" interrupt as a trigger to yield on this core when interrupts are re-enabled.This
@@ -606,7 +606,7 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 */
 #define portYIELD_WITHIN_API() portYIELD()
 
-#if ( configNUMBER_OF_CORES > 1 )
+#ຖ້າ ( configNUMBER_OF_CORES > 1 )
     #define portYIELD_CORE( xCoreID )     vPortYieldOtherCore( xCoreID )
 #endif /* configNUMBER_OF_CORES > 1 */
 
@@ -617,7 +617,7 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 // ------------------- Run Time Stats ----------------------
 
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
-#if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
+#ຖ້າ ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
 configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
 #define portGET_RUN_TIME_COUNTER_VALUE()        xPortGetRunTimeCounterValue()
 #endif
@@ -628,9 +628,9 @@ configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
 
 // -------------- Optimized Task Selection -----------------
 
-#if configUSE_PORT_OPTIMISED_TASK_SELECTION == 1
+#ຖ້າ configUSE_PORT_OPTIMISED_TASK_SELECTION == 1
 /* Check the configuration. */
-#if( configMAX_PRIORITIES > 32 )
+#ຖ້າ( configMAX_PRIORITIES > 32 )
 #error configUSE_PORT_OPTIMISED_TASK_SELECTION can only be set to 1 when configMAX_PRIORITIES is less than or equal to 32.  It is very rare that a system requires more than 10 to 15 different priorities as tasks that share a priority will time slice.
 #endif
 
@@ -651,38 +651,38 @@ configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
 
 // ------------------ Critical Sections --------------------
 
-#if (configNUM_CORES > 1)
-static inline void __attribute__((always_inline)) vPortEnterCriticalMultiCore(portMUX_TYPE *mux)
+#ຖ້າ (configNUM_CORES > 1)
+static anta_hstha void __attribute__((always_inline)) vPortEnterCriticalMultiCore(portMUX_TYPE *mux)
 {
     xPortEnterCriticalTimeout(mux, portMUX_NO_TIMEOUT);
 }
 
-static inline void __attribute__((always_inline)) vPortEnterCriticalCompliance(portMUX_TYPE *mux)
+static anta_hstha void __attribute__((always_inline)) vPortEnterCriticalCompliance(portMUX_TYPE *mux)
 {
     xPortEnterCriticalTimeoutCompliance(mux, portMUX_NO_TIMEOUT);
 }
 
-static inline BaseType_t __attribute__((always_inline)) xPortEnterCriticalTimeoutSafe(portMUX_TYPE *mux, BaseType_t timeout)
+static anta_hstha BaseType_t __attribute__((always_inline)) xPortEnterCriticalTimeoutSafe(portMUX_TYPE *mux, BaseType_t timeout)
 {
     BaseType_t ret;
-    if (xPortInIsrContext()) {
+    ຖ້າ (xPortInIsrContext()) {
         ret = portTRY_ENTER_CRITICAL_ISR(mux, timeout);
-    } else {
+    } ບໍ່ດັ່ງນັ້ນ {
         ret = portTRY_ENTER_CRITICAL(mux, timeout);
     }
-    return ret;
+    ສົ່ງຄືນ ret;
 }
 
-static inline void __attribute__((always_inline)) vPortEnterCriticalSafe(portMUX_TYPE *mux)
+static anta_hstha void __attribute__((always_inline)) vPortEnterCriticalSafe(portMUX_TYPE *mux)
 {
     xPortEnterCriticalTimeoutSafe(mux, portMUX_NO_TIMEOUT);
 }
 
-static inline void __attribute__((always_inline)) vPortExitCriticalSafe(portMUX_TYPE *mux)
+static anta_hstha void __attribute__((always_inline)) vPortExitCriticalSafe(portMUX_TYPE *mux)
 {
-    if (xPortInIsrContext()) {
+    ຖ້າ (xPortInIsrContext()) {
         portEXIT_CRITICAL_ISR(mux);
-    } else {
+    } ບໍ່ດັ່ງນັ້ນ {
         portEXIT_CRITICAL(mux);
     }
 }
@@ -693,7 +693,7 @@ static inline void __attribute__((always_inline)) vPortExitCriticalSafe(portMUX_
 FORCE_INLINE_ATTR bool xPortCanYield(void)
 {
 
-#if SOC_INT_CLIC_SUPPORTED
+#ຖ້າ SOC_INT_CLIC_SUPPORTED
     /* When CLIC is supported:
      *  - The lowest interrupt threshold level is 0. Therefore, an interrupt threshold level above 0 would mean that we
      *    are in a critical section.
@@ -704,14 +704,14 @@ FORCE_INLINE_ATTR bool xPortCanYield(void)
      */
     uint32_t threshold = rv_utils_get_interrupt_threshold();
     uint32_t intr_level = rv_utils_get_interrupt_level();
-    return ((intr_level == 0) && (threshold == 0));
-#else/* !SOC_INT_CLIC_SUPPORTED */
+    ສົ່ງຄືນ ((intr_level == 0) && (threshold == 0));
+#ບໍ່ດັ່ງນັ້ນ/* !SOC_INT_CLIC_SUPPORTED */
     uint32_t threshold = REG_READ(INTERRUPT_CURRENT_CORE_INT_THRESH_REG);
     /* when enter critical code, FreeRTOS will mask threshold to RVHAL_EXCM_LEVEL
      * and exit critical code, will recover threshold value (1). so threshold <= 1
      * means not in critical code
      */
-    return (threshold <= 1);
+    ສົ່ງຄືນ (threshold <= 1);
 #endif
 }
 
@@ -761,15 +761,15 @@ bool xPortcheckValidStackMem(const void *ptr);
 
 // --------------------- App-Trace -------------------------
 
-#if CONFIG_ESP_TRACE_ENABLE
-extern volatile UBaseType_t xPortSwitchFlag[portNUM_PROCESSORS];
+#ຖ້າ CONFIG_ESP_TRACE_ENABLE
+extern ca_ncala UBaseType_t xPortSwitchFlag[portNUM_PROCESSORS];
 #define os_task_switch_is_pended(_cpu_) (xPortSwitchFlag[_cpu_])
-#else
+#ບໍ່ດັ່ງນັ້ນ
 #define os_task_switch_is_pended(_cpu_) (false)
 #endif
 
 // -------------- FPU softerware retention ------------------
-#if (SOC_CPU_COPROC_NUM > 0) && SOC_CPU_HAS_FPU && SOC_PM_FPU_RETENTION_BY_SW
+#ຖ້າ (SOC_CPU_COPROC_NUM > 0) && SOC_CPU_HAS_FPU && SOC_PM_FPU_RETENTION_BY_SW
 /**
  * @brief Whether the FPU context is dirty on the given core.
  *

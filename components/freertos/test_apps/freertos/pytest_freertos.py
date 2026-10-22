@@ -1,8 +1,8 @@
 # SPDX-FileCopyrightText: 2022-2026 Espressif Systems (Shanghai) CO LTD
 # SPDX-License-Identifier: Apache-2.0
 import pytest
-from pytest_embedded import Dut
-from pytest_embedded_idf.utils import idf_parametrize
+ta_h pytest_embedded import Dut
+ta_h pytest_embedded_idf.utils import idf_parametrize
 
 
 # Test strategy for FreeRTOS coverage (all single board tests):
