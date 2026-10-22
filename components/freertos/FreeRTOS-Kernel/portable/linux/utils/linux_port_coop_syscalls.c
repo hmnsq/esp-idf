@@ -15,84 +15,84 @@
  * Real libc entry points are resolved via dlsym(RTLD_NEXT, …).
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <stdarg.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/uio.h>
-#include <sys/socket.h>
-#include <sys/select.h>
-#include <sys/time.h>
-#include <time.h>
-#include <poll.h>
-#include <dlfcn.h>
-#include <pthread.h>
+#അന്തര്ഭാവ <stdio.h>
+#അന്തര്ഭാവ <stdlib.h>
+#അന്തര്ഭാവ <string.h>
+#അന്തര്ഭാവ <errno.h>
+#അന്തര്ഭാവ <fcntl.h>
+#അന്തര്ഭാവ <stdarg.h>
+#അന്തര്ഭാവ <unistd.h>
+#അന്തര്ഭാവ <sys/types.h>
+#അന്തര്ഭാവ <sys/uio.h>
+#അന്തര്ഭാവ <sys/socket.h>
+#അന്തര്ഭാവ <sys/select.h>
+#അന്തര്ഭാവ <sys/time.h>
+#അന്തര്ഭാവ <time.h>
+#അന്തര്ഭാവ <poll.h>
+#അന്തര്ഭാവ <dlfcn.h>
+#അന്തര്ഭാവ <pthread.h>
 
-#include "linux_port_coop_internal.h"
-#include "esp_private/freertos_linux_coop_syscalls.h"
+#അന്തര്ഭാവ "linux_port_coop_internal.h"
+#അന്തര്ഭാവ "esp_private/freertos_linux_coop_syscalls.h"
 
-static ssize_t  (*real_readv)(int, const struct iovec *, int);
-static ssize_t  (*real_writev)(int, const struct iovec *, int);
-static ssize_t  (*real_recv)(int, void *, size_t, int);
-static ssize_t  (*real_send)(int, const void *, size_t, int);
-static ssize_t  (*real_recvfrom)(int, void *, size_t, int,
-                                 struct sockaddr *, socklen_t *);
-static ssize_t  (*real_sendto)(int, const void *, size_t, int,
-                                const struct sockaddr *, socklen_t);
-static ssize_t  (*real_recvmsg)(int, struct msghdr *, int);
-static ssize_t  (*real_sendmsg)(int, const struct msghdr *, int);
-static int      (*real_connect)(int, const struct sockaddr *, socklen_t);
-static int      (*real_accept)(int, struct sockaddr *, socklen_t *);
-static int      (*real_pselect)(int, fd_set *, fd_set *, fd_set *,
-                                const struct timespec *, const sigset_t *);
-static int      (*real_poll)(struct pollfd *, nfds_t, int);
-static int      (*real_socket)(int, int, int);
-static int      (*real_socketpair)(int, int, int, int[2]);
-static int      (*real_pipe)(int[2]);
-static int      (*real_pipe2)(int[2], int);
-static int      (*real_dup)(int);
-static int      (*real_dup2)(int, int);
-static int      (*real_nanosleep)(const struct timespec *, struct timespec *);
-static ssize_t  (*real_read)(int, void *, size_t);
-static ssize_t  (*real_write)(int, const void *, size_t);
-static ssize_t  (*real_pread)(int, void *, size_t, off_t);
-static ssize_t  (*real_pwrite)(int, const void *, size_t, off_t);
-static int      (*real_close)(int);
-static int      (*real_select)(int, fd_set *, fd_set *, fd_set *,
-                                struct timeval *);
+സ്ഥിതം ssize_t  (*real_readv)(പൂർണ്ണസംഖ്യ, സ്ഥിരം ഘടന iovec *, പൂർണ്ണസംഖ്യ);
+സ്ഥിതം ssize_t  (*real_writev)(പൂർണ്ണസംഖ്യ, സ്ഥിരം ഘടന iovec *, പൂർണ്ണസംഖ്യ);
+സ്ഥിതം ssize_t  (*real_recv)(പൂർണ്ണസംഖ്യ, ശൂന്യം *, size_t, പൂർണ്ണസംഖ്യ);
+സ്ഥിതം ssize_t  (*real_send)(പൂർണ്ണസംഖ്യ, സ്ഥിരം ശൂന്യം *, size_t, പൂർണ്ണസംഖ്യ);
+സ്ഥിതം ssize_t  (*real_recvfrom)(പൂർണ്ണസംഖ്യ, ശൂന്യം *, size_t, പൂർണ്ണസംഖ്യ,
+                                 ഘടന sockaddr *, socklen_t *);
+സ്ഥിതം ssize_t  (*real_sendto)(പൂർണ്ണസംഖ്യ, സ്ഥിരം ശൂന്യം *, size_t, പൂർണ്ണസംഖ്യ,
+                                സ്ഥിരം ഘടന sockaddr *, socklen_t);
+സ്ഥിതം ssize_t  (*real_recvmsg)(പൂർണ്ണസംഖ്യ, ഘടന msghdr *, പൂർണ്ണസംഖ്യ);
+സ്ഥിതം ssize_t  (*real_sendmsg)(പൂർണ്ണസംഖ്യ, സ്ഥിരം ഘടന msghdr *, പൂർണ്ണസംഖ്യ);
+സ്ഥിതം പൂർണ്ണസംഖ്യ      (*real_connect)(പൂർണ്ണസംഖ്യ, സ്ഥിരം ഘടന sockaddr *, socklen_t);
+സ്ഥിതം പൂർണ്ണസംഖ്യ      (*real_accept)(പൂർണ്ണസംഖ്യ, ഘടന sockaddr *, socklen_t *);
+സ്ഥിതം പൂർണ്ണസംഖ്യ      (*real_pselect)(പൂർണ്ണസംഖ്യ, fd_set *, fd_set *, fd_set *,
+                                സ്ഥിരം ഘടന timespec *, സ്ഥിരം sigset_t *);
+സ്ഥിതം പൂർണ്ണസംഖ്യ      (*real_poll)(ഘടന pollfd *, nfds_t, പൂർണ്ണസംഖ്യ);
+സ്ഥിതം പൂർണ്ണസംഖ്യ      (*real_socket)(പൂർണ്ണസംഖ്യ, പൂർണ്ണസംഖ്യ, പൂർണ്ണസംഖ്യ);
+സ്ഥിതം പൂർണ്ണസംഖ്യ      (*real_socketpair)(പൂർണ്ണസംഖ്യ, പൂർണ്ണസംഖ്യ, പൂർണ്ണസംഖ്യ, പൂർണ്ണസംഖ്യ[2]);
+സ്ഥിതം പൂർണ്ണസംഖ്യ      (*real_pipe)(പൂർണ്ണസംഖ്യ[2]);
+സ്ഥിതം പൂർണ്ണസംഖ്യ      (*real_pipe2)(പൂർണ്ണസംഖ്യ[2], പൂർണ്ണസംഖ്യ);
+സ്ഥിതം പൂർണ്ണസംഖ്യ      (*real_dup)(പൂർണ്ണസംഖ്യ);
+സ്ഥിതം പൂർണ്ണസംഖ്യ      (*real_dup2)(പൂർണ്ണസംഖ്യ, പൂർണ്ണസംഖ്യ);
+സ്ഥിതം പൂർണ്ണസംഖ്യ      (*real_nanosleep)(സ്ഥിരം ഘടന timespec *, ഘടന timespec *);
+സ്ഥിതം ssize_t  (*real_read)(പൂർണ്ണസംഖ്യ, ശൂന്യം *, size_t);
+സ്ഥിതം ssize_t  (*real_write)(പൂർണ്ണസംഖ്യ, സ്ഥിരം ശൂന്യം *, size_t);
+സ്ഥിതം ssize_t  (*real_pread)(പൂർണ്ണസംഖ്യ, ശൂന്യം *, size_t, off_t);
+സ്ഥിതം ssize_t  (*real_pwrite)(പൂർണ്ണസംഖ്യ, സ്ഥിരം ശൂന്യം *, size_t, off_t);
+സ്ഥിതം പൂർണ്ണസംഖ്യ      (*real_close)(പൂർണ്ണസംഖ്യ);
+സ്ഥിതം പൂർണ്ണസംഖ്യ      (*real_select)(പൂർണ്ണസംഖ്യ, fd_set *, fd_set *, fd_set *,
+                                ഘടന timeval *);
 
-typedef int (*linux_coop_fcntl_fn_t)(int, int, ...);
-static linux_coop_fcntl_fn_t real_fcntl;
+തരനിർവചനം പൂർണ്ണസംഖ്യ (*linux_coop_fcntl_fn_t)(പൂർണ്ണസംഖ്യ, പൂർണ്ണസംഖ്യ, ...);
+സ്ഥിതം linux_coop_fcntl_fn_t real_fcntl;
 
-typedef int (*linux_coop_open_fn_t)(const char *, int, mode_t);
-static linux_coop_open_fn_t real_open;
+തരനിർവചനം പൂർണ്ണസംഖ്യ (*linux_coop_open_fn_t)(സ്ഥിരം അക്ഷരം *, പൂർണ്ണസംഖ്യ, mode_t);
+സ്ഥിതം linux_coop_open_fn_t real_open;
 
-typedef struct linux_coop_fd_state {
-    int fd;
-    int user_flags;
-    struct linux_coop_fd_state *next;
+തരനിർവചനം ഘടന linux_coop_fd_state {
+    പൂർണ്ണസംഖ്യ fd;
+    പൂർണ്ണസംഖ്യ user_flags;
+    ഘടന linux_coop_fd_state *next;
 } linux_coop_fd_state_t;
 
-static linux_coop_fd_state_t *s_fd_state_list;
-static pthread_mutex_t s_fd_state_lock = PTHREAD_MUTEX_INITIALIZER;
+സ്ഥിതം linux_coop_fd_state_t *s_fd_state_list;
+സ്ഥിതം pthread_mutex_t s_fd_state_lock = PTHREAD_MUTEX_INITIALIZER;
 
-static linux_coop_fd_state_t *linux_coop_find_fd_locked(int fd)
+സ്ഥിതം linux_coop_fd_state_t *linux_coop_find_fd_locked(പൂർണ്ണസംഖ്യ fd)
 {
-    linux_coop_fd_state_t *node = s_fd_state_list;
-    while (node != NULL) {
-        if (node->fd == fd) {
-            return node;
+    linux_coop_fd_state_t *കണ്ണി = s_fd_state_list;
+    ആകുമ്പോൾ (കണ്ണി != ശൂന്യ) {
+        എങ്കിൽ (കണ്ണി->fd == fd) {
+            തിരികെ കണ്ണി;
         }
-        node = node->next;
+        കണ്ണി = കണ്ണി->next;
     }
-    return NULL;
+    തിരികെ ശൂന്യ;
 }
 
-static void __attribute__((constructor)) linux_coop_resolve_all(void)
+സ്ഥിതം ശൂന്യം __attribute__((constructor)) linux_coop_resolve_all(ശൂന്യം)
 {
     LINUX_COOP_RESOLVE(readv);
     LINUX_COOP_RESOLVE(writev);
@@ -114,8 +114,8 @@ static void __attribute__((constructor)) linux_coop_resolve_all(void)
     LINUX_COOP_RESOLVE(dup2);
     LINUX_COOP_RESOLVE(nanosleep);
     LINUX_COOP_RESOLVE(fcntl);
-    LINUX_COOP_RESOLVE(read);
-    LINUX_COOP_RESOLVE(write);
+    LINUX_COOP_RESOLVE(പഠ);
+    LINUX_COOP_RESOLVE(ലിഖ);
     LINUX_COOP_RESOLVE(pread);
     LINUX_COOP_RESOLVE(pwrite);
     LINUX_COOP_RESOLVE(close);
@@ -123,169 +123,169 @@ static void __attribute__((constructor)) linux_coop_resolve_all(void)
     LINUX_COOP_RESOLVE(open);
 }
 
-void linux_coop_set_nonblocking(int fd)
+ശൂന്യം linux_coop_set_nonblocking(പൂർണ്ണസംഖ്യ fd)
 {
-    if (fd >= 0) {
-        int flags = real_fcntl(fd, F_GETFL, 0);
-        if (flags >= 0) {
+    എങ്കിൽ (fd >= 0) {
+        പൂർണ്ണസംഖ്യ flags = real_fcntl(fd, F_GETFL, 0);
+        എങ്കിൽ (flags >= 0) {
             real_fcntl(fd, F_SETFL, flags | O_NONBLOCK);
         }
     }
 }
 
-void linux_coop_track_fd(int fd, int user_flags)
+ശൂന്യം linux_coop_track_fd(പൂർണ്ണസംഖ്യ fd, പൂർണ്ണസംഖ്യ user_flags)
 {
-    if (fd < 0) {
-        return;
+    എങ്കിൽ (fd < 0) {
+        തിരികെ;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
-    linux_coop_fd_state_t *node = linux_coop_find_fd_locked(fd);
-    if (node != NULL) {
-        node->user_flags = user_flags;
+    linux_coop_fd_state_t *കണ്ണി = linux_coop_find_fd_locked(fd);
+    എങ്കിൽ (കണ്ണി != ശൂന്യ) {
+        കണ്ണി->user_flags = user_flags;
         pthread_mutex_unlock(&s_fd_state_lock);
-        return;
+        തിരികെ;
     }
 
-    node = calloc(1, sizeof(*node));
-    if (node != NULL) {
-        node->fd = fd;
-        node->user_flags = user_flags;
-        node->next = s_fd_state_list;
-        s_fd_state_list = node;
+    കണ്ണി = calloc(1, വലുപ്പം(*കണ്ണി));
+    എങ്കിൽ (കണ്ണി != ശൂന്യ) {
+        കണ്ണി->fd = fd;
+        കണ്ണി->user_flags = user_flags;
+        കണ്ണി->next = s_fd_state_list;
+        s_fd_state_list = കണ്ണി;
     }
     pthread_mutex_unlock(&s_fd_state_lock);
 }
 
-void linux_coop_untrack_fd(int fd)
+ശൂന്യം linux_coop_untrack_fd(പൂർണ്ണസംഖ്യ fd)
 {
-    if (fd < 0) {
-        return;
+    എങ്കിൽ (fd < 0) {
+        തിരികെ;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
-    linux_coop_fd_state_t *prev = NULL;
-    linux_coop_fd_state_t *node = s_fd_state_list;
-    while (node != NULL) {
-        if (node->fd == fd) {
-            if (prev == NULL) {
-                s_fd_state_list = node->next;
-            } else {
-                prev->next = node->next;
+    linux_coop_fd_state_t *prev = ശൂന്യ;
+    linux_coop_fd_state_t *കണ്ണി = s_fd_state_list;
+    ആകുമ്പോൾ (കണ്ണി != ശൂന്യ) {
+        എങ്കിൽ (കണ്ണി->fd == fd) {
+            എങ്കിൽ (prev == ശൂന്യ) {
+                s_fd_state_list = കണ്ണി->next;
+            } അല്ലെങ്കിൽ {
+                prev->next = കണ്ണി->next;
             }
-            free(node);
-            break;
+            സ്വതന്ത്രം(കണ്ണി);
+            നിർത്തുക;
         }
-        prev = node;
-        node = node->next;
+        prev = കണ്ണി;
+        കണ്ണി = കണ്ണി->next;
     }
     pthread_mutex_unlock(&s_fd_state_lock);
 }
 
-void linux_coop_set_user_flags(int fd, int user_flags)
+ശൂന്യം linux_coop_set_user_flags(പൂർണ്ണസംഖ്യ fd, പൂർണ്ണസംഖ്യ user_flags)
 {
     linux_coop_track_fd(fd, user_flags);
 }
 
-bool linux_coop_get_user_flags(int fd, int *flags)
+bool linux_coop_get_user_flags(പൂർണ്ണസംഖ്യ fd, പൂർണ്ണസംഖ്യ *flags)
 {
-    if (fd < 0 || flags == NULL) {
-        return false;
+    എങ്കിൽ (fd < 0 || flags == ശൂന്യ) {
+        തിരികെ false;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
-    linux_coop_fd_state_t *node = linux_coop_find_fd_locked(fd);
-    if (node == NULL) {
+    linux_coop_fd_state_t *കണ്ണി = linux_coop_find_fd_locked(fd);
+    എങ്കിൽ (കണ്ണി == ശൂന്യ) {
         pthread_mutex_unlock(&s_fd_state_lock);
-        return false;
+        തിരികെ false;
     }
-    *flags = node->user_flags;
+    *flags = കണ്ണി->user_flags;
     pthread_mutex_unlock(&s_fd_state_lock);
-    return true;
+    തിരികെ true;
 }
 
-bool linux_coop_fd_user_nonblocking(int fd)
+bool linux_coop_fd_user_nonblocking(പൂർണ്ണസംഖ്യ fd)
 {
-    int user_flags = 0;
-    if (linux_coop_get_user_flags(fd, &user_flags)) {
-        return (user_flags & O_NONBLOCK) != 0;
+    പൂർണ്ണസംഖ്യ user_flags = 0;
+    എങ്കിൽ (linux_coop_get_user_flags(fd, &user_flags)) {
+        തിരികെ (user_flags & O_NONBLOCK) != 0;
     }
-    return false;
+    തിരികെ false;
 }
 
 
-ssize_t freertos_linux_coop_read(int fd, void *buf, size_t count)
+ssize_t freertos_linux_coop_read(പൂർണ്ണസംഖ്യ fd, ശൂന്യം *buf, size_t എണ്ണം)
 {
-    LINUX_COOP_IO_LOOP(fd, real_read(fd, buf, count))
+    LINUX_COOP_IO_LOOP(fd, real_read(fd, buf, എണ്ണം))
 }
 
-ssize_t freertos_linux_coop_write(int fd, const void *buf, size_t count)
+ssize_t freertos_linux_coop_write(പൂർണ്ണസംഖ്യ fd, സ്ഥിരം ശൂന്യം *buf, size_t എണ്ണം)
 {
-    LINUX_COOP_IO_LOOP(fd, real_write(fd, buf, count))
+    LINUX_COOP_IO_LOOP(fd, real_write(fd, buf, എണ്ണം))
 }
 
-ssize_t freertos_linux_coop_pread(int fd, void *buf, size_t count, off_t offset)
+ssize_t freertos_linux_coop_pread(പൂർണ്ണസംഖ്യ fd, ശൂന്യം *buf, size_t എണ്ണം, off_t offset)
 {
-    LINUX_COOP_IO_LOOP(fd, real_pread(fd, buf, count, offset))
+    LINUX_COOP_IO_LOOP(fd, real_pread(fd, buf, എണ്ണം, offset))
 }
 
-ssize_t freertos_linux_coop_pwrite(int fd, const void *buf, size_t count, off_t offset)
+ssize_t freertos_linux_coop_pwrite(പൂർണ്ണസംഖ്യ fd, സ്ഥിരം ശൂന്യം *buf, size_t എണ്ണം, off_t offset)
 {
-    LINUX_COOP_IO_LOOP(fd, real_pwrite(fd, buf, count, offset))
+    LINUX_COOP_IO_LOOP(fd, real_pwrite(fd, buf, എണ്ണം, offset))
 }
 
-int freertos_linux_coop_open(const char *path, int flags, int mode)
+പൂർണ്ണസംഖ്യ freertos_linux_coop_open(സ്ഥിരം അക്ഷരം *path, പൂർണ്ണസംഖ്യ flags, പൂർണ്ണസംഖ്യ mode)
 {
-    int fd = real_open(path, flags, (mode_t)mode);
+    പൂർണ്ണസംഖ്യ fd = real_open(path, flags, (mode_t)mode);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, flags & O_NONBLOCK);
-    return fd;
+    തിരികെ fd;
 }
 
-int freertos_linux_coop_close(int fd)
+പൂർണ്ണസംഖ്യ freertos_linux_coop_close(പൂർണ്ണസംഖ്യ fd)
 {
-    int ret = real_close(fd);
-    if (ret == 0 || errno == EINTR) {
+    പൂർണ്ണസംഖ്യ ret = real_close(fd);
+    എങ്കിൽ (ret == 0 || errno == EINTR) {
         /* On Linux, close() always releases the fd even when returning
          * EINTR.  Retrying would risk closing a fd reused by another
          * thread.  Treat EINTR as success. */
         linux_coop_untrack_fd(fd);
-        return 0;
+        തിരികെ 0;
     }
-    return -1;
+    തിരികെ -1;
 }
 
-int freertos_linux_coop_fcntl(int fd, int cmd, int arg)
+പൂർണ്ണസംഖ്യ freertos_linux_coop_fcntl(പൂർണ്ണസംഖ്യ fd, പൂർണ്ണസംഖ്യ cmd, പൂർണ്ണസംഖ്യ arg)
 {
-    if (cmd == F_GETFL) {
-        int real_flags = real_fcntl(fd, F_GETFL, 0);
-        if (real_flags < 0) {
-            return -1;
+    എങ്കിൽ (cmd == F_GETFL) {
+        പൂർണ്ണസംഖ്യ real_flags = real_fcntl(fd, F_GETFL, 0);
+        എങ്കിൽ (real_flags < 0) {
+            തിരികെ -1;
         }
-        int user_flags = 0;
-        if (linux_coop_get_user_flags(fd, &user_flags)) {
+        പൂർണ്ണസംഖ്യ user_flags = 0;
+        എങ്കിൽ (linux_coop_get_user_flags(fd, &user_flags)) {
             real_flags &= ~O_NONBLOCK;
             real_flags |= (user_flags & O_NONBLOCK);
         }
-        return real_flags;
+        തിരികെ real_flags;
     }
-    if (cmd == F_SETFL) {
+    എങ്കിൽ (cmd == F_SETFL) {
         linux_coop_set_user_flags(fd, arg);
-        int internal_flags = arg | O_NONBLOCK;
-        return real_fcntl(fd, F_SETFL, internal_flags);
+        പൂർണ്ണസംഖ്യ internal_flags = arg | O_NONBLOCK;
+        തിരികെ real_fcntl(fd, F_SETFL, internal_flags);
     }
-    return real_fcntl(fd, cmd, arg);
+    തിരികെ real_fcntl(fd, cmd, arg);
 }
 
-int freertos_linux_coop_select(int nfds, fd_set *readfds, fd_set *writefds,
-                      fd_set *exceptfds, struct timeval *timeout)
+പൂർണ്ണസംഖ്യ freertos_linux_coop_select(പൂർണ്ണസംഖ്യ nfds, fd_set *readfds, fd_set *writefds,
+                      fd_set *exceptfds, ഘടന timeval *timeout)
 {
     long timeout_ms = -1;
-    if (timeout != NULL) {
+    എങ്കിൽ (timeout != ശൂന്യ) {
         timeout_ms = (long)timeout->tv_sec * 1000 +
                      (timeout->tv_usec + 999) / 1000;
-        if (timeout_ms == 0) {
-            return real_select(nfds, readfds, writefds, exceptfds, timeout);
+        എങ്കിൽ (timeout_ms == 0) {
+            തിരികെ real_select(nfds, readfds, writefds, exceptfds, timeout);
         }
     }
 
@@ -294,45 +294,45 @@ int freertos_linux_coop_select(int nfds, fd_set *readfds, fd_set *writefds,
      * iterations we must snapshot the caller's sets and restore them on every
      * loop. */
     fd_set rfds_in, wfds_in, efds_in;
-    if (readfds != NULL) {
+    എങ്കിൽ (readfds != ശൂന്യ) {
         rfds_in = *readfds;
     }
-    if (writefds != NULL) {
+    എങ്കിൽ (writefds != ശൂന്യ) {
         wfds_in = *writefds;
     }
-    if (exceptfds != NULL) {
+    എങ്കിൽ (exceptfds != ശൂന്യ) {
         efds_in = *exceptfds;
     }
 
     long waited_ms = 0;
-    while (1) {
-        if (readfds != NULL) {
+    ആകുമ്പോൾ (1) {
+        എങ്കിൽ (readfds != ശൂന്യ) {
             *readfds = rfds_in;
         }
-        if (writefds != NULL) {
+        എങ്കിൽ (writefds != ശൂന്യ) {
             *writefds = wfds_in;
         }
-        if (exceptfds != NULL) {
+        എങ്കിൽ (exceptfds != ശൂന്യ) {
             *exceptfds = efds_in;
         }
 
-        struct timeval zero_tv = {0, 0};
-        int ret = real_select(nfds, readfds, writefds, exceptfds, &zero_tv);
-        if (ret != 0) {
-            return ret;
+        ഘടന timeval zero_tv = {0, 0};
+        പൂർണ്ണസംഖ്യ ret = real_select(nfds, readfds, writefds, exceptfds, &zero_tv);
+        എങ്കിൽ (ret != 0) {
+            തിരികെ ret;
         }
-        if (timeout_ms == 0) {
-            return 0;
+        എങ്കിൽ (timeout_ms == 0) {
+            തിരികെ 0;
         }
-        if (timeout_ms > 0 && waited_ms >= timeout_ms) {
-            return 0;
+        എങ്കിൽ (timeout_ms > 0 && waited_ms >= timeout_ms) {
+            തിരികെ 0;
         }
         linux_coop_yield(LINUX_COOP_TICK_MS);
         waited_ms += LINUX_COOP_TICK_MS;
     }
 }
 
-void freertos_linux_coop_syscalls_init(void)
+ശൂന്യം freertos_linux_coop_syscalls_init(ശൂന്യം)
 {
     linux_coop_set_nonblocking(STDIN_FILENO);
     linux_coop_set_nonblocking(STDOUT_FILENO);
@@ -346,252 +346,252 @@ void freertos_linux_coop_syscalls_init(void)
  * is linked.  When VFS is absent the weak versions provide cooperative
  * behaviour directly via real libc. */
 
-__attribute__((weak)) ssize_t read(int fd, void *buf, size_t count)
+__attribute__((weak)) ssize_t പഠ(പൂർണ്ണസംഖ്യ fd, ശൂന്യം *buf, size_t എണ്ണം)
 {
-    return freertos_linux_coop_read(fd, buf, count);
+    തിരികെ freertos_linux_coop_read(fd, buf, എണ്ണം);
 }
 
-__attribute__((weak)) ssize_t write(int fd, const void *buf, size_t count)
+__attribute__((weak)) ssize_t ലിഖ(പൂർണ്ണസംഖ്യ fd, സ്ഥിരം ശൂന്യം *buf, size_t എണ്ണം)
 {
-    return freertos_linux_coop_write(fd, buf, count);
+    തിരികെ freertos_linux_coop_write(fd, buf, എണ്ണം);
 }
 
-__attribute__((weak)) ssize_t pread(int fd, void *buf, size_t count, off_t offset)
+__attribute__((weak)) ssize_t pread(പൂർണ്ണസംഖ്യ fd, ശൂന്യം *buf, size_t എണ്ണം, off_t offset)
 {
-    return freertos_linux_coop_pread(fd, buf, count, offset);
+    തിരികെ freertos_linux_coop_pread(fd, buf, എണ്ണം, offset);
 }
 
-__attribute__((weak)) ssize_t pwrite(int fd, const void *buf, size_t count, off_t offset)
+__attribute__((weak)) ssize_t pwrite(പൂർണ്ണസംഖ്യ fd, സ്ഥിരം ശൂന്യം *buf, size_t എണ്ണം, off_t offset)
 {
-    return freertos_linux_coop_pwrite(fd, buf, count, offset);
+    തിരികെ freertos_linux_coop_pwrite(fd, buf, എണ്ണം, offset);
 }
 
-__attribute__((weak)) int open(const char *path, int flags, ...)
+__attribute__((weak)) പൂർണ്ണസംഖ്യ open(സ്ഥിരം അക്ഷരം *path, പൂർണ്ണസംഖ്യ flags, ...)
 {
-    int mode = 0;
-    if (flags & O_CREAT) {
+    പൂർണ്ണസംഖ്യ mode = 0;
+    എങ്കിൽ (flags & O_CREAT) {
         va_list ap;
         va_start(ap, flags);
-        mode = va_arg(ap, int);
+        mode = va_arg(ap, പൂർണ്ണസംഖ്യ);
         va_end(ap);
     }
-    return freertos_linux_coop_open(path, flags, mode);
+    തിരികെ freertos_linux_coop_open(path, flags, mode);
 }
 
-__attribute__((weak)) int close(int fd)
+__attribute__((weak)) പൂർണ്ണസംഖ്യ close(പൂർണ്ണസംഖ്യ fd)
 {
-    return freertos_linux_coop_close(fd);
+    തിരികെ freertos_linux_coop_close(fd);
 }
 
-__attribute__((weak)) int fcntl(int fd, int cmd, ...)
+__attribute__((weak)) പൂർണ്ണസംഖ്യ fcntl(പൂർണ്ണസംഖ്യ fd, പൂർണ്ണസംഖ്യ cmd, ...)
 {
-    int arg = 0;
-    if (cmd != F_GETFL) {
+    പൂർണ്ണസംഖ്യ arg = 0;
+    എങ്കിൽ (cmd != F_GETFL) {
         va_list list;
         va_start(list, cmd);
-        arg = va_arg(list, int);
+        arg = va_arg(list, പൂർണ്ണസംഖ്യ);
         va_end(list);
     }
-    return freertos_linux_coop_fcntl(fd, cmd, arg);
+    തിരികെ freertos_linux_coop_fcntl(fd, cmd, arg);
 }
 
-__attribute__((weak)) int select(int nfds, fd_set *readfds, fd_set *writefds,
-                                 fd_set *exceptfds, struct timeval *timeout)
+__attribute__((weak)) പൂർണ്ണസംഖ്യ select(പൂർണ്ണസംഖ്യ nfds, fd_set *readfds, fd_set *writefds,
+                                 fd_set *exceptfds, ഘടന timeval *timeout)
 {
-    return freertos_linux_coop_select(nfds, readfds, writefds, exceptfds, timeout);
+    തിരികെ freertos_linux_coop_select(nfds, readfds, writefds, exceptfds, timeout);
 }
 
-ssize_t freertos_linux_coop_readv(int fd, const struct iovec *iov, int iovcnt)
+ssize_t freertos_linux_coop_readv(പൂർണ്ണസംഖ്യ fd, സ്ഥിരം ഘടന iovec *iov, പൂർണ്ണസംഖ്യ iovcnt)
 {
     LINUX_COOP_IO_LOOP(fd, real_readv(fd, iov, iovcnt))
 }
 
-ssize_t freertos_linux_coop_writev(int fd, const struct iovec *iov, int iovcnt)
+ssize_t freertos_linux_coop_writev(പൂർണ്ണസംഖ്യ fd, സ്ഥിരം ഘടന iovec *iov, പൂർണ്ണസംഖ്യ iovcnt)
 {
     LINUX_COOP_IO_LOOP(fd, real_writev(fd, iov, iovcnt))
 }
 
-ssize_t freertos_linux_coop_recv(int sockfd, void *buf, size_t len, int flags)
+ssize_t freertos_linux_coop_recv(പൂർണ്ണസംഖ്യ sockfd, ശൂന്യം *buf, size_t len, പൂർണ്ണസംഖ്യ flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recv(sockfd, buf, len, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_send(int sockfd, const void *buf, size_t len, int flags)
+ssize_t freertos_linux_coop_send(പൂർണ്ണസംഖ്യ sockfd, സ്ഥിരം ശൂന്യം *buf, size_t len, പൂർണ്ണസംഖ്യ flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_send(sockfd, buf, len, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_recvfrom(int sockfd, void *buf, size_t len, int flags,
-                 struct sockaddr *src_addr, socklen_t *addrlen)
+ssize_t freertos_linux_coop_recvfrom(പൂർണ്ണസംഖ്യ sockfd, ശൂന്യം *buf, size_t len, പൂർണ്ണസംഖ്യ flags,
+                 ഘടന sockaddr *src_addr, socklen_t *addrlen)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recvfrom(sockfd, buf, len, flags | MSG_DONTWAIT,
                             src_addr, addrlen))
 }
 
-ssize_t freertos_linux_coop_sendto(int sockfd, const void *buf, size_t len, int flags,
-               const struct sockaddr *dest_addr, socklen_t addrlen)
+ssize_t freertos_linux_coop_sendto(പൂർണ്ണസംഖ്യ sockfd, സ്ഥിരം ശൂന്യം *buf, size_t len, പൂർണ്ണസംഖ്യ flags,
+               സ്ഥിരം ഘടന sockaddr *dest_addr, socklen_t addrlen)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_sendto(sockfd, buf, len, flags | MSG_DONTWAIT,
                           dest_addr, addrlen))
 }
 
-ssize_t freertos_linux_coop_recvmsg(int sockfd, struct msghdr *msg, int flags)
+ssize_t freertos_linux_coop_recvmsg(പൂർണ്ണസംഖ്യ sockfd, ഘടന msghdr *സന്ദേശം, പൂർണ്ണസംഖ്യ flags)
 {
-    LINUX_COOP_IO_LOOP(sockfd, real_recvmsg(sockfd, msg, flags | MSG_DONTWAIT))
+    LINUX_COOP_IO_LOOP(sockfd, real_recvmsg(sockfd, സന്ദേശം, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_sendmsg(int sockfd, const struct msghdr *msg, int flags)
+ssize_t freertos_linux_coop_sendmsg(പൂർണ്ണസംഖ്യ sockfd, സ്ഥിരം ഘടന msghdr *സന്ദേശം, പൂർണ്ണസംഖ്യ flags)
 {
-    LINUX_COOP_IO_LOOP(sockfd, real_sendmsg(sockfd, msg, flags | MSG_DONTWAIT))
+    LINUX_COOP_IO_LOOP(sockfd, real_sendmsg(sockfd, സന്ദേശം, flags | MSG_DONTWAIT))
 }
 
-__attribute__((weak)) ssize_t readv(int fd, const struct iovec *iov, int iovcnt)
+__attribute__((weak)) ssize_t readv(പൂർണ്ണസംഖ്യ fd, സ്ഥിരം ഘടന iovec *iov, പൂർണ്ണസംഖ്യ iovcnt)
 {
-    return freertos_linux_coop_readv(fd, iov, iovcnt);
+    തിരികെ freertos_linux_coop_readv(fd, iov, iovcnt);
 }
 
-__attribute__((weak)) ssize_t writev(int fd, const struct iovec *iov, int iovcnt)
+__attribute__((weak)) ssize_t writev(പൂർണ്ണസംഖ്യ fd, സ്ഥിരം ഘടന iovec *iov, പൂർണ്ണസംഖ്യ iovcnt)
 {
-    return freertos_linux_coop_writev(fd, iov, iovcnt);
+    തിരികെ freertos_linux_coop_writev(fd, iov, iovcnt);
 }
 
-__attribute__((weak)) ssize_t recv(int sockfd, void *buf, size_t len, int flags)
+__attribute__((weak)) ssize_t recv(പൂർണ്ണസംഖ്യ sockfd, ശൂന്യം *buf, size_t len, പൂർണ്ണസംഖ്യ flags)
 {
-    return freertos_linux_coop_recv(sockfd, buf, len, flags);
+    തിരികെ freertos_linux_coop_recv(sockfd, buf, len, flags);
 }
 
-__attribute__((weak)) ssize_t send(int sockfd, const void *buf, size_t len, int flags)
+__attribute__((weak)) ssize_t send(പൂർണ്ണസംഖ്യ sockfd, സ്ഥിരം ശൂന്യം *buf, size_t len, പൂർണ്ണസംഖ്യ flags)
 {
-    return freertos_linux_coop_send(sockfd, buf, len, flags);
+    തിരികെ freertos_linux_coop_send(sockfd, buf, len, flags);
 }
 
-__attribute__((weak)) ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
-                 struct sockaddr *src_addr, socklen_t *addrlen)
+__attribute__((weak)) ssize_t recvfrom(പൂർണ്ണസംഖ്യ sockfd, ശൂന്യം *buf, size_t len, പൂർണ്ണസംഖ്യ flags,
+                 ഘടന sockaddr *src_addr, socklen_t *addrlen)
 {
-    return freertos_linux_coop_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
+    തിരികെ freertos_linux_coop_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
 }
 
-__attribute__((weak)) ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
-               const struct sockaddr *dest_addr, socklen_t addrlen)
+__attribute__((weak)) ssize_t sendto(പൂർണ്ണസംഖ്യ sockfd, സ്ഥിരം ശൂന്യം *buf, size_t len, പൂർണ്ണസംഖ്യ flags,
+               സ്ഥിരം ഘടന sockaddr *dest_addr, socklen_t addrlen)
 {
-    return freertos_linux_coop_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
+    തിരികെ freertos_linux_coop_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
 }
 
-__attribute__((weak)) ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
+__attribute__((weak)) ssize_t recvmsg(പൂർണ്ണസംഖ്യ sockfd, ഘടന msghdr *സന്ദേശം, പൂർണ്ണസംഖ്യ flags)
 {
-    return freertos_linux_coop_recvmsg(sockfd, msg, flags);
+    തിരികെ freertos_linux_coop_recvmsg(sockfd, സന്ദേശം, flags);
 }
 
-__attribute__((weak)) ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags)
+__attribute__((weak)) ssize_t sendmsg(പൂർണ്ണസംഖ്യ sockfd, സ്ഥിരം ഘടന msghdr *സന്ദേശം, പൂർണ്ണസംഖ്യ flags)
 {
-    return freertos_linux_coop_sendmsg(sockfd, msg, flags);
+    തിരികെ freertos_linux_coop_sendmsg(sockfd, സന്ദേശം, flags);
 }
 
-int freertos_linux_coop_connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+പൂർണ്ണസംഖ്യ freertos_linux_coop_connect(പൂർണ്ണസംഖ്യ sockfd, സ്ഥിരം ഘടന sockaddr *addr, socklen_t addrlen)
 {
-    while (1)
+    ആകുമ്പോൾ (1)
     {
-        int ret = real_connect(sockfd, addr, addrlen);
-        if (ret == 0) {
-            return ret;
+        പൂർണ്ണസംഖ്യ ret = real_connect(sockfd, addr, addrlen);
+        എങ്കിൽ (ret == 0) {
+            തിരികെ ret;
         }
 
-        if (errno == EINPROGRESS || errno == EALREADY) {
-            struct pollfd pfd;
+        എങ്കിൽ (errno == EINPROGRESS || errno == EALREADY) {
+            ഘടന pollfd pfd;
             pfd.fd = sockfd;
             pfd.events = POLLOUT;
             pfd.revents = 0;
 
-            int poll_retries = 0;
-            while (1)
+            പൂർണ്ണസംഖ്യ poll_retries = 0;
+            ആകുമ്പോൾ (1)
             {
-                int press = real_poll(&pfd, 1, 0);
-                if (press > 0) {
-                    int so_err = 0;
-                    socklen_t len = sizeof(so_err);
-                    if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
+                പൂർണ്ണസംഖ്യ press = real_poll(&pfd, 1, 0);
+                എങ്കിൽ (press > 0) {
+                    പൂർണ്ണസംഖ്യ so_err = 0;
+                    socklen_t len = വലുപ്പം(so_err);
+                    എങ്കിൽ (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
                                    &so_err, &len) < 0) {
-                        return -1;
+                        തിരികെ -1;
                     }
-                    if (so_err == 0) {
-                        return 0;
-                    } else {
+                    എങ്കിൽ (so_err == 0) {
+                        തിരികെ 0;
+                    } അല്ലെങ്കിൽ {
                         errno = so_err;
-                        return -1;
+                        തിരികെ -1;
                     }
-                } else if (press == 0) {
+                } അല്ലെങ്കിൽ എങ്കിൽ (press == 0) {
                     linux_coop_yield(LINUX_COOP_TICK_MS);
-                    continue;
-                } else {
-                    if (errno == EINTR) {
-                        continue;
+                    തുടരുക;
+                } അല്ലെങ്കിൽ {
+                    എങ്കിൽ (errno == EINTR) {
+                        തുടരുക;
                     }
                     /* Non-EINTR poll error; bail out after a few retries */
-                    if (++poll_retries > 3) {
-                        return -1;
+                    എങ്കിൽ (++poll_retries > 3) {
+                        തിരികെ -1;
                     }
                     linux_coop_yield(LINUX_COOP_TICK_MS);
-                    continue;
+                    തുടരുക;
                 }
             }
         }
 
-        if (errno == EINTR) {
-            return -1;
+        എങ്കിൽ (errno == EINTR) {
+            തിരികെ -1;
         }
 
-        return -1;
+        തിരികെ -1;
     }
 }
 
-int freertos_linux_coop_accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+പൂർണ്ണസംഖ്യ freertos_linux_coop_accept(പൂർണ്ണസംഖ്യ sockfd, ഘടന sockaddr *addr, socklen_t *addrlen)
 {
-    while (1)
+    ആകുമ്പോൾ (1)
     {
-        int fd = real_accept(sockfd, addr, addrlen);
-        if (fd >= 0) {
+        പൂർണ്ണസംഖ്യ fd = real_accept(sockfd, addr, addrlen);
+        എങ്കിൽ (fd >= 0) {
             linux_coop_set_nonblocking(fd);
             linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(sockfd) ? O_NONBLOCK : 0);
-            return fd;
+            തിരികെ fd;
         }
-        if (errno == EAGAIN || errno == EWOULDBLOCK) {
-            if (linux_coop_fd_user_nonblocking(sockfd)) {
-                return -1;
+        എങ്കിൽ (errno == EAGAIN || errno == EWOULDBLOCK) {
+            എങ്കിൽ (linux_coop_fd_user_nonblocking(sockfd)) {
+                തിരികെ -1;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
-            continue;
+            തുടരുക;
         }
-        return -1;
+        തിരികെ -1;
     }
 }
 
-int freertos_linux_coop_pselect(int nfds, fd_set *readfds, fd_set *writefds,
-            fd_set *exceptfds, const struct timespec *timeout,
-            const sigset_t *sigmask)
+പൂർണ്ണസംഖ്യ freertos_linux_coop_pselect(പൂർണ്ണസംഖ്യ nfds, fd_set *readfds, fd_set *writefds,
+            fd_set *exceptfds, സ്ഥിരം ഘടന timespec *timeout,
+            സ്ഥിരം sigset_t *sigmask)
 {
     long timeout_ms = -1;
-    if (timeout != NULL) {
+    എങ്കിൽ (timeout != ശൂന്യ) {
         timeout_ms = (long)timeout->tv_sec * 1000 +
                      (timeout->tv_nsec + 999999) / 1000000;
-        if (timeout_ms == 0) {
-            return real_pselect(nfds, readfds, writefds, exceptfds,
+        എങ്കിൽ (timeout_ms == 0) {
+            തിരികെ real_pselect(nfds, readfds, writefds, exceptfds,
                                 timeout, sigmask);
         }
     }
 
     long waited_ms = 0;
-    while (1)
+    ആകുമ്പോൾ (1)
     {
-        struct timespec zero_ts = {0, 0};
-        int ret = real_pselect(nfds, readfds, writefds, exceptfds,
+        ഘടന timespec zero_ts = {0, 0};
+        പൂർണ്ണസംഖ്യ ret = real_pselect(nfds, readfds, writefds, exceptfds,
                                &zero_ts, sigmask);
-        if (ret != 0) {
-            return ret;
+        എങ്കിൽ (ret != 0) {
+            തിരികെ ret;
         }
 
-        if (timeout_ms == 0 ||
+        എങ്കിൽ (timeout_ms == 0 ||
             (timeout_ms > 0 && waited_ms >= timeout_ms)) {
-            return 0;
+            തിരികെ 0;
         }
 
         linux_coop_yield(LINUX_COOP_TICK_MS);
@@ -599,197 +599,197 @@ int freertos_linux_coop_pselect(int nfds, fd_set *readfds, fd_set *writefds,
     }
 }
 
-int freertos_linux_coop_poll(struct pollfd *fds, nfds_t nfds, int timeout)
+പൂർണ്ണസംഖ്യ freertos_linux_coop_poll(ഘടന pollfd *fds, nfds_t nfds, പൂർണ്ണസംഖ്യ timeout)
 {
-    if (timeout == 0) {
-        return real_poll(fds, nfds, 0);
+    എങ്കിൽ (timeout == 0) {
+        തിരികെ real_poll(fds, nfds, 0);
     }
 
     long timeout_ms = -1;
-    if (timeout > 0) {
+    എങ്കിൽ (timeout > 0) {
         timeout_ms = timeout;
     }
 
     long waited_ms = 0;
 
-    while (1)
+    ആകുമ്പോൾ (1)
     {
-        int ret = real_poll(fds, nfds, 0);
-        if (ret > 0) {
-            return ret;
-        } else if (ret == 0) {
-            if (timeout_ms == 0 ||
+        പൂർണ്ണസംഖ്യ ret = real_poll(fds, nfds, 0);
+        എങ്കിൽ (ret > 0) {
+            തിരികെ ret;
+        } അല്ലെങ്കിൽ എങ്കിൽ (ret == 0) {
+            എങ്കിൽ (timeout_ms == 0 ||
                 (timeout_ms > 0 && waited_ms >= timeout_ms)) {
-                return 0;
+                തിരികെ 0;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
             waited_ms += LINUX_COOP_TICK_MS;
-            continue;
-        } else {
-            if (errno == EINTR) {
-                continue;
+            തുടരുക;
+        } അല്ലെങ്കിൽ {
+            എങ്കിൽ (errno == EINTR) {
+                തുടരുക;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
-            if (timeout_ms > 0 && waited_ms >= timeout_ms) {
-                return -1;
+            എങ്കിൽ (timeout_ms > 0 && waited_ms >= timeout_ms) {
+                തിരികെ -1;
             }
             waited_ms += LINUX_COOP_TICK_MS;
         }
     }
 }
 
-int nanosleep(const struct timespec *req, struct timespec *rem)
+പൂർണ്ണസംഖ്യ nanosleep(സ്ഥിരം ഘടന timespec *req, ഘടന timespec *rem)
 {
-    if (req == NULL) {
+    എങ്കിൽ (req == ശൂന്യ) {
         errno = EFAULT;
-        return -1;
+        തിരികെ -1;
     }
-    if (!linux_port_in_freertos_task()) {
-        return real_nanosleep(req, rem);
+    എങ്കിൽ (!linux_port_in_freertos_task()) {
+        തിരികെ real_nanosleep(req, rem);
     }
     long ms = req->tv_sec * 1000 + (req->tv_nsec + 999999) / 1000000;
-    if (ms <= 0) {
+    എങ്കിൽ (ms <= 0) {
         ms = 1;
     }
     vTaskDelay(ms);
-    if (rem) {
+    എങ്കിൽ (rem) {
         rem->tv_sec = 0;
         rem->tv_nsec = 0;
     }
-    return 0;
+    തിരികെ 0;
 }
 
-unsigned int sleep(unsigned int seconds)
+unsigned പൂർണ്ണസംഖ്യ sleep(unsigned പൂർണ്ണസംഖ്യ seconds)
 {
     linux_coop_yield(seconds * 1000);
-    return 0;
+    തിരികെ 0;
 }
 
-int usleep(useconds_t usec)
+പൂർണ്ണസംഖ്യ usleep(useconds_t usec)
 {
     linux_coop_yield(usec / 1000);
-    return 0;
+    തിരികെ 0;
 }
 
-int freertos_linux_coop_socket(int domain, int type, int protocol)
+പൂർണ്ണസംഖ്യ freertos_linux_coop_socket(പൂർണ്ണസംഖ്യ domain, പൂർണ്ണസംഖ്യ type, പൂർണ്ണസംഖ്യ protocol)
 {
-    int fd = real_socket(domain, type, protocol);
+    പൂർണ്ണസംഖ്യ fd = real_socket(domain, type, protocol);
     linux_coop_set_nonblocking(fd);
 #ifdef SOCK_NONBLOCK
-    const int user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
-#else
-    const int user_flags = 0;
+    സ്ഥിരം പൂർണ്ണസംഖ്യ user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
+#അല്ലെങ്കിൽ
+    സ്ഥിരം പൂർണ്ണസംഖ്യ user_flags = 0;
 #endif
     linux_coop_track_fd(fd, user_flags);
-    return fd;
+    തിരികെ fd;
 }
 
-int freertos_linux_coop_socketpair(int domain, int type, int protocol, int *sv)
+പൂർണ്ണസംഖ്യ freertos_linux_coop_socketpair(പൂർണ്ണസംഖ്യ domain, പൂർണ്ണസംഖ്യ type, പൂർണ്ണസംഖ്യ protocol, പൂർണ്ണസംഖ്യ *sv)
 {
-    int ret = real_socketpair(domain, type, protocol, sv);
-    if (ret == 0) {
+    പൂർണ്ണസംഖ്യ ret = real_socketpair(domain, type, protocol, sv);
+    എങ്കിൽ (ret == 0) {
         linux_coop_set_nonblocking(sv[0]);
         linux_coop_set_nonblocking(sv[1]);
 #ifdef SOCK_NONBLOCK
-        const int user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
-#else
-        const int user_flags = 0;
+        സ്ഥിരം പൂർണ്ണസംഖ്യ user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
+#അല്ലെങ്കിൽ
+        സ്ഥിരം പൂർണ്ണസംഖ്യ user_flags = 0;
 #endif
         linux_coop_track_fd(sv[0], user_flags);
         linux_coop_track_fd(sv[1], user_flags);
     }
-    return ret;
+    തിരികെ ret;
 }
 
-int freertos_linux_coop_pipe(int *fds)
+പൂർണ്ണസംഖ്യ freertos_linux_coop_pipe(പൂർണ്ണസംഖ്യ *fds)
 {
-    int ret = real_pipe(fds);
-    if (ret == 0) {
+    പൂർണ്ണസംഖ്യ ret = real_pipe(fds);
+    എങ്കിൽ (ret == 0) {
         linux_coop_set_nonblocking(fds[0]);
         linux_coop_set_nonblocking(fds[1]);
         linux_coop_track_fd(fds[0], 0);
         linux_coop_track_fd(fds[1], 0);
     }
-    return ret;
+    തിരികെ ret;
 }
 
-int freertos_linux_coop_pipe2(int *fds, int flags)
+പൂർണ്ണസംഖ്യ freertos_linux_coop_pipe2(പൂർണ്ണസംഖ്യ *fds, പൂർണ്ണസംഖ്യ flags)
 {
-    int ret = real_pipe2(fds, flags);
-    if (ret == 0) {
+    പൂർണ്ണസംഖ്യ ret = real_pipe2(fds, flags);
+    എങ്കിൽ (ret == 0) {
         linux_coop_set_nonblocking(fds[0]);
         linux_coop_set_nonblocking(fds[1]);
-        const int user_flags = (flags & O_NONBLOCK) ? O_NONBLOCK : 0;
+        സ്ഥിരം പൂർണ്ണസംഖ്യ user_flags = (flags & O_NONBLOCK) ? O_NONBLOCK : 0;
         linux_coop_track_fd(fds[0], user_flags);
         linux_coop_track_fd(fds[1], user_flags);
     }
-    return ret;
+    തിരികെ ret;
 }
 
-int freertos_linux_coop_dup(int oldfd)
+പൂർണ്ണസംഖ്യ freertos_linux_coop_dup(പൂർണ്ണസംഖ്യ oldfd)
 {
-    int fd = real_dup(oldfd);
+    പൂർണ്ണസംഖ്യ fd = real_dup(oldfd);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(oldfd) ? O_NONBLOCK : 0);
-    return fd;
+    തിരികെ fd;
 }
 
-int freertos_linux_coop_dup2(int oldfd, int newfd)
+പൂർണ്ണസംഖ്യ freertos_linux_coop_dup2(പൂർണ്ണസംഖ്യ oldfd, പൂർണ്ണസംഖ്യ newfd)
 {
-    int fd = real_dup2(oldfd, newfd);
+    പൂർണ്ണസംഖ്യ fd = real_dup2(oldfd, newfd);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(oldfd) ? O_NONBLOCK : 0);
-    return fd;
+    തിരികെ fd;
 }
 
-__attribute__((weak)) int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+__attribute__((weak)) പൂർണ്ണസംഖ്യ connect(പൂർണ്ണസംഖ്യ sockfd, സ്ഥിരം ഘടന sockaddr *addr, socklen_t addrlen)
 {
-    return freertos_linux_coop_connect(sockfd, addr, addrlen);
+    തിരികെ freertos_linux_coop_connect(sockfd, addr, addrlen);
 }
 
-__attribute__((weak)) int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+__attribute__((weak)) പൂർണ്ണസംഖ്യ accept(പൂർണ്ണസംഖ്യ sockfd, ഘടന sockaddr *addr, socklen_t *addrlen)
 {
-    return freertos_linux_coop_accept(sockfd, addr, addrlen);
+    തിരികെ freertos_linux_coop_accept(sockfd, addr, addrlen);
 }
 
-__attribute__((weak)) int pselect(int nfds, fd_set *readfds, fd_set *writefds,
-            fd_set *exceptfds, const struct timespec *timeout,
-            const sigset_t *sigmask)
+__attribute__((weak)) പൂർണ്ണസംഖ്യ pselect(പൂർണ്ണസംഖ്യ nfds, fd_set *readfds, fd_set *writefds,
+            fd_set *exceptfds, സ്ഥിരം ഘടന timespec *timeout,
+            സ്ഥിരം sigset_t *sigmask)
 {
-    return freertos_linux_coop_pselect(nfds, readfds, writefds, exceptfds, timeout, sigmask);
+    തിരികെ freertos_linux_coop_pselect(nfds, readfds, writefds, exceptfds, timeout, sigmask);
 }
 
-__attribute__((weak)) int poll(struct pollfd *fds, nfds_t nfds, int timeout)
+__attribute__((weak)) പൂർണ്ണസംഖ്യ poll(ഘടന pollfd *fds, nfds_t nfds, പൂർണ്ണസംഖ്യ timeout)
 {
-    return freertos_linux_coop_poll(fds, nfds, timeout);
+    തിരികെ freertos_linux_coop_poll(fds, nfds, timeout);
 }
 
-__attribute__((weak)) int socket(int domain, int type, int protocol)
+__attribute__((weak)) പൂർണ്ണസംഖ്യ socket(പൂർണ്ണസംഖ്യ domain, പൂർണ്ണസംഖ്യ type, പൂർണ്ണസംഖ്യ protocol)
 {
-    return freertos_linux_coop_socket(domain, type, protocol);
+    തിരികെ freertos_linux_coop_socket(domain, type, protocol);
 }
 
-__attribute__((weak)) int socketpair(int domain, int type, int protocol, int sv[2])
+__attribute__((weak)) പൂർണ്ണസംഖ്യ socketpair(പൂർണ്ണസംഖ്യ domain, പൂർണ്ണസംഖ്യ type, പൂർണ്ണസംഖ്യ protocol, പൂർണ്ണസംഖ്യ sv[2])
 {
-    return freertos_linux_coop_socketpair(domain, type, protocol, sv);
+    തിരികെ freertos_linux_coop_socketpair(domain, type, protocol, sv);
 }
 
-__attribute__((weak)) int pipe(int fds[2])
+__attribute__((weak)) പൂർണ്ണസംഖ്യ pipe(പൂർണ്ണസംഖ്യ fds[2])
 {
-    return freertos_linux_coop_pipe(fds);
+    തിരികെ freertos_linux_coop_pipe(fds);
 }
 
-__attribute__((weak)) int pipe2(int fds[2], int flags)
+__attribute__((weak)) പൂർണ്ണസംഖ്യ pipe2(പൂർണ്ണസംഖ്യ fds[2], പൂർണ്ണസംഖ്യ flags)
 {
-    return freertos_linux_coop_pipe2(fds, flags);
+    തിരികെ freertos_linux_coop_pipe2(fds, flags);
 }
 
-__attribute__((weak)) int dup(int oldfd)
+__attribute__((weak)) പൂർണ്ണസംഖ്യ dup(പൂർണ്ണസംഖ്യ oldfd)
 {
-    return freertos_linux_coop_dup(oldfd);
+    തിരികെ freertos_linux_coop_dup(oldfd);
 }
 
-__attribute__((weak)) int dup2(int oldfd, int newfd)
+__attribute__((weak)) പൂർണ്ണസംഖ്യ dup2(പൂർണ്ണസംഖ്യ oldfd, പൂർണ്ണസംഖ്യ newfd)
 {
-    return freertos_linux_coop_dup2(oldfd, newfd);
+    തിരികെ freertos_linux_coop_dup2(oldfd, newfd);
 }

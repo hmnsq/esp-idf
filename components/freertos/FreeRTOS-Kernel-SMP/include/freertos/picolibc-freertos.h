@@ -41,21 +41,21 @@
  * https://github.com/picolibc/picolibc/blob/main/doc/tls.md
  * for additional information. */
 
-#include <picotls.h>
+#അന്തര്ഭാവ <picotls.h>
 
 #define configUSE_C_RUNTIME_TLS_SUPPORT    1
 
-#define configTLS_BLOCK_TYPE               void *
+#define configTLS_BLOCK_TYPE               ശൂന്യം *
 
 #define picolibcTLS_SIZE                   ( ( portPOINTER_SIZE_TYPE ) _tls_size() )
-#define picolibcSTACK_ALIGNMENT_MASK       ( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK )
+#define picolibc_അട്ടി_ALIGNMENT_MASK       ( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK )
 
-#if __PICOLIBC_MAJOR__ > 1 || __PICOLIBC_MINOR__ >= 8
+#എങ്കിൽ __PICOLIBC_MAJOR__ > 1 || __PICOLIBC_MINOR__ >= 8
 
 /* Picolibc 1.8 and newer have explicit alignment values provided
  * by the _tls_align() inline */
     #define picolibcTLS_ALIGNMENT_MASK    ( ( portPOINTER_SIZE_TYPE ) ( _tls_align() - 1 ) )
-#else
+#അല്ലെങ്കിൽ
 
 /* For older Picolibc versions, use the general port alignment value */
     #define picolibcTLS_ALIGNMENT_MASK    ( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK )
@@ -65,27 +65,27 @@
  * stack. The picolibcTLS_SIZE macro returns the size (in
  * bytes) of the total TLS area used by the application.
  * Calculate the top of stack address. */
-#if ( portSTACK_GROWTH < 0 )
+#എങ്കിൽ ( port_അട്ടി_GROWTH < 0 )
 
-    #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )                                  \
-    do {                                                                                     \
-        xTLSBlock = ( void * ) ( ( ( ( portPOINTER_SIZE_TYPE ) pxTopOfStack ) -              \
+    #define configINIT_TLS_BLOCK( xTLSBlock, px_മുകൾ_Of_അട്ടി )                                  \
+    ചെയ്യുക {                                                                                     \
+        xTLSBlock = ( ശൂന്യം * ) ( ( ( ( portPOINTER_SIZE_TYPE ) px_മുകൾ_Of_അട്ടി ) -              \
                                    picolibcTLS_SIZE ) &                                      \
                                  ~picolibcTLS_ALIGNMENT_MASK );                              \
-        pxTopOfStack = ( StackType_t * ) ( ( ( ( portPOINTER_SIZE_TYPE ) xTLSBlock ) - 1 ) & \
-                                           ~picolibcSTACK_ALIGNMENT_MASK );                  \
+        px_മുകൾ_Of_അട്ടി = ( അട്ടി_Type_t * ) ( ( ( ( portPOINTER_SIZE_TYPE ) xTLSBlock ) - 1 ) & \
+                                           ~picolibc_അട്ടി_ALIGNMENT_MASK );                  \
         _init_tls( xTLSBlock );                                                              \
-    } while( 0 )
-#else /* portSTACK_GROWTH */
-    #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )                                          \
-    do {                                                                                             \
-        xTLSBlock = ( void * ) ( ( ( portPOINTER_SIZE_TYPE ) pxTopOfStack +                          \
+    } ആകുമ്പോൾ( 0 )
+#അല്ലെങ്കിൽ /* portSTACK_GROWTH */
+    #define configINIT_TLS_BLOCK( xTLSBlock, px_മുകൾ_Of_അട്ടി )                                          \
+    ചെയ്യുക {                                                                                             \
+        xTLSBlock = ( ശൂന്യം * ) ( ( ( portPOINTER_SIZE_TYPE ) px_മുകൾ_Of_അട്ടി +                          \
                                    picolibcTLS_ALIGNMENT_MASK ) & ~picolibcTLS_ALIGNMENT_MASK );     \
-        pxTopOfStack = ( StackType_t * ) ( ( ( ( ( portPOINTER_SIZE_TYPE ) xTLSBlock ) +             \
-                                               picolibcTLS_SIZE ) + picolibcSTACK_ALIGNMENT_MASK ) & \
-                                           ~picolibcSTACK_ALIGNMENT_MASK );                          \
+        px_മുകൾ_Of_അട്ടി = ( അട്ടി_Type_t * ) ( ( ( ( ( portPOINTER_SIZE_TYPE ) xTLSBlock ) +             \
+                                               picolibcTLS_SIZE ) + picolibc_അട്ടി_ALIGNMENT_MASK ) & \
+                                           ~picolibc_അട്ടി_ALIGNMENT_MASK );                          \
         _init_tls( xTLSBlock );                                                                      \
-    } while( 0 )
+    } ആകുമ്പോൾ( 0 )
 #endif /* portSTACK_GROWTH */
 
 #define configSET_TLS_BLOCK( xTLSBlock )    _set_tls( xTLSBlock )

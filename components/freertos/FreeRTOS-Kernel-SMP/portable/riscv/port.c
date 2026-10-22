@@ -4,51 +4,51 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <stdbool.h>
-#include <string.h>
-#include "esp_compiler.h"
-#include "soc/soc_caps.h"
-#include "soc/periph_defs.h"
-#include "soc/system_reg.h"
-#include "hal/crosscore_int_ll.h"
-#include "hal/systimer_hal.h"
-#include "hal/systimer_ll.h"
-#include "riscv/rvruntime-frames.h"
-#include "riscv/rv_utils.h"
-#include "riscv/interrupt.h"
-#include "esp_private/crosscore_int.h"
-#include "esp_private/esp_int_wdt.h"
-#include "esp_private/periph_ctrl.h"
-#include "esp_private/systimer.h"
-#include "esp_attr.h"
-#include "esp_system.h"
-#include "esp_heap_caps_init.h"
-#include "esp_task_wdt.h"
-#include "esp_task.h"
-#include "esp_intr_alloc.h"
-#include "esp_log.h"
-#include "FreeRTOS.h"       /* This pulls in portmacro.h */
-#include "task.h"
-#include "port_systick.h"
-#include "portmacro.h"
-#include "esp_memory_utils.h"
-#include "esp_macros.h"
-#if CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
-#include "esp_timer.h"
+#അന്തര്ഭാവ "sdkconfig.h"
+#അന്തര്ഭാവ <stdbool.h>
+#അന്തര്ഭാവ <string.h>
+#അന്തര്ഭാവ "esp_compiler.h"
+#അന്തര്ഭാവ "soc/soc_caps.h"
+#അന്തര്ഭാവ "soc/periph_defs.h"
+#അന്തര്ഭാവ "soc/system_reg.h"
+#അന്തര്ഭാവ "hal/crosscore_int_ll.h"
+#അന്തര്ഭാവ "hal/systimer_hal.h"
+#അന്തര്ഭാവ "hal/systimer_ll.h"
+#അന്തര്ഭാവ "riscv/rvruntime-frames.h"
+#അന്തര്ഭാവ "riscv/rv_utils.h"
+#അന്തര്ഭാവ "riscv/interrupt.h"
+#അന്തര്ഭാവ "esp_private/crosscore_int.h"
+#അന്തര്ഭാവ "esp_private/esp_int_wdt.h"
+#അന്തര്ഭാവ "esp_private/periph_ctrl.h"
+#അന്തര്ഭാവ "esp_private/systimer.h"
+#അന്തര്ഭാവ "esp_attr.h"
+#അന്തര്ഭാവ "esp_system.h"
+#അന്തര്ഭാവ "esp_heap_caps_init.h"
+#അന്തര്ഭാവ "esp_task_wdt.h"
+#അന്തര്ഭാവ "esp_task.h"
+#അന്തര്ഭാവ "esp_intr_alloc.h"
+#അന്തര്ഭാവ "esp_log.h"
+#അന്തര്ഭാവ "FreeRTOS.h"       /* This pulls in portmacro.h */
+#അന്തര്ഭാവ "task.h"
+#അന്തര്ഭാവ "port_systick.h"
+#അന്തര്ഭാവ "portmacro.h"
+#അന്തര്ഭാവ "esp_memory_utils.h"
+#അന്തര്ഭാവ "esp_macros.h"
+#എങ്കിൽ CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
+#അന്തര്ഭാവ "esp_timer.h"
 #endif
 #ifdef CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER
-#include "soc/periph_defs.h"
-#include "soc/system_reg.h"
-#include "hal/systimer_hal.h"
-#include "hal/systimer_ll.h"
+#അന്തര്ഭാവ "soc/periph_defs.h"
+#അന്തര്ഭാവ "soc/system_reg.h"
+#അന്തര്ഭാവ "hal/systimer_hal.h"
+#അന്തര്ഭാവ "hal/systimer_ll.h"
 #endif
 #ifdef CONFIG_PM_TRACE
-#include "esp_private/pm_trace.h"
+#അന്തര്ഭാവ "esp_private/pm_trace.h"
 #endif //CONFIG_PM_TRACE
 
 _Static_assert(portBYTE_ALIGNMENT == 16, "portBYTE_ALIGNMENT must be set to 16");
-#if CONFIG_ESP_SYSTEM_HW_STACK_GUARD
+#എങ്കിൽ CONFIG_ESP_SYSTEM_HW_അട്ടി_GUARD
 /**
  * offsetof() can not be used in asm code. Then we need make sure that
  * PORT_OFFSET_PX_STACK and PORT_OFFSET_PX_END_OF_STACK have expected values.
@@ -56,8 +56,8 @@ _Static_assert(portBYTE_ALIGNMENT == 16, "portBYTE_ALIGNMENT must be set to 16")
  * which accessing DRAM memory. This optimization saves CPU time in the interrupt handling.
  */
 
-_Static_assert(offsetof( StaticTask_t, pxDummy6 ) == PORT_OFFSET_PX_STACK);
-_Static_assert(offsetof( StaticTask_t, pxDummy8 ) == PORT_OFFSET_PX_END_OF_STACK);
+_Static_assert(offsetof( StaticTask_t, pxDummy6 ) == PORT_OFFSET_PX_അട്ടി);
+_Static_assert(offsetof( StaticTask_t, pxDummy8 ) == PORT_OFFSET_PX_END_OF_അട്ടി);
 #endif // CONFIG_ESP_SYSTEM_HW_STACK_GUARD
 
 /* ---------------------------------------------------- Variables ------------------------------------------------------
@@ -65,21 +65,21 @@ _Static_assert(offsetof( StaticTask_t, pxDummy8 ) == PORT_OFFSET_PX_END_OF_STACK
  * ------------------------------------------------------------------------------------------------------------------ */
 
 BaseType_t uxSchedulerRunning = 0;  // Duplicate of xSchedulerRunning, accessible to port files
-volatile UBaseType_t uxInterruptNesting = 0;
-#if configNUM_CORES > 1
-volatile unsigned port_uxCoreStartupDone[portNUM_PROCESSORS] = {0};  // Indicates whether the core has completed its startup sequence
+അസ്ഥിര UBaseType_t uxInterruptNesting = 0;
+#എങ്കിൽ config_അക്കം_CORES > 1
+അസ്ഥിര unsigned port_uxCoreStartupDone[port_അക്കം_PROCESSORS] = {0};  // Indicates whether the core has completed its startup sequence
 #endif
 portMUX_TYPE port_xTaskLock = portMUX_INITIALIZER_UNLOCKED;
 portMUX_TYPE port_xISRLock = portMUX_INITIALIZER_UNLOCKED;
-volatile BaseType_t xPortSwitchFlag = 0;
-__attribute__((aligned(16))) StackType_t xIsrStack[configISR_STACK_SIZE];
-StackType_t *xIsrStackTop = &xIsrStack[0] + (configISR_STACK_SIZE & (~((portPOINTER_SIZE_TYPE)portBYTE_ALIGNMENT_MASK)));
+അസ്ഥിര BaseType_t xPortSwitchFlag = 0;
+__attribute__((aligned(16))) അട്ടി_Type_t x_Isr_അട്ടി[config_ISR_അട്ടി_SIZE];
+അട്ടി_Type_t *x_Isr_അട്ടി_മുകൾ = &x_Isr_അട്ടി[0] + (config_ISR_അട്ടി_SIZE & (~((portPOINTER_SIZE_TYPE)portBYTE_ALIGNMENT_MASK)));
 
 // Variables used for IDF style critical sections. These are orthogonal to FreeRTOS critical sections
-static UBaseType_t port_uxCriticalNestingIDF = 0;
-static UBaseType_t port_uxCriticalOldInterruptStateIDF = 0;
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-volatile bool port_xThreadSafeClaimed = false;
+സ്ഥിതം UBaseType_t port_uxCriticalNestingIDF = 0;
+സ്ഥിതം UBaseType_t port_uxCriticalOldInterruptStateIDF = 0;
+#എങ്കിൽ CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+അസ്ഥിര bool port_xThreadSafeClaimed = false;
 #endif
 
 /* ------------------------------------------------ IDF Compatibility --------------------------------------------------
@@ -88,15 +88,15 @@ volatile bool port_xThreadSafeClaimed = false;
 
 // ------------------ Critical Sections --------------------
 
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-void xPortThreadSafeClaim(void)
+#എങ്കിൽ CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+ശൂന്യം xPortThreadSafeClaim(ശൂന്യം)
 {
     configASSERT(!xPortCanYield());
     configASSERT(!port_xThreadSafeClaimed);
     port_xThreadSafeClaimed = true;
 }
 
-void xPortThreadSafeDisclaim(void)
+ശൂന്യം xPortThreadSafeDisclaim(ശൂന്യം)
 {
     configASSERT(!xPortCanYield());
     configASSERT(port_xThreadSafeClaimed);
@@ -104,54 +104,54 @@ void xPortThreadSafeDisclaim(void)
 }
 #endif /* CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM */
 
-void vPortEnterCritical(void)
+ശൂന്യം vPortEnterCritical(ശൂന്യം)
 {
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-    if (unlikely(port_xThreadSafeClaimed)) {
-        return;
+#എങ്കിൽ CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+    എങ്കിൽ (unlikely(port_xThreadSafeClaimed)) {
+        തിരികെ;
     }
 #endif
     // Save current interrupt threshold and disable interrupts
     UBaseType_t old_thresh = ulPortSetInterruptMask();
     // Update the IDF critical nesting count
     port_uxCriticalNestingIDF++;
-    if (port_uxCriticalNestingIDF == 1) {
+    എങ്കിൽ (port_uxCriticalNestingIDF == 1) {
         // Save a copy of the old interrupt threshold
         port_uxCriticalOldInterruptStateIDF = (UBaseType_t) old_thresh;
     }
 }
 
-void vPortExitCritical(void)
+ശൂന്യം vPortExitCritical(ശൂന്യം)
 {
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
-    if (unlikely(port_xThreadSafeClaimed)) {
-        return;
+#എങ്കിൽ CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+    എങ്കിൽ (unlikely(port_xThreadSafeClaimed)) {
+        തിരികെ;
     }
 #endif
 
     /* Critical section nesting coung must never be negative */
     configASSERT( port_uxCriticalNestingIDF > 0 );
 
-    if (port_uxCriticalNestingIDF > 0) {
+    എങ്കിൽ (port_uxCriticalNestingIDF > 0) {
         port_uxCriticalNestingIDF--;
 
-        if (port_uxCriticalNestingIDF == 0) {
+        എങ്കിൽ (port_uxCriticalNestingIDF == 0) {
             // Restore the saved interrupt threshold
-            vPortClearInterruptMask((int)port_uxCriticalOldInterruptStateIDF);
+            vPortClearInterruptMask((പൂർണ്ണസംഖ്യ)port_uxCriticalOldInterruptStateIDF);
         }
     }
 }
 
 // ----------------------- System --------------------------
 
-#define STACK_WATCH_AREA_SIZE 32
-#define STACK_WATCH_POINT_NUMBER (SOC_CPU_WATCHPOINTS_NUM - 1)
+#define അട്ടി_WATCH_AREA_SIZE 32
+#define അട്ടി_WATCH_POINT_സംഖ്യ (SOC_CPU_WATCHPOINTS_അക്കം - 1)
 
-void vPortSetStackWatchpoint(void *pxStackStart)
+ശൂന്യം v_Port_Set_അട്ടി_Watchpoint(ശൂന്യം *px_അട്ടി_Start)
 {
-    uint32_t addr = (uint32_t)pxStackStart;
-    addr = (addr + (STACK_WATCH_AREA_SIZE - 1)) & (~(STACK_WATCH_AREA_SIZE - 1));
-    esp_cpu_set_watchpoint(STACK_WATCH_POINT_NUMBER, (char *)addr, STACK_WATCH_AREA_SIZE, ESP_CPU_WATCHPOINT_STORE);
+    uint32_t addr = (uint32_t)px_അട്ടി_Start;
+    addr = (addr + (അട്ടി_WATCH_AREA_SIZE - 1)) & (~(അട്ടി_WATCH_AREA_SIZE - 1));
+    esp_cpu_set_watchpoint(അട്ടി_WATCH_POINT_സംഖ്യ, (അക്ഷരം *)addr, അട്ടി_WATCH_AREA_SIZE, ESP_CPU_WATCHPOINT_STORE);
 }
 
 
@@ -162,12 +162,12 @@ void vPortSetStackWatchpoint(void *pxStackStart)
 
 // --------------------- Interrupts ------------------------
 
-UBaseType_t ulPortSetInterruptMask(void)
+UBaseType_t ulPortSetInterruptMask(ശൂന്യം)
 {
     UBaseType_t prev_int_level = 0, int_level = 0;
-#if !SOC_INT_CLIC_SUPPORTED
+#എങ്കിൽ !SOC_INT_CLIC_SUPPORTED
     int_level = RVHAL_EXCM_LEVEL;
-#else
+#അല്ലെങ്കിൽ
     int_level = RVHAL_EXCM_LEVEL_CLIC;
 #endif
 
@@ -183,10 +183,10 @@ UBaseType_t ulPortSetInterruptMask(void)
      * followed by two instructions: `ret` and `csrrs` (RV_SET_CSR).
      * That's why we don't need any additional nop instructions here.
      */
-    return prev_int_level;
+    തിരികെ prev_int_level;
 }
 
-void vPortClearInterruptMask(UBaseType_t mask)
+ശൂന്യം vPortClearInterruptMask(UBaseType_t mask)
 {
     rv_utils_restore_intlevel_regval(mask);
     /**
@@ -204,17 +204,17 @@ void vPortClearInterruptMask(UBaseType_t mask)
      * In order to prevent this, force this routine to have a 3-instruction
      * delay before exiting.
      */
-    asm volatile ( "nop" );
-    asm volatile ( "nop" );
-    asm volatile ( "nop" );
+    asm അസ്ഥിര ( "nop" );
+    asm അസ്ഥിര ( "nop" );
+    asm അസ്ഥിര ( "nop" );
 }
 
-BaseType_t xPortCheckIfInISR(void)
+BaseType_t xPortCheckIfInISR(ശൂന്യം)
 {
-    return uxInterruptNesting;
+    തിരികെ uxInterruptNesting;
 }
 
-void vPortAssertIfInISR(void)
+ശൂന്യം vPortAssertIfInISR(ശൂന്യം)
 {
     /* Assert if the interrupt nesting count is > 0 */
     configASSERT(xPortCheckIfInISR() == 0);
@@ -222,13 +222,13 @@ void vPortAssertIfInISR(void)
 
 // ------------------ Critical Sections --------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
-void vPortTakeLock( portMUX_TYPE *lock )
+#എങ്കിൽ ( config_സംഖ്യ_OF_CORES > 1 )
+ശൂന്യം vPortTakeLock( portMUX_TYPE *lock )
 {
     spinlock_acquire( lock, portMUX_NO_TIMEOUT);
 }
 
-void vPortReleaseLock( portMUX_TYPE *lock )
+ശൂന്യം vPortReleaseLock( portMUX_TYPE *lock )
 {
     spinlock_release( lock );
 }
@@ -236,14 +236,14 @@ void vPortReleaseLock( portMUX_TYPE *lock )
 
 // ---------------------- Yielding -------------------------
 
-void vPortYield(void)
+ശൂന്യം vPortYield(ശൂന്യം)
 {
     // TODO: IDF-8113
-    const int core_id = 0;
+    സ്ഥിരം പൂർണ്ണസംഖ്യ core_id = 0;
 
-    if (uxInterruptNesting) {
+    എങ്കിൽ (uxInterruptNesting) {
         vPortYieldFromISR();
-    } else {
+    } അല്ലെങ്കിൽ {
 
         esp_crosscore_int_send_yield(0);
         /* There are 3-4 instructions of latency between triggering the software
@@ -256,11 +256,11 @@ void vPortYield(void)
            for an instant yield, and if that happens then the WFI would be
            waiting for the next interrupt to occur...)
         */
-        while (uxSchedulerRunning && crosscore_int_ll_get_state(core_id) != 0) {}
+        ആകുമ്പോൾ (uxSchedulerRunning && crosscore_int_ll_get_state(core_id) != 0) {}
     }
 }
 
-void vPortYieldFromISR( void )
+ശൂന്യം vPortYieldFromISR( ശൂന്യം )
 {
     //traceISR_EXIT_TO_SCHEDULER();
     uxSchedulerRunning = 1;
@@ -272,8 +272,8 @@ void vPortYieldFromISR( void )
 
 // --------------------- TCB Cleanup -----------------------
 
-#if ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
-static void vPortTLSPointersDelCb( void *pxTCB )
+#എങ്കിൽ ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
+സ്ഥിതം ശൂന്യം vPortTLSPointersDelCb( ശൂന്യം *pxTCB )
 {
     /* Typecast pxTCB to StaticTask_t type to access TCB struct members.
      * pvDummy15 corresponds to pvThreadLocalStoragePointers member of the TCB.
@@ -281,15 +281,15 @@ static void vPortTLSPointersDelCb( void *pxTCB )
     StaticTask_t *tcb = ( StaticTask_t * )pxTCB;
 
     /* The TLSP deletion callbacks are stored at an offset of (configNUM_THREAD_LOCAL_STORAGE_POINTERS/2) */
-    TlsDeleteCallbackFunction_t *pvThreadLocalStoragePointersDelCallback = ( TlsDeleteCallbackFunction_t * )( &( tcb->pvDummy15[ ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ) ] ) );
+    TlsDeleteCallbackFunction_t *pvThreadLocalStoragePointersDelCallback = ( TlsDeleteCallbackFunction_t * )( &( tcb->pvDummy15[ ( config_അക്കം_THREAD_LOCAL_STORAGE_POINTERS / 2 ) ] ) );
 
     /* We need to iterate over half the depth of the pvThreadLocalStoragePointers area
      * to access all TLS pointers and their respective TLS deletion callbacks.
      */
-    for ( int x = 0; x < ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ); x++ ) {
-        if ( pvThreadLocalStoragePointersDelCallback[ x ] != NULL ) {  //If del cb is set
+    വേണ്ടി ( പൂർണ്ണസംഖ്യ x = 0; x < ( config_അക്കം_THREAD_LOCAL_STORAGE_POINTERS / 2 ); x++ ) {
+        എങ്കിൽ ( pvThreadLocalStoragePointersDelCallback[ x ] != ശൂന്യ ) {  //If del cb is set
             /* In case the TLSP deletion callback has been overwritten by a TLS pointer, gracefully abort. */
-            if ( !esp_ptr_executable( pvThreadLocalStoragePointersDelCallback[ x ] ) ) {
+            എങ്കിൽ ( !esp_ptr_executable( pvThreadLocalStoragePointersDelCallback[ x ] ) ) {
                 ESP_EARLY_LOGE("FreeRTOS", "Fatal error: TLSP deletion callback at index %d overwritten with non-excutable pointer %p", x, pvThreadLocalStoragePointersDelCallback[ x ]);
                 abort();
             }
@@ -300,15 +300,15 @@ static void vPortTLSPointersDelCb( void *pxTCB )
 }
 #endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 
-void vPortTCBPreDeleteHook( void *pxTCB )
+ശൂന്യം vPortTCBPreDeleteHook( ശൂന്യം *pxTCB )
 {
-    #if ( CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK )
+    #എങ്കിൽ ( CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK )
         /* Call the user defined task pre-deletion hook */
-        extern void vTaskPreDeletionHook( void * pxTCB );
+        ബാഹ്യ ശൂന്യം vTaskPreDeletionHook( ശൂന്യം * pxTCB );
         vTaskPreDeletionHook( pxTCB );
     #endif /* CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK */
 
-    #if ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
+    #എങ്കിൽ ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
         /* Call TLS pointers deletion callbacks */
         vPortTLSPointersDelCb( pxTCB );
     #endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
@@ -321,15 +321,15 @@ void vPortTCBPreDeleteHook( void *pxTCB )
 
 // ----------------- Scheduler Start/End -------------------
 
-BaseType_t xPortStartScheduler(void)
+BaseType_t xPortStartScheduler(ശൂന്യം)
 {
     uxInterruptNesting = 0;
     port_uxCriticalNestingIDF = 0;
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+#എങ്കിൽ CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
     port_xThreadSafeClaimed = false;
 #endif
     uxSchedulerRunning = 0;
-#if configNUM_CORES > 1
+#എങ്കിൽ config_അക്കം_CORES > 1
     port_uxCoreStartupDone[xPortGetCoreID()] = 0;
 #endif
     /* Setup the hardware to generate the tick. */
@@ -341,10 +341,10 @@ BaseType_t xPortStartScheduler(void)
     vPortYield();
 
     /*Should not get here*/
-    return pdFALSE;
+    തിരികെ pdFALSE;
 }
 
-void vPortEndScheduler(void)
+ശൂന്യം vPortEndScheduler(ശൂന്യം)
 {
     /* very unlikely this function will be called, so just trap here */
     abort();
@@ -370,7 +370,7 @@ void vPortEndScheduler(void)
  * @param[out] ret_threadptr_reg_init Calculated THREADPTR register initialization value
  * @return Stack pointer that points to the TLS area
  */
-FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackTLS(UBaseType_t uxStackPointer, uint32_t *ret_threadptr_reg_init)
+FORCE_INLINE_ATTR UBaseType_t ux_Initialise_അട്ടി_TLS(UBaseType_t ux_അട്ടി_Pointer, uint32_t *ret_threadptr_reg_init)
 {
     /*
     LOW ADDRESS
@@ -392,37 +392,37 @@ FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackTLS(UBaseType_t uxStackPointer, u
     HIGH ADDRESS
     */
     // Calculate TLS area size and round up to multiple of 16 bytes.
-    extern char _thread_local_data_start, _thread_local_data_end;
-    extern char _thread_local_bss_start, _thread_local_bss_end;
-    const uint32_t tls_data_size = (uint32_t)&_thread_local_data_end - (uint32_t)&_thread_local_data_start;
-    const uint32_t tls_bss_size = (uint32_t)&_thread_local_bss_end - (uint32_t)&_thread_local_bss_start;
-    const uint32_t tls_area_size = ESP_ALIGN_UP(tls_data_size + tls_bss_size, 16);
+    ബാഹ്യ അക്ഷരം _thread_local_data_start, _thread_local_data_end;
+    ബാഹ്യ അക്ഷരം _thread_local_bss_start, _thread_local_bss_end;
+    സ്ഥിരം uint32_t tls_data_size = (uint32_t)&_thread_local_data_end - (uint32_t)&_thread_local_data_start;
+    സ്ഥിരം uint32_t tls_bss_size = (uint32_t)&_thread_local_bss_end - (uint32_t)&_thread_local_bss_start;
+    സ്ഥിരം uint32_t tls_area_size = ESP_ALIGN_UP(tls_data_size + tls_bss_size, 16);
     // TODO: check that TLS area fits the stack
 
     // Allocate space for the TLS area on the stack. The area must be aligned to 16-bytes
-    uxStackPointer = ESP_ALIGN_DOWN(uxStackPointer - (UBaseType_t)tls_area_size, 16);
+    ux_അട്ടി_Pointer = ESP_ALIGN_DOWN(ux_അട്ടി_Pointer - (UBaseType_t)tls_area_size, 16);
     // Initialize the TLS data with the initialization values of each TLS variable
-    memcpy((void *)uxStackPointer, &_thread_local_data_start, tls_data_size);
+    memcpy((ശൂന്യം *)ux_അട്ടി_Pointer, &_thread_local_data_start, tls_data_size);
     // Initialize the TLS bss with zeroes
-    memset((void *)(uxStackPointer + tls_data_size), 0, tls_bss_size);
+    memset((ശൂന്യം *)(ux_അട്ടി_Pointer + tls_data_size), 0, tls_bss_size);
 
     // Save tls start address
-    *ret_threadptr_reg_init = (uint32_t)uxStackPointer;
-    return uxStackPointer;
+    *ret_threadptr_reg_init = (uint32_t)ux_അട്ടി_Pointer;
+    തിരികെ ux_അട്ടി_Pointer;
 }
 
-#if CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
-static void vPortTaskWrapper(TaskFunction_t pxCode, void *pvParameters)
+#എങ്കിൽ CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
+സ്ഥിതം ശൂന്യം vPortTaskWrapper(TaskFunction_t pxCode, ശൂന്യം *pvParameters)
 {
-    __asm__ volatile(".cfi_undefined ra");  // tell to debugger that it's outermost (initial) frame
-    extern void __attribute__((noreturn)) panic_abort(const char *details);
-    static char DRAM_ATTR msg[80] = "FreeRTOS: FreeRTOS Task \"\0";
+    __asm__ അസ്ഥിര(".cfi_undefined ra");  // tell to debugger that it's outermost (initial) frame
+    ബാഹ്യ ശൂന്യം __attribute__((noreturn)) panic_abort(സ്ഥിരം അക്ഷരം *details);
+    സ്ഥിതം അക്ഷരം DRAM_ATTR സന്ദേശം[80] = "FreeRTOS: FreeRTOS Task \"\0";
     pxCode(pvParameters);
     /* FreeRTOS tasks should not return. Log the task name and abort. */
     /* We cannot use s(n)printf because it is in flash */
-    strcat(msg, pcTaskGetName(NULL));
-    strcat(msg, "\" should not return, Aborting now!");
-    panic_abort(msg);
+    strcat(സന്ദേശം, pcTaskGetName(ശൂന്യ));
+    strcat(സന്ദേശം, "\" should not return, Aborting now!");
+    panic_abort(സന്ദേശം);
 }
 #endif // CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
 
@@ -441,41 +441,41 @@ static void vPortTaskWrapper(TaskFunction_t pxCode, void *pvParameters)
  * @param[in] threadptr_reg_init THREADPTR register initialization value
  * @return Stack pointer that points to the stack frame
  */
-FORCE_INLINE_ATTR UBaseType_t uxInitialiseStackFrame(UBaseType_t uxStackPointer, TaskFunction_t pxCode, void *pvParameters, uint32_t threadptr_reg_init)
+FORCE_INLINE_ATTR UBaseType_t ux_Initialise_അട്ടി_Frame(UBaseType_t ux_അട്ടി_Pointer, TaskFunction_t pxCode, ശൂന്യം *pvParameters, uint32_t threadptr_reg_init)
 {
     /*
     Allocate space for the task's starting interrupt stack frame.
     - The stack frame must be allocated to a 16-byte aligned address.
     - We use RV_STK_FRMSZ (instead of sizeof(RvExcFrame)) as it rounds up the total size to a multiple of 16.
     */
-    uxStackPointer = ESP_ALIGN_DOWN(uxStackPointer - RV_STK_FRMSZ, 16);
+    ux_അട്ടി_Pointer = ESP_ALIGN_DOWN(ux_അട്ടി_Pointer - RV_STK_FRMSZ, 16);
 
     // Clear the entire interrupt stack frame
-    RvExcFrame *frame = (RvExcFrame *)uxStackPointer;
-    memset(frame, 0, sizeof(RvExcFrame));
+    RvExcFrame *frame = (RvExcFrame *)ux_അട്ടി_Pointer;
+    memset(frame, 0, വലുപ്പം(RvExcFrame));
 
     /* Initialize the stack frame. */
-    extern uint32_t __global_pointer$;
-    #if CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
+    ബാഹ്യ uint32_t __global_pointer$;
+    #എങ്കിൽ CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
         frame->mepc = (UBaseType_t)vPortTaskWrapper;
         frame->a0 = (UBaseType_t)pxCode;
         frame->a1 = (UBaseType_t)pvParameters;
-    #else
+    #അല്ലെങ്കിൽ
         frame->mepc = (UBaseType_t)pxCode;
         frame->a0 = (UBaseType_t)pvParameters;
     #endif // CONFIG_FREERTOS_TASK_FUNCTION_WRAPPER
     frame->gp = (UBaseType_t)&__global_pointer$;
     frame->tp = (UBaseType_t)threadptr_reg_init;
 
-    return uxStackPointer;
+    തിരികെ ux_അട്ടി_Pointer;
 }
 
-StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack, TaskFunction_t pxCode, void *pvParameters)
+അട്ടി_Type_t *px_Port_Initialise_അട്ടി(അട്ടി_Type_t *px_മുകൾ_Of_അട്ടി, TaskFunction_t pxCode, ശൂന്യം *pvParameters)
 {
 #ifdef __clang_analyzer__
     // Teach clang-tidy that pxTopOfStack cannot be a pointer to const
-    volatile StackType_t * pxTemp = pxTopOfStack;
-    pxTopOfStack = pxTemp;
+    അസ്ഥിര അട്ടി_Type_t * pxTemp = px_മുകൾ_Of_അട്ടി;
+    px_മുകൾ_Of_അട്ടി = pxTemp;
 #endif /*__clang_analyzer__ */
     /*
     HIGH ADDRESS
@@ -494,61 +494,61 @@ StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack, TaskFunction_t pxC
     - We use UBaseType_t for all of stack area initialization functions for more convenient pointer arithmetic
     */
 
-    UBaseType_t uxStackPointer = (UBaseType_t)pxTopOfStack;
-    configASSERT((uxStackPointer & portBYTE_ALIGNMENT_MASK) == 0);
+    UBaseType_t ux_അട്ടി_Pointer = (UBaseType_t)px_മുകൾ_Of_അട്ടി;
+    configASSERT((ux_അട്ടി_Pointer & portBYTE_ALIGNMENT_MASK) == 0);
 
     // Initialize GCC TLS area
     uint32_t threadptr_reg_init;
-    uxStackPointer = uxInitialiseStackTLS(uxStackPointer, &threadptr_reg_init);
-    configASSERT((uxStackPointer & portBYTE_ALIGNMENT_MASK) == 0);
+    ux_അട്ടി_Pointer = ux_Initialise_അട്ടി_TLS(ux_അട്ടി_Pointer, &threadptr_reg_init);
+    configASSERT((ux_അട്ടി_Pointer & portBYTE_ALIGNMENT_MASK) == 0);
 
     // Initialize the starting interrupt stack frame
-    uxStackPointer = uxInitialiseStackFrame(uxStackPointer, pxCode, pvParameters, threadptr_reg_init);
-    configASSERT((uxStackPointer & portBYTE_ALIGNMENT_MASK) == 0);
+    ux_അട്ടി_Pointer = ux_Initialise_അട്ടി_Frame(ux_അട്ടി_Pointer, pxCode, pvParameters, threadptr_reg_init);
+    configASSERT((ux_അട്ടി_Pointer & portBYTE_ALIGNMENT_MASK) == 0);
 
     // Return the task's current stack pointer address which should point to the starting interrupt stack frame
-    return (StackType_t *)uxStackPointer;
+    തിരികെ (അട്ടി_Type_t *)ux_അട്ടി_Pointer;
 }
 
 // ------------------- Hook Functions ----------------------
 
-void __attribute__((weak)) vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
+ശൂന്യം __attribute__((weak)) v_Application_അട്ടി_Overflow_Hook(TaskHandle_t xTask, അക്ഷരം *pcTaskName)
 {
 #define ERR_STR1 "***ERROR*** A stack overflow in task "
 #define ERR_STR2 " has been detected."
-    const char *str[] = {ERR_STR1, pcTaskName, ERR_STR2};
+    സ്ഥിരം അക്ഷരം *str[] = {ERR_STR1, pcTaskName, ERR_STR2};
 
-    char buf[sizeof(ERR_STR1) + CONFIG_FREERTOS_MAX_TASK_NAME_LEN + sizeof(ERR_STR2) + 1 /* null char */] = {0};
+    അക്ഷരം buf[വലുപ്പം(ERR_STR1) + CONFIG_FREERTOS_MAX_TASK_NAME_LEN + വലുപ്പം(ERR_STR2) + 1 /* null char */] = {0};
 
-    char *dest = buf;
-    for (int i = 0; i < sizeof(str) / sizeof(str[0]); i++) {
+    അക്ഷരം *dest = buf;
+    വേണ്ടി (പൂർണ്ണസംഖ്യ i = 0; i < വലുപ്പം(str) / വലുപ്പം(str[0]); i++) {
         dest = strcat(dest, str[i]);
     }
     esp_system_abort(buf);
 }
 
-#if  (  configUSE_TICK_HOOK > 0 )
-void vApplicationTickHook( void )
+#എങ്കിൽ  (  configUSE_TICK_HOOK > 0 )
+ശൂന്യം vApplicationTickHook( ശൂന്യം )
 {
     esp_vApplicationTickHook();
 }
 #endif
 
-extern void esp_vApplicationIdleHook(void);
-#if CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK
+ബാഹ്യ ശൂന്യം esp_vApplicationIdleHook(ശൂന്യം);
+#എങ്കിൽ CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK
 /*
 By default, the port uses vApplicationPassiveIdleHook() to run IDF style idle
 hooks. However, users may also want to provide their own vApplicationPassiveIdleHook().
 In this case, we use to -Wl,--wrap option to wrap the user provided vApplicationPassiveIdleHook()
 */
-extern void __real_vApplicationPassiveIdleHook( void );
-void __wrap_vApplicationPassiveIdleHook( void )
+ബാഹ്യ ശൂന്യം __real_vApplicationPassiveIdleHook( ശൂന്യം );
+ശൂന്യം __wrap_vApplicationPassiveIdleHook( ശൂന്യം )
 {
     esp_vApplicationIdleHook(); //Run IDF style hooks
     __real_vApplicationPassiveIdleHook(); //Call the user provided vApplicationPassiveIdleHook()
 }
-#else // CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK
-void vApplicationPassiveIdleHook( void )
+#അല്ലെങ്കിൽ // CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK
+ശൂന്യം vApplicationPassiveIdleHook( ശൂന്യം )
 {
     esp_vApplicationIdleHook(); //Run IDF style hooks
 }
@@ -556,14 +556,14 @@ void vApplicationPassiveIdleHook( void )
 
 /* ------------------------------------------------ Run Time Stats ------------------------------------------------- */
 
-#if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
+#എങ്കിൽ ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
 
-configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void )
+configRUN_TIME_COUNTER_TYPE x_Port_Get_Run_Time_Counter_മൂല്യം( ശൂന്യം )
 {
 #ifdef CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
-    return (configRUN_TIME_COUNTER_TYPE) esp_timer_get_time();
-#else
-    return 0;
+    തിരികെ (configRUN_TIME_COUNTER_TYPE) esp_timer_get_time();
+#അല്ലെങ്കിൽ
+    തിരികെ 0;
 #endif // CONFIG_FREERTOS_RUN_TIME_STATS_USING_ESP_TIMER
 }
 

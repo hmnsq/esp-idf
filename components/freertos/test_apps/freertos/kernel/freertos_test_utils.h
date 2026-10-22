@@ -4,18 +4,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <stdint.h>
-#include "FreeRTOS.h"
+#അന്തര്ഭാവ "sdkconfig.h"
+#അന്തര്ഭാവ <stdint.h>
+#അന്തര്ഭാവ "FreeRTOS.h"
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
+#എങ്കിൽ ( CONFIG_FREERTOS_സംഖ്യ_OF_CORES > 1 )
 
 /**
  * @brief Prototype for test function.
  *
  * A test function can be passed to vTestOnAllCores() which will run the test function from a task on each core.
  */
-typedef void (* TestFunction_t)(void *);
+തരനിർവചനം ശൂന്യം (* TestFunction_t)(ശൂന്യം *);
 
 /**
  * @brief Run a test function on each core
@@ -28,6 +28,6 @@ typedef void (* TestFunction_t)(void *);
  * @param ulStackDepth Stack depth of the created tasks
  * @param uxPriority Priority of the created tasks
  */
-void vTestOnAllCores(TestFunction_t pxTestCode, void * pvTestCodeArg, uint32_t ulStackDepth, UBaseType_t uxPriority);
+ശൂന്യം vTestOnAllCores(TestFunction_t pxTestCode, ശൂന്യം * pvTestCodeArg, uint32_t ul_അട്ടി_Depth, UBaseType_t uxPriority);
 
 #endif /* ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 ) */

@@ -31,15 +31,15 @@
  */
 
 
-#include <stdlib.h>
+#അന്തര്ഭാവ <stdlib.h>
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
  * task.h is included from an application file. */
 #define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#include "FreeRTOS.h"
-#include "list.h"
+#അന്തര്ഭാവ "FreeRTOS.h"
+#അന്തര്ഭാവ "list.h"
 
 /* Lint e9021, e961 and e750 are suppressed as a MISRA exception justified
  * because the MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be
@@ -51,18 +51,18 @@
 * PUBLIC LIST API documented in list.h
 *----------------------------------------------------------*/
 
-void vListInitialise( List_t * const pxList )
+ശൂന്യം vListInitialise( List_t * സ്ഥിരം pxList )
 {
     /* The list structure contains a list item which is used to mark the
      * end of the list.  To initialise the list the list end is inserted
      * as the only list entry. */
     pxList->pxIndex = ( ListItem_t * ) &( pxList->xListEnd ); /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
 
-    listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( &( pxList->xListEnd ) );
+    list_SET_FIRST_LIST_ITEM_INTEGRITY_CHECK_മൂല്യം( &( pxList->xListEnd ) );
 
     /* The list end value is the highest possible value in the list to
      * ensure it remains at the end of the list. */
-    pxList->xListEnd.xItemValue = portMAX_DELAY;
+    pxList->xListEnd.x_Item_മൂല്യം = portMAX_DELAY;
 
     /* The list end next and previous pointers point to itself so we know
      * when the list is empty. */
@@ -70,39 +70,39 @@ void vListInitialise( List_t * const pxList )
     pxList->xListEnd.pxPrevious = ( ListItem_t * ) &( pxList->xListEnd ); /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
 
     /* Initialize the remaining fields of xListEnd when it is a proper ListItem_t */
-    #if ( configUSE_MINI_LIST_ITEM == 0 )
+    #എങ്കിൽ ( configUSE_MINI_LIST_ITEM == 0 )
     {
-        pxList->xListEnd.pvOwner = NULL;
-        pxList->xListEnd.pxContainer = NULL;
-        listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( &( pxList->xListEnd ) );
+        pxList->xListEnd.pvOwner = ശൂന്യ;
+        pxList->xListEnd.pxContainer = ശൂന്യ;
+        list_SET_SECOND_LIST_ITEM_INTEGRITY_CHECK_മൂല്യം( &( pxList->xListEnd ) );
     }
     #endif
 
-    pxList->uxNumberOfItems = ( UBaseType_t ) 0U;
+    pxList->ux_സംഖ്യ_Of_ഇനങ്ങൾ = ( UBaseType_t ) 0U;
 
     /* Write known values into the list if
      * configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    listSET_LIST_INTEGRITY_CHECK_1_VALUE( pxList );
-    listSET_LIST_INTEGRITY_CHECK_2_VALUE( pxList );
+    list_SET_LIST_INTEGRITY_CHECK_1_മൂല്യം( pxList );
+    list_SET_LIST_INTEGRITY_CHECK_2_മൂല്യം( pxList );
 }
 /*-----------------------------------------------------------*/
 
-void vListInitialiseItem( ListItem_t * const pxItem )
+ശൂന്യം vListInitialiseItem( ListItem_t * സ്ഥിരം pxItem )
 {
     /* Make sure the list item is not recorded as being on a list. */
-    pxItem->pxContainer = NULL;
+    pxItem->pxContainer = ശൂന്യ;
 
     /* Write known values into the list item if
      * configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem );
-    listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem );
+    list_SET_FIRST_LIST_ITEM_INTEGRITY_CHECK_മൂല്യം( pxItem );
+    list_SET_SECOND_LIST_ITEM_INTEGRITY_CHECK_മൂല്യം( pxItem );
 }
 /*-----------------------------------------------------------*/
 
-void vListInsertEnd( List_t * const pxList,
-                     ListItem_t * const pxNewListItem )
+ശൂന്യം v_List_തിരുകുക_End( List_t * സ്ഥിരം pxList,
+                     ListItem_t * സ്ഥിരം pxNewListItem )
 {
-    ListItem_t * const pxIndex = pxList->pxIndex;
+    ListItem_t * സ്ഥിരം pxIndex = pxList->pxIndex;
 
     /* Only effective when configASSERT() is also defined, these tests may catch
      * the list data structures being overwritten in memory.  They will not catch
@@ -125,15 +125,15 @@ void vListInsertEnd( List_t * const pxList,
     /* Remember which list the item is in. */
     pxNewListItem->pxContainer = pxList;
 
-    ( pxList->uxNumberOfItems )++;
+    ( pxList->ux_സംഖ്യ_Of_ഇനങ്ങൾ )++;
 }
 /*-----------------------------------------------------------*/
 
-void vListInsert( List_t * const pxList,
-                  ListItem_t * const pxNewListItem )
+ശൂന്യം v_List_തിരുകുക( List_t * സ്ഥിരം pxList,
+                  ListItem_t * സ്ഥിരം pxNewListItem )
 {
     ListItem_t * pxIterator;
-    const TickType_t xValueOfInsertion = pxNewListItem->xItemValue;
+    സ്ഥിരം TickType_t x_മൂല്യം_Of_Insertion = pxNewListItem->x_Item_മൂല്യം;
 
     /* Only effective when configASSERT() is also defined, these tests may catch
      * the list data structures being overwritten in memory.  They will not catch
@@ -149,11 +149,11 @@ void vListInsert( List_t * const pxList,
      * share of the CPU.  However, if the xItemValue is the same as the back marker
      * the iteration loop below will not end.  Therefore the value is checked
      * first, and the algorithm slightly modified if necessary. */
-    if( xValueOfInsertion == portMAX_DELAY )
+    എങ്കിൽ( x_മൂല്യം_Of_Insertion == portMAX_DELAY )
     {
         pxIterator = pxList->xListEnd.pxPrevious;
     }
-    else
+    അല്ലെങ്കിൽ
     {
         /* *** NOTE ***********************************************************
         *  If you find your application is crashing here then likely causes are
@@ -180,7 +180,7 @@ void vListInsert( List_t * const pxList,
         *      configMAX_SYSCALL_INTERRUPT_PRIORITY.
         **********************************************************************/
 
-        for( pxIterator = ( ListItem_t * ) &( pxList->xListEnd ); pxIterator->pxNext->xItemValue <= xValueOfInsertion; pxIterator = pxIterator->pxNext ) /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. *//*lint !e440 The iterator moves to a different value, not xValueOfInsertion. */
+        വേണ്ടി( pxIterator = ( ListItem_t * ) &( pxList->xListEnd ); pxIterator->pxNext->x_Item_മൂല്യം <= x_മൂല്യം_Of_Insertion; pxIterator = pxIterator->pxNext ) /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. *//*lint !e440 The iterator moves to a different value, not xValueOfInsertion. */
         {
             /* There is nothing to do here, just iterating to the wanted
              * insertion position. */
@@ -196,15 +196,15 @@ void vListInsert( List_t * const pxList,
      * item later. */
     pxNewListItem->pxContainer = pxList;
 
-    ( pxList->uxNumberOfItems )++;
+    ( pxList->ux_സംഖ്യ_Of_ഇനങ്ങൾ )++;
 }
 /*-----------------------------------------------------------*/
 
-UBaseType_t uxListRemove( ListItem_t * const pxItemToRemove )
+UBaseType_t uxListRemove( ListItem_t * സ്ഥിരം pxItemToRemove )
 {
 /* The list item knows which list it is in.  Obtain the list from the list
  * item. */
-    List_t * const pxList = pxItemToRemove->pxContainer;
+    List_t * സ്ഥിരം pxList = pxItemToRemove->pxContainer;
 
     pxItemToRemove->pxNext->pxPrevious = pxItemToRemove->pxPrevious;
     pxItemToRemove->pxPrevious->pxNext = pxItemToRemove->pxNext;
@@ -213,18 +213,18 @@ UBaseType_t uxListRemove( ListItem_t * const pxItemToRemove )
     mtCOVERAGE_TEST_DELAY();
 
     /* Make sure the index is left pointing to a valid item. */
-    if( pxList->pxIndex == pxItemToRemove )
+    എങ്കിൽ( pxList->pxIndex == pxItemToRemove )
     {
         pxList->pxIndex = pxItemToRemove->pxPrevious;
     }
-    else
+    അല്ലെങ്കിൽ
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    pxItemToRemove->pxContainer = NULL;
-    ( pxList->uxNumberOfItems )--;
+    pxItemToRemove->pxContainer = ശൂന്യ;
+    ( pxList->ux_സംഖ്യ_Of_ഇനങ്ങൾ )--;
 
-    return pxList->uxNumberOfItems;
+    തിരികെ pxList->ux_സംഖ്യ_Of_ഇനങ്ങൾ;
 }
 /*-----------------------------------------------------------*/

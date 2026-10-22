@@ -4,37 +4,37 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <stdio.h>
-#include <stdbool.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/freertos_debug.h"
-#include "esp_cpu.h"
-#include "esp_rom_sys.h"
-#include "unity.h"
-#include "sdkconfig.h"
+#അന്തര്ഭാവ "sdkconfig.h"
+#അന്തര്ഭാവ <stdio.h>
+#അന്തര്ഭാവ <stdbool.h>
+#അന്തര്ഭാവ "freertos/FreeRTOS.h"
+#അന്തര്ഭാവ "freertos/task.h"
+#അന്തര്ഭാവ "freertos/freertos_debug.h"
+#അന്തര്ഭാവ "esp_cpu.h"
+#അന്തര്ഭാവ "esp_rom_sys.h"
+#അന്തര്ഭാവ "unity.h"
+#അന്തര്ഭാവ "sdkconfig.h"
 
-#define TEST_MAX_TASKS_NUM      32
-#define NUM_TASKS_PER_LIST      2
+#define TEST_MAX_TASKS_അക്കം      32
+#define അക്കം_TASKS_PER_LIST      2
 #define TASK_PRIORITY           (configMAX_PRIORITIES - 2)
 
-static volatile bool start_ready_flag = false;
-static volatile bool start_resp_flag = false;
-static volatile bool stop_flag = false;
+സ്ഥിതം അസ്ഥിര bool start_ready_flag = false;
+സ്ഥിതം അസ്ഥിര bool start_resp_flag = false;
+സ്ഥിതം അസ്ഥിര bool stop_flag = false;
 
-static void ready_task(void *arg)
+സ്ഥിതം ശൂന്യം ready_task(ശൂന്യം *arg)
 {
-    while (1) {
-#if !CONFIG_FREERTOS_UNICORE
+    ആകുമ്പോൾ (1) {
+#എങ്കിൽ !CONFIG_FREERTOS_UNICORE
         taskDISABLE_INTERRUPTS();
         /*
         The main task (on core 0) has a higher priority than this task. Thus, by the time this flag is set, this task
         is guaranteed to running on core 1.
         */
-        if (start_ready_flag) {   // Is the test starting?
+        എങ്കിൽ (start_ready_flag) {   // Is the test starting?
             start_resp_flag = true;   // Indicate we are ready to start
-            while (!stop_flag) {
+            ആകുമ്പോൾ (!stop_flag) {
                 ;   // Wait until test completes
             }
 
@@ -50,37 +50,37 @@ static void ready_task(void *arg)
     }
 }
 
-static void blocked_task(void *arg)
+സ്ഥിതം ശൂന്യം blocked_task(ശൂന്യം *arg)
 {
     // Delay for portMAX_DELAY - 1 as not to go on the suspended list
     vTaskDelay(portMAX_DELAY - 1);
 }
 
-static void suspended_task(void *arg)
+സ്ഥിതം ശൂന്യം suspended_task(ശൂന്യം *arg)
 {
-    vTaskSuspend(NULL);
+    vTaskSuspend(ശൂന്യ);
 }
 
-static void setup(TaskHandle_t *task_list, int *num_tasks_ret, UBaseType_t *old_priority_ret)
+സ്ഥിതം ശൂന്യം setup(TaskHandle_t *task_list, പൂർണ്ണസംഖ്യ *അക്കം_tasks_ret, UBaseType_t *old_priority_ret)
 {
     // Raise our priority so that we aren't preempted
-    *old_priority_ret = uxTaskPriorityGet(NULL);
-    vTaskPrioritySet(NULL, configMAX_PRIORITIES - 1);
+    *old_priority_ret = uxTaskPriorityGet(ശൂന്യ);
+    vTaskPrioritySet(ശൂന്യ, configMAX_PRIORITIES - 1);
 
     // Create tasks
-    int num_tasks = 0;
-    for (int i = 0; i < NUM_TASKS_PER_LIST; i++) {
+    പൂർണ്ണസംഖ്യ അക്കം_tasks = 0;
+    വേണ്ടി (പൂർണ്ണസംഖ്യ i = 0; i < അക്കം_TASKS_PER_LIST; i++) {
         //Ready task
-        xTaskCreate(ready_task, "ready", 1024, NULL, TASK_PRIORITY, &(task_list[num_tasks]));
-        num_tasks++;
+        xTaskCreate(ready_task, "ready", 1024, ശൂന്യ, TASK_PRIORITY, &(task_list[അക്കം_tasks]));
+        അക്കം_tasks++;
         //Blocked task
-        xTaskCreate(blocked_task, "blkd", 1024, NULL, TASK_PRIORITY, &(task_list[num_tasks]));
-        num_tasks++;
+        xTaskCreate(blocked_task, "blkd", 1024, ശൂന്യ, TASK_PRIORITY, &(task_list[അക്കം_tasks]));
+        അക്കം_tasks++;
         //Suspended task
-        xTaskCreate(suspended_task, "susp", 1024, NULL, TASK_PRIORITY, &(task_list[num_tasks]));
-        num_tasks++;
+        xTaskCreate(suspended_task, "susp", 1024, ശൂന്യ, TASK_PRIORITY, &(task_list[അക്കം_tasks]));
+        അക്കം_tasks++;
     }
-    *num_tasks_ret = num_tasks;
+    *അക്കം_tasks_ret = അക്കം_tasks;
     // Short delay to allow tasks to spin up
     vTaskDelay(10);
 
@@ -96,44 +96,44 @@ static void setup(TaskHandle_t *task_list, int *num_tasks_ret, UBaseType_t *old_
     */
     // Disable interrupts so that the current core isn't preempted.
     taskDISABLE_INTERRUPTS();
-#if !CONFIG_FREERTOS_UNICORE
+#എങ്കിൽ !CONFIG_FREERTOS_UNICORE
     // For SMP, we need to do a 2-way handshake to ensure the other core spins with interrupts disabled.
     start_ready_flag = true;
-    while (!start_resp_flag) {
+    ആകുമ്പോൾ (!start_resp_flag) {
         ;
     }
 #endif // !CONFIG_FREERTOS_UNICORE
 }
 
-static void check_snapshots(TaskHandle_t *task_list, int num_tasks, TaskSnapshot_t *task_snapshots, UBaseType_t num_snapshots)
+സ്ഥിതം ശൂന്യം check_snapshots(TaskHandle_t *task_list, പൂർണ്ണസംഖ്യ അക്കം_tasks, TaskSnapshot_t *task_snapshots, UBaseType_t അക്കം_snapshots)
 {
     // Check task snapshots. Every created task should be found in the task snapshot
-    for (int i = 0; i < num_tasks; i++) {
+    വേണ്ടി (പൂർണ്ണസംഖ്യ i = 0; i < അക്കം_tasks; i++) {
         bool found = false;
-        for (int j = 0; j < num_snapshots; j++) {
-            if (task_list[i] == (TaskHandle_t)task_snapshots[j].pxTCB) {
+        വേണ്ടി (പൂർണ്ണസംഖ്യ j = 0; j < അക്കം_snapshots; j++) {
+            എങ്കിൽ (task_list[i] == (TaskHandle_t)task_snapshots[j].pxTCB) {
                 found = true;
-                break;
+                നിർത്തുക;
             }
         }
         TEST_ASSERT(found);
     }
 }
 
-static void teardown(TaskHandle_t *task_list, int num_tasks, UBaseType_t old_priority)
+സ്ഥിതം ശൂന്യം teardown(TaskHandle_t *task_list, പൂർണ്ണസംഖ്യ അക്കം_tasks, UBaseType_t old_priority)
 {
-#if !CONFIG_FREERTOS_UNICORE
+#എങ്കിൽ !CONFIG_FREERTOS_UNICORE
     // Signal to the other core that it can exit the loop
     stop_flag = true;
 #endif // !CONFIG_FREERTOS_UNICORE
     // Re-enable interrupts on the current core.
     taskENABLE_INTERRUPTS();
 
-    for (int i = 0; i < num_tasks; i++) {
+    വേണ്ടി (പൂർണ്ണസംഖ്യ i = 0; i < അക്കം_tasks; i++) {
         vTaskDelete(task_list[i]);
     }
     // Restore priority
-    vTaskPrioritySet(NULL, old_priority);
+    vTaskPrioritySet(ശൂന്യ, old_priority);
     // Short delay to allow tasks to clean up
     vTaskDelay(10);
 }
@@ -143,20 +143,20 @@ TEST_CASE("Task snapshot: Get all", "[freertos]")
     // Short delay to allow both cores to spin up
     vTaskDelay(10);
 
-    TaskHandle_t task_list[TEST_MAX_TASKS_NUM];
-    int num_tasks;
+    TaskHandle_t task_list[TEST_MAX_TASKS_അക്കം];
+    പൂർണ്ണസംഖ്യ അക്കം_tasks;
     UBaseType_t old_priority;
-    setup(task_list, &num_tasks, &old_priority);
+    setup(task_list, &അക്കം_tasks, &old_priority);
 
     // Get task snapshots using uxTaskGetSnapshotAll()
-    TaskSnapshot_t task_snapshots[TEST_MAX_TASKS_NUM];
+    TaskSnapshot_t task_snapshots[TEST_MAX_TASKS_അക്കം];
     UBaseType_t tcb_size;
-    UBaseType_t num_snapshots;
-    num_snapshots = uxTaskGetSnapshotAll(task_snapshots, TEST_MAX_TASKS_NUM, &tcb_size);
-    TEST_ASSERT_LESS_OR_EQUAL(TEST_MAX_TASKS_NUM, num_snapshots);
+    UBaseType_t അക്കം_snapshots;
+    അക്കം_snapshots = uxTaskGetSnapshotAll(task_snapshots, TEST_MAX_TASKS_അക്കം, &tcb_size);
+    TEST_ASSERT_LESS_OR_EQUAL(TEST_MAX_TASKS_അക്കം, അക്കം_snapshots);
 
-    check_snapshots(task_list, num_tasks, task_snapshots, num_snapshots);
-    teardown(task_list, num_tasks, old_priority);
+    check_snapshots(task_list, അക്കം_tasks, task_snapshots, അക്കം_snapshots);
+    teardown(task_list, അക്കം_tasks, old_priority);
 }
 
 TEST_CASE("Task snapshot: Iterate", "[freertos]")
@@ -164,25 +164,25 @@ TEST_CASE("Task snapshot: Iterate", "[freertos]")
     // Short delay to allow both cores to spin up
     vTaskDelay(10);
 
-    TaskHandle_t task_list[TEST_MAX_TASKS_NUM];
-    int num_tasks;
+    TaskHandle_t task_list[TEST_MAX_TASKS_അക്കം];
+    പൂർണ്ണസംഖ്യ അക്കം_tasks;
     UBaseType_t old_priority;
-    setup(task_list, &num_tasks, &old_priority);
+    setup(task_list, &അക്കം_tasks, &old_priority);
 
     // Get task snapshots using xTaskGetNext() and vTaskGetSnapshot()
-    TaskSnapshot_t task_snapshots[TEST_MAX_TASKS_NUM];
-    UBaseType_t num_snapshots = 0;
+    TaskSnapshot_t task_snapshots[TEST_MAX_TASKS_അക്കം];
+    UBaseType_t അക്കം_snapshots = 0;
     TaskIterator_t task_iterator = {0};
-    while (xTaskGetNext(&task_iterator) != -1) {
-        if (task_iterator.pxTaskHandle != NULL) {
+    ആകുമ്പോൾ (xTaskGetNext(&task_iterator) != -1) {
+        എങ്കിൽ (task_iterator.pxTaskHandle != ശൂന്യ) {
             // Get the task's snapshot
-            BaseType_t Result = vTaskGetSnapshot(task_iterator.pxTaskHandle, &task_snapshots[num_snapshots]);
+            BaseType_t Result = vTaskGetSnapshot(task_iterator.pxTaskHandle, &task_snapshots[അക്കം_snapshots]);
             TEST_ASSERT_EQUAL(pdTRUE, Result);
-            num_snapshots++;
+            അക്കം_snapshots++;
         }
     }
-    TEST_ASSERT_LESS_OR_EQUAL(TEST_MAX_TASKS_NUM, num_snapshots);
+    TEST_ASSERT_LESS_OR_EQUAL(TEST_MAX_TASKS_അക്കം, അക്കം_snapshots);
 
-    check_snapshots(task_list, num_tasks, task_snapshots, num_snapshots);
-    teardown(task_list, num_tasks, old_priority);
+    check_snapshots(task_list, അക്കം_tasks, task_snapshots, അക്കം_snapshots);
+    teardown(task_list, അക്കം_tasks, old_priority);
 }

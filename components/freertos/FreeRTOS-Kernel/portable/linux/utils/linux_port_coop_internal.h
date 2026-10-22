@@ -9,14 +9,14 @@
 
 #pragma once
 
-#include <errno.h>
-#include <time.h>
-#include <dlfcn.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#അന്തര്ഭാവ <errno.h>
+#അന്തര്ഭാവ <time.h>
+#അന്തര്ഭാവ <dlfcn.h>
+#അന്തര്ഭാവ "freertos/FreeRTOS.h"
+#അന്തര്ഭാവ "freertos/task.h"
 
 #ifdef __cplusplus
-extern "C" {
+ബാഹ്യ "C" {
 #endif
 
 /**
@@ -39,14 +39,14 @@ extern "C" {
  *
  * @return true if called from a FreeRTOS task, false otherwise.
  */
-bool linux_port_in_freertos_task(void);
+bool linux_port_in_freertos_task(ശൂന്യം);
 
 /**
  * @brief Set a kernel file descriptor to O_NONBLOCK mode.
  *
  * @param fd File descriptor to make non-blocking.
  */
-void linux_coop_set_nonblocking(int fd);
+ശൂന്യം linux_coop_set_nonblocking(പൂർണ്ണസംഖ്യ fd);
 
 /**
  * @brief Track a file descriptor in the cooperative mode table.
@@ -58,14 +58,14 @@ void linux_coop_set_nonblocking(int fd);
  * @param fd         File descriptor to track.
  * @param user_flags User-visible status flags (as passed to fcntl F_SETFL).
  */
-void linux_coop_track_fd(int fd, int user_flags);
+ശൂന്യം linux_coop_track_fd(പൂർണ്ണസംഖ്യ fd, പൂർണ്ണസംഖ്യ user_flags);
 
 /**
  * @brief Stop tracking a file descriptor in the cooperative mode table.
  *
  * @param fd File descriptor to untrack.
  */
-void linux_coop_untrack_fd(int fd);
+ശൂന്യം linux_coop_untrack_fd(പൂർണ്ണസംഖ്യ fd);
 
 /**
  * @brief Update user-visible status flags for a tracked file descriptor.
@@ -73,7 +73,7 @@ void linux_coop_untrack_fd(int fd);
  * @param fd         File descriptor to update.
  * @param user_flags New user-visible status flags.
  */
-void linux_coop_set_user_flags(int fd, int user_flags);
+ശൂന്യം linux_coop_set_user_flags(പൂർണ്ണസംഖ്യ fd, പൂർണ്ണസംഖ്യ user_flags);
 
 /**
  * @brief Query whether user-visible mode is non-blocking for a file descriptor.
@@ -81,7 +81,7 @@ void linux_coop_set_user_flags(int fd, int user_flags);
  * @param fd File descriptor to query.
  * @return true if user-visible mode is non-blocking, false otherwise.
  */
-bool linux_coop_fd_user_nonblocking(int fd);
+bool linux_coop_fd_user_nonblocking(പൂർണ്ണസംഖ്യ fd);
 
 /**
  * @brief Get tracked user-visible status flags for a file descriptor.
@@ -90,7 +90,7 @@ bool linux_coop_fd_user_nonblocking(int fd);
  * @param[out] flags Output for tracked user-visible flags.
  * @return true if the fd is tracked and flags were written, false otherwise.
  */
-bool linux_coop_get_user_flags(int fd, int *flags);
+bool linux_coop_get_user_flags(പൂർണ്ണസംഖ്യ fd, പൂർണ്ണസംഖ്യ *flags);
 
 /**
  * @brief Cooperatively yield for @p ms milliseconds.
@@ -99,16 +99,16 @@ bool linux_coop_get_user_flags(int fd, int *flags);
  *
  * @param ms Number of milliseconds to yield.
  */
-static inline __attribute__((always_inline))
-void linux_coop_yield(int ms)
+സ്ഥിതം വരിയിൽ __attribute__((always_inline))
+ശൂന്യം linux_coop_yield(പൂർണ്ണസംഖ്യ ms)
 {
-    if (linux_port_in_freertos_task()) {
+    എങ്കിൽ (linux_port_in_freertos_task()) {
         vTaskDelay(pdMS_TO_TICKS(ms));
-    } else {
-        struct timespec ts;
+    } അല്ലെങ്കിൽ {
+        ഘടന timespec ts;
         ts.tv_sec  = ms / 1000;
         ts.tv_nsec = (ms % 1000) * 1000000L;
-        while (nanosleep(&ts, &ts) == -1 && errno == EINTR) {
+        ആകുമ്പോൾ (nanosleep(&ts, &ts) == -1 && errno == EINTR) {
             /* retry with remaining time */
         }
     }
@@ -123,21 +123,21 @@ void linux_coop_yield(int ms)
  * @param fd   File descriptor used to determine user-visible blocking mode.
  * @param expr Expression to evaluate in the retry loop (must yield ssize_t).
  */
-#define LINUX_COOP_IO_LOOP(fd, expr)                           \
-    while (1)                                                  \
+#define LINUX_COOP_IO_LOOP(fd, വ്യഞ്ജകം)                           \
+    ആകുമ്പോൾ (1)                                                  \
     {                                                          \
-        ssize_t _n = (expr);                                   \
-        if (_n >= 0) {                                         \
-            return _n;                                         \
+        ssize_t _n = (വ്യഞ്ജകം);                                   \
+        എങ്കിൽ (_n >= 0) {                                         \
+            തിരികെ _n;                                         \
         }                                                      \
-        if (errno == EAGAIN || errno == EWOULDBLOCK) {         \
-            if (linux_coop_fd_user_nonblocking(fd)) {          \
-                return -1;                                     \
+        എങ്കിൽ (errno == EAGAIN || errno == EWOULDBLOCK) {         \
+            എങ്കിൽ (linux_coop_fd_user_nonblocking(fd)) {          \
+                തിരികെ -1;                                     \
             }                                                  \
             linux_coop_yield(LINUX_COOP_TICK_MS);              \
-            continue;                                          \
+            തുടരുക;                                          \
         }                                                      \
-        return -1;                                             \
+        തിരികെ -1;                                             \
     }
 
 #ifdef __cplusplus

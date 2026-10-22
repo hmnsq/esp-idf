@@ -47,11 +47,11 @@
 #endif
 
 /* Standard includes. */
-#include <stdint.h>
+#അന്തര്ഭാവ <stdint.h>
 
 /* *INDENT-OFF* */
 #ifdef __cplusplus
-    extern "C" {
+    ബാഹ്യ "C" {
 #endif
 /* *INDENT-ON* */
 
@@ -63,7 +63,7 @@
  * ATOMIC_ENTER_CRITICAL().
  *
  */
-#if defined( portSET_INTERRUPT_MASK_FROM_ISR )
+#എങ്കിൽ defined( portSET_INTERRUPT_MASK_FROM_ISR )
 
 /* Nested interrupt scheme is supported in this port. */
     #define ATOMIC_ENTER_CRITICAL() \
@@ -72,7 +72,7 @@
     #define ATOMIC_EXIT_CRITICAL() \
     portCLEAR_INTERRUPT_MASK_FROM_ISR( uxCriticalSectionType )
 
-#else
+#അല്ലെങ്കിൽ
 
 /* Nested interrupt scheme is NOT supported in this port. */
     #define ATOMIC_ENTER_CRITICAL()    portENTER_CRITICAL()
@@ -111,27 +111,27 @@
  * @note This function only swaps *pulDestination with ulExchange, if previous
  *       *pulDestination value equals ulComparand.
  */
-static portFORCE_INLINE uint32_t Atomic_CompareAndSwap_u32( uint32_t volatile * pulDestination,
+സ്ഥിതം portFORCE_INLINE uint32_t Atomic_CompareAndSwap_u32( uint32_t അസ്ഥിര * pulDestination,
                                                             uint32_t ulExchange,
                                                             uint32_t ulComparand )
 {
-    uint32_t ulReturnValue;
+    uint32_t ul_Return_മൂല്യം;
 
     ATOMIC_ENTER_CRITICAL();
     {
-        if( *pulDestination == ulComparand )
+        എങ്കിൽ( *pulDestination == ulComparand )
         {
             *pulDestination = ulExchange;
-            ulReturnValue = ATOMIC_COMPARE_AND_SWAP_SUCCESS;
+            ul_Return_മൂല്യം = ATOMIC_COMPARE_AND_SWAP_SUCCESS;
         }
-        else
+        അല്ലെങ്കിൽ
         {
-            ulReturnValue = ATOMIC_COMPARE_AND_SWAP_FAILURE;
+            ul_Return_മൂല്യം = ATOMIC_COMPARE_AND_SWAP_FAILURE;
         }
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulReturnValue;
+    തിരികെ ul_Return_മൂല്യം;
 }
 /*-----------------------------------------------------------*/
 
@@ -147,19 +147,19 @@ static portFORCE_INLINE uint32_t Atomic_CompareAndSwap_u32( uint32_t volatile * 
  *
  * @return The initial value of *ppvDestination.
  */
-static portFORCE_INLINE void * Atomic_SwapPointers_p32( void * volatile * ppvDestination,
-                                                        void * pvExchange )
+സ്ഥിതം portFORCE_INLINE ശൂന്യം * Atomic_SwapPointers_p32( ശൂന്യം * അസ്ഥിര * ppvDestination,
+                                                        ശൂന്യം * pvExchange )
 {
-    void * pReturnValue;
+    ശൂന്യം * p_Return_മൂല്യം;
 
     ATOMIC_ENTER_CRITICAL();
     {
-        pReturnValue = *ppvDestination;
+        p_Return_മൂല്യം = *ppvDestination;
         *ppvDestination = pvExchange;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return pReturnValue;
+    തിരികെ p_Return_മൂല്യം;
 }
 /*-----------------------------------------------------------*/
 
@@ -179,23 +179,23 @@ static portFORCE_INLINE void * Atomic_SwapPointers_p32( void * volatile * ppvDes
  * @note This function only swaps *ppvDestination with pvExchange, if previous
  *       *ppvDestination value equals pvComparand.
  */
-static portFORCE_INLINE uint32_t Atomic_CompareAndSwapPointers_p32( void * volatile * ppvDestination,
-                                                                    void * pvExchange,
-                                                                    void * pvComparand )
+സ്ഥിതം portFORCE_INLINE uint32_t Atomic_CompareAndSwapPointers_p32( ശൂന്യം * അസ്ഥിര * ppvDestination,
+                                                                    ശൂന്യം * pvExchange,
+                                                                    ശൂന്യം * pvComparand )
 {
-    uint32_t ulReturnValue = ATOMIC_COMPARE_AND_SWAP_FAILURE;
+    uint32_t ul_Return_മൂല്യം = ATOMIC_COMPARE_AND_SWAP_FAILURE;
 
     ATOMIC_ENTER_CRITICAL();
     {
-        if( *ppvDestination == pvComparand )
+        എങ്കിൽ( *ppvDestination == pvComparand )
         {
             *ppvDestination = pvExchange;
-            ulReturnValue = ATOMIC_COMPARE_AND_SWAP_SUCCESS;
+            ul_Return_മൂല്യം = ATOMIC_COMPARE_AND_SWAP_SUCCESS;
         }
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulReturnValue;
+    തിരികെ ul_Return_മൂല്യം;
 }
 
 
@@ -212,19 +212,19 @@ static portFORCE_INLINE uint32_t Atomic_CompareAndSwapPointers_p32( void * volat
  *
  * @return previous *pulAddend value.
  */
-static portFORCE_INLINE uint32_t Atomic_Add_u32( uint32_t volatile * pulAddend,
-                                                 uint32_t ulCount )
+സ്ഥിതം portFORCE_INLINE uint32_t Atomic_Add_u32( uint32_t അസ്ഥിര * pulAddend,
+                                                 uint32_t ul_എണ്ണം )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulAddend;
-        *pulAddend += ulCount;
+        *pulAddend += ul_എണ്ണം;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    തിരികെ ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -240,19 +240,19 @@ static portFORCE_INLINE uint32_t Atomic_Add_u32( uint32_t volatile * pulAddend,
  *
  * @return previous *pulAddend value.
  */
-static portFORCE_INLINE uint32_t Atomic_Subtract_u32( uint32_t volatile * pulAddend,
-                                                      uint32_t ulCount )
+സ്ഥിതം portFORCE_INLINE uint32_t Atomic_Subtract_u32( uint32_t അസ്ഥിര * pulAddend,
+                                                      uint32_t ul_എണ്ണം )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulAddend;
-        *pulAddend -= ulCount;
+        *pulAddend -= ul_എണ്ണം;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    തിരികെ ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -266,7 +266,7 @@ static portFORCE_INLINE uint32_t Atomic_Subtract_u32( uint32_t volatile * pulAdd
  *
  * @return *pulAddend value before increment.
  */
-static portFORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t volatile * pulAddend )
+സ്ഥിതം portFORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t അസ്ഥിര * pulAddend )
 {
     uint32_t ulCurrent;
 
@@ -277,7 +277,7 @@ static portFORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t volatile * pulAd
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    തിരികെ ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -291,7 +291,7 @@ static portFORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t volatile * pulAd
  *
  * @return *pulAddend value before decrement.
  */
-static portFORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t volatile * pulAddend )
+സ്ഥിതം portFORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t അസ്ഥിര * pulAddend )
 {
     uint32_t ulCurrent;
 
@@ -302,7 +302,7 @@ static portFORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t volatile * pulAd
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    തിരികെ ulCurrent;
 }
 
 /*----------------------------- Bitwise Logical ------------------------------*/
@@ -318,19 +318,19 @@ static portFORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t volatile * pulAd
  *
  * @return The original value of *pulDestination.
  */
-static portFORCE_INLINE uint32_t Atomic_OR_u32( uint32_t volatile * pulDestination,
-                                                uint32_t ulValue )
+സ്ഥിതം portFORCE_INLINE uint32_t Atomic_OR_u32( uint32_t അസ്ഥിര * pulDestination,
+                                                uint32_t ul_മൂല്യം )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulDestination;
-        *pulDestination |= ulValue;
+        *pulDestination |= ul_മൂല്യം;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    തിരികെ ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -345,19 +345,19 @@ static portFORCE_INLINE uint32_t Atomic_OR_u32( uint32_t volatile * pulDestinati
  *
  * @return The original value of *pulDestination.
  */
-static portFORCE_INLINE uint32_t Atomic_AND_u32( uint32_t volatile * pulDestination,
-                                                 uint32_t ulValue )
+സ്ഥിതം portFORCE_INLINE uint32_t Atomic_AND_u32( uint32_t അസ്ഥിര * pulDestination,
+                                                 uint32_t ul_മൂല്യം )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulDestination;
-        *pulDestination &= ulValue;
+        *pulDestination &= ul_മൂല്യം;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    തിരികെ ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -372,19 +372,19 @@ static portFORCE_INLINE uint32_t Atomic_AND_u32( uint32_t volatile * pulDestinat
  *
  * @return The original value of *pulDestination.
  */
-static portFORCE_INLINE uint32_t Atomic_NAND_u32( uint32_t volatile * pulDestination,
-                                                  uint32_t ulValue )
+സ്ഥിതം portFORCE_INLINE uint32_t Atomic_NAND_u32( uint32_t അസ്ഥിര * pulDestination,
+                                                  uint32_t ul_മൂല്യം )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulDestination;
-        *pulDestination = ~( ulCurrent & ulValue );
+        *pulDestination = ~( ulCurrent & ul_മൂല്യം );
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    തിരികെ ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -399,19 +399,19 @@ static portFORCE_INLINE uint32_t Atomic_NAND_u32( uint32_t volatile * pulDestina
  *
  * @return The original value of *pulDestination.
  */
-static portFORCE_INLINE uint32_t Atomic_XOR_u32( uint32_t volatile * pulDestination,
-                                                 uint32_t ulValue )
+സ്ഥിതം portFORCE_INLINE uint32_t Atomic_XOR_u32( uint32_t അസ്ഥിര * pulDestination,
+                                                 uint32_t ul_മൂല്യം )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulDestination;
-        *pulDestination ^= ulValue;
+        *pulDestination ^= ul_മൂല്യം;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    തിരികെ ulCurrent;
 }
 
 /* *INDENT-OFF* */

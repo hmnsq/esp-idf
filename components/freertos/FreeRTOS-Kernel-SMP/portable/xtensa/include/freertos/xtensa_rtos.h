@@ -50,19 +50,19 @@
 #define XTENSA_RTOS_H
 
 #ifdef __ASSEMBLER__
-#include    <xtensa/coreasm.h>
-#else
-#include    <xtensa/config/core.h>
+#അന്തര്ഭാവ    <xtensa/coreasm.h>
+#അല്ലെങ്കിൽ
+#അന്തര്ഭാവ    <xtensa/config/core.h>
 #endif
 
-#include    <xtensa/corebits.h>
-#include    <xtensa/config/system.h>
-#include    "sdkconfig.h"
+#അന്തര്ഭാവ    <xtensa/corebits.h>
+#അന്തര്ഭാവ    <xtensa/config/system.h>
+#അന്തര്ഭാവ    "sdkconfig.h"
 
 /*
 Include any RTOS specific definitions that are needed by this header.
 */
-#include    "freertos/FreeRTOSConfig.h"
+#അന്തര്ഭാവ    "freertos/FreeRTOSConfig.h"
 
 /*
 Convert FreeRTOSConfig definitions to XTENSA definitions.
@@ -70,30 +70,30 @@ However these can still be overridden from the command line.
 */
 
 #ifndef XT_SIMULATOR
-  #if configXT_SIMULATOR
+  #എങ്കിൽ configXT_SIMULATOR
     #define XT_SIMULATOR             1  /* Simulator mode */
   #endif
 #endif
 
 #ifndef XT_BOARD
-  #if configXT_BOARD
+  #എങ്കിൽ configXT_BOARD
     #define XT_BOARD                 1  /* Board mode */
   #endif
 #endif
 
 #ifndef XT_TIMER_INDEX
-  #if defined configXT_TIMER_INDEX
+  #എങ്കിൽ defined configXT_TIMER_INDEX
     #define XT_TIMER_INDEX           configXT_TIMER_INDEX  /* Index of hardware timer to be used */
   #endif
 #endif
 
 #ifndef XT_INTEXC_HOOKS
-  #if configXT_INTEXC_HOOKS
+  #എങ്കിൽ configXT_INTEXC_HOOKS
     #define XT_INTEXC_HOOKS          1  /* Enables exception hooks */
   #endif
 #endif
 
-#if (!XT_SIMULATOR) && (!XT_BOARD)
+#എങ്കിൽ (!XT_SIMULATOR) && (!XT_BOARD)
   #error Either XT_SIMULATOR or XT_BOARD must be defined.
 #endif
 
@@ -108,7 +108,7 @@ Check some Xtensa configuration requirements and report error if not met.
 Error messages can be customize to the RTOS port.
 */
 
-#if !XCHAL_HAVE_XEA2
+#എങ്കിൽ !XCHAL_HAVE_XEA2
 #error "FreeRTOS/Xtensa requires XEA2 (exception architecture 2)."
 #endif
 
@@ -176,7 +176,7 @@ only be called from assembly code and by the 'call0' instruction.
 The implementation may use only a2-4, a15 (all other regs must be preserved).
 */
 // void XT_RTOS_CP_EXC_HOOK(void)
-#if XCHAL_CP_NUM > 0
+#എങ്കിൽ XCHAL_CP_അക്കം > 0
 #define XT_RTOS_CP_EXC_HOOK   _frxt_coproc_exc_hook
 #endif
 
@@ -214,11 +214,11 @@ To enable interrupt/exception hooks, compile the RTOS with '-DXT_INTEXC_HOOKS'.
 
 *******************************************************************************/
 
-#define XT_INTEXC_HOOK_NUM  (1 + XCHAL_NUM_INTLEVELS + XCHAL_HAVE_NMI)
+#define XT_INTEXC_HOOK_അക്കം  (1 + XCHAL_അക്കം_INTLEVELS + XCHAL_HAVE_NMI)
 
 #ifndef __ASSEMBLER__
-typedef unsigned (*XT_INTEXC_HOOK)(unsigned cause);
-extern  volatile XT_INTEXC_HOOK _xt_intexc_hooks[XT_INTEXC_HOOK_NUM];
+തരനിർവചനം unsigned (*XT_INTEXC_HOOK)(unsigned cause);
+ബാഹ്യ  അസ്ഥിര XT_INTEXC_HOOK _xt_intexc_hooks[XT_INTEXC_HOOK_അക്കം];
 #endif
 
 
@@ -231,10 +231,10 @@ These headers are included last so they can use the RTOS definitions above.
 
 *******************************************************************************/
 
-#include    "xtensa_context.h"
+#അന്തര്ഭാവ    "xtensa_context.h"
 
 #ifdef XT_RTOS_TIMER_INT
-#include    "xtensa_timer.h"
+#അന്തര്ഭാവ    "xtensa_timer.h"
 #endif
 
 

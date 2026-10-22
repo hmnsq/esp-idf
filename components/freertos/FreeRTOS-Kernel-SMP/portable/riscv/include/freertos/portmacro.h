@@ -6,44 +6,44 @@
 
 #pragma once
 
-#include "sdkconfig.h"
+#അന്തര്ഭാവ "sdkconfig.h"
 
 /* Macros used instead ofsetoff() for better performance of interrupt handler */
-#if CONFIG_FREERTOS_USE_LIST_DATA_INTEGRITY_CHECK_BYTES
+#എങ്കിൽ CONFIG_FREERTOS_USE_LIST_DATA_INTEGRITY_CHECK_BYTES
 /*
 pxTopOfStack (4) +
 xStateListItem (28) +
 xEventListItem (28) +
 uxPriority (4)
 */
-#define PORT_OFFSET_PX_STACK 0x40
-#else
+#define PORT_OFFSET_PX_അട്ടി 0x40
+#അല്ലെങ്കിൽ
 /*
 pxTopOfStack (4) +
 xStateListItem (20) +
 xEventListItem (20) +
 uxPriority (4)
 */
-#define PORT_OFFSET_PX_STACK 0x30
+#define PORT_OFFSET_PX_അട്ടി 0x30
 #endif /* #if CONFIG_FREERTOS_USE_LIST_DATA_INTEGRITY_CHECK_BYTES */
 
-#if ( configNUMBER_OF_CORES > 1 )
+#എങ്കിൽ ( config_സംഖ്യ_OF_CORES > 1 )
 #define PORT_TCB_CORE_FIELDS_SIZE 8
-#else
+#അല്ലെങ്കിൽ
 #define PORT_TCB_CORE_FIELDS_SIZE 0
 #endif
 
-#if ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
+#എങ്കിൽ ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
 #define PORT_TCB_PREEMPT_DISABLE_FIELD_SIZE 4
-#else
+#അല്ലെങ്കിൽ
 #define PORT_TCB_PREEMPT_DISABLE_FIELD_SIZE 0
 #endif
 
 /* Align the value up to the nearest multiple of 4 */
-#define PORT_ALIGN_UP_TO_4(value) (((value) + 3) & ~3)
+#define PORT_ALIGN_UP_TO_4(മൂല്യം) (((മൂല്യം) + 3) & ~3)
 
-#define PORT_OFFSET_PX_END_OF_STACK ( \
-    PORT_OFFSET_PX_STACK \
+#define PORT_OFFSET_PX_END_OF_അട്ടി ( \
+    PORT_OFFSET_PX_അട്ടി \
     + 4                                 /* StackType_t * pxStack */ \
     + PORT_TCB_CORE_FIELDS_SIZE                     /* BaseType_t xDummy23 + UBaseType_t uxDummy24 */ \
     + PORT_ALIGN_UP_TO_4(configMAX_TASK_NAME_LEN)   /* pcTaskName[ configMAX_TASK_NAME_LEN ] */ \
@@ -52,16 +52,16 @@ uxPriority (4)
 
 #ifndef __ASSEMBLER__
 
-#include <stdint.h>
-#include "spinlock.h"
-#include "soc/interrupt_reg.h"
-#include "esp_macros.h"
-#include "esp_cpu.h"
-#include "esp_private/crosscore_int.h"
-#include "esp_memory_utils.h"
+#അന്തര്ഭാവ <stdint.h>
+#അന്തര്ഭാവ "spinlock.h"
+#അന്തര്ഭാവ "soc/interrupt_reg.h"
+#അന്തര്ഭാവ "esp_macros.h"
+#അന്തര്ഭാവ "esp_cpu.h"
+#അന്തര്ഭാവ "esp_private/crosscore_int.h"
+#അന്തര്ഭാവ "esp_memory_utils.h"
 
 #ifdef __cplusplus
-extern "C" {
+ബാഹ്യ "C" {
 #endif
 
 /* --------------------------------------------------- Port Types ------------------------------------------------------
@@ -72,28 +72,28 @@ extern "C" {
  * ------------------------------------------------------------------------------------------------------------------ */
 
 #define portCHAR                    uint8_t
-#define portFLOAT                   float
-#define portDOUBLE                  double
+#define portFLOAT                   ദശാംശം
+#define portDOUBLE                  ഇരട്ട
 #define portLONG                    int32_t
 #define portSHORT                   int16_t
-#define portSTACK_TYPE              uint8_t
-#define portBASE_TYPE               int
+#define port_അട്ടി_TYPE              uint8_t
+#define portBASE_TYPE               പൂർണ്ണസംഖ്യ
 
-typedef portSTACK_TYPE              StackType_t;
-typedef portBASE_TYPE               BaseType_t;
-typedef unsigned portBASE_TYPE      UBaseType_t;
+തരനിർവചനം port_അട്ടി_TYPE              അട്ടി_Type_t;
+തരനിർവചനം portBASE_TYPE               BaseType_t;
+തരനിർവചനം unsigned portBASE_TYPE      UBaseType_t;
 
-#if ( configUSE_16_BIT_TICKS == 1 )
-typedef uint16_t TickType_t;
+#എങ്കിൽ ( configUSE_16_BIT_TICKS == 1 )
+തരനിർവചനം uint16_t TickType_t;
 #define portMAX_DELAY ( TickType_t )  0xffff
-#else
-typedef uint32_t TickType_t;
+#അല്ലെങ്കിൽ
+തരനിർവചനം uint32_t TickType_t;
 #define portMAX_DELAY ( TickType_t )  0xffffffffUL
 #endif
 
 /* Task function macros as described on the FreeRTOS.org WEB site. */
-#define portTASK_FUNCTION_PROTO( vFunction, pvParameters )  void vFunction( void *pvParameters )
-#define portTASK_FUNCTION( vFunction, pvParameters )          void vFunction( void *pvParameters )
+#define portTASK_FUNCTION_PROTO( vFunction, pvParameters )  ശൂന്യം vFunction( ശൂന്യം *pvParameters )
+#define portTASK_FUNCTION( vFunction, pvParameters )          ശൂന്യം vFunction( ശൂന്യം *pvParameters )
 
 /* ----------------------------------------------- Port Configurations -------------------------------------------------
  * - Configurations values supplied by each port
@@ -101,10 +101,10 @@ typedef uint32_t TickType_t;
  * ------------------------------------------------------------------------------------------------------------------ */
 
 #define portCRITICAL_NESTING_IN_TCB     1
-#define portSTACK_GROWTH                ( -1 )
+#define port_അട്ടി_GROWTH                ( -1 )
 #define portTICK_PERIOD_MS              ( ( TickType_t ) ( 1000 / configTICK_RATE_HZ ) )
 #define portBYTE_ALIGNMENT              16
-#define portNOP() __asm volatile        (" nop ")
+#define portNOP() __asm അസ്ഥിര        (" nop ")
 
 /* ---------------------------------------------- Forward Declarations -------------------------------------------------
  * - Forward declarations of all the port functions and macros needed to implement the FreeRTOS porting interface
@@ -115,7 +115,7 @@ typedef uint32_t TickType_t;
  - Spinlocks added to match API with SMP FreeRTOS. Single core RISC-V does not need spin locks
  * ------------------------------------------------------ */
 
-typedef spinlock_t                          portMUX_TYPE;               /**< Spinlock type used by FreeRTOS critical sections */
+തരനിർവചനം spinlock_t                          portMUX_TYPE;               /**< Spinlock type used by FreeRTOS critical sections */
 
 #define portMUX_INITIALIZER_UNLOCKED        SPINLOCK_INITIALIZER        /**< Spinlock initializer */
 #define portMUX_FREE_VAL                    SPINLOCK_FREE               /**< Spinlock is free. [refactor-todo] check if this is still required */
@@ -125,54 +125,54 @@ typedef spinlock_t                          portMUX_TYPE;               /**< Spi
 
 // --------------------- Interrupts ------------------------
 
-BaseType_t xPortCheckIfInISR(void);
+BaseType_t xPortCheckIfInISR(ശൂന്യം);
 
 /**
  * @brief Assert if in ISR context
  *
  * - Asserts on xPortCheckIfInISR() internally
  */
-void vPortAssertIfInISR(void);
+ശൂന്യം vPortAssertIfInISR(ശൂന്യം);
 
 // ------------------ Critical Sections --------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
+#എങ്കിൽ ( config_സംഖ്യ_OF_CORES > 1 )
 /*
 These are always called with interrupts already disabled. We simply need to get/release the spinlocks
 */
-extern portMUX_TYPE port_xTaskLock;
-extern portMUX_TYPE port_xISRLock;
+ബാഹ്യ portMUX_TYPE port_xTaskLock;
+ബാഹ്യ portMUX_TYPE port_xISRLock;
 
-void vPortTakeLock( portMUX_TYPE *lock );
-void vPortReleaseLock( portMUX_TYPE *lock );
+ശൂന്യം vPortTakeLock( portMUX_TYPE *lock );
+ശൂന്യം vPortReleaseLock( portMUX_TYPE *lock );
 #endif /* configNUMBER_OF_CORES > 1 */
 
 // ---------------------- Yielding -------------------------
 
-void vPortYield( void );
-static inline void __attribute__((always_inline)) vPortYieldCore( BaseType_t xCoreID );
+ശൂന്യം vPortYield( ശൂന്യം );
+സ്ഥിതം വരിയിൽ ശൂന്യം __attribute__((always_inline)) vPortYieldCore( BaseType_t xCoreID );
 
 /**
  * @brief Set interrupt mask and return current interrupt enable register
  *
  * @return UBaseType_t Current interrupt enable register before set
  */
-UBaseType_t ulPortSetInterruptMask(void);
+UBaseType_t ulPortSetInterruptMask(ശൂന്യം);
 
 /**
  * @brief Clear current interrupt mask and set given mask
  *
  * @param mask Interrupt mask
  */
-void vPortClearInterruptMask(UBaseType_t mask);
+ശൂന്യം vPortClearInterruptMask(UBaseType_t mask);
 
 /**
  * @brief Perform a context switch from an ISR
  */
-void vPortYieldFromISR(void);
+ശൂന്യം vPortYieldFromISR(ശൂന്യം);
 
 #define portYIELD_FROM_ISR_CHECK(x)     ({ \
-    if ( (x) == pdTRUE ) { \
+    എങ്കിൽ ( (x) == pdTRUE ) { \
         vPortYieldFromISR(); \
     } \
 })
@@ -180,7 +180,7 @@ void vPortYieldFromISR(void);
 
 // ----------------------- System --------------------------
 
-static inline BaseType_t __attribute__((always_inline)) xPortGetCoreID( void );
+സ്ഥിതം വരിയിൽ BaseType_t __attribute__((always_inline)) xPortGetCoreID( ശൂന്യം );
 
 // --------------------- TCB Cleanup -----------------------
 
@@ -191,7 +191,7 @@ static inline BaseType_t __attribute__((always_inline)) xPortGetCoreID( void );
  * deleted task's memory is freed. We map that macro to this internal function
  * so that IDF FreeRTOS ports can inject some task pre-deletion operations.
  */
-void vPortTCBPreDeleteHook( void *pxTCB );
+ശൂന്യം vPortTCBPreDeleteHook( ശൂന്യം *pxTCB );
 
 /* ------------------------------------------- FreeRTOS Porting Interface ----------------------------------------------
  * - Contains all the mappings of the macros required by FreeRTOS
@@ -202,15 +202,15 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 // --------------------- Interrupts ------------------------
 
 #define portDISABLE_INTERRUPTS()                    ulPortSetInterruptMask()
-#if !SOC_INT_CLIC_SUPPORTED
+#എങ്കിൽ !SOC_INT_CLIC_SUPPORTED
 #define portENABLE_INTERRUPTS()                     vPortClearInterruptMask(RVHAL_INTR_ENABLE_THRESH)
-#else
+#അല്ലെങ്കിൽ
 #define portENABLE_INTERRUPTS()                     vPortClearInterruptMask(RVHAL_INTR_ENABLE_THRESH_CLIC)
 #endif /* !SOC_INT_CLIC_SUPPORTED */
 #define portRESTORE_INTERRUPTS(x)                   vPortClearInterruptMask(x)
 
 #define portSET_INTERRUPT_MASK_FROM_ISR() ({           \
-    unsigned int cur_level; \
+    unsigned പൂർണ്ണസംഖ്യ cur_level; \
     cur_level = ulPortSetInterruptMask(); \
     cur_level; \
 })
@@ -229,7 +229,7 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 
 // ------------------ Critical Sections --------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
+#എങ്കിൽ ( config_സംഖ്യ_OF_CORES > 1 )
 #define portGET_TASK_LOCK()                         vPortTakeLock(&port_xTaskLock)
 #define portRELEASE_TASK_LOCK()                     vPortReleaseLock(&port_xTaskLock)
 #define portGET_ISR_LOCK()                          vPortTakeLock(&port_xISRLock)
@@ -237,15 +237,15 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 #endif /* configNUMBER_OF_CORES > 1 */
 
 //Critical sections used by FreeRTOS SMP
-extern void vTaskEnterCritical( void );
-extern void vTaskExitCritical( void );
+ബാഹ്യ ശൂന്യം vTaskEnterCritical( ശൂന്യം );
+ബാഹ്യ ശൂന്യം vTaskExitCritical( ശൂന്യം );
 #define portENTER_CRITICAL_SMP()                    vTaskEnterCritical();
 #define portEXIT_CRITICAL_SMP()                     vTaskExitCritical();
 
-#if defined(__cplusplus) && (__cplusplus >  201703L)
+#എങ്കിൽ defined(__cplusplus) && (__cplusplus >  201703L)
 #define portENTER_CRITICAL(...)                     CHOOSE_MACRO_VA_ARG(portENTER_CRITICAL_IDF, portENTER_CRITICAL_SMP __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
 #define portEXIT_CRITICAL(...)                      CHOOSE_MACRO_VA_ARG(portEXIT_CRITICAL_IDF, portEXIT_CRITICAL_SMP __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
-#else
+#അല്ലെങ്കിൽ
 #define portENTER_CRITICAL(...)                     CHOOSE_MACRO_VA_ARG(portENTER_CRITICAL_IDF, portENTER_CRITICAL_SMP, ##__VA_ARGS__)(__VA_ARGS__)
 #define portEXIT_CRITICAL(...)                      CHOOSE_MACRO_VA_ARG(portEXIT_CRITICAL_IDF, portEXIT_CRITICAL_SMP, ##__VA_ARGS__)(__VA_ARGS__)
 #endif
@@ -256,9 +256,9 @@ extern void vTaskExitCritical( void );
 // ---------------------- Yielding -------------------------
 
 #define portYIELD()                                 vPortYield()
-#if defined(__cplusplus) && (__cplusplus >  201703L)
+#എങ്കിൽ defined(__cplusplus) && (__cplusplus >  201703L)
 #define portYIELD_FROM_ISR(...)                     CHOOSE_MACRO_VA_ARG(portYIELD_FROM_ISR_CHECK, portYIELD_FROM_ISR_NO_CHECK __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
-#else
+#അല്ലെങ്കിൽ
 #define portYIELD_FROM_ISR(...)                     CHOOSE_MACRO_VA_ARG(portYIELD_FROM_ISR_CHECK, portYIELD_FROM_ISR_NO_CHECK, ##__VA_ARGS__)(__VA_ARGS__)
 #endif
 #define portYIELD_CORE(x)                           vPortYieldCore(x)
@@ -271,9 +271,9 @@ extern void vTaskExitCritical( void );
 // ------------------- Run Time Stats ----------------------
 
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
-#if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
-configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
-#define portGET_RUN_TIME_COUNTER_VALUE()        xPortGetRunTimeCounterValue()
+#എങ്കിൽ ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
+configRUN_TIME_COUNTER_TYPE x_Port_Get_Run_Time_Counter_മൂല്യം( ശൂന്യം );
+#define port_GET_RUN_TIME_COUNTER_മൂല്യം()        x_Port_Get_Run_Time_Counter_മൂല്യം()
 #endif
 
 // --------------------- TCB Cleanup -----------------------
@@ -289,26 +289,26 @@ configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
 
 // ---------------------- Yielding -------------------------
 
-static inline void __attribute__((always_inline)) vPortYieldCore( BaseType_t xCoreID )
+സ്ഥിതം വരിയിൽ ശൂന്യം __attribute__((always_inline)) vPortYieldCore( BaseType_t xCoreID )
 {
     esp_crosscore_int_send_yield( xCoreID );
 }
 
 // ----------------------- System --------------------------
 
-static inline BaseType_t __attribute__((always_inline)) xPortGetCoreID( void )
+സ്ഥിതം വരിയിൽ BaseType_t __attribute__((always_inline)) xPortGetCoreID( ശൂന്യം )
 {
-    return (BaseType_t) esp_cpu_get_core_id();
+    തിരികെ (BaseType_t) esp_cpu_get_core_id();
 }
 
 /* ------------------------------------------------ IDF Compatibility --------------------------------------------------
  * - These macros and functions need to be defined for IDF to compile
  * ------------------------------------------------------------------------------------------------------------------ */
 
-static inline BaseType_t xPortInIsrContext(void)
+സ്ഥിതം വരിയിൽ BaseType_t xPortInIsrContext(ശൂന്യം)
 {
     //Just call the FreeRTOS port interface version
-    return xPortCheckIfInISR();
+    തിരികെ xPortCheckIfInISR();
 }
 
 // Added for backward compatibility with IDF
@@ -324,17 +324,17 @@ Note: The IDF Style critical sections are named differently to their counterpart
 examples such as esp_zigbee_gateway, when compiled for RISC-V targets, have a reference to vPortEnterCritical()
 and vPortExitCritical() from precompiled libraries (.a) thereby failing linking.
 */
-void vPortEnterCritical(void);
-void vPortExitCritical(void);
+ശൂന്യം vPortEnterCritical(ശൂന്യം);
+ശൂന്യം vPortExitCritical(ശൂന്യം);
 
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+#എങ്കിൽ CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
 /**
  * @brief Claim thread-safe region start
  *        If claimed, vPortEnterCritical/vPortExitCritical on the current core are no-ops.
  *        Only can be used in single-core running context with interrupts disabled.
  * @note !!! Caller must guarantee thread safety between Claim and Disclaim !!!
  */
-void xPortThreadSafeClaim(void);
+ശൂന്യം xPortThreadSafeClaim(ശൂന്യം);
 
 /**
  * @brief Claim thread-safe region end
@@ -342,28 +342,28 @@ void xPortThreadSafeClaim(void);
  *        Only can be used in single-core running context with interrupts disabled.
  * @note !!! Caller must guarantee thread safety between Claim and Disclaim !!!
  */
-void xPortThreadSafeDisclaim(void);
+ശൂന്യം xPortThreadSafeDisclaim(ശൂന്യം);
 
-extern volatile bool port_xThreadSafeClaimed;
+ബാഹ്യ അസ്ഥിര bool port_xThreadSafeClaimed;
 #endif /* CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM */
 
 //IDF task critical sections
-#define portTRY_ENTER_CRITICAL(lock, timeout)       ({(void) lock; (void) timeout; vPortEnterCritical(); pdPASS;})
-#define portENTER_CRITICAL_IDF(lock)                ({(void) lock; vPortEnterCritical();})
-#define portEXIT_CRITICAL_IDF(lock)                 ({(void) lock; vPortExitCritical();})
+#define portTRY_ENTER_CRITICAL(lock, timeout)       ({(ശൂന്യം) lock; (ശൂന്യം) timeout; vPortEnterCritical(); pdPASS;})
+#define portENTER_CRITICAL_IDF(lock)                ({(ശൂന്യം) lock; vPortEnterCritical();})
+#define portEXIT_CRITICAL_IDF(lock)                 ({(ശൂന്യം) lock; vPortExitCritical();})
 //IDF ISR critical sections
-#define portTRY_ENTER_CRITICAL_ISR(lock, timeout)   ({(void) lock; (void) timeout; vPortEnterCritical(); pdPASS;})
-#define portENTER_CRITICAL_ISR(lock)                ({(void) lock; vPortEnterCritical();})
-#define portEXIT_CRITICAL_ISR(lock)                 ({(void) lock; vPortExitCritical();})
+#define portTRY_ENTER_CRITICAL_ISR(lock, timeout)   ({(ശൂന്യം) lock; (ശൂന്യം) timeout; vPortEnterCritical(); pdPASS;})
+#define portENTER_CRITICAL_ISR(lock)                ({(ശൂന്യം) lock; vPortEnterCritical();})
+#define portEXIT_CRITICAL_ISR(lock)                 ({(ശൂന്യം) lock; vPortExitCritical();})
 //IDF safe critical sections (they're the same)
-#define portENTER_CRITICAL_SAFE(lock)               ({(void) lock; vPortEnterCritical();})
-#define portEXIT_CRITICAL_SAFE(lock)                ({(void) lock; vPortExitCritical();})
+#define portENTER_CRITICAL_SAFE(lock)               ({(ശൂന്യം) lock; vPortEnterCritical();})
+#define portEXIT_CRITICAL_SAFE(lock)                ({(ശൂന്യം) lock; vPortExitCritical();})
 
 // ---------------------- Yielding -------------------------
 
-static inline bool xPortCanYield(void)
+സ്ഥിതം വരിയിൽ bool xPortCanYield(ശൂന്യം)
 {
-#if SOC_INT_CLIC_SUPPORTED
+#എങ്കിൽ SOC_INT_CLIC_SUPPORTED
     /* When CLIC is supported:
      *  - The lowest interrupt threshold level is 0. Therefore, an interrupt threshold level above 0 would mean that we
      *    are in a critical section.
@@ -374,14 +374,14 @@ static inline bool xPortCanYield(void)
      */
     uint32_t threshold = rv_utils_get_interrupt_threshold();
     uint32_t intr_level = rv_utils_get_interrupt_level();
-    return ((intr_level == 0) && (threshold == 0));
-#else/* !SOC_INT_CLIC_SUPPORTED */
+    തിരികെ ((intr_level == 0) && (threshold == 0));
+#അല്ലെങ്കിൽ/* !SOC_INT_CLIC_SUPPORTED */
     uint32_t threshold = REG_READ(INTERRUPT_CURRENT_CORE_INT_THRESH_REG);
     /* when enter critical code, FreeRTOS will mask threshold to RVHAL_EXCM_LEVEL
      * and exit critical code, will recover threshold value (1). so threshold <= 1
      * means not in critical code
      */
-    return (threshold <= 1);
+    തിരികെ (threshold <= 1);
 #endif
 }
 
@@ -390,7 +390,7 @@ static inline bool xPortCanYield(void)
 
 // ----------------------- System --------------------------
 
-void vPortSetStackWatchpoint(void *pxStackStart);
+ശൂന്യം v_Port_Set_അട്ടി_Watchpoint(ശൂന്യം *px_അട്ടി_Start);
 
 // -------------------- Heap Related -----------------------
 
@@ -403,7 +403,7 @@ void vPortSetStackWatchpoint(void *pxStackStart);
  * @return true Memory can be used to store a List
  * @return false Otherwise
  */
-bool xPortCheckValidListMem(const void *ptr);
+bool xPortCheckValidListMem(സ്ഥിരം ശൂന്യം *ptr);
 
 /**
  * @brief Checks if a given piece of memory can be used to store a task's TCB
@@ -414,7 +414,7 @@ bool xPortCheckValidListMem(const void *ptr);
  * @return true Memory can be used to store a TCB
  * @return false Otherwise
  */
-bool xPortCheckValidTCBMem(const void *ptr);
+bool xPortCheckValidTCBMem(സ്ഥിരം ശൂന്യം *ptr);
 
 /**
  * @brief Checks if a given piece of memory can be used to store a task's stack
@@ -425,11 +425,11 @@ bool xPortCheckValidTCBMem(const void *ptr);
  * @return true Memory can be used to store a task stack
  * @return false Otherwise
  */
-bool xPortcheckValidStackMem(const void *ptr);
+bool x_Portcheck_Valid_അട്ടി_Mem(സ്ഥിരം ശൂന്യം *ptr);
 
 #define portVALID_LIST_MEM(ptr)     xPortCheckValidListMem(ptr)
 #define portVALID_TCB_MEM(ptr)      xPortCheckValidTCBMem(ptr)
-#define portVALID_STACK_MEM(ptr)    xPortcheckValidStackMem(ptr)
+#define port_VALID_അട്ടി_MEM(ptr)    x_Portcheck_Valid_അട്ടി_Mem(ptr)
 
 /* ------------------------------------------------------ Misc ---------------------------------------------------------
  * - Miscellaneous porting macros
@@ -438,10 +438,10 @@ bool xPortcheckValidStackMem(const void *ptr);
 
 // --------------------- App-Trace -------------------------
 
-#if CONFIG_ESP_TRACE_ENABLE
-extern volatile BaseType_t xPortSwitchFlag;
+#എങ്കിൽ CONFIG_ESP_TRACE_ENABLE
+ബാഹ്യ അസ്ഥിര BaseType_t xPortSwitchFlag;
 #define os_task_switch_is_pended(_cpu_) (xPortSwitchFlag)
-#else
+#അല്ലെങ്കിൽ
 #define os_task_switch_is_pended(_cpu_) (false)
 #endif
 
@@ -453,15 +453,15 @@ portmacro.h. Therefore, we need to keep these headers around for now to allow th
 [refactor-todo] Clean up ESP-IDF inclusion dependencies and add a inclusion check.
 */
 
-#include <stdlib.h>
-#include <stdbool.h>
-#include <stdarg.h>
-#include <limits.h>
-#include "esp_attr.h"
-#include "esp_newlib.h"
-#include "esp_heap_caps.h"
-#include "esp_rom_sys.h"
-#include "esp_system.h"             /* required by esp_get_...() functions in portable.h. [refactor-todo] Update portable.h */
+#അന്തര്ഭാവ <stdlib.h>
+#അന്തര്ഭാവ <stdbool.h>
+#അന്തര്ഭാവ <stdarg.h>
+#അന്തര്ഭാവ <limits.h>
+#അന്തര്ഭാവ "esp_attr.h"
+#അന്തര്ഭാവ "esp_newlib.h"
+#അന്തര്ഭാവ "esp_heap_caps.h"
+#അന്തര്ഭാവ "esp_rom_sys.h"
+#അന്തര്ഭാവ "esp_system.h"             /* required by esp_get_...() functions in portable.h. [refactor-todo] Update portable.h */
 
 
 #ifdef __cplusplus

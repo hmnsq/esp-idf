@@ -37,26 +37,26 @@
 
 
 #ifdef XT_BOARD
-#include "xtensa/xtbsp.h"
+#അന്തര്ഭാവ "xtensa/xtbsp.h"
 #endif
 
-#include "xtensa_rtos.h"
-#include "sdkconfig.h"
-#include "esp_private/esp_clk.h"
+#അന്തര്ഭാവ "xtensa_rtos.h"
+#അന്തര്ഭാവ "sdkconfig.h"
+#അന്തര്ഭാവ "esp_private/esp_clk.h"
 
 #ifdef XT_RTOS_TIMER_INT
 
-unsigned _xt_tick_divisor = 0;  /* cached number of cycles per tick */
+unsigned xt_tick_ഹാരകം = 0;  /* cached number of cycles per tick */
 
-void _xt_tick_divisor_init(void)
+ശൂന്യം xt_tick_ഹാരകം_init(ശൂന്യം)
 {
-    _xt_tick_divisor = esp_clk_cpu_freq() / XT_TICK_PER_SEC;
+    xt_tick_ഹാരകം = esp_clk_cpu_freq() / XT_TICK_PER_SEC;
 }
 
 /* Deprecated, to be removed */
-int xt_clock_freq(void)
+പൂർണ്ണസംഖ്യ xt_clock_freq(ശൂന്യം)
 {
-    return esp_clk_cpu_freq();
+    തിരികെ esp_clk_cpu_freq();
 }
 
 #endif /* XT_RTOS_TIMER_INT */
