@@ -31,20 +31,20 @@
  *
  */
 
-#pragma once
+#आशय once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#अगर_घोषित __cplusplus
+बाह्य "C" {
+#पूर्ण_अगर
 
-#include <stdbool.h>
-#include <time.h>
+#समावेश <stdbool.h>
+#समावेश <time.h>
 
 /**
  * @brief
  *
  */
-typedef struct event
+प्रकार काष्ठा event
 {
     pthread_mutex_t mutex;
     pthread_cond_t cond;
@@ -57,14 +57,14 @@ typedef struct event
  *
  * @return event_t*
  */
-event_t *event_create(void);
+event_t *event_create(व्योम);
 
 /**
  * @brief
  *
  * @param ev
  */
-void event_delete(event_t *ev);
+व्योम event_delete(event_t *ev);
 
 /**
  * @brief
@@ -83,22 +83,22 @@ bool event_wait(event_t *ev);
  * @return true
  * @return false
  */
-bool event_wait_timed(event_t *ev, time_t ms);
+bool event_wait_timed(event_t *ev, समय_प्रकार ms);
 
 /**
  * @brief
  *
  * @param ev
  */
-void event_signal(event_t *ev);
+व्योम event_signal(event_t *ev);
 
 /**
  * @brief Discard a pending signal that was never consumed by a wait
  *
  * @param ev
  */
-void event_clear(event_t *ev);
+व्योम event_clear(event_t *ev);
 
-#ifdef __cplusplus
+#अगर_घोषित __cplusplus
 }
-#endif
+#पूर्ण_अगर

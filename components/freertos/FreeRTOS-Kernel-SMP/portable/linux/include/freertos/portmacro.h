@@ -30,17 +30,17 @@
  */
 
 
-#ifndef PORTMACRO_H
-#define PORTMACRO_H
+#अगर_अघोषित PORTMACRO_H
+#घोषणा PORTMACRO_H
 
-#include <limits.h>
-#include <stdint.h>
-#include "esp_macros.h"
-#include "spinlock.h"
+#समावेश <limits.h>
+#समावेश <stdint.h>
+#समावेश "esp_macros.h"
+#समावेश "spinlock.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#अगर_घोषित __cplusplus
+बाह्य "C" {
+#पूर्ण_अगर
 
 /* --------------------------------------------------- Port Types ------------------------------------------------------
  * - Port specific types.
@@ -50,27 +50,27 @@ extern "C" {
  * ------------------------------------------------------------------------------------------------------------------ */
 
 /* Type definitions. */
-#define portCHAR        char
-#define portFLOAT       float
-#define portDOUBLE      double
-#define portLONG        long
-#define portSHORT       short
-#define portSTACK_TYPE  unsigned long
-#define portBASE_TYPE   long
-#define portPOINTER_SIZE_TYPE intptr_t
+#घोषणा portCHAR        अक्षर
+#घोषणा portFLOAT       भग्न
+#घोषणा portDOUBLE      द्विगुन
+#घोषणा portLONG        दीर्घ
+#घोषणा portSHORT       लघु
+#घोषणा port_ढेर_TYPE  अचिन्हित दीर्घ
+#घोषणा portBASE_TYPE   दीर्घ
+#घोषणा port_POINTER_आकार_TYPE intptr_t
 
-typedef portSTACK_TYPE StackType_t;
-typedef portBASE_TYPE BaseType_t;
-typedef unsigned portBASE_TYPE UBaseType_t;
+प्रकार port_ढेर_TYPE ढेर_Type_t;
+प्रकार portBASE_TYPE BaseType_t;
+प्रकार अचिन्हित portBASE_TYPE UBaseType_t;
 
-typedef unsigned long TickType_t;
-#define portMAX_DELAY ( TickType_t ) ULONG_MAX
+प्रकार अचिन्हित दीर्घ TickType_t;
+#घोषणा portMAX_DELAY ( TickType_t ) अच_दीर्घ_उच्च
 
-#define portTICK_TYPE_IS_ATOMIC 1
+#घोषणा portTICK_TYPE_IS_ATOMIC 1
 
 /* Task function macros as described on the FreeRTOS.org WEB site. */
-#define portTASK_FUNCTION_PROTO( vFunction, pvParameters ) void vFunction( void *pvParameters )
-#define portTASK_FUNCTION( vFunction, pvParameters ) void vFunction( void *pvParameters )
+#घोषणा portTASK_FUNCTION_PROTO( vFunction, pvParameters ) व्योम vFunction( व्योम *pvParameters )
+#घोषणा portTASK_FUNCTION( vFunction, pvParameters ) व्योम vFunction( व्योम *pvParameters )
 /*-----------------------------------------------------------*/
 
 /* ----------------------------------------------- Port Configurations -------------------------------------------------
@@ -78,13 +78,13 @@ typedef unsigned long TickType_t;
  * - Required by FreeRTOS
  * ------------------------------------------------------------------------------------------------------------------ */
 
-#define portCRITICAL_NESTING_IN_TCB     1
-#define portSTACK_GROWTH                ( -1 )
-#define portHAS_STACK_OVERFLOW_CHECKING ( 1 )   // Set in non-SMP POSIX port
-#define portTICK_PERIOD_MS              ( ( TickType_t ) 1000 / configTICK_RATE_HZ )
-#define portTICK_RATE_MICROSECONDS      ( ( TickType_t ) 1000000 / configTICK_RATE_HZ )
-#define portBYTE_ALIGNMENT              8
-#define portNOP() __asm volatile        (" nop ")
+#घोषणा portCRITICAL_NESTING_IN_TCB     1
+#घोषणा port_ढेर_GROWTH                ( -1 )
+#घोषणा port_HAS_ढेर_OVERFLOW_CHECKING ( 1 )   // Set in non-SMP POSIX port
+#घोषणा portTICK_PERIOD_MS              ( ( TickType_t ) 1000 / configTICK_RATE_HZ )
+#घोषणा portTICK_RATE_MICROSECONDS      ( ( TickType_t ) 1000000 / configTICK_RATE_HZ )
+#घोषणा portBYTE_ALIGNMENT              8
+#घोषणा portNOP() __asm अस्थिर        (" nop ")
 /*-----------------------------------------------------------*/
 
 /* ---------------------------------------------- Forward Declarations -------------------------------------------------
@@ -94,52 +94,52 @@ typedef unsigned long TickType_t;
 
 // ---------------------- Spinlocks ------------------------
 
-typedef spinlock_t                          portMUX_TYPE;               /**< Spinlock type used by FreeRTOS critical sections */
+प्रकार spinlock_t                          portMUX_TYPE;               /**< Spinlock type used by FreeRTOS critical sections */
 /**< Spinlock initializer */
-#define portMUX_INITIALIZER_UNLOCKED        SPINLOCK_INITIALIZER        /**< Spinlock initializer */
-#define portMUX_FREE_VAL                    SPINLOCK_FREE           /**< Spinlock is free. [refactor-todo] check if this is still required */
-#define portMUX_NO_TIMEOUT                  SPINLOCK_WAIT_FOREVER       /**< When passed for 'timeout_cycles', spin forever if necessary. [refactor-todo] check if this is still required */
-#define portMUX_TRY_LOCK                    SPINLOCK_NO_WAIT            /**< Try to acquire the spinlock a single time only. [refactor-todo] check if this is still required */
-#define portMUX_INITIALIZE(mux)             spinlock_initialize(mux)    /*< Initialize a spinlock to its unlocked state */
+#घोषणा portMUX_INITIALIZER_UNLOCKED        SPINLOCK_INITIALIZER        /**< Spinlock initializer */
+#घोषणा portMUX_FREE_VAL                    SPINLOCK_FREE           /**< Spinlock is free. [refactor-todo] check if this is still required */
+#घोषणा portMUX_NO_TIMEOUT                  SPINLOCK_WAIT_FOREVER       /**< When passed for 'timeout_cycles', spin forever if necessary. [refactor-todo] check if this is still required */
+#घोषणा portMUX_TRY_LOCK                    SPINLOCK_NO_WAIT            /**< Try to acquire the spinlock a single time only. [refactor-todo] check if this is still required */
+#घोषणा portMUX_INITIALIZE(mux)             spinlock_initialize(mux)    /*< Initialize a spinlock to its unlocked state */
 
 // ----------------------- Memory --------------------------
 
 // --------------------- Interrupts ------------------------
 
-BaseType_t xPortCheckIfInISR(void);
+BaseType_t xPortCheckIfInISR(व्योम);
 
 // ------------------ Critical Sections --------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
+#अगर ( config_संख्या_OF_CORES > 1 )
 /*
 These are always called with interrupts already disabled. We simply need to get/release the spinlocks
 */
-extern portMUX_TYPE port_xTaskLock;
-extern portMUX_TYPE port_xISRLock;
+बाह्य portMUX_TYPE port_xTaskLock;
+बाह्य portMUX_TYPE port_xISRLock;
 
-void vPortTakeLock( portMUX_TYPE *lock );
-void vPortReleaseLock( portMUX_TYPE *lock );
-#endif /* configNUMBER_OF_CORES > 1 */
+व्योम vPortTakeLock( portMUX_TYPE *lock );
+व्योम vPortReleaseLock( portMUX_TYPE *lock );
+#पूर्ण_अगर /* configNUMBER_OF_CORES > 1 */
 
 // ---------------------- Yielding -------------------------
 
-void vPortYield( void );
-extern void vPortYieldFromISR( void );
+व्योम vPortYield( व्योम );
+बाह्य व्योम vPortYieldFromISR( व्योम );
 
-#define portYIELD_FROM_ISR_CHECK(x)     ({ \
-    if ( (x) == pdTRUE ) { \
+#घोषणा portYIELD_FROM_ISR_CHECK(x)     ({ \
+    अगर ( (x) == pdTRUE ) { \
         vPortYieldFromISR(); \
     } \
 })
-#define portYIELD_FROM_ISR_NO_CHECK()               vPortYieldFromISR()
+#घोषणा portYIELD_FROM_ISR_NO_CHECK()               vPortYieldFromISR()
 
 // ----------------------- System --------------------------
 
-static inline BaseType_t __attribute__((always_inline)) xPortGetCoreID( void );
+अटल अंतरभूत BaseType_t __attribute__((always_inline)) xPortGetCoreID( व्योम );
 
 // ----------------------- TCB Cleanup --------------------------
 
-void vPortCleanUpTCB ( void *pxTCB );
+व्योम vPortCleanUpTCB ( व्योम *pxTCB );
 
 /* ----------------------------------------- FreeRTOS SMP Porting Interface --------------------------------------------
  * - Contains all the mappings of the macros required by FreeRTOS SMP
@@ -150,61 +150,61 @@ void vPortCleanUpTCB ( void *pxTCB );
 
 // --------------------- Interrupts ------------------------
 
-#define portDISABLE_INTERRUPTS()                    xPortSetInterruptMask()
-#define portENABLE_INTERRUPTS()                     vPortClearInterruptMask(0)
+#घोषणा portDISABLE_INTERRUPTS()                    xPortSetInterruptMask()
+#घोषणा portENABLE_INTERRUPTS()                     vPortClearInterruptMask(0)
 
 // ------------------ Critical Sections --------------------
 
-#define portENTER_CRITICAL_SMP()                    vTaskEnterCritical();
-#define portEXIT_CRITICAL_SMP()                     vTaskExitCritical();
+#घोषणा portENTER_CRITICAL_SMP()                    vTaskEnterCritical();
+#घोषणा portEXIT_CRITICAL_SMP()                     vTaskExitCritical();
 
-#if defined(__cplusplus) && (__cplusplus >  201703L)
-#define portENTER_CRITICAL(...)                     CHOOSE_MACRO_VA_ARG(portENTER_CRITICAL_IDF, portENTER_CRITICAL_SMP __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
-#define portEXIT_CRITICAL(...)                      CHOOSE_MACRO_VA_ARG(portEXIT_CRITICAL_IDF, portEXIT_CRITICAL_SMP __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
-#else
-#define portENTER_CRITICAL(...)                     CHOOSE_MACRO_VA_ARG(portENTER_CRITICAL_IDF, portENTER_CRITICAL_SMP, ##__VA_ARGS__)(__VA_ARGS__)
-#define portEXIT_CRITICAL(...)                      CHOOSE_MACRO_VA_ARG(portEXIT_CRITICAL_IDF, portEXIT_CRITICAL_SMP, ##__VA_ARGS__)(__VA_ARGS__)
-#endif
+#अगर defined(__cplusplus) && (__cplusplus >  201703L)
+#घोषणा portENTER_CRITICAL(...)                     CHOOSE_MACRO_VA_ARG(portENTER_CRITICAL_IDF, portENTER_CRITICAL_SMP __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
+#घोषणा portEXIT_CRITICAL(...)                      CHOOSE_MACRO_VA_ARG(portEXIT_CRITICAL_IDF, portEXIT_CRITICAL_SMP __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
+#अन्यथा
+#घोषणा portENTER_CRITICAL(...)                     CHOOSE_MACRO_VA_ARG(portENTER_CRITICAL_IDF, portENTER_CRITICAL_SMP, ##__VA_ARGS__)(__VA_ARGS__)
+#घोषणा portEXIT_CRITICAL(...)                      CHOOSE_MACRO_VA_ARG(portEXIT_CRITICAL_IDF, portEXIT_CRITICAL_SMP, ##__VA_ARGS__)(__VA_ARGS__)
+#पूर्ण_अगर
 
-extern BaseType_t xPortSetInterruptMask( void );
-extern void vPortClearInterruptMask( BaseType_t xMask );
+बाह्य BaseType_t xPortSetInterruptMask( व्योम );
+बाह्य व्योम vPortClearInterruptMask( BaseType_t xMask );
 
-#define portSET_INTERRUPT_MASK_FROM_ISR() ({ \
+#घोषणा portSET_INTERRUPT_MASK_FROM_ISR() ({ \
     BaseType_t cur_level; \
     cur_level = xPortSetInterruptMask(); \
     vTaskEnterCritical(); \
     cur_level; \
 })
-#define portCLEAR_INTERRUPT_MASK_FROM_ISR(x) ({ \
+#घोषणा portCLEAR_INTERRUPT_MASK_FROM_ISR(x) ({ \
     vTaskExitCritical(); \
     vPortClearInterruptMask(x); \
 })
 
 // ---------------------- Yielding -------------------------
 
-#define portYIELD()                                 vPortYield()
-#if defined(__cplusplus) && (__cplusplus >  201703L)
-#define portYIELD_FROM_ISR(...)                     CHOOSE_MACRO_VA_ARG(portYIELD_FROM_ISR_CHECK, portYIELD_FROM_ISR_NO_CHECK __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
-#else
-#define portYIELD_FROM_ISR(...)                     CHOOSE_MACRO_VA_ARG(portYIELD_FROM_ISR_CHECK, portYIELD_FROM_ISR_NO_CHECK, ##__VA_ARGS__)(__VA_ARGS__)
-#endif
+#घोषणा portYIELD()                                 vPortYield()
+#अगर defined(__cplusplus) && (__cplusplus >  201703L)
+#घोषणा portYIELD_FROM_ISR(...)                     CHOOSE_MACRO_VA_ARG(portYIELD_FROM_ISR_CHECK, portYIELD_FROM_ISR_NO_CHECK __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
+#अन्यथा
+#घोषणा portYIELD_FROM_ISR(...)                     CHOOSE_MACRO_VA_ARG(portYIELD_FROM_ISR_CHECK, portYIELD_FROM_ISR_NO_CHECK, ##__VA_ARGS__)(__VA_ARGS__)
+#पूर्ण_अगर
 // Note that the Linux port does not provide portYIELD_CORE(x) because purely single core for now.
 
 // ----------------------- System --------------------------
 
-#define portGET_CORE_ID()                           xPortGetCoreID()
-#define portCHECK_IF_IN_ISR()                       xPortCheckIfInISR()
+#घोषणा portGET_CORE_ID()                           xPortGetCoreID()
+#घोषणा portCHECK_IF_IN_ISR()                       xPortCheckIfInISR()
 
 // ------------------- Run Time Stats ----------------------
 
-extern unsigned long ulPortGetRunTime( void );
-#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() /* no-op */
-#define portGET_RUN_TIME_COUNTER_VALUE()         ulPortGetRunTime()
+बाह्य अचिन्हित दीर्घ ulPortGetRunTime( व्योम );
+#घोषणा portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() /* no-op */
+#घोषणा port_GET_RUN_TIME_गणक_मूल्य()         ulPortGetRunTime()
 // TODO IDF-5723: no esp_timer implementation
 
 // ------------------- TCB Cleanup ----------------------
 
-#define portCLEAN_UP_TCB( pxTCB )                   vPortCleanUpTCB( pxTCB )
+#घोषणा portCLEAN_UP_TCB( pxTCB )                   vPortCleanUpTCB( pxTCB )
 
 /* --------------------------------------------- Inline Implementations ------------------------------------------------
  * - Implementation of inline functions of the forward declares
@@ -227,9 +227,9 @@ extern unsigned long ulPortGetRunTime( void );
  * @note dummy function for freertos simulator, always returns 0.
  @ return BaseType_t 0
  */
-static inline BaseType_t xPortGetCoreID(void)
+अटल अंतरभूत BaseType_t xPortGetCoreID(व्योम)
 {
-    return (BaseType_t) 0; // POSIX simulator is only single-core at the moment
+    वापस (BaseType_t) 0; // POSIX simulator is only single-core at the moment
 }
 
 /* ------------------------------------------------ IDF Compatibility --------------------------------------------------
@@ -238,13 +238,13 @@ static inline BaseType_t xPortGetCoreID(void)
 
 // --------------------- Interrupts ------------------------
 
-static inline BaseType_t xPortInIsrContext(void)
+अटल अंतरभूत BaseType_t xPortInIsrContext(व्योम)
 {
     //Just call the FreeRTOS port interface version
-    return xPortCheckIfInISR();
+    वापस xPortCheckIfInISR();
 }
 
-static inline void vPortAssertIfInISR(void)
+अटल अंतरभूत व्योम vPortAssertIfInISR(व्योम)
 {
     /* Assert if the interrupt nesting count is > 0 */
     configASSERT(xPortInIsrContext() == 0);
@@ -265,41 +265,41 @@ static inline void vPortAssertIfInISR(void)
 
 // ------------------ Critical Sections --------------------
 
-void vPortEnterCriticalIDF(void);
-void vPortExitCriticalIDF(void);
+व्योम vPortEnterCriticalIDF(व्योम);
+व्योम vPortExitCriticalIDF(व्योम);
 
 // We ignore the lock and timeout argument on POSIX simulator since it is single core
 
 //IDF task critical sections
-#define portTRY_ENTER_CRITICAL(lock, timeout)       ({(void) lock; (void) timeout; vPortEnterCriticalIDF(); pdPASS;})
-#define portENTER_CRITICAL_IDF(lock)                ({(void) lock; vPortEnterCriticalIDF();})
-#define portEXIT_CRITICAL_IDF(lock)                 ({(void) lock; vPortExitCriticalIDF();})
+#घोषणा portTRY_ENTER_CRITICAL(lock, timeout)       ({(व्योम) lock; (व्योम) timeout; vPortEnterCriticalIDF(); pdPASS;})
+#घोषणा portENTER_CRITICAL_IDF(lock)                ({(व्योम) lock; vPortEnterCriticalIDF();})
+#घोषणा portEXIT_CRITICAL_IDF(lock)                 ({(व्योम) lock; vPortExitCriticalIDF();})
 //IDF ISR critical sections
-#define portTRY_ENTER_CRITICAL_ISR(lock, timeout)   ({(void) lock; (void) timeout; vPortEnterCriticalIDF(); pdPASS;})
-#define portENTER_CRITICAL_ISR(lock)                ({(void) lock; vPortEnterCriticalIDF();})
-#define portEXIT_CRITICAL_ISR(lock)                 ({(void) lock; vPortExitCriticalIDF();})
+#घोषणा portTRY_ENTER_CRITICAL_ISR(lock, timeout)   ({(व्योम) lock; (व्योम) timeout; vPortEnterCriticalIDF(); pdPASS;})
+#घोषणा portENTER_CRITICAL_ISR(lock)                ({(व्योम) lock; vPortEnterCriticalIDF();})
+#घोषणा portEXIT_CRITICAL_ISR(lock)                 ({(व्योम) lock; vPortExitCriticalIDF();})
 //IDF safe critical sections (they're the same)
-#define portENTER_CRITICAL_SAFE(lock)               ({(void) lock; vPortEnterCriticalIDF();})
-#define portEXIT_CRITICAL_SAFE(lock)                ({(void) lock; vPortExitCriticalIDF();})
+#घोषणा portENTER_CRITICAL_SAFE(lock)               ({(व्योम) lock; vPortEnterCriticalIDF();})
+#घोषणा portEXIT_CRITICAL_SAFE(lock)                ({(व्योम) lock; vPortExitCriticalIDF();})
 
 // ---------------------- Yielding -------------------------
 
-extern void vPortYield( void );
-#define portYIELD() vPortYield()
+बाह्य व्योम vPortYield( व्योम );
+#घोषणा portYIELD() vPortYield()
 
 // ----------------------- System --------------------------
 
-bool portVALID_LIST_MEM(const void *ptr);
-bool portVALID_TCB_MEM(const void *ptr);
-bool portVALID_STACK_MEM(const void *ptr);
+bool portVALID_LIST_MEM(स्थिर व्योम *ptr);
+bool portVALID_TCB_MEM(स्थिर व्योम *ptr);
+bool port_VALID_ढेर_MEM(स्थिर व्योम *ptr);
 
 /*-----------------------------------------------------------*/
 
 /* POSIX-specific port functions */
 
-extern void vPortThreadDying( void *pxTaskToDelete, volatile BaseType_t *pxPendYield );
-extern void vPortCancelThread( void *pxTaskToDelete );
-#define portPRE_TASK_DELETE_HOOK( pvTaskToDelete, pxPendYield ) vPortThreadDying( ( pvTaskToDelete ), ( pxPendYield ) )
+बाह्य व्योम vPortThreadDying( व्योम *pxTaskToDelete, अस्थिर BaseType_t *pxPendYield );
+बाह्य व्योम vPortCancelThread( व्योम *pxTaskToDelete );
+#घोषणा portPRE_TASK_DELETE_HOOK( pvTaskToDelete, pxPendYield ) vPortThreadDying( ( pvTaskToDelete ), ( pxPendYield ) )
 /*-----------------------------------------------------------*/
 
 /*
@@ -310,10 +310,10 @@ extern void vPortCancelThread( void *pxTaskToDelete );
  * Thus, only a compiler barrier is needed to prevent the compiler
  * reordering.
  */
-#define portMEMORY_BARRIER() __asm volatile( "" ::: "memory" )
+#घोषणा portMEMORY_BARRIER() __asm अस्थिर( "" ::: "memory" )
 
-#ifdef __cplusplus
+#अगर_घोषित __cplusplus
 }
-#endif
+#पूर्ण_अगर
 
-#endif /* PORTMACRO_H */
+#पूर्ण_अगर /* PORTMACRO_H */

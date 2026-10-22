@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#pragma once
+#आशय once
 
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#समावेश "sdkconfig.h"
+#समावेश "freertos/FreeRTOS.h"
+#समावेश "freertos/task.h"
 
 /*
  * This header contains public API for FreeRTOS debugging features including task snapshots.
@@ -17,9 +17,9 @@
  */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#अगर_घोषित __cplusplus
+    बाह्य "C" {
+#पूर्ण_अगर
 /* *INDENT-ON* */
 
 /* -------------------------------------------------- Task Snapshot ------------------------------------------------- */
@@ -30,11 +30,11 @@
  * - Used with the uxTaskGetSnapshotAll() function to save memory snapshot of each task in the system.
  * - We need this structure because TCB_t is defined (hidden) in tasks.c.
  */
-typedef struct xTASK_SNAPSHOT
+प्रकार काष्ठा xTASK_SNAPSHOT
 {
-    void * pxTCB;               /*!< Address of the task control block. */
-    StackType_t * pxTopOfStack; /*!< Points to the location of the last item placed on the tasks stack. */
-    StackType_t * pxEndOfStack; /*!< Points to the end of the stack. pxTopOfStack < pxEndOfStack, stack grows hi2lo
+    व्योम * pxTCB;               /*!< Address of the task control block. */
+    ढेर_Type_t * px_शीर्ष_Of_ढेर; /*!< Points to the location of the last item placed on the tasks stack. */
+    ढेर_Type_t * px_End_Of_ढेर; /*!< Points to the end of the stack. pxTopOfStack < pxEndOfStack, stack grows hi2lo
                                  *  pxTopOfStack > pxEndOfStack, stack grows lo2hi*/
 } TaskSnapshot_t;
 
@@ -43,10 +43,10 @@ typedef struct xTASK_SNAPSHOT
  *
  * Used in xTaskGetNext(). Must be zero/null initialized on the first call.
  */
-typedef struct TaskIterator
+प्रकार काष्ठा TaskIterator
 {
-    UBaseType_t uxCurrentListIndex; /**< Current task list index being traversed. */
-    ListItem_t * pxNextListItem;    /**< Next task list item will being traversed. */
+    UBaseType_t ux_Current_List_सूचकांक; /**< Current task list index being traversed. */
+    ListItem_t * px_अग्र_List_Item;    /**< Next task list item will being traversed. */
     TaskHandle_t pxTaskHandle;      /**< Current task handle being traversed. */
 } TaskIterator_t;
 
@@ -65,7 +65,7 @@ typedef struct TaskIterator
  *       If a broken or corrupted task is encountered, the task handle is set to NULL.
  *
  */
-int xTaskGetNext( TaskIterator_t * xIterator );
+पूर्णांक x_Task_Get_अग्र( TaskIterator_t * xIterator );
 
 /**
  * @brief Fill a TaskSnapshot_t structure for specified task.
@@ -97,9 +97,9 @@ BaseType_t vTaskGetSnapshot( TaskHandle_t pxTask,
  * @param[out] pxTCBSize Size of the a task's TCB structure (can be set to NULL)
  * @return UBaseType_t Number of task snapshots filled in the array
  */
-UBaseType_t uxTaskGetSnapshotAll( TaskSnapshot_t * const pxTaskSnapshotArray,
-                                  const UBaseType_t uxArrayLength,
-                                  UBaseType_t * const pxTCBSize );
+UBaseType_t uxTaskGetSnapshotAll( TaskSnapshot_t * स्थिर pxTaskSnapshotArray,
+                                  स्थिर UBaseType_t ux_Array_लंबाई,
+                                  UBaseType_t * स्थिर pxTCBSize );
 
 /* ----------------------------------------------------- Misc ----------------------------------------------------- */
 
@@ -111,10 +111,10 @@ UBaseType_t uxTaskGetSnapshotAll( TaskSnapshot_t * const pxTaskSnapshotArray,
  * @param xCoreID The core to query
  * @return Void pointer to current TCB
  */
-void * pvTaskGetCurrentTCBForCore( BaseType_t xCoreID );
+व्योम * pvTaskGetCurrentTCBForCore( BaseType_t xCoreID );
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#अगर_घोषित __cplusplus
     }
-#endif
+#पूर्ण_अगर
 /* *INDENT-ON* */

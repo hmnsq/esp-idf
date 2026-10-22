@@ -3,44 +3,44 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-#include <stdio.h>
-#include "unity.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "esp_pm.h"
-#include "esp_private/esp_clk.h"
-#include "esp_clk_tree.h"
+#समावेश <stdio.h>
+#समावेश "unity.h"
+#समावेश "freertos/FreeRTOS.h"
+#समावेश "freertos/task.h"
+#समावेश "freertos/semphr.h"
+#समावेश "esp_pm.h"
+#समावेश "esp_private/esp_clk.h"
+#समावेश "esp_clk_tree.h"
 
-#include "sdkconfig.h"
+#समावेश "sdkconfig.h"
 
-#if CONFIG_FREERTOS_USE_TICKLESS_IDLE && CONFIG_PM_ENABLE
+#अगर CONFIG_FREERTOS_USE_TICKLESS_IDLE && CONFIG_PM_ENABLE
 
-#define MHZ (1000000)
+#घोषणा MHZ (1000000)
 
-static SemaphoreHandle_t test_sem;
-static volatile bool test_timeout_occurred = false;
+अटल SemaphoreHandle_t test_sem;
+अटल अस्थिर bool test_timeout_occurred = false;
 
-static void producer_task(void *arg)
+अटल व्योम producer_task(व्योम *arg)
 {
-    while (1) {
+    जबतक (1) {
         xSemaphoreGive(test_sem);
         vTaskDelay(pdMS_TO_TICKS(5));  // Give semaphore every 5ms
     }
 }
 
-static void consumer_task(void *arg)
+अटल व्योम consumer_task(व्योम *arg)
 {
-    while (1) {
+    जबतक (1) {
         // Try to take semaphore with 1 second timeout
         // Should never timeout as producer is giving the semaphore every 5ms
-        if (xSemaphoreTake(test_sem, pdMS_TO_TICKS(1000)) == pdFALSE) {
+        अगर (xSemaphoreTake(test_sem, pdMS_TO_TICKS(1000)) == pdFALSE) {
             test_timeout_occurred = true;  // Mark that timeout occurred
-            break;
+            अवरोध;
         }
     }
 
-    vTaskSuspend(NULL);
+    vTaskSuspend(शून्य);
 }
 
 /**
@@ -68,7 +68,7 @@ TEST_CASE("Test semaphore timeout during tickless idle", "[freertos]")
 {
     // Configure tickless idle
     uint32_t xtal_hz = 0;
-    esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_XTAL, ESP_CLK_TREE_SRC_FREQ_PRECISION_EXACT, &xtal_hz);
+    esp_clk_वृक्ष_src_get_freq_hz(SOC_MOD_CLK_XTAL, ESP_CLK_वृक्ष_SRC_FREQ_PRECISION_EXACT, &xtal_hz);
     esp_pm_config_t pm_config = {
         .max_freq_mhz = CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ,
         .min_freq_mhz = xtal_hz / MHZ,
@@ -77,15 +77,15 @@ TEST_CASE("Test semaphore timeout during tickless idle", "[freertos]")
     TEST_ESP_OK(esp_pm_configure(&pm_config));
 
     // Create test semaphore
-    test_sem = xSemaphoreCreateBinary();
+    test_sem = x_Semaphore_Create_द्विआधारी();
     TEST_ASSERT_NOT_NULL(test_sem);
 
     test_timeout_occurred = false;
 
     // Create producer and consumer tasks
     TaskHandle_t producer_handle, consumer_handle;
-    TEST_ASSERT_EQUAL(pdPASS, xTaskCreate(producer_task, "producer", 2048, NULL, 1, &producer_handle));
-    TEST_ASSERT_EQUAL(pdPASS, xTaskCreate(consumer_task, "consumer", 2048, NULL, 2, &consumer_handle));
+    TEST_ASSERT_EQUAL(pdPASS, xTaskCreate(producer_task, "producer", 2048, शून्य, 1, &producer_handle));
+    TEST_ASSERT_EQUAL(pdPASS, xTaskCreate(consumer_task, "consumer", 2048, शून्य, 2, &consumer_handle));
 
     // Run the test for a while to ensure tickless idle mode has
     // enough time to enter and exit multiple times
@@ -116,4 +116,4 @@ TEST_CASE("Test semaphore timeout during tickless idle", "[freertos]")
     vSemaphoreDelete(test_sem);
 }
 
-#endif /* CONFIG_FREERTOS_USE_TICKLESS_IDLE && CONFIG_PM_ENABLE */
+#पूर्ण_अगर /* CONFIG_FREERTOS_USE_TICKLESS_IDLE && CONFIG_PM_ENABLE */

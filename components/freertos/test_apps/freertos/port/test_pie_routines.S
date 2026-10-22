@@ -49,7 +49,7 @@ pie_vector_signed_add:
 
 
 /**
- * @brief Performs a XOR operation on two 4-word vectors using the PIE.
+ * @brief Performs a अथवा operation on two 4-word vectors using the PIE.
  *
  * @param a0 First vector
  * @param a1 Second vector

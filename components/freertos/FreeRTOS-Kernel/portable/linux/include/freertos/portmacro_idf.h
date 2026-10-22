@@ -10,32 +10,32 @@
  * FreeRTOS POSIX port code from the additional IDF POSIX port code.
  */
 
-#pragma once
+#आशय once
 
-#include <stdint.h>
-#include <stdlib.h> // This is for malloc(), used by portmacro.h
-#include "sdkconfig.h"
-#include "esp_attr.h"
-#include "esp_task.h"
-#include "spinlock.h"
+#समावेश <stdint.h>
+#समावेश <stdlib.h> // This is for malloc(), used by portmacro.h
+#समावेश "sdkconfig.h"
+#समावेश "esp_attr.h"
+#समावेश "esp_task.h"
+#समावेश "spinlock.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#अगर_घोषित __cplusplus
+बाह्य "C" {
+#पूर्ण_अगर
 
-typedef spinlock_t portMUX_TYPE;
+प्रकार spinlock_t portMUX_TYPE;
 
 /**< Spinlock initializer */
-#define portMUX_INITIALIZER_UNLOCKED {                      \
+#घोषणा portMUX_INITIALIZER_UNLOCKED {                      \
             .owner = portMUX_FREE_VAL,                      \
-            .count = 0,                                     \
+            .गिनती = 0,                                     \
         }
-#define portMUX_FREE_VAL                    SPINLOCK_FREE           /**< Spinlock is free. [refactor-todo] check if this is still required */
+#घोषणा portMUX_FREE_VAL                    SPINLOCK_FREE           /**< Spinlock is free. [refactor-todo] check if this is still required */
 
-void vPortYieldFromISR(void);
-void vPortYieldOtherCore(BaseType_t coreid);
+व्योम vPortYieldFromISR(व्योम);
+व्योम vPortYieldOtherCore(BaseType_t coreid);
 
-#define portMUX_INITIALIZE(mux)             spinlock_initialize(mux)    /*< Initialize a spinlock to its unlocked state */
+#घोषणा portMUX_INITIALIZE(mux)             spinlock_initialize(mux)    /*< Initialize a spinlock to its unlocked state */
 
 /**
  * @brief Get the current core's ID
@@ -43,9 +43,9 @@ void vPortYieldOtherCore(BaseType_t coreid);
  * @note dummy function for freertos simulator, always returns 0.
  @ return BaseType_t 0
  */
-static inline BaseType_t xPortGetCoreID(void)
+अटल अंतरभूत BaseType_t xPortGetCoreID(व्योम)
 {
-    return (BaseType_t) 0;
+    वापस (BaseType_t) 0;
 }
 
 /**
@@ -57,7 +57,7 @@ static inline BaseType_t xPortGetCoreID(void)
  * @return true Memory can be used to store a List
  * @return false Otherwise
  */
-bool xPortCheckValidListMem(const void *ptr);
+bool xPortCheckValidListMem(स्थिर व्योम *ptr);
 
 /**
  * @brief Checks if a given piece of memory can be used to store a task's TCB
@@ -68,7 +68,7 @@ bool xPortCheckValidListMem(const void *ptr);
  * @return true Memory can be used to store a TCB
  * @return false Otherwise
  */
-bool xPortCheckValidTCBMem(const void *ptr);
+bool xPortCheckValidTCBMem(स्थिर व्योम *ptr);
 
 /**
  * @brief Checks if a given piece of memory can be used to store a task's stack
@@ -79,13 +79,13 @@ bool xPortCheckValidTCBMem(const void *ptr);
  * @return true Memory can be used to store a task stack
  * @return false Otherwise
  */
-bool xPortcheckValidStackMem(const void *ptr);
+bool x_Portcheck_Valid_ढेर_Mem(स्थिर व्योम *ptr);
 
-#define portVALID_LIST_MEM(ptr)     xPortCheckValidListMem(ptr)
-#define portVALID_TCB_MEM(ptr)      xPortCheckValidTCBMem(ptr)
-#define portVALID_STACK_MEM(ptr)    xPortcheckValidStackMem(ptr)
+#घोषणा portVALID_LIST_MEM(ptr)     xPortCheckValidListMem(ptr)
+#घोषणा portVALID_TCB_MEM(ptr)      xPortCheckValidTCBMem(ptr)
+#घोषणा port_VALID_ढेर_MEM(ptr)    x_Portcheck_Valid_ढेर_Mem(ptr)
 
-BaseType_t xPortCheckIfInISR(void);
+BaseType_t xPortCheckIfInISR(व्योम);
 
 /**
  * @brief Checks if the current core is in an ISR context
@@ -98,13 +98,13 @@ BaseType_t xPortCheckIfInISR(void);
  *  - pdTRUE if in ISR
  *  - pdFALSE otherwise
  */
-static inline BaseType_t xPortInIsrContext(void)
+अटल अंतरभूत BaseType_t xPortInIsrContext(व्योम)
 {
     //Just call the FreeRTOS port interface version
-    return xPortCheckIfInISR();
+    वापस xPortCheckIfInISR();
 }
 
-static inline void vPortAssertIfInISR(void)
+अटल अंतरभूत व्योम vPortAssertIfInISR(व्योम)
 {
     /* Assert if the interrupt nesting count is > 0 */
     configASSERT(xPortInIsrContext() == 0);
@@ -113,8 +113,8 @@ static inline void vPortAssertIfInISR(void)
 /**
  * @brief Assert if in ISR context
  */
-#define portASSERT_IF_IN_ISR() vPortAssertIfInISR()
+#घोषणा portASSERT_IF_IN_ISR() vPortAssertIfInISR()
 
-#ifdef __cplusplus
+#अगर_घोषित __cplusplus
 }
-#endif
+#पूर्ण_अगर

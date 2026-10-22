@@ -4,57 +4,57 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "unity.h"
-#include "unity_test_runner.h"
-#include "esp_heap_caps.h"
-#include "test_utils.h"
-#include "esp_task_wdt.h"
+#समावेश "freertos/FreeRTOS.h"
+#समावेश "freertos/task.h"
+#समावेश "unity.h"
+#समावेश "unity_test_runner.h"
+#समावेश "esp_heap_caps.h"
+#समावेश "test_utils.h"
+#समावेश "esp_task_wdt.h"
 
-#define TEST_MEMORY_LEAK_THRESHOLD (-512)
+#घोषणा TEST_MEMORY_LEAK_THRESHOLD (-512)
 
-static size_t before_free_8bit;
-static size_t before_free_32bit;
+अटल माप_प्रकार before_free_8bit;
+अटल माप_प्रकार before_free_32bit;
 
-static void check_leak(size_t before_free, size_t after_free, const char *type)
+अटल व्योम check_leak(माप_प्रकार before_free, माप_प्रकार after_free, स्थिर अक्षर *type)
 {
     ssize_t delta = after_free - before_free;
-    printf("MALLOC_CAP_%s: Before %u bytes free, After %u bytes free (delta %d)\n", type, before_free, after_free, delta);
+    म_लिखो("MALLOC_CAP_%s: Before %u bytes free, After %u bytes free (delta %d)\n", type, before_free, after_free, delta);
     TEST_ASSERT_MESSAGE(delta >= TEST_MEMORY_LEAK_THRESHOLD, "memory leak");
 }
 
-void setUp(void)
+व्योम setUp(व्योम)
 {
-    before_free_8bit = heap_caps_get_free_size(MALLOC_CAP_8BIT);
-    before_free_32bit = heap_caps_get_free_size(MALLOC_CAP_32BIT);
+    before_free_8bit = heap_caps_get_free_आकार(MALLOC_CAP_8BIT);
+    before_free_32bit = heap_caps_get_free_आकार(MALLOC_CAP_32BIT);
 
-#if SOC_WDT_SUPPORTED
-    esp_task_wdt_add(NULL);
+#अगर SOC_WDT_SUPPORTED
+    esp_task_wdt_add(शून्य);
     esp_task_wdt_reset();
-#endif
+#पूर्ण_अगर
 
 }
 
-void tearDown(void)
+व्योम tearDown(व्योम)
 {
-#if SOC_WDT_SUPPORTED
+#अगर SOC_WDT_SUPPORTED
     esp_task_wdt_reset();
-    esp_task_wdt_delete(NULL);
-#endif
+    esp_task_wdt_delete(शून्य);
+#पूर्ण_अगर
 
     // Add a short delay of 10 ticks to allow the idle task to free remaining memory.
     vTaskDelay(10);
-    size_t after_free_8bit = heap_caps_get_free_size(MALLOC_CAP_8BIT);
-    size_t after_free_32bit = heap_caps_get_free_size(MALLOC_CAP_32BIT);
+    माप_प्रकार after_free_8bit = heap_caps_get_free_आकार(MALLOC_CAP_8BIT);
+    माप_प्रकार after_free_32bit = heap_caps_get_free_आकार(MALLOC_CAP_32BIT);
     check_leak(before_free_8bit, after_free_8bit, "8BIT");
     check_leak(before_free_32bit, after_free_32bit, "32BIT");
 }
 
-void app_main(void)
+व्योम app_main(व्योम)
 {
 
-#if SOC_WDT_SUPPORTED
+#अगर SOC_WDT_SUPPORTED
     // Configure the task watchdog timer to catch any tests that hang
     esp_task_wdt_config_t config = {
         .timeout_ms = 25 * 1000, // 25 seconds, smaller than the default pytest timeout
@@ -63,18 +63,18 @@ void app_main(void)
     };
 
     esp_task_wdt_init(&config);
-#endif // SOC_WDT_SUPPORTED
+#पूर्ण_अगर // SOC_WDT_SUPPORTED
 
     /*
     Some FreeRTOS tests are reliant on the main task being at priority UNITY_FREERTOS_PRIORITY to test scheduling
     behavior. Thus, we raise the main task's priority before any tasks are run. See IDF-6088
     */
-    vTaskPrioritySet(NULL, UNITY_FREERTOS_PRIORITY);
-    printf(" ______             _____ _______ ____   _____\n");
-    printf("|  ____|           |  __ \\__   __/ __ \\ / ____|\n");
-    printf("| |__ _ __ ___  ___| |__) | | | | |  | | (___\n");
-    printf("|  __| '__/ _ \\/ _ \\  _  /  | | | |  | |\\___ \\\n");
-    printf("| |  | | |  __/  __/ | \\ \\  | | | |__| |____) |\n");
-    printf("|_|  |_|  \\___|\\___|_|  \\_\\ |_|  \\____/|_____/\n");
+    vTaskPrioritySet(शून्य, UNITY_FREERTOS_PRIORITY);
+    म_लिखो(" ______             _____ _______ ____   _____\n");
+    म_लिखो("|  ____|           |  __ \\__   __/ __ \\ / ____|\n");
+    म_लिखो("| |__ _ __ ___  ___| |__) | | | | |  | | (___\n");
+    म_लिखो("|  __| '__/ _ \\/ _ \\  _  /  | | | |  | |\\___ \\\n");
+    म_लिखो("| |  | | |  __/  __/ | \\ \\  | | | |__| |____) |\n");
+    म_लिखो("|_|  |_|  \\___|\\___|_|  \\_\\ |_|  \\____/|_____/\n");
     unity_run_menu();
 }

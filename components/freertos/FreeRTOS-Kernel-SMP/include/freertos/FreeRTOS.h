@@ -30,13 +30,13 @@
  *
  */
 
-#ifndef INC_FREERTOS_H
-#define INC_FREERTOS_H
+#अगर_अघोषित INC_FREERTOS_H
+#घोषणा INC_FREERTOS_H
 
 /*
  * Include the generic headers required for the FreeRTOS port being used.
  */
-#include <stddef.h>
+#समावेश <stddef.h>
 
 /*
  * If stdint.h cannot be located then:
@@ -51,110 +51,110 @@
  *     contains the typedefs required to build FreeRTOS.  Read the instructions
  *     in FreeRTOS/source/stdint.readme for more information.
  */
-#include <stdint.h> /* READ COMMENT ABOVE. */
+#समावेश <stdint.h> /* READ COMMENT ABOVE. */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#अगर_घोषित __cplusplus
+    बाह्य "C" {
+#पूर्ण_अगर
 /* *INDENT-ON* */
 
 /* Acceptable values for configTICK_TYPE_WIDTH_IN_BITS. */
-#define TICK_TYPE_WIDTH_16_BITS    0
-#define TICK_TYPE_WIDTH_32_BITS    1
-#define TICK_TYPE_WIDTH_64_BITS    2
+#घोषणा TICK_TYPE_WIDTH_16_BITS    0
+#घोषणा TICK_TYPE_WIDTH_32_BITS    1
+#घोषणा TICK_TYPE_WIDTH_64_BITS    2
 
 /* Application specific configuration options. */
-#include "FreeRTOSConfig.h"
+#समावेश "FreeRTOSConfig.h"
 
-#if !defined( configUSE_16_BIT_TICKS ) && !defined( configTICK_TYPE_WIDTH_IN_BITS )
-    #error Missing definition:  One of configUSE_16_BIT_TICKS and configTICK_TYPE_WIDTH_IN_BITS must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#अगर !defined( configUSE_16_BIT_TICKS ) && !defined( configTICK_TYPE_WIDTH_IN_BITS )
+    #त्रुटि Missing definition:  One of configUSE_16_BIT_TICKS and configTICK_TYPE_WIDTH_IN_BITS must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation क्रम details.
+#पूर्ण_अगर
 
-#if defined( configUSE_16_BIT_TICKS ) && defined( configTICK_TYPE_WIDTH_IN_BITS )
-    #error Only one of configUSE_16_BIT_TICKS and configTICK_TYPE_WIDTH_IN_BITS must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#अगर defined( configUSE_16_BIT_TICKS ) && defined( configTICK_TYPE_WIDTH_IN_BITS )
+    #त्रुटि Only one of configUSE_16_BIT_TICKS and configTICK_TYPE_WIDTH_IN_BITS must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation क्रम details.
+#पूर्ण_अगर
 
 /* Define configTICK_TYPE_WIDTH_IN_BITS according to the
  * value of configUSE_16_BIT_TICKS for backward compatibility. */
-#ifndef configTICK_TYPE_WIDTH_IN_BITS
-    #if ( configUSE_16_BIT_TICKS == 1 )
-        #define configTICK_TYPE_WIDTH_IN_BITS    TICK_TYPE_WIDTH_16_BITS
-    #else
-        #define configTICK_TYPE_WIDTH_IN_BITS    TICK_TYPE_WIDTH_32_BITS
-    #endif
-#endif
+#अगर_अघोषित configTICK_TYPE_WIDTH_IN_BITS
+    #अगर ( configUSE_16_BIT_TICKS == 1 )
+        #घोषणा configTICK_TYPE_WIDTH_IN_BITS    TICK_TYPE_WIDTH_16_BITS
+    #अन्यथा
+        #घोषणा configTICK_TYPE_WIDTH_IN_BITS    TICK_TYPE_WIDTH_32_BITS
+    #पूर्ण_अगर
+#पूर्ण_अगर
 
 /* Set configUSE_MPU_WRAPPERS_V1 to 1 to use MPU wrappers v1. */
-#ifndef configUSE_MPU_WRAPPERS_V1
-    #define configUSE_MPU_WRAPPERS_V1    0
-#endif
+#अगर_अघोषित configUSE_MPU_WRAPPERS_V1
+    #घोषणा configUSE_MPU_WRAPPERS_V1    0
+#पूर्ण_अगर
 
 /* Set configENABLE_ACCESS_CONTROL_LIST to 1 to enable access control list support. */
-#ifndef configENABLE_ACCESS_CONTROL_LIST
-    #define configENABLE_ACCESS_CONTROL_LIST    0
-#endif
+#अगर_अघोषित configENABLE_ACCESS_CONTROL_LIST
+    #घोषणा configENABLE_ACCESS_CONTROL_LIST    0
+#पूर्ण_अगर
 
 /* Set default value of configNUMBER_OF_CORES to 1 to use single core FreeRTOS. */
-#ifndef configNUMBER_OF_CORES
-    #define configNUMBER_OF_CORES    1
-#endif
+#अगर_अघोषित config_संख्या_OF_CORES
+    #घोषणा config_संख्या_OF_CORES    1
+#पूर्ण_अगर
 
-#ifndef configUSE_MALLOC_FAILED_HOOK
-    #define configUSE_MALLOC_FAILED_HOOK    0
-#endif
+#अगर_अघोषित configUSE_MALLOC_FAILED_HOOK
+    #घोषणा configUSE_MALLOC_FAILED_HOOK    0
+#पूर्ण_अगर
 
 /* Basic FreeRTOS definitions. */
-#include "projdefs.h"
+#समावेश "projdefs.h"
 
 /* Definitions specific to the port being used. */
-#include "portable.h"
+#समावेश "portable.h"
 
 /* Must be defaulted before configUSE_NEWLIB_REENTRANT is used below. */
-#ifndef configUSE_NEWLIB_REENTRANT
-    #define configUSE_NEWLIB_REENTRANT    0
-#endif
+#अगर_अघोषित configUSE_NEWLIB_REENTRANT
+    #घोषणा configUSE_NEWLIB_REENTRANT    0
+#पूर्ण_अगर
 
 /* Required if struct _reent is used. */
-#if ( configUSE_NEWLIB_REENTRANT == 1 )
+#अगर ( configUSE_NEWLIB_REENTRANT == 1 )
 
-    #include "newlib-freertos.h"
+    #समावेश "newlib-freertos.h"
 
-#endif /* if ( configUSE_NEWLIB_REENTRANT == 1 ) */
+#पूर्ण_अगर /* if ( configUSE_NEWLIB_REENTRANT == 1 ) */
 
 /* Must be defaulted before configUSE_PICOLIBC_TLS is used below. */
-#ifndef configUSE_PICOLIBC_TLS
-    #define configUSE_PICOLIBC_TLS    0
-#endif
+#अगर_अघोषित configUSE_PICOLIBC_TLS
+    #घोषणा configUSE_PICOLIBC_TLS    0
+#पूर्ण_अगर
 
-#if ( configUSE_PICOLIBC_TLS == 1 )
+#अगर ( configUSE_PICOLIBC_TLS == 1 )
 
-    #include "picolibc-freertos.h"
+    #समावेश "picolibc-freertos.h"
 
-#endif /* if ( configUSE_PICOLIBC_TLS == 1 ) */
+#पूर्ण_अगर /* if ( configUSE_PICOLIBC_TLS == 1 ) */
 
-#ifndef configUSE_C_RUNTIME_TLS_SUPPORT
-    #define configUSE_C_RUNTIME_TLS_SUPPORT    0
-#endif
+#अगर_अघोषित configUSE_C_RUNTIME_TLS_SUPPORT
+    #घोषणा configUSE_C_RUNTIME_TLS_SUPPORT    0
+#पूर्ण_अगर
 
-#if ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 )
+#अगर ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 )
 
-    #ifndef configTLS_BLOCK_TYPE
-        #error Missing definition:  configTLS_BLOCK_TYPE must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
+    #अगर_अघोषित configTLS_BLOCK_TYPE
+        #त्रुटि Missing definition:  configTLS_BLOCK_TYPE must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
+    #पूर्ण_अगर
 
-    #ifndef configINIT_TLS_BLOCK
-        #error Missing definition:  configINIT_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
+    #अगर_अघोषित configINIT_TLS_BLOCK
+        #त्रुटि Missing definition:  configINIT_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
+    #पूर्ण_अगर
 
-    #ifndef configSET_TLS_BLOCK
-        #error Missing definition:  configSET_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
+    #अगर_अघोषित configSET_TLS_BLOCK
+        #त्रुटि Missing definition:  configSET_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
+    #पूर्ण_अगर
 
-    #ifndef configDEINIT_TLS_BLOCK
-        #error Missing definition:  configDEINIT_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
-#endif /* if ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) */
+    #अगर_अघोषित configDEINIT_TLS_BLOCK
+        #त्रुटि Missing definition:  configDEINIT_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
+    #पूर्ण_अगर
+#पूर्ण_अगर /* if ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) */
 
 /*
  * Check all the required application specific macros have been defined.
@@ -162,2759 +162,2759 @@
  * within FreeRTOSConfig.h.
  */
 
-#ifndef configMINIMAL_STACK_SIZE
-    #error Missing definition:  configMINIMAL_STACK_SIZE must be defined in FreeRTOSConfig.h.  configMINIMAL_STACK_SIZE defines the size (in words) of the stack allocated to the idle task.  Refer to the demo project provided for your port for a suitable value.
-#endif
+#अगर_अघोषित config_MINIMAL_ढेर_आकार
+    #त्रुटि Missing definition:  config_MINIMAL_ढेर_आकार must be defined in FreeRTOSConfig.h.  config_MINIMAL_ढेर_आकार defines the आकार (in शब्दगण) of the ढेर allocated to the idle task.  Refer to the demo project provided क्रम your port क्रम a suitable मूल्य.
+#पूर्ण_अगर
 
-#ifndef configMAX_PRIORITIES
-    #error Missing definition:  configMAX_PRIORITIES must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#अगर_अघोषित configMAX_PRIORITIES
+    #त्रुटि Missing definition:  configMAX_PRIORITIES must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation क्रम details.
+#पूर्ण_अगर
 
-#if configMAX_PRIORITIES < 1
-    #error configMAX_PRIORITIES must be defined to be greater than or equal to 1.
-#endif
+#अगर configMAX_PRIORITIES < 1
+    #त्रुटि configMAX_PRIORITIES must be defined to be greater than or equal to 1.
+#पूर्ण_अगर
 
-#ifndef configUSE_PREEMPTION
-    #error Missing definition:  configUSE_PREEMPTION must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#अगर_अघोषित configUSE_PREEMPTION
+    #त्रुटि Missing definition:  configUSE_PREEMPTION must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation क्रम details.
+#पूर्ण_अगर
 
-#ifndef configUSE_IDLE_HOOK
-    #error Missing definition:  configUSE_IDLE_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#अगर_अघोषित configUSE_IDLE_HOOK
+    #त्रुटि Missing definition:  configUSE_IDLE_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation क्रम details.
+#पूर्ण_अगर
 
-#if ( configNUMBER_OF_CORES > 1 )
-    #ifndef configUSE_PASSIVE_IDLE_HOOK
-        #error Missing definition:  configUSE_PASSIVE_IDLE_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-    #endif
-#endif
+#अगर ( config_संख्या_OF_CORES > 1 )
+    #अगर_अघोषित configUSE_PASSIVE_IDLE_HOOK
+        #त्रुटि Missing definition:  configUSE_PASSIVE_IDLE_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation क्रम details.
+    #पूर्ण_अगर
+#पूर्ण_अगर
 
-#ifndef configUSE_TICK_HOOK
-    #error Missing definition:  configUSE_TICK_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#अगर_अघोषित configUSE_TICK_HOOK
+    #त्रुटि Missing definition:  configUSE_TICK_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation क्रम details.
+#पूर्ण_अगर
 
-#if ( ( configTICK_TYPE_WIDTH_IN_BITS != TICK_TYPE_WIDTH_16_BITS ) && \
+#अगर ( ( configTICK_TYPE_WIDTH_IN_BITS != TICK_TYPE_WIDTH_16_BITS ) && \
     ( configTICK_TYPE_WIDTH_IN_BITS != TICK_TYPE_WIDTH_32_BITS ) &&   \
     ( configTICK_TYPE_WIDTH_IN_BITS != TICK_TYPE_WIDTH_64_BITS ) )
-    #error Macro configTICK_TYPE_WIDTH_IN_BITS is defined to incorrect value.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+    #त्रुटि Macro configTICK_TYPE_WIDTH_IN_BITS is defined to incorrect मूल्य.  See the Configuration section of the FreeRTOS API documentation क्रम details.
+#पूर्ण_अगर
 
-#ifndef configUSE_CO_ROUTINES
-    #define configUSE_CO_ROUTINES    0
-#endif
+#अगर_अघोषित configUSE_CO_ROUTINES
+    #घोषणा configUSE_CO_ROUTINES    0
+#पूर्ण_अगर
 
-#ifndef INCLUDE_vTaskPrioritySet
-    #define INCLUDE_vTaskPrioritySet    0
-#endif
+#अगर_अघोषित INCLUDE_vTaskPrioritySet
+    #घोषणा INCLUDE_vTaskPrioritySet    0
+#पूर्ण_अगर
 
-#ifndef INCLUDE_uxTaskPriorityGet
-    #define INCLUDE_uxTaskPriorityGet    0
-#endif
+#अगर_अघोषित INCLUDE_uxTaskPriorityGet
+    #घोषणा INCLUDE_uxTaskPriorityGet    0
+#पूर्ण_अगर
 
-#ifndef INCLUDE_vTaskDelete
-    #define INCLUDE_vTaskDelete    0
-#endif
+#अगर_अघोषित INCLUDE_vTaskDelete
+    #घोषणा INCLUDE_vTaskDelete    0
+#पूर्ण_अगर
 
-#ifndef INCLUDE_vTaskSuspend
-    #define INCLUDE_vTaskSuspend    0
-#endif
+#अगर_अघोषित INCLUDE_vTaskSuspend
+    #घोषणा INCLUDE_vTaskSuspend    0
+#पूर्ण_अगर
 
-#ifdef INCLUDE_xTaskDelayUntil
-    #ifdef INCLUDE_vTaskDelayUntil
+#अगर_घोषित INCLUDE_xTaskDelayUntil
+    #अगर_घोषित INCLUDE_vTaskDelayUntil
 
 /* INCLUDE_vTaskDelayUntil was replaced by INCLUDE_xTaskDelayUntil.  Backward
  * compatibility is maintained if only one or the other is defined, but
  * there is a conflict if both are defined. */
-        #error INCLUDE_vTaskDelayUntil and INCLUDE_xTaskDelayUntil are both defined.  INCLUDE_vTaskDelayUntil is no longer required and should be removed
-    #endif
-#endif
+        #त्रुटि INCLUDE_vTaskDelayUntil and INCLUDE_xTaskDelayUntil are both defined.  INCLUDE_vTaskDelayUntil is no longer required and should be removed
+    #पूर्ण_अगर
+#पूर्ण_अगर
 
-#ifndef INCLUDE_xTaskDelayUntil
-    #ifdef INCLUDE_vTaskDelayUntil
+#अगर_अघोषित INCLUDE_xTaskDelayUntil
+    #अगर_घोषित INCLUDE_vTaskDelayUntil
 
 /* If INCLUDE_vTaskDelayUntil is set but INCLUDE_xTaskDelayUntil is not then
  * the project's FreeRTOSConfig.h probably pre-dates the introduction of
  * xTaskDelayUntil and setting INCLUDE_xTaskDelayUntil to whatever
  * INCLUDE_vTaskDelayUntil is set to will ensure backward compatibility.
  */
-        #define INCLUDE_xTaskDelayUntil    INCLUDE_vTaskDelayUntil
-    #endif
-#endif
+        #घोषणा INCLUDE_xTaskDelayUntil    INCLUDE_vTaskDelayUntil
+    #पूर्ण_अगर
+#पूर्ण_अगर
 
-#ifndef INCLUDE_xTaskDelayUntil
-    #define INCLUDE_xTaskDelayUntil    0
-#endif
+#अगर_अघोषित INCLUDE_xTaskDelayUntil
+    #घोषणा INCLUDE_xTaskDelayUntil    0
+#पूर्ण_अगर
 
-#ifndef INCLUDE_vTaskDelay
-    #define INCLUDE_vTaskDelay    0
-#endif
+#अगर_अघोषित INCLUDE_vTaskDelay
+    #घोषणा INCLUDE_vTaskDelay    0
+#पूर्ण_अगर
 
-#ifndef INCLUDE_xTaskGetIdleTaskHandle
-    #define INCLUDE_xTaskGetIdleTaskHandle    0
-#endif
+#अगर_अघोषित INCLUDE_xTaskGetIdleTaskHandle
+    #घोषणा INCLUDE_xTaskGetIdleTaskHandle    0
+#पूर्ण_अगर
 
-#ifndef INCLUDE_xTaskAbortDelay
-    #define INCLUDE_xTaskAbortDelay    0
-#endif
+#अगर_अघोषित INCLUDE_xTaskAbortDelay
+    #घोषणा INCLUDE_xTaskAbortDelay    0
+#पूर्ण_अगर
 
-#ifndef INCLUDE_xQueueGetMutexHolder
-    #define INCLUDE_xQueueGetMutexHolder    0
-#endif
+#अगर_अघोषित INCLUDE_xQueueGetMutexHolder
+    #घोषणा INCLUDE_xQueueGetMutexHolder    0
+#पूर्ण_अगर
 
-#ifndef INCLUDE_xSemaphoreGetMutexHolder
-    #define INCLUDE_xSemaphoreGetMutexHolder    INCLUDE_xQueueGetMutexHolder
-#endif
+#अगर_अघोषित INCLUDE_xSemaphoreGetMutexHolder
+    #घोषणा INCLUDE_xSemaphoreGetMutexHolder    INCLUDE_xQueueGetMutexHolder
+#पूर्ण_अगर
 
-#ifndef INCLUDE_xTaskGetHandle
-    #define INCLUDE_xTaskGetHandle    0
-#endif
+#अगर_अघोषित INCLUDE_xTaskGetHandle
+    #घोषणा INCLUDE_xTaskGetHandle    0
+#पूर्ण_अगर
 
-#ifndef INCLUDE_uxTaskGetStackHighWaterMark
-    #define INCLUDE_uxTaskGetStackHighWaterMark    0
-#endif
+#अगर_अघोषित INCLUDE_ux_Task_Get_ढेर_ऊपरी_Water_Mark
+    #घोषणा INCLUDE_ux_Task_Get_ढेर_ऊपरी_Water_Mark    0
+#पूर्ण_अगर
 
-#ifndef INCLUDE_uxTaskGetStackHighWaterMark2
-    #define INCLUDE_uxTaskGetStackHighWaterMark2    0
-#endif
+#अगर_अघोषित INCLUDE_ux_Task_Get_ढेर_ऊपरी_Water_Mark2
+    #घोषणा INCLUDE_ux_Task_Get_ढेर_ऊपरी_Water_Mark2    0
+#पूर्ण_अगर
 
-#ifndef INCLUDE_eTaskGetState
-    #define INCLUDE_eTaskGetState    0
-#endif
+#अगर_अघोषित INCLUDE_eTaskGetState
+    #घोषणा INCLUDE_eTaskGetState    0
+#पूर्ण_अगर
 
-#ifndef INCLUDE_xTaskResumeFromISR
-    #define INCLUDE_xTaskResumeFromISR    1
-#endif
+#अगर_अघोषित INCLUDE_xTaskResumeFromISR
+    #घोषणा INCLUDE_xTaskResumeFromISR    1
+#पूर्ण_अगर
 
-#ifndef INCLUDE_xTimerPendFunctionCall
-    #define INCLUDE_xTimerPendFunctionCall    0
-#endif
+#अगर_अघोषित INCLUDE_xTimerPendFunctionCall
+    #घोषणा INCLUDE_xTimerPendFunctionCall    0
+#पूर्ण_अगर
 
-#ifndef INCLUDE_xTaskGetSchedulerState
-    #define INCLUDE_xTaskGetSchedulerState    0
-#endif
+#अगर_अघोषित INCLUDE_xTaskGetSchedulerState
+    #घोषणा INCLUDE_xTaskGetSchedulerState    0
+#पूर्ण_अगर
 
-#ifndef INCLUDE_xTaskGetCurrentTaskHandle
-    #define INCLUDE_xTaskGetCurrentTaskHandle    1
-#endif
+#अगर_अघोषित INCLUDE_xTaskGetCurrentTaskHandle
+    #घोषणा INCLUDE_xTaskGetCurrentTaskHandle    1
+#पूर्ण_अगर
 
-#if configUSE_CO_ROUTINES != 0
-    #ifndef configMAX_CO_ROUTINE_PRIORITIES
-        #error configMAX_CO_ROUTINE_PRIORITIES must be greater than or equal to 1.
-    #endif
-#endif
+#अगर configUSE_CO_ROUTINES != 0
+    #अगर_अघोषित configMAX_CO_ROUTINE_PRIORITIES
+        #त्रुटि configMAX_CO_ROUTINE_PRIORITIES must be greater than or equal to 1.
+    #पूर्ण_अगर
+#पूर्ण_अगर
 
-#ifndef configUSE_APPLICATION_TASK_TAG
-    #define configUSE_APPLICATION_TASK_TAG    0
-#endif
+#अगर_अघोषित configUSE_APPLICATION_TASK_TAG
+    #घोषणा configUSE_APPLICATION_TASK_TAG    0
+#पूर्ण_अगर
 
-#ifndef configNUM_THREAD_LOCAL_STORAGE_POINTERS
-    #define configNUM_THREAD_LOCAL_STORAGE_POINTERS    0
-#endif
+#अगर_अघोषित config_अंक_THREAD_LOCAL_STORAGE_POINTERS
+    #घोषणा config_अंक_THREAD_LOCAL_STORAGE_POINTERS    0
+#पूर्ण_अगर
 
-#ifndef configUSE_RECURSIVE_MUTEXES
-    #define configUSE_RECURSIVE_MUTEXES    0
-#endif
+#अगर_अघोषित configUSE_RECURSIVE_MUTEXES
+    #घोषणा configUSE_RECURSIVE_MUTEXES    0
+#पूर्ण_अगर
 
-#ifndef configUSE_MUTEXES
-    #define configUSE_MUTEXES    0
-#endif
+#अगर_अघोषित configUSE_MUTEXES
+    #घोषणा configUSE_MUTEXES    0
+#पूर्ण_अगर
 
-#ifndef configUSE_TIMERS
-    #define configUSE_TIMERS    0
-#endif
+#अगर_अघोषित configUSE_TIMERS
+    #घोषणा configUSE_TIMERS    0
+#पूर्ण_अगर
 
-#ifndef configUSE_EVENT_GROUPS
-    #define configUSE_EVENT_GROUPS    1
-#endif
+#अगर_अघोषित configUSE_EVENT_GROUPS
+    #घोषणा configUSE_EVENT_GROUPS    1
+#पूर्ण_अगर
 
-#ifndef configUSE_STREAM_BUFFERS
-    #define configUSE_STREAM_BUFFERS    1
-#endif
+#अगर_अघोषित configUSE_STREAM_BUFFERS
+    #घोषणा configUSE_STREAM_BUFFERS    1
+#पूर्ण_अगर
 
-#ifndef configUSE_DAEMON_TASK_STARTUP_HOOK
-    #define configUSE_DAEMON_TASK_STARTUP_HOOK    0
-#endif
+#अगर_अघोषित configUSE_DAEMON_TASK_STARTUP_HOOK
+    #घोषणा configUSE_DAEMON_TASK_STARTUP_HOOK    0
+#पूर्ण_अगर
 
-#if ( configUSE_DAEMON_TASK_STARTUP_HOOK != 0 )
-    #if ( configUSE_TIMERS == 0 )
-        #error configUSE_DAEMON_TASK_STARTUP_HOOK is set, but the daemon task is not created because configUSE_TIMERS is 0.
-    #endif
-#endif
+#अगर ( configUSE_DAEMON_TASK_STARTUP_HOOK != 0 )
+    #अगर ( configUSE_TIMERS == 0 )
+        #त्रुटि configUSE_DAEMON_TASK_STARTUP_HOOK is set, but the daemon task is not created because configUSE_TIMERS is 0.
+    #पूर्ण_अगर
+#पूर्ण_अगर
 
-#ifndef configUSE_COUNTING_SEMAPHORES
-    #define configUSE_COUNTING_SEMAPHORES    0
-#endif
+#अगर_अघोषित configUSE_COUNTING_SEMAPHORES
+    #घोषणा configUSE_COUNTING_SEMAPHORES    0
+#पूर्ण_अगर
 
-#ifndef configUSE_TASK_PREEMPTION_DISABLE
-    #define configUSE_TASK_PREEMPTION_DISABLE    0
-#endif
+#अगर_अघोषित configUSE_TASK_PREEMPTION_DISABLE
+    #घोषणा configUSE_TASK_PREEMPTION_DISABLE    0
+#पूर्ण_अगर
 
-#ifndef configUSE_ALTERNATIVE_API
-    #define configUSE_ALTERNATIVE_API    0
-#endif
+#अगर_अघोषित configUSE_ALTERNATIVE_API
+    #घोषणा configUSE_ALTERNATIVE_API    0
+#पूर्ण_अगर
 
-#ifndef portCRITICAL_NESTING_IN_TCB
-    #define portCRITICAL_NESTING_IN_TCB    0
-#endif
+#अगर_अघोषित portCRITICAL_NESTING_IN_TCB
+    #घोषणा portCRITICAL_NESTING_IN_TCB    0
+#पूर्ण_अगर
 
-#ifndef configMAX_TASK_NAME_LEN
-    #define configMAX_TASK_NAME_LEN    16
-#endif
+#अगर_अघोषित configMAX_TASK_NAME_LEN
+    #घोषणा configMAX_TASK_NAME_LEN    16
+#पूर्ण_अगर
 
-#ifndef configIDLE_SHOULD_YIELD
-    #define configIDLE_SHOULD_YIELD    1
-#endif
+#अगर_अघोषित configIDLE_SHOULD_YIELD
+    #घोषणा configIDLE_SHOULD_YIELD    1
+#पूर्ण_अगर
 
-#if configMAX_TASK_NAME_LEN < 1
-    #error configMAX_TASK_NAME_LEN must be set to a minimum of 1 in FreeRTOSConfig.h
-#endif
+#अगर configMAX_TASK_NAME_LEN < 1
+    #त्रुटि configMAX_TASK_NAME_LEN must be set to a minimum of 1 in FreeRTOSConfig.h
+#पूर्ण_अगर
 
-#ifndef configASSERT
-    #define configASSERT( x )
-    #define configASSERT_DEFINED    0
-#else
-    #define configASSERT_DEFINED    1
-#endif
+#अगर_अघोषित configASSERT
+    #घोषणा configASSERT( x )
+    #घोषणा configASSERT_DEFINED    0
+#अन्यथा
+    #घोषणा configASSERT_DEFINED    1
+#पूर्ण_अगर
 
 /* configPRECONDITION should be defined as configASSERT.
  * The CBMC proofs need a way to track assumptions and assertions.
  * A configPRECONDITION statement should express an implicit invariant or
  * assumption made.  A configASSERT statement should express an invariant that must
  * hold explicit before calling the code. */
-#ifndef configPRECONDITION
-    #define configPRECONDITION( X )    configASSERT( X )
-    #define configPRECONDITION_DEFINED    0
-#else
-    #define configPRECONDITION_DEFINED    1
-#endif
+#अगर_अघोषित configPRECONDITION
+    #घोषणा configPRECONDITION( X )    configASSERT( X )
+    #घोषणा configPRECONDITION_DEFINED    0
+#अन्यथा
+    #घोषणा configPRECONDITION_DEFINED    1
+#पूर्ण_अगर
 
-#ifndef configCHECK_HANDLER_INSTALLATION
-    #define configCHECK_HANDLER_INSTALLATION    1
-#else
+#अगर_अघोषित configCHECK_HANDLER_INSTALLATION
+    #घोषणा configCHECK_HANDLER_INSTALLATION    1
+#अन्यथा
 
 /* The application has explicitly defined configCHECK_HANDLER_INSTALLATION
  * to 1. The checks requires configASSERT() to be defined. */
-    #if ( ( configCHECK_HANDLER_INSTALLATION == 1 ) && ( configASSERT_DEFINED == 0 ) )
-        #error You must define configASSERT() when configCHECK_HANDLER_INSTALLATION is 1.
-    #endif
-#endif
+    #अगर ( ( configCHECK_HANDLER_INSTALLATION == 1 ) && ( configASSERT_DEFINED == 0 ) )
+        #त्रुटि You must define configASSERT() when configCHECK_HANDLER_INSTALLATION is 1.
+    #पूर्ण_अगर
+#पूर्ण_अगर
 
-#ifndef portMEMORY_BARRIER
-    #define portMEMORY_BARRIER()
-#endif
+#अगर_अघोषित portMEMORY_BARRIER
+    #घोषणा portMEMORY_BARRIER()
+#पूर्ण_अगर
 
-#ifndef portSOFTWARE_BARRIER
-    #define portSOFTWARE_BARRIER()
-#endif
+#अगर_अघोषित portSOFTWARE_BARRIER
+    #घोषणा portSOFTWARE_BARRIER()
+#पूर्ण_अगर
 
-#ifndef configRUN_MULTIPLE_PRIORITIES
-    #define configRUN_MULTIPLE_PRIORITIES    0
-#endif
+#अगर_अघोषित configRUN_MULTIPLE_PRIORITIES
+    #घोषणा configRUN_MULTIPLE_PRIORITIES    0
+#पूर्ण_अगर
 
-#ifndef portGET_CORE_ID
+#अगर_अघोषित portGET_CORE_ID
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portGET_CORE_ID()    0
-    #else
-        #error configNUMBER_OF_CORES is set to more than 1 then portGET_CORE_ID must also be defined.
-    #endif /* configNUMBER_OF_CORES */
+    #अगर ( config_संख्या_OF_CORES == 1 )
+        #घोषणा portGET_CORE_ID()    0
+    #अन्यथा
+        #त्रुटि config_संख्या_OF_CORES is set to more than 1 then portGET_CORE_ID must also be defined.
+    #पूर्ण_अगर /* configNUMBER_OF_CORES */
 
-#endif /* portGET_CORE_ID */
+#पूर्ण_अगर /* portGET_CORE_ID */
 
-#ifndef portYIELD_CORE
+#अगर_अघोषित portYIELD_CORE
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portYIELD_CORE( x )    portYIELD()
-    #else
-        #error configNUMBER_OF_CORES is set to more than 1 then portYIELD_CORE must also be defined.
-    #endif /* configNUMBER_OF_CORES */
+    #अगर ( config_संख्या_OF_CORES == 1 )
+        #घोषणा portYIELD_CORE( x )    portYIELD()
+    #अन्यथा
+        #त्रुटि config_संख्या_OF_CORES is set to more than 1 then portYIELD_CORE must also be defined.
+    #पूर्ण_अगर /* configNUMBER_OF_CORES */
 
-#endif /* portYIELD_CORE */
+#पूर्ण_अगर /* portYIELD_CORE */
 
-#ifndef portSET_INTERRUPT_MASK
+#अगर_अघोषित portSET_INTERRUPT_MASK
 
-    #if ( configNUMBER_OF_CORES > 1 )
-        #error portSET_INTERRUPT_MASK is required in SMP
-    #endif
+    #अगर ( config_संख्या_OF_CORES > 1 )
+        #त्रुटि portSET_INTERRUPT_MASK is required in SMP
+    #पूर्ण_अगर
 
-#endif /* portSET_INTERRUPT_MASK */
+#पूर्ण_अगर /* portSET_INTERRUPT_MASK */
 
-#ifndef portCLEAR_INTERRUPT_MASK
+#अगर_अघोषित portCLEAR_INTERRUPT_MASK
 
-    #if ( configNUMBER_OF_CORES > 1 )
-        #error portCLEAR_INTERRUPT_MASK is required in SMP
-    #endif
+    #अगर ( config_संख्या_OF_CORES > 1 )
+        #त्रुटि portCLEAR_INTERRUPT_MASK is required in SMP
+    #पूर्ण_अगर
 
-#endif /* portCLEAR_INTERRUPT_MASK */
+#पूर्ण_अगर /* portCLEAR_INTERRUPT_MASK */
 
-#ifndef portRELEASE_TASK_LOCK
+#अगर_अघोषित portRELEASE_TASK_LOCK
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portRELEASE_TASK_LOCK()
-    #else
-        #error portRELEASE_TASK_LOCK is required in SMP
-    #endif
+    #अगर ( config_संख्या_OF_CORES == 1 )
+        #घोषणा portRELEASE_TASK_LOCK()
+    #अन्यथा
+        #त्रुटि portRELEASE_TASK_LOCK is required in SMP
+    #पूर्ण_अगर
 
-#endif /* portRELEASE_TASK_LOCK */
+#पूर्ण_अगर /* portRELEASE_TASK_LOCK */
 
-#ifndef portGET_TASK_LOCK
+#अगर_अघोषित portGET_TASK_LOCK
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portGET_TASK_LOCK()
-    #else
-        #error portGET_TASK_LOCK is required in SMP
-    #endif
+    #अगर ( config_संख्या_OF_CORES == 1 )
+        #घोषणा portGET_TASK_LOCK()
+    #अन्यथा
+        #त्रुटि portGET_TASK_LOCK is required in SMP
+    #पूर्ण_अगर
 
-#endif /* portGET_TASK_LOCK */
+#पूर्ण_अगर /* portGET_TASK_LOCK */
 
-#ifndef portRELEASE_ISR_LOCK
+#अगर_अघोषित portRELEASE_ISR_LOCK
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portRELEASE_ISR_LOCK()
-    #else
-        #error portRELEASE_ISR_LOCK is required in SMP
-    #endif
+    #अगर ( config_संख्या_OF_CORES == 1 )
+        #घोषणा portRELEASE_ISR_LOCK()
+    #अन्यथा
+        #त्रुटि portRELEASE_ISR_LOCK is required in SMP
+    #पूर्ण_अगर
 
-#endif /* portRELEASE_ISR_LOCK */
+#पूर्ण_अगर /* portRELEASE_ISR_LOCK */
 
-#ifndef portGET_ISR_LOCK
+#अगर_अघोषित portGET_ISR_LOCK
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portGET_ISR_LOCK()
-    #else
-        #error portGET_ISR_LOCK is required in SMP
-    #endif
+    #अगर ( config_संख्या_OF_CORES == 1 )
+        #घोषणा portGET_ISR_LOCK()
+    #अन्यथा
+        #त्रुटि portGET_ISR_LOCK is required in SMP
+    #पूर्ण_अगर
 
-#endif /* portGET_ISR_LOCK */
+#पूर्ण_अगर /* portGET_ISR_LOCK */
 
-#ifndef portENTER_CRITICAL_FROM_ISR
+#अगर_अघोषित portENTER_CRITICAL_FROM_ISR
 
-    #if ( configNUMBER_OF_CORES > 1 )
-        #error portENTER_CRITICAL_FROM_ISR is required in SMP
-    #endif
+    #अगर ( config_संख्या_OF_CORES > 1 )
+        #त्रुटि portENTER_CRITICAL_FROM_ISR is required in SMP
+    #पूर्ण_अगर
 
-#endif
+#पूर्ण_अगर
 
-#ifndef portEXIT_CRITICAL_FROM_ISR
+#अगर_अघोषित portEXIT_CRITICAL_FROM_ISR
 
-    #if ( configNUMBER_OF_CORES > 1 )
-        #error portEXIT_CRITICAL_FROM_ISR is required in SMP
-    #endif
+    #अगर ( config_संख्या_OF_CORES > 1 )
+        #त्रुटि portEXIT_CRITICAL_FROM_ISR is required in SMP
+    #पूर्ण_अगर
 
-#endif
+#पूर्ण_अगर
 
-#ifndef configUSE_CORE_AFFINITY
-    #define configUSE_CORE_AFFINITY    0
-#endif /* configUSE_CORE_AFFINITY */
+#अगर_अघोषित configUSE_CORE_AFFINITY
+    #घोषणा configUSE_CORE_AFFINITY    0
+#पूर्ण_अगर /* configUSE_CORE_AFFINITY */
 
-#if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
-    #ifndef configTASK_DEFAULT_CORE_AFFINITY
-        #define configTASK_DEFAULT_CORE_AFFINITY    tskNO_AFFINITY
-    #endif
-#endif
+#अगर ( ( config_संख्या_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+    #अगर_अघोषित configTASK_DEFAULT_CORE_AFFINITY
+        #घोषणा configTASK_DEFAULT_CORE_AFFINITY    tskNO_AFFINITY
+    #पूर्ण_अगर
+#पूर्ण_अगर
 
-#ifndef configUSE_PASSIVE_IDLE_HOOK
-    #define configUSE_PASSIVE_IDLE_HOOK    0
-#endif /* configUSE_PASSIVE_IDLE_HOOK */
+#अगर_अघोषित configUSE_PASSIVE_IDLE_HOOK
+    #घोषणा configUSE_PASSIVE_IDLE_HOOK    0
+#पूर्ण_अगर /* configUSE_PASSIVE_IDLE_HOOK */
 
 /* The timers module relies on xTaskGetSchedulerState(). */
-#if configUSE_TIMERS == 1
+#अगर configUSE_TIMERS == 1
 
-    #ifndef configTIMER_TASK_PRIORITY
-        #error If configUSE_TIMERS is set to 1 then configTIMER_TASK_PRIORITY must also be defined.
-    #endif /* configTIMER_TASK_PRIORITY */
+    #अगर_अघोषित configTIMER_TASK_PRIORITY
+        #त्रुटि If configUSE_TIMERS is set to 1 then configTIMER_TASK_PRIORITY must also be defined.
+    #पूर्ण_अगर /* configTIMER_TASK_PRIORITY */
 
-    #ifndef configTIMER_QUEUE_LENGTH
-        #error If configUSE_TIMERS is set to 1 then configTIMER_QUEUE_LENGTH must also be defined.
-    #endif /* configTIMER_QUEUE_LENGTH */
+    #अगर_अघोषित config_TIMER_QUEUE_लंबाई
+        #त्रुटि If configUSE_TIMERS is set to 1 then config_TIMER_QUEUE_लंबाई must also be defined.
+    #पूर्ण_अगर /* configTIMER_QUEUE_LENGTH */
 
-    #ifndef configTIMER_TASK_STACK_DEPTH
-        #error If configUSE_TIMERS is set to 1 then configTIMER_TASK_STACK_DEPTH must also be defined.
-    #endif /* configTIMER_TASK_STACK_DEPTH */
+    #अगर_अघोषित config_TIMER_TASK_ढेर_DEPTH
+        #त्रुटि If configUSE_TIMERS is set to 1 then config_TIMER_TASK_ढेर_DEPTH must also be defined.
+    #पूर्ण_अगर /* configTIMER_TASK_STACK_DEPTH */
 
-    #ifndef portTIMER_CALLBACK_ATTRIBUTE
-        #define portTIMER_CALLBACK_ATTRIBUTE
-    #endif /* portTIMER_CALLBACK_ATTRIBUTE */
+    #अगर_अघोषित portTIMER_CALLBACK_ATTRIBUTE
+        #घोषणा portTIMER_CALLBACK_ATTRIBUTE
+    #पूर्ण_अगर /* portTIMER_CALLBACK_ATTRIBUTE */
 
-#endif /* configUSE_TIMERS */
+#पूर्ण_अगर /* configUSE_TIMERS */
 
-#ifndef portHAS_NESTED_INTERRUPTS
-    #if defined( portSET_INTERRUPT_MASK_FROM_ISR ) && defined( portCLEAR_INTERRUPT_MASK_FROM_ISR )
-        #define portHAS_NESTED_INTERRUPTS    1
-    #else
-        #define portHAS_NESTED_INTERRUPTS    0
-    #endif
-#endif
+#अगर_अघोषित portHAS_NESTED_INTERRUPTS
+    #अगर defined( portSET_INTERRUPT_MASK_FROM_ISR ) && defined( portCLEAR_INTERRUPT_MASK_FROM_ISR )
+        #घोषणा portHAS_NESTED_INTERRUPTS    1
+    #अन्यथा
+        #घोषणा portHAS_NESTED_INTERRUPTS    0
+    #पूर्ण_अगर
+#पूर्ण_अगर
 
-#ifndef portSET_INTERRUPT_MASK_FROM_ISR
-    #if ( portHAS_NESTED_INTERRUPTS == 1 )
-        #error portSET_INTERRUPT_MASK_FROM_ISR must be defined for ports that support nested interrupts (i.e. portHAS_NESTED_INTERRUPTS is set to 1)
-    #else
-        #define portSET_INTERRUPT_MASK_FROM_ISR()    0
-    #endif
-#else
-    #if ( portHAS_NESTED_INTERRUPTS == 0 )
-        #error portSET_INTERRUPT_MASK_FROM_ISR must not be defined for ports that do not support nested interrupts (i.e. portHAS_NESTED_INTERRUPTS is set to 0)
-    #endif
-#endif
+#अगर_अघोषित portSET_INTERRUPT_MASK_FROM_ISR
+    #अगर ( portHAS_NESTED_INTERRUPTS == 1 )
+        #त्रुटि portSET_INTERRUPT_MASK_FROM_ISR must be defined क्रम ports that support nested interrupts (i.e. portHAS_NESTED_INTERRUPTS is set to 1)
+    #अन्यथा
+        #घोषणा portSET_INTERRUPT_MASK_FROM_ISR()    0
+    #पूर्ण_अगर
+#अन्यथा
+    #अगर ( portHAS_NESTED_INTERRUPTS == 0 )
+        #त्रुटि portSET_INTERRUPT_MASK_FROM_ISR must not be defined क्रम ports that करो not support nested interrupts (i.e. portHAS_NESTED_INTERRUPTS is set to 0)
+    #पूर्ण_अगर
+#पूर्ण_अगर
 
-#ifndef portCLEAR_INTERRUPT_MASK_FROM_ISR
-    #if ( portHAS_NESTED_INTERRUPTS == 1 )
-        #error portCLEAR_INTERRUPT_MASK_FROM_ISR must be defined for ports that support nested interrupts  (i.e. portHAS_NESTED_INTERRUPTS is set to 1)
-    #else
-        #define portCLEAR_INTERRUPT_MASK_FROM_ISR( uxSavedStatusValue )    ( void ) ( uxSavedStatusValue )
-    #endif
-#else
-    #if ( portHAS_NESTED_INTERRUPTS == 0 )
-        #error portCLEAR_INTERRUPT_MASK_FROM_ISR must not be defined for ports that do not support nested interrupts (i.e. portHAS_NESTED_INTERRUPTS is set to 0)
-    #endif
-#endif
+#अगर_अघोषित portCLEAR_INTERRUPT_MASK_FROM_ISR
+    #अगर ( portHAS_NESTED_INTERRUPTS == 1 )
+        #त्रुटि portCLEAR_INTERRUPT_MASK_FROM_ISR must be defined क्रम ports that support nested interrupts  (i.e. portHAS_NESTED_INTERRUPTS is set to 1)
+    #अन्यथा
+        #घोषणा portCLEAR_INTERRUPT_MASK_FROM_ISR( ux_Saved_Status_मूल्य )    ( व्योम ) ( ux_Saved_Status_मूल्य )
+    #पूर्ण_अगर
+#अन्यथा
+    #अगर ( portHAS_NESTED_INTERRUPTS == 0 )
+        #त्रुटि portCLEAR_INTERRUPT_MASK_FROM_ISR must not be defined क्रम ports that करो not support nested interrupts (i.e. portHAS_NESTED_INTERRUPTS is set to 0)
+    #पूर्ण_अगर
+#पूर्ण_अगर
 
-#ifndef portCLEAN_UP_TCB
-    #define portCLEAN_UP_TCB( pxTCB )    ( void ) ( pxTCB )
-#endif
+#अगर_अघोषित portCLEAN_UP_TCB
+    #घोषणा portCLEAN_UP_TCB( pxTCB )    ( व्योम ) ( pxTCB )
+#पूर्ण_अगर
 
-#ifndef portPRE_TASK_DELETE_HOOK
-    #define portPRE_TASK_DELETE_HOOK( pvTaskToDelete, pxYieldPending )
-#endif
+#अगर_अघोषित portPRE_TASK_DELETE_HOOK
+    #घोषणा portPRE_TASK_DELETE_HOOK( pvTaskToDelete, pxYieldPending )
+#पूर्ण_अगर
 
-#ifndef portSETUP_TCB
-    #define portSETUP_TCB( pxTCB )    ( void ) ( pxTCB )
-#endif
+#अगर_अघोषित portSETUP_TCB
+    #घोषणा portSETUP_TCB( pxTCB )    ( व्योम ) ( pxTCB )
+#पूर्ण_अगर
 
-#ifndef portTASK_SWITCH_HOOK
-    #define portTASK_SWITCH_HOOK( pxTCB )    ( void ) ( pxTCB )
-#endif
+#अगर_अघोषित portTASK_SWITCH_HOOK
+    #घोषणा portTASK_SWITCH_HOOK( pxTCB )    ( व्योम ) ( pxTCB )
+#पूर्ण_अगर
 
-#ifndef configQUEUE_REGISTRY_SIZE
-    #define configQUEUE_REGISTRY_SIZE    0U
-#endif
+#अगर_अघोषित config_QUEUE_REGISTRY_आकार
+    #घोषणा config_QUEUE_REGISTRY_आकार    0U
+#पूर्ण_अगर
 
-#if ( configQUEUE_REGISTRY_SIZE < 1 )
-    #define vQueueAddToRegistry( xQueue, pcName )
-    #define vQueueUnregisterQueue( xQueue )
-    #define pcQueueGetName( xQueue )
-#endif
+#अगर ( config_QUEUE_REGISTRY_आकार < 1 )
+    #घोषणा vQueueAddToRegistry( xQueue, pcName )
+    #घोषणा vQueueUnregisterQueue( xQueue )
+    #घोषणा pcQueueGetName( xQueue )
+#पूर्ण_अगर
 
-#ifndef configUSE_MINI_LIST_ITEM
-    #define configUSE_MINI_LIST_ITEM    1
-#endif
+#अगर_अघोषित configUSE_MINI_LIST_ITEM
+    #घोषणा configUSE_MINI_LIST_ITEM    1
+#पूर्ण_अगर
 
-#ifndef portPOINTER_SIZE_TYPE
-    #define portPOINTER_SIZE_TYPE    uint32_t
-#endif
+#अगर_अघोषित port_POINTER_आकार_TYPE
+    #घोषणा port_POINTER_आकार_TYPE    uint32_t
+#पूर्ण_अगर
 
 /* Remove any unused trace macros. */
-#ifndef traceSTART
+#अगर_अघोषित traceSTART
 
 /* Used to perform any necessary initialisation - for example, open a file
  * into which trace is to be written. */
-    #define traceSTART()
-#endif
+    #घोषणा traceSTART()
+#पूर्ण_अगर
 
-#ifndef traceEND
+#अगर_अघोषित traceEND
 
 /* Use to close a trace, for example close a file into which trace has been
  * written. */
-    #define traceEND()
-#endif
+    #घोषणा traceEND()
+#पूर्ण_अगर
 
-#ifndef traceTASK_SWITCHED_IN
+#अगर_अघोषित traceTASK_SWITCHED_IN
 
 /* Called after a task has been selected to run.  pxCurrentTCB holds a pointer
  * to the task control block of the selected task. */
-    #define traceTASK_SWITCHED_IN()
-#endif
+    #घोषणा traceTASK_SWITCHED_IN()
+#पूर्ण_अगर
 
-#ifndef traceINCREASE_TICK_COUNT
+#अगर_अघोषित trace_INCREASE_TICK_गिनती
 
 /* Called before stepping the tick count after waking from tickless idle
  * sleep. */
-    #define traceINCREASE_TICK_COUNT( x )
-#endif
+    #घोषणा trace_INCREASE_TICK_गिनती( x )
+#पूर्ण_अगर
 
-#ifndef traceLOW_POWER_IDLE_BEGIN
+#अगर_अघोषित trace_निचला_POWER_IDLE_BEGIN
     /* Called immediately before entering tickless idle. */
-    #define traceLOW_POWER_IDLE_BEGIN()
-#endif
+    #घोषणा trace_निचला_POWER_IDLE_BEGIN()
+#पूर्ण_अगर
 
-#ifndef traceLOW_POWER_IDLE_END
+#अगर_अघोषित trace_निचला_POWER_IDLE_END
     /* Called when returning to the Idle task after a tickless idle. */
-    #define traceLOW_POWER_IDLE_END()
-#endif
+    #घोषणा trace_निचला_POWER_IDLE_END()
+#पूर्ण_अगर
 
-#ifndef traceTASK_SWITCHED_OUT
+#अगर_अघोषित traceTASK_SWITCHED_OUT
 
 /* Called before a task has been selected to run.  pxCurrentTCB holds a pointer
  * to the task control block of the task being switched out. */
-    #define traceTASK_SWITCHED_OUT()
-#endif
+    #घोषणा traceTASK_SWITCHED_OUT()
+#पूर्ण_अगर
 
-#ifndef traceTASK_PRIORITY_INHERIT
+#अगर_अघोषित traceTASK_PRIORITY_INHERIT
 
 /* Called when a task attempts to take a mutex that is already held by a
  * lower priority task.  pxTCBOfMutexHolder is a pointer to the TCB of the task
  * that holds the mutex.  uxInheritedPriority is the priority the mutex holder
  * will inherit (the priority of the task that is attempting to obtain the
  * muted. */
-    #define traceTASK_PRIORITY_INHERIT( pxTCBOfMutexHolder, uxInheritedPriority )
-#endif
+    #घोषणा traceTASK_PRIORITY_INHERIT( pxTCBOfMutexHolder, uxInheritedPriority )
+#पूर्ण_अगर
 
-#ifndef traceTASK_PRIORITY_DISINHERIT
+#अगर_अघोषित traceTASK_PRIORITY_DISINHERIT
 
 /* Called when a task releases a mutex, the holding of which had resulted in
  * the task inheriting the priority of a higher priority task.
  * pxTCBOfMutexHolder is a pointer to the TCB of the task that is releasing the
  * mutex.  uxOriginalPriority is the task's configured (base) priority. */
-    #define traceTASK_PRIORITY_DISINHERIT( pxTCBOfMutexHolder, uxOriginalPriority )
-#endif
+    #घोषणा traceTASK_PRIORITY_DISINHERIT( pxTCBOfMutexHolder, uxOriginalPriority )
+#पूर्ण_अगर
 
-#ifndef traceBLOCKING_ON_QUEUE_RECEIVE
-
-/* Task is about to block because it cannot read from a
- * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
- * upon which the read was attempted.  pxCurrentTCB points to the TCB of the
- * task that attempted the read. */
-    #define traceBLOCKING_ON_QUEUE_RECEIVE( pxQueue )
-#endif
-
-#ifndef traceBLOCKING_ON_QUEUE_PEEK
+#अगर_अघोषित traceBLOCKING_ON_QUEUE_RECEIVE
 
 /* Task is about to block because it cannot read from a
  * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
  * upon which the read was attempted.  pxCurrentTCB points to the TCB of the
  * task that attempted the read. */
-    #define traceBLOCKING_ON_QUEUE_PEEK( pxQueue )
-#endif
+    #घोषणा traceBLOCKING_ON_QUEUE_RECEIVE( pxQueue )
+#पूर्ण_अगर
 
-#ifndef traceBLOCKING_ON_QUEUE_SEND
+#अगर_अघोषित traceBLOCKING_ON_QUEUE_PEEK
+
+/* Task is about to block because it cannot read from a
+ * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
+ * upon which the read was attempted.  pxCurrentTCB points to the TCB of the
+ * task that attempted the read. */
+    #घोषणा traceBLOCKING_ON_QUEUE_PEEK( pxQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceBLOCKING_ON_QUEUE_SEND
 
 /* Task is about to block because it cannot write to a
  * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
  * upon which the write was attempted.  pxCurrentTCB points to the TCB of the
  * task that attempted the write. */
-    #define traceBLOCKING_ON_QUEUE_SEND( pxQueue )
-#endif
+    #घोषणा traceBLOCKING_ON_QUEUE_SEND( pxQueue )
+#पूर्ण_अगर
 
-#ifndef configCHECK_FOR_STACK_OVERFLOW
-    #define configCHECK_FOR_STACK_OVERFLOW    0
-#endif
+#अगर_अघोषित config_CHECK_FOR_ढेर_OVERFLOW
+    #घोषणा config_CHECK_FOR_ढेर_OVERFLOW    0
+#पूर्ण_अगर
 
-#ifndef configRECORD_STACK_HIGH_ADDRESS
-    #define configRECORD_STACK_HIGH_ADDRESS    0
-#endif
+#अगर_अघोषित config_RECORD_ढेर_ऊपरी_ADDRESS
+    #घोषणा config_RECORD_ढेर_ऊपरी_ADDRESS    0
+#पूर्ण_अगर
 
-#ifndef configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H
-    #define configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H    0
-#endif
+#अगर_अघोषित configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H
+    #घोषणा configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H    0
+#पूर्ण_अगर
 
 /* The following event macros are embedded in the kernel API calls. */
 
-#ifndef traceMOVED_TASK_TO_READY_STATE
-    #define traceMOVED_TASK_TO_READY_STATE( pxTCB )
-#endif
-
-#ifndef tracePOST_MOVED_TASK_TO_READY_STATE
-    #define tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )
-#endif
-
-#ifndef traceMOVED_TASK_TO_DELAYED_LIST
-    #define traceMOVED_TASK_TO_DELAYED_LIST()
-#endif
-
-#ifndef traceMOVED_TASK_TO_OVERFLOW_DELAYED_LIST
-    #define traceMOVED_TASK_TO_OVERFLOW_DELAYED_LIST()
-#endif
-
-#ifndef traceQUEUE_CREATE
-    #define traceQUEUE_CREATE( pxNewQueue )
-#endif
-
-#ifndef traceQUEUE_CREATE_FAILED
-    #define traceQUEUE_CREATE_FAILED( ucQueueType )
-#endif
-
-#ifndef traceCREATE_MUTEX
-    #define traceCREATE_MUTEX( pxNewQueue )
-#endif
-
-#ifndef traceCREATE_MUTEX_FAILED
-    #define traceCREATE_MUTEX_FAILED()
-#endif
-
-#ifndef traceGIVE_MUTEX_RECURSIVE
-    #define traceGIVE_MUTEX_RECURSIVE( pxMutex )
-#endif
-
-#ifndef traceGIVE_MUTEX_RECURSIVE_FAILED
-    #define traceGIVE_MUTEX_RECURSIVE_FAILED( pxMutex )
-#endif
-
-#ifndef traceTAKE_MUTEX_RECURSIVE
-    #define traceTAKE_MUTEX_RECURSIVE( pxMutex )
-#endif
-
-#ifndef traceTAKE_MUTEX_RECURSIVE_FAILED
-    #define traceTAKE_MUTEX_RECURSIVE_FAILED( pxMutex )
-#endif
-
-#ifndef traceCREATE_COUNTING_SEMAPHORE
-    #define traceCREATE_COUNTING_SEMAPHORE()
-#endif
-
-#ifndef traceCREATE_COUNTING_SEMAPHORE_FAILED
-    #define traceCREATE_COUNTING_SEMAPHORE_FAILED()
-#endif
-
-#ifndef traceQUEUE_SET_SEND
-    #define traceQUEUE_SET_SEND    traceQUEUE_SEND
-#endif
-
-#ifndef traceQUEUE_SEND
-    #define traceQUEUE_SEND( pxQueue )
-#endif
-
-#ifndef traceQUEUE_SEND_FAILED
-    #define traceQUEUE_SEND_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE
-    #define traceQUEUE_RECEIVE( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK
-    #define traceQUEUE_PEEK( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK_FAILED
-    #define traceQUEUE_PEEK_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK_FROM_ISR
-    #define traceQUEUE_PEEK_FROM_ISR( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE_FAILED
-    #define traceQUEUE_RECEIVE_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_SEND_FROM_ISR
-    #define traceQUEUE_SEND_FROM_ISR( pxQueue )
-#endif
-
-#ifndef traceQUEUE_SEND_FROM_ISR_FAILED
-    #define traceQUEUE_SEND_FROM_ISR_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE_FROM_ISR
-    #define traceQUEUE_RECEIVE_FROM_ISR( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE_FROM_ISR_FAILED
-    #define traceQUEUE_RECEIVE_FROM_ISR_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK_FROM_ISR_FAILED
-    #define traceQUEUE_PEEK_FROM_ISR_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_DELETE
-    #define traceQUEUE_DELETE( pxQueue )
-#endif
-
-#ifndef traceTASK_CREATE
-    #define traceTASK_CREATE( pxNewTCB )
-#endif
-
-#ifndef traceTASK_CREATE_FAILED
-    #define traceTASK_CREATE_FAILED()
-#endif
-
-#ifndef traceTASK_DELETE
-    #define traceTASK_DELETE( pxTaskToDelete )
-#endif
-
-#ifndef traceTASK_DELAY_UNTIL
-    #define traceTASK_DELAY_UNTIL( x )
-#endif
-
-#ifndef traceTASK_DELAY
-    #define traceTASK_DELAY()
-#endif
-
-#ifndef traceTASK_PRIORITY_SET
-    #define traceTASK_PRIORITY_SET( pxTask, uxNewPriority )
-#endif
-
-#ifndef traceTASK_SUSPEND
-    #define traceTASK_SUSPEND( pxTaskToSuspend )
-#endif
-
-#ifndef traceTASK_RESUME
-    #define traceTASK_RESUME( pxTaskToResume )
-#endif
-
-#ifndef traceTASK_RESUME_FROM_ISR
-    #define traceTASK_RESUME_FROM_ISR( pxTaskToResume )
-#endif
-
-#ifndef traceTASK_INCREMENT_TICK
-    #define traceTASK_INCREMENT_TICK( xTickCount )
-#endif
-
-#ifndef traceTIMER_CREATE
-    #define traceTIMER_CREATE( pxNewTimer )
-#endif
-
-#ifndef traceTIMER_CREATE_FAILED
-    #define traceTIMER_CREATE_FAILED()
-#endif
-
-#ifndef traceTIMER_COMMAND_SEND
-    #define traceTIMER_COMMAND_SEND( xTimer, xMessageID, xMessageValueValue, xReturn )
-#endif
-
-#ifndef traceTIMER_EXPIRED
-    #define traceTIMER_EXPIRED( pxTimer )
-#endif
-
-#ifndef traceTIMER_COMMAND_RECEIVED
-    #define traceTIMER_COMMAND_RECEIVED( pxTimer, xMessageID, xMessageValue )
-#endif
-
-#ifndef traceMALLOC
-    #define traceMALLOC( pvAddress, uiSize )
-#endif
-
-#ifndef traceFREE
-    #define traceFREE( pvAddress, uiSize )
-#endif
-
-#ifndef traceEVENT_GROUP_CREATE
-    #define traceEVENT_GROUP_CREATE( xEventGroup )
-#endif
-
-#ifndef traceEVENT_GROUP_CREATE_FAILED
-    #define traceEVENT_GROUP_CREATE_FAILED()
-#endif
-
-#ifndef traceEVENT_GROUP_SYNC_BLOCK
-    #define traceEVENT_GROUP_SYNC_BLOCK( xEventGroup, uxBitsToSet, uxBitsToWaitFor )
-#endif
-
-#ifndef traceEVENT_GROUP_SYNC_END
-    #define traceEVENT_GROUP_SYNC_END( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTimeoutOccurred )    ( void ) ( xTimeoutOccurred )
-#endif
-
-#ifndef traceEVENT_GROUP_WAIT_BITS_BLOCK
-    #define traceEVENT_GROUP_WAIT_BITS_BLOCK( xEventGroup, uxBitsToWaitFor )
-#endif
-
-#ifndef traceEVENT_GROUP_WAIT_BITS_END
-    #define traceEVENT_GROUP_WAIT_BITS_END( xEventGroup, uxBitsToWaitFor, xTimeoutOccurred )    ( void ) ( xTimeoutOccurred )
-#endif
-
-#ifndef traceEVENT_GROUP_CLEAR_BITS
-    #define traceEVENT_GROUP_CLEAR_BITS( xEventGroup, uxBitsToClear )
-#endif
-
-#ifndef traceEVENT_GROUP_CLEAR_BITS_FROM_ISR
-    #define traceEVENT_GROUP_CLEAR_BITS_FROM_ISR( xEventGroup, uxBitsToClear )
-#endif
-
-#ifndef traceEVENT_GROUP_SET_BITS
-    #define traceEVENT_GROUP_SET_BITS( xEventGroup, uxBitsToSet )
-#endif
-
-#ifndef traceEVENT_GROUP_SET_BITS_FROM_ISR
-    #define traceEVENT_GROUP_SET_BITS_FROM_ISR( xEventGroup, uxBitsToSet )
-#endif
-
-#ifndef traceEVENT_GROUP_DELETE
-    #define traceEVENT_GROUP_DELETE( xEventGroup )
-#endif
-
-#ifndef tracePEND_FUNC_CALL
-    #define tracePEND_FUNC_CALL( xFunctionToPend, pvParameter1, ulParameter2, ret )
-#endif
-
-#ifndef tracePEND_FUNC_CALL_FROM_ISR
-    #define tracePEND_FUNC_CALL_FROM_ISR( xFunctionToPend, pvParameter1, ulParameter2, ret )
-#endif
-
-#ifndef traceQUEUE_REGISTRY_ADD
-    #define traceQUEUE_REGISTRY_ADD( xQueue, pcQueueName )
-#endif
-
-#ifndef traceTASK_NOTIFY_TAKE_BLOCK
-    #define traceTASK_NOTIFY_TAKE_BLOCK( uxIndexToWait )
-#endif
-
-#ifndef traceTASK_NOTIFY_TAKE
-    #define traceTASK_NOTIFY_TAKE( uxIndexToWait )
-#endif
-
-#ifndef traceTASK_NOTIFY_WAIT_BLOCK
-    #define traceTASK_NOTIFY_WAIT_BLOCK( uxIndexToWait )
-#endif
-
-#ifndef traceTASK_NOTIFY_WAIT
-    #define traceTASK_NOTIFY_WAIT( uxIndexToWait )
-#endif
-
-#ifndef traceTASK_NOTIFY
-    #define traceTASK_NOTIFY( uxIndexToNotify )
-#endif
-
-#ifndef traceTASK_NOTIFY_FROM_ISR
-    #define traceTASK_NOTIFY_FROM_ISR( uxIndexToNotify )
-#endif
-
-#ifndef traceTASK_NOTIFY_GIVE_FROM_ISR
-    #define traceTASK_NOTIFY_GIVE_FROM_ISR( uxIndexToNotify )
-#endif
-
-#ifndef traceISR_EXIT_TO_SCHEDULER
-    #define traceISR_EXIT_TO_SCHEDULER()
-#endif
-
-#ifndef traceISR_EXIT
-    #define traceISR_EXIT()
-#endif
-
-#ifndef traceISR_ENTER
-    #define traceISR_ENTER()
-#endif
-
-#ifndef traceSTREAM_BUFFER_CREATE_FAILED
-    #define traceSTREAM_BUFFER_CREATE_FAILED( xStreamBufferType )
-#endif
-
-#ifndef traceSTREAM_BUFFER_CREATE_STATIC_FAILED
-    #define traceSTREAM_BUFFER_CREATE_STATIC_FAILED( xReturn, xStreamBufferType )
-#endif
-
-#ifndef traceSTREAM_BUFFER_CREATE
-    #define traceSTREAM_BUFFER_CREATE( pxStreamBuffer, xStreamBufferType )
-#endif
-
-#ifndef traceSTREAM_BUFFER_DELETE
-    #define traceSTREAM_BUFFER_DELETE( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_RESET
-    #define traceSTREAM_BUFFER_RESET( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_RESET_FROM_ISR
-    #define traceSTREAM_BUFFER_RESET_FROM_ISR( xStreamBuffer )
-#endif
-
-#ifndef traceBLOCKING_ON_STREAM_BUFFER_SEND
-    #define traceBLOCKING_ON_STREAM_BUFFER_SEND( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_SEND
-    #define traceSTREAM_BUFFER_SEND( xStreamBuffer, xBytesSent )
-#endif
-
-#ifndef traceSTREAM_BUFFER_SEND_FAILED
-    #define traceSTREAM_BUFFER_SEND_FAILED( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_SEND_FROM_ISR
-    #define traceSTREAM_BUFFER_SEND_FROM_ISR( xStreamBuffer, xBytesSent )
-#endif
-
-#ifndef traceBLOCKING_ON_STREAM_BUFFER_RECEIVE
-    #define traceBLOCKING_ON_STREAM_BUFFER_RECEIVE( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_RECEIVE
-    #define traceSTREAM_BUFFER_RECEIVE( xStreamBuffer, xReceivedLength )
-#endif
-
-#ifndef traceSTREAM_BUFFER_RECEIVE_FAILED
-    #define traceSTREAM_BUFFER_RECEIVE_FAILED( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_RECEIVE_FROM_ISR
-    #define traceSTREAM_BUFFER_RECEIVE_FROM_ISR( xStreamBuffer, xReceivedLength )
-#endif
-
-#ifndef traceENTER_xEventGroupCreateStatic
-    #define traceENTER_xEventGroupCreateStatic( pxEventGroupBuffer )
-#endif
-
-#ifndef traceRETURN_xEventGroupCreateStatic
-    #define traceRETURN_xEventGroupCreateStatic( pxEventBits )
-#endif
-
-#ifndef traceENTER_xEventGroupCreate
-    #define traceENTER_xEventGroupCreate()
-#endif
-
-#ifndef traceRETURN_xEventGroupCreate
-    #define traceRETURN_xEventGroupCreate( pxEventBits )
-#endif
-
-#ifndef traceENTER_xEventGroupSync
-    #define traceENTER_xEventGroupSync( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xEventGroupSync
-    #define traceRETURN_xEventGroupSync( uxReturn )
-#endif
-
-#ifndef traceENTER_xEventGroupWaitBits
-    #define traceENTER_xEventGroupWaitBits( xEventGroup, uxBitsToWaitFor, xClearOnExit, xWaitForAllBits, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xEventGroupWaitBits
-    #define traceRETURN_xEventGroupWaitBits( uxReturn )
-#endif
-
-#ifndef traceENTER_xEventGroupClearBits
-    #define traceENTER_xEventGroupClearBits( xEventGroup, uxBitsToClear )
-#endif
-
-#ifndef traceRETURN_xEventGroupClearBits
-    #define traceRETURN_xEventGroupClearBits( uxReturn )
-#endif
-
-#ifndef traceENTER_xEventGroupClearBitsFromISR
-    #define traceENTER_xEventGroupClearBitsFromISR( xEventGroup, uxBitsToClear )
-#endif
-
-#ifndef traceRETURN_xEventGroupClearBitsFromISR
-    #define traceRETURN_xEventGroupClearBitsFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xEventGroupGetBitsFromISR
-    #define traceENTER_xEventGroupGetBitsFromISR( xEventGroup )
-#endif
-
-#ifndef traceRETURN_xEventGroupGetBitsFromISR
-    #define traceRETURN_xEventGroupGetBitsFromISR( uxReturn )
-#endif
-
-#ifndef traceENTER_xEventGroupSetBits
-    #define traceENTER_xEventGroupSetBits( xEventGroup, uxBitsToSet )
-#endif
-
-#ifndef traceRETURN_xEventGroupSetBits
-    #define traceRETURN_xEventGroupSetBits( uxEventBits )
-#endif
-
-#ifndef traceENTER_vEventGroupDelete
-    #define traceENTER_vEventGroupDelete( xEventGroup )
-#endif
-
-#ifndef traceRETURN_vEventGroupDelete
-    #define traceRETURN_vEventGroupDelete()
-#endif
-
-#ifndef traceENTER_xEventGroupGetStaticBuffer
-    #define traceENTER_xEventGroupGetStaticBuffer( xEventGroup, ppxEventGroupBuffer )
-#endif
-
-#ifndef traceRETURN_xEventGroupGetStaticBuffer
-    #define traceRETURN_xEventGroupGetStaticBuffer( xReturn )
-#endif
-
-#ifndef traceENTER_vEventGroupSetBitsCallback
-    #define traceENTER_vEventGroupSetBitsCallback( pvEventGroup, ulBitsToSet )
-#endif
-
-#ifndef traceRETURN_vEventGroupSetBitsCallback
-    #define traceRETURN_vEventGroupSetBitsCallback()
-#endif
-
-#ifndef traceENTER_vEventGroupClearBitsCallback
-    #define traceENTER_vEventGroupClearBitsCallback( pvEventGroup, ulBitsToClear )
-#endif
-
-#ifndef traceRETURN_vEventGroupClearBitsCallback
-    #define traceRETURN_vEventGroupClearBitsCallback()
-#endif
-
-#ifndef traceENTER_xEventGroupSetBitsFromISR
-    #define traceENTER_xEventGroupSetBitsFromISR( xEventGroup, uxBitsToSet, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xEventGroupSetBitsFromISR
-    #define traceRETURN_xEventGroupSetBitsFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_uxEventGroupGetNumber
-    #define traceENTER_uxEventGroupGetNumber( xEventGroup )
-#endif
-
-#ifndef traceRETURN_uxEventGroupGetNumber
-    #define traceRETURN_uxEventGroupGetNumber( xReturn )
-#endif
-
-#ifndef traceENTER_vEventGroupSetNumber
-    #define traceENTER_vEventGroupSetNumber( xEventGroup, uxEventGroupNumber )
-#endif
-
-#ifndef traceRETURN_vEventGroupSetNumber
-    #define traceRETURN_vEventGroupSetNumber()
-#endif
-
-#ifndef traceENTER_xQueueGenericReset
-    #define traceENTER_xQueueGenericReset( xQueue, xNewQueue )
-#endif
-
-#ifndef traceRETURN_xQueueGenericReset
-    #define traceRETURN_xQueueGenericReset( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueGenericCreateStatic
-    #define traceENTER_xQueueGenericCreateStatic( uxQueueLength, uxItemSize, pucQueueStorage, pxStaticQueue, ucQueueType )
-#endif
-
-#ifndef traceRETURN_xQueueGenericCreateStatic
-    #define traceRETURN_xQueueGenericCreateStatic( pxNewQueue )
-#endif
-
-#ifndef traceENTER_xQueueGenericGetStaticBuffers
-    #define traceENTER_xQueueGenericGetStaticBuffers( xQueue, ppucQueueStorage, ppxStaticQueue )
-#endif
-
-#ifndef traceRETURN_xQueueGenericGetStaticBuffers
-    #define traceRETURN_xQueueGenericGetStaticBuffers( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueGenericCreate
-    #define traceENTER_xQueueGenericCreate( uxQueueLength, uxItemSize, ucQueueType )
-#endif
-
-#ifndef traceRETURN_xQueueGenericCreate
-    #define traceRETURN_xQueueGenericCreate( pxNewQueue )
-#endif
-
-#ifndef traceENTER_xQueueCreateMutex
-    #define traceENTER_xQueueCreateMutex( ucQueueType )
-#endif
-
-#ifndef traceRETURN_xQueueCreateMutex
-    #define traceRETURN_xQueueCreateMutex( xNewQueue )
-#endif
-
-#ifndef traceENTER_xQueueCreateMutexStatic
-    #define traceENTER_xQueueCreateMutexStatic( ucQueueType, pxStaticQueue )
-#endif
-
-#ifndef traceRETURN_xQueueCreateMutexStatic
-    #define traceRETURN_xQueueCreateMutexStatic( xNewQueue )
-#endif
-
-#ifndef traceENTER_xQueueGetMutexHolder
-    #define traceENTER_xQueueGetMutexHolder( xSemaphore )
-#endif
-
-#ifndef traceRETURN_xQueueGetMutexHolder
-    #define traceRETURN_xQueueGetMutexHolder( pxReturn )
-#endif
-
-#ifndef traceENTER_xQueueGetMutexHolderFromISR
-    #define traceENTER_xQueueGetMutexHolderFromISR( xSemaphore )
-#endif
-
-#ifndef traceRETURN_xQueueGetMutexHolderFromISR
-    #define traceRETURN_xQueueGetMutexHolderFromISR( pxReturn )
-#endif
-
-#ifndef traceENTER_xQueueGiveMutexRecursive
-    #define traceENTER_xQueueGiveMutexRecursive( xMutex )
-#endif
-
-#ifndef traceRETURN_xQueueGiveMutexRecursive
-    #define traceRETURN_xQueueGiveMutexRecursive( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueTakeMutexRecursive
-    #define traceENTER_xQueueTakeMutexRecursive( xMutex, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueTakeMutexRecursive
-    #define traceRETURN_xQueueTakeMutexRecursive( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueCreateCountingSemaphoreStatic
-    #define traceENTER_xQueueCreateCountingSemaphoreStatic( uxMaxCount, uxInitialCount, pxStaticQueue )
-#endif
-
-#ifndef traceRETURN_xQueueCreateCountingSemaphoreStatic
-    #define traceRETURN_xQueueCreateCountingSemaphoreStatic( xHandle )
-#endif
-
-#ifndef traceENTER_xQueueCreateCountingSemaphore
-    #define traceENTER_xQueueCreateCountingSemaphore( uxMaxCount, uxInitialCount )
-#endif
-
-#ifndef traceRETURN_xQueueCreateCountingSemaphore
-    #define traceRETURN_xQueueCreateCountingSemaphore( xHandle )
-#endif
-
-#ifndef traceENTER_xQueueGenericSend
-    #define traceENTER_xQueueGenericSend( xQueue, pvItemToQueue, xTicksToWait, xCopyPosition )
-#endif
-
-#ifndef traceRETURN_xQueueGenericSend
-    #define traceRETURN_xQueueGenericSend( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueGenericSendFromISR
-    #define traceENTER_xQueueGenericSendFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken, xCopyPosition )
-#endif
-
-#ifndef traceRETURN_xQueueGenericSendFromISR
-    #define traceRETURN_xQueueGenericSendFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueGiveFromISR
-    #define traceENTER_xQueueGiveFromISR( xQueue, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xQueueGiveFromISR
-    #define traceRETURN_xQueueGiveFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueReceive
-    #define traceENTER_xQueueReceive( xQueue, pvBuffer, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueReceive
-    #define traceRETURN_xQueueReceive( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueSemaphoreTake
-    #define traceENTER_xQueueSemaphoreTake( xQueue, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueSemaphoreTake
-    #define traceRETURN_xQueueSemaphoreTake( xReturn )
-#endif
-
-#ifndef traceENTER_xQueuePeek
-    #define traceENTER_xQueuePeek( xQueue, pvBuffer, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueuePeek
-    #define traceRETURN_xQueuePeek( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueReceiveFromISR
-    #define traceENTER_xQueueReceiveFromISR( xQueue, pvBuffer, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xQueueReceiveFromISR
-    #define traceRETURN_xQueueReceiveFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xQueuePeekFromISR
-    #define traceENTER_xQueuePeekFromISR( xQueue, pvBuffer )
-#endif
-
-#ifndef traceRETURN_xQueuePeekFromISR
-    #define traceRETURN_xQueuePeekFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_uxQueueMessagesWaiting
-    #define traceENTER_uxQueueMessagesWaiting( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueMessagesWaiting
-    #define traceRETURN_uxQueueMessagesWaiting( uxReturn )
-#endif
-
-#ifndef traceENTER_uxQueueSpacesAvailable
-    #define traceENTER_uxQueueSpacesAvailable( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueSpacesAvailable
-    #define traceRETURN_uxQueueSpacesAvailable( uxReturn )
-#endif
-
-#ifndef traceENTER_uxQueueMessagesWaitingFromISR
-    #define traceENTER_uxQueueMessagesWaitingFromISR( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueMessagesWaitingFromISR
-    #define traceRETURN_uxQueueMessagesWaitingFromISR( uxReturn )
-#endif
-
-#ifndef traceENTER_vQueueDelete
-    #define traceENTER_vQueueDelete( xQueue )
-#endif
-
-#ifndef traceRETURN_vQueueDelete
-    #define traceRETURN_vQueueDelete()
-#endif
-
-#ifndef traceENTER_uxQueueGetQueueNumber
-    #define traceENTER_uxQueueGetQueueNumber( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueGetQueueNumber
-    #define traceRETURN_uxQueueGetQueueNumber( uxQueueNumber )
-#endif
-
-#ifndef traceENTER_vQueueSetQueueNumber
-    #define traceENTER_vQueueSetQueueNumber( xQueue, uxQueueNumber )
-#endif
-
-#ifndef traceRETURN_vQueueSetQueueNumber
-    #define traceRETURN_vQueueSetQueueNumber()
-#endif
-
-#ifndef traceENTER_ucQueueGetQueueType
-    #define traceENTER_ucQueueGetQueueType( xQueue )
-#endif
-
-#ifndef traceRETURN_ucQueueGetQueueType
-    #define traceRETURN_ucQueueGetQueueType( ucQueueType )
-#endif
-
-#ifndef traceENTER_uxQueueGetQueueItemSize
-    #define traceENTER_uxQueueGetQueueItemSize( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueGetQueueItemSize
-    #define traceRETURN_uxQueueGetQueueItemSize( uxItemSize )
-#endif
-
-#ifndef traceENTER_uxQueueGetQueueLength
-    #define traceENTER_uxQueueGetQueueLength( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueGetQueueLength
-    #define traceRETURN_uxQueueGetQueueLength( uxLength )
-#endif
-
-#ifndef traceENTER_xQueueIsQueueEmptyFromISR
-    #define traceENTER_xQueueIsQueueEmptyFromISR( xQueue )
-#endif
-
-#ifndef traceRETURN_xQueueIsQueueEmptyFromISR
-    #define traceRETURN_xQueueIsQueueEmptyFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueIsQueueFullFromISR
-    #define traceENTER_xQueueIsQueueFullFromISR( xQueue )
-#endif
-
-#ifndef traceRETURN_xQueueIsQueueFullFromISR
-    #define traceRETURN_xQueueIsQueueFullFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueCRSend
-    #define traceENTER_xQueueCRSend( xQueue, pvItemToQueue, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueCRSend
-    #define traceRETURN_xQueueCRSend( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueCRReceive
-    #define traceENTER_xQueueCRReceive( xQueue, pvBuffer, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueCRReceive
-    #define traceRETURN_xQueueCRReceive( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueCRSendFromISR
-    #define traceENTER_xQueueCRSendFromISR( xQueue, pvItemToQueue, xCoRoutinePreviouslyWoken )
-#endif
-
-#ifndef traceRETURN_xQueueCRSendFromISR
-    #define traceRETURN_xQueueCRSendFromISR( xCoRoutinePreviouslyWoken )
-#endif
-
-#ifndef traceENTER_xQueueCRReceiveFromISR
-    #define traceENTER_xQueueCRReceiveFromISR( xQueue, pvBuffer, pxCoRoutineWoken )
-#endif
-
-#ifndef traceRETURN_xQueueCRReceiveFromISR
-    #define traceRETURN_xQueueCRReceiveFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_vQueueAddToRegistry
-    #define traceENTER_vQueueAddToRegistry( xQueue, pcQueueName )
-#endif
-
-#ifndef traceRETURN_vQueueAddToRegistry
-    #define traceRETURN_vQueueAddToRegistry()
-#endif
-
-#ifndef traceENTER_pcQueueGetName
-    #define traceENTER_pcQueueGetName( xQueue )
-#endif
-
-#ifndef traceRETURN_pcQueueGetName
-    #define traceRETURN_pcQueueGetName( pcReturn )
-#endif
-
-#ifndef traceENTER_vQueueUnregisterQueue
-    #define traceENTER_vQueueUnregisterQueue( xQueue )
-#endif
-
-#ifndef traceRETURN_vQueueUnregisterQueue
-    #define traceRETURN_vQueueUnregisterQueue()
-#endif
-
-#ifndef traceENTER_vQueueWaitForMessageRestricted
-    #define traceENTER_vQueueWaitForMessageRestricted( xQueue, xTicksToWait, xWaitIndefinitely )
-#endif
-
-#ifndef traceRETURN_vQueueWaitForMessageRestricted
-    #define traceRETURN_vQueueWaitForMessageRestricted()
-#endif
-
-#ifndef traceENTER_xQueueCreateSet
-    #define traceENTER_xQueueCreateSet( uxEventQueueLength )
-#endif
-
-#ifndef traceRETURN_xQueueCreateSet
-    #define traceRETURN_xQueueCreateSet( pxQueue )
-#endif
-
-#ifndef traceENTER_xQueueAddToSet
-    #define traceENTER_xQueueAddToSet( xQueueOrSemaphore, xQueueSet )
-#endif
-
-#ifndef traceRETURN_xQueueAddToSet
-    #define traceRETURN_xQueueAddToSet( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueRemoveFromSet
-    #define traceENTER_xQueueRemoveFromSet( xQueueOrSemaphore, xQueueSet )
-#endif
-
-#ifndef traceRETURN_xQueueRemoveFromSet
-    #define traceRETURN_xQueueRemoveFromSet( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueSelectFromSet
-    #define traceENTER_xQueueSelectFromSet( xQueueSet, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueSelectFromSet
-    #define traceRETURN_xQueueSelectFromSet( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueSelectFromSetFromISR
-    #define traceENTER_xQueueSelectFromSetFromISR( xQueueSet )
-#endif
-
-#ifndef traceRETURN_xQueueSelectFromSetFromISR
-    #define traceRETURN_xQueueSelectFromSetFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerCreateTimerTask
-    #define traceENTER_xTimerCreateTimerTask()
-#endif
-
-#ifndef traceRETURN_xTimerCreateTimerTask
-    #define traceRETURN_xTimerCreateTimerTask( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerCreate
-    #define traceENTER_xTimerCreate( pcTimerName, xTimerPeriodInTicks, xAutoReload, pvTimerID, pxCallbackFunction )
-#endif
-
-#ifndef traceRETURN_xTimerCreate
-    #define traceRETURN_xTimerCreate( pxNewTimer )
-#endif
-
-#ifndef traceENTER_xTimerCreateStatic
-    #define traceENTER_xTimerCreateStatic( pcTimerName, xTimerPeriodInTicks, xAutoReload, pvTimerID, pxCallbackFunction, pxTimerBuffer )
-#endif
-
-#ifndef traceRETURN_xTimerCreateStatic
-    #define traceRETURN_xTimerCreateStatic( pxNewTimer )
-#endif
-
-#ifndef traceENTER_xTimerGenericCommandFromTask
-    #define traceENTER_xTimerGenericCommandFromTask( xTimer, xCommandID, xOptionalValue, pxHigherPriorityTaskWoken, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xTimerGenericCommandFromTask
-    #define traceRETURN_xTimerGenericCommandFromTask( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerGenericCommandFromISR
-    #define traceENTER_xTimerGenericCommandFromISR( xTimer, xCommandID, xOptionalValue, pxHigherPriorityTaskWoken, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xTimerGenericCommandFromISR
-    #define traceRETURN_xTimerGenericCommandFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerGetTimerDaemonTaskHandle
-    #define traceENTER_xTimerGetTimerDaemonTaskHandle()
-#endif
-
-#ifndef traceRETURN_xTimerGetTimerDaemonTaskHandle
-    #define traceRETURN_xTimerGetTimerDaemonTaskHandle( xTimerTaskHandle )
-#endif
-
-#ifndef traceENTER_xTimerGetPeriod
-    #define traceENTER_xTimerGetPeriod( xTimer )
-#endif
-
-#ifndef traceRETURN_xTimerGetPeriod
-    #define traceRETURN_xTimerGetPeriod( xTimerPeriodInTicks )
-#endif
-
-#ifndef traceENTER_vTimerSetReloadMode
-    #define traceENTER_vTimerSetReloadMode( xTimer, xAutoReload )
-#endif
-
-#ifndef traceRETURN_vTimerSetReloadMode
-    #define traceRETURN_vTimerSetReloadMode()
-#endif
-
-#ifndef traceENTER_xTimerGetReloadMode
-    #define traceENTER_xTimerGetReloadMode( xTimer )
-#endif
-
-#ifndef traceRETURN_xTimerGetReloadMode
-    #define traceRETURN_xTimerGetReloadMode( xReturn )
-#endif
-
-#ifndef traceENTER_uxTimerGetReloadMode
-    #define traceENTER_uxTimerGetReloadMode( xTimer )
-#endif
-
-#ifndef traceRETURN_uxTimerGetReloadMode
-    #define traceRETURN_uxTimerGetReloadMode( uxReturn )
-#endif
-
-#ifndef traceENTER_xTimerGetExpiryTime
-    #define traceENTER_xTimerGetExpiryTime( xTimer )
-#endif
-
-#ifndef traceRETURN_xTimerGetExpiryTime
-    #define traceRETURN_xTimerGetExpiryTime( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerGetStaticBuffer
-    #define traceENTER_xTimerGetStaticBuffer( xTimer, ppxTimerBuffer )
-#endif
-
-#ifndef traceRETURN_xTimerGetStaticBuffer
-    #define traceRETURN_xTimerGetStaticBuffer( xReturn )
-#endif
-
-#ifndef traceENTER_pcTimerGetName
-    #define traceENTER_pcTimerGetName( xTimer )
-#endif
-
-#ifndef traceRETURN_pcTimerGetName
-    #define traceRETURN_pcTimerGetName( pcTimerName )
-#endif
-
-#ifndef traceENTER_xTimerIsTimerActive
-    #define traceENTER_xTimerIsTimerActive( xTimer )
-#endif
-
-#ifndef traceRETURN_xTimerIsTimerActive
-    #define traceRETURN_xTimerIsTimerActive( xReturn )
-#endif
-
-#ifndef traceENTER_pvTimerGetTimerID
-    #define traceENTER_pvTimerGetTimerID( xTimer )
-#endif
-
-#ifndef traceRETURN_pvTimerGetTimerID
-    #define traceRETURN_pvTimerGetTimerID( pvReturn )
-#endif
-
-#ifndef traceENTER_vTimerSetTimerID
-    #define traceENTER_vTimerSetTimerID( xTimer, pvNewID )
-#endif
-
-#ifndef traceRETURN_vTimerSetTimerID
-    #define traceRETURN_vTimerSetTimerID()
-#endif
-
-#ifndef traceENTER_xTimerPendFunctionCallFromISR
-    #define traceENTER_xTimerPendFunctionCallFromISR( xFunctionToPend, pvParameter1, ulParameter2, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xTimerPendFunctionCallFromISR
-    #define traceRETURN_xTimerPendFunctionCallFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerPendFunctionCall
-    #define traceENTER_xTimerPendFunctionCall( xFunctionToPend, pvParameter1, ulParameter2, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xTimerPendFunctionCall
-    #define traceRETURN_xTimerPendFunctionCall( xReturn )
-#endif
-
-#ifndef traceENTER_uxTimerGetTimerNumber
-    #define traceENTER_uxTimerGetTimerNumber( xTimer )
-#endif
-
-#ifndef traceRETURN_uxTimerGetTimerNumber
-    #define traceRETURN_uxTimerGetTimerNumber( uxTimerNumber )
-#endif
-
-#ifndef traceENTER_vTimerSetTimerNumber
-    #define traceENTER_vTimerSetTimerNumber( xTimer, uxTimerNumber )
-#endif
-
-#ifndef traceRETURN_vTimerSetTimerNumber
-    #define traceRETURN_vTimerSetTimerNumber()
-#endif
-
-#ifndef traceENTER_xTaskCreateStatic
-    #define traceENTER_xTaskCreateStatic( pxTaskCode, pcName, uxStackDepth, pvParameters, uxPriority, puxStackBuffer, pxTaskBuffer )
-#endif
-
-#ifndef traceRETURN_xTaskCreateStatic
-    #define traceRETURN_xTaskCreateStatic( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateStaticAffinitySet
-    #define traceENTER_xTaskCreateStaticAffinitySet( pxTaskCode, pcName, uxStackDepth, pvParameters, uxPriority, puxStackBuffer, pxTaskBuffer, uxCoreAffinityMask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateStaticAffinitySet
-    #define traceRETURN_xTaskCreateStaticAffinitySet( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateRestrictedStatic
-    #define traceENTER_xTaskCreateRestrictedStatic( pxTaskDefinition, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateRestrictedStatic
-    #define traceRETURN_xTaskCreateRestrictedStatic( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateRestrictedStaticAffinitySet
-    #define traceENTER_xTaskCreateRestrictedStaticAffinitySet( pxTaskDefinition, uxCoreAffinityMask, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateRestrictedStaticAffinitySet
-    #define traceRETURN_xTaskCreateRestrictedStaticAffinitySet( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateRestricted
-    #define traceENTER_xTaskCreateRestricted( pxTaskDefinition, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateRestricted
-    #define traceRETURN_xTaskCreateRestricted( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateRestrictedAffinitySet
-    #define traceENTER_xTaskCreateRestrictedAffinitySet( pxTaskDefinition, uxCoreAffinityMask, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateRestrictedAffinitySet
-    #define traceRETURN_xTaskCreateRestrictedAffinitySet( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreate
-    #define traceENTER_xTaskCreate( pxTaskCode, pcName, uxStackDepth, pvParameters, uxPriority, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreate
-    #define traceRETURN_xTaskCreate( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateAffinitySet
-    #define traceENTER_xTaskCreateAffinitySet( pxTaskCode, pcName, uxStackDepth, pvParameters, uxPriority, uxCoreAffinityMask, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateAffinitySet
-    #define traceRETURN_xTaskCreateAffinitySet( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskDelete
-    #define traceENTER_vTaskDelete( xTaskToDelete )
-#endif
-
-#ifndef traceRETURN_vTaskDelete
-    #define traceRETURN_vTaskDelete()
-#endif
-
-#ifndef traceENTER_xTaskDelayUntil
-    #define traceENTER_xTaskDelayUntil( pxPreviousWakeTime, xTimeIncrement )
-#endif
-
-#ifndef traceRETURN_xTaskDelayUntil
-    #define traceRETURN_xTaskDelayUntil( xShouldDelay )
-#endif
-
-#ifndef traceENTER_vTaskDelay
-    #define traceENTER_vTaskDelay( xTicksToDelay )
-#endif
-
-#ifndef traceRETURN_vTaskDelay
-    #define traceRETURN_vTaskDelay()
-#endif
-
-#ifndef traceENTER_eTaskGetState
-    #define traceENTER_eTaskGetState( xTask )
-#endif
-
-#ifndef traceRETURN_eTaskGetState
-    #define traceRETURN_eTaskGetState( eReturn )
-#endif
-
-#ifndef traceENTER_uxTaskPriorityGet
-    #define traceENTER_uxTaskPriorityGet( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskPriorityGet
-    #define traceRETURN_uxTaskPriorityGet( uxReturn )
-#endif
-
-#ifndef traceENTER_uxTaskPriorityGetFromISR
-    #define traceENTER_uxTaskPriorityGetFromISR( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskPriorityGetFromISR
-    #define traceRETURN_uxTaskPriorityGetFromISR( uxReturn )
-#endif
-
-#ifndef traceENTER_uxTaskBasePriorityGet
-    #define traceENTER_uxTaskBasePriorityGet( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskBasePriorityGet
-    #define traceRETURN_uxTaskBasePriorityGet( uxReturn )
-#endif
-
-#ifndef traceENTER_uxTaskBasePriorityGetFromISR
-    #define traceENTER_uxTaskBasePriorityGetFromISR( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskBasePriorityGetFromISR
-    #define traceRETURN_uxTaskBasePriorityGetFromISR( uxReturn )
-#endif
-
-#ifndef traceENTER_vTaskPrioritySet
-    #define traceENTER_vTaskPrioritySet( xTask, uxNewPriority )
-#endif
-
-#ifndef traceRETURN_vTaskPrioritySet
-    #define traceRETURN_vTaskPrioritySet()
-#endif
-
-#ifndef traceENTER_vTaskCoreAffinitySet
-    #define traceENTER_vTaskCoreAffinitySet( xTask, uxCoreAffinityMask )
-#endif
-
-#ifndef traceRETURN_vTaskCoreAffinitySet
-    #define traceRETURN_vTaskCoreAffinitySet()
-#endif
-
-#ifndef traceENTER_vTaskCoreAffinityGet
-    #define traceENTER_vTaskCoreAffinityGet( xTask )
-#endif
-
-#ifndef traceRETURN_vTaskCoreAffinityGet
-    #define traceRETURN_vTaskCoreAffinityGet( uxCoreAffinityMask )
-#endif
-
-#ifndef traceENTER_vTaskPreemptionDisable
-    #define traceENTER_vTaskPreemptionDisable( xTask )
-#endif
-
-#ifndef traceRETURN_vTaskPreemptionDisable
-    #define traceRETURN_vTaskPreemptionDisable()
-#endif
-
-#ifndef traceENTER_vTaskPreemptionEnable
-    #define traceENTER_vTaskPreemptionEnable( xTask )
-#endif
-
-#ifndef traceRETURN_vTaskPreemptionEnable
-    #define traceRETURN_vTaskPreemptionEnable()
-#endif
-
-#ifndef traceENTER_vTaskSuspend
-    #define traceENTER_vTaskSuspend( xTaskToSuspend )
-#endif
-
-#ifndef traceRETURN_vTaskSuspend
-    #define traceRETURN_vTaskSuspend()
-#endif
-
-#ifndef traceENTER_vTaskResume
-    #define traceENTER_vTaskResume( xTaskToResume )
-#endif
-
-#ifndef traceRETURN_vTaskResume
-    #define traceRETURN_vTaskResume()
-#endif
-
-#ifndef traceENTER_xTaskResumeFromISR
-    #define traceENTER_xTaskResumeFromISR( xTaskToResume )
-#endif
-
-#ifndef traceRETURN_xTaskResumeFromISR
-    #define traceRETURN_xTaskResumeFromISR( xYieldRequired )
-#endif
-
-#ifndef traceENTER_vTaskStartScheduler
-    #define traceENTER_vTaskStartScheduler()
-#endif
-
-#ifndef traceRETURN_vTaskStartScheduler
-    #define traceRETURN_vTaskStartScheduler()
-#endif
-
-#ifndef traceENTER_vTaskEndScheduler
-    #define traceENTER_vTaskEndScheduler()
-#endif
-
-#ifndef traceRETURN_vTaskEndScheduler
-    #define traceRETURN_vTaskEndScheduler()
-#endif
-
-#ifndef traceENTER_vTaskSuspendAll
-    #define traceENTER_vTaskSuspendAll()
-#endif
-
-#ifndef traceRETURN_vTaskSuspendAll
-    #define traceRETURN_vTaskSuspendAll()
-#endif
-
-#ifndef traceENTER_xTaskResumeAll
-    #define traceENTER_xTaskResumeAll()
-#endif
-
-#ifndef traceRETURN_xTaskResumeAll
-    #define traceRETURN_xTaskResumeAll( xAlreadyYielded )
-#endif
-
-#ifndef traceENTER_xTaskGetTickCount
-    #define traceENTER_xTaskGetTickCount()
-#endif
-
-#ifndef traceRETURN_xTaskGetTickCount
-    #define traceRETURN_xTaskGetTickCount( xTicks )
-#endif
-
-#ifndef traceENTER_xTaskGetTickCountFromISR
-    #define traceENTER_xTaskGetTickCountFromISR()
-#endif
-
-#ifndef traceRETURN_xTaskGetTickCountFromISR
-    #define traceRETURN_xTaskGetTickCountFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_uxTaskGetNumberOfTasks
-    #define traceENTER_uxTaskGetNumberOfTasks()
-#endif
-
-#ifndef traceRETURN_uxTaskGetNumberOfTasks
-    #define traceRETURN_uxTaskGetNumberOfTasks( uxCurrentNumberOfTasks )
-#endif
-
-#ifndef traceENTER_pcTaskGetName
-    #define traceENTER_pcTaskGetName( xTaskToQuery )
-#endif
-
-#ifndef traceRETURN_pcTaskGetName
-    #define traceRETURN_pcTaskGetName( pcTaskName )
-#endif
-
-#ifndef traceENTER_xTaskGetHandle
-    #define traceENTER_xTaskGetHandle( pcNameToQuery )
-#endif
-
-#ifndef traceRETURN_xTaskGetHandle
-    #define traceRETURN_xTaskGetHandle( pxTCB )
-#endif
-
-#ifndef traceENTER_xTaskGetStaticBuffers
-    #define traceENTER_xTaskGetStaticBuffers( xTask, ppuxStackBuffer, ppxTaskBuffer )
-#endif
-
-#ifndef traceRETURN_xTaskGetStaticBuffers
-    #define traceRETURN_xTaskGetStaticBuffers( xReturn )
-#endif
-
-#ifndef traceENTER_uxTaskGetSystemState
-    #define traceENTER_uxTaskGetSystemState( pxTaskStatusArray, uxArraySize, pulTotalRunTime )
-#endif
-
-#ifndef traceRETURN_uxTaskGetSystemState
-    #define traceRETURN_uxTaskGetSystemState( uxTask )
-#endif
-
-#if ( configNUMBER_OF_CORES == 1 )
-    #ifndef traceENTER_xTaskGetIdleTaskHandle
-        #define traceENTER_xTaskGetIdleTaskHandle()
-    #endif
-#endif
-
-#if ( configNUMBER_OF_CORES == 1 )
-    #ifndef traceRETURN_xTaskGetIdleTaskHandle
-        #define traceRETURN_xTaskGetIdleTaskHandle( xIdleTaskHandle )
-    #endif
-#endif
-
-#ifndef traceENTER_xTaskGetIdleTaskHandleForCore
-    #define traceENTER_xTaskGetIdleTaskHandleForCore( xCoreID )
-#endif
-
-#ifndef traceRETURN_xTaskGetIdleTaskHandleForCore
-    #define traceRETURN_xTaskGetIdleTaskHandleForCore( xIdleTaskHandle )
-#endif
-
-#ifndef traceENTER_vTaskStepTick
-    #define traceENTER_vTaskStepTick( xTicksToJump )
-#endif
-
-#ifndef traceRETURN_vTaskStepTick
-    #define traceRETURN_vTaskStepTick()
-#endif
-
-#ifndef traceENTER_xTaskCatchUpTicks
-    #define traceENTER_xTaskCatchUpTicks( xTicksToCatchUp )
-#endif
-
-#ifndef traceRETURN_xTaskCatchUpTicks
-    #define traceRETURN_xTaskCatchUpTicks( xYieldOccurred )
-#endif
-
-#ifndef traceENTER_xTaskAbortDelay
-    #define traceENTER_xTaskAbortDelay( xTask )
-#endif
-
-#ifndef traceRETURN_xTaskAbortDelay
-    #define traceRETURN_xTaskAbortDelay( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskIncrementTick
-    #define traceENTER_xTaskIncrementTick()
-#endif
-
-#ifndef traceRETURN_xTaskIncrementTick
-    #define traceRETURN_xTaskIncrementTick( xSwitchRequired )
-#endif
-
-#ifndef traceENTER_vTaskSetApplicationTaskTag
-    #define traceENTER_vTaskSetApplicationTaskTag( xTask, pxHookFunction )
-#endif
-
-#ifndef traceRETURN_vTaskSetApplicationTaskTag
-    #define traceRETURN_vTaskSetApplicationTaskTag()
-#endif
-
-#ifndef traceENTER_xTaskGetApplicationTaskTag
-    #define traceENTER_xTaskGetApplicationTaskTag( xTask )
-#endif
-
-#ifndef traceRETURN_xTaskGetApplicationTaskTag
-    #define traceRETURN_xTaskGetApplicationTaskTag( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskGetApplicationTaskTagFromISR
-    #define traceENTER_xTaskGetApplicationTaskTagFromISR( xTask )
-#endif
-
-#ifndef traceRETURN_xTaskGetApplicationTaskTagFromISR
-    #define traceRETURN_xTaskGetApplicationTaskTagFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCallApplicationTaskHook
-    #define traceENTER_xTaskCallApplicationTaskHook( xTask, pvParameter )
-#endif
-
-#ifndef traceRETURN_xTaskCallApplicationTaskHook
-    #define traceRETURN_xTaskCallApplicationTaskHook( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskSwitchContext
-    #define traceENTER_vTaskSwitchContext()
-#endif
-
-#ifndef traceRETURN_vTaskSwitchContext
-    #define traceRETURN_vTaskSwitchContext()
-#endif
-
-#ifndef traceENTER_vTaskPlaceOnEventList
-    #define traceENTER_vTaskPlaceOnEventList( pxEventList, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_vTaskPlaceOnEventList
-    #define traceRETURN_vTaskPlaceOnEventList()
-#endif
-
-#ifndef traceENTER_vTaskPlaceOnUnorderedEventList
-    #define traceENTER_vTaskPlaceOnUnorderedEventList( pxEventList, xItemValue, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_vTaskPlaceOnUnorderedEventList
-    #define traceRETURN_vTaskPlaceOnUnorderedEventList()
-#endif
-
-#ifndef traceENTER_vTaskPlaceOnEventListRestricted
-    #define traceENTER_vTaskPlaceOnEventListRestricted( pxEventList, xTicksToWait, xWaitIndefinitely )
-#endif
-
-#ifndef traceRETURN_vTaskPlaceOnEventListRestricted
-    #define traceRETURN_vTaskPlaceOnEventListRestricted()
-#endif
-
-#ifndef traceENTER_xTaskRemoveFromEventList
-    #define traceENTER_xTaskRemoveFromEventList( pxEventList )
-#endif
-
-#ifndef traceRETURN_xTaskRemoveFromEventList
-    #define traceRETURN_xTaskRemoveFromEventList( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskRemoveFromUnorderedEventList
-    #define traceENTER_vTaskRemoveFromUnorderedEventList( pxEventListItem, xItemValue )
-#endif
-
-#ifndef traceRETURN_vTaskRemoveFromUnorderedEventList
-    #define traceRETURN_vTaskRemoveFromUnorderedEventList()
-#endif
-
-#ifndef traceENTER_vTaskSetTimeOutState
-    #define traceENTER_vTaskSetTimeOutState( pxTimeOut )
-#endif
-
-#ifndef traceRETURN_vTaskSetTimeOutState
-    #define traceRETURN_vTaskSetTimeOutState()
-#endif
-
-#ifndef traceENTER_vTaskInternalSetTimeOutState
-    #define traceENTER_vTaskInternalSetTimeOutState( pxTimeOut )
-#endif
-
-#ifndef traceRETURN_vTaskInternalSetTimeOutState
-    #define traceRETURN_vTaskInternalSetTimeOutState()
-#endif
-
-#ifndef traceENTER_xTaskCheckForTimeOut
-    #define traceENTER_xTaskCheckForTimeOut( pxTimeOut, pxTicksToWait )
-#endif
-
-#ifndef traceRETURN_xTaskCheckForTimeOut
-    #define traceRETURN_xTaskCheckForTimeOut( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskMissedYield
-    #define traceENTER_vTaskMissedYield()
-#endif
-
-#ifndef traceRETURN_vTaskMissedYield
-    #define traceRETURN_vTaskMissedYield()
-#endif
-
-#ifndef traceENTER_uxTaskGetTaskNumber
-    #define traceENTER_uxTaskGetTaskNumber( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskGetTaskNumber
-    #define traceRETURN_uxTaskGetTaskNumber( uxReturn )
-#endif
-
-#ifndef traceENTER_vTaskSetTaskNumber
-    #define traceENTER_vTaskSetTaskNumber( xTask, uxHandle )
-#endif
-
-#ifndef traceRETURN_vTaskSetTaskNumber
-    #define traceRETURN_vTaskSetTaskNumber()
-#endif
-
-#ifndef traceENTER_eTaskConfirmSleepModeStatus
-    #define traceENTER_eTaskConfirmSleepModeStatus()
-#endif
-
-#ifndef traceRETURN_eTaskConfirmSleepModeStatus
-    #define traceRETURN_eTaskConfirmSleepModeStatus( eReturn )
-#endif
-
-#ifndef traceENTER_vTaskSetThreadLocalStoragePointer
-    #define traceENTER_vTaskSetThreadLocalStoragePointer( xTaskToSet, xIndex, pvValue )
-#endif
-
-#ifndef traceRETURN_vTaskSetThreadLocalStoragePointer
-    #define traceRETURN_vTaskSetThreadLocalStoragePointer()
-#endif
-
-#ifndef traceENTER_pvTaskGetThreadLocalStoragePointer
-    #define traceENTER_pvTaskGetThreadLocalStoragePointer( xTaskToQuery, xIndex )
-#endif
-
-#ifndef traceRETURN_pvTaskGetThreadLocalStoragePointer
-    #define traceRETURN_pvTaskGetThreadLocalStoragePointer( pvReturn )
-#endif
-
-#ifndef traceENTER_vTaskAllocateMPURegions
-    #define traceENTER_vTaskAllocateMPURegions( xTaskToModify, pxRegions )
-#endif
-
-#ifndef traceRETURN_vTaskAllocateMPURegions
-    #define traceRETURN_vTaskAllocateMPURegions()
-#endif
-
-#ifndef traceENTER_vTaskGetInfo
-    #define traceENTER_vTaskGetInfo( xTask, pxTaskStatus, xGetFreeStackSpace, eState )
-#endif
-
-#ifndef traceRETURN_vTaskGetInfo
-    #define traceRETURN_vTaskGetInfo()
-#endif
-
-#ifndef traceENTER_uxTaskGetStackHighWaterMark2
-    #define traceENTER_uxTaskGetStackHighWaterMark2( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskGetStackHighWaterMark2
-    #define traceRETURN_uxTaskGetStackHighWaterMark2( uxReturn )
-#endif
-
-#ifndef traceENTER_uxTaskGetStackHighWaterMark
-    #define traceENTER_uxTaskGetStackHighWaterMark( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskGetStackHighWaterMark
-    #define traceRETURN_uxTaskGetStackHighWaterMark( uxReturn )
-#endif
-
-#ifndef traceENTER_xTaskGetCurrentTaskHandle
-    #define traceENTER_xTaskGetCurrentTaskHandle()
-#endif
-
-#ifndef traceRETURN_xTaskGetCurrentTaskHandle
-    #define traceRETURN_xTaskGetCurrentTaskHandle( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskGetCurrentTaskHandleForCore
-    #define traceENTER_xTaskGetCurrentTaskHandleForCore( xCoreID )
-#endif
-
-#ifndef traceRETURN_xTaskGetCurrentTaskHandleForCore
-    #define traceRETURN_xTaskGetCurrentTaskHandleForCore( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskGetSchedulerState
-    #define traceENTER_xTaskGetSchedulerState()
-#endif
-
-#ifndef traceRETURN_xTaskGetSchedulerState
-    #define traceRETURN_xTaskGetSchedulerState( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskPriorityInherit
-    #define traceENTER_xTaskPriorityInherit( pxMutexHolder )
-#endif
-
-#ifndef traceRETURN_xTaskPriorityInherit
-    #define traceRETURN_xTaskPriorityInherit( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskPriorityDisinherit
-    #define traceENTER_xTaskPriorityDisinherit( pxMutexHolder )
-#endif
-
-#ifndef traceRETURN_xTaskPriorityDisinherit
-    #define traceRETURN_xTaskPriorityDisinherit( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskPriorityDisinheritAfterTimeout
-    #define traceENTER_vTaskPriorityDisinheritAfterTimeout( pxMutexHolder, uxHighestPriorityWaitingTask )
-#endif
-
-#ifndef traceRETURN_vTaskPriorityDisinheritAfterTimeout
-    #define traceRETURN_vTaskPriorityDisinheritAfterTimeout()
-#endif
-
-#ifndef traceENTER_vTaskYieldWithinAPI
-    #define traceENTER_vTaskYieldWithinAPI()
-#endif
-
-#ifndef traceRETURN_vTaskYieldWithinAPI
-    #define traceRETURN_vTaskYieldWithinAPI()
-#endif
-
-#ifndef traceENTER_vTaskEnterCritical
-    #define traceENTER_vTaskEnterCritical()
-#endif
-
-#ifndef traceRETURN_vTaskEnterCritical
-    #define traceRETURN_vTaskEnterCritical()
-#endif
-
-#ifndef traceENTER_vTaskEnterCriticalFromISR
-    #define traceENTER_vTaskEnterCriticalFromISR()
-#endif
-
-#ifndef traceRETURN_vTaskEnterCriticalFromISR
-    #define traceRETURN_vTaskEnterCriticalFromISR( uxSavedInterruptStatus )
-#endif
-
-#ifndef traceENTER_vTaskExitCritical
-    #define traceENTER_vTaskExitCritical()
-#endif
-
-#ifndef traceRETURN_vTaskExitCritical
-    #define traceRETURN_vTaskExitCritical()
-#endif
-
-#ifndef traceENTER_vTaskExitCriticalFromISR
-    #define traceENTER_vTaskExitCriticalFromISR( uxSavedInterruptStatus )
-#endif
-
-#ifndef traceRETURN_vTaskExitCriticalFromISR
-    #define traceRETURN_vTaskExitCriticalFromISR()
-#endif
-
-#ifndef traceENTER_vTaskListTasks
-    #define traceENTER_vTaskListTasks( pcWriteBuffer, uxBufferLength )
-#endif
-
-#ifndef traceRETURN_vTaskListTasks
-    #define traceRETURN_vTaskListTasks()
-#endif
-
-#ifndef traceENTER_vTaskGetRunTimeStatistics
-    #define traceENTER_vTaskGetRunTimeStatistics( pcWriteBuffer, uxBufferLength )
-#endif
-
-#ifndef traceRETURN_vTaskGetRunTimeStatistics
-    #define traceRETURN_vTaskGetRunTimeStatistics()
-#endif
-
-#ifndef traceENTER_uxTaskResetEventItemValue
-    #define traceENTER_uxTaskResetEventItemValue()
-#endif
-
-#ifndef traceRETURN_uxTaskResetEventItemValue
-    #define traceRETURN_uxTaskResetEventItemValue( uxReturn )
-#endif
-
-#ifndef traceENTER_pvTaskIncrementMutexHeldCount
-    #define traceENTER_pvTaskIncrementMutexHeldCount()
-#endif
-
-#ifndef traceRETURN_pvTaskIncrementMutexHeldCount
-    #define traceRETURN_pvTaskIncrementMutexHeldCount( pxTCB )
-#endif
-
-#ifndef traceENTER_ulTaskGenericNotifyTake
-    #define traceENTER_ulTaskGenericNotifyTake( uxIndexToWaitOn, xClearCountOnExit, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_ulTaskGenericNotifyTake
-    #define traceRETURN_ulTaskGenericNotifyTake( ulReturn )
-#endif
-
-#ifndef traceENTER_xTaskGenericNotifyWait
-    #define traceENTER_xTaskGenericNotifyWait( uxIndexToWaitOn, ulBitsToClearOnEntry, ulBitsToClearOnExit, pulNotificationValue, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xTaskGenericNotifyWait
-    #define traceRETURN_xTaskGenericNotifyWait( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskGenericNotify
-    #define traceENTER_xTaskGenericNotify( xTaskToNotify, uxIndexToNotify, ulValue, eAction, pulPreviousNotificationValue )
-#endif
-
-#ifndef traceRETURN_xTaskGenericNotify
-    #define traceRETURN_xTaskGenericNotify( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskGenericNotifyFromISR
-    #define traceENTER_xTaskGenericNotifyFromISR( xTaskToNotify, uxIndexToNotify, ulValue, eAction, pulPreviousNotificationValue, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xTaskGenericNotifyFromISR
-    #define traceRETURN_xTaskGenericNotifyFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskGenericNotifyGiveFromISR
-    #define traceENTER_vTaskGenericNotifyGiveFromISR( xTaskToNotify, uxIndexToNotify, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_vTaskGenericNotifyGiveFromISR
-    #define traceRETURN_vTaskGenericNotifyGiveFromISR()
-#endif
-
-#ifndef traceENTER_xTaskGenericNotifyStateClear
-    #define traceENTER_xTaskGenericNotifyStateClear( xTask, uxIndexToClear )
-#endif
-
-#ifndef traceRETURN_xTaskGenericNotifyStateClear
-    #define traceRETURN_xTaskGenericNotifyStateClear( xReturn )
-#endif
-
-#ifndef traceENTER_ulTaskGenericNotifyValueClear
-    #define traceENTER_ulTaskGenericNotifyValueClear( xTask, uxIndexToClear, ulBitsToClear )
-#endif
-
-#ifndef traceRETURN_ulTaskGenericNotifyValueClear
-    #define traceRETURN_ulTaskGenericNotifyValueClear( ulReturn )
-#endif
-
-#ifndef traceENTER_ulTaskGetRunTimeCounter
-    #define traceENTER_ulTaskGetRunTimeCounter( xTask )
-#endif
-
-#ifndef traceRETURN_ulTaskGetRunTimeCounter
-    #define traceRETURN_ulTaskGetRunTimeCounter( ulRunTimeCounter )
-#endif
-
-#ifndef traceENTER_ulTaskGetRunTimePercent
-    #define traceENTER_ulTaskGetRunTimePercent( xTask )
-#endif
-
-#ifndef traceRETURN_ulTaskGetRunTimePercent
-    #define traceRETURN_ulTaskGetRunTimePercent( ulReturn )
-#endif
-
-#ifndef traceENTER_ulTaskGetIdleRunTimeCounter
-    #define traceENTER_ulTaskGetIdleRunTimeCounter()
-#endif
-
-#ifndef traceRETURN_ulTaskGetIdleRunTimeCounter
-    #define traceRETURN_ulTaskGetIdleRunTimeCounter( ulReturn )
-#endif
-
-#ifndef traceENTER_ulTaskGetIdleRunTimePercent
-    #define traceENTER_ulTaskGetIdleRunTimePercent()
-#endif
-
-#ifndef traceRETURN_ulTaskGetIdleRunTimePercent
-    #define traceRETURN_ulTaskGetIdleRunTimePercent( ulReturn )
-#endif
-
-#ifndef traceENTER_xTaskGetMPUSettings
-    #define traceENTER_xTaskGetMPUSettings( xTask )
-#endif
-
-#ifndef traceRETURN_xTaskGetMPUSettings
-    #define traceRETURN_xTaskGetMPUSettings( xMPUSettings )
-#endif
-
-#ifndef traceENTER_xStreamBufferGenericCreate
-    #define traceENTER_xStreamBufferGenericCreate( xBufferSizeBytes, xTriggerLevelBytes, xStreamBufferType, pxSendCompletedCallback, pxReceiveCompletedCallback )
-#endif
-
-#ifndef traceRETURN_xStreamBufferGenericCreate
-    #define traceRETURN_xStreamBufferGenericCreate( pvAllocatedMemory )
-#endif
-
-#ifndef traceENTER_xStreamBufferGenericCreateStatic
-    #define traceENTER_xStreamBufferGenericCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, xStreamBufferType, pucStreamBufferStorageArea, pxStaticStreamBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback )
-#endif
-
-#ifndef traceRETURN_xStreamBufferGenericCreateStatic
-    #define traceRETURN_xStreamBufferGenericCreateStatic( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferGetStaticBuffers
-    #define traceENTER_xStreamBufferGetStaticBuffers( xStreamBuffer, ppucStreamBufferStorageArea, ppxStaticStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferGetStaticBuffers
-    #define traceRETURN_xStreamBufferGetStaticBuffers( xReturn )
-#endif
-
-#ifndef traceENTER_vStreamBufferDelete
-    #define traceENTER_vStreamBufferDelete( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_vStreamBufferDelete
-    #define traceRETURN_vStreamBufferDelete()
-#endif
-
-#ifndef traceENTER_xStreamBufferReset
-    #define traceENTER_xStreamBufferReset( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferReset
-    #define traceRETURN_xStreamBufferReset( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferResetFromISR
-    #define traceENTER_xStreamBufferResetFromISR( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferResetFromISR
-    #define traceRETURN_xStreamBufferResetFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferSetTriggerLevel
-    #define traceENTER_xStreamBufferSetTriggerLevel( xStreamBuffer, xTriggerLevel )
-#endif
-
-#ifndef traceRETURN_xStreamBufferSetTriggerLevel
-    #define traceRETURN_xStreamBufferSetTriggerLevel( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferSpacesAvailable
-    #define traceENTER_xStreamBufferSpacesAvailable( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferSpacesAvailable
-    #define traceRETURN_xStreamBufferSpacesAvailable( xSpace )
-#endif
-
-#ifndef traceENTER_xStreamBufferBytesAvailable
-    #define traceENTER_xStreamBufferBytesAvailable( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferBytesAvailable
-    #define traceRETURN_xStreamBufferBytesAvailable( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferSend
-    #define traceENTER_xStreamBufferSend( xStreamBuffer, pvTxData, xDataLengthBytes, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xStreamBufferSend
-    #define traceRETURN_xStreamBufferSend( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferSendFromISR
-    #define traceENTER_xStreamBufferSendFromISR( xStreamBuffer, pvTxData, xDataLengthBytes, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xStreamBufferSendFromISR
-    #define traceRETURN_xStreamBufferSendFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferReceive
-    #define traceENTER_xStreamBufferReceive( xStreamBuffer, pvRxData, xBufferLengthBytes, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xStreamBufferReceive
-    #define traceRETURN_xStreamBufferReceive( xReceivedLength )
-#endif
-
-#ifndef traceENTER_xStreamBufferNextMessageLengthBytes
-    #define traceENTER_xStreamBufferNextMessageLengthBytes( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferNextMessageLengthBytes
-    #define traceRETURN_xStreamBufferNextMessageLengthBytes( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferReceiveFromISR
-    #define traceENTER_xStreamBufferReceiveFromISR( xStreamBuffer, pvRxData, xBufferLengthBytes, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xStreamBufferReceiveFromISR
-    #define traceRETURN_xStreamBufferReceiveFromISR( xReceivedLength )
-#endif
-
-#ifndef traceENTER_xStreamBufferIsEmpty
-    #define traceENTER_xStreamBufferIsEmpty( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferIsEmpty
-    #define traceRETURN_xStreamBufferIsEmpty( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferIsFull
-    #define traceENTER_xStreamBufferIsFull( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferIsFull
-    #define traceRETURN_xStreamBufferIsFull( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferSendCompletedFromISR
-    #define traceENTER_xStreamBufferSendCompletedFromISR( xStreamBuffer, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xStreamBufferSendCompletedFromISR
-    #define traceRETURN_xStreamBufferSendCompletedFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferReceiveCompletedFromISR
-    #define traceENTER_xStreamBufferReceiveCompletedFromISR( xStreamBuffer, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xStreamBufferReceiveCompletedFromISR
-    #define traceRETURN_xStreamBufferReceiveCompletedFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_uxStreamBufferGetStreamBufferNotificationIndex
-    #define traceENTER_uxStreamBufferGetStreamBufferNotificationIndex( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_uxStreamBufferGetStreamBufferNotificationIndex
-    #define traceRETURN_uxStreamBufferGetStreamBufferNotificationIndex( uxNotificationIndex )
-#endif
-
-#ifndef traceENTER_vStreamBufferSetStreamBufferNotificationIndex
-    #define traceENTER_vStreamBufferSetStreamBufferNotificationIndex( xStreamBuffer, uxNotificationIndex )
-#endif
-
-#ifndef traceRETURN_vStreamBufferSetStreamBufferNotificationIndex
-    #define traceRETURN_vStreamBufferSetStreamBufferNotificationIndex()
-#endif
-
-#ifndef traceENTER_uxStreamBufferGetStreamBufferNumber
-    #define traceENTER_uxStreamBufferGetStreamBufferNumber( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_uxStreamBufferGetStreamBufferNumber
-    #define traceRETURN_uxStreamBufferGetStreamBufferNumber( uxStreamBufferNumber )
-#endif
-
-#ifndef traceENTER_vStreamBufferSetStreamBufferNumber
-    #define traceENTER_vStreamBufferSetStreamBufferNumber( xStreamBuffer, uxStreamBufferNumber )
-#endif
-
-#ifndef traceRETURN_vStreamBufferSetStreamBufferNumber
-    #define traceRETURN_vStreamBufferSetStreamBufferNumber()
-#endif
-
-#ifndef traceENTER_ucStreamBufferGetStreamBufferType
-    #define traceENTER_ucStreamBufferGetStreamBufferType( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_ucStreamBufferGetStreamBufferType
-    #define traceRETURN_ucStreamBufferGetStreamBufferType( ucStreamBufferType )
-#endif
-
-#ifndef traceENTER_vListInitialise
-    #define traceENTER_vListInitialise( pxList )
-#endif
-
-#ifndef traceRETURN_vListInitialise
-    #define traceRETURN_vListInitialise()
-#endif
-
-#ifndef traceENTER_vListInitialiseItem
-    #define traceENTER_vListInitialiseItem( pxItem )
-#endif
-
-#ifndef traceRETURN_vListInitialiseItem
-    #define traceRETURN_vListInitialiseItem()
-#endif
-
-#ifndef traceENTER_vListInsertEnd
-    #define traceENTER_vListInsertEnd( pxList, pxNewListItem )
-#endif
-
-#ifndef traceRETURN_vListInsertEnd
-    #define traceRETURN_vListInsertEnd()
-#endif
-
-#ifndef traceENTER_vListInsert
-    #define traceENTER_vListInsert( pxList, pxNewListItem )
-#endif
-
-#ifndef traceRETURN_vListInsert
-    #define traceRETURN_vListInsert()
-#endif
-
-#ifndef traceENTER_uxListRemove
-    #define traceENTER_uxListRemove( pxItemToRemove )
-#endif
-
-#ifndef traceRETURN_uxListRemove
-    #define traceRETURN_uxListRemove( uxNumberOfItems )
-#endif
-
-#ifndef traceENTER_xCoRoutineCreate
-    #define traceENTER_xCoRoutineCreate( pxCoRoutineCode, uxPriority, uxIndex )
-#endif
-
-#ifndef traceRETURN_xCoRoutineCreate
-    #define traceRETURN_xCoRoutineCreate( xReturn )
-#endif
-
-#ifndef traceENTER_vCoRoutineAddToDelayedList
-    #define traceENTER_vCoRoutineAddToDelayedList( xTicksToDelay, pxEventList )
-#endif
-
-#ifndef traceRETURN_vCoRoutineAddToDelayedList
-    #define traceRETURN_vCoRoutineAddToDelayedList()
-#endif
-
-#ifndef traceENTER_vCoRoutineSchedule
-    #define traceENTER_vCoRoutineSchedule()
-#endif
-
-#ifndef traceRETURN_vCoRoutineSchedule
-    #define traceRETURN_vCoRoutineSchedule()
-#endif
-
-#ifndef traceENTER_xCoRoutineRemoveFromEventList
-    #define traceENTER_xCoRoutineRemoveFromEventList( pxEventList )
-#endif
-
-#ifndef traceRETURN_xCoRoutineRemoveFromEventList
-    #define traceRETURN_xCoRoutineRemoveFromEventList( xReturn )
-#endif
-
-#ifndef configGENERATE_RUN_TIME_STATS
-    #define configGENERATE_RUN_TIME_STATS    0
-#endif
-
-#if ( configGENERATE_RUN_TIME_STATS == 1 )
-
-    #ifndef portCONFIGURE_TIMER_FOR_RUN_TIME_STATS
-        #error If configGENERATE_RUN_TIME_STATS is defined then portCONFIGURE_TIMER_FOR_RUN_TIME_STATS must also be defined.  portCONFIGURE_TIMER_FOR_RUN_TIME_STATS should call a port layer function to setup a peripheral timer/counter that can then be used as the run time counter time base.
-    #endif /* portCONFIGURE_TIMER_FOR_RUN_TIME_STATS */
-
-    #ifndef portGET_RUN_TIME_COUNTER_VALUE
-        #ifndef portALT_GET_RUN_TIME_COUNTER_VALUE
-            #error If configGENERATE_RUN_TIME_STATS is defined then either portGET_RUN_TIME_COUNTER_VALUE or portALT_GET_RUN_TIME_COUNTER_VALUE must also be defined.  See the examples provided and the FreeRTOS web site for more information.
-        #endif /* portALT_GET_RUN_TIME_COUNTER_VALUE */
-    #endif /* portGET_RUN_TIME_COUNTER_VALUE */
-
-#endif /* configGENERATE_RUN_TIME_STATS */
-
-#ifndef portCONFIGURE_TIMER_FOR_RUN_TIME_STATS
-    #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
-#endif
-
-#ifndef portPRIVILEGE_BIT
-    #define portPRIVILEGE_BIT    ( ( UBaseType_t ) 0x00 )
-#endif
-
-#ifndef portYIELD_WITHIN_API
-    #define portYIELD_WITHIN_API    portYIELD
-#endif
-
-#ifndef portSUPPRESS_TICKS_AND_SLEEP
-    #define portSUPPRESS_TICKS_AND_SLEEP( xExpectedIdleTime )
-#endif
-
-#ifndef configEXPECTED_IDLE_TIME_BEFORE_SLEEP
-    #define configEXPECTED_IDLE_TIME_BEFORE_SLEEP    2
-#endif
-
-#if configEXPECTED_IDLE_TIME_BEFORE_SLEEP < 2
-    #error configEXPECTED_IDLE_TIME_BEFORE_SLEEP must not be less than 2
-#endif
-
-#ifndef configUSE_TICKLESS_IDLE
-    #define configUSE_TICKLESS_IDLE    0
-#endif
-
-#ifndef configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING
-    #define configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING( x )
-#endif
-
-#ifndef configPRE_SLEEP_PROCESSING
-    #define configPRE_SLEEP_PROCESSING( x )
-#endif
-
-#ifndef configPOST_SLEEP_PROCESSING
-    #define configPOST_SLEEP_PROCESSING( x )
-#endif
-
-#ifndef configUSE_QUEUE_SETS
-    #define configUSE_QUEUE_SETS    0
-#endif
-
-#ifndef portTASK_USES_FLOATING_POINT
-    #define portTASK_USES_FLOATING_POINT()
-#endif
-
-#ifndef portALLOCATE_SECURE_CONTEXT
-    #define portALLOCATE_SECURE_CONTEXT( ulSecureStackSize )
-#endif
-
-#ifndef portDONT_DISCARD
-    #define portDONT_DISCARD
-#endif
-
-#ifndef configUSE_TIME_SLICING
-    #define configUSE_TIME_SLICING    1
-#endif
-
-#ifndef configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS
-    #define configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS    0
-#endif
-
-#ifndef configUSE_STATS_FORMATTING_FUNCTIONS
-    #define configUSE_STATS_FORMATTING_FUNCTIONS    0
-#endif
-
-#ifndef portASSERT_IF_INTERRUPT_PRIORITY_INVALID
-    #define portASSERT_IF_INTERRUPT_PRIORITY_INVALID()
-#endif
-
-#ifndef configUSE_TRACE_FACILITY
-    #define configUSE_TRACE_FACILITY    0
-#endif
-
-#ifndef mtCOVERAGE_TEST_MARKER
-    #define mtCOVERAGE_TEST_MARKER()
-#endif
-
-#ifndef mtCOVERAGE_TEST_DELAY
-    #define mtCOVERAGE_TEST_DELAY()
-#endif
-
-#ifndef portASSERT_IF_IN_ISR
-    #define portASSERT_IF_IN_ISR()
-#endif
-
-#ifndef configUSE_PORT_OPTIMISED_TASK_SELECTION
-    #define configUSE_PORT_OPTIMISED_TASK_SELECTION    0
-#endif
-
-#ifndef configAPPLICATION_ALLOCATED_HEAP
-    #define configAPPLICATION_ALLOCATED_HEAP    0
-#endif
-
-#ifndef configENABLE_HEAP_PROTECTOR
-    #define configENABLE_HEAP_PROTECTOR    0
-#endif
-
-#ifndef configUSE_TASK_NOTIFICATIONS
-    #define configUSE_TASK_NOTIFICATIONS    1
-#endif
-
-#ifndef configTASK_NOTIFICATION_ARRAY_ENTRIES
-    #define configTASK_NOTIFICATION_ARRAY_ENTRIES    1
-#endif
-
-#if configTASK_NOTIFICATION_ARRAY_ENTRIES < 1
-    #error configTASK_NOTIFICATION_ARRAY_ENTRIES must be at least 1
-#endif
-
-#ifndef configUSE_POSIX_ERRNO
-    #define configUSE_POSIX_ERRNO    0
-#endif
-
-#ifndef configUSE_SB_COMPLETED_CALLBACK
+#अगर_अघोषित traceMOVED_TASK_TO_READY_STATE
+    #घोषणा traceMOVED_TASK_TO_READY_STATE( pxTCB )
+#पूर्ण_अगर
+
+#अगर_अघोषित tracePOST_MOVED_TASK_TO_READY_STATE
+    #घोषणा tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceMOVED_TASK_TO_DELAYED_LIST
+    #घोषणा traceMOVED_TASK_TO_DELAYED_LIST()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceMOVED_TASK_TO_OVERFLOW_DELAYED_LIST
+    #घोषणा traceMOVED_TASK_TO_OVERFLOW_DELAYED_LIST()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_CREATE
+    #घोषणा traceQUEUE_CREATE( pxNewQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_CREATE_FAILED
+    #घोषणा traceQUEUE_CREATE_FAILED( ucQueueType )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceCREATE_MUTEX
+    #घोषणा traceCREATE_MUTEX( pxNewQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceCREATE_MUTEX_FAILED
+    #घोषणा traceCREATE_MUTEX_FAILED()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceGIVE_MUTEX_RECURSIVE
+    #घोषणा traceGIVE_MUTEX_RECURSIVE( pxMutex )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceGIVE_MUTEX_RECURSIVE_FAILED
+    #घोषणा traceGIVE_MUTEX_RECURSIVE_FAILED( pxMutex )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTAKE_MUTEX_RECURSIVE
+    #घोषणा traceTAKE_MUTEX_RECURSIVE( pxMutex )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTAKE_MUTEX_RECURSIVE_FAILED
+    #घोषणा traceTAKE_MUTEX_RECURSIVE_FAILED( pxMutex )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceCREATE_COUNTING_SEMAPHORE
+    #घोषणा traceCREATE_COUNTING_SEMAPHORE()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceCREATE_COUNTING_SEMAPHORE_FAILED
+    #घोषणा traceCREATE_COUNTING_SEMAPHORE_FAILED()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_SET_SEND
+    #घोषणा traceQUEUE_SET_SEND    traceQUEUE_SEND
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_SEND
+    #घोषणा traceQUEUE_SEND( pxQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_SEND_FAILED
+    #घोषणा traceQUEUE_SEND_FAILED( pxQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_RECEIVE
+    #घोषणा traceQUEUE_RECEIVE( pxQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_PEEK
+    #घोषणा traceQUEUE_PEEK( pxQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_PEEK_FAILED
+    #घोषणा traceQUEUE_PEEK_FAILED( pxQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_PEEK_FROM_ISR
+    #घोषणा traceQUEUE_PEEK_FROM_ISR( pxQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_RECEIVE_FAILED
+    #घोषणा traceQUEUE_RECEIVE_FAILED( pxQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_SEND_FROM_ISR
+    #घोषणा traceQUEUE_SEND_FROM_ISR( pxQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_SEND_FROM_ISR_FAILED
+    #घोषणा traceQUEUE_SEND_FROM_ISR_FAILED( pxQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_RECEIVE_FROM_ISR
+    #घोषणा traceQUEUE_RECEIVE_FROM_ISR( pxQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_RECEIVE_FROM_ISR_FAILED
+    #घोषणा traceQUEUE_RECEIVE_FROM_ISR_FAILED( pxQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_PEEK_FROM_ISR_FAILED
+    #घोषणा traceQUEUE_PEEK_FROM_ISR_FAILED( pxQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_DELETE
+    #घोषणा traceQUEUE_DELETE( pxQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_CREATE
+    #घोषणा traceTASK_CREATE( pxNewTCB )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_CREATE_FAILED
+    #घोषणा traceTASK_CREATE_FAILED()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_DELETE
+    #घोषणा traceTASK_DELETE( pxTaskToDelete )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_DELAY_UNTIL
+    #घोषणा traceTASK_DELAY_UNTIL( x )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_DELAY
+    #घोषणा traceTASK_DELAY()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_PRIORITY_SET
+    #घोषणा traceTASK_PRIORITY_SET( pxTask, uxNewPriority )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_SUSPEND
+    #घोषणा traceTASK_SUSPEND( pxTaskToSuspend )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_RESUME
+    #घोषणा traceTASK_RESUME( pxTaskToResume )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_RESUME_FROM_ISR
+    #घोषणा traceTASK_RESUME_FROM_ISR( pxTaskToResume )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_INCREMENT_TICK
+    #घोषणा traceTASK_INCREMENT_TICK( x_Tick_गिनती )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTIMER_CREATE
+    #घोषणा traceTIMER_CREATE( pxNewTimer )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTIMER_CREATE_FAILED
+    #घोषणा traceTIMER_CREATE_FAILED()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTIMER_COMMAND_SEND
+    #घोषणा traceTIMER_COMMAND_SEND( xTimer, xMessageID, x_Message_मूल्य_मूल्य, xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTIMER_EXPIRED
+    #घोषणा traceTIMER_EXPIRED( pxTimer )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTIMER_COMMAND_RECEIVED
+    #घोषणा traceTIMER_COMMAND_RECEIVED( pxTimer, xMessageID, x_Message_मूल्य )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceMALLOC
+    #घोषणा traceMALLOC( pvAddress, ui_आकार )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceFREE
+    #घोषणा traceFREE( pvAddress, ui_आकार )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceEVENT_GROUP_CREATE
+    #घोषणा traceEVENT_GROUP_CREATE( xEventGroup )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceEVENT_GROUP_CREATE_FAILED
+    #घोषणा traceEVENT_GROUP_CREATE_FAILED()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceEVENT_GROUP_SYNC_BLOCK
+    #घोषणा traceEVENT_GROUP_SYNC_BLOCK( xEventGroup, uxBitsToSet, uxBitsToWaitFor )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceEVENT_GROUP_SYNC_END
+    #घोषणा traceEVENT_GROUP_SYNC_END( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTimeoutOccurred )    ( व्योम ) ( xTimeoutOccurred )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceEVENT_GROUP_WAIT_BITS_BLOCK
+    #घोषणा traceEVENT_GROUP_WAIT_BITS_BLOCK( xEventGroup, uxBitsToWaitFor )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceEVENT_GROUP_WAIT_BITS_END
+    #घोषणा traceEVENT_GROUP_WAIT_BITS_END( xEventGroup, uxBitsToWaitFor, xTimeoutOccurred )    ( व्योम ) ( xTimeoutOccurred )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceEVENT_GROUP_CLEAR_BITS
+    #घोषणा traceEVENT_GROUP_CLEAR_BITS( xEventGroup, uxBitsToClear )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceEVENT_GROUP_CLEAR_BITS_FROM_ISR
+    #घोषणा traceEVENT_GROUP_CLEAR_BITS_FROM_ISR( xEventGroup, uxBitsToClear )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceEVENT_GROUP_SET_BITS
+    #घोषणा traceEVENT_GROUP_SET_BITS( xEventGroup, uxBitsToSet )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceEVENT_GROUP_SET_BITS_FROM_ISR
+    #घोषणा traceEVENT_GROUP_SET_BITS_FROM_ISR( xEventGroup, uxBitsToSet )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceEVENT_GROUP_DELETE
+    #घोषणा traceEVENT_GROUP_DELETE( xEventGroup )
+#पूर्ण_अगर
+
+#अगर_अघोषित tracePEND_FUNC_CALL
+    #घोषणा tracePEND_FUNC_CALL( xFunctionToPend, pvParameter1, ulParameter2, ret )
+#पूर्ण_अगर
+
+#अगर_अघोषित tracePEND_FUNC_CALL_FROM_ISR
+    #घोषणा tracePEND_FUNC_CALL_FROM_ISR( xFunctionToPend, pvParameter1, ulParameter2, ret )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceQUEUE_REGISTRY_ADD
+    #घोषणा traceQUEUE_REGISTRY_ADD( xQueue, pcQueueName )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_NOTIFY_TAKE_BLOCK
+    #घोषणा traceTASK_NOTIFY_TAKE_BLOCK( ux_सूचकांक_To_Wait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_NOTIFY_TAKE
+    #घोषणा traceTASK_NOTIFY_TAKE( ux_सूचकांक_To_Wait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_NOTIFY_WAIT_BLOCK
+    #घोषणा traceTASK_NOTIFY_WAIT_BLOCK( ux_सूचकांक_To_Wait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_NOTIFY_WAIT
+    #घोषणा traceTASK_NOTIFY_WAIT( ux_सूचकांक_To_Wait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_NOTIFY
+    #घोषणा traceTASK_NOTIFY( ux_सूचकांक_To_Notify )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_NOTIFY_FROM_ISR
+    #घोषणा traceTASK_NOTIFY_FROM_ISR( ux_सूचकांक_To_Notify )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceTASK_NOTIFY_GIVE_FROM_ISR
+    #घोषणा traceTASK_NOTIFY_GIVE_FROM_ISR( ux_सूचकांक_To_Notify )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceISR_EXIT_TO_SCHEDULER
+    #घोषणा traceISR_EXIT_TO_SCHEDULER()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceISR_EXIT
+    #घोषणा traceISR_EXIT()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceISR_ENTER
+    #घोषणा traceISR_ENTER()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_STREAM_बफर_CREATE_FAILED
+    #घोषणा trace_STREAM_बफर_CREATE_FAILED( x_Stream_बफर_Type )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_STREAM_बफर_CREATE_STATIC_FAILED
+    #घोषणा trace_STREAM_बफर_CREATE_STATIC_FAILED( xReturn, x_Stream_बफर_Type )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_STREAM_बफर_CREATE
+    #घोषणा trace_STREAM_बफर_CREATE( px_Stream_बफर, x_Stream_बफर_Type )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_STREAM_बफर_DELETE
+    #घोषणा trace_STREAM_बफर_DELETE( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_STREAM_बफर_RESET
+    #घोषणा trace_STREAM_बफर_RESET( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_STREAM_बफर_RESET_FROM_ISR
+    #घोषणा trace_STREAM_बफर_RESET_FROM_ISR( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_BLOCKING_ON_STREAM_बफर_SEND
+    #घोषणा trace_BLOCKING_ON_STREAM_बफर_SEND( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_STREAM_बफर_SEND
+    #घोषणा trace_STREAM_बफर_SEND( x_Stream_बफर, xBytesSent )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_STREAM_बफर_SEND_FAILED
+    #घोषणा trace_STREAM_बफर_SEND_FAILED( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_STREAM_बफर_SEND_FROM_ISR
+    #घोषणा trace_STREAM_बफर_SEND_FROM_ISR( x_Stream_बफर, xBytesSent )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_BLOCKING_ON_STREAM_बफर_RECEIVE
+    #घोषणा trace_BLOCKING_ON_STREAM_बफर_RECEIVE( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_STREAM_बफर_RECEIVE
+    #घोषणा trace_STREAM_बफर_RECEIVE( x_Stream_बफर, x_Received_लंबाई )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_STREAM_बफर_RECEIVE_FAILED
+    #घोषणा trace_STREAM_बफर_RECEIVE_FAILED( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_STREAM_बफर_RECEIVE_FROM_ISR
+    #घोषणा trace_STREAM_बफर_RECEIVE_FROM_ISR( x_Stream_बफर, x_Received_लंबाई )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xEventGroupCreateStatic
+    #घोषणा traceENTER_xEventGroupCreateStatic( px_Event_Group_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xEventGroupCreateStatic
+    #घोषणा traceRETURN_xEventGroupCreateStatic( pxEventBits )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xEventGroupCreate
+    #घोषणा traceENTER_xEventGroupCreate()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xEventGroupCreate
+    #घोषणा traceRETURN_xEventGroupCreate( pxEventBits )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xEventGroupSync
+    #घोषणा traceENTER_xEventGroupSync( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xEventGroupSync
+    #घोषणा traceRETURN_xEventGroupSync( uxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xEventGroupWaitBits
+    #घोषणा traceENTER_xEventGroupWaitBits( xEventGroup, uxBitsToWaitFor, xClearOnExit, xWaitForAllBits, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xEventGroupWaitBits
+    #घोषणा traceRETURN_xEventGroupWaitBits( uxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xEventGroupClearBits
+    #घोषणा traceENTER_xEventGroupClearBits( xEventGroup, uxBitsToClear )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xEventGroupClearBits
+    #घोषणा traceRETURN_xEventGroupClearBits( uxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xEventGroupClearBitsFromISR
+    #घोषणा traceENTER_xEventGroupClearBitsFromISR( xEventGroup, uxBitsToClear )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xEventGroupClearBitsFromISR
+    #घोषणा traceRETURN_xEventGroupClearBitsFromISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xEventGroupGetBitsFromISR
+    #घोषणा traceENTER_xEventGroupGetBitsFromISR( xEventGroup )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xEventGroupGetBitsFromISR
+    #घोषणा traceRETURN_xEventGroupGetBitsFromISR( uxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xEventGroupSetBits
+    #घोषणा traceENTER_xEventGroupSetBits( xEventGroup, uxBitsToSet )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xEventGroupSetBits
+    #घोषणा traceRETURN_xEventGroupSetBits( uxEventBits )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vEventGroupDelete
+    #घोषणा traceENTER_vEventGroupDelete( xEventGroup )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vEventGroupDelete
+    #घोषणा traceRETURN_vEventGroupDelete()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Event_Group_Get_Static_बफर
+    #घोषणा trace_ENTER_x_Event_Group_Get_Static_बफर( xEventGroup, ppx_Event_Group_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Event_Group_Get_Static_बफर
+    #घोषणा trace_RETURN_x_Event_Group_Get_Static_बफर( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vEventGroupSetBitsCallback
+    #घोषणा traceENTER_vEventGroupSetBitsCallback( pvEventGroup, ulBitsToSet )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vEventGroupSetBitsCallback
+    #घोषणा traceRETURN_vEventGroupSetBitsCallback()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vEventGroupClearBitsCallback
+    #घोषणा traceENTER_vEventGroupClearBitsCallback( pvEventGroup, ulBitsToClear )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vEventGroupClearBitsCallback
+    #घोषणा traceRETURN_vEventGroupClearBitsCallback()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xEventGroupSetBitsFromISR
+    #घोषणा traceENTER_xEventGroupSetBitsFromISR( xEventGroup, uxBitsToSet, pxHigherPriorityTaskWoken )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xEventGroupSetBitsFromISR
+    #घोषणा traceRETURN_xEventGroupSetBitsFromISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_ux_Event_Group_Get_संख्या
+    #घोषणा trace_ENTER_ux_Event_Group_Get_संख्या( xEventGroup )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_ux_Event_Group_Get_संख्या
+    #घोषणा trace_RETURN_ux_Event_Group_Get_संख्या( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_v_Event_Group_Set_संख्या
+    #घोषणा trace_ENTER_v_Event_Group_Set_संख्या( xEventGroup, ux_Event_Group_संख्या )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_v_Event_Group_Set_संख्या
+    #घोषणा trace_RETURN_v_Event_Group_Set_संख्या()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueGenericReset
+    #घोषणा traceENTER_xQueueGenericReset( xQueue, xNewQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueGenericReset
+    #घोषणा traceRETURN_xQueueGenericReset( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueGenericCreateStatic
+    #घोषणा traceENTER_xQueueGenericCreateStatic( ux_Queue_लंबाई, ux_Item_आकार, pucQueueStorage, pxStaticQueue, ucQueueType )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueGenericCreateStatic
+    #घोषणा traceRETURN_xQueueGenericCreateStatic( pxNewQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueGenericGetStaticBuffers
+    #घोषणा traceENTER_xQueueGenericGetStaticBuffers( xQueue, ppucQueueStorage, ppxStaticQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueGenericGetStaticBuffers
+    #घोषणा traceRETURN_xQueueGenericGetStaticBuffers( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueGenericCreate
+    #घोषणा traceENTER_xQueueGenericCreate( ux_Queue_लंबाई, ux_Item_आकार, ucQueueType )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueGenericCreate
+    #घोषणा traceRETURN_xQueueGenericCreate( pxNewQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueCreateMutex
+    #घोषणा traceENTER_xQueueCreateMutex( ucQueueType )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueCreateMutex
+    #घोषणा traceRETURN_xQueueCreateMutex( xNewQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueCreateMutexStatic
+    #घोषणा traceENTER_xQueueCreateMutexStatic( ucQueueType, pxStaticQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueCreateMutexStatic
+    #घोषणा traceRETURN_xQueueCreateMutexStatic( xNewQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueGetMutexHolder
+    #घोषणा traceENTER_xQueueGetMutexHolder( xSemaphore )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueGetMutexHolder
+    #घोषणा traceRETURN_xQueueGetMutexHolder( pxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueGetMutexHolderFromISR
+    #घोषणा traceENTER_xQueueGetMutexHolderFromISR( xSemaphore )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueGetMutexHolderFromISR
+    #घोषणा traceRETURN_xQueueGetMutexHolderFromISR( pxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueGiveMutexRecursive
+    #घोषणा traceENTER_xQueueGiveMutexRecursive( xMutex )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueGiveMutexRecursive
+    #घोषणा traceRETURN_xQueueGiveMutexRecursive( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueTakeMutexRecursive
+    #घोषणा traceENTER_xQueueTakeMutexRecursive( xMutex, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueTakeMutexRecursive
+    #घोषणा traceRETURN_xQueueTakeMutexRecursive( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueCreateCountingSemaphoreStatic
+    #घोषणा traceENTER_xQueueCreateCountingSemaphoreStatic( ux_Max_गिनती, ux_Initial_गिनती, pxStaticQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueCreateCountingSemaphoreStatic
+    #घोषणा traceRETURN_xQueueCreateCountingSemaphoreStatic( xHandle )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueCreateCountingSemaphore
+    #घोषणा traceENTER_xQueueCreateCountingSemaphore( ux_Max_गिनती, ux_Initial_गिनती )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueCreateCountingSemaphore
+    #घोषणा traceRETURN_xQueueCreateCountingSemaphore( xHandle )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueGenericSend
+    #घोषणा traceENTER_xQueueGenericSend( xQueue, pvItemToQueue, xTicksToWait, xCopyPosition )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueGenericSend
+    #घोषणा traceRETURN_xQueueGenericSend( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueGenericSendFromISR
+    #घोषणा traceENTER_xQueueGenericSendFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken, xCopyPosition )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueGenericSendFromISR
+    #घोषणा traceRETURN_xQueueGenericSendFromISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueGiveFromISR
+    #घोषणा traceENTER_xQueueGiveFromISR( xQueue, pxHigherPriorityTaskWoken )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueGiveFromISR
+    #घोषणा traceRETURN_xQueueGiveFromISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueReceive
+    #घोषणा traceENTER_xQueueReceive( xQueue, pv_बफर, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueReceive
+    #घोषणा traceRETURN_xQueueReceive( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueSemaphoreTake
+    #घोषणा traceENTER_xQueueSemaphoreTake( xQueue, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueSemaphoreTake
+    #घोषणा traceRETURN_xQueueSemaphoreTake( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueuePeek
+    #घोषणा traceENTER_xQueuePeek( xQueue, pv_बफर, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueuePeek
+    #घोषणा traceRETURN_xQueuePeek( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueReceiveFromISR
+    #घोषणा traceENTER_xQueueReceiveFromISR( xQueue, pv_बफर, pxHigherPriorityTaskWoken )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueReceiveFromISR
+    #घोषणा traceRETURN_xQueueReceiveFromISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueuePeekFromISR
+    #घोषणा traceENTER_xQueuePeekFromISR( xQueue, pv_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueuePeekFromISR
+    #घोषणा traceRETURN_xQueuePeekFromISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_uxQueueMessagesWaiting
+    #घोषणा traceENTER_uxQueueMessagesWaiting( xQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_uxQueueMessagesWaiting
+    #घोषणा traceRETURN_uxQueueMessagesWaiting( uxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_uxQueueSpacesAvailable
+    #घोषणा traceENTER_uxQueueSpacesAvailable( xQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_uxQueueSpacesAvailable
+    #घोषणा traceRETURN_uxQueueSpacesAvailable( uxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_uxQueueMessagesWaitingFromISR
+    #घोषणा traceENTER_uxQueueMessagesWaitingFromISR( xQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_uxQueueMessagesWaitingFromISR
+    #घोषणा traceRETURN_uxQueueMessagesWaitingFromISR( uxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vQueueDelete
+    #घोषणा traceENTER_vQueueDelete( xQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vQueueDelete
+    #घोषणा traceRETURN_vQueueDelete()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_ux_Queue_Get_Queue_संख्या
+    #घोषणा trace_ENTER_ux_Queue_Get_Queue_संख्या( xQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_ux_Queue_Get_Queue_संख्या
+    #घोषणा trace_RETURN_ux_Queue_Get_Queue_संख्या( ux_Queue_संख्या )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_v_Queue_Set_Queue_संख्या
+    #घोषणा trace_ENTER_v_Queue_Set_Queue_संख्या( xQueue, ux_Queue_संख्या )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_v_Queue_Set_Queue_संख्या
+    #घोषणा trace_RETURN_v_Queue_Set_Queue_संख्या()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_ucQueueGetQueueType
+    #घोषणा traceENTER_ucQueueGetQueueType( xQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_ucQueueGetQueueType
+    #घोषणा traceRETURN_ucQueueGetQueueType( ucQueueType )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_ux_Queue_Get_Queue_Item_आकार
+    #घोषणा trace_ENTER_ux_Queue_Get_Queue_Item_आकार( xQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_ux_Queue_Get_Queue_Item_आकार
+    #घोषणा trace_RETURN_ux_Queue_Get_Queue_Item_आकार( ux_Item_आकार )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_ux_Queue_Get_Queue_लंबाई
+    #घोषणा trace_ENTER_ux_Queue_Get_Queue_लंबाई( xQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_ux_Queue_Get_Queue_लंबाई
+    #घोषणा trace_RETURN_ux_Queue_Get_Queue_लंबाई( ux_लंबाई )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueIsQueueEmptyFromISR
+    #घोषणा traceENTER_xQueueIsQueueEmptyFromISR( xQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueIsQueueEmptyFromISR
+    #घोषणा traceRETURN_xQueueIsQueueEmptyFromISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueIsQueueFullFromISR
+    #घोषणा traceENTER_xQueueIsQueueFullFromISR( xQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueIsQueueFullFromISR
+    #घोषणा traceRETURN_xQueueIsQueueFullFromISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueCRSend
+    #घोषणा traceENTER_xQueueCRSend( xQueue, pvItemToQueue, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueCRSend
+    #घोषणा traceRETURN_xQueueCRSend( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueCRReceive
+    #घोषणा traceENTER_xQueueCRReceive( xQueue, pv_बफर, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueCRReceive
+    #घोषणा traceRETURN_xQueueCRReceive( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueCRSendFromISR
+    #घोषणा traceENTER_xQueueCRSendFromISR( xQueue, pvItemToQueue, xCoRoutinePreviouslyWoken )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueCRSendFromISR
+    #घोषणा traceRETURN_xQueueCRSendFromISR( xCoRoutinePreviouslyWoken )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueCRReceiveFromISR
+    #घोषणा traceENTER_xQueueCRReceiveFromISR( xQueue, pv_बफर, pxCoRoutineWoken )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueCRReceiveFromISR
+    #घोषणा traceRETURN_xQueueCRReceiveFromISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vQueueAddToRegistry
+    #घोषणा traceENTER_vQueueAddToRegistry( xQueue, pcQueueName )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vQueueAddToRegistry
+    #घोषणा traceRETURN_vQueueAddToRegistry()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_pcQueueGetName
+    #घोषणा traceENTER_pcQueueGetName( xQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_pcQueueGetName
+    #घोषणा traceRETURN_pcQueueGetName( pcReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vQueueUnregisterQueue
+    #घोषणा traceENTER_vQueueUnregisterQueue( xQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vQueueUnregisterQueue
+    #घोषणा traceRETURN_vQueueUnregisterQueue()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vQueueWaitForMessageRestricted
+    #घोषणा traceENTER_vQueueWaitForMessageRestricted( xQueue, xTicksToWait, xWaitIndefinitely )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vQueueWaitForMessageRestricted
+    #घोषणा traceRETURN_vQueueWaitForMessageRestricted()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueCreateSet
+    #घोषणा traceENTER_xQueueCreateSet( ux_Event_Queue_लंबाई )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueCreateSet
+    #घोषणा traceRETURN_xQueueCreateSet( pxQueue )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueAddToSet
+    #घोषणा traceENTER_xQueueAddToSet( xQueueOrSemaphore, xQueueSet )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueAddToSet
+    #घोषणा traceRETURN_xQueueAddToSet( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueRemoveFromSet
+    #घोषणा traceENTER_xQueueRemoveFromSet( xQueueOrSemaphore, xQueueSet )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueRemoveFromSet
+    #घोषणा traceRETURN_xQueueRemoveFromSet( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueSelectFromSet
+    #घोषणा traceENTER_xQueueSelectFromSet( xQueueSet, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueSelectFromSet
+    #घोषणा traceRETURN_xQueueSelectFromSet( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xQueueSelectFromSetFromISR
+    #घोषणा traceENTER_xQueueSelectFromSetFromISR( xQueueSet )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xQueueSelectFromSetFromISR
+    #घोषणा traceRETURN_xQueueSelectFromSetFromISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTimerCreateTimerTask
+    #घोषणा traceENTER_xTimerCreateTimerTask()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTimerCreateTimerTask
+    #घोषणा traceRETURN_xTimerCreateTimerTask( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTimerCreate
+    #घोषणा traceENTER_xTimerCreate( pcTimerName, xTimerPeriodInTicks, xAutoReload, pvTimerID, pxCallbackFunction )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTimerCreate
+    #घोषणा traceRETURN_xTimerCreate( pxNewTimer )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTimerCreateStatic
+    #घोषणा traceENTER_xTimerCreateStatic( pcTimerName, xTimerPeriodInTicks, xAutoReload, pvTimerID, pxCallbackFunction, px_Timer_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTimerCreateStatic
+    #घोषणा traceRETURN_xTimerCreateStatic( pxNewTimer )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTimerGenericCommandFromTask
+    #घोषणा traceENTER_xTimerGenericCommandFromTask( xTimer, xCommandID, x_Optional_मूल्य, pxHigherPriorityTaskWoken, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTimerGenericCommandFromTask
+    #घोषणा traceRETURN_xTimerGenericCommandFromTask( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTimerGenericCommandFromISR
+    #घोषणा traceENTER_xTimerGenericCommandFromISR( xTimer, xCommandID, x_Optional_मूल्य, pxHigherPriorityTaskWoken, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTimerGenericCommandFromISR
+    #घोषणा traceRETURN_xTimerGenericCommandFromISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTimerGetTimerDaemonTaskHandle
+    #घोषणा traceENTER_xTimerGetTimerDaemonTaskHandle()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTimerGetTimerDaemonTaskHandle
+    #घोषणा traceRETURN_xTimerGetTimerDaemonTaskHandle( xTimerTaskHandle )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTimerGetPeriod
+    #घोषणा traceENTER_xTimerGetPeriod( xTimer )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTimerGetPeriod
+    #घोषणा traceRETURN_xTimerGetPeriod( xTimerPeriodInTicks )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTimerSetReloadMode
+    #घोषणा traceENTER_vTimerSetReloadMode( xTimer, xAutoReload )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTimerSetReloadMode
+    #घोषणा traceRETURN_vTimerSetReloadMode()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTimerGetReloadMode
+    #घोषणा traceENTER_xTimerGetReloadMode( xTimer )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTimerGetReloadMode
+    #घोषणा traceRETURN_xTimerGetReloadMode( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_uxTimerGetReloadMode
+    #घोषणा traceENTER_uxTimerGetReloadMode( xTimer )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_uxTimerGetReloadMode
+    #घोषणा traceRETURN_uxTimerGetReloadMode( uxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTimerGetExpiryTime
+    #घोषणा traceENTER_xTimerGetExpiryTime( xTimer )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTimerGetExpiryTime
+    #घोषणा traceRETURN_xTimerGetExpiryTime( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Timer_Get_Static_बफर
+    #घोषणा trace_ENTER_x_Timer_Get_Static_बफर( xTimer, ppx_Timer_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Timer_Get_Static_बफर
+    #घोषणा trace_RETURN_x_Timer_Get_Static_बफर( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_pcTimerGetName
+    #घोषणा traceENTER_pcTimerGetName( xTimer )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_pcTimerGetName
+    #घोषणा traceRETURN_pcTimerGetName( pcTimerName )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTimerIsTimerActive
+    #घोषणा traceENTER_xTimerIsTimerActive( xTimer )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTimerIsTimerActive
+    #घोषणा traceRETURN_xTimerIsTimerActive( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_pvTimerGetTimerID
+    #घोषणा traceENTER_pvTimerGetTimerID( xTimer )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_pvTimerGetTimerID
+    #घोषणा traceRETURN_pvTimerGetTimerID( pvReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTimerSetTimerID
+    #घोषणा traceENTER_vTimerSetTimerID( xTimer, pvNewID )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTimerSetTimerID
+    #घोषणा traceRETURN_vTimerSetTimerID()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTimerPendFunctionCallFromISR
+    #घोषणा traceENTER_xTimerPendFunctionCallFromISR( xFunctionToPend, pvParameter1, ulParameter2, pxHigherPriorityTaskWoken )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTimerPendFunctionCallFromISR
+    #घोषणा traceRETURN_xTimerPendFunctionCallFromISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTimerPendFunctionCall
+    #घोषणा traceENTER_xTimerPendFunctionCall( xFunctionToPend, pvParameter1, ulParameter2, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTimerPendFunctionCall
+    #घोषणा traceRETURN_xTimerPendFunctionCall( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_ux_Timer_Get_Timer_संख्या
+    #घोषणा trace_ENTER_ux_Timer_Get_Timer_संख्या( xTimer )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_ux_Timer_Get_Timer_संख्या
+    #घोषणा trace_RETURN_ux_Timer_Get_Timer_संख्या( ux_Timer_संख्या )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_v_Timer_Set_Timer_संख्या
+    #घोषणा trace_ENTER_v_Timer_Set_Timer_संख्या( xTimer, ux_Timer_संख्या )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_v_Timer_Set_Timer_संख्या
+    #घोषणा trace_RETURN_v_Timer_Set_Timer_संख्या()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskCreateStatic
+    #घोषणा traceENTER_xTaskCreateStatic( pxTaskCode, pcName, ux_ढेर_Depth, pvParameters, uxPriority, pux_ढेर_बफर, px_Task_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskCreateStatic
+    #घोषणा traceRETURN_xTaskCreateStatic( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskCreateStaticAffinitySet
+    #घोषणा traceENTER_xTaskCreateStaticAffinitySet( pxTaskCode, pcName, ux_ढेर_Depth, pvParameters, uxPriority, pux_ढेर_बफर, px_Task_बफर, uxCoreAffinityMask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskCreateStaticAffinitySet
+    #घोषणा traceRETURN_xTaskCreateStaticAffinitySet( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskCreateRestrictedStatic
+    #घोषणा traceENTER_xTaskCreateRestrictedStatic( pxTaskDefinition, pxCreatedTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskCreateRestrictedStatic
+    #घोषणा traceRETURN_xTaskCreateRestrictedStatic( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskCreateRestrictedStaticAffinitySet
+    #घोषणा traceENTER_xTaskCreateRestrictedStaticAffinitySet( pxTaskDefinition, uxCoreAffinityMask, pxCreatedTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskCreateRestrictedStaticAffinitySet
+    #घोषणा traceRETURN_xTaskCreateRestrictedStaticAffinitySet( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskCreateRestricted
+    #घोषणा traceENTER_xTaskCreateRestricted( pxTaskDefinition, pxCreatedTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskCreateRestricted
+    #घोषणा traceRETURN_xTaskCreateRestricted( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskCreateRestrictedAffinitySet
+    #घोषणा traceENTER_xTaskCreateRestrictedAffinitySet( pxTaskDefinition, uxCoreAffinityMask, pxCreatedTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskCreateRestrictedAffinitySet
+    #घोषणा traceRETURN_xTaskCreateRestrictedAffinitySet( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskCreate
+    #घोषणा traceENTER_xTaskCreate( pxTaskCode, pcName, ux_ढेर_Depth, pvParameters, uxPriority, pxCreatedTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskCreate
+    #घोषणा traceRETURN_xTaskCreate( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskCreateAffinitySet
+    #घोषणा traceENTER_xTaskCreateAffinitySet( pxTaskCode, pcName, ux_ढेर_Depth, pvParameters, uxPriority, uxCoreAffinityMask, pxCreatedTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskCreateAffinitySet
+    #घोषणा traceRETURN_xTaskCreateAffinitySet( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskDelete
+    #घोषणा traceENTER_vTaskDelete( xTaskToDelete )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskDelete
+    #घोषणा traceRETURN_vTaskDelete()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskDelayUntil
+    #घोषणा traceENTER_xTaskDelayUntil( pxPreviousWakeTime, xTimeIncrement )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskDelayUntil
+    #घोषणा traceRETURN_xTaskDelayUntil( xShouldDelay )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskDelay
+    #घोषणा traceENTER_vTaskDelay( xTicksToDelay )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskDelay
+    #घोषणा traceRETURN_vTaskDelay()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_eTaskGetState
+    #घोषणा traceENTER_eTaskGetState( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_eTaskGetState
+    #घोषणा traceRETURN_eTaskGetState( eReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_uxTaskPriorityGet
+    #घोषणा traceENTER_uxTaskPriorityGet( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_uxTaskPriorityGet
+    #घोषणा traceRETURN_uxTaskPriorityGet( uxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_uxTaskPriorityGetFromISR
+    #घोषणा traceENTER_uxTaskPriorityGetFromISR( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_uxTaskPriorityGetFromISR
+    #घोषणा traceRETURN_uxTaskPriorityGetFromISR( uxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_uxTaskBasePriorityGet
+    #घोषणा traceENTER_uxTaskBasePriorityGet( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_uxTaskBasePriorityGet
+    #घोषणा traceRETURN_uxTaskBasePriorityGet( uxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_uxTaskBasePriorityGetFromISR
+    #घोषणा traceENTER_uxTaskBasePriorityGetFromISR( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_uxTaskBasePriorityGetFromISR
+    #घोषणा traceRETURN_uxTaskBasePriorityGetFromISR( uxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskPrioritySet
+    #घोषणा traceENTER_vTaskPrioritySet( xTask, uxNewPriority )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskPrioritySet
+    #घोषणा traceRETURN_vTaskPrioritySet()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskCoreAffinitySet
+    #घोषणा traceENTER_vTaskCoreAffinitySet( xTask, uxCoreAffinityMask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskCoreAffinitySet
+    #घोषणा traceRETURN_vTaskCoreAffinitySet()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskCoreAffinityGet
+    #घोषणा traceENTER_vTaskCoreAffinityGet( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskCoreAffinityGet
+    #घोषणा traceRETURN_vTaskCoreAffinityGet( uxCoreAffinityMask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskPreemptionDisable
+    #घोषणा traceENTER_vTaskPreemptionDisable( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskPreemptionDisable
+    #घोषणा traceRETURN_vTaskPreemptionDisable()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskPreemptionEnable
+    #घोषणा traceENTER_vTaskPreemptionEnable( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskPreemptionEnable
+    #घोषणा traceRETURN_vTaskPreemptionEnable()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskSuspend
+    #घोषणा traceENTER_vTaskSuspend( xTaskToSuspend )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskSuspend
+    #घोषणा traceRETURN_vTaskSuspend()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskResume
+    #घोषणा traceENTER_vTaskResume( xTaskToResume )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskResume
+    #घोषणा traceRETURN_vTaskResume()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskResumeFromISR
+    #घोषणा traceENTER_xTaskResumeFromISR( xTaskToResume )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskResumeFromISR
+    #घोषणा traceRETURN_xTaskResumeFromISR( xYieldRequired )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskStartScheduler
+    #घोषणा traceENTER_vTaskStartScheduler()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskStartScheduler
+    #घोषणा traceRETURN_vTaskStartScheduler()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskEndScheduler
+    #घोषणा traceENTER_vTaskEndScheduler()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskEndScheduler
+    #घोषणा traceRETURN_vTaskEndScheduler()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskSuspendAll
+    #घोषणा traceENTER_vTaskSuspendAll()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskSuspendAll
+    #घोषणा traceRETURN_vTaskSuspendAll()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskResumeAll
+    #घोषणा traceENTER_xTaskResumeAll()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskResumeAll
+    #घोषणा traceRETURN_xTaskResumeAll( xAlreadyYielded )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Task_Get_Tick_गिनती
+    #घोषणा trace_ENTER_x_Task_Get_Tick_गिनती()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Task_Get_Tick_गिनती
+    #घोषणा trace_RETURN_x_Task_Get_Tick_गिनती( xTicks )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Task_Get_Tick_गिनती_From_ISR
+    #घोषणा trace_ENTER_x_Task_Get_Tick_गिनती_From_ISR()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Task_Get_Tick_गिनती_From_ISR
+    #घोषणा trace_RETURN_x_Task_Get_Tick_गिनती_From_ISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_ux_Task_Get_संख्या_Of_Tasks
+    #घोषणा trace_ENTER_ux_Task_Get_संख्या_Of_Tasks()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_ux_Task_Get_संख्या_Of_Tasks
+    #घोषणा trace_RETURN_ux_Task_Get_संख्या_Of_Tasks( ux_Current_संख्या_Of_Tasks )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_pcTaskGetName
+    #घोषणा traceENTER_pcTaskGetName( xTaskToQuery )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_pcTaskGetName
+    #घोषणा traceRETURN_pcTaskGetName( pcTaskName )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskGetHandle
+    #घोषणा traceENTER_xTaskGetHandle( pcNameToQuery )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskGetHandle
+    #घोषणा traceRETURN_xTaskGetHandle( pxTCB )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskGetStaticBuffers
+    #घोषणा traceENTER_xTaskGetStaticBuffers( xTask, ppux_ढेर_बफर, ppx_Task_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskGetStaticBuffers
+    #घोषणा traceRETURN_xTaskGetStaticBuffers( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_uxTaskGetSystemState
+    #घोषणा traceENTER_uxTaskGetSystemState( pxTaskStatusArray, ux_Array_आकार, pul_योग_Run_Time )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_uxTaskGetSystemState
+    #घोषणा traceRETURN_uxTaskGetSystemState( uxTask )
+#पूर्ण_अगर
+
+#अगर ( config_संख्या_OF_CORES == 1 )
+    #अगर_अघोषित traceENTER_xTaskGetIdleTaskHandle
+        #घोषणा traceENTER_xTaskGetIdleTaskHandle()
+    #पूर्ण_अगर
+#पूर्ण_अगर
+
+#अगर ( config_संख्या_OF_CORES == 1 )
+    #अगर_अघोषित traceRETURN_xTaskGetIdleTaskHandle
+        #घोषणा traceRETURN_xTaskGetIdleTaskHandle( xIdleTaskHandle )
+    #पूर्ण_अगर
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskGetIdleTaskHandleForCore
+    #घोषणा traceENTER_xTaskGetIdleTaskHandleForCore( xCoreID )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskGetIdleTaskHandleForCore
+    #घोषणा traceRETURN_xTaskGetIdleTaskHandleForCore( xIdleTaskHandle )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskStepTick
+    #घोषणा traceENTER_vTaskStepTick( xTicksToJump )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskStepTick
+    #घोषणा traceRETURN_vTaskStepTick()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskCatchUpTicks
+    #घोषणा traceENTER_xTaskCatchUpTicks( xTicksToCatchUp )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskCatchUpTicks
+    #घोषणा traceRETURN_xTaskCatchUpTicks( xYieldOccurred )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskAbortDelay
+    #घोषणा traceENTER_xTaskAbortDelay( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskAbortDelay
+    #घोषणा traceRETURN_xTaskAbortDelay( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskIncrementTick
+    #घोषणा traceENTER_xTaskIncrementTick()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskIncrementTick
+    #घोषणा traceRETURN_xTaskIncrementTick( xSwitchRequired )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskSetApplicationTaskTag
+    #घोषणा traceENTER_vTaskSetApplicationTaskTag( xTask, pxHookFunction )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskSetApplicationTaskTag
+    #घोषणा traceRETURN_vTaskSetApplicationTaskTag()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskGetApplicationTaskTag
+    #घोषणा traceENTER_xTaskGetApplicationTaskTag( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskGetApplicationTaskTag
+    #घोषणा traceRETURN_xTaskGetApplicationTaskTag( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskGetApplicationTaskTagFromISR
+    #घोषणा traceENTER_xTaskGetApplicationTaskTagFromISR( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskGetApplicationTaskTagFromISR
+    #घोषणा traceRETURN_xTaskGetApplicationTaskTagFromISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskCallApplicationTaskHook
+    #घोषणा traceENTER_xTaskCallApplicationTaskHook( xTask, pvParameter )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskCallApplicationTaskHook
+    #घोषणा traceRETURN_xTaskCallApplicationTaskHook( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskSwitchContext
+    #घोषणा traceENTER_vTaskSwitchContext()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskSwitchContext
+    #घोषणा traceRETURN_vTaskSwitchContext()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskPlaceOnEventList
+    #घोषणा traceENTER_vTaskPlaceOnEventList( pxEventList, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskPlaceOnEventList
+    #घोषणा traceRETURN_vTaskPlaceOnEventList()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskPlaceOnUnorderedEventList
+    #घोषणा traceENTER_vTaskPlaceOnUnorderedEventList( pxEventList, x_Item_मूल्य, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskPlaceOnUnorderedEventList
+    #घोषणा traceRETURN_vTaskPlaceOnUnorderedEventList()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskPlaceOnEventListRestricted
+    #घोषणा traceENTER_vTaskPlaceOnEventListRestricted( pxEventList, xTicksToWait, xWaitIndefinitely )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskPlaceOnEventListRestricted
+    #घोषणा traceRETURN_vTaskPlaceOnEventListRestricted()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskRemoveFromEventList
+    #घोषणा traceENTER_xTaskRemoveFromEventList( pxEventList )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskRemoveFromEventList
+    #घोषणा traceRETURN_xTaskRemoveFromEventList( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskRemoveFromUnorderedEventList
+    #घोषणा traceENTER_vTaskRemoveFromUnorderedEventList( pxEventListItem, x_Item_मूल्य )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskRemoveFromUnorderedEventList
+    #घोषणा traceRETURN_vTaskRemoveFromUnorderedEventList()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskSetTimeOutState
+    #घोषणा traceENTER_vTaskSetTimeOutState( pxTimeOut )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskSetTimeOutState
+    #घोषणा traceRETURN_vTaskSetTimeOutState()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskInternalSetTimeOutState
+    #घोषणा traceENTER_vTaskInternalSetTimeOutState( pxTimeOut )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskInternalSetTimeOutState
+    #घोषणा traceRETURN_vTaskInternalSetTimeOutState()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskCheckForTimeOut
+    #घोषणा traceENTER_xTaskCheckForTimeOut( pxTimeOut, pxTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskCheckForTimeOut
+    #घोषणा traceRETURN_xTaskCheckForTimeOut( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskMissedYield
+    #घोषणा traceENTER_vTaskMissedYield()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskMissedYield
+    #घोषणा traceRETURN_vTaskMissedYield()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_ux_Task_Get_Task_संख्या
+    #घोषणा trace_ENTER_ux_Task_Get_Task_संख्या( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_ux_Task_Get_Task_संख्या
+    #घोषणा trace_RETURN_ux_Task_Get_Task_संख्या( uxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_v_Task_Set_Task_संख्या
+    #घोषणा trace_ENTER_v_Task_Set_Task_संख्या( xTask, uxHandle )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_v_Task_Set_Task_संख्या
+    #घोषणा trace_RETURN_v_Task_Set_Task_संख्या()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_eTaskConfirmSleepModeStatus
+    #घोषणा traceENTER_eTaskConfirmSleepModeStatus()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_eTaskConfirmSleepModeStatus
+    #घोषणा traceRETURN_eTaskConfirmSleepModeStatus( eReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskSetThreadLocalStoragePointer
+    #घोषणा traceENTER_vTaskSetThreadLocalStoragePointer( xTaskToSet, x_सूचकांक, pv_मूल्य )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskSetThreadLocalStoragePointer
+    #घोषणा traceRETURN_vTaskSetThreadLocalStoragePointer()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_pvTaskGetThreadLocalStoragePointer
+    #घोषणा traceENTER_pvTaskGetThreadLocalStoragePointer( xTaskToQuery, x_सूचकांक )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_pvTaskGetThreadLocalStoragePointer
+    #घोषणा traceRETURN_pvTaskGetThreadLocalStoragePointer( pvReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskAllocateMPURegions
+    #घोषणा traceENTER_vTaskAllocateMPURegions( xTaskToModify, pxRegions )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskAllocateMPURegions
+    #घोषणा traceRETURN_vTaskAllocateMPURegions()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskGetInfo
+    #घोषणा traceENTER_vTaskGetInfo( xTask, pxTaskStatus, x_Get_Free_ढेर_Space, eState )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskGetInfo
+    #घोषणा traceRETURN_vTaskGetInfo()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_ux_Task_Get_ढेर_ऊपरी_Water_Mark2
+    #घोषणा trace_ENTER_ux_Task_Get_ढेर_ऊपरी_Water_Mark2( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_ux_Task_Get_ढेर_ऊपरी_Water_Mark2
+    #घोषणा trace_RETURN_ux_Task_Get_ढेर_ऊपरी_Water_Mark2( uxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_ux_Task_Get_ढेर_ऊपरी_Water_Mark
+    #घोषणा trace_ENTER_ux_Task_Get_ढेर_ऊपरी_Water_Mark( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_ux_Task_Get_ढेर_ऊपरी_Water_Mark
+    #घोषणा trace_RETURN_ux_Task_Get_ढेर_ऊपरी_Water_Mark( uxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskGetCurrentTaskHandle
+    #घोषणा traceENTER_xTaskGetCurrentTaskHandle()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskGetCurrentTaskHandle
+    #घोषणा traceRETURN_xTaskGetCurrentTaskHandle( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskGetCurrentTaskHandleForCore
+    #घोषणा traceENTER_xTaskGetCurrentTaskHandleForCore( xCoreID )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskGetCurrentTaskHandleForCore
+    #घोषणा traceRETURN_xTaskGetCurrentTaskHandleForCore( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskGetSchedulerState
+    #घोषणा traceENTER_xTaskGetSchedulerState()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskGetSchedulerState
+    #घोषणा traceRETURN_xTaskGetSchedulerState( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskPriorityInherit
+    #घोषणा traceENTER_xTaskPriorityInherit( pxMutexHolder )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskPriorityInherit
+    #घोषणा traceRETURN_xTaskPriorityInherit( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskPriorityDisinherit
+    #घोषणा traceENTER_xTaskPriorityDisinherit( pxMutexHolder )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskPriorityDisinherit
+    #घोषणा traceRETURN_xTaskPriorityDisinherit( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskPriorityDisinheritAfterTimeout
+    #घोषणा traceENTER_vTaskPriorityDisinheritAfterTimeout( pxMutexHolder, uxHighestPriorityWaitingTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskPriorityDisinheritAfterTimeout
+    #घोषणा traceRETURN_vTaskPriorityDisinheritAfterTimeout()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskYieldWithinAPI
+    #घोषणा traceENTER_vTaskYieldWithinAPI()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskYieldWithinAPI
+    #घोषणा traceRETURN_vTaskYieldWithinAPI()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskEnterCritical
+    #घोषणा traceENTER_vTaskEnterCritical()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskEnterCritical
+    #घोषणा traceRETURN_vTaskEnterCritical()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskEnterCriticalFromISR
+    #घोषणा traceENTER_vTaskEnterCriticalFromISR()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskEnterCriticalFromISR
+    #घोषणा traceRETURN_vTaskEnterCriticalFromISR( uxSavedInterruptStatus )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskExitCritical
+    #घोषणा traceENTER_vTaskExitCritical()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskExitCritical
+    #घोषणा traceRETURN_vTaskExitCritical()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskExitCriticalFromISR
+    #घोषणा traceENTER_vTaskExitCriticalFromISR( uxSavedInterruptStatus )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskExitCriticalFromISR
+    #घोषणा traceRETURN_vTaskExitCriticalFromISR()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskListTasks
+    #घोषणा traceENTER_vTaskListTasks( pc_Write_बफर, ux_बफर_लंबाई )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskListTasks
+    #घोषणा traceRETURN_vTaskListTasks()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskGetRunTimeStatistics
+    #घोषणा traceENTER_vTaskGetRunTimeStatistics( pc_Write_बफर, ux_बफर_लंबाई )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskGetRunTimeStatistics
+    #घोषणा traceRETURN_vTaskGetRunTimeStatistics()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_ux_Task_Reset_Event_Item_मूल्य
+    #घोषणा trace_ENTER_ux_Task_Reset_Event_Item_मूल्य()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_ux_Task_Reset_Event_Item_मूल्य
+    #घोषणा trace_RETURN_ux_Task_Reset_Event_Item_मूल्य( uxReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_pv_Task_Increment_Mutex_Held_गिनती
+    #घोषणा trace_ENTER_pv_Task_Increment_Mutex_Held_गिनती()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_pv_Task_Increment_Mutex_Held_गिनती
+    #घोषणा trace_RETURN_pv_Task_Increment_Mutex_Held_गिनती( pxTCB )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_ulTaskGenericNotifyTake
+    #घोषणा traceENTER_ulTaskGenericNotifyTake( ux_सूचकांक_To_Wait_On, x_Clear_गिनती_On_Exit, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_ulTaskGenericNotifyTake
+    #घोषणा traceRETURN_ulTaskGenericNotifyTake( ulReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskGenericNotifyWait
+    #घोषणा traceENTER_xTaskGenericNotifyWait( ux_सूचकांक_To_Wait_On, ulBitsToClearOnEntry, ulBitsToClearOnExit, pul_Notification_मूल्य, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskGenericNotifyWait
+    #घोषणा traceRETURN_xTaskGenericNotifyWait( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskGenericNotify
+    #घोषणा traceENTER_xTaskGenericNotify( xTaskToNotify, ux_सूचकांक_To_Notify, ul_मूल्य, eAction, pul_Previous_Notification_मूल्य )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskGenericNotify
+    #घोषणा traceRETURN_xTaskGenericNotify( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskGenericNotifyFromISR
+    #घोषणा traceENTER_xTaskGenericNotifyFromISR( xTaskToNotify, ux_सूचकांक_To_Notify, ul_मूल्य, eAction, pul_Previous_Notification_मूल्य, pxHigherPriorityTaskWoken )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskGenericNotifyFromISR
+    #घोषणा traceRETURN_xTaskGenericNotifyFromISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vTaskGenericNotifyGiveFromISR
+    #घोषणा traceENTER_vTaskGenericNotifyGiveFromISR( xTaskToNotify, ux_सूचकांक_To_Notify, pxHigherPriorityTaskWoken )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vTaskGenericNotifyGiveFromISR
+    #घोषणा traceRETURN_vTaskGenericNotifyGiveFromISR()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskGenericNotifyStateClear
+    #घोषणा traceENTER_xTaskGenericNotifyStateClear( xTask, ux_सूचकांक_To_Clear )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskGenericNotifyStateClear
+    #घोषणा traceRETURN_xTaskGenericNotifyStateClear( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_ul_Task_Generic_Notify_मूल्य_Clear
+    #घोषणा trace_ENTER_ul_Task_Generic_Notify_मूल्य_Clear( xTask, ux_सूचकांक_To_Clear, ulBitsToClear )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_ul_Task_Generic_Notify_मूल्य_Clear
+    #घोषणा trace_RETURN_ul_Task_Generic_Notify_मूल्य_Clear( ulReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_ul_Task_Get_Run_Time_गणक
+    #घोषणा trace_ENTER_ul_Task_Get_Run_Time_गणक( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_ul_Task_Get_Run_Time_गणक
+    #घोषणा trace_RETURN_ul_Task_Get_Run_Time_गणक( ul_Run_Time_गणक )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_ulTaskGetRunTimePercent
+    #घोषणा traceENTER_ulTaskGetRunTimePercent( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_ulTaskGetRunTimePercent
+    #घोषणा traceRETURN_ulTaskGetRunTimePercent( ulReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_ul_Task_Get_Idle_Run_Time_गणक
+    #घोषणा trace_ENTER_ul_Task_Get_Idle_Run_Time_गणक()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_ul_Task_Get_Idle_Run_Time_गणक
+    #घोषणा trace_RETURN_ul_Task_Get_Idle_Run_Time_गणक( ulReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_ulTaskGetIdleRunTimePercent
+    #घोषणा traceENTER_ulTaskGetIdleRunTimePercent()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_ulTaskGetIdleRunTimePercent
+    #घोषणा traceRETURN_ulTaskGetIdleRunTimePercent( ulReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xTaskGetMPUSettings
+    #घोषणा traceENTER_xTaskGetMPUSettings( xTask )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xTaskGetMPUSettings
+    #घोषणा traceRETURN_xTaskGetMPUSettings( xMPUSettings )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_Generic_Create
+    #घोषणा trace_ENTER_x_Stream_बफर_Generic_Create( x_बफर_आकार_Bytes, xTriggerLevelBytes, x_Stream_बफर_Type, pxSendCompletedCallback, pxReceiveCompletedCallback )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_Generic_Create
+    #घोषणा trace_RETURN_x_Stream_बफर_Generic_Create( pvAllocatedMemory )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_Generic_Create_Static
+    #घोषणा trace_ENTER_x_Stream_बफर_Generic_Create_Static( x_बफर_आकार_Bytes, xTriggerLevelBytes, x_Stream_बफर_Type, puc_Stream_बफर_Storage_Area, px_Static_Stream_बफर, pxSendCompletedCallback, pxReceiveCompletedCallback )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_Generic_Create_Static
+    #घोषणा trace_RETURN_x_Stream_बफर_Generic_Create_Static( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_Get_Static_Buffers
+    #घोषणा trace_ENTER_x_Stream_बफर_Get_Static_Buffers( x_Stream_बफर, ppuc_Stream_बफर_Storage_Area, ppx_Static_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_Get_Static_Buffers
+    #घोषणा trace_RETURN_x_Stream_बफर_Get_Static_Buffers( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_v_Stream_बफर_Delete
+    #घोषणा trace_ENTER_v_Stream_बफर_Delete( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_v_Stream_बफर_Delete
+    #घोषणा trace_RETURN_v_Stream_बफर_Delete()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_Reset
+    #घोषणा trace_ENTER_x_Stream_बफर_Reset( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_Reset
+    #घोषणा trace_RETURN_x_Stream_बफर_Reset( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_Reset_From_ISR
+    #घोषणा trace_ENTER_x_Stream_बफर_Reset_From_ISR( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_Reset_From_ISR
+    #घोषणा trace_RETURN_x_Stream_बफर_Reset_From_ISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_Set_Trigger_Level
+    #घोषणा trace_ENTER_x_Stream_बफर_Set_Trigger_Level( x_Stream_बफर, xTriggerLevel )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_Set_Trigger_Level
+    #घोषणा trace_RETURN_x_Stream_बफर_Set_Trigger_Level( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_Spaces_Available
+    #घोषणा trace_ENTER_x_Stream_बफर_Spaces_Available( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_Spaces_Available
+    #घोषणा trace_RETURN_x_Stream_बफर_Spaces_Available( xSpace )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_Bytes_Available
+    #घोषणा trace_ENTER_x_Stream_बफर_Bytes_Available( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_Bytes_Available
+    #घोषणा trace_RETURN_x_Stream_बफर_Bytes_Available( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_Send
+    #घोषणा trace_ENTER_x_Stream_बफर_Send( x_Stream_बफर, pv_Tx_तथ्य, x_तथ्य_लंबाई_Bytes, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_Send
+    #घोषणा trace_RETURN_x_Stream_बफर_Send( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_Send_From_ISR
+    #घोषणा trace_ENTER_x_Stream_बफर_Send_From_ISR( x_Stream_बफर, pv_Tx_तथ्य, x_तथ्य_लंबाई_Bytes, pxHigherPriorityTaskWoken )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_Send_From_ISR
+    #घोषणा trace_RETURN_x_Stream_बफर_Send_From_ISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_Receive
+    #घोषणा trace_ENTER_x_Stream_बफर_Receive( x_Stream_बफर, pv_Rx_तथ्य, x_बफर_लंबाई_Bytes, xTicksToWait )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_Receive
+    #घोषणा trace_RETURN_x_Stream_बफर_Receive( x_Received_लंबाई )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_अग्र_Message_लंबाई_Bytes
+    #घोषणा trace_ENTER_x_Stream_बफर_अग्र_Message_लंबाई_Bytes( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_अग्र_Message_लंबाई_Bytes
+    #घोषणा trace_RETURN_x_Stream_बफर_अग्र_Message_लंबाई_Bytes( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_Receive_From_ISR
+    #घोषणा trace_ENTER_x_Stream_बफर_Receive_From_ISR( x_Stream_बफर, pv_Rx_तथ्य, x_बफर_लंबाई_Bytes, pxHigherPriorityTaskWoken )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_Receive_From_ISR
+    #घोषणा trace_RETURN_x_Stream_बफर_Receive_From_ISR( x_Received_लंबाई )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_Is_Empty
+    #घोषणा trace_ENTER_x_Stream_बफर_Is_Empty( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_Is_Empty
+    #घोषणा trace_RETURN_x_Stream_बफर_Is_Empty( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_Is_Full
+    #घोषणा trace_ENTER_x_Stream_बफर_Is_Full( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_Is_Full
+    #घोषणा trace_RETURN_x_Stream_बफर_Is_Full( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_Send_Completed_From_ISR
+    #घोषणा trace_ENTER_x_Stream_बफर_Send_Completed_From_ISR( x_Stream_बफर, pxHigherPriorityTaskWoken )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_Send_Completed_From_ISR
+    #घोषणा trace_RETURN_x_Stream_बफर_Send_Completed_From_ISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_x_Stream_बफर_Receive_Completed_From_ISR
+    #घोषणा trace_ENTER_x_Stream_बफर_Receive_Completed_From_ISR( x_Stream_बफर, pxHigherPriorityTaskWoken )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_x_Stream_बफर_Receive_Completed_From_ISR
+    #घोषणा trace_RETURN_x_Stream_बफर_Receive_Completed_From_ISR( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_ux_Stream_बफर_Get_Stream_बफर_Notification_सूचकांक
+    #घोषणा trace_ENTER_ux_Stream_बफर_Get_Stream_बफर_Notification_सूचकांक( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_ux_Stream_बफर_Get_Stream_बफर_Notification_सूचकांक
+    #घोषणा trace_RETURN_ux_Stream_बफर_Get_Stream_बफर_Notification_सूचकांक( ux_Notification_सूचकांक )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_v_Stream_बफर_Set_Stream_बफर_Notification_सूचकांक
+    #घोषणा trace_ENTER_v_Stream_बफर_Set_Stream_बफर_Notification_सूचकांक( x_Stream_बफर, ux_Notification_सूचकांक )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_v_Stream_बफर_Set_Stream_बफर_Notification_सूचकांक
+    #घोषणा trace_RETURN_v_Stream_बफर_Set_Stream_बफर_Notification_सूचकांक()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_ux_Stream_बफर_Get_Stream_बफर_संख्या
+    #घोषणा trace_ENTER_ux_Stream_बफर_Get_Stream_बफर_संख्या( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_ux_Stream_बफर_Get_Stream_बफर_संख्या
+    #घोषणा trace_RETURN_ux_Stream_बफर_Get_Stream_बफर_संख्या( ux_Stream_बफर_संख्या )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_v_Stream_बफर_Set_Stream_बफर_संख्या
+    #घोषणा trace_ENTER_v_Stream_बफर_Set_Stream_बफर_संख्या( x_Stream_बफर, ux_Stream_बफर_संख्या )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_v_Stream_बफर_Set_Stream_बफर_संख्या
+    #घोषणा trace_RETURN_v_Stream_बफर_Set_Stream_बफर_संख्या()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_uc_Stream_बफर_Get_Stream_बफर_Type
+    #घोषणा trace_ENTER_uc_Stream_बफर_Get_Stream_बफर_Type( x_Stream_बफर )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_uc_Stream_बफर_Get_Stream_बफर_Type
+    #घोषणा trace_RETURN_uc_Stream_बफर_Get_Stream_बफर_Type( uc_Stream_बफर_Type )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vListInitialise
+    #घोषणा traceENTER_vListInitialise( pxList )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vListInitialise
+    #घोषणा traceRETURN_vListInitialise()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vListInitialiseItem
+    #घोषणा traceENTER_vListInitialiseItem( pxItem )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vListInitialiseItem
+    #घोषणा traceRETURN_vListInitialiseItem()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_v_List_जोड़ो_End
+    #घोषणा trace_ENTER_v_List_जोड़ो_End( pxList, pxNewListItem )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_v_List_जोड़ो_End
+    #घोषणा trace_RETURN_v_List_जोड़ो_End()
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_ENTER_v_List_जोड़ो
+    #घोषणा trace_ENTER_v_List_जोड़ो( pxList, pxNewListItem )
+#पूर्ण_अगर
+
+#अगर_अघोषित trace_RETURN_v_List_जोड़ो
+    #घोषणा trace_RETURN_v_List_जोड़ो()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_uxListRemove
+    #घोषणा traceENTER_uxListRemove( pxItemToRemove )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_uxListRemove
+    #घोषणा traceRETURN_uxListRemove( ux_संख्या_Of_वस्तुएँ )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xCoRoutineCreate
+    #घोषणा traceENTER_xCoRoutineCreate( pxCoRoutineCode, uxPriority, ux_सूचकांक )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xCoRoutineCreate
+    #घोषणा traceRETURN_xCoRoutineCreate( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vCoRoutineAddToDelayedList
+    #घोषणा traceENTER_vCoRoutineAddToDelayedList( xTicksToDelay, pxEventList )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vCoRoutineAddToDelayedList
+    #घोषणा traceRETURN_vCoRoutineAddToDelayedList()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_vCoRoutineSchedule
+    #घोषणा traceENTER_vCoRoutineSchedule()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_vCoRoutineSchedule
+    #घोषणा traceRETURN_vCoRoutineSchedule()
+#पूर्ण_अगर
+
+#अगर_अघोषित traceENTER_xCoRoutineRemoveFromEventList
+    #घोषणा traceENTER_xCoRoutineRemoveFromEventList( pxEventList )
+#पूर्ण_अगर
+
+#अगर_अघोषित traceRETURN_xCoRoutineRemoveFromEventList
+    #घोषणा traceRETURN_xCoRoutineRemoveFromEventList( xReturn )
+#पूर्ण_अगर
+
+#अगर_अघोषित configGENERATE_RUN_TIME_STATS
+    #घोषणा configGENERATE_RUN_TIME_STATS    0
+#पूर्ण_अगर
+
+#अगर ( configGENERATE_RUN_TIME_STATS == 1 )
+
+    #अगर_अघोषित portCONFIGURE_TIMER_FOR_RUN_TIME_STATS
+        #त्रुटि If configGENERATE_RUN_TIME_STATS is defined then portCONFIGURE_TIMER_FOR_RUN_TIME_STATS must also be defined.  portCONFIGURE_TIMER_FOR_RUN_TIME_STATS should call a port layer function to setup a peripheral timer/गणक that can then be used as the run समय गणक समय base.
+    #पूर्ण_अगर /* portCONFIGURE_TIMER_FOR_RUN_TIME_STATS */
+
+    #अगर_अघोषित port_GET_RUN_TIME_गणक_मूल्य
+        #अगर_अघोषित port_ALT_GET_RUN_TIME_गणक_मूल्य
+            #त्रुटि If configGENERATE_RUN_TIME_STATS is defined then either port_GET_RUN_TIME_गणक_मूल्य or port_ALT_GET_RUN_TIME_गणक_मूल्य must also be defined.  See the examples provided and the FreeRTOS web site क्रम more information.
+        #पूर्ण_अगर /* portALT_GET_RUN_TIME_COUNTER_VALUE */
+    #पूर्ण_अगर /* portGET_RUN_TIME_COUNTER_VALUE */
+
+#पूर्ण_अगर /* configGENERATE_RUN_TIME_STATS */
+
+#अगर_अघोषित portCONFIGURE_TIMER_FOR_RUN_TIME_STATS
+    #घोषणा portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
+#पूर्ण_अगर
+
+#अगर_अघोषित portPRIVILEGE_BIT
+    #घोषणा portPRIVILEGE_BIT    ( ( UBaseType_t ) 0x00 )
+#पूर्ण_अगर
+
+#अगर_अघोषित portYIELD_WITHIN_API
+    #घोषणा portYIELD_WITHIN_API    portYIELD
+#पूर्ण_अगर
+
+#अगर_अघोषित portSUPPRESS_TICKS_AND_SLEEP
+    #घोषणा portSUPPRESS_TICKS_AND_SLEEP( xExpectedIdleTime )
+#पूर्ण_अगर
+
+#अगर_अघोषित configEXPECTED_IDLE_TIME_BEFORE_SLEEP
+    #घोषणा configEXPECTED_IDLE_TIME_BEFORE_SLEEP    2
+#पूर्ण_अगर
+
+#अगर configEXPECTED_IDLE_TIME_BEFORE_SLEEP < 2
+    #त्रुटि configEXPECTED_IDLE_TIME_BEFORE_SLEEP must not be less than 2
+#पूर्ण_अगर
+
+#अगर_अघोषित configUSE_TICKLESS_IDLE
+    #घोषणा configUSE_TICKLESS_IDLE    0
+#पूर्ण_अगर
+
+#अगर_अघोषित configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING
+    #घोषणा configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING( x )
+#पूर्ण_अगर
+
+#अगर_अघोषित configPRE_SLEEP_PROCESSING
+    #घोषणा configPRE_SLEEP_PROCESSING( x )
+#पूर्ण_अगर
+
+#अगर_अघोषित configPOST_SLEEP_PROCESSING
+    #घोषणा configPOST_SLEEP_PROCESSING( x )
+#पूर्ण_अगर
+
+#अगर_अघोषित configUSE_QUEUE_SETS
+    #घोषणा configUSE_QUEUE_SETS    0
+#पूर्ण_अगर
+
+#अगर_अघोषित portTASK_USES_FLOATING_POINT
+    #घोषणा portTASK_USES_FLOATING_POINT()
+#पूर्ण_अगर
+
+#अगर_अघोषित portALLOCATE_SECURE_CONTEXT
+    #घोषणा portALLOCATE_SECURE_CONTEXT( ul_Secure_ढेर_आकार )
+#पूर्ण_अगर
+
+#अगर_अघोषित portDONT_DISCARD
+    #घोषणा portDONT_DISCARD
+#पूर्ण_अगर
+
+#अगर_अघोषित configUSE_TIME_SLICING
+    #घोषणा configUSE_TIME_SLICING    1
+#पूर्ण_अगर
+
+#अगर_अघोषित configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS
+    #घोषणा configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS    0
+#पूर्ण_अगर
+
+#अगर_अघोषित configUSE_STATS_FORMATTING_FUNCTIONS
+    #घोषणा configUSE_STATS_FORMATTING_FUNCTIONS    0
+#पूर्ण_अगर
+
+#अगर_अघोषित portASSERT_IF_INTERRUPT_PRIORITY_INVALID
+    #घोषणा portASSERT_IF_INTERRUPT_PRIORITY_INVALID()
+#पूर्ण_अगर
+
+#अगर_अघोषित configUSE_TRACE_FACILITY
+    #घोषणा configUSE_TRACE_FACILITY    0
+#पूर्ण_अगर
+
+#अगर_अघोषित mtCOVERAGE_TEST_MARKER
+    #घोषणा mtCOVERAGE_TEST_MARKER()
+#पूर्ण_अगर
+
+#अगर_अघोषित mtCOVERAGE_TEST_DELAY
+    #घोषणा mtCOVERAGE_TEST_DELAY()
+#पूर्ण_अगर
+
+#अगर_अघोषित portASSERT_IF_IN_ISR
+    #घोषणा portASSERT_IF_IN_ISR()
+#पूर्ण_अगर
+
+#अगर_अघोषित configUSE_PORT_OPTIMISED_TASK_SELECTION
+    #घोषणा configUSE_PORT_OPTIMISED_TASK_SELECTION    0
+#पूर्ण_अगर
+
+#अगर_अघोषित configAPPLICATION_ALLOCATED_HEAP
+    #घोषणा configAPPLICATION_ALLOCATED_HEAP    0
+#पूर्ण_अगर
+
+#अगर_अघोषित configENABLE_HEAP_PROTECTOR
+    #घोषणा configENABLE_HEAP_PROTECTOR    0
+#पूर्ण_अगर
+
+#अगर_अघोषित configUSE_TASK_NOTIFICATIONS
+    #घोषणा configUSE_TASK_NOTIFICATIONS    1
+#पूर्ण_अगर
+
+#अगर_अघोषित configTASK_NOTIFICATION_ARRAY_ENTRIES
+    #घोषणा configTASK_NOTIFICATION_ARRAY_ENTRIES    1
+#पूर्ण_अगर
+
+#अगर configTASK_NOTIFICATION_ARRAY_ENTRIES < 1
+    #त्रुटि configTASK_NOTIFICATION_ARRAY_ENTRIES must be at least 1
+#पूर्ण_अगर
+
+#अगर_अघोषित configUSE_POSIX_ERRNO
+    #घोषणा configUSE_POSIX_ERRNO    0
+#पूर्ण_अगर
+
+#अगर_अघोषित configUSE_SB_COMPLETED_CALLBACK
 
 /* By default per-instance callbacks are not enabled for stream buffer or message buffer. */
-    #define configUSE_SB_COMPLETED_CALLBACK    0
-#endif
+    #घोषणा configUSE_SB_COMPLETED_CALLBACK    0
+#पूर्ण_अगर
 
-#ifndef portTICK_TYPE_IS_ATOMIC
-    #define portTICK_TYPE_IS_ATOMIC    0
-#endif
+#अगर_अघोषित portTICK_TYPE_IS_ATOMIC
+    #घोषणा portTICK_TYPE_IS_ATOMIC    0
+#पूर्ण_अगर
 
-#ifndef configSUPPORT_STATIC_ALLOCATION
+#अगर_अघोषित configSUPPORT_STATIC_ALLOCATION
     /* Defaults to 0 for backward compatibility. */
-    #define configSUPPORT_STATIC_ALLOCATION    0
-#endif
+    #घोषणा configSUPPORT_STATIC_ALLOCATION    0
+#पूर्ण_अगर
 
-#ifndef configKERNEL_PROVIDED_STATIC_MEMORY
-    #define configKERNEL_PROVIDED_STATIC_MEMORY    0
-#endif
+#अगर_अघोषित configKERNEL_PROVIDED_STATIC_MEMORY
+    #घोषणा configKERNEL_PROVIDED_STATIC_MEMORY    0
+#पूर्ण_अगर
 
-#ifndef configSUPPORT_DYNAMIC_ALLOCATION
+#अगर_अघोषित configSUPPORT_DYNAMIC_ALLOCATION
     /* Defaults to 1 for backward compatibility. */
-    #define configSUPPORT_DYNAMIC_ALLOCATION    1
-#endif
+    #घोषणा configSUPPORT_DYNAMIC_ALLOCATION    1
+#पूर्ण_अगर
 
-#if ( ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION != 1 ) )
-    #error configUSE_STATS_FORMATTING_FUNCTIONS cannot be used without dynamic allocation, but configSUPPORT_DYNAMIC_ALLOCATION is not set to 1.
-#endif
+#अगर ( ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION != 1 ) )
+    #त्रुटि configUSE_STATS_FORMATTING_FUNCTIONS cannot be used without dynamic allocation, but configSUPPORT_DYNAMIC_ALLOCATION is not set to 1.
+#पूर्ण_अगर
 
-#if ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 )
-    #if ( ( configUSE_TRACE_FACILITY != 1 ) && ( configGENERATE_RUN_TIME_STATS != 1 ) )
-        #error configUSE_STATS_FORMATTING_FUNCTIONS is 1 but the functions it enables are not used because neither configUSE_TRACE_FACILITY or configGENERATE_RUN_TIME_STATS are 1.  Set configUSE_STATS_FORMATTING_FUNCTIONS to 0 in FreeRTOSConfig.h.
-    #endif
-#endif
+#अगर ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 )
+    #अगर ( ( configUSE_TRACE_FACILITY != 1 ) && ( configGENERATE_RUN_TIME_STATS != 1 ) )
+        #त्रुटि configUSE_STATS_FORMATTING_FUNCTIONS is 1 but the functions it enables are not used because neither configUSE_TRACE_FACILITY or configGENERATE_RUN_TIME_STATS are 1.  Set configUSE_STATS_FORMATTING_FUNCTIONS to 0 in FreeRTOSConfig.h.
+    #पूर्ण_अगर
+#पूर्ण_अगर
 
-#ifndef configSTATS_BUFFER_MAX_LENGTH
-    #define configSTATS_BUFFER_MAX_LENGTH    0xFFFF
-#endif
+#अगर_अघोषित config_STATS_बफर_MAX_लंबाई
+    #घोषणा config_STATS_बफर_MAX_लंबाई    0xFFFF
+#पूर्ण_अगर
 
-#ifndef configSTACK_DEPTH_TYPE
+#अगर_अघोषित config_ढेर_DEPTH_TYPE
 
 /* Defaults to StackType_t for backward compatibility, but can be overridden
  * in FreeRTOSConfig.h if StackType_t is too restrictive. */
-    #define configSTACK_DEPTH_TYPE    StackType_t
-#endif
+    #घोषणा config_ढेर_DEPTH_TYPE    ढेर_Type_t
+#पूर्ण_अगर
 
-#ifndef configRUN_TIME_COUNTER_TYPE
+#अगर_अघोषित config_RUN_TIME_गणक_TYPE
 
 /* Defaults to uint32_t for backward compatibility, but can be overridden in
  * FreeRTOSConfig.h if uint32_t is too restrictive. */
 
-    #define configRUN_TIME_COUNTER_TYPE    uint32_t
-#endif
+    #घोषणा config_RUN_TIME_गणक_TYPE    uint32_t
+#पूर्ण_अगर
 
-#ifndef configMESSAGE_BUFFER_LENGTH_TYPE
+#अगर_अघोषित config_MESSAGE_बफर_लंबाई_TYPE
 
 /* Defaults to size_t for backward compatibility, but can be overridden
  * in FreeRTOSConfig.h if lengths will always be less than the number of bytes
  * in a size_t. */
-    #define configMESSAGE_BUFFER_LENGTH_TYPE    size_t
-#endif
+    #घोषणा config_MESSAGE_बफर_लंबाई_TYPE    माप_प्रकार
+#पूर्ण_अगर
 
 /* Sanity check the configuration. */
-#if ( ( configSUPPORT_STATIC_ALLOCATION == 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 0 ) )
-    #error configSUPPORT_STATIC_ALLOCATION and configSUPPORT_DYNAMIC_ALLOCATION cannot both be 0, but can both be 1.
-#endif
+#अगर ( ( configSUPPORT_STATIC_ALLOCATION == 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 0 ) )
+    #त्रुटि configSUPPORT_STATIC_ALLOCATION and configSUPPORT_DYNAMIC_ALLOCATION cannot both be 0, but can both be 1.
+#पूर्ण_अगर
 
-#if ( ( configUSE_RECURSIVE_MUTEXES == 1 ) && ( configUSE_MUTEXES != 1 ) )
-    #error configUSE_MUTEXES must be set to 1 to use recursive mutexes
-#endif
+#अगर ( ( configUSE_RECURSIVE_MUTEXES == 1 ) && ( configUSE_MUTEXES != 1 ) )
+    #त्रुटि configUSE_MUTEXES must be set to 1 to use recursive mutexes
+#पूर्ण_अगर
 
-#if ( ( configRUN_MULTIPLE_PRIORITIES == 0 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
-    #error configRUN_MULTIPLE_PRIORITIES must be set to 1 to use task preemption disable
-#endif
+#अगर ( ( configRUN_MULTIPLE_PRIORITIES == 0 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
+    #त्रुटि configRUN_MULTIPLE_PRIORITIES must be set to 1 to use task preemption disable
+#पूर्ण_अगर
 
-#if ( ( configUSE_PREEMPTION == 0 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
-    #error configUSE_PREEMPTION must be set to 1 to use task preemption disable
-#endif
+#अगर ( ( configUSE_PREEMPTION == 0 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
+    #त्रुटि configUSE_PREEMPTION must be set to 1 to use task preemption disable
+#पूर्ण_अगर
 
-#if ( ( configNUMBER_OF_CORES == 1 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
-    #error configUSE_TASK_PREEMPTION_DISABLE is not supported in single core FreeRTOS
-#endif
+#अगर ( ( config_संख्या_OF_CORES == 1 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
+    #त्रुटि configUSE_TASK_PREEMPTION_DISABLE is not supported in single core FreeRTOS
+#पूर्ण_अगर
 
-#if ( ( configNUMBER_OF_CORES == 1 ) && ( configUSE_CORE_AFFINITY != 0 ) )
-    #error configUSE_CORE_AFFINITY is not supported in single core FreeRTOS
-#endif
+#अगर ( ( config_संख्या_OF_CORES == 1 ) && ( configUSE_CORE_AFFINITY != 0 ) )
+    #त्रुटि configUSE_CORE_AFFINITY is not supported in single core FreeRTOS
+#पूर्ण_अगर
 
-#if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_PORT_OPTIMISED_TASK_SELECTION != 0 ) )
-    #error configUSE_PORT_OPTIMISED_TASK_SELECTION is not supported in SMP FreeRTOS
-#endif
+#अगर ( ( config_संख्या_OF_CORES > 1 ) && ( configUSE_PORT_OPTIMISED_TASK_SELECTION != 0 ) )
+    #त्रुटि configUSE_PORT_OPTIMISED_TASK_SELECTION is not supported in SMP FreeRTOS
+#पूर्ण_अगर
 
-#ifndef configINITIAL_TICK_COUNT
-    #define configINITIAL_TICK_COUNT    0
-#endif
+#अगर_अघोषित config_INITIAL_TICK_गिनती
+    #घोषणा config_INITIAL_TICK_गिनती    0
+#पूर्ण_अगर
 
-#if ( portTICK_TYPE_IS_ATOMIC == 0 )
+#अगर ( portTICK_TYPE_IS_ATOMIC == 0 )
 
 /* Either variables of tick type cannot be read atomically, or
  * portTICK_TYPE_IS_ATOMIC was not set - map the critical sections used when
  * the tick count is returned to the standard critical section macros. */
-    #define portTICK_TYPE_ENTER_CRITICAL()                      portENTER_CRITICAL()
-    #define portTICK_TYPE_EXIT_CRITICAL()                       portEXIT_CRITICAL()
-    #define portTICK_TYPE_SET_INTERRUPT_MASK_FROM_ISR()         portSET_INTERRUPT_MASK_FROM_ISR()
-    #define portTICK_TYPE_CLEAR_INTERRUPT_MASK_FROM_ISR( x )    portCLEAR_INTERRUPT_MASK_FROM_ISR( ( x ) )
-#else
+    #घोषणा portTICK_TYPE_ENTER_CRITICAL()                      portENTER_CRITICAL()
+    #घोषणा portTICK_TYPE_EXIT_CRITICAL()                       portEXIT_CRITICAL()
+    #घोषणा portTICK_TYPE_SET_INTERRUPT_MASK_FROM_ISR()         portSET_INTERRUPT_MASK_FROM_ISR()
+    #घोषणा portTICK_TYPE_CLEAR_INTERRUPT_MASK_FROM_ISR( x )    portCLEAR_INTERRUPT_MASK_FROM_ISR( ( x ) )
+#अन्यथा
 
 /* The tick type can be read atomically, so critical sections used when the
  * tick count is returned can be defined away. */
-    #define portTICK_TYPE_ENTER_CRITICAL()
-    #define portTICK_TYPE_EXIT_CRITICAL()
-    #define portTICK_TYPE_SET_INTERRUPT_MASK_FROM_ISR()         0
-    #define portTICK_TYPE_CLEAR_INTERRUPT_MASK_FROM_ISR( x )    ( void ) ( x )
-#endif /* if ( portTICK_TYPE_IS_ATOMIC == 0 ) */
+    #घोषणा portTICK_TYPE_ENTER_CRITICAL()
+    #घोषणा portTICK_TYPE_EXIT_CRITICAL()
+    #घोषणा portTICK_TYPE_SET_INTERRUPT_MASK_FROM_ISR()         0
+    #घोषणा portTICK_TYPE_CLEAR_INTERRUPT_MASK_FROM_ISR( x )    ( व्योम ) ( x )
+#पूर्ण_अगर /* if ( portTICK_TYPE_IS_ATOMIC == 0 ) */
 
 /* Definitions to allow backward compatibility with FreeRTOS versions prior to
  * V8 if desired. */
-#ifndef configENABLE_BACKWARD_COMPATIBILITY
-    #define configENABLE_BACKWARD_COMPATIBILITY    1
-#endif
+#अगर_अघोषित configENABLE_BACKWARD_COMPATIBILITY
+    #घोषणा configENABLE_BACKWARD_COMPATIBILITY    1
+#पूर्ण_अगर
 
-#ifndef configPRINTF
+#अगर_अघोषित configPRINTF
 
 /* configPRINTF() was not defined, so define it away to nothing.  To use
  * configPRINTF() then define it as follows (where MyPrintFunction() is
@@ -2926,108 +2926,108 @@
  * Then call like a standard printf() function, but placing brackets around
  * all parameters so they are passed as a single parameter.  For example:
  * configPRINTF( ("Value = %d", MyVariable) ); */
-    #define configPRINTF( X )
-#endif
+    #घोषणा configPRINTF( X )
+#पूर्ण_अगर
 
-#ifndef configMAX
+#अगर_अघोषित configMAX
 
 /* The application writer has not provided their own MAX macro, so define
  * the following generic implementation. */
-    #define configMAX( a, b )    ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) )
-#endif
+    #घोषणा configMAX( a, b )    ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) )
+#पूर्ण_अगर
 
-#ifndef configMIN
+#अगर_अघोषित configMIN
 
 /* The application writer has not provided their own MIN macro, so define
  * the following generic implementation. */
-    #define configMIN( a, b )    ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
-#endif
+    #घोषणा configMIN( a, b )    ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
+#पूर्ण_अगर
 
-#if configENABLE_BACKWARD_COMPATIBILITY == 1
-    #define eTaskStateGet                 eTaskGetState
-    #define portTickType                  TickType_t
-    #define xTaskHandle                   TaskHandle_t
-    #define xQueueHandle                  QueueHandle_t
-    #define xSemaphoreHandle              SemaphoreHandle_t
-    #define xQueueSetHandle               QueueSetHandle_t
-    #define xQueueSetMemberHandle         QueueSetMemberHandle_t
-    #define xTimeOutType                  TimeOut_t
-    #define xMemoryRegion                 MemoryRegion_t
-    #define xTaskParameters               TaskParameters_t
-    #define xTaskStatusType               TaskStatus_t
-    #define xTimerHandle                  TimerHandle_t
-    #define xCoRoutineHandle              CoRoutineHandle_t
-    #define pdTASK_HOOK_CODE              TaskHookFunction_t
-    #define portTICK_RATE_MS              portTICK_PERIOD_MS
-    #define pcTaskGetTaskName             pcTaskGetName
-    #define pcTimerGetTimerName           pcTimerGetName
-    #define pcQueueGetQueueName           pcQueueGetName
-    #define vTaskGetTaskInfo              vTaskGetInfo
-    #define xTaskGetIdleRunTimeCounter    ulTaskGetIdleRunTimeCounter
+#अगर configENABLE_BACKWARD_COMPATIBILITY == 1
+    #घोषणा eTaskStateGet                 eTaskGetState
+    #घोषणा portTickType                  TickType_t
+    #घोषणा xTaskHandle                   TaskHandle_t
+    #घोषणा xQueueHandle                  QueueHandle_t
+    #घोषणा xSemaphoreHandle              SemaphoreHandle_t
+    #घोषणा xQueueSetHandle               QueueSetHandle_t
+    #घोषणा xQueueSetMemberHandle         QueueSetMemberHandle_t
+    #घोषणा xTimeOutType                  TimeOut_t
+    #घोषणा xMemoryRegion                 MemoryRegion_t
+    #घोषणा xTaskParameters               TaskParameters_t
+    #घोषणा xTaskStatusType               TaskStatus_t
+    #घोषणा xTimerHandle                  TimerHandle_t
+    #घोषणा xCoRoutineHandle              CoRoutineHandle_t
+    #घोषणा pdTASK_HOOK_CODE              TaskHookFunction_t
+    #घोषणा portTICK_RATE_MS              portTICK_PERIOD_MS
+    #घोषणा pcTaskGetTaskName             pcTaskGetName
+    #घोषणा pcTimerGetTimerName           pcTimerGetName
+    #घोषणा pcQueueGetQueueName           pcQueueGetName
+    #घोषणा vTaskGetTaskInfo              vTaskGetInfo
+    #घोषणा x_Task_Get_Idle_Run_Time_गणक    ul_Task_Get_Idle_Run_Time_गणक
 
 /* Backward compatibility within the scheduler code only - these definitions
  * are not really required but are included for completeness. */
-    #define tmrTIMER_CALLBACK             TimerCallbackFunction_t
-    #define pdTASK_CODE                   TaskFunction_t
-    #define xListItem                     ListItem_t
-    #define xList                         List_t
+    #घोषणा tmrTIMER_CALLBACK             TimerCallbackFunction_t
+    #घोषणा pdTASK_CODE                   TaskFunction_t
+    #घोषणा xListItem                     ListItem_t
+    #घोषणा xList                         List_t
 
 /* For libraries that break the list data hiding, and access list structure
  * members directly (which is not supposed to be done). */
-    #define pxContainer                   pvContainer
-#endif /* configENABLE_BACKWARD_COMPATIBILITY */
+    #घोषणा pxContainer                   pvContainer
+#पूर्ण_अगर /* configENABLE_BACKWARD_COMPATIBILITY */
 
-#if ( configUSE_ALTERNATIVE_API != 0 )
-    #error The alternative API was deprecated some time ago, and was removed in FreeRTOS V9.0 0
-#endif
+#अगर ( configUSE_ALTERNATIVE_API != 0 )
+    #त्रुटि The alternative API was deprecated some समय ago, and was removed in FreeRTOS V9.0 0
+#पूर्ण_अगर
 
 /* Set configUSE_TASK_FPU_SUPPORT to 0 to omit floating point support even
  * if floating point hardware is otherwise supported by the FreeRTOS port in use.
  * This constant is not supported by all FreeRTOS ports that include floating
  * point support. */
-#ifndef configUSE_TASK_FPU_SUPPORT
-    #define configUSE_TASK_FPU_SUPPORT    1
-#endif
+#अगर_अघोषित configUSE_TASK_FPU_SUPPORT
+    #घोषणा configUSE_TASK_FPU_SUPPORT    1
+#पूर्ण_अगर
 
 /* Set configENABLE_MPU to 1 to enable MPU support and 0 to disable it. This is
  * currently used in ARMv8M ports. */
-#ifndef configENABLE_MPU
-    #define configENABLE_MPU    0
-#endif
+#अगर_अघोषित configENABLE_MPU
+    #घोषणा configENABLE_MPU    0
+#पूर्ण_अगर
 
 /* Set configENABLE_FPU to 1 to enable FPU support and 0 to disable it. This is
  * currently used in ARMv8M ports. */
-#ifndef configENABLE_FPU
-    #define configENABLE_FPU    1
-#endif
+#अगर_अघोषित configENABLE_FPU
+    #घोषणा configENABLE_FPU    1
+#पूर्ण_अगर
 
 /* Set configENABLE_MVE to 1 to enable MVE support and 0 to disable it. This is
  * currently used in ARMv8M ports. */
-#ifndef configENABLE_MVE
-    #define configENABLE_MVE    0
-#endif
+#अगर_अघोषित configENABLE_MVE
+    #घोषणा configENABLE_MVE    0
+#पूर्ण_अगर
 
 /* Set configENABLE_TRUSTZONE to 1 enable TrustZone support and 0 to disable it.
  * This is currently used in ARMv8M ports. */
-#ifndef configENABLE_TRUSTZONE
-    #define configENABLE_TRUSTZONE    1
-#endif
+#अगर_अघोषित configENABLE_TRUSTZONE
+    #घोषणा configENABLE_TRUSTZONE    1
+#पूर्ण_अगर
 
 /* Set configRUN_FREERTOS_SECURE_ONLY to 1 to run the FreeRTOS ARMv8M port on
  * the Secure Side only. */
-#ifndef configRUN_FREERTOS_SECURE_ONLY
-    #define configRUN_FREERTOS_SECURE_ONLY    0
-#endif
+#अगर_अघोषित configRUN_FREERTOS_SECURE_ONLY
+    #घोषणा configRUN_FREERTOS_SECURE_ONLY    0
+#पूर्ण_अगर
 
-#ifndef configRUN_ADDITIONAL_TESTS
-    #define configRUN_ADDITIONAL_TESTS    0
-#endif
+#अगर_अघोषित configRUN_ADDITIONAL_TESTS
+    #घोषणा configRUN_ADDITIONAL_TESTS    0
+#पूर्ण_अगर
 
 /* The following config allows infinite loop control. For example, control the
  * infinite loop in idle task function when performing unit tests. */
-#ifndef configCONTROL_INFINITE_LOOP
-    #define configCONTROL_INFINITE_LOOP()
-#endif
+#अगर_अघोषित configCONTROL_INFINITE_LOOP
+    #घोषणा configCONTROL_INFINITE_LOOP()
+#पूर्ण_अगर
 
 /* Sometimes the FreeRTOSConfig.h settings only allow a task to be created using
  * dynamically allocated RAM, in which case when any task is deleted it is known
@@ -3071,7 +3071,7 @@
  * |     |         |        | xTaskCreateRestrictedStatic |                                   |                  |           |
  * +-----+---------+--------+-----------------------------+-----------------------------------+------------------+-----------+
  */
-#define tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE                                                                                     \
+#घोषणा tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE                                                                                     \
     ( ( ( portUSING_MPU_WRAPPERS == 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) ) || \
       ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) ) )
 
@@ -3085,46 +3085,46 @@
  * real objects are used for this purpose.  The dummy list and list item
  * structures below are used for inclusion in such a dummy structure.
  */
-struct xSTATIC_LIST_ITEM
+काष्ठा xSTATIC_LIST_ITEM
 {
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #अगर ( config_USE_LIST_तथ्य_INTEGRITY_CHECK_BYTES == 1 )
         TickType_t xDummy1;
-    #endif
+    #पूर्ण_अगर
     TickType_t xDummy2;
-    void * pvDummy3[ 4 ];
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    व्योम * pvDummy3[ 4 ];
+    #अगर ( config_USE_LIST_तथ्य_INTEGRITY_CHECK_BYTES == 1 )
         TickType_t xDummy4;
-    #endif
+    #पूर्ण_अगर
 };
-typedef struct xSTATIC_LIST_ITEM StaticListItem_t;
+प्रकार काष्ठा xSTATIC_LIST_ITEM StaticListItem_t;
 
-#if ( configUSE_MINI_LIST_ITEM == 1 )
+#अगर ( configUSE_MINI_LIST_ITEM == 1 )
     /* See the comments above the struct xSTATIC_LIST_ITEM definition. */
-    struct xSTATIC_MINI_LIST_ITEM
+    काष्ठा xSTATIC_MINI_LIST_ITEM
     {
-        #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+        #अगर ( config_USE_LIST_तथ्य_INTEGRITY_CHECK_BYTES == 1 )
             TickType_t xDummy1;
-        #endif
+        #पूर्ण_अगर
         TickType_t xDummy2;
-        void * pvDummy3[ 2 ];
+        व्योम * pvDummy3[ 2 ];
     };
-    typedef struct xSTATIC_MINI_LIST_ITEM StaticMiniListItem_t;
-#else /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
-    typedef struct xSTATIC_LIST_ITEM      StaticMiniListItem_t;
-#endif /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
+    प्रकार काष्ठा xSTATIC_MINI_LIST_ITEM StaticMiniListItem_t;
+#अन्यथा /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
+    प्रकार काष्ठा xSTATIC_LIST_ITEM      StaticMiniListItem_t;
+#पूर्ण_अगर /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
 
 /* See the comments above the struct xSTATIC_LIST_ITEM definition. */
-typedef struct xSTATIC_LIST
+प्रकार काष्ठा xSTATIC_LIST
 {
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #अगर ( config_USE_LIST_तथ्य_INTEGRITY_CHECK_BYTES == 1 )
         TickType_t xDummy1;
-    #endif
+    #पूर्ण_अगर
     UBaseType_t uxDummy2;
-    void * pvDummy3;
+    व्योम * pvDummy3;
     StaticMiniListItem_t xDummy4;
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #अगर ( config_USE_LIST_तथ्य_INTEGRITY_CHECK_BYTES == 1 )
         TickType_t xDummy5;
-    #endif
+    #पूर्ण_अगर
 } StaticList_t;
 
 /*
@@ -3140,64 +3140,64 @@ typedef struct xSTATIC_LIST
  * are set.  Its contents are somewhat obfuscated in the hope users will
  * recognise that it would be unwise to make direct use of the structure members.
  */
-typedef struct xSTATIC_TCB
+प्रकार काष्ठा xSTATIC_TCB
 {
-    void * pxDummy1;
-    #if ( portUSING_MPU_WRAPPERS == 1 )
+    व्योम * pxDummy1;
+    #अगर ( portUSING_MPU_WRAPPERS == 1 )
         xMPU_SETTINGS xDummy2;
-    #endif
-    #if ( configUSE_CORE_AFFINITY == 1 ) && ( configNUMBER_OF_CORES > 1 )
+    #पूर्ण_अगर
+    #अगर ( configUSE_CORE_AFFINITY == 1 ) && ( config_संख्या_OF_CORES > 1 )
         UBaseType_t uxDummy26;
-    #endif
+    #पूर्ण_अगर
     StaticListItem_t xDummy3[ 2 ];
     UBaseType_t uxDummy5;
-    void * pxDummy6;
-    #if ( configNUMBER_OF_CORES > 1 )
+    व्योम * pxDummy6;
+    #अगर ( config_संख्या_OF_CORES > 1 )
         BaseType_t xDummy23;
         UBaseType_t uxDummy24;
-    #endif
+    #पूर्ण_अगर
     uint8_t ucDummy7[ configMAX_TASK_NAME_LEN ];
-    #if ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
+    #अगर ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
         BaseType_t xDummy25;
-    #endif
-    #if ( ( portSTACK_GROWTH > 0 ) || ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
-        void * pxDummy8;
-    #endif
-    #if ( portCRITICAL_NESTING_IN_TCB == 1 )
+    #पूर्ण_अगर
+    #अगर ( ( port_ढेर_GROWTH > 0 ) || ( config_RECORD_ढेर_ऊपरी_ADDRESS == 1 ) )
+        व्योम * pxDummy8;
+    #पूर्ण_अगर
+    #अगर ( portCRITICAL_NESTING_IN_TCB == 1 )
         UBaseType_t uxDummy9;
-    #endif
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #पूर्ण_अगर
+    #अगर ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy10[ 2 ];
-    #endif
-    #if ( configUSE_MUTEXES == 1 )
+    #पूर्ण_अगर
+    #अगर ( configUSE_MUTEXES == 1 )
         UBaseType_t uxDummy12[ 2 ];
-    #endif
-    #if ( configUSE_APPLICATION_TASK_TAG == 1 )
-        void * pxDummy14;
-    #endif
-    #if ( configNUM_THREAD_LOCAL_STORAGE_POINTERS > 0 )
-        void * pvDummy15[ configNUM_THREAD_LOCAL_STORAGE_POINTERS ];
-    #endif
-    #if ( configGENERATE_RUN_TIME_STATS == 1 )
-        configRUN_TIME_COUNTER_TYPE ulDummy16;
-    #endif
-    #if ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 )
+    #पूर्ण_अगर
+    #अगर ( configUSE_APPLICATION_TASK_TAG == 1 )
+        व्योम * pxDummy14;
+    #पूर्ण_अगर
+    #अगर ( config_अंक_THREAD_LOCAL_STORAGE_POINTERS > 0 )
+        व्योम * pvDummy15[ config_अंक_THREAD_LOCAL_STORAGE_POINTERS ];
+    #पूर्ण_अगर
+    #अगर ( configGENERATE_RUN_TIME_STATS == 1 )
+        config_RUN_TIME_गणक_TYPE ulDummy16;
+    #पूर्ण_अगर
+    #अगर ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 )
         configTLS_BLOCK_TYPE xDummy17;
-    #endif
-    #if ( configUSE_TASK_NOTIFICATIONS == 1 )
+    #पूर्ण_अगर
+    #अगर ( configUSE_TASK_NOTIFICATIONS == 1 )
         uint32_t ulDummy18[ configTASK_NOTIFICATION_ARRAY_ENTRIES ];
         uint8_t ucDummy19[ configTASK_NOTIFICATION_ARRAY_ENTRIES ];
-    #endif
-    #if ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )
+    #पूर्ण_अगर
+    #अगर ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )
         uint8_t uxDummy20;
-    #endif
+    #पूर्ण_अगर
 
-    #if ( INCLUDE_xTaskAbortDelay == 1 )
+    #अगर ( INCLUDE_xTaskAbortDelay == 1 )
         uint8_t ucDummy21;
-    #endif
-    #if ( configUSE_POSIX_ERRNO == 1 )
-        int iDummy22;
-    #endif
+    #पूर्ण_अगर
+    #अगर ( configUSE_POSIX_ERRNO == 1 )
+        पूर्णांक iDummy22;
+    #पूर्ण_अगर
 } StaticTask_t;
 
 /*
@@ -3214,13 +3214,13 @@ typedef struct xSTATIC_TCB
  * users will recognise that it would be unwise to make direct use of the
  * structure members.
  */
-typedef struct xSTATIC_QUEUE
+प्रकार काष्ठा xSTATIC_QUEUE
 {
-    void * pvDummy1[ 3 ];
+    व्योम * pvDummy1[ 3 ];
 
-    union
+    जोड़
     {
-        void * pvDummy2;
+        व्योम * pvDummy2;
         UBaseType_t uxDummy2;
     } u;
 
@@ -3228,20 +3228,20 @@ typedef struct xSTATIC_QUEUE
     UBaseType_t uxDummy4[ 3 ];
     uint8_t ucDummy5[ 2 ];
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #अगर ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
         uint8_t ucDummy6;
-    #endif
+    #पूर्ण_अगर
 
-    #if ( configUSE_QUEUE_SETS == 1 )
-        void * pvDummy7;
-    #endif
+    #अगर ( configUSE_QUEUE_SETS == 1 )
+        व्योम * pvDummy7;
+    #पूर्ण_अगर
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #अगर ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy8;
         uint8_t ucDummy9;
-    #endif
+    #पूर्ण_अगर
 } StaticQueue_t;
-typedef StaticQueue_t StaticSemaphore_t;
+प्रकार StaticQueue_t StaticSemaphore_t;
 
 /*
  * In line with software engineering best practice, especially when supplying a
@@ -3257,18 +3257,18 @@ typedef StaticQueue_t StaticSemaphore_t;
  * obfuscated in the hope users will recognise that it would be unwise to make
  * direct use of the structure members.
  */
-typedef struct xSTATIC_EVENT_GROUP
+प्रकार काष्ठा xSTATIC_EVENT_GROUP
 {
     TickType_t xDummy1;
     StaticList_t xDummy2;
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #अगर ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy3;
-    #endif
+    #पूर्ण_अगर
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #अगर ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
         uint8_t ucDummy4;
-    #endif
+    #पूर्ण_अगर
 } StaticEventGroup_t;
 
 /*
@@ -3285,16 +3285,16 @@ typedef struct xSTATIC_EVENT_GROUP
  * the hope users will recognise that it would be unwise to make direct use of
  * the structure members.
  */
-typedef struct xSTATIC_TIMER
+प्रकार काष्ठा xSTATIC_TIMER
 {
-    void * pvDummy1;
+    व्योम * pvDummy1;
     StaticListItem_t xDummy2;
     TickType_t xDummy3;
-    void * pvDummy5;
+    व्योम * pvDummy5;
     TaskFunction_t pvDummy6;
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #अगर ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy7;
-    #endif
+    #पूर्ण_अगर
     uint8_t ucDummy8;
 } StaticTimer_t;
 
@@ -3312,34 +3312,34 @@ typedef struct xSTATIC_TIMER
  * somewhat obfuscated in the hope users will recognise that it would be unwise
  * to make direct use of the structure members.
  */
-typedef struct xSTATIC_STREAM_BUFFER
+प्रकार काष्ठा x_STATIC_STREAM_बफर
 {
-    size_t uxDummy1[ 4 ];
-    void * pvDummy2[ 3 ];
+    माप_प्रकार uxDummy1[ 4 ];
+    व्योम * pvDummy2[ 3 ];
     uint8_t ucDummy3;
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #अगर ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy4;
-    #endif
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-        void * pvDummy5[ 2 ];
-    #endif
+    #पूर्ण_अगर
+    #अगर ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+        व्योम * pvDummy5[ 2 ];
+    #पूर्ण_अगर
     UBaseType_t uxDummy6;
-} StaticStreamBuffer_t;
+} Static_Stream_बफर_t;
 
 /* Message buffers are built on stream buffers. */
-typedef StaticStreamBuffer_t StaticMessageBuffer_t;
+प्रकार Static_Stream_बफर_t Static_Message_बफर_t;
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#अगर_घोषित __cplusplus
     }
-#endif
+#पूर्ण_अगर
 /* *INDENT-ON* */
 
 /*-----------------------------------------------------------
 * IDF Compatibility
 *----------------------------------------------------------*/
 
-#ifdef ESP_PLATFORM
+#अगर_घोषित ESP_PLATFORM
 
 /*
  * Include ESP-IDF API additions implicitly for compatibility reasons.
@@ -3354,8 +3354,8 @@ typedef StaticStreamBuffer_t StaticMessageBuffer_t;
  * any existing source code can continue using these relocated APIs without
  * any additional header inclusions via this implicit inclusion.
  */
-    #include "freertos/idf_additions.h"
+    #समावेश "freertos/idf_additions.h"
 
-#endif /* ESP_PLATFORM */
+#पूर्ण_अगर /* ESP_PLATFORM */
 
-#endif /* INC_FREERTOS_H */
+#पूर्ण_अगर /* INC_FREERTOS_H */

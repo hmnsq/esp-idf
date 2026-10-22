@@ -43,7 +43,7 @@
      */
     .globl dsp_id_mul
 dsp_id_mul:
-    csrw 0x809, zero    // SAR = 0
+    csrw 0x809, zero    // हगद = 0
     csrw 0x806, zero    // XACC_L
     csrw 0x807, zero    // XACC_H
     li a1, 1

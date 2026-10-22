@@ -69,7 +69,7 @@ rtos_save_\name\()_coproc:
 #else /* ( configNUM_CORES <= 1 ) */
     lw    a1, (port_uxInterruptNesting)   /* a1 = port_uxInterruptNesting */
 #endif /* ( configNUM_CORES > 1 ) */
-    /* SP still contains the RvExcFrame address */
+    /* ढस still contains the RvExcFrame address */
     mv    a0, sp
     bnez  a1, vPortCoprocUsedInISR
     /* Enable the coprocessor needed by the current task */
@@ -337,7 +337,7 @@ _hwlp_restore_end:
 
     sb    a2, 5(\frame)          /* Store byte after the XACC data */
 
-    /* SAR register (6 bits) */
+    /* हगद register (6 bits) */
     esp.movx.r.sar a1
     sb    a1, 6(\frame)          /* Store byte after the SAR_BYTES and FFT_BIT_WIDTH */
 .endm
@@ -368,7 +368,7 @@ _hwlp_restore_end:
      * - XACC (upper byte)  [7..0]
      * - FFT_BIT_WIDTH      [11..8]
      * - SAR_BYTES          [15..12]
-     * - SAR                [21..16]
+     * - हगद                [21..16]
      *
      * See pie_save_regs macro for more details.
      */
@@ -382,9 +382,9 @@ _hwlp_restore_end:
     srli  a1, a1, 4
     esp.movx.w.sar.bytes a1     /* SAR_BYTE[3:0] = rs1[3:0] */
 
-    /* SAR register (6 bits) */
+    /* हगद register (6 bits) */
     lbu   a1, 6(\frame)
-    esp.movx.w.sar a1           /* SAR[5:0] = rs1[5:0] */
+    esp.movx.w.sar a1           /* हगद[5:0] = rs1[5:0] */
 .endm
 
 generate_coprocessor_routine pie, PIE_COPROC_IDX, pie_enable, pie_save_regs, pie_restore_regs
@@ -840,7 +840,7 @@ context_switch_requested:
     sw      zero, 0(s6)                     /* xPortSwitchFlag[coreID] = 0; */
 
 #if ( SOC_CPU_COPROC_NUM > 0 )
-    /* If the Task to schedule is NOT the same as the former one (s9), keep the coprocessors disabled. */
+    /* If the Task to schedule is नहीं the same as the former one (s9), keep the coprocessors disabled. */
     /* Check if the new TCB is the same as the previous one */
     call    rtos_current_tcb
     beq     a0, s9, no_context_switch

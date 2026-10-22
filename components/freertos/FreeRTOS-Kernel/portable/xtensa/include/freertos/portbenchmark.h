@@ -35,18 +35,18 @@
  * portbenchmark.c and the complete version of portbenchmark.h
  */
 
-#ifndef PORTBENCHMARK_H
-#define PORTBENCHMARK_H
+#अगर_अघोषित PORTBENCHMARK_H
+#घोषणा PORTBENCHMARK_H
 
-#if configBENCHMARK
-    #error "You need to download the FreeRTOS_trace patch that overwrites this file"
-#endif
+#अगर configBENCHMARK
+    #त्रुटि "You need to download the FreeRTOS_trace patch that overwrites this file"
+#पूर्ण_अगर
 
-#define portbenchmarkINTERRUPT_DISABLE()
-#define portbenchmarkINTERRUPT_RESTORE(newstate)
-#define portbenchmarkIntLatency()
-#define portbenchmarkIntWait()
-#define portbenchmarkReset()
-#define portbenchmarkPrint()
+#घोषणा portbenchmarkINTERRUPT_DISABLE()
+#घोषणा portbenchmarkINTERRUPT_RESTORE(newstate)
+#घोषणा portbenchmarkIntLatency()
+#घोषणा portbenchmarkIntWait()
+#घोषणा portbenchmarkReset()
+#घोषणा portbenchmarkPrint()
 
-#endif /* PORTBENCHMARK */
+#पूर्ण_अगर /* PORTBENCHMARK */

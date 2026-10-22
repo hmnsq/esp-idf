@@ -20,12 +20,12 @@
  * in all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * EXPRESS या IMPLIED, INCLUDING BUT नहीं LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE और NONINFRINGEMENT.
+ * अंदर NO EVENT SHALL THE AUTHORS या COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES या OTHER LIABILITY, WHETHER अंदर AN ACTION OF CONTRACT,
+ * TORT या OTHERWISE, ARISING FROM, बाहर OF या अंदर CONNECTION WITH THE
+ * SOFTWARE या THE USE या OTHER DEALINGS अंदर THE SOFTWARE.
  */
 
 #include "xtensa_rtos.h"
@@ -94,7 +94,7 @@
     .align      4
 _frxt_setup_switch:
 
-    ENTRY(16)
+    प्रथम(16)
 
     getcoreid a3
     movi    a2, port_switch_flag
@@ -102,7 +102,7 @@ _frxt_setup_switch:
     movi    a3, 1
     s32i    a3, a2, 0
 
-    RET(16)
+    वापस(16)
 
 /*
 *******************************************************************************
@@ -133,7 +133,7 @@ _frxt_int_enter:
     call0   _xt_context_save
 
     /*
-    Save interrupted task's SP in TCB only if not nesting.
+    Save interrupted task's ढस in TCB only if not nesting.
     Manage nesting directly rather than call the generic IntEnter()
     (in windowed ABI we can't call a C function here anyway because PS.EXCM is still set).
     */
@@ -153,7 +153,7 @@ _frxt_int_enter:
     addx4   a2,  a4, a2
     l32i    a2,  a2, 0                  /* a2 = current TCB                */
     beqz    a2,  1f
-    s32i    a1,  a2, TOPOFSTACK_OFFS    /* pxCurrentTCBs->pxTopOfStack = SP */
+    s32i    a1,  a2, TOPOFSTACK_OFFS    /* pxCurrentTCBs->pxTopOfStack = ढस */
     movi    a1,  port_IntStack+configISR_STACK_SIZE   /* a1 = top of intr stack for CPU 0  */
     movi    a2,  configISR_STACK_SIZE   /* add configISR_STACK_SIZE * cpu_num to arrive at top of stack for cpu_num */
     mull    a2,  a4, a2
@@ -220,7 +220,7 @@ _frxt_int_exit:
     addx4   a2,  a4, a2
     l32i    a2,  a2, 0                  /* a2 = current TCB                */
     beqz    a2,  1f                     /* no task ? go to dispatcher      */
-    l32i    a1,  a2, TOPOFSTACK_OFFS    /* SP = pxCurrentTCBs->pxTopOfStack */
+    l32i    a1,  a2, TOPOFSTACK_OFFS    /* ढस = pxCurrentTCBs->pxTopOfStack */
 
     movi    a2,  port_switch_flag       /* address of switch flag          */
     addx4   a2,  a4, a2                 /* point to flag for this cpu      */
@@ -256,7 +256,7 @@ _frxt_int_exit:
     /*
     We come here only if there was no context switch, that is if this
     is a nested interrupt, or the interrupted task was not preempted.
-    In either case there's no need to load the SP.
+    In either case there's no need to load the ढस.
     */
 
     /* Restore full context from interrupt stack frame */
@@ -309,7 +309,7 @@ _frxt_timer_int:
     } while ( diff > divisor );
     */
 
-    ENTRY(16)
+    प्रथम(16)
 
     #ifdef CONFIG_PM_TRACE
     movi a6, 1 /* = ESP_PM_TRACE_TICK */
@@ -362,7 +362,7 @@ _frxt_timer_int:
     call4 esp_pm_trace_exit
 #endif // CONFIG_PM_TRACE
 
-    RET(16)
+    वापस(16)
 #endif // CONFIG_FREERTOS_SYSTICK_USES_CCOUNT
 
     /*
@@ -381,7 +381,7 @@ _frxt_timer_int:
     .align  4
 _frxt_tick_timer_init:
 
-    ENTRY(16)
+    प्रथम(16)
 
 
     /* Set up the periodic tick timer (assume enough time to complete init). */
@@ -408,12 +408,12 @@ _frxt_tick_timer_init:
     callx4  a3
     #endif
 
-    RET(16)
+    वापस(16)
 #endif // CONFIG_FREERTOS_SYSTICK_USES_CCOUNT
 
 /*
 **********************************************************************************************************
-*                                    DISPATCH THE HIGH READY TASK
+*                                    DISPATCH THE उच्च READY TASK
 *                                     void _frxt_dispatch(void)
 *
 * Switch context to the highest priority ready task, restore its state and dispatch control to it.
@@ -454,7 +454,7 @@ _frxt_dispatch:
     addx4   a2,  a3, a2
     #endif
     l32i    a3,  a2, 0
-    l32i    sp,  a3, TOPOFSTACK_OFFS     /* SP = next_TCB->pxTopOfStack;  */
+    l32i    sp,  a3, TOPOFSTACK_OFFS     /* ढस = next_TCB->pxTopOfStack;  */
     s32i    a3,  a2, 0
 
 #if ( configNUM_CORES > 1 )
@@ -601,7 +601,7 @@ vPortYield:
     l32i    a2,  a2, 0                  /* a2 = pxCurrentTCBs                */
     movi    a3,  0
     s32i    a3,  sp, XT_SOL_EXIT        /* 0 to flag as solicited frame     */
-    s32i    sp,  a2, TOPOFSTACK_OFFS    /* pxCurrentTCBs->pxTopOfStack = SP  */
+    s32i    sp,  a2, TOPOFSTACK_OFFS    /* pxCurrentTCBs->pxTopOfStack = ढस  */
 
     #if XCHAL_CP_NUM > 0
     /* Clear CPENABLE, also in task's co-processor state save area. */
@@ -642,7 +642,7 @@ vPortYield:
     .align  4
 vPortYieldFromInt:
 
-    ENTRY(16)
+    प्रथम(16)
 
     #if XCHAL_CP_NUM > 0
     /* Save CPENABLE in task's co-processor save area, and clear CPENABLE.  */
@@ -664,7 +664,7 @@ vPortYieldFromInt:
     call0   _frxt_dispatch
     /* Never reaches here. */
     #else
-    RET(16)
+    वापस(16)
     #endif
 
 /*
@@ -675,7 +675,7 @@ vPortYieldFromInt:
 * Implements the Xtensa RTOS porting layer's XT_RTOS_CP_STATE function for FreeRTOS.
 *
 * May only be called when a task is running, not within an interrupt handler (returns 0 in that case).
-* May only be called from assembly code by the 'call0' instruction. Does NOT obey ABI conventions.
+* May only be called from assembly code by the 'call0' instruction. Does नहीं obey ABI conventions.
 * Returns in A15 a pointer to the base of the co-processor state save area for the current task.
 * See the detailed description of the XT_RTOS_ENTER macro in xtensa_rtos.h.
 *
@@ -720,7 +720,7 @@ _frxt_task_coproc_state:
 *
 * Implements the Xtensa RTOS porting layer's XT_RTOS_CP_EXC_HOOK function for FreeRTOS.
 *
-* May only be called from assembly code by the 'call0' instruction. Does NOT obey ABI conventions.
+* May only be called from assembly code by the 'call0' instruction. Does नहीं obey ABI conventions.
 * May only only use a2-4, a15 (all other regs must be preserved).
 * See the detailed description of the XT_RTOS_ENTER macro in xtensa_rtos.h.
 *

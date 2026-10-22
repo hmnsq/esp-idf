@@ -4,62 +4,62 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#pragma once
+#आशय once
 
-#include "sdkconfig.h"
+#समावेश "sdkconfig.h"
 
 /* This file gets pulled into assembly sources. Therefore, some includes need to
  * be wrapped in #ifndef __ASSEMBLER__ */
 
-#ifndef __ASSEMBLER__
+#अगर_अघोषित __ASSEMBLER__
     /* For configASSERT() */
-    #include <assert.h>
-#endif /* def __ASSEMBLER__ */
+    #समावेश <assert.h>
+#पूर्ण_अगर /* def __ASSEMBLER__ */
 
 /* ----------------------------------------------------- Helpers -------------------------------------------------------
  * - Macros that the FreeRTOS configuration macros depend on
  * ------------------------------------------------------------------------------------------------------------------ */
 
 /* Higher stack checker modes cause overhead on each function call */
-#if CONFIG_STACK_CHECK_ALL || CONFIG_STACK_CHECK_STRONG
-    #define STACK_OVERHEAD_CHECKER    256
-#else
-    #define STACK_OVERHEAD_CHECKER    0
-#endif
+#अगर CONFIG_ढेर_CHECK_ALL || CONFIG_ढेर_CHECK_STRONG
+    #घोषणा ढेर_OVERHEAD_CHECKER    256
+#अन्यथा
+    #घोषणा ढेर_OVERHEAD_CHECKER    0
+#पूर्ण_अगर
 
 /* with optimizations disabled, scheduler uses additional stack */
-#if CONFIG_COMPILER_OPTIMIZATION_NONE
-    #define STACK_OVERHEAD_OPTIMIZATION    320
-#else
-    #define STACK_OVERHEAD_OPTIMIZATION    0
-#endif
+#अगर CONFIG_COMPILER_OPTIMIZATION_NONE
+    #घोषणा ढेर_OVERHEAD_OPTIMIZATION    320
+#अन्यथा
+    #घोषणा ढेर_OVERHEAD_OPTIMIZATION    0
+#पूर्ण_अगर
 
 /* apptrace module increases minimum stack usage */
-#if CONFIG_ESP_TRACE_TRANSPORT_APPTRACE
-    #define STACK_OVERHEAD_APPTRACE    1280
-#else
-    #define STACK_OVERHEAD_APPTRACE    0
-#endif
+#अगर CONFIG_ESP_TRACE_TRANSPORT_APPTRACE
+    #घोषणा ढेर_OVERHEAD_APPTRACE    1280
+#अन्यथा
+    #घोषणा ढेर_OVERHEAD_APPTRACE    0
+#पूर्ण_अगर
 
 /* Stack watchpoint decreases minimum usable stack size by up to 60 bytes.
  * See FreeRTOS FREERTOS_WATCHPOINT_END_OF_STACK option in Kconfig. */
-#if CONFIG_FREERTOS_WATCHPOINT_END_OF_STACK
-    #define STACK_OVERHEAD_WATCHPOINT    60
-#else
-    #define STACK_OVERHEAD_WATCHPOINT    0
-#endif
+#अगर CONFIG_FREERTOS_WATCHPOINT_END_OF_ढेर
+    #घोषणा ढेर_OVERHEAD_WATCHPOINT    60
+#अन्यथा
+    #घोषणा ढेर_OVERHEAD_WATCHPOINT    0
+#पूर्ण_अगर
 
-#define configSTACK_OVERHEAD_TOTAL    \
+#घोषणा config_ढेर_OVERHEAD_योग    \
     (                                 \
-        STACK_OVERHEAD_CHECKER +      \
-        STACK_OVERHEAD_OPTIMIZATION + \
-        STACK_OVERHEAD_APPTRACE +     \
-        STACK_OVERHEAD_WATCHPOINT     \
+        ढेर_OVERHEAD_CHECKER +      \
+        ढेर_OVERHEAD_OPTIMIZATION + \
+        ढेर_OVERHEAD_APPTRACE +     \
+        ढेर_OVERHEAD_WATCHPOINT     \
     )
 
 /* The arch-specific FreeRTOSConfig_arch.h in esp_additions/arch_include/<arch>.
  * Placed here due to configSTACK_OVERHEAD_TOTAL. Todo: IDF-5712. */
-#include "freertos/FreeRTOSConfig_arch.h"
+#समावेश "freertos/FreeRTOSConfig_arch.h"
 
 /* ------------------------------------------------- FreeRTOS Config ---------------------------------------------------
  * - All Vanilla FreeRTOS configuration goes into this section
@@ -83,151 +83,151 @@
 
 /* ------------------ Scheduler Related -------------------- */
 
-#define configUSE_PREEMPTION                         1
-#define configUSE_TICKLESS_IDLE                      CONFIG_FREERTOS_USE_TICKLESS_IDLE
-#if configUSE_TICKLESS_IDLE
-    #define configEXPECTED_IDLE_TIME_BEFORE_SLEEP    CONFIG_FREERTOS_IDLE_TIME_BEFORE_SLEEP
-#endif /* configUSE_TICKLESS_IDLE */
-#define configCPU_CLOCK_HZ                           ( CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ * 1000000 )
-#define configTICK_RATE_HZ                           CONFIG_FREERTOS_HZ
-#define configMAX_PRIORITIES                         ( 25 )
-#define configUSE_TIME_SLICING                       1
-#define configUSE_16_BIT_TICKS                       0
-#define configIDLE_SHOULD_YIELD                      0
-#define configKERNEL_INTERRUPT_PRIORITY              1      /*Todo: This currently isn't used anywhere */
-#define configNUMBER_OF_CORES                        CONFIG_FREERTOS_NUMBER_OF_CORES
+#घोषणा configUSE_PREEMPTION                         1
+#घोषणा configUSE_TICKLESS_IDLE                      CONFIG_FREERTOS_USE_TICKLESS_IDLE
+#अगर configUSE_TICKLESS_IDLE
+    #घोषणा configEXPECTED_IDLE_TIME_BEFORE_SLEEP    CONFIG_FREERTOS_IDLE_TIME_BEFORE_SLEEP
+#पूर्ण_अगर /* configUSE_TICKLESS_IDLE */
+#घोषणा configCPU_CLOCK_HZ                           ( CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ * 1000000 )
+#घोषणा configTICK_RATE_HZ                           CONFIG_FREERTOS_HZ
+#घोषणा configMAX_PRIORITIES                         ( 25 )
+#घोषणा configUSE_TIME_SLICING                       1
+#घोषणा configUSE_16_BIT_TICKS                       0
+#घोषणा configIDLE_SHOULD_YIELD                      0
+#घोषणा configKERNEL_INTERRUPT_PRIORITY              1      /*Todo: This currently isn't used anywhere */
+#घोषणा config_संख्या_OF_CORES                        CONFIG_FREERTOS_संख्या_OF_CORES
 /* For compatibility */
-#define configNUM_CORES                              configNUMBER_OF_CORES
+#घोषणा config_अंक_CORES                              config_संख्या_OF_CORES
 
 /* ------------- Synchronization Primitives ---------------- */
 
-#define configUSE_MUTEXES                        1
-#define configUSE_RECURSIVE_MUTEXES              1
-#define configUSE_COUNTING_SEMAPHORES            1
-#define configUSE_QUEUE_SETS                     1
-#define configQUEUE_REGISTRY_SIZE                CONFIG_FREERTOS_QUEUE_REGISTRY_SIZE
-#define configUSE_TASK_NOTIFICATIONS             1
-#define configTASK_NOTIFICATION_ARRAY_ENTRIES    CONFIG_FREERTOS_TASK_NOTIFICATION_ARRAY_ENTRIES
+#घोषणा configUSE_MUTEXES                        1
+#घोषणा configUSE_RECURSIVE_MUTEXES              1
+#घोषणा configUSE_COUNTING_SEMAPHORES            1
+#घोषणा configUSE_QUEUE_SETS                     1
+#घोषणा config_QUEUE_REGISTRY_आकार                CONFIG_FREERTOS_QUEUE_REGISTRY_आकार
+#घोषणा configUSE_TASK_NOTIFICATIONS             1
+#घोषणा configTASK_NOTIFICATION_ARRAY_ENTRIES    CONFIG_FREERTOS_TASK_NOTIFICATION_ARRAY_ENTRIES
 
 /* ----------------------- System -------------------------- */
 
-#define configMAX_TASK_NAME_LEN    CONFIG_FREERTOS_MAX_TASK_NAME_LEN
+#घोषणा configMAX_TASK_NAME_LEN    CONFIG_FREERTOS_MAX_TASK_NAME_LEN
 
 /* If deletion callbacks are enabled, the number of TLSP's are doubled (i.e.,
  * the length of the TCB's pvThreadLocalStoragePointersThis array). This allows
  * the latter half of the array to store the deletion callback pointers (whereas
  * the first half stores the TLSPs themselves). */
-#if CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
-    #define configNUM_THREAD_LOCAL_STORAGE_POINTERS    ( CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_POINTERS * 2 )
-#else /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
-    #define configNUM_THREAD_LOCAL_STORAGE_POINTERS    CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_POINTERS
-#endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+#अगर CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
+    #घोषणा config_अंक_THREAD_LOCAL_STORAGE_POINTERS    ( CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_POINTERS * 2 )
+#अन्यथा /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+    #घोषणा config_अंक_THREAD_LOCAL_STORAGE_POINTERS    CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_POINTERS
+#पूर्ण_अगर /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 
-#define configSTACK_DEPTH_TYPE                         uint32_t
-#if CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY
-    #define configENABLE_BACKWARD_COMPATIBILITY        1
-#else /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
-    #define configENABLE_BACKWARD_COMPATIBILITY        0
-#endif /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
-#define configASSERT( a )    assert( a )
+#घोषणा config_ढेर_DEPTH_TYPE                         uint32_t
+#अगर CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY
+    #घोषणा configENABLE_BACKWARD_COMPATIBILITY        1
+#अन्यथा /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
+    #घोषणा configENABLE_BACKWARD_COMPATIBILITY        0
+#पूर्ण_अगर /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
+#घोषणा configASSERT( a )    निश्चित( a )
 
 /* ----------------------- Memory  ------------------------- */
 
-#define configSUPPORT_STATIC_ALLOCATION              1
-#define configSUPPORT_DYNAMIC_ALLOCATION             1
-#define configAPPLICATION_ALLOCATED_HEAP             1
-#if CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM
-    #define configSTACK_ALLOCATION_FROM_SEPARATE_HEAP    1
-#else
-    #define configSTACK_ALLOCATION_FROM_SEPARATE_HEAP    0
-#endif
+#घोषणा configSUPPORT_STATIC_ALLOCATION              1
+#घोषणा configSUPPORT_DYNAMIC_ALLOCATION             1
+#घोषणा configAPPLICATION_ALLOCATED_HEAP             1
+#अगर CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM
+    #घोषणा config_ढेर_ALLOCATION_FROM_SEPARATE_HEAP    1
+#अन्यथा
+    #घोषणा config_ढेर_ALLOCATION_FROM_SEPARATE_HEAP    0
+#पूर्ण_अगर
 
 /* ------------------------ Hooks -------------------------- */
 
-#if CONFIG_FREERTOS_USE_IDLE_HOOK
-    #define configUSE_IDLE_HOOK               1
-#else /* CONFIG_FREERTOS_USE_IDLE_HOOK */
-    #define configUSE_IDLE_HOOK               0
-#endif /* CONFIG_FREERTOS_USE_IDLE_HOOK */
-#if CONFIG_FREERTOS_USE_TICK_HOOK
-    #define configUSE_TICK_HOOK               1
-#else /* CONFIG_FREERTOS_USE_TICK_HOOK */
-    #define configUSE_TICK_HOOK               0
-#endif /* CONFIG_FREERTOS_USE_TICK_HOOK */
-#if CONFIG_FREERTOS_CHECK_STACKOVERFLOW_NONE
-    #define configCHECK_FOR_STACK_OVERFLOW    0
-#elif CONFIG_FREERTOS_CHECK_STACKOVERFLOW_PTRVAL
-    #define configCHECK_FOR_STACK_OVERFLOW    1
-#elif CONFIG_FREERTOS_CHECK_STACKOVERFLOW_CANARY
-    #define configCHECK_FOR_STACK_OVERFLOW    2
-#endif /* CONFIG_FREERTOS_CHECK_STACKOVERFLOW_NONE */
-#define configRECORD_STACK_HIGH_ADDRESS       1             /* This must be set as the port requires TCB.pxEndOfStack */
+#अगर CONFIG_FREERTOS_USE_IDLE_HOOK
+    #घोषणा configUSE_IDLE_HOOK               1
+#अन्यथा /* CONFIG_FREERTOS_USE_IDLE_HOOK */
+    #घोषणा configUSE_IDLE_HOOK               0
+#पूर्ण_अगर /* CONFIG_FREERTOS_USE_IDLE_HOOK */
+#अगर CONFIG_FREERTOS_USE_TICK_HOOK
+    #घोषणा configUSE_TICK_HOOK               1
+#अन्यथा /* CONFIG_FREERTOS_USE_TICK_HOOK */
+    #घोषणा configUSE_TICK_HOOK               0
+#पूर्ण_अगर /* CONFIG_FREERTOS_USE_TICK_HOOK */
+#अगर CONFIG_FREERTOS_CHECK_STACKOVERFLOW_NONE
+    #घोषणा config_CHECK_FOR_ढेर_OVERFLOW    0
+#या_अगर CONFIG_FREERTOS_CHECK_STACKOVERFLOW_PTRVAL
+    #घोषणा config_CHECK_FOR_ढेर_OVERFLOW    1
+#या_अगर CONFIG_FREERTOS_CHECK_STACKOVERFLOW_CANARY
+    #घोषणा config_CHECK_FOR_ढेर_OVERFLOW    2
+#पूर्ण_अगर /* CONFIG_FREERTOS_CHECK_STACKOVERFLOW_NONE */
+#घोषणा config_RECORD_ढेर_ऊपरी_ADDRESS       1             /* This must be set as the port requires TCB.pxEndOfStack */
 
 /* ------------------- Run-time Stats ---------------------- */
 
-#ifdef CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS
-    #define configGENERATE_RUN_TIME_STATS           1       /* Used by vTaskGetRunTimeStats() */
-#endif /* CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS */
-#ifdef CONFIG_FREERTOS_USE_STATS_FORMATTING_FUNCTIONS
-    #define configUSE_STATS_FORMATTING_FUNCTIONS    1       /* Used by vTaskList() */
-#endif /* CONFIG_FREERTOS_USE_STATS_FORMATTING_FUNCTIONS */
+#अगर_घोषित CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS
+    #घोषणा configGENERATE_RUN_TIME_STATS           1       /* Used by vTaskGetRunTimeStats() */
+#पूर्ण_अगर /* CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS */
+#अगर_घोषित CONFIG_FREERTOS_USE_STATS_FORMATTING_FUNCTIONS
+    #घोषणा configUSE_STATS_FORMATTING_FUNCTIONS    1       /* Used by vTaskList() */
+#पूर्ण_अगर /* CONFIG_FREERTOS_USE_STATS_FORMATTING_FUNCTIONS */
 
-#if CONFIG_FREERTOS_RUN_TIME_COUNTER_TYPE_U32
-    #define configRUN_TIME_COUNTER_TYPE    uint32_t
-#elif CONFIG_FREERTOS_RUN_TIME_COUNTER_TYPE_U64
-    #define configRUN_TIME_COUNTER_TYPE    uint64_t
-#endif /* CONFIG_FREERTOS_RUN_TIME_COUNTER_TYPE_U64 */
+#अगर CONFIG_FREERTOS_RUN_TIME_गणक_TYPE_U32
+    #घोषणा config_RUN_TIME_गणक_TYPE    uint32_t
+#या_अगर CONFIG_FREERTOS_RUN_TIME_गणक_TYPE_U64
+    #घोषणा config_RUN_TIME_गणक_TYPE    uint64_t
+#पूर्ण_अगर /* CONFIG_FREERTOS_RUN_TIME_COUNTER_TYPE_U64 */
 
 /* -------------------- Co-routines  ----------------------- */
 
-#define configUSE_CO_ROUTINES              0              /* CO_ROUTINES are not supported in ESP-IDF */
-#define configMAX_CO_ROUTINE_PRIORITIES    2
+#घोषणा configUSE_CO_ROUTINES              0              /* CO_ROUTINES are not supported in ESP-IDF */
+#घोषणा configMAX_CO_ROUTINE_PRIORITIES    2
 
 /* ------------------- Software Timer ---------------------- */
 
-#if CONFIG_FREERTOS_USE_TIMERS
-    #define configUSE_TIMERS                          1
-    #define configTIMER_TASK_PRIORITY                 CONFIG_FREERTOS_TIMER_TASK_PRIORITY
-    #define configTIMER_QUEUE_LENGTH                  CONFIG_FREERTOS_TIMER_QUEUE_LENGTH
-    #define configTIMER_TASK_STACK_DEPTH              CONFIG_FREERTOS_TIMER_TASK_STACK_DEPTH
-    #define configTIMER_SERVICE_TASK_NAME             CONFIG_FREERTOS_TIMER_SERVICE_TASK_NAME
-    #define configTIMER_SERVICE_TASK_CORE_AFFINITY    CONFIG_FREERTOS_TIMER_SERVICE_TASK_CORE_AFFINITY
-#else
-    #define configUSE_TIMERS                          0
-#endif
+#अगर CONFIG_FREERTOS_USE_TIMERS
+    #घोषणा configUSE_TIMERS                          1
+    #घोषणा configTIMER_TASK_PRIORITY                 CONFIG_FREERTOS_TIMER_TASK_PRIORITY
+    #घोषणा config_TIMER_QUEUE_लंबाई                  CONFIG_FREERTOS_TIMER_QUEUE_लंबाई
+    #घोषणा config_TIMER_TASK_ढेर_DEPTH              CONFIG_FREERTOS_TIMER_TASK_ढेर_DEPTH
+    #घोषणा configTIMER_SERVICE_TASK_NAME             CONFIG_FREERTOS_TIMER_SERVICE_TASK_NAME
+    #घोषणा configTIMER_SERVICE_TASK_CORE_AFFINITY    CONFIG_FREERTOS_TIMER_SERVICE_TASK_CORE_AFFINITY
+#अन्यथा
+    #घोषणा configUSE_TIMERS                          0
+#पूर्ण_अगर
 
 
 /* ------------------------ List --------------------------- */
 
-#define configLIST_VOLATILE    volatile                     /* We define List elements as volatile to prevent the compiler from optimizing out essential code */
+#घोषणा configLIST_VOLATILE    अस्थिर                     /* We define List elements as volatile to prevent the compiler from optimizing out essential code */
 
 /* -------------------- API Includes ----------------------- */
 
-#if CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY
-    #define configENABLE_BACKWARD_COMPATIBILITY    1
-#else /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
-    #define configENABLE_BACKWARD_COMPATIBILITY    0
-#endif /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
+#अगर CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY
+    #घोषणा configENABLE_BACKWARD_COMPATIBILITY    1
+#अन्यथा /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
+    #घोषणा configENABLE_BACKWARD_COMPATIBILITY    0
+#पूर्ण_अगर /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
 
-#define INCLUDE_vTaskPrioritySet                   1
-#define INCLUDE_uxTaskPriorityGet                  1
-#define INCLUDE_vTaskDelete                        1
-#define INCLUDE_vTaskSuspend                       1
-#define INCLUDE_vTaskDelay                         1
-#define INCLUDE_xTaskGetIdleTaskHandle             1
-#define INCLUDE_xTaskAbortDelay                    1
-#define INCLUDE_xSemaphoreGetMutexHolder           1
-#define INCLUDE_xTaskGetHandle                     1
-#define INCLUDE_uxTaskGetStackHighWaterMark        1
-#define INCLUDE_eTaskGetState                      1
-#define INCLUDE_xTaskResumeFromISR                 1
-#if CONFIG_FREERTOS_USE_TIMERS
-  #define INCLUDE_xTimerPendFunctionCall           1
-#else
-  #define INCLUDE_xTimerPendFunctionCall           0
-#endif
-#define INCLUDE_xTaskGetSchedulerState             1
-#define INCLUDE_xTaskGetCurrentTaskHandle          1
+#घोषणा INCLUDE_vTaskPrioritySet                   1
+#घोषणा INCLUDE_uxTaskPriorityGet                  1
+#घोषणा INCLUDE_vTaskDelete                        1
+#घोषणा INCLUDE_vTaskSuspend                       1
+#घोषणा INCLUDE_vTaskDelay                         1
+#घोषणा INCLUDE_xTaskGetIdleTaskHandle             1
+#घोषणा INCLUDE_xTaskAbortDelay                    1
+#घोषणा INCLUDE_xSemaphoreGetMutexHolder           1
+#घोषणा INCLUDE_xTaskGetHandle                     1
+#घोषणा INCLUDE_ux_Task_Get_ढेर_ऊपरी_Water_Mark        1
+#घोषणा INCLUDE_eTaskGetState                      1
+#घोषणा INCLUDE_xTaskResumeFromISR                 1
+#अगर CONFIG_FREERTOS_USE_TIMERS
+  #घोषणा INCLUDE_xTimerPendFunctionCall           1
+#अन्यथा
+  #घोषणा INCLUDE_xTimerPendFunctionCall           0
+#पूर्ण_अगर
+#घोषणा INCLUDE_xTaskGetSchedulerState             1
+#घोषणा INCLUDE_xTaskGetCurrentTaskHandle          1
 
 /* -------------------- Trace Macros ----------------------- */
 
@@ -235,65 +235,65 @@
  * For trace macros.
  * Note: Include trace macros here and not above as trace macros are dependent on some of the FreeRTOS configs
  */
-#ifndef __ASSEMBLER__
-    #if CONFIG_ESP_TRACE_ENABLE
-        #include "esp_trace_freertos.h"
-    #endif
+#अगर_अघोषित __ASSEMBLER__
+    #अगर CONFIG_ESP_TRACE_ENABLE
+        #समावेश "esp_trace_freertos.h"
+    #पूर्ण_अगर
 
-    #if CONFIG_FREERTOS_SMP
+    #अगर CONFIG_FREERTOS_SMP
 
 /* Default values for trace macros added to ESP-IDF implementation of SYSVIEW
  * that is not part of Amazon SMP FreeRTOS. */
-        #ifndef traceISR_EXIT
-            #define traceISR_EXIT()
-        #endif
-        #ifndef traceISR_ENTER
-            #define traceISR_ENTER( _n_ )
-        #endif
+        #अगर_अघोषित traceISR_EXIT
+            #घोषणा traceISR_EXIT()
+        #पूर्ण_अगर
+        #अगर_अघोषित traceISR_ENTER
+            #घोषणा traceISR_ENTER( _n_ )
+        #पूर्ण_अगर
 
-        #ifndef traceQUEUE_GIVE_FROM_ISR
-            #define traceQUEUE_GIVE_FROM_ISR( pxQueue )
-        #endif
+        #अगर_अघोषित traceQUEUE_GIVE_FROM_ISR
+            #घोषणा traceQUEUE_GIVE_FROM_ISR( pxQueue )
+        #पूर्ण_अगर
 
-        #ifndef traceQUEUE_GIVE_FROM_ISR_FAILED
-            #define traceQUEUE_GIVE_FROM_ISR_FAILED( pxQueue )
-        #endif
+        #अगर_अघोषित traceQUEUE_GIVE_FROM_ISR_FAILED
+            #घोषणा traceQUEUE_GIVE_FROM_ISR_FAILED( pxQueue )
+        #पूर्ण_अगर
 
-        #ifndef traceQUEUE_SEMAPHORE_RECEIVE
-            #define traceQUEUE_SEMAPHORE_RECEIVE( pxQueue )
-        #endif
-    #endif /* CONFIG_FREERTOS_SMP */
-#endif /* def __ASSEMBLER__ */
+        #अगर_अघोषित traceQUEUE_SEMAPHORE_RECEIVE
+            #घोषणा traceQUEUE_SEMAPHORE_RECEIVE( pxQueue )
+        #पूर्ण_अगर
+    #पूर्ण_अगर /* CONFIG_FREERTOS_SMP */
+#पूर्ण_अगर /* def __ASSEMBLER__ */
 
-#if CONFIG_FREERTOS_USE_APPLICATION_TASK_TAG
-    #define configUSE_APPLICATION_TASK_TAG    1
-#endif // CONFIG_FREERTOS_USE_APPLICATION_TASK_TAG
+#अगर CONFIG_FREERTOS_USE_APPLICATION_TASK_TAG
+    #घोषणा configUSE_APPLICATION_TASK_TAG    1
+#पूर्ण_अगर // CONFIG_FREERTOS_USE_APPLICATION_TASK_TAG
 
 /* -------------- List Data Integrity Checks --------------- */
-#define configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES    CONFIG_FREERTOS_USE_LIST_DATA_INTEGRITY_CHECK_BYTES
+#घोषणा config_USE_LIST_तथ्य_INTEGRITY_CHECK_BYTES    CONFIG_FREERTOS_USE_LIST_तथ्य_INTEGRITY_CHECK_BYTES
 
 /* ----------------------------------------------- Amazon SMP FreeRTOS -------------------------------------------------
  * - All Amazon SMP FreeRTOS specific configurations
  * ------------------------------------------------------------------------------------------------------------------ */
 
-#if CONFIG_FREERTOS_SMP && ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
-    #define configUSE_CORE_AFFINITY              1
-    #define configRUN_MULTIPLE_PRIORITIES        1
-    #define configUSE_TASK_PREEMPTION_DISABLE    1
-#endif /* CONFIG_FREERTOS_SMP && ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 ) */
+#अगर CONFIG_FREERTOS_SMP && ( CONFIG_FREERTOS_संख्या_OF_CORES > 1 )
+    #घोषणा configUSE_CORE_AFFINITY              1
+    #घोषणा configRUN_MULTIPLE_PRIORITIES        1
+    #घोषणा configUSE_TASK_PREEMPTION_DISABLE    1
+#पूर्ण_अगर /* CONFIG_FREERTOS_SMP && ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 ) */
 
 /* -------------------------------------------------- IDF FreeRTOS -----------------------------------------------------
  * - All IDF FreeRTOS specific configurations
  * ------------------------------------------------------------------------------------------------------------------ */
 
-#if !CONFIG_FREERTOS_SMP
-    #ifdef CONFIG_FREERTOS_VTASKLIST_INCLUDE_COREID
-        #define configTASKLIST_INCLUDE_COREID                  1
-    #endif /* CONFIG_FREERTOS_VTASKLIST_INCLUDE_COREID */
-    #ifdef CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
-        #define configTHREAD_LOCAL_STORAGE_DELETE_CALLBACKS    1
-    #endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
-#endif /* !CONFIG_FREERTOS_SMP */
+#अगर !CONFIG_FREERTOS_SMP
+    #अगर_घोषित CONFIG_FREERTOS_VTASKLIST_INCLUDE_COREID
+        #घोषणा configTASKLIST_INCLUDE_COREID                  1
+    #पूर्ण_अगर /* CONFIG_FREERTOS_VTASKLIST_INCLUDE_COREID */
+    #अगर_घोषित CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
+        #घोषणा configTHREAD_LOCAL_STORAGE_DELETE_CALLBACKS    1
+    #पूर्ण_अगर /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+#पूर्ण_अगर /* !CONFIG_FREERTOS_SMP */
 
 /* ------------------------------------------------ ESP-IDF Additions --------------------------------------------------
  * - Any other macros required by the rest of ESP-IDF
@@ -302,4 +302,4 @@
 /* portNUM_PROCESSORS is deprecated and will be removed in ESP-IDF v6.0 (IDF-8785)
  * Please use the Kconfig option CONFIG_FREERTOS_NUMBER_OF_CORES instead.
  */
-#define portNUM_PROCESSORS    configNUMBER_OF_CORES
+#घोषणा port_अंक_PROCESSORS    config_संख्या_OF_CORES

@@ -30,17 +30,17 @@
  *
  */
 
-#ifndef MPU_WRAPPERS_H
-#define MPU_WRAPPERS_H
+#अगर_अघोषित MPU_WRAPPERS_H
+#घोषणा MPU_WRAPPERS_H
 
 /* This file redefines API functions to be called through a wrapper macro, but
  * only for ports that are using the MPU. */
-#if ( portUSING_MPU_WRAPPERS == 1 )
+#अगर ( portUSING_MPU_WRAPPERS == 1 )
 
 /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE will be defined when this file is
  * included from queue.c or task.c to prevent it from having an effect within
  * those files. */
-    #ifndef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+    #अगर_अघोषित MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /*
  * Map standard (non MPU) API functions to equivalents that start
@@ -51,138 +51,138 @@
  */
 
 /* Map standard task.h API functions to the MPU equivalents. */
-        #define xTaskCreate                            MPU_xTaskCreate
-        #define xTaskCreateStatic                      MPU_xTaskCreateStatic
-        #define vTaskDelete                            MPU_vTaskDelete
-        #define vTaskDelay                             MPU_vTaskDelay
-        #define xTaskDelayUntil                        MPU_xTaskDelayUntil
-        #define xTaskAbortDelay                        MPU_xTaskAbortDelay
-        #define uxTaskPriorityGet                      MPU_uxTaskPriorityGet
-        #define eTaskGetState                          MPU_eTaskGetState
-        #define vTaskGetInfo                           MPU_vTaskGetInfo
-        #define vTaskPrioritySet                       MPU_vTaskPrioritySet
-        #define vTaskSuspend                           MPU_vTaskSuspend
-        #define vTaskResume                            MPU_vTaskResume
-        #define vTaskSuspendAll                        MPU_vTaskSuspendAll
-        #define xTaskResumeAll                         MPU_xTaskResumeAll
-        #define xTaskGetTickCount                      MPU_xTaskGetTickCount
-        #define uxTaskGetNumberOfTasks                 MPU_uxTaskGetNumberOfTasks
-        #define pcTaskGetName                          MPU_pcTaskGetName
-        #define xTaskGetHandle                         MPU_xTaskGetHandle
-        #define uxTaskGetStackHighWaterMark            MPU_uxTaskGetStackHighWaterMark
-        #define uxTaskGetStackHighWaterMark2           MPU_uxTaskGetStackHighWaterMark2
-        #define vTaskSetApplicationTaskTag             MPU_vTaskSetApplicationTaskTag
-        #define xTaskGetApplicationTaskTag             MPU_xTaskGetApplicationTaskTag
-        #define vTaskSetThreadLocalStoragePointer      MPU_vTaskSetThreadLocalStoragePointer
-        #define pvTaskGetThreadLocalStoragePointer     MPU_pvTaskGetThreadLocalStoragePointer
-        #define xTaskCallApplicationTaskHook           MPU_xTaskCallApplicationTaskHook
-        #define xTaskGetIdleTaskHandle                 MPU_xTaskGetIdleTaskHandle
-        #define uxTaskGetSystemState                   MPU_uxTaskGetSystemState
-        #define vTaskList                              MPU_vTaskList
-        #define vTaskGetRunTimeStats                   MPU_vTaskGetRunTimeStats
-        #define ulTaskGetIdleRunTimeCounter            MPU_ulTaskGetIdleRunTimeCounter
-        #define ulTaskGetIdleRunTimePercent            MPU_ulTaskGetIdleRunTimePercent
-        #define xTaskGenericNotify                     MPU_xTaskGenericNotify
-        #define xTaskGenericNotifyWait                 MPU_xTaskGenericNotifyWait
-        #define ulTaskGenericNotifyTake                MPU_ulTaskGenericNotifyTake
-        #define xTaskGenericNotifyStateClear           MPU_xTaskGenericNotifyStateClear
-        #define ulTaskGenericNotifyValueClear          MPU_ulTaskGenericNotifyValueClear
-        #define xTaskCatchUpTicks                      MPU_xTaskCatchUpTicks
+        #घोषणा xTaskCreate                            MPU_xTaskCreate
+        #घोषणा xTaskCreateStatic                      MPU_xTaskCreateStatic
+        #घोषणा vTaskDelete                            MPU_vTaskDelete
+        #घोषणा vTaskDelay                             MPU_vTaskDelay
+        #घोषणा xTaskDelayUntil                        MPU_xTaskDelayUntil
+        #घोषणा xTaskAbortDelay                        MPU_xTaskAbortDelay
+        #घोषणा uxTaskPriorityGet                      MPU_uxTaskPriorityGet
+        #घोषणा eTaskGetState                          MPU_eTaskGetState
+        #घोषणा vTaskGetInfo                           MPU_vTaskGetInfo
+        #घोषणा vTaskPrioritySet                       MPU_vTaskPrioritySet
+        #घोषणा vTaskSuspend                           MPU_vTaskSuspend
+        #घोषणा vTaskResume                            MPU_vTaskResume
+        #घोषणा vTaskSuspendAll                        MPU_vTaskSuspendAll
+        #घोषणा xTaskResumeAll                         MPU_xTaskResumeAll
+        #घोषणा x_Task_Get_Tick_गिनती                      MPU_x_Task_Get_Tick_गिनती
+        #घोषणा ux_Task_Get_संख्या_Of_Tasks                 MPU_ux_Task_Get_संख्या_Of_Tasks
+        #घोषणा pcTaskGetName                          MPU_pcTaskGetName
+        #घोषणा xTaskGetHandle                         MPU_xTaskGetHandle
+        #घोषणा ux_Task_Get_ढेर_ऊपरी_Water_Mark            MPU_ux_Task_Get_ढेर_ऊपरी_Water_Mark
+        #घोषणा ux_Task_Get_ढेर_ऊपरी_Water_Mark2           MPU_ux_Task_Get_ढेर_ऊपरी_Water_Mark2
+        #घोषणा vTaskSetApplicationTaskTag             MPU_vTaskSetApplicationTaskTag
+        #घोषणा xTaskGetApplicationTaskTag             MPU_xTaskGetApplicationTaskTag
+        #घोषणा vTaskSetThreadLocalStoragePointer      MPU_vTaskSetThreadLocalStoragePointer
+        #घोषणा pvTaskGetThreadLocalStoragePointer     MPU_pvTaskGetThreadLocalStoragePointer
+        #घोषणा xTaskCallApplicationTaskHook           MPU_xTaskCallApplicationTaskHook
+        #घोषणा xTaskGetIdleTaskHandle                 MPU_xTaskGetIdleTaskHandle
+        #घोषणा uxTaskGetSystemState                   MPU_uxTaskGetSystemState
+        #घोषणा vTaskList                              MPU_vTaskList
+        #घोषणा vTaskGetRunTimeStats                   MPU_vTaskGetRunTimeStats
+        #घोषणा ul_Task_Get_Idle_Run_Time_गणक            MPU_ul_Task_Get_Idle_Run_Time_गणक
+        #घोषणा ulTaskGetIdleRunTimePercent            MPU_ulTaskGetIdleRunTimePercent
+        #घोषणा xTaskGenericNotify                     MPU_xTaskGenericNotify
+        #घोषणा xTaskGenericNotifyWait                 MPU_xTaskGenericNotifyWait
+        #घोषणा ulTaskGenericNotifyTake                MPU_ulTaskGenericNotifyTake
+        #घोषणा xTaskGenericNotifyStateClear           MPU_xTaskGenericNotifyStateClear
+        #घोषणा ul_Task_Generic_Notify_मूल्य_Clear          MPU_ul_Task_Generic_Notify_मूल्य_Clear
+        #घोषणा xTaskCatchUpTicks                      MPU_xTaskCatchUpTicks
 
-        #define xTaskGetCurrentTaskHandle              MPU_xTaskGetCurrentTaskHandle
-        #define vTaskSetTimeOutState                   MPU_vTaskSetTimeOutState
-        #define xTaskCheckForTimeOut                   MPU_xTaskCheckForTimeOut
-        #define xTaskGetSchedulerState                 MPU_xTaskGetSchedulerState
+        #घोषणा xTaskGetCurrentTaskHandle              MPU_xTaskGetCurrentTaskHandle
+        #घोषणा vTaskSetTimeOutState                   MPU_vTaskSetTimeOutState
+        #घोषणा xTaskCheckForTimeOut                   MPU_xTaskCheckForTimeOut
+        #घोषणा xTaskGetSchedulerState                 MPU_xTaskGetSchedulerState
 
 /* Map standard queue.h API functions to the MPU equivalents. */
-        #define xQueueGenericSend                      MPU_xQueueGenericSend
-        #define xQueueReceive                          MPU_xQueueReceive
-        #define xQueuePeek                             MPU_xQueuePeek
-        #define xQueueSemaphoreTake                    MPU_xQueueSemaphoreTake
-        #define uxQueueMessagesWaiting                 MPU_uxQueueMessagesWaiting
-        #define uxQueueSpacesAvailable                 MPU_uxQueueSpacesAvailable
-        #define vQueueDelete                           MPU_vQueueDelete
-        #define xQueueCreateMutex                      MPU_xQueueCreateMutex
-        #define xQueueCreateMutexStatic                MPU_xQueueCreateMutexStatic
-        #define xQueueCreateCountingSemaphore          MPU_xQueueCreateCountingSemaphore
-        #define xQueueCreateCountingSemaphoreStatic    MPU_xQueueCreateCountingSemaphoreStatic
-        #define xQueueGetMutexHolder                   MPU_xQueueGetMutexHolder
-        #define xQueueTakeMutexRecursive               MPU_xQueueTakeMutexRecursive
-        #define xQueueGiveMutexRecursive               MPU_xQueueGiveMutexRecursive
-        #define xQueueGenericCreate                    MPU_xQueueGenericCreate
-        #define xQueueGenericCreateStatic              MPU_xQueueGenericCreateStatic
-        #define xQueueCreateSet                        MPU_xQueueCreateSet
-        #define xQueueAddToSet                         MPU_xQueueAddToSet
-        #define xQueueRemoveFromSet                    MPU_xQueueRemoveFromSet
-        #define xQueueSelectFromSet                    MPU_xQueueSelectFromSet
-        #define xQueueGenericReset                     MPU_xQueueGenericReset
+        #घोषणा xQueueGenericSend                      MPU_xQueueGenericSend
+        #घोषणा xQueueReceive                          MPU_xQueueReceive
+        #घोषणा xQueuePeek                             MPU_xQueuePeek
+        #घोषणा xQueueSemaphoreTake                    MPU_xQueueSemaphoreTake
+        #घोषणा uxQueueMessagesWaiting                 MPU_uxQueueMessagesWaiting
+        #घोषणा uxQueueSpacesAvailable                 MPU_uxQueueSpacesAvailable
+        #घोषणा vQueueDelete                           MPU_vQueueDelete
+        #घोषणा xQueueCreateMutex                      MPU_xQueueCreateMutex
+        #घोषणा xQueueCreateMutexStatic                MPU_xQueueCreateMutexStatic
+        #घोषणा xQueueCreateCountingSemaphore          MPU_xQueueCreateCountingSemaphore
+        #घोषणा xQueueCreateCountingSemaphoreStatic    MPU_xQueueCreateCountingSemaphoreStatic
+        #घोषणा xQueueGetMutexHolder                   MPU_xQueueGetMutexHolder
+        #घोषणा xQueueTakeMutexRecursive               MPU_xQueueTakeMutexRecursive
+        #घोषणा xQueueGiveMutexRecursive               MPU_xQueueGiveMutexRecursive
+        #घोषणा xQueueGenericCreate                    MPU_xQueueGenericCreate
+        #घोषणा xQueueGenericCreateStatic              MPU_xQueueGenericCreateStatic
+        #घोषणा xQueueCreateSet                        MPU_xQueueCreateSet
+        #घोषणा xQueueAddToSet                         MPU_xQueueAddToSet
+        #घोषणा xQueueRemoveFromSet                    MPU_xQueueRemoveFromSet
+        #घोषणा xQueueSelectFromSet                    MPU_xQueueSelectFromSet
+        #घोषणा xQueueGenericReset                     MPU_xQueueGenericReset
 
-        #if ( configQUEUE_REGISTRY_SIZE > 0 )
-            #define vQueueAddToRegistry                MPU_vQueueAddToRegistry
-            #define vQueueUnregisterQueue              MPU_vQueueUnregisterQueue
-            #define pcQueueGetName                     MPU_pcQueueGetName
-        #endif
+        #अगर ( config_QUEUE_REGISTRY_आकार > 0 )
+            #घोषणा vQueueAddToRegistry                MPU_vQueueAddToRegistry
+            #घोषणा vQueueUnregisterQueue              MPU_vQueueUnregisterQueue
+            #घोषणा pcQueueGetName                     MPU_pcQueueGetName
+        #पूर्ण_अगर
 
 /* Map standard timer.h API functions to the MPU equivalents. */
-        #define pvTimerGetTimerID                      MPU_pvTimerGetTimerID
-        #define vTimerSetTimerID                       MPU_vTimerSetTimerID
-        #define xTimerIsTimerActive                    MPU_xTimerIsTimerActive
-        #define xTimerGetTimerDaemonTaskHandle         MPU_xTimerGetTimerDaemonTaskHandle
-        #define pcTimerGetName                         MPU_pcTimerGetName
-        #define vTimerSetReloadMode                    MPU_vTimerSetReloadMode
-        #define uxTimerGetReloadMode                   MPU_uxTimerGetReloadMode
-        #define xTimerGetPeriod                        MPU_xTimerGetPeriod
-        #define xTimerGetExpiryTime                    MPU_xTimerGetExpiryTime
-        #define xTimerGenericCommand                   MPU_xTimerGenericCommand
+        #घोषणा pvTimerGetTimerID                      MPU_pvTimerGetTimerID
+        #घोषणा vTimerSetTimerID                       MPU_vTimerSetTimerID
+        #घोषणा xTimerIsTimerActive                    MPU_xTimerIsTimerActive
+        #घोषणा xTimerGetTimerDaemonTaskHandle         MPU_xTimerGetTimerDaemonTaskHandle
+        #घोषणा pcTimerGetName                         MPU_pcTimerGetName
+        #घोषणा vTimerSetReloadMode                    MPU_vTimerSetReloadMode
+        #घोषणा uxTimerGetReloadMode                   MPU_uxTimerGetReloadMode
+        #घोषणा xTimerGetPeriod                        MPU_xTimerGetPeriod
+        #घोषणा xTimerGetExpiryTime                    MPU_xTimerGetExpiryTime
+        #घोषणा xTimerGenericCommand                   MPU_xTimerGenericCommand
 
 /* Map standard event_group.h API functions to the MPU equivalents. */
-        #define xEventGroupCreate                      MPU_xEventGroupCreate
-        #define xEventGroupCreateStatic                MPU_xEventGroupCreateStatic
-        #define xEventGroupWaitBits                    MPU_xEventGroupWaitBits
-        #define xEventGroupClearBits                   MPU_xEventGroupClearBits
-        #define xEventGroupSetBits                     MPU_xEventGroupSetBits
-        #define xEventGroupSync                        MPU_xEventGroupSync
-        #define vEventGroupDelete                      MPU_vEventGroupDelete
+        #घोषणा xEventGroupCreate                      MPU_xEventGroupCreate
+        #घोषणा xEventGroupCreateStatic                MPU_xEventGroupCreateStatic
+        #घोषणा xEventGroupWaitBits                    MPU_xEventGroupWaitBits
+        #घोषणा xEventGroupClearBits                   MPU_xEventGroupClearBits
+        #घोषणा xEventGroupSetBits                     MPU_xEventGroupSetBits
+        #घोषणा xEventGroupSync                        MPU_xEventGroupSync
+        #घोषणा vEventGroupDelete                      MPU_vEventGroupDelete
 
 /* Map standard message/stream_buffer.h API functions to the MPU
  * equivalents. */
-        #define xStreamBufferSend                      MPU_xStreamBufferSend
-        #define xStreamBufferReceive                   MPU_xStreamBufferReceive
-        #define xStreamBufferNextMessageLengthBytes    MPU_xStreamBufferNextMessageLengthBytes
-        #define vStreamBufferDelete                    MPU_vStreamBufferDelete
-        #define xStreamBufferIsFull                    MPU_xStreamBufferIsFull
-        #define xStreamBufferIsEmpty                   MPU_xStreamBufferIsEmpty
-        #define xStreamBufferReset                     MPU_xStreamBufferReset
-        #define xStreamBufferSpacesAvailable           MPU_xStreamBufferSpacesAvailable
-        #define xStreamBufferBytesAvailable            MPU_xStreamBufferBytesAvailable
-        #define xStreamBufferSetTriggerLevel           MPU_xStreamBufferSetTriggerLevel
-        #define xStreamBufferGenericCreate             MPU_xStreamBufferGenericCreate
-        #define xStreamBufferGenericCreateStatic       MPU_xStreamBufferGenericCreateStatic
+        #घोषणा x_Stream_बफर_Send                      MPU_x_Stream_बफर_Send
+        #घोषणा x_Stream_बफर_Receive                   MPU_x_Stream_बफर_Receive
+        #घोषणा x_Stream_बफर_अग्र_Message_लंबाई_Bytes    MPU_x_Stream_बफर_अग्र_Message_लंबाई_Bytes
+        #घोषणा v_Stream_बफर_Delete                    MPU_v_Stream_बफर_Delete
+        #घोषणा x_Stream_बफर_Is_Full                    MPU_x_Stream_बफर_Is_Full
+        #घोषणा x_Stream_बफर_Is_Empty                   MPU_x_Stream_बफर_Is_Empty
+        #घोषणा x_Stream_बफर_Reset                     MPU_x_Stream_बफर_Reset
+        #घोषणा x_Stream_बफर_Spaces_Available           MPU_x_Stream_बफर_Spaces_Available
+        #घोषणा x_Stream_बफर_Bytes_Available            MPU_x_Stream_बफर_Bytes_Available
+        #घोषणा x_Stream_बफर_Set_Trigger_Level           MPU_x_Stream_बफर_Set_Trigger_Level
+        #घोषणा x_Stream_बफर_Generic_Create             MPU_x_Stream_बफर_Generic_Create
+        #घोषणा x_Stream_बफर_Generic_Create_Static       MPU_x_Stream_बफर_Generic_Create_Static
 
 
 /* Remove the privileged function macro, but keep the PRIVILEGED_DATA
  * macro so applications can place data in privileged access sections
  * (useful when using statically allocated objects). */
-        #define PRIVILEGED_FUNCTION
-        #define PRIVILEGED_DATA    __attribute__( ( section( "privileged_data" ) ) )
-        #define FREERTOS_SYSTEM_CALL
+        #घोषणा PRIVILEGED_FUNCTION
+        #घोषणा PRIVILEGED_तथ्य    __attribute__( ( section( "privileged_data" ) ) )
+        #घोषणा FREERTOS_SYSTEM_CALL
 
-    #else /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
+    #अन्यथा /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
 
 /* Ensure API functions go in the privileged execution section. */
-        #define PRIVILEGED_FUNCTION     __attribute__( ( section( "privileged_functions" ) ) )
-        #define PRIVILEGED_DATA         __attribute__( ( section( "privileged_data" ) ) )
-        #define FREERTOS_SYSTEM_CALL    __attribute__( ( section( "freertos_system_calls" ) ) )
+        #घोषणा PRIVILEGED_FUNCTION     __attribute__( ( section( "privileged_functions" ) ) )
+        #घोषणा PRIVILEGED_तथ्य         __attribute__( ( section( "privileged_data" ) ) )
+        #घोषणा FREERTOS_SYSTEM_CALL    __attribute__( ( section( "freertos_system_calls" ) ) )
 
-    #endif /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
+    #पूर्ण_अगर /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
 
-#else /* portUSING_MPU_WRAPPERS */
+#अन्यथा /* portUSING_MPU_WRAPPERS */
 
-    #define PRIVILEGED_FUNCTION
-    #define PRIVILEGED_DATA
-    #define FREERTOS_SYSTEM_CALL
+    #घोषणा PRIVILEGED_FUNCTION
+    #घोषणा PRIVILEGED_तथ्य
+    #घोषणा FREERTOS_SYSTEM_CALL
 
-#endif /* portUSING_MPU_WRAPPERS */
+#पूर्ण_अगर /* portUSING_MPU_WRAPPERS */
 
 
-#endif /* MPU_WRAPPERS_H */
+#पूर्ण_अगर /* MPU_WRAPPERS_H */

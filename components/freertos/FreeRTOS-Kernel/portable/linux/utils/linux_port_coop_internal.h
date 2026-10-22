@@ -7,22 +7,22 @@
  * Not for use outside the FreeRTOS portable layer.
  */
 
-#pragma once
+#आशय once
 
-#include <errno.h>
-#include <time.h>
-#include <dlfcn.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#समावेश <errno.h>
+#समावेश <time.h>
+#समावेश <dlfcn.h>
+#समावेश "freertos/FreeRTOS.h"
+#समावेश "freertos/task.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#अगर_घोषित __cplusplus
+बाह्य "C" {
+#पूर्ण_अगर
 
 /**
  * @brief Cooperative tick period in milliseconds.
  */
-#define LINUX_COOP_TICK_MS   (1000 / CONFIG_FREERTOS_HZ)
+#घोषणा LINUX_COOP_TICK_MS   (1000 / CONFIG_FREERTOS_HZ)
 
 /**
  * @brief Resolve real libc symbol into a file-static function pointer.
@@ -32,21 +32,21 @@ extern "C" {
  *
  * @param name Name of the libc symbol to resolve.
  */
-#define LINUX_COOP_RESOLVE(name) real_##name = dlsym(RTLD_NEXT, #name)
+#घोषणा LINUX_COOP_RESOLVE(name) real_##name = dlsym(RTLD_NEXT, #name)
 
 /**
  * @brief Check whether the calling thread is a FreeRTOS task pthread.
  *
  * @return true if called from a FreeRTOS task, false otherwise.
  */
-bool linux_port_in_freertos_task(void);
+bool linux_port_in_freertos_task(व्योम);
 
 /**
  * @brief Set a kernel file descriptor to O_NONBLOCK mode.
  *
  * @param fd File descriptor to make non-blocking.
  */
-void linux_coop_set_nonblocking(int fd);
+व्योम linux_coop_set_nonblocking(पूर्णांक fd);
 
 /**
  * @brief Track a file descriptor in the cooperative mode table.
@@ -58,14 +58,14 @@ void linux_coop_set_nonblocking(int fd);
  * @param fd         File descriptor to track.
  * @param user_flags User-visible status flags (as passed to fcntl F_SETFL).
  */
-void linux_coop_track_fd(int fd, int user_flags);
+व्योम linux_coop_track_fd(पूर्णांक fd, पूर्णांक user_flags);
 
 /**
  * @brief Stop tracking a file descriptor in the cooperative mode table.
  *
  * @param fd File descriptor to untrack.
  */
-void linux_coop_untrack_fd(int fd);
+व्योम linux_coop_untrack_fd(पूर्णांक fd);
 
 /**
  * @brief Update user-visible status flags for a tracked file descriptor.
@@ -73,7 +73,7 @@ void linux_coop_untrack_fd(int fd);
  * @param fd         File descriptor to update.
  * @param user_flags New user-visible status flags.
  */
-void linux_coop_set_user_flags(int fd, int user_flags);
+व्योम linux_coop_set_user_flags(पूर्णांक fd, पूर्णांक user_flags);
 
 /**
  * @brief Query whether user-visible mode is non-blocking for a file descriptor.
@@ -81,7 +81,7 @@ void linux_coop_set_user_flags(int fd, int user_flags);
  * @param fd File descriptor to query.
  * @return true if user-visible mode is non-blocking, false otherwise.
  */
-bool linux_coop_fd_user_nonblocking(int fd);
+bool linux_coop_fd_user_nonblocking(पूर्णांक fd);
 
 /**
  * @brief Get tracked user-visible status flags for a file descriptor.
@@ -90,7 +90,7 @@ bool linux_coop_fd_user_nonblocking(int fd);
  * @param[out] flags Output for tracked user-visible flags.
  * @return true if the fd is tracked and flags were written, false otherwise.
  */
-bool linux_coop_get_user_flags(int fd, int *flags);
+bool linux_coop_get_user_flags(पूर्णांक fd, पूर्णांक *flags);
 
 /**
  * @brief Cooperatively yield for @p ms milliseconds.
@@ -99,16 +99,16 @@ bool linux_coop_get_user_flags(int fd, int *flags);
  *
  * @param ms Number of milliseconds to yield.
  */
-static inline __attribute__((always_inline))
-void linux_coop_yield(int ms)
+अटल अंतरभूत __attribute__((always_inline))
+व्योम linux_coop_yield(पूर्णांक ms)
 {
-    if (linux_port_in_freertos_task()) {
+    अगर (linux_port_in_freertos_task()) {
         vTaskDelay(pdMS_TO_TICKS(ms));
-    } else {
-        struct timespec ts;
+    } अन्यथा {
+        काष्ठा timespec ts;
         ts.tv_sec  = ms / 1000;
         ts.tv_nsec = (ms % 1000) * 1000000L;
-        while (nanosleep(&ts, &ts) == -1 && errno == EINTR) {
+        जबतक (nanosleep(&ts, &ts) == -1 && त्रुटि_सं == EINTR) {
             /* retry with remaining time */
         }
     }
@@ -123,23 +123,23 @@ void linux_coop_yield(int ms)
  * @param fd   File descriptor used to determine user-visible blocking mode.
  * @param expr Expression to evaluate in the retry loop (must yield ssize_t).
  */
-#define LINUX_COOP_IO_LOOP(fd, expr)                           \
-    while (1)                                                  \
+#घोषणा LINUX_COOP_IO_LOOP(fd, व्यंजक)                           \
+    जबतक (1)                                                  \
     {                                                          \
-        ssize_t _n = (expr);                                   \
-        if (_n >= 0) {                                         \
-            return _n;                                         \
+        ssize_t _n = (व्यंजक);                                   \
+        अगर (_n >= 0) {                                         \
+            वापस _n;                                         \
         }                                                      \
-        if (errno == EAGAIN || errno == EWOULDBLOCK) {         \
-            if (linux_coop_fd_user_nonblocking(fd)) {          \
-                return -1;                                     \
+        अगर (त्रुटि_सं == EAGAIN || त्रुटि_सं == EWOULDBLOCK) {         \
+            अगर (linux_coop_fd_user_nonblocking(fd)) {          \
+                वापस -1;                                     \
             }                                                  \
             linux_coop_yield(LINUX_COOP_TICK_MS);              \
-            continue;                                          \
+            जारी;                                          \
         }                                                      \
-        return -1;                                             \
+        वापस -1;                                             \
     }
 
-#ifdef __cplusplus
+#अगर_घोषित __cplusplus
 }
-#endif
+#पूर्ण_अगर

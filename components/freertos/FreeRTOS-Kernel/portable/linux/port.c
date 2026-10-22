@@ -3,56 +3,56 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <sys/queue.h>
-#include <time.h>
-#include "string.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "utils/wait_for_event.h"
-#include "esp_private/freertos_linux_coop_syscalls.h"
-#include "utils/linux_port_utils.h"
+#समावेश <stdio.h>
+#समावेश <stdlib.h>
+#समावेश <stdint.h>
+#समावेश <unistd.h>
+#समावेश <pthread.h>
+#समावेश <sys/queue.h>
+#समावेश <time.h>
+#समावेश "string.h"
+#समावेश "FreeRTOS.h"
+#समावेश "task.h"
+#समावेश "utils/wait_for_event.h"
+#समावेश "esp_private/freertos_linux_coop_syscalls.h"
+#समावेश "utils/linux_port_utils.h"
 
-#define FREERTOS_SIM_TICK_PERIOD_US (1000000 / CONFIG_FREERTOS_HZ)
+#घोषणा FREERTOS_SIM_TICK_PERIOD_US (1000000 / CONFIG_FREERTOS_HZ)
 
-typedef struct thread {
-    const char *name;
+प्रकार काष्ठा thread {
+    स्थिर अक्षर *name;
     pthread_t pthread;
     TaskFunction_t pxCode;
-    void *pvParams;
+    व्योम *pvParams;
     bool is_dying;
     bool yield_needed;
-    struct event *ev;
+    काष्ठा event *ev;
 } thread_t;
 
-typedef struct task_thread_node {
+प्रकार काष्ठा task_thread_गाँठ {
     TaskHandle_t handle;
     thread_t *thread;
-    SLIST_ENTRY(task_thread_node) next;
-} task_thread_node_t;
+    SLIST_ENTRY(task_thread_गाँठ) अग्र;
+} task_thread_गाँठ_t;
 
 
-static SLIST_HEAD(task_thread_node_ll, task_thread_node) s_task_thread_list = SLIST_HEAD_INITIALIZER(task_thread_node);
-static pthread_mutex_t s_thread_map_mutex = PTHREAD_MUTEX_INITIALIZER;
+अटल SLIST_HEAD(task_thread_गाँठ_ll, task_thread_गाँठ) s_task_thread_list = SLIST_HEAD_INITIALIZER(task_thread_गाँठ);
+अटल pthread_mutex_t s_thread_map_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-static pthread_mutex_t s_port_mutex;
-static pthread_t s_scheduler_thread;
-static bool s_scheduler_started = false;
-static int s_ux_critical_nesting = 0;
+अटल pthread_mutex_t s_port_mutex;
+अटल pthread_t s_scheduler_thread;
+अटल bool s_scheduler_started = false;
+अटल पूर्णांक s_ux_critical_nesting = 0;
 
 /* TLS flag: true only when inside a real FreeRTOS task pthread */
-static __thread bool s_in_freertos_task = false;
+अटल __thread bool s_in_freertos_task = false;
 
-bool linux_port_in_freertos_task(void)
+bool linux_port_in_freertos_task(व्योम)
 {
-    return s_in_freertos_task;
+    वापस s_in_freertos_task;
 }
 
-static void linux_port_initialize_mutexes(void)
+अटल व्योम linux_port_initialize_mutexes(व्योम)
 {
     pthread_mutexattr_t attr;
     pthread_mutexattr_init(&attr);
@@ -61,107 +61,107 @@ static void linux_port_initialize_mutexes(void)
     pthread_mutexattr_destroy(&attr);
 }
 
-static void linux_port_fatal_error(const char *msg, int err)
+अटल व्योम linux_port_fatal_error(स्थिर अक्षर *संदेश, पूर्णांक err)
 {
-    fprintf(stderr, "%s: %s\n", msg, strerror(err));
-    abort();
+    ख_लिखो(मानक_त्रुटि, "%s: %s\n", संदेश, म_त्रुटि(err));
+    पात();
 }
 
-static void linux_port_register_thread(TaskHandle_t handle, thread_t *thread)
+अटल व्योम linux_port_register_thread(TaskHandle_t handle, thread_t *thread)
 {
-    if (handle == NULL) {
-        return;
+    अगर (handle == शून्य) {
+        वापस;
     }
 
-    task_thread_node_t *node = malloc(sizeof(task_thread_node_t));
-    if (!node) {
+    task_thread_गाँठ_t *गाँठ = दो_स्मृति(माप(task_thread_गाँठ_t));
+    अगर (!गाँठ) {
         linux_port_fatal_error("Failed to allocate thread map node", -1);
     }
 
-    node->handle = handle;
-    node->thread = thread;
+    गाँठ->handle = handle;
+    गाँठ->thread = thread;
 
     pthread_mutex_lock(&s_thread_map_mutex);
-    SLIST_INSERT_HEAD(&s_task_thread_list, node, next);
+    SLIST_INSERT_HEAD(&s_task_thread_list, गाँठ, अग्र);
     pthread_mutex_unlock(&s_thread_map_mutex);
 }
 
-static void linux_port_unregister_thread(TaskHandle_t handle)
+अटल व्योम linux_port_unregister_thread(TaskHandle_t handle)
 {
-    if (handle == NULL) {
-        return;
+    अगर (handle == शून्य) {
+        वापस;
     }
 
     pthread_mutex_lock(&s_thread_map_mutex);
 
-    task_thread_node_t *cur_node = SLIST_FIRST(&s_task_thread_list);
-    task_thread_node_t *prev_node = NULL;
+    task_thread_गाँठ_t *cur_गाँठ = SLIST_FIRST(&s_task_thread_list);
+    task_thread_गाँठ_t *पूर्व_गाँठ = शून्य;
 
-    while (cur_node) {
-        if (cur_node->handle == handle) {
-            if (prev_node) {
-                prev_node->next.sle_next = SLIST_NEXT(cur_node, next);
-            } else {
-                SLIST_REMOVE_HEAD(&s_task_thread_list, next);
+    जबतक (cur_गाँठ) {
+        अगर (cur_गाँठ->handle == handle) {
+            अगर (पूर्व_गाँठ) {
+                पूर्व_गाँठ->अग्र.sle_अग्र = SLIST_NEXT(cur_गाँठ, अग्र);
+            } अन्यथा {
+                SLIST_REMOVE_HEAD(&s_task_thread_list, अग्र);
             }
 
-            free(cur_node);
+            मुक्त(cur_गाँठ);
             pthread_mutex_unlock(&s_thread_map_mutex);
-            return;
+            वापस;
         }
 
-        prev_node = cur_node;
-        cur_node = SLIST_NEXT(cur_node, next);
+        पूर्व_गाँठ = cur_गाँठ;
+        cur_गाँठ = SLIST_NEXT(cur_गाँठ, अग्र);
     }
 
     pthread_mutex_unlock(&s_thread_map_mutex);
 }
 
-static thread_t *linux_port_get_thread_from_handle(TaskHandle_t handle)
+अटल thread_t *linux_port_get_thread_from_handle(TaskHandle_t handle)
 {
-    if (handle == NULL) {
-        return NULL;
+    अगर (handle == शून्य) {
+        वापस शून्य;
     }
 
     pthread_mutex_lock(&s_thread_map_mutex);
-    task_thread_node_t *node = NULL;
-    SLIST_FOREACH(node, &s_task_thread_list, next) {
-        if (node->handle == (TaskHandle_t)(*(StackType_t **)(handle))) {
-            thread_t *t = node->thread;
+    task_thread_गाँठ_t *गाँठ = शून्य;
+    SLIST_FOREACH(गाँठ, &s_task_thread_list, अग्र) {
+        अगर (गाँठ->handle == (TaskHandle_t)(*(ढेर_Type_t **)(handle))) {
+            thread_t *t = गाँठ->thread;
             pthread_mutex_unlock(&s_thread_map_mutex);
-            return t;
+            वापस t;
         }
     }
     pthread_mutex_unlock(&s_thread_map_mutex);
-    return NULL;
+    वापस शून्य;
 }
 
-static thread_t *linux_port_get_calling_thread(void)
+अटल thread_t *linux_port_get_calling_thread(व्योम)
 {
     pthread_t self = pthread_self();
     pthread_mutex_lock(&s_thread_map_mutex);
-    task_thread_node_t *node = NULL;
-    SLIST_FOREACH(node, &s_task_thread_list, next) {
-        if (pthread_equal(node->thread->pthread, self)) {
-            thread_t *thread = node->thread;
+    task_thread_गाँठ_t *गाँठ = शून्य;
+    SLIST_FOREACH(गाँठ, &s_task_thread_list, अग्र) {
+        अगर (pthread_equal(गाँठ->thread->pthread, self)) {
+            thread_t *thread = गाँठ->thread;
             pthread_mutex_unlock(&s_thread_map_mutex);
-            return thread;
+            वापस thread;
         }
     }
     pthread_mutex_unlock(&s_thread_map_mutex);
-    return NULL;
+    वापस शून्य;
 }
 
-pthread_t linux_port_get_scheduled_task_pthread(void)
+pthread_t linux_port_get_scheduled_task_pthread(व्योम)
 {
     thread_t *thread = linux_port_get_thread_from_handle(xTaskGetCurrentTaskHandle());
-    return thread ? thread->pthread : pthread_self();
+    वापस thread ? thread->pthread : pthread_self();
 }
 
-static void *linux_port_task_runner(void *arg)
+अटल व्योम *linux_port_task_runner(व्योम *arg)
 {
     /* Allow this thread to be cancelled */
-    pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+    pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, शून्य);
 
     /* set the flag showing that this is a freertos task */
     s_in_freertos_task = true;
@@ -176,25 +176,25 @@ static void *linux_port_task_runner(void *arg)
     event_wait(thread->ev);
     thread->pxCode(thread->pvParams);
 
-    return NULL;
+    वापस शून्य;
 }
 
-static void linux_port_unblock_thread(thread_t *thread)
+अटल व्योम linux_port_unblock_thread(thread_t *thread)
 {
     event_signal(thread->ev);
 }
 
-static void linux_port_block_thread(thread_t *thread)
+अटल व्योम linux_port_block_thread(thread_t *thread)
 {
     event_wait(thread->ev);
 }
 
-static void linux_port_increment_tick(void)
+अटल व्योम linux_port_increment_tick(व्योम)
 {
-    (void)xTaskIncrementTick();
+    (व्योम)xTaskIncrementTick();
 }
 
-static void linux_port_switch_context(TaskHandle_t current_task_hdl)
+अटल व्योम linux_port_switch_context(TaskHandle_t current_task_hdl)
 {
     pthread_mutex_lock(&s_port_mutex);
 
@@ -204,12 +204,12 @@ static void linux_port_switch_context(TaskHandle_t current_task_hdl)
     vTaskSwitchContext();
 
     /* get the new task to schedule and the associated thread item */
-    TaskHandle_t next_task_hdl = xTaskGetCurrentTaskHandle();
-    thread_t *next_thread = linux_port_get_thread_from_handle(next_task_hdl);
+    TaskHandle_t अग्र_task_hdl = xTaskGetCurrentTaskHandle();
+    thread_t *अग्र_thread = linux_port_get_thread_from_handle(अग्र_task_hdl);
 
     /* unblock the newly scheduled task if it is different from
      * the one already scheduled */
-    if (next_thread) {
+    अगर (अग्र_thread) {
         /* Only unblock the thread if we are actually switching to a
          * different one. Signaling the already-running thread would
          * leave a stale event_triggered flag, causing its next
@@ -219,7 +219,7 @@ static void linux_port_switch_context(TaskHandle_t current_task_hdl)
          * Exception: on the very first switch, the task is still blocked
          * in its initial event_wait (linux_port_task_runner), so we must
          * signal it even though current_thread == next_thread. */
-        if (next_thread != current_thread || !s_scheduler_started) {
+        अगर (अग्र_thread != current_thread || !s_scheduler_started) {
             /* Discard any stale wake on the task being switched out.
              *
              * Because tasks are pthreads that cannot be forcibly paused,
@@ -244,25 +244,25 @@ static void linux_port_switch_context(TaskHandle_t current_task_hdl)
              * which the current_thread NULL-check below also tolerates.
              * The NULL-check additionally guards the deleted-task path
              * where the outgoing task has no thread mapping. */
-            if (current_thread) {
+            अगर (current_thread) {
                 event_clear(current_thread->ev);
             }
-            linux_port_unblock_thread(next_thread);
+            linux_port_unblock_thread(अग्र_thread);
         }
     }
 
-    if (!s_scheduler_started) {
+    अगर (!s_scheduler_started) {
         s_scheduler_started = true;
     }
 
     /* fill the name of the task in the thread item if not done already. */
-    if (next_thread && next_thread->name == NULL) {
+    अगर (अग्र_thread && अग्र_thread->name == शून्य) {
         /* fill the name of the thread now */
-        next_thread->name = pcTaskGetName(next_task_hdl);
+        अग्र_thread->name = pcTaskGetName(अग्र_task_hdl);
     }
 
     /* fill the name of the task in the thread item if not done already. */
-    if (current_thread && current_thread->name == NULL) {
+    अगर (current_thread && current_thread->name == शून्य) {
         /* fill the name of the thread now */
         current_thread->name = pcTaskGetName(current_task_hdl);
     }
@@ -270,11 +270,11 @@ static void linux_port_switch_context(TaskHandle_t current_task_hdl)
     pthread_mutex_unlock(&s_port_mutex);
 }
 
-static void *linux_port_scheduler_runner(void *arg)
+अटल व्योम *linux_port_scheduler_runner(व्योम *arg)
 {
-    (void)arg;
+    (व्योम)arg;
 
-    while (1) {
+    जबतक (1) {
         /* sleep for a period of 1 tick */
         usleep(FREERTOS_SIM_TICK_PERIOD_US);
 
@@ -293,44 +293,44 @@ static void *linux_port_scheduler_runner(void *arg)
 
         pthread_mutex_unlock(&s_port_mutex);
     }
-    return NULL;
+    वापस शून्य;
 }
 
-StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack,
-                                   StackType_t *pxEndOfStack,
+ढेर_Type_t *px_Port_Initialise_ढेर(ढेर_Type_t *px_शीर्ष_Of_ढेर,
+                                   ढेर_Type_t *px_End_Of_ढेर,
                                    TaskFunction_t pxCode,
-                                   void *pvParameters)
+                                   व्योम *pvParameters)
 {
     pthread_attr_t thread_attr;
-    size_t thread_stack_size;
+    माप_प्रकार thread_ढेर_आकार;
 
     /* Store the thread data at the start of the stack. */
-    thread_stack_size = (pxTopOfStack - pxEndOfStack) * sizeof(*pxTopOfStack);
+    thread_ढेर_आकार = (px_शीर्ष_Of_ढेर - px_End_Of_ढेर) * माप(*px_शीर्ष_Of_ढेर);
     pthread_attr_init(&thread_attr);
-    pthread_attr_setstack(&thread_attr, pxEndOfStack, thread_stack_size);
+    pthread_attr_setstack(&thread_attr, px_End_Of_ढेर, thread_ढेर_आकार);
 
-    thread_t *thread = malloc(sizeof(thread_t));
-    if (!thread) {
+    thread_t *thread = दो_स्मृति(माप(thread_t));
+    अगर (!thread) {
         linux_port_fatal_error("Failed to allocate thread metadata", -1);
     }
-    thread->name = NULL; // this will be filled later when we know about the task name
+    thread->name = शून्य; // this will be filled later when we know about the task name
     thread->pxCode = pxCode;
     thread->pvParams = pvParameters;
     thread->is_dying = false;
     thread->yield_needed = false;
     thread->ev = event_create();
 
-    linux_port_register_thread((TaskHandle_t)pxTopOfStack, thread);
+    linux_port_register_thread((TaskHandle_t)px_शीर्ष_Of_ढेर, thread);
 
     /* create the thread associated with the task being created */
-    const int ret = pthread_create(&thread->pthread, &thread_attr, linux_port_task_runner, thread);
-    if (ret != 0) {
+    स्थिर पूर्णांक ret = pthread_create(&thread->pthread, &thread_attr, linux_port_task_runner, thread);
+    अगर (ret != 0) {
         linux_port_fatal_error("pthread_create", ret);
     }
-    return pxTopOfStack;
+    वापस px_शीर्ष_Of_ढेर;
 }
 
-BaseType_t xPortStartScheduler(void)
+BaseType_t xPortStartScheduler(व्योम)
 {
     /* set the port mutex to be recursive. Must be done before
      * vPortEnableInterrupts() which calls vPortExitCritical(). */
@@ -344,35 +344,35 @@ BaseType_t xPortStartScheduler(void)
     freertos_linux_coop_syscalls_init();
 
     /* Start scheduler thread */
-    int ret = pthread_create(&s_scheduler_thread, NULL, linux_port_scheduler_runner, NULL);
-    if (ret != 0) {
+    पूर्णांक ret = pthread_create(&s_scheduler_thread, शून्य, linux_port_scheduler_runner, शून्य);
+    अगर (ret != 0) {
        linux_port_fatal_error("pthread_create", ret);
     }
 
     /* Should never return */
-    pthread_join(s_scheduler_thread, NULL);
+    pthread_join(s_scheduler_thread, शून्य);
 
-    return 0;
+    वापस 0;
 }
 
-void vPortEndScheduler(void)
+व्योम vPortEndScheduler(व्योम)
 {
-    exit(0);
+    निकास(0);
 }
 
-void vPortEnterCritical(void)
+व्योम vPortEnterCritical(व्योम)
 {
-    if (!s_scheduler_started) {
-        return;
+    अगर (!s_scheduler_started) {
+        वापस;
     }
 
     pthread_mutex_lock(&s_port_mutex);
 
     /* Non-FreeRTOS thread or recursive enter: just bump the counter.
      * The mutex is already held (recursive lock succeeds for same thread). */
-    if (!linux_port_in_freertos_task() || s_ux_critical_nesting > 0) {
+    अगर (!linux_port_in_freertos_task() || s_ux_critical_nesting > 0) {
         s_ux_critical_nesting++;
-        return;
+        वापस;
     }
 
     /* First enter from a FreeRTOS task: ensure we're the scheduled task.
@@ -381,7 +381,7 @@ void vPortEnterCritical(void)
     thread_t *calling_thread = linux_port_get_calling_thread();
     thread_t *scheduled_thread = linux_port_get_thread_from_handle(xTaskGetCurrentTaskHandle());
 
-    while (calling_thread && !calling_thread->is_dying && calling_thread != scheduled_thread) {
+    जबतक (calling_thread && !calling_thread->is_dying && calling_thread != scheduled_thread) {
         pthread_mutex_unlock(&s_port_mutex);
         linux_port_block_thread(calling_thread);
         pthread_mutex_lock(&s_port_mutex);
@@ -389,31 +389,31 @@ void vPortEnterCritical(void)
         scheduled_thread = linux_port_get_thread_from_handle(xTaskGetCurrentTaskHandle());
     }
 
-    if (!calling_thread || calling_thread->is_dying) {
+    अगर (!calling_thread || calling_thread->is_dying) {
         linux_port_switch_context(xTaskGetCurrentTaskHandle());
         pthread_mutex_unlock(&s_port_mutex);
-        return;
+        वापस;
     }
 
     s_ux_critical_nesting = 1;
 }
 
-void vPortExitCritical(void)
+व्योम vPortExitCritical(व्योम)
 {
-    if (!s_scheduler_started || s_ux_critical_nesting == 0) {
-        return;
+    अगर (!s_scheduler_started || s_ux_critical_nesting == 0) {
+        वापस;
     }
 
     s_ux_critical_nesting--;
 
     /* Check for deferred yield on final exit from a FreeRTOS task */
-    if (s_ux_critical_nesting == 0 && linux_port_in_freertos_task()) {
+    अगर (s_ux_critical_nesting == 0 && linux_port_in_freertos_task()) {
         thread_t *calling_thread = linux_port_get_calling_thread();
-        if (calling_thread && calling_thread->yield_needed) {
+        अगर (calling_thread && calling_thread->yield_needed) {
             calling_thread->yield_needed = false;
             pthread_mutex_unlock(&s_port_mutex);
             vPortYield();
-            return;
+            वापस;
         }
     }
 
@@ -424,37 +424,37 @@ void vPortExitCritical(void)
  * If the calling thread has been deleted but is still the scheduled task,
  * perform a context switch. Otherwise just release the mutex and return.
  * Returns true if the caller should return early. */
-static bool linux_port_handle_deleted_task(TaskHandle_t scheduled_task_hdl,
+अटल bool linux_port_handle_deleted_task(TaskHandle_t scheduled_task_hdl,
                                            thread_t *calling_thread)
 {
-    if (calling_thread != NULL) {
-        return false;
+    अगर (calling_thread != शून्य) {
+        वापस false;
     }
 
     thread_t *scheduled_thread = linux_port_get_thread_from_handle(scheduled_task_hdl);
-    if (scheduled_thread == NULL) {
+    अगर (scheduled_thread == शून्य) {
         linux_port_switch_context(scheduled_task_hdl);
     }
     pthread_mutex_unlock(&s_port_mutex);
-    return true;
+    वापस true;
 }
 
-void vPortYield(void)
+व्योम vPortYield(व्योम)
 {
     pthread_mutex_lock(&s_port_mutex);
 
     thread_t *calling_thread = linux_port_get_calling_thread();
     TaskHandle_t scheduled_task_hdl = xTaskGetCurrentTaskHandle();
 
-    if (linux_port_handle_deleted_task(scheduled_task_hdl, calling_thread)) {
-        return;
+    अगर (linux_port_handle_deleted_task(scheduled_task_hdl, calling_thread)) {
+        वापस;
     }
 
     /* If in a critical section, defer the yield until the section exits. */
-    if (s_ux_critical_nesting != 0) {
+    अगर (s_ux_critical_nesting != 0) {
         calling_thread->yield_needed = true;
         pthread_mutex_unlock(&s_port_mutex);
-        return;
+        वापस;
     }
 
     /* Hand the CPU to the next ready task right now (mimics PendSV on real
@@ -464,19 +464,19 @@ void vPortYield(void)
 
     /* If the newly scheduled task is different from the calling thread,
      * block until the scheduler resumes this task. */
-    TaskHandle_t next_task_hdl = xTaskGetCurrentTaskHandle();
-    thread_t *next_thread = linux_port_get_thread_from_handle(next_task_hdl);
-    if (calling_thread != next_thread) {
+    TaskHandle_t अग्र_task_hdl = xTaskGetCurrentTaskHandle();
+    thread_t *अग्र_thread = linux_port_get_thread_from_handle(अग्र_task_hdl);
+    अगर (calling_thread != अग्र_thread) {
         linux_port_block_thread(calling_thread);
     }
 }
 
-void vPortYieldWithinApi(void)
+व्योम vPortYieldWithinApi(व्योम)
 {
     vPortYield();
 }
 
-void vPortSuspendScheduler(void)
+व्योम vPortSuspendScheduler(व्योम)
 {
     /* scheduled out task trying to suspend the scheduler should get blocked here */
     pthread_mutex_lock(&s_port_mutex);
@@ -487,48 +487,48 @@ void vPortSuspendScheduler(void)
     /* get the thread metadata from the scheduled task */
     TaskHandle_t scheduled_task_hdl = xTaskGetCurrentTaskHandle();
 
-    if (linux_port_handle_deleted_task(scheduled_task_hdl, calling_thread)) {
-        return;
+    अगर (linux_port_handle_deleted_task(scheduled_task_hdl, calling_thread)) {
+        वापस;
     }
 
     thread_t *scheduled_thread = linux_port_get_thread_from_handle(scheduled_task_hdl);
-    if (calling_thread != scheduled_thread) {
+    अगर (calling_thread != scheduled_thread) {
         pthread_mutex_unlock(&s_port_mutex);
         vPortYield();
-        return;
+        वापस;
     }
     pthread_mutex_unlock(&s_port_mutex);
 }
 
-void vPortDisableInterrupts(void)
+व्योम vPortDisableInterrupts(व्योम)
 {
     vPortEnterCritical();
 }
 
-void vPortEnableInterrupts(void)
+व्योम vPortEnableInterrupts(व्योम)
 {
     vPortExitCritical();
 }
 
-BaseType_t xPortSetInterruptMask(void)
+BaseType_t xPortSetInterruptMask(व्योम)
 {
     vPortEnterCritical();
-    return pdTRUE;
+    वापस pdTRUE;
 }
 
-void vPortClearInterruptMask(BaseType_t xMask)
+व्योम vPortClearInterruptMask(BaseType_t xMask)
 {
     vPortExitCritical();
 }
 
-void vPortThreadDying(void *pxTaskToDelete, volatile BaseType_t *pxPendYield)
+व्योम vPortThreadDying(व्योम *pxTaskToDelete, अस्थिर BaseType_t *pxPendYield)
 {
     pthread_mutex_lock(&s_port_mutex);
 
     thread_t *thread = linux_port_get_thread_from_handle((TaskHandle_t)pxTaskToDelete);
-    if (thread == NULL) {
+    अगर (thread == शून्य) {
         pthread_mutex_unlock(&s_port_mutex);
-        return;
+        वापस;
     }
 
     /* Mark the thread as dying, cancel the thread. the pthread
@@ -540,37 +540,37 @@ void vPortThreadDying(void *pxTaskToDelete, volatile BaseType_t *pxPendYield)
     pthread_mutex_unlock(&s_port_mutex);
 }
 
-#if CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
-static void vPortTLSPointersDelCb(void *pxTCB)
+#अगर CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
+अटल व्योम vPortTLSPointersDelCb(व्योम *pxTCB)
 {
     StaticTask_t *tcb = (StaticTask_t *)pxTCB;
-    TlsDeleteCallbackFunction_t *pvDelCbs = (TlsDeleteCallbackFunction_t *)(&tcb->pvDummy15[configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2]);
+    TlsDeleteCallbackFunction_t *pvDelCbs = (TlsDeleteCallbackFunction_t *)(&tcb->pvDummy15[config_अंक_THREAD_LOCAL_STORAGE_POINTERS / 2]);
 
-    for (int x = 0; x < (configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2); x++) {
-        if (pvDelCbs[x] != NULL) {
+    क्रम (पूर्णांक x = 0; x < (config_अंक_THREAD_LOCAL_STORAGE_POINTERS / 2); x++) {
+        अगर (pvDelCbs[x] != शून्य) {
             pvDelCbs[x](x, tcb->pvDummy15[x]);
         }
     }
 }
-#endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+#पूर्ण_अगर /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 
-void vPortCancelThread(void *pxTaskToDelete)
+व्योम vPortCancelThread(व्योम *pxTaskToDelete)
 {
     pthread_mutex_lock(&s_port_mutex);
 
-#if CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
+#अगर CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
     vPortTLSPointersDelCb(pxTaskToDelete);
-#endif
+#पूर्ण_अगर
 
     thread_t *thread = linux_port_get_thread_from_handle((TaskHandle_t)pxTaskToDelete);
-    if (!thread) {
+    अगर (!thread) {
         pthread_mutex_unlock(&s_port_mutex);
-        return;
+        वापस;
     }
 
-    if (thread->is_dying) {
+    अगर (thread->is_dying) {
         /* vPortThreadDying already called */
-    } else {
+    } अन्यथा {
         thread->is_dying = true;
         pthread_cancel(thread->pthread);
     }
@@ -585,23 +585,23 @@ void vPortCancelThread(void *pxTaskToDelete)
      * point. */
     pthread_mutex_unlock(&s_port_mutex);
 
-    pthread_join(pt, NULL);
+    pthread_join(pt, शून्य);
     event_delete(ev);
-    free(thread);
+    मुक्त(thread);
 }
 
-void vPortSetStackWatchpoint(void *pxStackStart)
+व्योम v_Port_Set_ढेर_Watchpoint(व्योम *px_ढेर_Start)
 {
 }
 
-#if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
-configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void )
+#अगर ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
+config_RUN_TIME_गणक_TYPE x_Port_Get_Run_Time_गणक_मूल्य( व्योम )
 {
-    struct timespec ts;
+    काष्ठा timespec ts;
 
     clock_gettime(CLOCK_MONOTONIC, &ts);
 
-    return ( configRUN_TIME_COUNTER_TYPE ) ( ( ( uint64_t ) ts.tv_sec * 1000000ULL ) +
+    वापस ( config_RUN_TIME_गणक_TYPE ) ( ( ( uint64_t ) ts.tv_sec * 1000000ULL ) +
                                             ( ( uint64_t ) ts.tv_nsec / 1000ULL ) );
 }
-#endif /* CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS */
+#पूर्ण_अगर /* CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS */

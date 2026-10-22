@@ -53,130 +53,130 @@
  * semaphore or mutex.
  *----------------------------------------------------------*/
 
-#include <errno.h>
-#include <pthread.h>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/time.h>
-#include <sys/times.h>
-#include <time.h>
-#include <unistd.h>
-#include <assert.h>
+#समावेश <errno.h>
+#समावेश <pthread.h>
+#समावेश <signal.h>
+#समावेश <stdio.h>
+#समावेश <stdlib.h>
+#समावेश <string.h>
+#समावेश <sys/time.h>
+#समावेश <sys/times.h>
+#समावेश <time.h>
+#समावेश <unistd.h>
+#समावेश <assert.h>
 
 /* Scheduler includes. */
-#include "esp_heap_caps.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "esp_task.h"
-#include "timers.h"
-#include "utils/wait_for_event.h"
-#include "esp_log.h"
+#समावेश "esp_heap_caps.h"
+#समावेश "FreeRTOS.h"
+#समावेश "task.h"
+#समावेश "esp_task.h"
+#समावेश "timers.h"
+#समावेश "utils/wait_for_event.h"
+#समावेश "esp_log.h"
 /*-----------------------------------------------------------*/
 
-#define SIG_RESUME SIGUSR1
+#घोषणा SIG_RESUME SIGUSR1
 
-typedef struct THREAD
+प्रकार काष्ठा THREAD
 {
     pthread_t pthread;
     TaskFunction_t pxCode;
-    void *pvParams;
+    व्योम *pvParams;
     BaseType_t xDying;
-    struct event *ev;
+    काष्ठा event *ev;
 } Thread_t;
 
 /*
  * The additional per-thread data is stored at the beginning of the
  * task's stack.
  */
-static inline Thread_t *prvGetThreadFromTask(TaskHandle_t xTask)
+अटल अंतरभूत Thread_t *prvGetThreadFromTask(TaskHandle_t xTask)
 {
-    StackType_t *pxTopOfStack = *(StackType_t **)xTask;
+    ढेर_Type_t *px_शीर्ष_Of_ढेर = *(ढेर_Type_t **)xTask;
 
-    return (Thread_t *)(pxTopOfStack + 1);
+    वापस (Thread_t *)(px_शीर्ष_Of_ढेर + 1);
 }
 
 /*-----------------------------------------------------------*/
 
-static pthread_once_t hSigSetupThread = PTHREAD_ONCE_INIT;
-static sigset_t xAllSignals;
-static sigset_t xSchedulerOriginalSignalMask;
-static pthread_t hMainThread = ( pthread_t )NULL;
+अटल pthread_once_t hSigSetupThread = PTHREAD_ONCE_INIT;
+अटल sigset_t xAllSignals;
+अटल sigset_t xSchedulerOriginalSignalMask;
+अटल pthread_t hMainThread = ( pthread_t )शून्य;
 
 // These are saved as part of a thread's state in prvSwitchThread()
-static volatile BaseType_t uxCriticalNestingIDF = 0;    /* Track nesting calls for IDF style critical sections. FreeRTOS critical section nesting is maintained in the TCB. */
-static volatile UBaseType_t uxInterruptNesting = 0;     /* Tracks if we are currently in an interrupt. */
-static volatile BaseType_t uxInterruptLevel = 0;        /* Tracks the current level (i.e., interrupt mask) */
+अटल अस्थिर BaseType_t uxCriticalNestingIDF = 0;    /* Track nesting calls for IDF style critical sections. FreeRTOS critical section nesting is maintained in the TCB. */
+अटल अस्थिर UBaseType_t uxInterruptNesting = 0;     /* Tracks if we are currently in an interrupt. */
+अटल अस्थिर BaseType_t uxInterruptLevel = 0;        /* Tracks the current level (i.e., interrupt mask) */
 /*-----------------------------------------------------------*/
 
-static BaseType_t xSchedulerEnd = pdFALSE;
+अटल BaseType_t xSchedulerEnd = pdFALSE;
 /*-----------------------------------------------------------*/
 
-static void prvSetupSignalsAndSchedulerPolicy( void );
-static void prvSetupTimerInterrupt( void );
-static void *prvWaitForStart( void * pvParams );
-static void prvSwitchThread( Thread_t * xThreadToResume,
+अटल व्योम prvSetupSignalsAndSchedulerPolicy( व्योम );
+अटल व्योम prvSetupTimerInterrupt( व्योम );
+अटल व्योम *prvWaitForStart( व्योम * pvParams );
+अटल व्योम prvSwitchThread( Thread_t * xThreadToResume,
                              Thread_t *xThreadToSuspend );
-static void prvSuspendSelf( Thread_t * thread);
-static void prvResumeThread( Thread_t * xThreadId );
-static void vPortSystemTickHandler( int sig );
-static void vPortStartFirstTask( void );
+अटल व्योम prvSuspendSelf( Thread_t * thread);
+अटल व्योम prvResumeThread( Thread_t * xThreadId );
+अटल व्योम vPortSystemTickHandler( पूर्णांक sig );
+अटल व्योम vPortStartFirstTask( व्योम );
 /*-----------------------------------------------------------*/
 
-static void prvFatalError( const char *pcCall, int iErrno )
+अटल व्योम prvFatalError( स्थिर अक्षर *pcCall, पूर्णांक iErrno )
 {
-    fprintf( stderr, "%s: %s\n", pcCall, strerror( iErrno ) );
-    abort();
+    ख_लिखो( मानक_त्रुटि, "%s: %s\n", pcCall, म_त्रुटि( iErrno ) );
+    पात();
 }
 
 /*
  * See header file for description.
  */
-StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack,
-                                    StackType_t *pxEndOfStack,
+ढेर_Type_t *px_Port_Initialise_ढेर( ढेर_Type_t *px_शीर्ष_Of_ढेर,
+                                    ढेर_Type_t *px_End_Of_ढेर,
                                     TaskFunction_t pxCode,
-                                    void *pvParameters )
+                                    व्योम *pvParameters )
 {
     Thread_t *thread;
     pthread_attr_t xThreadAttributes;
-    size_t ulStackSize;
-    int iRet;
+    माप_प्रकार ul_ढेर_आकार;
+    पूर्णांक iRet;
 
-    (void)pthread_once( &hSigSetupThread, prvSetupSignalsAndSchedulerPolicy );
+    (व्योम)pthread_once( &hSigSetupThread, prvSetupSignalsAndSchedulerPolicy );
 
     /*
      * Store the additional thread data at the start of the stack.
      */
-    thread = (Thread_t *)(pxTopOfStack + 1) - 1;
-    pxTopOfStack = (StackType_t *)thread - 1;
-    ulStackSize = (pxTopOfStack + 1 - pxEndOfStack) * sizeof(*pxTopOfStack);
+    thread = (Thread_t *)(px_शीर्ष_Of_ढेर + 1) - 1;
+    px_शीर्ष_Of_ढेर = (ढेर_Type_t *)thread - 1;
+    ul_ढेर_आकार = (px_शीर्ष_Of_ढेर + 1 - px_End_Of_ढेर) * माप(*px_शीर्ष_Of_ढेर);
 
     thread->pxCode = pxCode;
     thread->pvParams = pvParameters;
     thread->xDying = pdFALSE;
 
     pthread_attr_init( &xThreadAttributes );
-    pthread_attr_setstack( &xThreadAttributes, pxEndOfStack, ulStackSize );
+    pthread_attr_setstack( &xThreadAttributes, px_End_Of_ढेर, ul_ढेर_आकार );
 
     thread->ev = event_create();
 
-    BaseType_t prev_intr_level = xPortSetInterruptMask();
+    BaseType_t पूर्व_intr_level = xPortSetInterruptMask();
 
     iRet = pthread_create( &thread->pthread, &xThreadAttributes,
                            prvWaitForStart, thread );
-    if ( iRet )
+    अगर ( iRet )
     {
         prvFatalError( "pthread_create", iRet );
     }
 
-    vPortClearInterruptMask( prev_intr_level );
+    vPortClearInterruptMask( पूर्व_intr_level );
 
-    return pxTopOfStack;
+    वापस px_शीर्ष_Of_ढेर;
 }
 /*-----------------------------------------------------------*/
 
-void vPortStartFirstTask( void )
+व्योम vPortStartFirstTask( व्योम )
 {
     Thread_t *pxFirstThread = prvGetThreadFromTask( xTaskGetCurrentTaskHandle() );
 
@@ -188,9 +188,9 @@ void vPortStartFirstTask( void )
 /*
  * See header file for description.
  */
-BaseType_t xPortStartScheduler( void )
+BaseType_t xPortStartScheduler( व्योम )
 {
-    int iSignal;
+    पूर्णांक iSignal;
     sigset_t xSignals;
 
     hMainThread = pthread_self();
@@ -206,32 +206,32 @@ BaseType_t xPortStartScheduler( void )
     sigemptyset( &xSignals );
     sigaddset( &xSignals, SIG_RESUME );
 
-    while ( !xSchedulerEnd )
+    जबतक ( !xSchedulerEnd )
     {
         sigwait( &xSignals, &iSignal );
     }
 
     /* Cancel the Idle task and free its resources */
-#if ( INCLUDE_xTaskGetIdleTaskHandle == 1 )
+#अगर ( INCLUDE_xTaskGetIdleTaskHandle == 1 )
     vPortCancelThread( xTaskGetIdleTaskHandle() );
-#endif
+#पूर्ण_अगर
 
-#if ( configUSE_TIMERS == 1 )
+#अगर ( configUSE_TIMERS == 1 )
     /* Cancel the Timer task and free its resources */
     vPortCancelThread( xTimerGetTimerDaemonTaskHandle() );
-#endif /* configUSE_TIMERS */
+#पूर्ण_अगर /* configUSE_TIMERS */
 
     /* Restore original signal mask. */
-    (void)pthread_sigmask( SIG_SETMASK, &xSchedulerOriginalSignalMask,  NULL );
+    (व्योम)pthread_sigmask( SIG_SETMASK, &xSchedulerOriginalSignalMask,  शून्य );
 
-    return 0;
+    वापस 0;
 }
 /*-----------------------------------------------------------*/
 
-void vPortEndScheduler( void )
+व्योम vPortEndScheduler( व्योम )
 {
-    struct itimerval itimer;
-    struct sigaction sigtick;
+    काष्ठा itimerval itimer;
+    काष्ठा sigaction sigtick;
     Thread_t *xCurrentThread;
 
     /* Stop the timer and ignore any pending SIGALRMs that would end
@@ -241,37 +241,37 @@ void vPortEndScheduler( void )
 
     itimer.it_interval.tv_sec = 0;
     itimer.it_interval.tv_usec = 0;
-    (void)setitimer( ITIMER_REAL, &itimer, NULL );
+    (व्योम)setitimer( ITIMER_REAL, &itimer, शून्य );
 
     sigtick.sa_flags = 0;
-    sigtick.sa_handler = SIG_IGN;
+    sigtick.sa_handler = संक_छोड़ो;
     sigemptyset( &sigtick.sa_mask );
-    sigaction( SIGALRM, &sigtick, NULL );
+    sigaction( SIGALRM, &sigtick, शून्य );
 
     /* Signal the scheduler to exit its loop. */
     xSchedulerEnd = pdTRUE;
-    (void)pthread_kill( hMainThread, SIG_RESUME );
+    (व्योम)pthread_kill( hMainThread, SIG_RESUME );
 
     xCurrentThread = prvGetThreadFromTask( xTaskGetCurrentTaskHandle() );
     prvSuspendSelf(xCurrentThread);
 }
 /*-----------------------------------------------------------*/
 
-static void vPortDisableInterrupts( void )
+अटल व्योम vPortDisableInterrupts( व्योम )
 {
-    pthread_sigmask( SIG_BLOCK, &xAllSignals, NULL );
+    pthread_sigmask( SIG_BLOCK, &xAllSignals, शून्य );
 }
 /*-----------------------------------------------------------*/
 
-static void vPortEnableInterrupts( void )
+अटल व्योम vPortEnableInterrupts( व्योम )
 {
-    pthread_sigmask( SIG_UNBLOCK, &xAllSignals, NULL );
+    pthread_sigmask( SIG_UNBLOCK, &xAllSignals, शून्य );
 }
 /*-----------------------------------------------------------*/
 
-void vPortEnterCriticalIDF( void )
+व्योम vPortEnterCriticalIDF( व्योम )
 {
-    if ( uxCriticalNestingIDF == 0 && uxInterruptLevel == 0)
+    अगर ( uxCriticalNestingIDF == 0 && uxInterruptLevel == 0)
     {
         vPortDisableInterrupts();
     }
@@ -279,19 +279,19 @@ void vPortEnterCriticalIDF( void )
 }
 /*-----------------------------------------------------------*/
 
-void vPortExitCriticalIDF( void )
+व्योम vPortExitCriticalIDF( व्योम )
 {
     uxCriticalNestingIDF--;
 
     /* If we have reached 0 then re-enable the interrupts. */
-    if( uxCriticalNestingIDF == 0 && uxInterruptLevel == 0)
+    अगर( uxCriticalNestingIDF == 0 && uxInterruptLevel == 0)
     {
         vPortEnableInterrupts();
     }
 }
 /*-----------------------------------------------------------*/
 
-void vPortYieldFromISR( void )
+व्योम vPortYieldFromISR( व्योम )
 {
     Thread_t *xThreadToSuspend;
     Thread_t *xThreadToResume;
@@ -306,13 +306,13 @@ void vPortYieldFromISR( void )
 }
 /*-----------------------------------------------------------*/
 
-void vPortYield( void )
+व्योम vPortYield( व्योम )
 {
-    BaseType_t prev_intr_level = xPortSetInterruptMask();
+    BaseType_t पूर्व_intr_level = xPortSetInterruptMask();
 
     vPortYieldFromISR();
 
-    vPortClearInterruptMask( prev_intr_level );
+    vPortClearInterruptMask( पूर्व_intr_level );
 }
 /*-----------------------------------------------------------*/
 
@@ -320,37 +320,37 @@ void vPortYield( void )
    Hence, we need to call vPortDisableInterrupts() and vPortEnableInterrupts(), otherwise interrupts
    are never disabled/enabled. */
 
-BaseType_t xPortSetInterruptMask( void )
+BaseType_t xPortSetInterruptMask( व्योम )
 {
-    if (uxInterruptLevel == 0 && uxCriticalNestingIDF == 0) {
+    अगर (uxInterruptLevel == 0 && uxCriticalNestingIDF == 0) {
         vPortDisableInterrupts();
     }
-    BaseType_t prev_intr_level = uxInterruptLevel;
+    BaseType_t पूर्व_intr_level = uxInterruptLevel;
     uxInterruptLevel++;
-    return prev_intr_level;
+    वापस पूर्व_intr_level;
 }
 /*-----------------------------------------------------------*/
 
-void vPortClearInterruptMask( BaseType_t xMask )
+व्योम vPortClearInterruptMask( BaseType_t xMask )
 {
     // Only re-enable interrupts if xMask is 0
     uxInterruptLevel = xMask;
-    if (uxInterruptLevel == 0 && uxCriticalNestingIDF == 0) {
+    अगर (uxInterruptLevel == 0 && uxCriticalNestingIDF == 0) {
         vPortEnableInterrupts();
     }
 }
 /*-----------------------------------------------------------*/
 
-static uint64_t prvGetTimeNs(void)
+अटल uint64_t prvGetTimeNs(व्योम)
 {
-    struct timespec t;
+    काष्ठा timespec t;
 
     clock_gettime(CLOCK_MONOTONIC, &t);
 
-    return t.tv_sec * 1000000000ull + t.tv_nsec;
+    वापस t.tv_sec * 1000000000ull + t.tv_nsec;
 }
 
-static uint64_t prvStartTimeNs;
+अटल uint64_t prvStartTimeNs;
 /* commented as part of the code below in vPortSystemTickHandler,
  * to adjust timing according to full demo requirements */
 /* static uint64_t prvTickCount; */
@@ -359,16 +359,16 @@ static uint64_t prvStartTimeNs;
  * Setup the systick timer to generate the tick interrupts at the required
  * frequency.
  */
-void prvSetupTimerInterrupt( void )
+व्योम prvSetupTimerInterrupt( व्योम )
 {
-    struct itimerval itimer;
-    int iRet;
+    काष्ठा itimerval itimer;
+    पूर्णांक iRet;
 
     /* Initialise the structure with the current timer information. */
     iRet = getitimer( ITIMER_REAL, &itimer );
-    if ( iRet )
+    अगर ( iRet )
     {
-        prvFatalError( "getitimer", errno );
+        prvFatalError( "getitimer", त्रुटि_सं );
     }
 
     /* Set the interval between timer events. */
@@ -380,17 +380,17 @@ void prvSetupTimerInterrupt( void )
     itimer.it_value.tv_usec = portTICK_RATE_MICROSECONDS;
 
     /* Set-up the timer interrupt. */
-    iRet = setitimer( ITIMER_REAL, &itimer, NULL );
-    if ( iRet )
+    iRet = setitimer( ITIMER_REAL, &itimer, शून्य );
+    अगर ( iRet )
     {
-        prvFatalError( "setitimer", errno );
+        prvFatalError( "setitimer", त्रुटि_सं );
     }
 
     prvStartTimeNs = prvGetTimeNs();
 }
 /*-----------------------------------------------------------*/
 
-static void vPortSystemTickHandler( int sig )
+अटल व्योम vPortSystemTickHandler( पूर्णांक sig )
 {
     Thread_t *pxThreadToSuspend;
     Thread_t *pxThreadToResume;
@@ -400,9 +400,9 @@ static void vPortSystemTickHandler( int sig )
     // Handling a timer signal, so we are currently in an interrupt.
     uxInterruptNesting++;
 
-#if ( configUSE_PREEMPTION == 1 )
+#अगर ( configUSE_PREEMPTION == 1 )
     pxThreadToSuspend = prvGetThreadFromTask( xTaskGetCurrentTaskHandle() );
-#endif
+#पूर्ण_अगर
 
     /* Tick Increment, accounting for any lost signals or drift in
      * the timer. */
@@ -416,8 +416,8 @@ static void vPortSystemTickHandler( int sig )
  *    } while (prvTickCount < xExpectedTicks);
 */
 
-#if ( configUSE_PREEMPTION == 1 )
-    if (xSwitchRequired == pdTRUE) {
+#अगर ( configUSE_PREEMPTION == 1 )
+    अगर (xSwitchRequired == pdTRUE) {
         /* Select Next Task. */
         vTaskSwitchContext();
 
@@ -425,23 +425,23 @@ static void vPortSystemTickHandler( int sig )
 
         prvSwitchThread(pxThreadToResume, pxThreadToSuspend);
     }
-#else
-    (void)xSwitchRequired;
-#endif
+#अन्यथा
+    (व्योम)xSwitchRequired;
+#पूर्ण_अगर
 
     // Returning from the timer signal handler, so we are exiting the interrupt.
     uxInterruptNesting--;
 }
 /*-----------------------------------------------------------*/
 
-void vPortThreadDying( void *pxTaskToDelete, volatile BaseType_t *pxPendYield )
+व्योम vPortThreadDying( व्योम *pxTaskToDelete, अस्थिर BaseType_t *pxPendYield )
 {
     Thread_t *pxThread = prvGetThreadFromTask( pxTaskToDelete );
 
     pxThread->xDying = pdTRUE;
 }
 
-void vPortCancelThread( void *pxTaskToDelete )
+व्योम vPortCancelThread( व्योम *pxTaskToDelete )
 {
     Thread_t *pxThreadToCancel = prvGetThreadFromTask( pxTaskToDelete );
 
@@ -449,12 +449,12 @@ void vPortCancelThread( void *pxTaskToDelete )
      * The thread has already been suspended so it can be safely cancelled.
      */
     pthread_cancel( pxThreadToCancel->pthread );
-    pthread_join( pxThreadToCancel->pthread, NULL );
+    pthread_join( pxThreadToCancel->pthread, शून्य );
     event_delete( pxThreadToCancel->ev );
 }
 /*-----------------------------------------------------------*/
 
-static void *prvWaitForStart( void * pvParams )
+अटल व्योम *prvWaitForStart( व्योम * pvParams )
 {
     Thread_t *pxThread = pvParams;
 
@@ -478,18 +478,18 @@ static void *prvWaitForStart( void * pvParams )
         * catch the error. */
     configASSERT( pdFALSE );
 
-    return NULL;
+    वापस शून्य;
 }
 /*-----------------------------------------------------------*/
 
-static void prvSwitchThread( Thread_t *pxThreadToResume,
+अटल व्योम prvSwitchThread( Thread_t *pxThreadToResume,
                              Thread_t *pxThreadToSuspend )
 {
     BaseType_t uxSavedCriticalNestingIDF;
     BaseType_t uxSavedInterruptNesting;
     BaseType_t uxSavedInterruptLevel;
 
-    if ( pxThreadToSuspend != pxThreadToResume )
+    अगर ( pxThreadToSuspend != pxThreadToResume )
     {
         /* It is possible for prvSwitchThread() to be called...
          * - while inside an ISR (i.e., via vPortSystemTickHandler() or vPortYieldFromISR())
@@ -502,9 +502,9 @@ static void prvSwitchThread( Thread_t *pxThreadToResume,
         uxSavedInterruptLevel = uxInterruptLevel;
 
         prvResumeThread( pxThreadToResume );
-        if ( pxThreadToSuspend->xDying )
+        अगर ( pxThreadToSuspend->xDying )
         {
-            pthread_exit( NULL );
+            pthread_exit( शून्य );
         }
         prvSuspendSelf( pxThreadToSuspend );
 
@@ -515,7 +515,7 @@ static void prvSwitchThread( Thread_t *pxThreadToResume,
 }
 /*-----------------------------------------------------------*/
 
-static void prvSuspendSelf( Thread_t *thread )
+अटल व्योम prvSuspendSelf( Thread_t *thread )
 {
     /*
      * Suspend this thread by waiting for a pthread_cond_signal event.
@@ -535,19 +535,19 @@ static void prvSuspendSelf( Thread_t *thread )
 
 /*-----------------------------------------------------------*/
 
-static void prvResumeThread( Thread_t *xThreadId )
+अटल व्योम prvResumeThread( Thread_t *xThreadId )
 {
-    if ( pthread_self() != xThreadId->pthread )
+    अगर ( pthread_self() != xThreadId->pthread )
     {
         event_signal(xThreadId->ev);
     }
 }
 /*-----------------------------------------------------------*/
 
-static void prvSetupSignalsAndSchedulerPolicy( void )
+अटल व्योम prvSetupSignalsAndSchedulerPolicy( व्योम )
 {
-    struct sigaction sigresume, sigtick;
-    int iRet;
+    काष्ठा sigaction sigresume, sigtick;
+    पूर्णांक iRet;
 
     hMainThread = pthread_self();
 
@@ -555,7 +555,7 @@ static void prvSetupSignalsAndSchedulerPolicy( void )
     sigfillset( &xAllSignals );
     /* Don't block SIGINT so this can be used to break into GDB while
      * in a critical section. */
-    sigdelset( &xAllSignals, SIGINT );
+    sigdelset( &xAllSignals, संक_विघ्न );
 
     /*
      * Block all signals in this thread so all new threads
@@ -564,107 +564,107 @@ static void prvSetupSignalsAndSchedulerPolicy( void )
      * When a thread is resumed for the first time, all signals
      * will be unblocked.
      */
-    (void)pthread_sigmask( SIG_SETMASK, &xAllSignals,
+    (व्योम)pthread_sigmask( SIG_SETMASK, &xAllSignals,
                            &xSchedulerOriginalSignalMask );
 
     /* SIG_RESUME is only used with sigwait() so doesn't need a
        handler. */
     sigresume.sa_flags = 0;
-    sigresume.sa_handler = SIG_IGN;
+    sigresume.sa_handler = संक_छोड़ो;
     sigfillset( &sigresume.sa_mask );
 
     sigtick.sa_flags = 0;
     sigtick.sa_handler = vPortSystemTickHandler;
     sigfillset( &sigtick.sa_mask );
 
-    iRet = sigaction( SIG_RESUME, &sigresume, NULL );
-    if ( iRet )
+    iRet = sigaction( SIG_RESUME, &sigresume, शून्य );
+    अगर ( iRet )
     {
-        prvFatalError( "sigaction", errno );
+        prvFatalError( "sigaction", त्रुटि_सं );
     }
 
-    iRet = sigaction( SIGALRM, &sigtick, NULL );
-    if ( iRet )
+    iRet = sigaction( SIGALRM, &sigtick, शून्य );
+    अगर ( iRet )
     {
-        prvFatalError( "sigaction", errno );
+        prvFatalError( "sigaction", त्रुटि_सं );
     }
 }
 /*-----------------------------------------------------------*/
 
-unsigned long ulPortGetRunTime( void )
+अचिन्हित दीर्घ ulPortGetRunTime( व्योम )
 {
-    struct tms xTimes;
+    काष्ठा tms xTimes;
 
-    times( &xTimes );
+    बार( &xTimes );
 
-    return ( unsigned long ) xTimes.tms_utime;
+    वापस ( अचिन्हित दीर्घ ) xTimes.tms_utime;
 }
 /*-----------------------------------------------------------*/
-bool portVALID_LIST_MEM(const void *ptr)
+bool portVALID_LIST_MEM(स्थिर व्योम *ptr)
 {
-    return true;
+    वापस true;
 }
 
-bool portVALID_TCB_MEM(const void *ptr)
+bool portVALID_TCB_MEM(स्थिर व्योम *ptr)
 {
-    return true;
+    वापस true;
 }
 
-bool portVALID_STACK_MEM(const void *ptr)
+bool port_VALID_ढेर_MEM(स्थिर व्योम *ptr)
 {
-    return true;
+    वापस true;
 }
 /*-----------------------------------------------------------*/
 
 portMUX_TYPE port_xTaskLock = portMUX_INITIALIZER_UNLOCKED;
 portMUX_TYPE port_xISRLock = portMUX_INITIALIZER_UNLOCKED;
 
-static const char *TAG = "port";
+अटल स्थिर अक्षर *TAG = "port";
 
-BaseType_t xPortCheckIfInISR(void)
+BaseType_t xPortCheckIfInISR(व्योम)
 {
-    return (uxInterruptNesting == 0) ? pdFALSE : pdTRUE;
+    वापस (uxInterruptNesting == 0) ? pdFALSE : pdTRUE;
 }
 
-void app_main(void);
+व्योम app_main(व्योम);
 
-static void main_task(void* args)
+अटल व्योम main_task(व्योम* args)
 {
     app_main();
-    vTaskDelete(NULL);
+    vTaskDelete(शून्य);
 }
 
-int main(int argc, const char **argv)
+पूर्णांक मुख्य(पूर्णांक argc, स्थिर अक्षर **argv)
 {
     // This makes sure that stdio is flushed after each '\n' so that idf.py monitor
     // reads the program output on time.
-    setvbuf(stdout, NULL, _IOLBF, 0);
+    रखो_भबफ(मानक_निकास, शून्य, _IOLBF, 0);
 
     usleep(1000);
 
     BaseType_t res;
 
-#if ( configNUM_CORES > 1 )
+#अगर ( config_अंक_CORES > 1 )
     res = xTaskCreateAffinitySet(&main_task, "main",
-                                 ESP_TASK_MAIN_STACK, NULL,
-                                 ESP_TASK_MAIN_PRIO, ESP_TASK_MAIN_CORE, NULL);
-#else
+                                 ESP_TASK_MAIN_ढेर, शून्य,
+                                 ESP_TASK_MAIN_PRIO, ESP_TASK_MAIN_CORE, शून्य);
+#अन्यथा
     res = xTaskCreate(&main_task, "main",
-                      ESP_TASK_MAIN_STACK, NULL,
-                      ESP_TASK_MAIN_PRIO, NULL);
-#endif
+                      ESP_TASK_MAIN_ढेर, शून्य,
+                      ESP_TASK_MAIN_PRIO, शून्य);
+#पूर्ण_अगर
 
-    assert(res == pdTRUE);
-    (void)res;
+    निश्चित(res == pdTRUE);
+    (व्योम)res;
 
     ESP_LOGI(TAG, "Starting SMP scheduler.");
     vTaskStartScheduler();
 
     // This line should never be reached
-    assert(false);
+    निश्चित(false);
 }
 
-void esp_vApplicationIdleHook(void)
+व्योम esp_vApplicationIdleHook(व्योम)
 {
     /* vApplicationIdleHook() will only be called if configUSE_IDLE_HOOK is set
      * to 1 in FreeRTOSConfig.h.  It will be called on each iteration of the idle
@@ -680,122 +680,122 @@ void esp_vApplicationIdleHook(void)
     usleep( 15000 );
 }
 
-void esp_vApplicationTickHook( void ) { }
+व्योम esp_vApplicationTickHook( व्योम ) { }
 
-#if  (  configUSE_TICK_HOOK > 0 )
-void vApplicationTickHook( void )
+#अगर  (  configUSE_TICK_HOOK > 0 )
+व्योम vApplicationTickHook( व्योम )
 {
     esp_vApplicationTickHook();
 }
-#endif
+#पूर्ण_अगर
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#अगर ( configSUPPORT_STATIC_ALLOCATION == 1 )
 /* configUSE_STATIC_ALLOCATION is set to 1, so the application must provide an
  * implementation of vApplicationGetIdleTaskMemory() to provide the memory that is
  * used by the Idle task. */
-void vApplicationGetIdleTaskMemory( StaticTask_t ** ppxIdleTaskTCBBuffer,
-                                    StackType_t ** ppxIdleTaskStackBuffer,
-                                    uint32_t * pulIdleTaskStackSize )
+व्योम vApplicationGetIdleTaskMemory( StaticTask_t ** ppxIdleTaskTCBBuffer,
+                                    ढेर_Type_t ** ppx_Idle_Task_ढेर_बफर,
+                                    uint32_t * pul_Idle_Task_ढेर_आकार )
 {
 /* If the buffers to be provided to the Idle task are declared inside this
  * function then they must be declared static - otherwise they will be allocated on
  * the stack and so not exists after this function exits. */
-    static StaticTask_t xIdleTaskTCB;
-    static StackType_t uxIdleTaskStack[ configMINIMAL_STACK_SIZE ];
+    अटल StaticTask_t xIdleTaskTCB;
+    अटल ढेर_Type_t ux_Idle_Task_ढेर[ config_MINIMAL_ढेर_आकार ];
 
     /* Pass out a pointer to the StaticTask_t structure in which the Idle task's
      * state will be stored. */
     *ppxIdleTaskTCBBuffer = &xIdleTaskTCB;
 
     /* Pass out the array that will be used as the Idle task's stack. */
-    *ppxIdleTaskStackBuffer = uxIdleTaskStack;
+    *ppx_Idle_Task_ढेर_बफर = ux_Idle_Task_ढेर;
 
     /* Pass out the size of the array pointed to by *ppxIdleTaskStackBuffer.
      * Note that, as the array is necessarily of type StackType_t,
      * configMINIMAL_STACK_SIZE is specified in bytes. */
-    *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+    *pul_Idle_Task_ढेर_आकार = config_MINIMAL_ढेर_आकार;
 }
-#endif // configSUPPORT_STATIC_ALLOCATION == 1
+#पूर्ण_अगर // configSUPPORT_STATIC_ALLOCATION == 1
 /*-----------------------------------------------------------*/
 
-#if ( (configSUPPORT_STATIC_ALLOCATION == 1) && (configUSE_TIMERS == 1))
+#अगर ( (configSUPPORT_STATIC_ALLOCATION == 1) && (configUSE_TIMERS == 1))
 
 /* When configSUPPORT_STATIC_ALLOCATION is set to 1 the application writer can
  * use a callback function to optionally provide the memory required by the idle
  * and timer tasks.  This is the stack that will be used by the timer task.  It is
  * declared here, as a global, so it can be checked by a test that is implemented
  * in a different file. */
-StackType_t uxTimerTaskStack[ configTIMER_TASK_STACK_DEPTH ];
+ढेर_Type_t ux_Timer_Task_ढेर[ config_TIMER_TASK_ढेर_DEPTH ];
 
 
 /* configUSE_STATIC_ALLOCATION and configUSE_TIMERS are both set to 1, so the
  * application must provide an implementation of vApplicationGetTimerTaskMemory()
  * to provide the memory that is used by the Timer service task. */
-void vApplicationGetTimerTaskMemory( StaticTask_t ** ppxTimerTaskTCBBuffer,
-                                     StackType_t ** ppxTimerTaskStackBuffer,
-                                     uint32_t * pulTimerTaskStackSize )
+व्योम vApplicationGetTimerTaskMemory( StaticTask_t ** ppxTimerTaskTCBBuffer,
+                                     ढेर_Type_t ** ppx_Timer_Task_ढेर_बफर,
+                                     uint32_t * pul_Timer_Task_ढेर_आकार )
 {
 /* If the buffers to be provided to the Timer task are declared inside this
  * function then they must be declared static - otherwise they will be allocated on
  * the stack and so not exists after this function exits. */
-    static StaticTask_t xTimerTaskTCB;
+    अटल StaticTask_t xTimerTaskTCB;
 
     /* Pass out a pointer to the StaticTask_t structure in which the Timer
      * task's state will be stored. */
     *ppxTimerTaskTCBBuffer = &xTimerTaskTCB;
 
     /* Pass out the array that will be used as the Timer task's stack. */
-    *ppxTimerTaskStackBuffer = uxTimerTaskStack;
+    *ppx_Timer_Task_ढेर_बफर = ux_Timer_Task_ढेर;
 
     /* Pass out the size of the array pointed to by *ppxTimerTaskStackBuffer.
      * Note that, as the array is necessarily of type StackType_t,
      * configMINIMAL_STACK_SIZE is specified in bytes. */
-    *pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
+    *pul_Timer_Task_ढेर_आकार = config_TIMER_TASK_ढेर_DEPTH;
 }
-#endif // configSUPPORT_STATIC_ALLOCATION == 1 && (configUSE_TIMERS == 1)
+#पूर्ण_अगर // configSUPPORT_STATIC_ALLOCATION == 1 && (configUSE_TIMERS == 1)
 
-void vPortTakeLock( portMUX_TYPE *lock )
+व्योम vPortTakeLock( portMUX_TYPE *lock )
 {
     spinlock_acquire( lock, portMUX_NO_TIMEOUT);
 }
 
-void vPortReleaseLock( portMUX_TYPE *lock )
+व्योम vPortReleaseLock( portMUX_TYPE *lock )
 {
     spinlock_release( lock );
 }
 
-#define FREERTOS_SMP_MALLOC_CAPS    (MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT)
+#घोषणा FREERTOS_SMP_MALLOC_CAPS    (MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT)
 
-void *pvPortMalloc( size_t xSize )
+व्योम *pvPortMalloc( माप_प्रकार x_आकार )
 {
-    return heap_caps_malloc(xSize, FREERTOS_SMP_MALLOC_CAPS);
+    वापस heap_caps_malloc(x_आकार, FREERTOS_SMP_MALLOC_CAPS);
 }
 
-void vPortFree( void *pv )
+व्योम vPortFree( व्योम *pv )
 {
     heap_caps_free(pv);
 }
 
-void __attribute__((weak)) vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
+व्योम __attribute__((weak)) v_Application_ढेर_Overflow_Hook(TaskHandle_t xTask, अक्षर *pcTaskName)
 {
-#define ERR_STR1 "***ERROR*** A stack overflow in task "
-#define ERR_STR2 " has been detected."
-    const char *str[] = {ERR_STR1, pcTaskName, ERR_STR2};
+#घोषणा ERR_STR1 "***ERROR*** A stack overflow in task "
+#घोषणा ERR_STR2 " has been detected."
+    स्थिर अक्षर *str[] = {ERR_STR1, pcTaskName, ERR_STR2};
 
-    char buf[sizeof(ERR_STR1) + CONFIG_FREERTOS_MAX_TASK_NAME_LEN + sizeof(ERR_STR2) + 1 /* null char */] = {0};
+    अक्षर buf[माप(ERR_STR1) + CONFIG_FREERTOS_MAX_TASK_NAME_LEN + माप(ERR_STR2) + 1 /* null char */] = {0};
 
-    char *dest = buf;
-    for (int i = 0; i < sizeof(str) / sizeof(str[0]); i++) {
-        dest = strcat(dest, str[i]);
+    अक्षर *dest = buf;
+    क्रम (पूर्णांक i = 0; i < माप(str) / माप(str[0]); i++) {
+        dest = म_जोड़ो(dest, str[i]);
     }
-	printf("%s\n", buf);
-    abort();
+	म_लिखो("%s\n", buf);
+    पात();
 }
 
 // ------- Thread Local Storage Pointers Deletion Callbacks -------
 
-#if ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
-void vPortTLSPointersDelCb( void *pxTCB )
+#अगर ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
+व्योम vPortTLSPointersDelCb( व्योम *pxTCB )
 {
     /* Typecast pxTCB to StaticTask_t type to access TCB struct members.
      * pvDummy15 corresponds to pvThreadLocalStoragePointers member of the TCB.
@@ -803,33 +803,33 @@ void vPortTLSPointersDelCb( void *pxTCB )
     StaticTask_t *tcb = ( StaticTask_t * )pxTCB;
 
     /* The TLSP deletion callbacks are stored at an offset of (configNUM_THREAD_LOCAL_STORAGE_POINTERS/2) */
-    TlsDeleteCallbackFunction_t *pvThreadLocalStoragePointersDelCallback = ( TlsDeleteCallbackFunction_t * )( &( tcb->pvDummy15[ ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ) ] ) );
+    TlsDeleteCallbackFunction_t *pvThreadLocalStoragePointersDelCallback = ( TlsDeleteCallbackFunction_t * )( &( tcb->pvDummy15[ ( config_अंक_THREAD_LOCAL_STORAGE_POINTERS / 2 ) ] ) );
 
     /* We need to iterate over half the depth of the pvThreadLocalStoragePointers area
      * to access all TLS pointers and their respective TLS deletion callbacks.
      */
-    for ( int x = 0; x < ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ); x++ ) {
-        if ( pvThreadLocalStoragePointersDelCallback[ x ] != NULL ) {  //If del cb is set
+    क्रम ( पूर्णांक x = 0; x < ( config_अंक_THREAD_LOCAL_STORAGE_POINTERS / 2 ); x++ ) {
+        अगर ( pvThreadLocalStoragePointersDelCallback[ x ] != शून्य ) {  //If del cb is set
             // We skip the check if the callback is executable as that is difficult to determine for different
             // platforms (compare xtensa and riscv code).
             pvThreadLocalStoragePointersDelCallback[ x ]( x, tcb->pvDummy15[ x ] );   //Call del cb
         }
     }
 }
-#endif // CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
+#पूर्ण_अगर // CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
 
-void vPortCleanUpTCB ( void *pxTCB )
+व्योम vPortCleanUpTCB ( व्योम *pxTCB )
 {
-    #if ( CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK )
+    #अगर ( CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK )
         /* Call the user defined task pre-deletion hook */
-        extern void vTaskPreDeletionHook( void * pxTCB );
+        बाह्य व्योम vTaskPreDeletionHook( व्योम * pxTCB );
         vTaskPreDeletionHook( pxTCB );
-    #endif /* CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK */
+    #पूर्ण_अगर /* CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK */
 
-#if ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
+#अगर ( CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS )
     /* Call TLS pointers deletion callbacks */
     vPortTLSPointersDelCb( pxTCB );
-#endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+#पूर्ण_अगर /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 
     vPortCancelThread(pxTCB);
 }
