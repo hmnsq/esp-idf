@@ -75,7 +75,7 @@ rtos_save_\name\()_coproc:
     /* Enable the coprocessor needed by the current task */
     \enable_coproc a1
     mv    s0, ra
-    call  rtos_current_tcb
+    نادي  rtos_current_tcb
     /* If the current TCB is NULL, the coprocessor is used during initialization, even before
      * the scheduler started. Consider this a valid usage, it will be disabled as soon as the
      * scheduler is started anyway */
@@ -85,15 +85,15 @@ rtos_save_\name\()_coproc:
     /* Abort before pinning or saving context if this task is blacklisted from PIE use */
     .if \coproc_idx == PIE_COPROC_IDX
     mv    a1, sp
-    call  vPortAbortIfTaskPieBlacklisted
+    نادي  vPortAbortIfTaskPieBlacklisted
     .endif
 #endif /* CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST */
     /* Prepare parameters of pxPortUpdateCoprocOwner. Source the TCB from s1, which
-     * is preserved across any call made above. */
+     * is preserved across any نادي made above. */
     mv    a2, s1
     li    a1, \coproc_idx
     csrr  a0, mhartid
-    call  pxPortUpdateCoprocOwner
+    نادي  pxPortUpdateCoprocOwner
     /* If the save area is NULL, no need to save context */
     beqz  a0, rtos_save_\name\()_coproc_nosave
     /* If the former owner is the current task (new owner), the return value is -1, we can skip restoring the
@@ -108,7 +108,7 @@ rtos_save_\name\()_coproc_nosave:
     /* Pin current task to current core, s1 has pxCurrentTCBs */
     mv    a0, s1
     csrr  a1, mhartid
-    call  vPortTaskPinToCore
+    نادي  vPortTaskPinToCore
 #endif /* configNUM_CORES > 1 */
     /* Check if we have to restore a previous context from the current TCB */
     mv    a0, s1
@@ -118,7 +118,7 @@ rtos_save_\name\()_coproc_nosave:
      * from the panic handler.  */
     li    a1, 0
     li    a2, \coproc_idx
-    call  pxPortGetCoprocArea
+    نادي  pxPortGetCoprocArea
     /* Get the enable flags from the coprocessor save area */
     lw    a1, RV_COPROC_ENABLE(a0)
     /* To avoid having branches below, set the coprocessor enable flag now */
@@ -216,7 +216,7 @@ hwlp_restore_if_used:
      */
     li    a1, 0
     li    a2, HWLP_COPROC_IDX
-    call  pxPortGetCoprocArea
+    نادي  pxPortGetCoprocArea
     /* Get the enable flags from the coprocessor save area */
     lw    a2, RV_COPROC_ENABLE(a0)
     andi  a1, a2, 1 << HWLP_COPROC_IDX
@@ -569,7 +569,7 @@ rtos_pie_used_cpu0:
     mv    s0, ra
     lw    a0, pxCurrentTCBs   // a0 = task
     mv    a1, sp              // a1 = frame
-    call  vPortTaskUsedPIEOnCPU0
+    نادي  vPortTaskUsedPIEOnCPU0
     /* Returns the context to save the current FPU context, or NULL if the task is not the owner of the FPU on the current core */
     beqz  a0, rtos_pie_used_cpu0_end
     /* As a precaution, enable the FPU. It will be restored to the initialize state when exiting
@@ -675,7 +675,7 @@ rtos_int_enter:
     add     a0, a0, s0                      /* a0 = &pxCurrentTCBs[coreID] // s0 already contains coreID * 4 */
     lw      a0, (a0)                        /* a0 = pxCurrentTCBs[coreID] */
     sw      sp, 0(a0)                       /* pxCurrentTCBs[coreID] = sp */
-    /* We may need a0 below to call pxPortGetCoprocArea */
+    /* We may need a0 below to نادي pxPortGetCoprocArea */
     la      a1, xIsrStackTop                /* a1 = &xIsrStackTop */
     add     a1, a1, s0                      /* a1 = &xIsrStackTop[coreID] // s0 already contains coreID * 4 */
     lw      sp, (a1)                        /* sp = xIsrStackTop[coreID] */
@@ -695,7 +695,7 @@ rtos_int_enter:
     li      a1, 1                           /* Allocate the save area if not already allocated */
     li      a2, HWLP_COPROC_IDX
     mv      s1, ra
-    call    pxPortGetCoprocArea
+    نادي    pxPortGetCoprocArea
     mv      ra, s1
     /* Set the enable flags from the coprocessor save area */
     lw      a1, RV_COPROC_ENABLE(a0)
@@ -786,7 +786,7 @@ isr_skip_decrement:
 
 #if ( SOC_CPU_COPROC_NUM > 0 )
     /* Keep the current TCB in a0 */
-    call    rtos_current_tcb
+    نادي    rtos_current_tcb
 #endif /* ( SOC_CPU_COPROC_NUM > 0 ) */
 
     /* Schedule the next task if a yield is pending */
@@ -835,19 +835,19 @@ context_switch_requested:
     /* Preserve former TCB in s9 */
     mv      s9, a0
 #endif /* ( SOC_CPU_COPROC_NUM > 0 ) */
-    call    vTaskSwitchContext
+    نادي    vTaskSwitchContext
     /* Clears the switch pending flag (stored in s6) */
     sw      zero, 0(s6)                     /* xPortSwitchFlag[coreID] = 0; */
 
 #if ( SOC_CPU_COPROC_NUM > 0 )
-    /* If the Task to schedule is NOT the same as the former one (s9), keep the coprocessors disabled. */
+    /* If the Task to schedule is ليس the same as the former one (s9), keep the coprocessors disabled. */
     /* Check if the new TCB is the same as the previous one */
-    call    rtos_current_tcb
+    نادي    rtos_current_tcb
     beq     a0, s9, no_context_switch
 #endif /* ( SOC_CPU_COPROC_NUM > 0 ) */
 
 #if SOC_CPU_HAS_HWLOOP
-    call    hwlp_restore_if_used
+    نادي    hwlp_restore_if_used
 #endif /* SOC_CPU_HAS_HWLOOP */
 
 restore_stack_pointer:
