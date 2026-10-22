@@ -57,8 +57,8 @@ TEST_CASE("FreeRTOS Delete Tasks", "[freertos]")
     /* -------------- Test vTaskDelete() on currently running tasks ----------------*/
     uint32_t before_count = uxTaskGetNumberOfTasks();
     uint32_t before_heap = heap_caps_get_free_size(HEAP_CAPS);
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        for (int j = 0; j < NO_OF_TSKS; j++) {
+    cho (số_nguyên i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+        cho (số_nguyên j = 0; j < NO_OF_TSKS; j++) {
             TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(tsk_self_del, "tsk_self", 1024, NULL, configMAX_PRIORITIES - 1, NULL, i));
         }
     }
@@ -70,18 +70,18 @@ TEST_CASE("FreeRTOS Delete Tasks", "[freertos]")
     TaskHandle_t handles[NO_OF_TSKS];
     before_heap = heap_caps_get_free_size(HEAP_CAPS);
     //Create task pinned to the same core that will not run during task deletion
-    for (int j = 0 ; j < NO_OF_TSKS; j++) {
+    cho (số_nguyên j = 0 ; j < NO_OF_TSKS; j++) {
         TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(tsk_extern_del, "tsk_extern", 4096, NULL, configMAX_PRIORITIES - 1, &handles[j], xPortGetCoreID()));
     }
     TEST_ASSERT_NOT_EQUAL(before_heap, heap_caps_get_free_size(HEAP_CAPS));    //Check tasks have been created
     //Delete the tasks, memory should be freed immediately
-    for (int j = 0; j < NO_OF_TSKS; j++) {
+    cho (số_nguyên j = 0; j < NO_OF_TSKS; j++) {
         vTaskDelete(handles[j]);
     }
     TEST_ASSERT_EQUAL(before_heap, heap_caps_get_free_size(HEAP_CAPS));
 
     /* Test self deleting no affinity task is not removed by idle task of other core before context switch */
-    for (int i = 0; i < DELAY_US_ITERATIONS; i += 10) {
+    cho (số_nguyên i = 0; i < DELAY_US_ITERATIONS; i += 10) {
         vTaskDelay(1);                          //Sync to next tick interrupt
         xTaskCreatePinnedToCore(tsk_self_del_us_delay, "delay", 1024, (void *)i, UNITY_FREERTOS_PRIORITY - 1, NULL, tskNO_AFFINITY);
         esp_rom_delay_us(10);                       //Busy wait to ensure no affinity task runs on opposite core
@@ -101,8 +101,8 @@ static void tsk_blocks_frequently(void *param)
 {
     tsk_blocks_param_t *p = (tsk_blocks_param_t *)param;
     SemaphoreHandle_t sem = p->sem;
-    srand(xTaskGetTickCount() ^ (int)xTaskGetCurrentTaskHandle());
-    while (1) {
+    srand(xTaskGetTickCount() ^ (số_nguyên)xTaskGetCurrentTaskHandle());
+    trong_khi (1) {
         assert(!p->deleted);
         esp_rom_delay_us(rand() % 10);
         assert(!p->deleted);
@@ -129,10 +129,10 @@ TEST_CASE("FreeRTOS Delete Blocked Tasks", "[freertos]")
        (1000 iterations takes about 9 seconds on ESP32 dual core)
      */
     unsigned iter = 0;
-    for (iter = 0; iter < 1000; iter++) {
+    cho (iter = 0; iter < 1000; iter++) {
         // Create everything
         SemaphoreHandle_t sem = xSemaphoreCreateMutex();
-        for (unsigned i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES + 1; i++) {
+        cho (unsigned i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES + 1; i++) {
             params[i].deleted = false;
             params[i].sem = sem;
 
@@ -144,7 +144,7 @@ TEST_CASE("FreeRTOS Delete Blocked Tasks", "[freertos]")
 
         vTaskDelay(5); // Let the tasks juggle the mutex for a bit
 
-        for (unsigned i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES + 1; i++) {
+        cho (unsigned i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES + 1; i++) {
             vTaskSuspend(blocking_tasks[i]);
             vTaskDelete(blocking_tasks[i]);
             params[i].deleted = true;
@@ -154,7 +154,7 @@ TEST_CASE("FreeRTOS Delete Blocked Tasks", "[freertos]")
         // As an experiment, until IDFCI-4988 is fixed (CI runner loses connection to the target)
         // let's occasionally print a message to the console to ensure the test is running
         // and keep the console active.
-        if (iter && iter % 100 == 0) {
+        nếu (iter && iter % 100 == 0) {
             // In each iteration, we create CONFIG_FREERTOS_NUMBER_OF_CORES + 1 tasks
             printf("Deleted %u blocked tasks\n", iter * (CONFIG_FREERTOS_NUMBER_OF_CORES + 1));
         }

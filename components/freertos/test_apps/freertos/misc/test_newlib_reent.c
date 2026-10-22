@@ -19,23 +19,23 @@
 #include "unity.h"
 #include "test_utils.h"
 
-volatile static int done;
-volatile static int error;
+volatile static số_nguyên done;
+volatile static số_nguyên error;
 
 static void tskTestRand(void *pvParameters)
 {
-    int l;
+    số_nguyên l;
     srand(0x1234);
-    vTaskDelay((int)pvParameters / portTICK_PERIOD_MS);
+    vTaskDelay((số_nguyên)pvParameters / portTICK_PERIOD_MS);
     l = rand();
     printf("Rand1: %d\n", l);
-    if (l != 869320854) {
+    nếu (l != 869320854) {
         error++;
     }
-    vTaskDelay((int)pvParameters / portTICK_PERIOD_MS);
+    vTaskDelay((số_nguyên)pvParameters / portTICK_PERIOD_MS);
     l = rand();
     printf("Rand2: %d\n", l);
-    if (l != 1148737841) {
+    nếu (l != 1148737841) {
         error++;
     }
     done++;
@@ -52,7 +52,7 @@ TEST_CASE("Test for per-task non-reentrant tasks", "[freertos]")
     xTaskCreatePinnedToCore(tskTestRand, "tsk2", stack_size, (void *)200, 3, NULL, 0);
     xTaskCreatePinnedToCore(tskTestRand, "tsk3", stack_size, (void *)300, 3, NULL, CONFIG_FREERTOS_NUMBER_OF_CORES - 1);
     xTaskCreatePinnedToCore(tskTestRand, "tsk4", stack_size, (void *)400, 3, NULL, 0);
-    while (done != 4) {
+    trong_khi (done != 4) {
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
     TEST_ASSERT(error == 0);

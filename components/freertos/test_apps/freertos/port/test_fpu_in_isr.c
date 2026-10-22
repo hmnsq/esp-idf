@@ -13,7 +13,7 @@
 #include "unity.h"
 #include "test_utils.h"
 
-#if SOC_CPU_HAS_FPU && CONFIG_FREERTOS_FPU_IN_ISR
+#nếu SOC_CPU_HAS_FPU && CONFIG_FREERTOS_FPU_IN_ISR
 
 // We can use xtensa API here as currently, non of the RISC-V targets have an FPU
 #include "xtensa_api.h"     // Replace with interrupt allocator API (IDF-3891)
@@ -32,7 +32,7 @@ static void fpu_isr(void *arg)
     - Therefore, we should end up with (0.01) * (2^8) = 2.56 at the end of the loop
     */
     volatile float test_float = 0.01f;
-    for (int i = 0; i < 8; i++) {
+    cho (số_nguyên i = 0; i < 8; i++) {
         test_float = test_float * 2.0f * cosf(0.0f);
     }
     // We allow a 0.1% delta on the final result in case of any loss of precision from floating point calculations
@@ -68,7 +68,7 @@ TEST_CASE("FPU: Usage in level 1 ISR", "[freertos]")
     */
     // We should end up with (2.56) / (2^4) = 0.16 at the end of the first loop
     volatile float test_float = 2.56f;
-    for (int i = 0; i < 4; i++) {
+    cho (số_nguyên i = 0; i < 4; i++) {
         test_float = test_float / (2.0f * cosf(0.0f));
     }
     // We allow a 0.1% delta on the final result in case of any loss of precision from floating point calculations
@@ -79,7 +79,7 @@ TEST_CASE("FPU: Usage in level 1 ISR", "[freertos]")
 
     // Continue using the FPU from a task context after the interrupt returns
     // We should end up with (0.16) / (2^4) = 0.01 at the end of the first loop
-    for (int i = 0; i < 4; i++) {
+    cho (số_nguyên i = 0; i < 4; i++) {
         test_float = test_float / (2.0f * cosf(0.0f));
     }
     // We allow a 0.1% delta on the final result in case of any loss of precision from floating point calculations
@@ -110,16 +110,16 @@ Expected:
 static void unpinned_task(void *arg)
 {
     // Disable scheduling/preemption to make sure the current task doesn't switch cores
-#if ( ( CONFIG_FREERTOS_SMP ) && ( !CONFIG_FREERTOS_UNICORE ) )
+#nếu ( ( CONFIG_FREERTOS_SMP ) && ( !CONFIG_FREERTOS_UNICORE ) )
     vTaskPreemptionDisable(NULL);
-#else
+#không_thì
     vTaskSuspendAll();
 #endif
     // Check that the task is unpinned
-#if !CONFIG_FREERTOS_UNICORE
-#if CONFIG_FREERTOS_SMP
+#nếu !CONFIG_FREERTOS_UNICORE
+#nếu CONFIG_FREERTOS_SMP
     TEST_ASSERT_EQUAL(tskNO_AFFINITY, vTaskCoreAffinityGet(NULL));
-#else
+#không_thì
     TEST_ASSERT_EQUAL(tskNO_AFFINITY, xTaskGetCoreID(NULL));
 #endif
 #endif // !CONFIG_FREERTOS_UNICORE
@@ -131,17 +131,17 @@ static void unpinned_task(void *arg)
     xt_set_intset(1 << SW_ISR_LEVEL_1);
 
     // Task should remain unpinned after the ISR uses the FPU
-#if !CONFIG_FREERTOS_UNICORE
-#if CONFIG_FREERTOS_SMP
+#nếu !CONFIG_FREERTOS_UNICORE
+#nếu CONFIG_FREERTOS_SMP
     TEST_ASSERT_EQUAL(tskNO_AFFINITY, vTaskCoreAffinityGet(NULL));
-#else
+#không_thì
     TEST_ASSERT_EQUAL(tskNO_AFFINITY, xTaskGetCoreID(NULL));
 #endif
 #endif // !CONFIG_FREERTOS_UNICORE
     // Re-enable scheduling/preemption
-#if ( ( CONFIG_FREERTOS_SMP ) && ( !CONFIG_FREERTOS_UNICORE ) )
+#nếu ( ( CONFIG_FREERTOS_SMP ) && ( !CONFIG_FREERTOS_UNICORE ) )
     vTaskPreemptionEnable(NULL);
-#else
+#không_thì
     xTaskResumeAll();
 #endif
 

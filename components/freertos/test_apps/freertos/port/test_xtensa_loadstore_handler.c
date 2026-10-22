@@ -10,7 +10,7 @@
 
 #include "sdkconfig.h"
 
-#if CONFIG_IDF_TARGET_ARCH_XTENSA && CONFIG_ESP32_IRAM_AS_8BIT_ACCESSIBLE_MEMORY
+#nếu CONFIG_IDF_TARGET_ARCH_XTENSA && CONFIG_ESP32_IRAM_AS_8BIT_ACCESSIBLE_MEMORY
 
 #include <esp_types.h>
 #include <stdio.h>
@@ -37,7 +37,7 @@ typedef struct {
 } iram_data_t;
 
 static volatile iram_data_t *s_iram;
-static volatile int isr_hits;
+static volatile số_nguyên isr_hits;
 
 TEST_CASE("LoadStore Exception handler", "[freertos]")
 {
@@ -65,7 +65,7 @@ TEST_CASE("LoadStore Exception handler", "[freertos]")
     int16_t *arr16 = (int16_t *)arr;
     int32_t *arr32 = (int32_t *)arr;
 
-    for (int i = 0; i < 1024; i++) {
+    cho (số_nguyên i = 0; i < 1024; i++) {
 
         // LoadStoreError
 
@@ -151,7 +151,7 @@ TEST_CASE("LoadStore Exception handler", "[freertos]")
 
 static void IRAM_ATTR level_isr(void *arg)
 {
-    const int cpu_intr_num = *(const int *)arg;
+    const số_nguyên cpu_intr_num = *(const số_nguyên *)arg;
 
     // Clear the SW interrupt source
     xt_set_intclear(1 << cpu_intr_num);
@@ -159,7 +159,7 @@ static void IRAM_ATTR level_isr(void *arg)
     // Schedule another pending level interrupt while still inside this ISR
     // to keep dispatch_c_isr in the interrupt loop handling. The pending
     // interrupt will be handled after this ISR returns.
-    if (isr_hits == 0) {
+    nếu (isr_hits == 0) {
         xt_set_intset(1 << cpu_intr_num);
     }
 
@@ -171,13 +171,13 @@ static void IRAM_ATTR level_isr(void *arg)
     isr_hits++;
 }
 
-static void run_sw_isr_level(int int_level)
+static void run_sw_isr_level(số_nguyên int_level)
 {
     memset((void *)s_iram, 0, sizeof(iram_data_t));
     isr_hits = 0;
 
     intr_handle_t handle;
-    int cpu_intr_num = (int_level == 1) ? SW_ISR_NUM_L1 : SW_ISR_NUM_L3;
+    số_nguyên cpu_intr_num = (int_level == 1) ? SW_ISR_NUM_L1 : SW_ISR_NUM_L3;
     TEST_ASSERT_EQUAL(ESP_OK, esp_intr_alloc((int_level == 1) ? ETS_INTERNAL_SW0_INTR_SOURCE : ETS_INTERNAL_SW1_INTR_SOURCE,
                                              (int_level == 1) ? ESP_INTR_FLAG_LEVEL1 : ESP_INTR_FLAG_LEVEL3,
                                              level_isr,
@@ -189,7 +189,7 @@ static void run_sw_isr_level(int int_level)
 
     // Wait for the ISR to be invoked twice
     TickType_t start = xTaskGetTickCount();
-    while (isr_hits < 2 && (xTaskGetTickCount() - start) < pdMS_TO_TICKS(500)) {
+    trong_khi (isr_hits < 2 && (xTaskGetTickCount() - start) < pdMS_TO_TICKS(500)) {
         vTaskDelay(1);
     }
 
@@ -229,7 +229,7 @@ TEST_CASE("LoadStore: zero-overhead loop continues after IRAM 8-bit store", "[fr
     uint8_t *src = heap_caps_calloc(len, 1, MALLOC_CAP_IRAM_8BIT);
     TEST_ASSERT_NOT_NULL(src);
 
-    for (unsigned i = 0; i < len; i++) {
+    cho (unsigned i = 0; i < len; i++) {
         src[i] = i + 1;
         dst[i] = 0xCC;
     }
@@ -266,7 +266,7 @@ TEST_CASE("LoadStore: zero-overhead loop continues after IRAM 8-bit store", "[fr
 
     ESP_LOG_BUFFER_HEX("dst  after", dst, len);
 
-    for (unsigned i = 0; i < len; i++) {
+    cho (unsigned i = 0; i < len; i++) {
         TEST_ASSERT_EQUAL_HEX8(src[i], dst[i]);
     }
 

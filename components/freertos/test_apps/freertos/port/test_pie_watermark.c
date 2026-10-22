@@ -19,7 +19,7 @@
  * As such, the port layer of FreeRTOS will adjust the lowest address of the stack when a coprocessor
  * context is saved.
  */
-#if SOC_CPU_HAS_PIE
+#nếu SOC_CPU_HAS_PIE
 
 /**
  * @brief Performs the signed sum of two 4-word vectors using the PIE.
@@ -54,7 +54,7 @@ TEST_CASE("PIE: Context save does not affect stack watermark", "[freertos]")
     TaskHandle_t pvCreatedTask;
     /* Force the FreeRTOS port layer to store a PIE context in the current task.
      * So let's use the PIE and make sure another task, on the SAME CORE, also uses it */
-    const int core_id = xPortGetCoreID();
+    const số_nguyên core_id = xPortGetCoreID();
     const TaskHandle_t current_handle = xTaskGetCurrentTaskHandle();
 
     /* Get the current stack watermark */
