@@ -35,7 +35,7 @@
 
 /* This file redefines API functions to be called through a wrapper macro, but
  * only for ports that are using the MPU. */
-#if ( portUSING_MPU_WRAPPERS == 1 )
+#إذا ( portUSING_MPU_WRAPPERS == 1 )
 
 /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE will be defined when this file is
  * included from queue.c or task.c to prevent it from having an effect within
@@ -65,12 +65,12 @@
         #define vTaskResume                            MPU_vTaskResume
         #define vTaskSuspendAll                        MPU_vTaskSuspendAll
         #define xTaskResumeAll                         MPU_xTaskResumeAll
-        #define xTaskGetTickCount                      MPU_xTaskGetTickCount
-        #define uxTaskGetNumberOfTasks                 MPU_uxTaskGetNumberOfTasks
+        #define x_Task_Get_Tick_تعداد                      MPU_x_Task_Get_Tick_تعداد
+        #define ux_Task_Get_العدد_Of_Tasks                 MPU_ux_Task_Get_العدد_Of_Tasks
         #define pcTaskGetName                          MPU_pcTaskGetName
         #define xTaskGetHandle                         MPU_xTaskGetHandle
-        #define uxTaskGetStackHighWaterMark            MPU_uxTaskGetStackHighWaterMark
-        #define uxTaskGetStackHighWaterMark2           MPU_uxTaskGetStackHighWaterMark2
+        #define ux_Task_Get_مكدس_أعلى_Water_Mark            MPU_ux_Task_Get_مكدس_أعلى_Water_Mark
+        #define ux_Task_Get_مكدس_أعلى_Water_Mark2           MPU_ux_Task_Get_مكدس_أعلى_Water_Mark2
         #define vTaskSetApplicationTaskTag             MPU_vTaskSetApplicationTaskTag
         #define xTaskGetApplicationTaskTag             MPU_xTaskGetApplicationTaskTag
         #define vTaskSetThreadLocalStoragePointer      MPU_vTaskSetThreadLocalStoragePointer
@@ -86,7 +86,7 @@
         #define xTaskGenericNotifyWait                 MPU_xTaskGenericNotifyWait
         #define ulTaskGenericNotifyTake                MPU_ulTaskGenericNotifyTake
         #define xTaskGenericNotifyStateClear           MPU_xTaskGenericNotifyStateClear
-        #define ulTaskGenericNotifyValueClear          MPU_ulTaskGenericNotifyValueClear
+        #define ul_Task_Generic_Notify_قيمة_Clear          MPU_ul_Task_Generic_Notify_قيمة_Clear
         #define xTaskCatchUpTicks                      MPU_xTaskCatchUpTicks
 
         #define xTaskGetCurrentTaskHandle              MPU_xTaskGetCurrentTaskHandle
@@ -117,7 +117,7 @@
         #define xQueueSelectFromSet                    MPU_xQueueSelectFromSet
         #define xQueueGenericReset                     MPU_xQueueGenericReset
 
-        #if ( configQUEUE_REGISTRY_SIZE > 0 )
+        #إذا ( configQUEUE_REGISTRY_SIZE > 0 )
             #define vQueueAddToRegistry                MPU_vQueueAddToRegistry
             #define vQueueUnregisterQueue              MPU_vQueueUnregisterQueue
             #define pcQueueGetName                     MPU_pcQueueGetName
@@ -167,7 +167,7 @@
         #define PRIVILEGED_DATA    __attribute__( ( section( "privileged_data" ) ) )
         #define FREERTOS_SYSTEM_CALL
 
-    #else /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
+    #وإلا /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
 
 /* Ensure API functions go in the privileged execution section. */
         #define PRIVILEGED_FUNCTION     __attribute__( ( section( "privileged_functions" ) ) )
@@ -176,7 +176,7 @@
 
     #endif /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
 
-#else /* portUSING_MPU_WRAPPERS */
+#وإلا /* portUSING_MPU_WRAPPERS */
 
     #define PRIVILEGED_FUNCTION
     #define PRIVILEGED_DATA
