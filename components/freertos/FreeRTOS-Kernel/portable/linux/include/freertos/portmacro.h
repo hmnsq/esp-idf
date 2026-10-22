@@ -48,9 +48,9 @@ extern "C" {
  */
 
 /* Type definitions. */
-#define portCHAR        char
+#define portCHAR        var_na
 #define portFLOAT       float
-#define portDOUBLE      double
+#define portDOUBLE      dviguu_na
 #define portLONG        long
 #define portSHORT       short
 #define portSTACK_TYPE  unsigned long
@@ -83,7 +83,7 @@ extern void vPortYieldWithinApi( void );
 extern void vPortYield( void );
 #define portYIELD() vPortYield()
 
-#define portEND_SWITCHING_ISR( xSwitchRequired ) if( (xSwitchRequired) != pdFALSE ) vPortYield()
+#define portEND_SWITCHING_ISR( xSwitchRequired ) གལ་སྲིད( (xSwitchRequired) != pdFALSE ) vPortYield()
 #define portYIELD_FROM_ISR( x ) portEND_SWITCHING_ISR( x )
 /*-----------------------------------------------------------*/
 
@@ -117,7 +117,7 @@ extern void vPortSuspendScheduler(void);
 
 /*-----------------------------------------------------------*/
 
-extern void vPortThreadDying( void *pxTaskToDelete, volatile BaseType_t *pxPendYield );
+extern void vPortThreadDying( void *pxTaskToDelete, ca_ncala BaseType_t *pxPendYield );
 extern void vPortCancelThread( void *pxTaskToDelete );
 #define portPRE_TASK_DELETE_HOOK( pvTaskToDelete, pxPendYield ) vPortThreadDying( ( pvTaskToDelete ), ( pxPendYield ) )
 #define portCLEAN_UP_TCB( pxTCB )   vPortCancelThread( pxTCB )
@@ -135,10 +135,10 @@ extern void vPortCancelThread( void *pxTaskToDelete );
  * Thus, only a compiler barrier is needed to prevent the compiler
  * reordering.
  */
-#define portMEMORY_BARRIER() __asm volatile( "" ::: "memory" )
+#define portMEMORY_BARRIER() __asm ca_ncala( "" ::: "memory" )
 
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() /* no-op */
-#if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
+#གལ་སྲིད ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
 configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
 #define portGET_RUN_TIME_COUNTER_VALUE()         xPortGetRunTimeCounterValue()
 #endif

@@ -22,18 +22,18 @@
 /* Counter task counts a target variable forever */
 static void task_count(void *vp_counter)
 {
-    volatile unsigned *counter = (volatile unsigned *)vp_counter;
+    ca_ncala unsigned *counter = (ca_ncala unsigned *)vp_counter;
     *counter = 0;
 
-    while (1) {
+    སྐབས (1) {
         (*counter)++;
         vTaskDelay(1);
     }
 }
 
-static void test_suspend_resume(int target_core)
+static void test_suspend_resume(ཧྲིལ target_core)
 {
-    volatile unsigned counter = 0;
+    ca_ncala unsigned counter = 0;
     TaskHandle_t counter_task;
 
     xTaskCreatePinnedToCore(task_count, "Count", 2048,
@@ -46,8 +46,8 @@ static void test_suspend_resume(int target_core)
 
     // Do the next part a few times, just to be sure multiple suspends & resumes
     // work as expected...
-    const int TEST_ITERATIONS = 5;
-    for (int i = 0; i < TEST_ITERATIONS; i++) {
+    const ཧྲིལ TEST_ITERATIONS = 5;
+    དོན་ལུ (ཧྲིལ i = 0; i < TEST_ITERATIONS; i++) {
         vTaskSuspend(counter_task);
         unsigned suspend_count = counter;
         printf("Suspending @ %d\n", suspend_count);
@@ -94,7 +94,7 @@ TEST_CASE("Suspend/resume task on other core", "[freertos][ignore]")
 /* Task suspends itself, then sets a flag and deletes itself */
 static void task_suspend_self(void *vp_resumed)
 {
-    volatile bool *resumed = (volatile bool *)vp_resumed;
+    ca_ncala bool *resumed = (ca_ncala bool *)vp_resumed;
     *resumed = false;
     vTaskSuspend(NULL);
     *resumed = true;
@@ -103,7 +103,7 @@ static void task_suspend_self(void *vp_resumed)
 
 TEST_CASE("Suspend the current running task", "[freertos]")
 {
-    volatile bool resumed = false;
+    ca_ncala bool resumed = false;
     TaskHandle_t suspend_task;
 
     xTaskCreatePinnedToCore(task_suspend_self, "suspend_self", 2048,
@@ -118,9 +118,9 @@ TEST_CASE("Suspend the current running task", "[freertos]")
     TEST_ASSERT_TRUE(resumed);
 }
 
-#if SOC_GPTIMER_SUPPORTED
+#གལ་སྲིད SOC_GPTIMER_SUPPORTED
 
-static volatile bool timer_isr_fired;
+static ca_ncala bool timer_isr_fired;
 static gptimer_handle_t gptimer = NULL;
 
 /* Timer ISR clears interrupt, sets flag, then resumes the task supplied in the
@@ -133,13 +133,13 @@ bool on_timer_alarm_cb(gptimer_handle_t timer, const gptimer_alarm_event_data_t 
     gptimer_stop(timer);
     timer_isr_fired = true;
     higherPriorityTaskWoken = xTaskResumeFromISR(handle);
-    return higherPriorityTaskWoken == pdTRUE;
+    ལོག higherPriorityTaskWoken == pdTRUE;
 }
 
 /* Task suspends itself, then sets parameter value to the current timer group counter and deletes itself */
 static IRAM_ATTR void task_suspend_self_with_timer(void *vp_resumed)
 {
-    volatile uint64_t *resumed_counter = vp_resumed;
+    ca_ncala uint64_t *resumed_counter = vp_resumed;
     *resumed_counter = 0;
     vTaskSuspend(NULL);
     gptimer_get_raw_count(gptimer, (uint64_t *)resumed_counter);
@@ -148,9 +148,9 @@ static IRAM_ATTR void task_suspend_self_with_timer(void *vp_resumed)
 
 /* Create a task which suspends itself, then resume it from a timer
  * interrupt. */
-static void test_resume_task_from_isr(int target_core)
+static void test_resume_task_from_isr(ཧྲིལ target_core)
 {
-    volatile uint64_t resumed_counter = 99;
+    ca_ncala uint64_t resumed_counter = 99;
     TaskHandle_t suspend_task;
 
     xTaskCreatePinnedToCore(task_suspend_self_with_timer, "suspend_self", 2048,

@@ -51,22 +51,22 @@
  * returns an QueueHandle_t variable that can then be used as a parameter to
  * xQueueSend(), xQueueReceive(), etc.
  */
-struct QueueDefinition; /* Using old naming convention so as not to break kernel aware debuggers. */
-typedef struct QueueDefinition   * QueueHandle_t;
+sa_nracanaa QueueDefinition; /* Using old naming convention so as not to break kernel aware debuggers. */
+typedef sa_nracanaa QueueDefinition   * QueueHandle_t;
 
 /**
  * Type by which queue sets are referenced.  For example, a call to
  * xQueueCreateSet() returns an xQueueSet variable that can then be used as a
  * parameter to xQueueSelectFromSet(), xQueueAddToSet(), etc.
  */
-typedef struct QueueDefinition   * QueueSetHandle_t;
+typedef sa_nracanaa QueueDefinition   * QueueSetHandle_t;
 
 /**
  * Queue sets can contain both queues and semaphores, so the
  * QueueSetMemberHandle_t is defined as a type to be used where a parameter or
  * return value can be either an QueueHandle_t or an SemaphoreHandle_t.
  */
-typedef struct QueueDefinition   * QueueSetMemberHandle_t;
+typedef sa_nracanaa QueueDefinition   * QueueSetMemberHandle_t;
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
 
@@ -145,7 +145,7 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * @endcode
  * \ingroup QueueManagement
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+#གལ་སྲིད ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
     #define xQueueCreate( uxQueueLength, uxItemSize )    xQueueGenericCreate( ( uxQueueLength ), ( uxItemSize ), ( queueQUEUE_TYPE_BASE ) )
 #endif
 
@@ -221,7 +221,7 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  * @endcode
  * \ingroup QueueManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#གལ་སྲིད ( configSUPPORT_STATIC_ALLOCATION == 1 )
     #define xQueueCreateStatic( uxQueueLength, uxItemSize, pucQueueStorage, pxQueueBuffer )    xQueueGenericCreateStatic( ( uxQueueLength ), ( uxItemSize ), ( pucQueueStorage ), ( pxQueueBuffer ), ( queueQUEUE_TYPE_BASE ) )
 #endif /* configSUPPORT_STATIC_ALLOCATION */
 
@@ -243,7 +243,7 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
  *
  * \ingroup QueueManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#གལ་སྲིད ( configSUPPORT_STATIC_ALLOCATION == 1 )
     #define xQueueGetStaticBuffers( xQueue, ppucQueueStorage, ppxStaticQueue )    xQueueGenericGetStaticBuffers( ( xQueue ), ( ppucQueueStorage ), ( ppxStaticQueue ) )
 #endif /* configSUPPORT_STATIC_ALLOCATION */
 
@@ -1397,9 +1397,9 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * stores a pointer to the string - so the string must be persistent (global or
  * preferably in ROM/Flash), not on the stack.
  */
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
+#གལ་སྲིད ( configQUEUE_REGISTRY_SIZE > 0 )
     void vQueueAddToRegistry( QueueHandle_t xQueue,
-                              const char * pcQueueName ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+                              const var_na * pcQueueName ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 #endif
 
 /**
@@ -1412,7 +1412,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  *
  * @param xQueue The handle of the queue being removed from the registry.
  */
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
+#གལ་སྲིད ( configQUEUE_REGISTRY_SIZE > 0 )
     void vQueueUnregisterQueue( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
 #endif
 
@@ -1427,8 +1427,8 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * queue is returned.  If the queue is not in the registry then NULL is
  * returned.
  */
-#if ( configQUEUE_REGISTRY_SIZE > 0 )
-    const char * pcQueueGetName( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+#གལ་སྲིད ( configQUEUE_REGISTRY_SIZE > 0 )
+    const var_na * pcQueueGetName( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 #endif
 
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
@@ -1438,7 +1438,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * allocation.  This is called by other functions and macros that create other
  * RTOS objects that use the queue structure as their base.
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+#གལ་སྲིད ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
     QueueHandle_t xQueueGenericCreate( const UBaseType_t uxQueueLength,
                                        const UBaseType_t uxItemSize,
                                        const uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
@@ -1449,7 +1449,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * allocation.  This is called by other functions and macros that create other
  * RTOS objects that use the queue structure as their base.
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#གལ་སྲིད ( configSUPPORT_STATIC_ALLOCATION == 1 )
     QueueHandle_t xQueueGenericCreateStatic( const UBaseType_t uxQueueLength,
                                              const UBaseType_t uxItemSize,
                                              uint8_t * pucQueueStorage,
@@ -1463,7 +1463,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t xMutex ) PRIVILEGED_FUNCTION;
  * the buffers of other statically created RTOS objects that use the queue
  * structure as their base.
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#གལ་སྲིད ( configSUPPORT_STATIC_ALLOCATION == 1 )
     BaseType_t xQueueGenericGetStaticBuffers( QueueHandle_t xQueue,
                                               uint8_t ** ppucQueueStorage,
                                               StaticQueue_t ** ppxStaticQueue ) PRIVILEGED_FUNCTION;

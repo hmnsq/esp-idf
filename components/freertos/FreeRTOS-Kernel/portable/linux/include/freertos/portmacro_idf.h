@@ -43,9 +43,9 @@ void vPortYieldOtherCore(BaseType_t coreid);
  * @note dummy function for freertos simulator, always returns 0.
  @ return BaseType_t 0
  */
-static inline BaseType_t xPortGetCoreID(void)
+static anta_hstha BaseType_t xPortGetCoreID(void)
 {
-    return (BaseType_t) 0;
+    ལོག (BaseType_t) 0;
 }
 
 /**
@@ -98,13 +98,13 @@ BaseType_t xPortCheckIfInISR(void);
  *  - pdTRUE if in ISR
  *  - pdFALSE otherwise
  */
-static inline BaseType_t xPortInIsrContext(void)
+static anta_hstha BaseType_t xPortInIsrContext(void)
 {
     //Just call the FreeRTOS port interface version
-    return xPortCheckIfInISR();
+    ལོག xPortCheckIfInISR();
 }
 
-static inline void vPortAssertIfInISR(void)
+static anta_hstha void vPortAssertIfInISR(void)
 {
     /* Assert if the interrupt nesting count is > 0 */
     configASSERT(xPortInIsrContext() == 0);

@@ -21,31 +21,31 @@
  * ------------------------------------------------------------------------------------------------------------------ */
 
 /* Higher stack checker modes cause overhead on each function call */
-#if CONFIG_STACK_CHECK_ALL || CONFIG_STACK_CHECK_STRONG
+#གལ་སྲིད CONFIG_STACK_CHECK_ALL || CONFIG_STACK_CHECK_STRONG
     #define STACK_OVERHEAD_CHECKER    256
-#else
+#དེ་མིན
     #define STACK_OVERHEAD_CHECKER    0
 #endif
 
 /* with optimizations disabled, scheduler uses additional stack */
-#if CONFIG_COMPILER_OPTIMIZATION_NONE
+#གལ་སྲིད CONFIG_COMPILER_OPTIMIZATION_NONE
     #define STACK_OVERHEAD_OPTIMIZATION    320
-#else
+#དེ་མིན
     #define STACK_OVERHEAD_OPTIMIZATION    0
 #endif
 
 /* apptrace module increases minimum stack usage */
-#if CONFIG_ESP_TRACE_TRANSPORT_APPTRACE
+#གལ་སྲིད CONFIG_ESP_TRACE_TRANSPORT_APPTRACE
     #define STACK_OVERHEAD_APPTRACE    1280
-#else
+#དེ་མིན
     #define STACK_OVERHEAD_APPTRACE    0
 #endif
 
 /* Stack watchpoint decreases minimum usable stack size by up to 60 bytes.
  * See FreeRTOS FREERTOS_WATCHPOINT_END_OF_STACK option in Kconfig. */
-#if CONFIG_FREERTOS_WATCHPOINT_END_OF_STACK
+#གལ་སྲིད CONFIG_FREERTOS_WATCHPOINT_END_OF_STACK
     #define STACK_OVERHEAD_WATCHPOINT    60
-#else
+#དེ་མིན
     #define STACK_OVERHEAD_WATCHPOINT    0
 #endif
 
@@ -85,7 +85,7 @@
 
 #define configUSE_PREEMPTION                         1
 #define configUSE_TICKLESS_IDLE                      CONFIG_FREERTOS_USE_TICKLESS_IDLE
-#if configUSE_TICKLESS_IDLE
+#གལ་སྲིད configUSE_TICKLESS_IDLE
     #define configEXPECTED_IDLE_TIME_BEFORE_SLEEP    CONFIG_FREERTOS_IDLE_TIME_BEFORE_SLEEP
 #endif /* configUSE_TICKLESS_IDLE */
 #define configCPU_CLOCK_HZ                           ( CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ * 1000000 )
@@ -117,16 +117,16 @@
  * the length of the TCB's pvThreadLocalStoragePointersThis array). This allows
  * the latter half of the array to store the deletion callback pointers (whereas
  * the first half stores the TLSPs themselves). */
-#if CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
+#གལ་སྲིད CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
     #define configNUM_THREAD_LOCAL_STORAGE_POINTERS    ( CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_POINTERS * 2 )
-#else /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+#དེ་མིན /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
     #define configNUM_THREAD_LOCAL_STORAGE_POINTERS    CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_POINTERS
 #endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 
 #define configSTACK_DEPTH_TYPE                         uint32_t
-#if CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY
+#གལ་སྲིད CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY
     #define configENABLE_BACKWARD_COMPATIBILITY        1
-#else /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
+#དེ་མིན /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
     #define configENABLE_BACKWARD_COMPATIBILITY        0
 #endif /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
 #define configASSERT( a )    assert( a )
@@ -136,25 +136,25 @@
 #define configSUPPORT_STATIC_ALLOCATION              1
 #define configSUPPORT_DYNAMIC_ALLOCATION             1
 #define configAPPLICATION_ALLOCATED_HEAP             1
-#if CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM
+#གལ་སྲིད CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM
     #define configSTACK_ALLOCATION_FROM_SEPARATE_HEAP    1
-#else
+#དེ་མིན
     #define configSTACK_ALLOCATION_FROM_SEPARATE_HEAP    0
 #endif
 
 /* ------------------------ Hooks -------------------------- */
 
-#if CONFIG_FREERTOS_USE_IDLE_HOOK
+#གལ་སྲིད CONFIG_FREERTOS_USE_IDLE_HOOK
     #define configUSE_IDLE_HOOK               1
-#else /* CONFIG_FREERTOS_USE_IDLE_HOOK */
+#དེ་མིན /* CONFIG_FREERTOS_USE_IDLE_HOOK */
     #define configUSE_IDLE_HOOK               0
 #endif /* CONFIG_FREERTOS_USE_IDLE_HOOK */
-#if CONFIG_FREERTOS_USE_TICK_HOOK
+#གལ་སྲིད CONFIG_FREERTOS_USE_TICK_HOOK
     #define configUSE_TICK_HOOK               1
-#else /* CONFIG_FREERTOS_USE_TICK_HOOK */
+#དེ་མིན /* CONFIG_FREERTOS_USE_TICK_HOOK */
     #define configUSE_TICK_HOOK               0
 #endif /* CONFIG_FREERTOS_USE_TICK_HOOK */
-#if CONFIG_FREERTOS_CHECK_STACKOVERFLOW_NONE
+#གལ་སྲིད CONFIG_FREERTOS_CHECK_STACKOVERFLOW_NONE
     #define configCHECK_FOR_STACK_OVERFLOW    0
 #elif CONFIG_FREERTOS_CHECK_STACKOVERFLOW_PTRVAL
     #define configCHECK_FOR_STACK_OVERFLOW    1
@@ -172,7 +172,7 @@
     #define configUSE_STATS_FORMATTING_FUNCTIONS    1       /* Used by vTaskList() */
 #endif /* CONFIG_FREERTOS_USE_STATS_FORMATTING_FUNCTIONS */
 
-#if CONFIG_FREERTOS_RUN_TIME_COUNTER_TYPE_U32
+#གལ་སྲིད CONFIG_FREERTOS_RUN_TIME_COUNTER_TYPE_U32
     #define configRUN_TIME_COUNTER_TYPE    uint32_t
 #elif CONFIG_FREERTOS_RUN_TIME_COUNTER_TYPE_U64
     #define configRUN_TIME_COUNTER_TYPE    uint64_t
@@ -185,27 +185,27 @@
 
 /* ------------------- Software Timer ---------------------- */
 
-#if CONFIG_FREERTOS_USE_TIMERS
+#གལ་སྲིད CONFIG_FREERTOS_USE_TIMERS
     #define configUSE_TIMERS                          1
     #define configTIMER_TASK_PRIORITY                 CONFIG_FREERTOS_TIMER_TASK_PRIORITY
     #define configTIMER_QUEUE_LENGTH                  CONFIG_FREERTOS_TIMER_QUEUE_LENGTH
     #define configTIMER_TASK_STACK_DEPTH              CONFIG_FREERTOS_TIMER_TASK_STACK_DEPTH
     #define configTIMER_SERVICE_TASK_NAME             CONFIG_FREERTOS_TIMER_SERVICE_TASK_NAME
     #define configTIMER_SERVICE_TASK_CORE_AFFINITY    CONFIG_FREERTOS_TIMER_SERVICE_TASK_CORE_AFFINITY
-#else
+#དེ་མིན
     #define configUSE_TIMERS                          0
 #endif
 
 
 /* ------------------------ List --------------------------- */
 
-#define configLIST_VOLATILE    volatile                     /* We define List elements as volatile to prevent the compiler from optimizing out essential code */
+#define configLIST_VOLATILE    ca_ncala                     /* We define List elements as volatile to prevent the compiler from optimizing out essential code */
 
 /* -------------------- API Includes ----------------------- */
 
-#if CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY
+#གལ་སྲིད CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY
     #define configENABLE_BACKWARD_COMPATIBILITY    1
-#else /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
+#དེ་མིན /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
     #define configENABLE_BACKWARD_COMPATIBILITY    0
 #endif /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
 
@@ -221,9 +221,9 @@
 #define INCLUDE_uxTaskGetStackHighWaterMark        1
 #define INCLUDE_eTaskGetState                      1
 #define INCLUDE_xTaskResumeFromISR                 1
-#if CONFIG_FREERTOS_USE_TIMERS
+#གལ་སྲིད CONFIG_FREERTOS_USE_TIMERS
   #define INCLUDE_xTimerPendFunctionCall           1
-#else
+#དེ་མིན
   #define INCLUDE_xTimerPendFunctionCall           0
 #endif
 #define INCLUDE_xTaskGetSchedulerState             1
@@ -236,11 +236,11 @@
  * Note: Include trace macros here and not above as trace macros are dependent on some of the FreeRTOS configs
  */
 #ifndef __ASSEMBLER__
-    #if CONFIG_ESP_TRACE_ENABLE
+    #གལ་སྲིད CONFIG_ESP_TRACE_ENABLE
         #include "esp_trace_freertos.h"
     #endif
 
-    #if CONFIG_FREERTOS_SMP
+    #གལ་སྲིད CONFIG_FREERTOS_SMP
 
 /* Default values for trace macros added to ESP-IDF implementation of SYSVIEW
  * that is not part of Amazon SMP FreeRTOS. */
@@ -265,7 +265,7 @@
     #endif /* CONFIG_FREERTOS_SMP */
 #endif /* def __ASSEMBLER__ */
 
-#if CONFIG_FREERTOS_USE_APPLICATION_TASK_TAG
+#གལ་སྲིད CONFIG_FREERTOS_USE_APPLICATION_TASK_TAG
     #define configUSE_APPLICATION_TASK_TAG    1
 #endif // CONFIG_FREERTOS_USE_APPLICATION_TASK_TAG
 
@@ -276,7 +276,7 @@
  * - All Amazon SMP FreeRTOS specific configurations
  * ------------------------------------------------------------------------------------------------------------------ */
 
-#if CONFIG_FREERTOS_SMP && ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
+#གལ་སྲིད CONFIG_FREERTOS_SMP && ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
     #define configUSE_CORE_AFFINITY              1
     #define configRUN_MULTIPLE_PRIORITIES        1
     #define configUSE_TASK_PREEMPTION_DISABLE    1
@@ -286,7 +286,7 @@
  * - All IDF FreeRTOS specific configurations
  * ------------------------------------------------------------------------------------------------------------------ */
 
-#if !CONFIG_FREERTOS_SMP
+#གལ་སྲིད !CONFIG_FREERTOS_SMP
     #ifdef CONFIG_FREERTOS_VTASKLIST_INCLUDE_COREID
         #define configTASKLIST_INCLUDE_COREID                  1
     #endif /* CONFIG_FREERTOS_VTASKLIST_INCLUDE_COREID */
