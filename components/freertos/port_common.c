@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <string.h>
-#include "FreeRTOS.h"
-#include "task.h"
-#include "esp_system.h"
-#include "esp_memory_utils.h"
-#include "sdkconfig.h"
+#ضمن <string.h>
+#ضمن "FreeRTOS.h"
+#ضمن "task.h"
+#ضمن "esp_system.h"
+#ضمن "esp_memory_utils.h"
+#ضمن "sdkconfig.h"
 
 /* ----------------------------------------- Port Implementations (Common)  --------------------------------------------
  * - Common FreeRTOS port function implementations
@@ -24,82 +24,82 @@ enabled and is used by FreeRTOS to obtain memory for its IDLE/Timer tasks.
 
 We simply allocate the IDLE/Timer tasks memory from the FreeRTOS heap.
 */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
-                                   StackType_t **ppxIdleTaskStackBuffer,
-                                   uint32_t *pulIdleTaskStackSize)
+#إذا ( config_SUPPORT_STATIC_ونڈ == 1 )
+فراغ v_Application_Get_Idle_Task_حافظہ(StaticTask_t **ppxIdleTaskTCBBuffer,
+                                   ڈھیر_Type_t **ppx_Idle_Task_ڈھیر_بفر,
+                                   uint32_t *pul_Idle_Task_ڈھیر_ناپ)
 {
-    StaticTask_t *pxTCBBufferTemp;
-    StackType_t *pxStackBufferTemp;
+    StaticTask_t *px_TCBBuffer_عارضی;
+    ڈھیر_Type_t *px_ڈھیر_بفر_عارضی;
 
     /* Allocate TCB and stack buffer from the FreeRTOS heap
      *
      * If the stack grows down then allocate the stack then the TCB so the stack
      * does not grow into the TCB.  Likewise if the stack grows up then allocate
      * the TCB then the stack. */
-#if (portSTACK_GROWTH > 0)
+#إذا (پورٹ_ڈھیر_GROWTH > 0)
     {
-        pxTCBBufferTemp = pvPortMalloc(sizeof(StaticTask_t));
-        pxStackBufferTemp = pvPortMalloc(configMINIMAL_STACK_SIZE);
+        px_TCBBuffer_عارضی = pv_پورٹ_Malloc(حجم(StaticTask_t));
+        px_ڈھیر_بفر_عارضی = pv_پورٹ_Malloc(config_اقل_ڈھیر_ناپ);
     }
-#else /* portSTACK_GROWTH */
+#وإلا /* portSTACK_GROWTH */
     {
-        pxStackBufferTemp = pvPortMalloc(configMINIMAL_STACK_SIZE);
-        pxTCBBufferTemp = pvPortMalloc(sizeof(StaticTask_t));
+        px_ڈھیر_بفر_عارضی = pv_پورٹ_Malloc(config_اقل_ڈھیر_ناپ);
+        px_TCBBuffer_عارضی = pv_پورٹ_Malloc(حجم(StaticTask_t));
     }
-#endif /* portSTACK_GROWTH */
+#جے_انت /* portSTACK_GROWTH */
 
-    assert(pxTCBBufferTemp != NULL);
-    assert(pxStackBufferTemp != NULL);
+    أكد(px_TCBBuffer_عارضی != عدم);
+    أكد(px_ڈھیر_بفر_عارضی != عدم);
     //Write back pointers
-    *ppxIdleTaskTCBBuffer = pxTCBBufferTemp;
-    *ppxIdleTaskStackBuffer = pxStackBufferTemp;
-    *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+    *ppxIdleTaskTCBBuffer = px_TCBBuffer_عارضی;
+    *ppx_Idle_Task_ڈھیر_بفر = px_ڈھیر_بفر_عارضی;
+    *pul_Idle_Task_ڈھیر_ناپ = config_اقل_ڈھیر_ناپ;
 }
 
-#if ( ( CONFIG_FREERTOS_SMP ) && ( configNUMBER_OF_CORES > 1 ) )
-void vApplicationGetPassiveIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer,
-                                          StackType_t ** ppxIdleTaskStackBuffer,
-                                          uint32_t * pulIdleTaskStackSize,
-                                          BaseType_t xPassiveIdleTaskIndex)
+#إذا ( ( CONFIG_FREERTOS_SMP ) && ( config_نمبر_دا_CORES > 1 ) )
+فراغ v_Application_Get_Passive_Idle_Task_حافظہ(StaticTask_t ** ppxIdleTaskTCBBuffer,
+                                          ڈھیر_Type_t ** ppx_Idle_Task_ڈھیر_بفر,
+                                          uint32_t * pul_Idle_Task_ڈھیر_ناپ,
+                                          ادھار_Type_t x_Passive_Idle_Task_اشاریہ)
 {
-    vApplicationGetIdleTaskMemory(ppxIdleTaskTCBBuffer, ppxIdleTaskStackBuffer, pulIdleTaskStackSize);
+    v_Application_Get_Idle_Task_حافظہ(ppxIdleTaskTCBBuffer, ppx_Idle_Task_ڈھیر_بفر, pul_Idle_Task_ڈھیر_ناپ);
 }
-#endif /* ( ( CONFIG_FREERTOS_SMP ) && ( configNUMBER_OF_CORES > 1 ) ) */
+#جے_انت /* ( ( CONFIG_FREERTOS_SMP ) && ( configNUMBER_OF_CORES > 1 ) ) */
 
-#if configUSE_TIMERS
+#إذا configUSE_TIMERS
 
-void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
-                                    StackType_t **ppxTimerTaskStackBuffer,
-                                    uint32_t *pulTimerTaskStackSize)
+فراغ v_Application_Get_Timer_Task_حافظہ(StaticTask_t **ppxTimerTaskTCBBuffer,
+                                    ڈھیر_Type_t **ppx_Timer_Task_ڈھیر_بفر,
+                                    uint32_t *pul_Timer_Task_ڈھیر_ناپ)
 {
-    StaticTask_t *pxTCBBufferTemp;
-    StackType_t *pxStackBufferTemp;
+    StaticTask_t *px_TCBBuffer_عارضی;
+    ڈھیر_Type_t *px_ڈھیر_بفر_عارضی;
 
     /* Allocate TCB and stack buffer from the FreeRTOS heap
      *
      * If the stack grows down then allocate the stack then the TCB so the stack
      * does not grow into the TCB.  Likewise if the stack grows up then allocate
      * the TCB then the stack. */
-#if (portSTACK_GROWTH > 0)
+#إذا (پورٹ_ڈھیر_GROWTH > 0)
     {
-        pxTCBBufferTemp = pvPortMalloc(sizeof(StaticTask_t));
-        pxStackBufferTemp = pvPortMalloc(configTIMER_TASK_STACK_DEPTH);
+        px_TCBBuffer_عارضی = pv_پورٹ_Malloc(حجم(StaticTask_t));
+        px_ڈھیر_بفر_عارضی = pv_پورٹ_Malloc(config_TIMER_TASK_ڈھیر_ڈونگھائی);
     }
-#else /* portSTACK_GROWTH */
+#وإلا /* portSTACK_GROWTH */
     {
-        pxStackBufferTemp = pvPortMalloc(configTIMER_TASK_STACK_DEPTH);
-        pxTCBBufferTemp = pvPortMalloc(sizeof(StaticTask_t));
+        px_ڈھیر_بفر_عارضی = pv_پورٹ_Malloc(config_TIMER_TASK_ڈھیر_ڈونگھائی);
+        px_TCBBuffer_عارضی = pv_پورٹ_Malloc(حجم(StaticTask_t));
     }
-#endif /* portSTACK_GROWTH */
+#جے_انت /* portSTACK_GROWTH */
 
-    assert(pxTCBBufferTemp != NULL);
-    assert(pxStackBufferTemp != NULL);
+    أكد(px_TCBBuffer_عارضی != عدم);
+    أكد(px_ڈھیر_بفر_عارضی != عدم);
     //Write back pointers
-    *ppxTimerTaskTCBBuffer = pxTCBBufferTemp;
-    *ppxTimerTaskStackBuffer = pxStackBufferTemp;
-    *pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
+    *ppxTimerTaskTCBBuffer = px_TCBBuffer_عارضی;
+    *ppx_Timer_Task_ڈھیر_بفر = px_ڈھیر_بفر_عارضی;
+    *pul_Timer_Task_ڈھیر_ناپ = config_TIMER_TASK_ڈھیر_ڈونگھائی;
 }
-#endif //configUSE_TIMERS
+#جے_انت //configUSE_TIMERS
 
-#endif // configSUPPORT_STATIC_ALLOCATION == 1
+#جے_انت // configSUPPORT_STATIC_ALLOCATION == 1

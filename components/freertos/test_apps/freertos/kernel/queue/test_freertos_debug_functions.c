@@ -12,99 +12,99 @@
  *
  */
 
-#include "sdkconfig.h"
-#include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "unity.h"
-#include "test_utils.h"
+#ضمن "sdkconfig.h"
+#ضمن <stdio.h>
+#ضمن "freertos/FreeRTOS.h"
+#ضمن "freertos/task.h"
+#ضمن "freertos/semphr.h"
+#ضمن "freertos/queue.h"
+#ضمن "unity.h"
+#ضمن "test_utils.h"
 
-#if (CONFIG_FREERTOS_QUEUE_REGISTRY_SIZE > 0)
-#define NO_OF_QUEUES_PER_CORE  ((int)((CONFIG_FREERTOS_QUEUE_REGISTRY_SIZE - 3)/CONFIG_FREERTOS_NUMBER_OF_CORES))     //Save space for some preallocated tasks
-#define NO_OF_QUEUES_TOTAL    (NO_OF_QUEUES_PER_CORE * CONFIG_FREERTOS_NUMBER_OF_CORES)
-#define QUEUE_NAME_MAX_LENGTH    30
+#إذا (CONFIG_FREERTOS_قطار_REGISTRY_ناپ > 0)
+#تعریف_کرو NO_دا_QUEUES_فی_CORE  ((صحيح)((CONFIG_FREERTOS_قطار_REGISTRY_ناپ - 3)/CONFIG_FREERTOS_نمبر_دا_CORES))     //Save space for some preallocated tasks
+#تعریف_کرو NO_دا_QUEUES_کل    (NO_دا_QUEUES_فی_CORE * CONFIG_FREERTOS_نمبر_دا_CORES)
+#تعریف_کرو قطار_NAME_MAX_لمائی    30
 
-static SemaphoreHandle_t start_sem[CONFIG_FREERTOS_NUMBER_OF_CORES];
-static SemaphoreHandle_t done_sem = NULL;
-static char *names[NO_OF_QUEUES_TOTAL];
-static QueueHandle_t handles[NO_OF_QUEUES_TOTAL];
+ساكن SemaphoreHandle_t شروع_sem[CONFIG_FREERTOS_نمبر_دا_CORES];
+ساكن SemaphoreHandle_t پورا_sem = عدم;
+ساكن حرف *ناں[NO_دا_QUEUES_کل];
+ساكن قطار_Handle_t handles[NO_دا_QUEUES_کل];
 
-void test_queue_registry_task(void *arg)
+فراغ test_قطار_registry_task(فراغ *arg)
 {
-    int core = xPortGetCoreID();
-    int offset = core * NO_OF_QUEUES_PER_CORE;
+    صحيح core = x_پورٹ_Get_Core_ID();
+    صحيح وتھ = core * NO_دا_QUEUES_فی_CORE;
     //Create queues and accompanying queue names
-    for (int i = 0; i < NO_OF_QUEUES_PER_CORE; i++) {
-        handles[i + offset] = xQueueCreate(1, 1);  //Create queues
-        names[i + offset] = calloc(QUEUE_NAME_MAX_LENGTH, sizeof(char));
-        sprintf(names[i + offset], "Queue%d%d", core, i);
+    لكل (صحيح i = 0; i < NO_دا_QUEUES_فی_CORE; i++) {
+        handles[i + وتھ] = x_قطار_Create(1, 1);  //Create queues
+        ناں[i + وتھ] = صفر_حافظہ_دیو(قطار_NAME_MAX_لمائی, حجم(حرف));
+        sprintf(ناں[i + وتھ], "Queue%d%d", core, i);
     }
 
-    xSemaphoreTake(start_sem[core], portMAX_DELAY);   //Wait for start vQueueAddToRegistry()
-    for (int i = 0; i < NO_OF_QUEUES_PER_CORE; i++) {
-        vQueueAddToRegistry(handles[i + offset], names[i + offset]);    //Register queues to queue registry
+    xSemaphoreTake(شروع_sem[core], پورٹ_MAX_DELAY);   //Wait for start vQueueAddToRegistry()
+    لكل (صحيح i = 0; i < NO_دا_QUEUES_فی_CORE; i++) {
+        v_قطار_جوڑو_منزل_Registry(handles[i + وتھ], ناں[i + وتھ]);    //Register queues to queue registry
     }
-    xSemaphoreGive(done_sem);   //Signal that vQueueAddToRegistry() has completed
+    xSemaphoreGive(پورا_sem);   //Signal that vQueueAddToRegistry() has completed
 
     vTaskDelay(1);
 
-    xSemaphoreTake(start_sem[core], portMAX_DELAY);   //Wait to start vQueueUnregisterQueue()
-    for (int i = 0; i < NO_OF_QUEUES_PER_CORE; i++) {
-        vQueueDelete(handles[i + offset]);  //Internally calls vQueueUnregisterQueue
+    xSemaphoreTake(شروع_sem[core], پورٹ_MAX_DELAY);   //Wait to start vQueueUnregisterQueue()
+    لكل (صحيح i = 0; i < NO_دا_QUEUES_فی_CORE; i++) {
+        v_قطار_Delete(handles[i + وتھ]);  //Internally calls vQueueUnregisterQueue
     }
-    xSemaphoreGive(done_sem);   //Signal done
+    xSemaphoreGive(پورا_sem);   //Signal done
 
-    vTaskDelete(NULL);  //Delete self
+    vTaskDelete(عدم);  //Delete self
 }
 
 TEST_CASE("Test FreeRTOS Queue Registry", "[freertos]")
 {
     //Create synchronization semaphores and tasks to test queue registry
-    done_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_NUMBER_OF_CORES, 0);
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        start_sem[i] = xSemaphoreCreateBinary();
-        xTaskCreatePinnedToCore(test_queue_registry_task, "testing task", 4096, NULL, UNITY_FREERTOS_PRIORITY + 1, NULL, i);
+    پورا_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_نمبر_دا_CORES, 0);
+    لكل (صحيح i = 0; i < CONFIG_FREERTOS_نمبر_دا_CORES; i++) {
+        شروع_sem[i] = x_Semaphore_Create_ثنائی();
+        x_Task_Create_Pinned_منزل_Core(test_قطار_registry_task, "testing task", 4096, عدم, UNITY_FREERTOS_ترجیح + 1, عدم, i);
     }
 
-    portDISABLE_INTERRUPTS();
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        xSemaphoreGive(start_sem[i]);  //Trigger start
+    پورٹ_DISABLE_INTERRUPTS();
+    لكل (صحيح i = 0; i < CONFIG_FREERTOS_نمبر_دا_CORES; i++) {
+        xSemaphoreGive(شروع_sem[i]);  //Trigger start
     }
-    portENABLE_INTERRUPTS();
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        xSemaphoreTake(done_sem, portMAX_DELAY);    //Wait for tasks to complete vQueueAddToRegistry
+    پورٹ_ENABLE_INTERRUPTS();
+    لكل (صحيح i = 0; i < CONFIG_FREERTOS_نمبر_دا_CORES; i++) {
+        xSemaphoreTake(پورا_sem, پورٹ_MAX_DELAY);    //Wait for tasks to complete vQueueAddToRegistry
     }
-    for (int i = 0; i < NO_OF_QUEUES_TOTAL; i++) {
-        const char *addr = pcQueueGetName(handles[i]);
-        TEST_ASSERT(addr == names[i]);   //Check vQueueAddToRegistry was successful
+    لكل (صحيح i = 0; i < NO_دا_QUEUES_کل; i++) {
+        ثابت حرف *addr = pc_قطار_Get_Name(handles[i]);
+        TEST_ASSERT(addr == ناں[i]);   //Check vQueueAddToRegistry was successful
     }
 
-    portDISABLE_INTERRUPTS();
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        xSemaphoreGive(start_sem[i]);  //Trigger start
+    پورٹ_DISABLE_INTERRUPTS();
+    لكل (صحيح i = 0; i < CONFIG_FREERTOS_نمبر_دا_CORES; i++) {
+        xSemaphoreGive(شروع_sem[i]);  //Trigger start
     }
-    portENABLE_INTERRUPTS();
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        xSemaphoreTake(done_sem, portMAX_DELAY);    //Wait for tasks to complete vQueueUnregisterQueue
+    پورٹ_ENABLE_INTERRUPTS();
+    لكل (صحيح i = 0; i < CONFIG_FREERTOS_نمبر_دا_CORES; i++) {
+        xSemaphoreTake(پورا_sem, پورٹ_MAX_DELAY);    //Wait for tasks to complete vQueueUnregisterQueue
     }
-    for (int i = 0; i <  NO_OF_QUEUES_TOTAL; i++) {
-        const char *addr = pcQueueGetName(handles[i]);
-        TEST_ASSERT(addr == NULL);   //Check vQueueUnregisterQueue was successful
-        handles[i] = NULL;
+    لكل (صحيح i = 0; i <  NO_دا_QUEUES_کل; i++) {
+        ثابت حرف *addr = pc_قطار_Get_Name(handles[i]);
+        TEST_ASSERT(addr == عدم);   //Check vQueueUnregisterQueue was successful
+        handles[i] = عدم;
     }
 
     //Cleanup
-    for (int i = 0; i < NO_OF_QUEUES_TOTAL; i++) {
-        free(names[i]);
-        names[i] = NULL;
+    لكل (صحيح i = 0; i < NO_دا_QUEUES_کل; i++) {
+        حرر(ناں[i]);
+        ناں[i] = عدم;
     }
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        vSemaphoreDelete(start_sem[i]);
-        start_sem[i] = NULL;
+    لكل (صحيح i = 0; i < CONFIG_FREERTOS_نمبر_دا_CORES; i++) {
+        vSemaphoreDelete(شروع_sem[i]);
+        شروع_sem[i] = عدم;
     }
-    vSemaphoreDelete(done_sem);
-    done_sem = NULL;
+    vSemaphoreDelete(پورا_sem);
+    پورا_sem = عدم;
 }
-#endif      //(CONFIG_FREERTOS_QUEUE_REGISTRY_SIZE > 0)
+#جے_انت      //(CONFIG_FREERTOS_QUEUE_REGISTRY_SIZE > 0)

@@ -30,8 +30,8 @@
  *
  */
 
-#ifndef STACK_MACROS_H
-#define STACK_MACROS_H
+#جے_بنا_تعریف ڈھیر_MACROS_H
+#تعریف_کرو ڈھیر_MACROS_H
 
 /*
  * Call the stack overflow hook function if the stack of the task being swapped
@@ -53,89 +53,89 @@
  * portSTACK_LIMIT_PADDING is a number of extra words to consider to be in
  * use on the stack.
  */
-#ifndef portSTACK_LIMIT_PADDING
-    #define portSTACK_LIMIT_PADDING    0
-#endif
+#جے_بنا_تعریف پورٹ_ڈھیر_حد_بندی_PADDING
+    #تعریف_کرو پورٹ_ڈھیر_حد_بندی_PADDING    0
+#جے_انت
 
-#if ( ( configCHECK_FOR_STACK_OVERFLOW == 1 ) && ( portSTACK_GROWTH < 0 ) )
+#إذا ( ( config_CHECK_FOR_ڈھیر_حد_توں_ودھ == 1 ) && ( پورٹ_ڈھیر_GROWTH < 0 ) )
 
 /* Only the current stack state is to be checked. */
-    #define taskCHECK_FOR_STACK_OVERFLOW( xCurCoreID )                                                                              \
+    #تعریف_کرو task_CHECK_FOR_ڈھیر_حد_توں_ودھ( xCurCoreID )                                                                              \
     {                                                                                                                               \
         /* Is the currently saved stack pointer within the stack limit? */                                                          \
-        if( pxCurrentTCBs[ xCurCoreID ]->pxTopOfStack <= pxCurrentTCBs[ xCurCoreID ]->pxStack + portSTACK_LIMIT_PADDING )           \
+        إذا( pxCurrentTCBs[ xCurCoreID ]->px_چوٹی_دا_ڈھیر <= pxCurrentTCBs[ xCurCoreID ]->px_ڈھیر + پورٹ_ڈھیر_حد_بندی_PADDING )           \
         {                                                                                                                           \
-            vApplicationStackOverflowHook( ( TaskHandle_t ) pxCurrentTCBs[ xCurCoreID ], pxCurrentTCBs[ xCurCoreID ]->pcTaskName ); \
+            v_Application_ڈھیر_حد_توں_ودھ_Hook( ( TaskHandle_t ) pxCurrentTCBs[ xCurCoreID ], pxCurrentTCBs[ xCurCoreID ]->pcTaskName ); \
         }                                                                                                                           \
     }
 
-#endif /* configCHECK_FOR_STACK_OVERFLOW == 1 */
+#جے_انت /* configCHECK_FOR_STACK_OVERFLOW == 1 */
 /*-----------------------------------------------------------*/
 
-#if ( ( configCHECK_FOR_STACK_OVERFLOW == 1 ) && ( portSTACK_GROWTH > 0 ) )
+#إذا ( ( config_CHECK_FOR_ڈھیر_حد_توں_ودھ == 1 ) && ( پورٹ_ڈھیر_GROWTH > 0 ) )
 
 /* Only the current stack state is to be checked. */
-    #define taskCHECK_FOR_STACK_OVERFLOW( xCurCoreID )                                                                              \
+    #تعریف_کرو task_CHECK_FOR_ڈھیر_حد_توں_ودھ( xCurCoreID )                                                                              \
     {                                                                                                                               \
                                                                                                                                     \
         /* Is the currently saved stack pointer within the stack limit? */                                                          \
-        if( pxCurrentTCBs[ xCurCoreID ]->pxTopOfStack >= pxCurrentTCBs[ xCurCoreID ]->pxEndOfStack - portSTACK_LIMIT_PADDING )      \
+        إذا( pxCurrentTCBs[ xCurCoreID ]->px_چوٹی_دا_ڈھیر >= pxCurrentTCBs[ xCurCoreID ]->px_سرا_دا_ڈھیر - پورٹ_ڈھیر_حد_بندی_PADDING )      \
         {                                                                                                                           \
-            vApplicationStackOverflowHook( ( TaskHandle_t ) pxCurrentTCBs[ xCurCoreID ], pxCurrentTCBs[ xCurCoreID ]->pcTaskName ); \
+            v_Application_ڈھیر_حد_توں_ودھ_Hook( ( TaskHandle_t ) pxCurrentTCBs[ xCurCoreID ], pxCurrentTCBs[ xCurCoreID ]->pcTaskName ); \
         }                                                                                                                           \
     }
 
-#endif /* configCHECK_FOR_STACK_OVERFLOW == 1 */
+#جے_انت /* configCHECK_FOR_STACK_OVERFLOW == 1 */
 /*-----------------------------------------------------------*/
 
-#if ( ( configCHECK_FOR_STACK_OVERFLOW > 1 ) && ( portSTACK_GROWTH < 0 ) )
+#إذا ( ( config_CHECK_FOR_ڈھیر_حد_توں_ودھ > 1 ) && ( پورٹ_ڈھیر_GROWTH < 0 ) )
 
-    #define taskCHECK_FOR_STACK_OVERFLOW( xCurCoreID )                                                                              \
+    #تعریف_کرو task_CHECK_FOR_ڈھیر_حد_توں_ودھ( xCurCoreID )                                                                              \
     {                                                                                                                               \
-        const uint32_t * const pulStack = ( uint32_t * ) pxCurrentTCBs[ xCurCoreID ]->pxStack;                                      \
-        const uint32_t ulCheckValue = ( uint32_t ) 0xa5a5a5a5;                                                                      \
+        ثابت uint32_t * ثابت pul_ڈھیر = ( uint32_t * ) pxCurrentTCBs[ xCurCoreID ]->px_ڈھیر;                                      \
+        ثابت uint32_t ul_Check_قدر = ( uint32_t ) 0xa5a5a5a5;                                                                      \
                                                                                                                                     \
-        if( ( pulStack[ 0 ] != ulCheckValue ) ||                                                                                    \
-            ( pulStack[ 1 ] != ulCheckValue ) ||                                                                                    \
-            ( pulStack[ 2 ] != ulCheckValue ) ||                                                                                    \
-            ( pulStack[ 3 ] != ulCheckValue ) )                                                                                     \
+        إذا( ( pul_ڈھیر[ 0 ] != ul_Check_قدر ) ||                                                                                    \
+            ( pul_ڈھیر[ 1 ] != ul_Check_قدر ) ||                                                                                    \
+            ( pul_ڈھیر[ 2 ] != ul_Check_قدر ) ||                                                                                    \
+            ( pul_ڈھیر[ 3 ] != ul_Check_قدر ) )                                                                                     \
         {                                                                                                                           \
-            vApplicationStackOverflowHook( ( TaskHandle_t ) pxCurrentTCBs[ xCurCoreID ], pxCurrentTCBs[ xCurCoreID ]->pcTaskName ); \
+            v_Application_ڈھیر_حد_توں_ودھ_Hook( ( TaskHandle_t ) pxCurrentTCBs[ xCurCoreID ], pxCurrentTCBs[ xCurCoreID ]->pcTaskName ); \
         }                                                                                                                           \
     }
 
-#endif /* #if( configCHECK_FOR_STACK_OVERFLOW > 1 ) */
+#جے_انت /* #if( configCHECK_FOR_STACK_OVERFLOW > 1 ) */
 /*-----------------------------------------------------------*/
 
-#if ( ( configCHECK_FOR_STACK_OVERFLOW > 1 ) && ( portSTACK_GROWTH > 0 ) )
+#إذا ( ( config_CHECK_FOR_ڈھیر_حد_توں_ودھ > 1 ) && ( پورٹ_ڈھیر_GROWTH > 0 ) )
 
-    #define taskCHECK_FOR_STACK_OVERFLOW( xCurCoreID )                                                                                    \
+    #تعریف_کرو task_CHECK_FOR_ڈھیر_حد_توں_ودھ( xCurCoreID )                                                                                    \
     {                                                                                                                                     \
-        int8_t * pcEndOfStack = ( int8_t * ) pxCurrentTCBs[ xCurCoreID ]->pxEndOfStack;                                                   \
-        static const uint8_t ucExpectedStackBytes[] = { tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE,   \
-                                                        tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE,   \
-                                                        tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE,   \
-                                                        tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE,   \
-                                                        tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE }; \
+        int8_t * pc_سرا_دا_ڈھیر = ( int8_t * ) pxCurrentTCBs[ xCurCoreID ]->px_سرا_دا_ڈھیر;                                                   \
+        ساكن ثابت uint8_t uc_Expected_ڈھیر_بائٹاں[] = { tsk_ڈھیر_FILL_BYTE, tsk_ڈھیر_FILL_BYTE, tsk_ڈھیر_FILL_BYTE, tsk_ڈھیر_FILL_BYTE,   \
+                                                        tsk_ڈھیر_FILL_BYTE, tsk_ڈھیر_FILL_BYTE, tsk_ڈھیر_FILL_BYTE, tsk_ڈھیر_FILL_BYTE,   \
+                                                        tsk_ڈھیر_FILL_BYTE, tsk_ڈھیر_FILL_BYTE, tsk_ڈھیر_FILL_BYTE, tsk_ڈھیر_FILL_BYTE,   \
+                                                        tsk_ڈھیر_FILL_BYTE, tsk_ڈھیر_FILL_BYTE, tsk_ڈھیر_FILL_BYTE, tsk_ڈھیر_FILL_BYTE,   \
+                                                        tsk_ڈھیر_FILL_BYTE, tsk_ڈھیر_FILL_BYTE, tsk_ڈھیر_FILL_BYTE, tsk_ڈھیر_FILL_BYTE }; \
                                                                                                                                           \
                                                                                                                                           \
-        pcEndOfStack -= sizeof( ucExpectedStackBytes );                                                                                   \
+        pc_سرا_دا_ڈھیر -= حجم( uc_Expected_ڈھیر_بائٹاں );                                                                                   \
                                                                                                                                           \
         /* Has the extremity of the task stack ever been written over? */                                                                 \
-        if( memcmp( ( void * ) pcEndOfStack, ( void * ) ucExpectedStackBytes, sizeof( ucExpectedStackBytes ) ) != 0 )                     \
+        إذا( memcmp( ( فراغ * ) pc_سرا_دا_ڈھیر, ( فراغ * ) uc_Expected_ڈھیر_بائٹاں, حجم( uc_Expected_ڈھیر_بائٹاں ) ) != 0 )                     \
         {                                                                                                                                 \
-            vApplicationStackOverflowHook( ( TaskHandle_t ) pxCurrentTCBs[ xCurCoreID ], pxCurrentTCBs[ xCurCoreID ]->pcTaskName );       \
+            v_Application_ڈھیر_حد_توں_ودھ_Hook( ( TaskHandle_t ) pxCurrentTCBs[ xCurCoreID ], pxCurrentTCBs[ xCurCoreID ]->pcTaskName );       \
         }                                                                                                                                 \
     }
 
-#endif /* #if( configCHECK_FOR_STACK_OVERFLOW > 1 ) */
+#جے_انت /* #if( configCHECK_FOR_STACK_OVERFLOW > 1 ) */
 /*-----------------------------------------------------------*/
 
 /* Remove stack overflow macro if not being used. */
-#ifndef taskCHECK_FOR_STACK_OVERFLOW
-    #define taskCHECK_FOR_STACK_OVERFLOW( xCurCoreID )
-#endif
+#جے_بنا_تعریف task_CHECK_FOR_ڈھیر_حد_توں_ودھ
+    #تعریف_کرو task_CHECK_FOR_ڈھیر_حد_توں_ودھ( xCurCoreID )
+#جے_انت
 
 
 
-#endif /* STACK_MACROS_H */
+#جے_انت /* STACK_MACROS_H */

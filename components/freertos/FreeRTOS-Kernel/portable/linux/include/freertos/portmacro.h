@@ -28,14 +28,14 @@
  */
 
 
-#ifndef PORTMACRO_H
-#define PORTMACRO_H
+#جے_بنا_تعریف PORTMACRO_H
+#تعریف_کرو PORTMACRO_H
 
-#include <limits.h>
+#ضمن <limits.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#جے_تعریف_شدہ __cplusplus
+خارجي "C" {
+#جے_انت
 
 /*-----------------------------------------------------------
  * Port specific definitions.
@@ -48,83 +48,83 @@ extern "C" {
  */
 
 /* Type definitions. */
-#define portCHAR        char
-#define portFLOAT       float
-#define portDOUBLE      double
-#define portLONG        long
-#define portSHORT       short
-#define portSTACK_TYPE  unsigned long
-#define portBASE_TYPE   long
-#define portPOINTER_SIZE_TYPE intptr_t
+#تعریف_کرو پورٹ_CHAR        حرف
+#تعریف_کرو پورٹ_FLOAT       عائم
+#تعریف_کرو پورٹ_DOUBLE      مزدوج
+#تعریف_کرو پورٹ_LONG        لما
+#تعریف_کرو پورٹ_SHORT       چھوٹا
+#تعریف_کرو پورٹ_ڈھیر_TYPE  بنانشانی لما
+#تعریف_کرو پورٹ_ادھار_TYPE   لما
+#تعریف_کرو پورٹ_اشارہ_گر_ناپ_TYPE intptr_t
 
-typedef portSTACK_TYPE StackType_t;
-typedef portBASE_TYPE BaseType_t;
-typedef unsigned portBASE_TYPE UBaseType_t;
+تعريفنوع پورٹ_ڈھیر_TYPE ڈھیر_Type_t;
+تعريفنوع پورٹ_ادھار_TYPE ادھار_Type_t;
+تعريفنوع بنانشانی پورٹ_ادھار_TYPE UBaseType_t;
 
-typedef unsigned long TickType_t;
-#define portMAX_DELAY ( TickType_t ) ULONG_MAX
+تعريفنوع بنانشانی لما TickType_t;
+#تعریف_کرو پورٹ_MAX_DELAY ( TickType_t ) ULONG_MAX
 
-#define portTICK_TYPE_IS_ATOMIC 1
+#تعریف_کرو پورٹ_TICK_TYPE_IS_ATOMIC 1
 
 /*-----------------------------------------------------------*/
 
 /* Architecture specifics. */
-#define portSTACK_GROWTH            ( -1 )
-#define portHAS_STACK_OVERFLOW_CHECKING ( 1 )
-#define portTICK_PERIOD_MS          ( ( TickType_t ) 1000 / configTICK_RATE_HZ )
-#define portTICK_RATE_MICROSECONDS  ( ( TickType_t ) 1000000 / configTICK_RATE_HZ )
-#define portBYTE_ALIGNMENT          8
+#تعریف_کرو پورٹ_ڈھیر_GROWTH            ( -1 )
+#تعریف_کرو پورٹ_HAS_ڈھیر_حد_توں_ودھ_CHECKING ( 1 )
+#تعریف_کرو پورٹ_TICK_PERIOD_MS          ( ( TickType_t ) 1000 / config_TICK_شرح_HZ )
+#تعریف_کرو پورٹ_TICK_شرح_MICROSECONDS  ( ( TickType_t ) 1000000 / config_TICK_شرح_HZ )
+#تعریف_کرو پورٹ_BYTE_ALIGNMENT          8
 /*-----------------------------------------------------------*/
 
 /* Scheduler utilities. */
-extern void vPortYieldWithinApi( void );
-#define portYIELD_WITHIN_API() vPortYieldWithinApi()
+خارجي فراغ v_پورٹ_Yield_Within_Api( فراغ );
+#تعریف_کرو پورٹ_YIELD_WITHIN_API() v_پورٹ_Yield_Within_Api()
 
-extern void vPortYield( void );
-#define portYIELD() vPortYield()
+خارجي فراغ v_پورٹ_Yield( فراغ );
+#تعریف_کرو پورٹ_YIELD() v_پورٹ_Yield()
 
-#define portEND_SWITCHING_ISR( xSwitchRequired ) if( (xSwitchRequired) != pdFALSE ) vPortYield()
-#define portYIELD_FROM_ISR( x ) portEND_SWITCHING_ISR( x )
+#تعریف_کرو پورٹ_سرا_SWITCHING_ISR( xSwitchRequired ) إذا( (xSwitchRequired) != pdFALSE ) v_پورٹ_Yield()
+#تعریف_کرو پورٹ_YIELD_FROM_ISR( x ) پورٹ_سرا_SWITCHING_ISR( x )
 /*-----------------------------------------------------------*/
 
 /* Critical section management. */
-extern void vPortDisableInterrupts( void );
-extern void vPortEnableInterrupts( void );
-#define portSET_INTERRUPT_MASK()        ( vPortDisableInterrupts() )
-#define portCLEAR_INTERRUPT_MASK()      ( vPortEnableInterrupts() )
+خارجي فراغ v_پورٹ_Disable_Interrupts( فراغ );
+خارجي فراغ v_پورٹ_Enable_Interrupts( فراغ );
+#تعریف_کرو پورٹ_سیٹ_رکاوٹ_نقاب()        ( v_پورٹ_Disable_Interrupts() )
+#تعریف_کرو پورٹ_CLEAR_رکاوٹ_نقاب()      ( v_پورٹ_Enable_Interrupts() )
 
-extern BaseType_t xPortSetInterruptMask( void );
-extern void vPortClearInterruptMask( BaseType_t xMask );
+خارجي ادھار_Type_t x_پورٹ_سیٹ_رکاوٹ_نقاب( فراغ );
+خارجي فراغ v_پورٹ_Clear_رکاوٹ_نقاب( ادھار_Type_t x_نقاب );
 
-void vPortEnterCritical( void );
-void vPortExitCritical( void );
-#define portSET_INTERRUPT_MASK_FROM_ISR()       xPortSetInterruptMask()
-#define portCLEAR_INTERRUPT_MASK_FROM_ISR(x)    vPortClearInterruptMask(x)
-#define portDISABLE_INTERRUPTS()                portSET_INTERRUPT_MASK()
-#define portENABLE_INTERRUPTS()                 portCLEAR_INTERRUPT_MASK()
-#define portENTER_CRITICAL(mux)                 {(void)mux;  vPortEnterCritical();}
-#define portEXIT_CRITICAL(mux)                  {(void)mux;  vPortExitCritical();}
-#define portENTER_CRITICAL_SAFE(mux)            {(void)mux;  vPortEnterCritical();}
-#define portEXIT_CRITICAL_SAFE(mux)             {(void)mux;  vPortExitCritical();}
-#define portENTER_CRITICAL_ISR(mux)             portENTER_CRITICAL(mux)
-#define portEXIT_CRITICAL_ISR(mux)              portEXIT_CRITICAL(mux)
+فراغ v_پورٹ_Enter_Critical( فراغ );
+فراغ v_پورٹ_Exit_Critical( فراغ );
+#تعریف_کرو پورٹ_سیٹ_رکاوٹ_نقاب_FROM_ISR()       x_پورٹ_سیٹ_رکاوٹ_نقاب()
+#تعریف_کرو پورٹ_CLEAR_رکاوٹ_نقاب_FROM_ISR(x)    v_پورٹ_Clear_رکاوٹ_نقاب(x)
+#تعریف_کرو پورٹ_DISABLE_INTERRUPTS()                پورٹ_سیٹ_رکاوٹ_نقاب()
+#تعریف_کرو پورٹ_ENABLE_INTERRUPTS()                 پورٹ_CLEAR_رکاوٹ_نقاب()
+#تعریف_کرو پورٹ_ENTER_CRITICAL(mux)                 {(فراغ)mux;  v_پورٹ_Enter_Critical();}
+#تعریف_کرو پورٹ_EXIT_CRITICAL(mux)                  {(فراغ)mux;  v_پورٹ_Exit_Critical();}
+#تعریف_کرو پورٹ_ENTER_CRITICAL_محفوظ(mux)            {(فراغ)mux;  v_پورٹ_Enter_Critical();}
+#تعریف_کرو پورٹ_EXIT_CRITICAL_محفوظ(mux)             {(فراغ)mux;  v_پورٹ_Exit_Critical();}
+#تعریف_کرو پورٹ_ENTER_CRITICAL_ISR(mux)             پورٹ_ENTER_CRITICAL(mux)
+#تعریف_کرو پورٹ_EXIT_CRITICAL_ISR(mux)              پورٹ_EXIT_CRITICAL(mux)
 
-#define prvENTER_CRITICAL_SMP_ONLY( pxLock )         portENTER_CRITICAL( pxLock )
-#define prvEXIT_CRITICAL_SMP_ONLY( pxLock )          portEXIT_CRITICAL( pxLock )
+#تعریف_کرو prvENTER_CRITICAL_SMP_ONLY( px_جندرا )         پورٹ_ENTER_CRITICAL( px_جندرا )
+#تعریف_کرو prvEXIT_CRITICAL_SMP_ONLY( px_جندرا )          پورٹ_EXIT_CRITICAL( px_جندرا )
 
-extern void vPortSuspendScheduler(void);
-#define portSOFTWARE_BARRIER() vPortSuspendScheduler()
+خارجي فراغ v_پورٹ_Suspend_Scheduler(فراغ);
+#تعریف_کرو پورٹ_SOFTWARE_BARRIER() v_پورٹ_Suspend_Scheduler()
 
 /*-----------------------------------------------------------*/
 
-extern void vPortThreadDying( void *pxTaskToDelete, volatile BaseType_t *pxPendYield );
-extern void vPortCancelThread( void *pxTaskToDelete );
-#define portPRE_TASK_DELETE_HOOK( pvTaskToDelete, pxPendYield ) vPortThreadDying( ( pvTaskToDelete ), ( pxPendYield ) )
-#define portCLEAN_UP_TCB( pxTCB )   vPortCancelThread( pxTCB )
+خارجي فراغ v_پورٹ_Thread_Dying( فراغ *px_Task_منزل_Delete, متطاير ادھار_Type_t *pxPendYield );
+خارجي فراغ v_پورٹ_Cancel_Thread( فراغ *px_Task_منزل_Delete );
+#تعریف_کرو پورٹ_PRE_TASK_DELETE_HOOK( pv_Task_منزل_Delete, pxPendYield ) v_پورٹ_Thread_Dying( ( pv_Task_منزل_Delete ), ( pxPendYield ) )
+#تعریف_کرو پورٹ_CLEAN_اتے_TCB( pxTCB )   v_پورٹ_Cancel_Thread( pxTCB )
 /*-----------------------------------------------------------*/
 
-#define portTASK_FUNCTION_PROTO( vFunction, pvParameters ) void vFunction( void *pvParameters )
-#define portTASK_FUNCTION( vFunction, pvParameters ) void vFunction( void *pvParameters )
+#تعریف_کرو پورٹ_TASK_FUNCTION_PROTO( vFunction, pvParameters ) فراغ vFunction( فراغ *pvParameters )
+#تعریف_کرو پورٹ_TASK_FUNCTION( vFunction, pvParameters ) فراغ vFunction( فراغ *pvParameters )
 /*-----------------------------------------------------------*/
 
 /*
@@ -135,21 +135,21 @@ extern void vPortCancelThread( void *pxTaskToDelete );
  * Thus, only a compiler barrier is needed to prevent the compiler
  * reordering.
  */
-#define portMEMORY_BARRIER() __asm volatile( "" ::: "memory" )
+#تعریف_کرو پورٹ_حافظہ_BARRIER() __asm متطاير( "" ::: "memory" )
 
-#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() /* no-op */
-#if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
-configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
-#define portGET_RUN_TIME_COUNTER_VALUE()         xPortGetRunTimeCounterValue()
-#endif
+#تعریف_کرو پورٹ_CONFIGURE_TIMER_FOR_لگاتار_ویلا_STATS() /* no-op */
+#إذا ( CONFIG_FREERTOS_GENERATE_لگاتار_ویلا_STATS )
+config_لگاتار_ویلا_COUNTER_TYPE x_پورٹ_Get_لگاتار_ویلا_Counter_قدر( فراغ );
+#تعریف_کرو پورٹ_GET_لگاتار_ویلا_COUNTER_قدر()         x_پورٹ_Get_لگاتار_ویلا_Counter_قدر()
+#جے_انت
 
-#ifdef __cplusplus
+#جے_تعریف_شدہ __cplusplus
 }
-#endif
+#جے_انت
 
 // We need additional definitions for ESP-IDF code
-#include "portmacro_idf.h"
+#ضمن "portmacro_idf.h"
 
-void vPortSetStackWatchpoint(void *pxStackStart);
+فراغ v_پورٹ_سیٹ_ڈھیر_Watchpoint(فراغ *px_ڈھیر_شروع);
 
-#endif /* PORTMACRO_H */
+#جے_انت /* PORTMACRO_H */

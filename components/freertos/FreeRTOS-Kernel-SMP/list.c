@@ -31,128 +31,128 @@
  */
 
 
-#include <stdlib.h>
+#ضمن <stdlib.h>
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
  * task.h is included from an application file. */
-#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#تعریف_کرو MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#include "FreeRTOS.h"
-#include "list.h"
+#ضمن "FreeRTOS.h"
+#ضمن "list.h"
 
 /* The MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be
  * defined for the header files above, but not in this file, in order to
  * generate the correct privileged Vs unprivileged linkage and placement. */
-#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#تعریف_رد MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /*-----------------------------------------------------------
 * PUBLIC LIST API documented in list.h
 *----------------------------------------------------------*/
 
-void vListInitialise( List_t * const pxList )
+فراغ vListInitialise( List_t * ثابت pxList )
 {
     traceENTER_vListInitialise( pxList );
 
     /* The list structure contains a list item which is used to mark the
      * end of the list.  To initialise the list the list end is inserted
      * as the only list entry. */
-    pxList->pxIndex = ( ListItem_t * ) &( pxList->xListEnd );
+    pxList->px_اشاریہ = ( List_شے_t * ) &( pxList->x_List_سرا );
 
-    listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( &( pxList->xListEnd ) );
+    list_سیٹ_پہلا_LIST_شے_INTEGRITY_CHECK_قدر( &( pxList->x_List_سرا ) );
 
     /* The list end value is the highest possible value in the list to
      * ensure it remains at the end of the list. */
-    pxList->xListEnd.xItemValue = portMAX_DELAY;
+    pxList->x_List_سرا.x_شے_قدر = پورٹ_MAX_DELAY;
 
     /* The list end next and previous pointers point to itself so we know
      * when the list is empty. */
-    pxList->xListEnd.pxNext = ( ListItem_t * ) &( pxList->xListEnd );
-    pxList->xListEnd.pxPrevious = ( ListItem_t * ) &( pxList->xListEnd );
+    pxList->x_List_سرا.px_اگلا = ( List_شے_t * ) &( pxList->x_List_سرا );
+    pxList->x_List_سرا.px_پچھلا = ( List_شے_t * ) &( pxList->x_List_سرا );
 
     /* Initialize the remaining fields of xListEnd when it is a proper ListItem_t */
-    #if ( configUSE_MINI_LIST_ITEM == 0 )
+    #إذا ( config_USE_MINI_LIST_شے == 0 )
     {
-        pxList->xListEnd.pvOwner = NULL;
-        pxList->xListEnd.pxContainer = NULL;
-        listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( &( pxList->xListEnd ) );
+        pxList->x_List_سرا.pvOwner = عدم;
+        pxList->x_List_سرا.pxContainer = عدم;
+        list_سیٹ_دوجا_LIST_شے_INTEGRITY_CHECK_قدر( &( pxList->x_List_سرا ) );
     }
-    #endif
+    #جے_انت
 
-    pxList->uxNumberOfItems = ( UBaseType_t ) 0U;
+    pxList->ux_نمبر_دا_اشیاء = ( UBaseType_t ) 0U;
 
     /* Write known values into the list if
      * configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    listSET_LIST_INTEGRITY_CHECK_1_VALUE( pxList );
-    listSET_LIST_INTEGRITY_CHECK_2_VALUE( pxList );
+    list_سیٹ_LIST_INTEGRITY_CHECK_1_قدر( pxList );
+    list_سیٹ_LIST_INTEGRITY_CHECK_2_قدر( pxList );
 
     traceRETURN_vListInitialise();
 }
 /*-----------------------------------------------------------*/
 
-void vListInitialiseItem( ListItem_t * const pxItem )
+فراغ v_List_Initialise_شے( List_شے_t * ثابت px_شے )
 {
-    traceENTER_vListInitialiseItem( pxItem );
+    trace_ENTER_v_List_Initialise_شے( px_شے );
 
     /* Make sure the list item is not recorded as being on a list. */
-    pxItem->pxContainer = NULL;
+    px_شے->pxContainer = عدم;
 
     /* Write known values into the list item if
      * configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem );
-    listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem );
+    list_سیٹ_پہلا_LIST_شے_INTEGRITY_CHECK_قدر( px_شے );
+    list_سیٹ_دوجا_LIST_شے_INTEGRITY_CHECK_قدر( px_شے );
 
-    traceRETURN_vListInitialiseItem();
+    trace_RETURN_v_List_Initialise_شے();
 }
 /*-----------------------------------------------------------*/
 
-void vListInsertEnd( List_t * const pxList,
-                     ListItem_t * const pxNewListItem )
+فراغ v_List_داخل_کرو_سرا( List_t * ثابت pxList,
+                     List_شے_t * ثابت px_New_List_شے )
 {
-    ListItem_t * const pxIndex = pxList->pxIndex;
+    List_شے_t * ثابت px_اشاریہ = pxList->px_اشاریہ;
 
-    traceENTER_vListInsertEnd( pxList, pxNewListItem );
+    trace_ENTER_v_List_داخل_کرو_سرا( pxList, px_New_List_شے );
 
     /* Only effective when configASSERT() is also defined, these tests may catch
      * the list data structures being overwritten in memory.  They will not catch
      * data errors caused by incorrect configuration or use of FreeRTOS. */
     listTEST_LIST_INTEGRITY( pxList );
-    listTEST_LIST_ITEM_INTEGRITY( pxNewListItem );
+    list_TEST_LIST_شے_INTEGRITY( px_New_List_شے );
 
     /* Insert a new list item into pxList, but rather than sort the list,
      * makes the new list item the last item to be removed by a call to
      * listGET_OWNER_OF_NEXT_ENTRY(). */
-    pxNewListItem->pxNext = pxIndex;
-    pxNewListItem->pxPrevious = pxIndex->pxPrevious;
+    px_New_List_شے->px_اگلا = px_اشاریہ;
+    px_New_List_شے->px_پچھلا = px_اشاریہ->px_پچھلا;
 
     /* Only used during decision coverage testing. */
     mtCOVERAGE_TEST_DELAY();
 
-    pxIndex->pxPrevious->pxNext = pxNewListItem;
-    pxIndex->pxPrevious = pxNewListItem;
+    px_اشاریہ->px_پچھلا->px_اگلا = px_New_List_شے;
+    px_اشاریہ->px_پچھلا = px_New_List_شے;
 
     /* Remember which list the item is in. */
-    pxNewListItem->pxContainer = pxList;
+    px_New_List_شے->pxContainer = pxList;
 
-    ( pxList->uxNumberOfItems ) = ( UBaseType_t ) ( pxList->uxNumberOfItems + 1U );
+    ( pxList->ux_نمبر_دا_اشیاء ) = ( UBaseType_t ) ( pxList->ux_نمبر_دا_اشیاء + 1U );
 
-    traceRETURN_vListInsertEnd();
+    trace_RETURN_v_List_داخل_کرو_سرا();
 }
 /*-----------------------------------------------------------*/
 
-void vListInsert( List_t * const pxList,
-                  ListItem_t * const pxNewListItem )
+فراغ v_List_داخل_کرو( List_t * ثابت pxList,
+                  List_شے_t * ثابت px_New_List_شے )
 {
-    ListItem_t * pxIterator;
-    const TickType_t xValueOfInsertion = pxNewListItem->xItemValue;
+    List_شے_t * pxIterator;
+    ثابت TickType_t x_قدر_دا_Insertion = px_New_List_شے->x_شے_قدر;
 
-    traceENTER_vListInsert( pxList, pxNewListItem );
+    trace_ENTER_v_List_داخل_کرو( pxList, px_New_List_شے );
 
     /* Only effective when configASSERT() is also defined, these tests may catch
      * the list data structures being overwritten in memory.  They will not catch
      * data errors caused by incorrect configuration or use of FreeRTOS. */
     listTEST_LIST_INTEGRITY( pxList );
-    listTEST_LIST_ITEM_INTEGRITY( pxNewListItem );
+    list_TEST_LIST_شے_INTEGRITY( px_New_List_شے );
 
     /* Insert the new list item into the list, sorted in xItemValue order.
      *
@@ -162,11 +162,11 @@ void vListInsert( List_t * const pxList,
      * share of the CPU.  However, if the xItemValue is the same as the back marker
      * the iteration loop below will not end.  Therefore the value is checked
      * first, and the algorithm slightly modified if necessary. */
-    if( xValueOfInsertion == portMAX_DELAY )
+    إذا( x_قدر_دا_Insertion == پورٹ_MAX_DELAY )
     {
-        pxIterator = pxList->xListEnd.pxPrevious;
+        pxIterator = pxList->x_List_سرا.px_پچھلا;
     }
-    else
+    وإلا
     {
         /* *** NOTE ***********************************************************
         *  If you find your application is crashing here then likely causes are
@@ -193,58 +193,58 @@ void vListInsert( List_t * const pxList,
         *      configMAX_SYSCALL_INTERRUPT_PRIORITY.
         **********************************************************************/
 
-        for( pxIterator = ( ListItem_t * ) &( pxList->xListEnd ); pxIterator->pxNext->xItemValue <= xValueOfInsertion; pxIterator = pxIterator->pxNext )
+        لكل( pxIterator = ( List_شے_t * ) &( pxList->x_List_سرا ); pxIterator->px_اگلا->x_شے_قدر <= x_قدر_دا_Insertion; pxIterator = pxIterator->px_اگلا )
         {
             /* There is nothing to do here, just iterating to the wanted
              * insertion position. */
         }
     }
 
-    pxNewListItem->pxNext = pxIterator->pxNext;
-    pxNewListItem->pxNext->pxPrevious = pxNewListItem;
-    pxNewListItem->pxPrevious = pxIterator;
-    pxIterator->pxNext = pxNewListItem;
+    px_New_List_شے->px_اگلا = pxIterator->px_اگلا;
+    px_New_List_شے->px_اگلا->px_پچھلا = px_New_List_شے;
+    px_New_List_شے->px_پچھلا = pxIterator;
+    pxIterator->px_اگلا = px_New_List_شے;
 
     /* Remember which list the item is in.  This allows fast removal of the
      * item later. */
-    pxNewListItem->pxContainer = pxList;
+    px_New_List_شے->pxContainer = pxList;
 
-    ( pxList->uxNumberOfItems ) = ( UBaseType_t ) ( pxList->uxNumberOfItems + 1U );
+    ( pxList->ux_نمبر_دا_اشیاء ) = ( UBaseType_t ) ( pxList->ux_نمبر_دا_اشیاء + 1U );
 
-    traceRETURN_vListInsert();
+    trace_RETURN_v_List_داخل_کرو();
 }
 /*-----------------------------------------------------------*/
 
 
-UBaseType_t uxListRemove( ListItem_t * const pxItemToRemove )
+UBaseType_t uxListRemove( List_شے_t * ثابت px_شے_منزل_Remove )
 {
     /* The list item knows which list it is in.  Obtain the list from the list
      * item. */
-    List_t * const pxList = pxItemToRemove->pxContainer;
+    List_t * ثابت pxList = px_شے_منزل_Remove->pxContainer;
 
-    traceENTER_uxListRemove( pxItemToRemove );
+    traceENTER_uxListRemove( px_شے_منزل_Remove );
 
-    pxItemToRemove->pxNext->pxPrevious = pxItemToRemove->pxPrevious;
-    pxItemToRemove->pxPrevious->pxNext = pxItemToRemove->pxNext;
+    px_شے_منزل_Remove->px_اگلا->px_پچھلا = px_شے_منزل_Remove->px_پچھلا;
+    px_شے_منزل_Remove->px_پچھلا->px_اگلا = px_شے_منزل_Remove->px_اگلا;
 
     /* Only used during decision coverage testing. */
     mtCOVERAGE_TEST_DELAY();
 
     /* Make sure the index is left pointing to a valid item. */
-    if( pxList->pxIndex == pxItemToRemove )
+    إذا( pxList->px_اشاریہ == px_شے_منزل_Remove )
     {
-        pxList->pxIndex = pxItemToRemove->pxPrevious;
+        pxList->px_اشاریہ = px_شے_منزل_Remove->px_پچھلا;
     }
-    else
+    وإلا
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    pxItemToRemove->pxContainer = NULL;
-    ( pxList->uxNumberOfItems ) = ( UBaseType_t ) ( pxList->uxNumberOfItems - 1U );
+    px_شے_منزل_Remove->pxContainer = عدم;
+    ( pxList->ux_نمبر_دا_اشیاء ) = ( UBaseType_t ) ( pxList->ux_نمبر_دا_اشیاء - 1U );
 
-    traceRETURN_uxListRemove( pxList->uxNumberOfItems );
+    traceRETURN_uxListRemove( pxList->ux_نمبر_دا_اشیاء );
 
-    return pxList->uxNumberOfItems;
+    أرجع pxList->ux_نمبر_دا_اشیاء;
 }
 /*-----------------------------------------------------------*/

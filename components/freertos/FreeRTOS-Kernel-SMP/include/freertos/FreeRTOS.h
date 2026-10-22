@@ -30,13 +30,13 @@
  *
  */
 
-#ifndef INC_FREERTOS_H
-#define INC_FREERTOS_H
+#جے_بنا_تعریف INC_FREERTOS_H
+#تعریف_کرو INC_FREERTOS_H
 
 /*
  * Include the generic headers required for the FreeRTOS port being used.
  */
-#include <stddef.h>
+#ضمن <stddef.h>
 
 /*
  * If stdint.h cannot be located then:
@@ -51,110 +51,110 @@
  *     contains the typedefs required to build FreeRTOS.  Read the instructions
  *     in FreeRTOS/source/stdint.readme for more information.
  */
-#include <stdint.h> /* READ COMMENT ABOVE. */
+#ضمن <stdint.h> /* READ COMMENT ABOVE. */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#جے_تعریف_شدہ __cplusplus
+    خارجي "C" {
+#جے_انت
 /* *INDENT-ON* */
 
 /* Acceptable values for configTICK_TYPE_WIDTH_IN_BITS. */
-#define TICK_TYPE_WIDTH_16_BITS    0
-#define TICK_TYPE_WIDTH_32_BITS    1
-#define TICK_TYPE_WIDTH_64_BITS    2
+#تعریف_کرو TICK_TYPE_چوڑائی_16_بٹ    0
+#تعریف_کرو TICK_TYPE_چوڑائی_32_بٹ    1
+#تعریف_کرو TICK_TYPE_چوڑائی_64_بٹ    2
 
 /* Application specific configuration options. */
-#include "FreeRTOSConfig.h"
+#ضمن "FreeRTOSConfig.h"
 
-#if !defined( configUSE_16_BIT_TICKS ) && !defined( configTICK_TYPE_WIDTH_IN_BITS )
-    #error Missing definition:  One of configUSE_16_BIT_TICKS and configTICK_TYPE_WIDTH_IN_BITS must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#إذا !defined( config_USE_16_ثنائی_ہندسہ_TICKS ) && !defined( config_TICK_TYPE_چوڑائی_وچ_بٹ )
+    #غلطی Missing definition:  One دا config_USE_16_ثنائی_ہندسہ_TICKS and config_TICK_TYPE_چوڑائی_وچ_بٹ must be defined وچ FreeRTOSConfig.h.  See the Configuration section دا the FreeRTOS API documentation لكل details.
+#جے_انت
 
-#if defined( configUSE_16_BIT_TICKS ) && defined( configTICK_TYPE_WIDTH_IN_BITS )
-    #error Only one of configUSE_16_BIT_TICKS and configTICK_TYPE_WIDTH_IN_BITS must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#إذا defined( config_USE_16_ثنائی_ہندسہ_TICKS ) && defined( config_TICK_TYPE_چوڑائی_وچ_بٹ )
+    #غلطی Only one دا config_USE_16_ثنائی_ہندسہ_TICKS and config_TICK_TYPE_چوڑائی_وچ_بٹ must be defined وچ FreeRTOSConfig.h.  See the Configuration section دا the FreeRTOS API documentation لكل details.
+#جے_انت
 
 /* Define configTICK_TYPE_WIDTH_IN_BITS according to the
  * value of configUSE_16_BIT_TICKS for backward compatibility. */
-#ifndef configTICK_TYPE_WIDTH_IN_BITS
-    #if ( configUSE_16_BIT_TICKS == 1 )
-        #define configTICK_TYPE_WIDTH_IN_BITS    TICK_TYPE_WIDTH_16_BITS
-    #else
-        #define configTICK_TYPE_WIDTH_IN_BITS    TICK_TYPE_WIDTH_32_BITS
-    #endif
-#endif
+#جے_بنا_تعریف config_TICK_TYPE_چوڑائی_وچ_بٹ
+    #إذا ( config_USE_16_ثنائی_ہندسہ_TICKS == 1 )
+        #تعریف_کرو config_TICK_TYPE_چوڑائی_وچ_بٹ    TICK_TYPE_چوڑائی_16_بٹ
+    #وإلا
+        #تعریف_کرو config_TICK_TYPE_چوڑائی_وچ_بٹ    TICK_TYPE_چوڑائی_32_بٹ
+    #جے_انت
+#جے_انت
 
 /* Set configUSE_MPU_WRAPPERS_V1 to 1 to use MPU wrappers v1. */
-#ifndef configUSE_MPU_WRAPPERS_V1
-    #define configUSE_MPU_WRAPPERS_V1    0
-#endif
+#جے_بنا_تعریف configUSE_MPU_WRAPPERS_V1
+    #تعریف_کرو configUSE_MPU_WRAPPERS_V1    0
+#جے_انت
 
 /* Set configENABLE_ACCESS_CONTROL_LIST to 1 to enable access control list support. */
-#ifndef configENABLE_ACCESS_CONTROL_LIST
-    #define configENABLE_ACCESS_CONTROL_LIST    0
-#endif
+#جے_بنا_تعریف configENABLE_ACCESS_CONTROL_LIST
+    #تعریف_کرو configENABLE_ACCESS_CONTROL_LIST    0
+#جے_انت
 
 /* Set default value of configNUMBER_OF_CORES to 1 to use single core FreeRTOS. */
-#ifndef configNUMBER_OF_CORES
-    #define configNUMBER_OF_CORES    1
-#endif
+#جے_بنا_تعریف config_نمبر_دا_CORES
+    #تعریف_کرو config_نمبر_دا_CORES    1
+#جے_انت
 
-#ifndef configUSE_MALLOC_FAILED_HOOK
-    #define configUSE_MALLOC_FAILED_HOOK    0
-#endif
+#جے_بنا_تعریف configUSE_MALLOC_FAILED_HOOK
+    #تعریف_کرو configUSE_MALLOC_FAILED_HOOK    0
+#جے_انت
 
 /* Basic FreeRTOS definitions. */
-#include "projdefs.h"
+#ضمن "projdefs.h"
 
 /* Definitions specific to the port being used. */
-#include "portable.h"
+#ضمن "portable.h"
 
 /* Must be defaulted before configUSE_NEWLIB_REENTRANT is used below. */
-#ifndef configUSE_NEWLIB_REENTRANT
-    #define configUSE_NEWLIB_REENTRANT    0
-#endif
+#جے_بنا_تعریف configUSE_NEWLIB_REENTRANT
+    #تعریف_کرو configUSE_NEWLIB_REENTRANT    0
+#جے_انت
 
 /* Required if struct _reent is used. */
-#if ( configUSE_NEWLIB_REENTRANT == 1 )
+#إذا ( configUSE_NEWLIB_REENTRANT == 1 )
 
-    #include "newlib-freertos.h"
+    #ضمن "newlib-freertos.h"
 
-#endif /* if ( configUSE_NEWLIB_REENTRANT == 1 ) */
+#جے_انت /* if ( configUSE_NEWLIB_REENTRANT == 1 ) */
 
 /* Must be defaulted before configUSE_PICOLIBC_TLS is used below. */
-#ifndef configUSE_PICOLIBC_TLS
-    #define configUSE_PICOLIBC_TLS    0
-#endif
+#جے_بنا_تعریف configUSE_PICOLIBC_TLS
+    #تعریف_کرو configUSE_PICOLIBC_TLS    0
+#جے_انت
 
-#if ( configUSE_PICOLIBC_TLS == 1 )
+#إذا ( configUSE_PICOLIBC_TLS == 1 )
 
-    #include "picolibc-freertos.h"
+    #ضمن "picolibc-freertos.h"
 
-#endif /* if ( configUSE_PICOLIBC_TLS == 1 ) */
+#جے_انت /* if ( configUSE_PICOLIBC_TLS == 1 ) */
 
-#ifndef configUSE_C_RUNTIME_TLS_SUPPORT
-    #define configUSE_C_RUNTIME_TLS_SUPPORT    0
-#endif
+#جے_بنا_تعریف configUSE_C_RUNTIME_TLS_SUPPORT
+    #تعریف_کرو configUSE_C_RUNTIME_TLS_SUPPORT    0
+#جے_انت
 
-#if ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 )
+#إذا ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 )
 
-    #ifndef configTLS_BLOCK_TYPE
-        #error Missing definition:  configTLS_BLOCK_TYPE must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
+    #جے_بنا_تعریف config_TLS_بلاک_TYPE
+        #غلطی Missing definition:  config_TLS_بلاک_TYPE must be defined وچ FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is سیٹ منزل 1.
+    #جے_انت
 
-    #ifndef configINIT_TLS_BLOCK
-        #error Missing definition:  configINIT_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
+    #جے_بنا_تعریف config_INIT_TLS_بلاک
+        #غلطی Missing definition:  config_INIT_TLS_بلاک must be defined وچ FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is سیٹ منزل 1.
+    #جے_انت
 
-    #ifndef configSET_TLS_BLOCK
-        #error Missing definition:  configSET_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
+    #جے_بنا_تعریف config_سیٹ_TLS_بلاک
+        #غلطی Missing definition:  config_سیٹ_TLS_بلاک must be defined وچ FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is سیٹ منزل 1.
+    #جے_انت
 
-    #ifndef configDEINIT_TLS_BLOCK
-        #error Missing definition:  configDEINIT_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
-#endif /* if ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) */
+    #جے_بنا_تعریف config_DEINIT_TLS_بلاک
+        #غلطی Missing definition:  config_DEINIT_TLS_بلاک must be defined وچ FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is سیٹ منزل 1.
+    #جے_انت
+#جے_انت /* if ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) */
 
 /*
  * Check all the required application specific macros have been defined.
@@ -162,2759 +162,2759 @@
  * within FreeRTOSConfig.h.
  */
 
-#ifndef configMINIMAL_STACK_SIZE
-    #error Missing definition:  configMINIMAL_STACK_SIZE must be defined in FreeRTOSConfig.h.  configMINIMAL_STACK_SIZE defines the size (in words) of the stack allocated to the idle task.  Refer to the demo project provided for your port for a suitable value.
-#endif
+#جے_بنا_تعریف config_اقل_ڈھیر_ناپ
+    #غلطی Missing definition:  config_اقل_ڈھیر_ناپ must be defined وچ FreeRTOSConfig.h.  config_اقل_ڈھیر_ناپ مقرر_کردا the ناپ (وچ الفاظ) دا the ڈھیر allocated منزل the idle task.  Refer منزل the demo project provided لكل your پورٹ لكل a suitable قدر.
+#جے_انت
 
-#ifndef configMAX_PRIORITIES
-    #error Missing definition:  configMAX_PRIORITIES must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#جے_بنا_تعریف configMAX_PRIORITIES
+    #غلطی Missing definition:  configMAX_PRIORITIES must be defined وچ FreeRTOSConfig.h.  See the Configuration section دا the FreeRTOS API documentation لكل details.
+#جے_انت
 
-#if configMAX_PRIORITIES < 1
-    #error configMAX_PRIORITIES must be defined to be greater than or equal to 1.
-#endif
+#إذا configMAX_PRIORITIES < 1
+    #غلطی configMAX_PRIORITIES must be defined منزل be greater than or equal منزل 1.
+#جے_انت
 
-#ifndef configUSE_PREEMPTION
-    #error Missing definition:  configUSE_PREEMPTION must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#جے_بنا_تعریف configUSE_PREEMPTION
+    #غلطی Missing definition:  configUSE_PREEMPTION must be defined وچ FreeRTOSConfig.h as either 1 or 0.  See the Configuration section دا the FreeRTOS API documentation لكل details.
+#جے_انت
 
-#ifndef configUSE_IDLE_HOOK
-    #error Missing definition:  configUSE_IDLE_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#جے_بنا_تعریف configUSE_IDLE_HOOK
+    #غلطی Missing definition:  configUSE_IDLE_HOOK must be defined وچ FreeRTOSConfig.h as either 1 or 0.  See the Configuration section دا the FreeRTOS API documentation لكل details.
+#جے_انت
 
-#if ( configNUMBER_OF_CORES > 1 )
-    #ifndef configUSE_PASSIVE_IDLE_HOOK
-        #error Missing definition:  configUSE_PASSIVE_IDLE_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-    #endif
-#endif
+#إذا ( config_نمبر_دا_CORES > 1 )
+    #جے_بنا_تعریف configUSE_PASSIVE_IDLE_HOOK
+        #غلطی Missing definition:  configUSE_PASSIVE_IDLE_HOOK must be defined وچ FreeRTOSConfig.h as either 1 or 0.  See the Configuration section دا the FreeRTOS API documentation لكل details.
+    #جے_انت
+#جے_انت
 
-#ifndef configUSE_TICK_HOOK
-    #error Missing definition:  configUSE_TICK_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#جے_بنا_تعریف configUSE_TICK_HOOK
+    #غلطی Missing definition:  configUSE_TICK_HOOK must be defined وچ FreeRTOSConfig.h as either 1 or 0.  See the Configuration section دا the FreeRTOS API documentation لكل details.
+#جے_انت
 
-#if ( ( configTICK_TYPE_WIDTH_IN_BITS != TICK_TYPE_WIDTH_16_BITS ) && \
-    ( configTICK_TYPE_WIDTH_IN_BITS != TICK_TYPE_WIDTH_32_BITS ) &&   \
-    ( configTICK_TYPE_WIDTH_IN_BITS != TICK_TYPE_WIDTH_64_BITS ) )
-    #error Macro configTICK_TYPE_WIDTH_IN_BITS is defined to incorrect value.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#إذا ( ( config_TICK_TYPE_چوڑائی_وچ_بٹ != TICK_TYPE_چوڑائی_16_بٹ ) && \
+    ( config_TICK_TYPE_چوڑائی_وچ_بٹ != TICK_TYPE_چوڑائی_32_بٹ ) &&   \
+    ( config_TICK_TYPE_چوڑائی_وچ_بٹ != TICK_TYPE_چوڑائی_64_بٹ ) )
+    #غلطی Macro config_TICK_TYPE_چوڑائی_وچ_بٹ is defined منزل incorrect قدر.  See the Configuration section دا the FreeRTOS API documentation لكل details.
+#جے_انت
 
-#ifndef configUSE_CO_ROUTINES
-    #define configUSE_CO_ROUTINES    0
-#endif
+#جے_بنا_تعریف configUSE_CO_ROUTINES
+    #تعریف_کرو configUSE_CO_ROUTINES    0
+#جے_انت
 
-#ifndef INCLUDE_vTaskPrioritySet
-    #define INCLUDE_vTaskPrioritySet    0
-#endif
+#جے_بنا_تعریف INCLUDE_v_Task_ترجیح_سیٹ
+    #تعریف_کرو INCLUDE_v_Task_ترجیح_سیٹ    0
+#جے_انت
 
-#ifndef INCLUDE_uxTaskPriorityGet
-    #define INCLUDE_uxTaskPriorityGet    0
-#endif
+#جے_بنا_تعریف INCLUDE_ux_Task_ترجیح_Get
+    #تعریف_کرو INCLUDE_ux_Task_ترجیح_Get    0
+#جے_انت
 
-#ifndef INCLUDE_vTaskDelete
-    #define INCLUDE_vTaskDelete    0
-#endif
+#جے_بنا_تعریف INCLUDE_vTaskDelete
+    #تعریف_کرو INCLUDE_vTaskDelete    0
+#جے_انت
 
-#ifndef INCLUDE_vTaskSuspend
-    #define INCLUDE_vTaskSuspend    0
-#endif
+#جے_بنا_تعریف INCLUDE_vTaskSuspend
+    #تعریف_کرو INCLUDE_vTaskSuspend    0
+#جے_انت
 
-#ifdef INCLUDE_xTaskDelayUntil
-    #ifdef INCLUDE_vTaskDelayUntil
+#جے_تعریف_شدہ INCLUDE_xTaskDelayUntil
+    #جے_تعریف_شدہ INCLUDE_vTaskDelayUntil
 
 /* INCLUDE_vTaskDelayUntil was replaced by INCLUDE_xTaskDelayUntil.  Backward
  * compatibility is maintained if only one or the other is defined, but
  * there is a conflict if both are defined. */
-        #error INCLUDE_vTaskDelayUntil and INCLUDE_xTaskDelayUntil are both defined.  INCLUDE_vTaskDelayUntil is no longer required and should be removed
-    #endif
-#endif
+        #غلطی INCLUDE_vTaskDelayUntil and INCLUDE_xTaskDelayUntil are both defined.  INCLUDE_vTaskDelayUntil is no longer required and should be removed
+    #جے_انت
+#جے_انت
 
-#ifndef INCLUDE_xTaskDelayUntil
-    #ifdef INCLUDE_vTaskDelayUntil
+#جے_بنا_تعریف INCLUDE_xTaskDelayUntil
+    #جے_تعریف_شدہ INCLUDE_vTaskDelayUntil
 
 /* If INCLUDE_vTaskDelayUntil is set but INCLUDE_xTaskDelayUntil is not then
  * the project's FreeRTOSConfig.h probably pre-dates the introduction of
  * xTaskDelayUntil and setting INCLUDE_xTaskDelayUntil to whatever
  * INCLUDE_vTaskDelayUntil is set to will ensure backward compatibility.
  */
-        #define INCLUDE_xTaskDelayUntil    INCLUDE_vTaskDelayUntil
-    #endif
-#endif
+        #تعریف_کرو INCLUDE_xTaskDelayUntil    INCLUDE_vTaskDelayUntil
+    #جے_انت
+#جے_انت
 
-#ifndef INCLUDE_xTaskDelayUntil
-    #define INCLUDE_xTaskDelayUntil    0
-#endif
+#جے_بنا_تعریف INCLUDE_xTaskDelayUntil
+    #تعریف_کرو INCLUDE_xTaskDelayUntil    0
+#جے_انت
 
-#ifndef INCLUDE_vTaskDelay
-    #define INCLUDE_vTaskDelay    0
-#endif
+#جے_بنا_تعریف INCLUDE_vTaskDelay
+    #تعریف_کرو INCLUDE_vTaskDelay    0
+#جے_انت
 
-#ifndef INCLUDE_xTaskGetIdleTaskHandle
-    #define INCLUDE_xTaskGetIdleTaskHandle    0
-#endif
+#جے_بنا_تعریف INCLUDE_xTaskGetIdleTaskHandle
+    #تعریف_کرو INCLUDE_xTaskGetIdleTaskHandle    0
+#جے_انت
 
-#ifndef INCLUDE_xTaskAbortDelay
-    #define INCLUDE_xTaskAbortDelay    0
-#endif
+#جے_بنا_تعریف INCLUDE_xTaskAbortDelay
+    #تعریف_کرو INCLUDE_xTaskAbortDelay    0
+#جے_انت
 
-#ifndef INCLUDE_xQueueGetMutexHolder
-    #define INCLUDE_xQueueGetMutexHolder    0
-#endif
+#جے_بنا_تعریف INCLUDE_x_قطار_Get_Mutex_Holder
+    #تعریف_کرو INCLUDE_x_قطار_Get_Mutex_Holder    0
+#جے_انت
 
-#ifndef INCLUDE_xSemaphoreGetMutexHolder
-    #define INCLUDE_xSemaphoreGetMutexHolder    INCLUDE_xQueueGetMutexHolder
-#endif
+#جے_بنا_تعریف INCLUDE_xSemaphoreGetMutexHolder
+    #تعریف_کرو INCLUDE_xSemaphoreGetMutexHolder    INCLUDE_x_قطار_Get_Mutex_Holder
+#جے_انت
 
-#ifndef INCLUDE_xTaskGetHandle
-    #define INCLUDE_xTaskGetHandle    0
-#endif
+#جے_بنا_تعریف INCLUDE_xTaskGetHandle
+    #تعریف_کرو INCLUDE_xTaskGetHandle    0
+#جے_انت
 
-#ifndef INCLUDE_uxTaskGetStackHighWaterMark
-    #define INCLUDE_uxTaskGetStackHighWaterMark    0
-#endif
+#جے_بنا_تعریف INCLUDE_ux_Task_Get_ڈھیر_بلند_Water_Mark
+    #تعریف_کرو INCLUDE_ux_Task_Get_ڈھیر_بلند_Water_Mark    0
+#جے_انت
 
-#ifndef INCLUDE_uxTaskGetStackHighWaterMark2
-    #define INCLUDE_uxTaskGetStackHighWaterMark2    0
-#endif
+#جے_بنا_تعریف INCLUDE_ux_Task_Get_ڈھیر_بلند_Water_Mark2
+    #تعریف_کرو INCLUDE_ux_Task_Get_ڈھیر_بلند_Water_Mark2    0
+#جے_انت
 
-#ifndef INCLUDE_eTaskGetState
-    #define INCLUDE_eTaskGetState    0
-#endif
+#جے_بنا_تعریف INCLUDE_eTaskGetState
+    #تعریف_کرو INCLUDE_eTaskGetState    0
+#جے_انت
 
-#ifndef INCLUDE_xTaskResumeFromISR
-    #define INCLUDE_xTaskResumeFromISR    1
-#endif
+#جے_بنا_تعریف INCLUDE_xTaskResumeFromISR
+    #تعریف_کرو INCLUDE_xTaskResumeFromISR    1
+#جے_انت
 
-#ifndef INCLUDE_xTimerPendFunctionCall
-    #define INCLUDE_xTimerPendFunctionCall    0
-#endif
+#جے_بنا_تعریف INCLUDE_xTimerPendFunctionCall
+    #تعریف_کرو INCLUDE_xTimerPendFunctionCall    0
+#جے_انت
 
-#ifndef INCLUDE_xTaskGetSchedulerState
-    #define INCLUDE_xTaskGetSchedulerState    0
-#endif
+#جے_بنا_تعریف INCLUDE_xTaskGetSchedulerState
+    #تعریف_کرو INCLUDE_xTaskGetSchedulerState    0
+#جے_انت
 
-#ifndef INCLUDE_xTaskGetCurrentTaskHandle
-    #define INCLUDE_xTaskGetCurrentTaskHandle    1
-#endif
+#جے_بنا_تعریف INCLUDE_xTaskGetCurrentTaskHandle
+    #تعریف_کرو INCLUDE_xTaskGetCurrentTaskHandle    1
+#جے_انت
 
-#if configUSE_CO_ROUTINES != 0
-    #ifndef configMAX_CO_ROUTINE_PRIORITIES
-        #error configMAX_CO_ROUTINE_PRIORITIES must be greater than or equal to 1.
-    #endif
-#endif
+#إذا configUSE_CO_ROUTINES != 0
+    #جے_بنا_تعریف configMAX_CO_ROUTINE_PRIORITIES
+        #غلطی configMAX_CO_ROUTINE_PRIORITIES must be greater than or equal منزل 1.
+    #جے_انت
+#جے_انت
 
-#ifndef configUSE_APPLICATION_TASK_TAG
-    #define configUSE_APPLICATION_TASK_TAG    0
-#endif
+#جے_بنا_تعریف config_USE_APPLICATION_TASK_ٹیگ
+    #تعریف_کرو config_USE_APPLICATION_TASK_ٹیگ    0
+#جے_انت
 
-#ifndef configNUM_THREAD_LOCAL_STORAGE_POINTERS
-    #define configNUM_THREAD_LOCAL_STORAGE_POINTERS    0
-#endif
+#جے_بنا_تعریف config_عدد_THREAD_LOCAL_STORAGE_سوچکاں
+    #تعریف_کرو config_عدد_THREAD_LOCAL_STORAGE_سوچکاں    0
+#جے_انت
 
-#ifndef configUSE_RECURSIVE_MUTEXES
-    #define configUSE_RECURSIVE_MUTEXES    0
-#endif
+#جے_بنا_تعریف configUSE_RECURSIVE_MUTEXES
+    #تعریف_کرو configUSE_RECURSIVE_MUTEXES    0
+#جے_انت
 
-#ifndef configUSE_MUTEXES
-    #define configUSE_MUTEXES    0
-#endif
+#جے_بنا_تعریف configUSE_MUTEXES
+    #تعریف_کرو configUSE_MUTEXES    0
+#جے_انت
 
-#ifndef configUSE_TIMERS
-    #define configUSE_TIMERS    0
-#endif
+#جے_بنا_تعریف configUSE_TIMERS
+    #تعریف_کرو configUSE_TIMERS    0
+#جے_انت
 
-#ifndef configUSE_EVENT_GROUPS
-    #define configUSE_EVENT_GROUPS    1
-#endif
+#جے_بنا_تعریف configUSE_EVENT_GROUPS
+    #تعریف_کرو configUSE_EVENT_GROUPS    1
+#جے_انت
 
-#ifndef configUSE_STREAM_BUFFERS
-    #define configUSE_STREAM_BUFFERS    1
-#endif
+#جے_بنا_تعریف config_USE_دھارا_BUFFERS
+    #تعریف_کرو config_USE_دھارا_BUFFERS    1
+#جے_انت
 
-#ifndef configUSE_DAEMON_TASK_STARTUP_HOOK
-    #define configUSE_DAEMON_TASK_STARTUP_HOOK    0
-#endif
+#جے_بنا_تعریف configUSE_DAEMON_TASK_STARTUP_HOOK
+    #تعریف_کرو configUSE_DAEMON_TASK_STARTUP_HOOK    0
+#جے_انت
 
-#if ( configUSE_DAEMON_TASK_STARTUP_HOOK != 0 )
-    #if ( configUSE_TIMERS == 0 )
-        #error configUSE_DAEMON_TASK_STARTUP_HOOK is set, but the daemon task is not created because configUSE_TIMERS is 0.
-    #endif
-#endif
+#إذا ( configUSE_DAEMON_TASK_STARTUP_HOOK != 0 )
+    #إذا ( configUSE_TIMERS == 0 )
+        #غلطی configUSE_DAEMON_TASK_STARTUP_HOOK is سیٹ, but the daemon task is not created because configUSE_TIMERS is 0.
+    #جے_انت
+#جے_انت
 
-#ifndef configUSE_COUNTING_SEMAPHORES
-    #define configUSE_COUNTING_SEMAPHORES    0
-#endif
+#جے_بنا_تعریف configUSE_COUNTING_SEMAPHORES
+    #تعریف_کرو configUSE_COUNTING_SEMAPHORES    0
+#جے_انت
 
-#ifndef configUSE_TASK_PREEMPTION_DISABLE
-    #define configUSE_TASK_PREEMPTION_DISABLE    0
-#endif
+#جے_بنا_تعریف configUSE_TASK_PREEMPTION_DISABLE
+    #تعریف_کرو configUSE_TASK_PREEMPTION_DISABLE    0
+#جے_انت
 
-#ifndef configUSE_ALTERNATIVE_API
-    #define configUSE_ALTERNATIVE_API    0
-#endif
+#جے_بنا_تعریف configUSE_ALTERNATIVE_API
+    #تعریف_کرو configUSE_ALTERNATIVE_API    0
+#جے_انت
 
-#ifndef portCRITICAL_NESTING_IN_TCB
-    #define portCRITICAL_NESTING_IN_TCB    0
-#endif
+#جے_بنا_تعریف پورٹ_CRITICAL_NESTING_وچ_TCB
+    #تعریف_کرو پورٹ_CRITICAL_NESTING_وچ_TCB    0
+#جے_انت
 
-#ifndef configMAX_TASK_NAME_LEN
-    #define configMAX_TASK_NAME_LEN    16
-#endif
+#جے_بنا_تعریف configMAX_TASK_NAME_LEN
+    #تعریف_کرو configMAX_TASK_NAME_LEN    16
+#جے_انت
 
-#ifndef configIDLE_SHOULD_YIELD
-    #define configIDLE_SHOULD_YIELD    1
-#endif
+#جے_بنا_تعریف configIDLE_SHOULD_YIELD
+    #تعریف_کرو configIDLE_SHOULD_YIELD    1
+#جے_انت
 
-#if configMAX_TASK_NAME_LEN < 1
-    #error configMAX_TASK_NAME_LEN must be set to a minimum of 1 in FreeRTOSConfig.h
-#endif
+#إذا configMAX_TASK_NAME_LEN < 1
+    #غلطی configMAX_TASK_NAME_LEN must be سیٹ منزل a minimum دا 1 وچ FreeRTOSConfig.h
+#جے_انت
 
-#ifndef configASSERT
-    #define configASSERT( x )
-    #define configASSERT_DEFINED    0
-#else
-    #define configASSERT_DEFINED    1
-#endif
+#جے_بنا_تعریف configASSERT
+    #تعریف_کرو configASSERT( x )
+    #تعریف_کرو configASSERT_DEFINED    0
+#وإلا
+    #تعریف_کرو configASSERT_DEFINED    1
+#جے_انت
 
 /* configPRECONDITION should be defined as configASSERT.
  * The CBMC proofs need a way to track assumptions and assertions.
  * A configPRECONDITION statement should express an implicit invariant or
  * assumption made.  A configASSERT statement should express an invariant that must
  * hold explicit before calling the code. */
-#ifndef configPRECONDITION
-    #define configPRECONDITION( X )    configASSERT( X )
-    #define configPRECONDITION_DEFINED    0
-#else
-    #define configPRECONDITION_DEFINED    1
-#endif
+#جے_بنا_تعریف configPRECONDITION
+    #تعریف_کرو configPRECONDITION( X )    configASSERT( X )
+    #تعریف_کرو configPRECONDITION_DEFINED    0
+#وإلا
+    #تعریف_کرو configPRECONDITION_DEFINED    1
+#جے_انت
 
-#ifndef configCHECK_HANDLER_INSTALLATION
-    #define configCHECK_HANDLER_INSTALLATION    1
-#else
+#جے_بنا_تعریف configCHECK_HANDLER_INSTALLATION
+    #تعریف_کرو configCHECK_HANDLER_INSTALLATION    1
+#وإلا
 
 /* The application has explicitly defined configCHECK_HANDLER_INSTALLATION
  * to 1. The checks requires configASSERT() to be defined. */
-    #if ( ( configCHECK_HANDLER_INSTALLATION == 1 ) && ( configASSERT_DEFINED == 0 ) )
-        #error You must define configASSERT() when configCHECK_HANDLER_INSTALLATION is 1.
-    #endif
-#endif
+    #إذا ( ( configCHECK_HANDLER_INSTALLATION == 1 ) && ( configASSERT_DEFINED == 0 ) )
+        #غلطی You must define configASSERT() when configCHECK_HANDLER_INSTALLATION is 1.
+    #جے_انت
+#جے_انت
 
-#ifndef portMEMORY_BARRIER
-    #define portMEMORY_BARRIER()
-#endif
+#جے_بنا_تعریف پورٹ_حافظہ_BARRIER
+    #تعریف_کرو پورٹ_حافظہ_BARRIER()
+#جے_انت
 
-#ifndef portSOFTWARE_BARRIER
-    #define portSOFTWARE_BARRIER()
-#endif
+#جے_بنا_تعریف پورٹ_SOFTWARE_BARRIER
+    #تعریف_کرو پورٹ_SOFTWARE_BARRIER()
+#جے_انت
 
-#ifndef configRUN_MULTIPLE_PRIORITIES
-    #define configRUN_MULTIPLE_PRIORITIES    0
-#endif
+#جے_بنا_تعریف config_لگاتار_مضرب_PRIORITIES
+    #تعریف_کرو config_لگاتار_مضرب_PRIORITIES    0
+#جے_انت
 
-#ifndef portGET_CORE_ID
+#جے_بنا_تعریف پورٹ_GET_CORE_ID
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portGET_CORE_ID()    0
-    #else
-        #error configNUMBER_OF_CORES is set to more than 1 then portGET_CORE_ID must also be defined.
-    #endif /* configNUMBER_OF_CORES */
+    #إذا ( config_نمبر_دا_CORES == 1 )
+        #تعریف_کرو پورٹ_GET_CORE_ID()    0
+    #وإلا
+        #غلطی config_نمبر_دا_CORES is سیٹ منزل ہور than 1 then پورٹ_GET_CORE_ID must also be defined.
+    #جے_انت /* configNUMBER_OF_CORES */
 
-#endif /* portGET_CORE_ID */
+#جے_انت /* portGET_CORE_ID */
 
-#ifndef portYIELD_CORE
+#جے_بنا_تعریف پورٹ_YIELD_CORE
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portYIELD_CORE( x )    portYIELD()
-    #else
-        #error configNUMBER_OF_CORES is set to more than 1 then portYIELD_CORE must also be defined.
-    #endif /* configNUMBER_OF_CORES */
+    #إذا ( config_نمبر_دا_CORES == 1 )
+        #تعریف_کرو پورٹ_YIELD_CORE( x )    پورٹ_YIELD()
+    #وإلا
+        #غلطی config_نمبر_دا_CORES is سیٹ منزل ہور than 1 then پورٹ_YIELD_CORE must also be defined.
+    #جے_انت /* configNUMBER_OF_CORES */
 
-#endif /* portYIELD_CORE */
+#جے_انت /* portYIELD_CORE */
 
-#ifndef portSET_INTERRUPT_MASK
+#جے_بنا_تعریف پورٹ_سیٹ_رکاوٹ_نقاب
 
-    #if ( configNUMBER_OF_CORES > 1 )
-        #error portSET_INTERRUPT_MASK is required in SMP
-    #endif
+    #إذا ( config_نمبر_دا_CORES > 1 )
+        #غلطی پورٹ_سیٹ_رکاوٹ_نقاب is required وچ SMP
+    #جے_انت
 
-#endif /* portSET_INTERRUPT_MASK */
+#جے_انت /* portSET_INTERRUPT_MASK */
 
-#ifndef portCLEAR_INTERRUPT_MASK
+#جے_بنا_تعریف پورٹ_CLEAR_رکاوٹ_نقاب
 
-    #if ( configNUMBER_OF_CORES > 1 )
-        #error portCLEAR_INTERRUPT_MASK is required in SMP
-    #endif
+    #إذا ( config_نمبر_دا_CORES > 1 )
+        #غلطی پورٹ_CLEAR_رکاوٹ_نقاب is required وچ SMP
+    #جے_انت
 
-#endif /* portCLEAR_INTERRUPT_MASK */
+#جے_انت /* portCLEAR_INTERRUPT_MASK */
 
-#ifndef portRELEASE_TASK_LOCK
+#جے_بنا_تعریف پورٹ_RELEASE_TASK_جندرا
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portRELEASE_TASK_LOCK()
-    #else
-        #error portRELEASE_TASK_LOCK is required in SMP
-    #endif
+    #إذا ( config_نمبر_دا_CORES == 1 )
+        #تعریف_کرو پورٹ_RELEASE_TASK_جندرا()
+    #وإلا
+        #غلطی پورٹ_RELEASE_TASK_جندرا is required وچ SMP
+    #جے_انت
 
-#endif /* portRELEASE_TASK_LOCK */
+#جے_انت /* portRELEASE_TASK_LOCK */
 
-#ifndef portGET_TASK_LOCK
+#جے_بنا_تعریف پورٹ_GET_TASK_جندرا
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portGET_TASK_LOCK()
-    #else
-        #error portGET_TASK_LOCK is required in SMP
-    #endif
+    #إذا ( config_نمبر_دا_CORES == 1 )
+        #تعریف_کرو پورٹ_GET_TASK_جندرا()
+    #وإلا
+        #غلطی پورٹ_GET_TASK_جندرا is required وچ SMP
+    #جے_انت
 
-#endif /* portGET_TASK_LOCK */
+#جے_انت /* portGET_TASK_LOCK */
 
-#ifndef portRELEASE_ISR_LOCK
+#جے_بنا_تعریف پورٹ_RELEASE_ISR_جندرا
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portRELEASE_ISR_LOCK()
-    #else
-        #error portRELEASE_ISR_LOCK is required in SMP
-    #endif
+    #إذا ( config_نمبر_دا_CORES == 1 )
+        #تعریف_کرو پورٹ_RELEASE_ISR_جندرا()
+    #وإلا
+        #غلطی پورٹ_RELEASE_ISR_جندرا is required وچ SMP
+    #جے_انت
 
-#endif /* portRELEASE_ISR_LOCK */
+#جے_انت /* portRELEASE_ISR_LOCK */
 
-#ifndef portGET_ISR_LOCK
+#جے_بنا_تعریف پورٹ_GET_ISR_جندرا
 
-    #if ( configNUMBER_OF_CORES == 1 )
-        #define portGET_ISR_LOCK()
-    #else
-        #error portGET_ISR_LOCK is required in SMP
-    #endif
+    #إذا ( config_نمبر_دا_CORES == 1 )
+        #تعریف_کرو پورٹ_GET_ISR_جندرا()
+    #وإلا
+        #غلطی پورٹ_GET_ISR_جندرا is required وچ SMP
+    #جے_انت
 
-#endif /* portGET_ISR_LOCK */
+#جے_انت /* portGET_ISR_LOCK */
 
-#ifndef portENTER_CRITICAL_FROM_ISR
+#جے_بنا_تعریف پورٹ_ENTER_CRITICAL_FROM_ISR
 
-    #if ( configNUMBER_OF_CORES > 1 )
-        #error portENTER_CRITICAL_FROM_ISR is required in SMP
-    #endif
+    #إذا ( config_نمبر_دا_CORES > 1 )
+        #غلطی پورٹ_ENTER_CRITICAL_FROM_ISR is required وچ SMP
+    #جے_انت
 
-#endif
+#جے_انت
 
-#ifndef portEXIT_CRITICAL_FROM_ISR
+#جے_بنا_تعریف پورٹ_EXIT_CRITICAL_FROM_ISR
 
-    #if ( configNUMBER_OF_CORES > 1 )
-        #error portEXIT_CRITICAL_FROM_ISR is required in SMP
-    #endif
+    #إذا ( config_نمبر_دا_CORES > 1 )
+        #غلطی پورٹ_EXIT_CRITICAL_FROM_ISR is required وچ SMP
+    #جے_انت
 
-#endif
+#جے_انت
 
-#ifndef configUSE_CORE_AFFINITY
-    #define configUSE_CORE_AFFINITY    0
-#endif /* configUSE_CORE_AFFINITY */
+#جے_بنا_تعریف configUSE_CORE_AFFINITY
+    #تعریف_کرو configUSE_CORE_AFFINITY    0
+#جے_انت /* configUSE_CORE_AFFINITY */
 
-#if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
-    #ifndef configTASK_DEFAULT_CORE_AFFINITY
-        #define configTASK_DEFAULT_CORE_AFFINITY    tskNO_AFFINITY
-    #endif
-#endif
+#إذا ( ( config_نمبر_دا_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+    #جے_بنا_تعریف configTASK_DEFAULT_CORE_AFFINITY
+        #تعریف_کرو configTASK_DEFAULT_CORE_AFFINITY    tskNO_AFFINITY
+    #جے_انت
+#جے_انت
 
-#ifndef configUSE_PASSIVE_IDLE_HOOK
-    #define configUSE_PASSIVE_IDLE_HOOK    0
-#endif /* configUSE_PASSIVE_IDLE_HOOK */
+#جے_بنا_تعریف configUSE_PASSIVE_IDLE_HOOK
+    #تعریف_کرو configUSE_PASSIVE_IDLE_HOOK    0
+#جے_انت /* configUSE_PASSIVE_IDLE_HOOK */
 
 /* The timers module relies on xTaskGetSchedulerState(). */
-#if configUSE_TIMERS == 1
+#إذا configUSE_TIMERS == 1
 
-    #ifndef configTIMER_TASK_PRIORITY
-        #error If configUSE_TIMERS is set to 1 then configTIMER_TASK_PRIORITY must also be defined.
-    #endif /* configTIMER_TASK_PRIORITY */
+    #جے_بنا_تعریف config_TIMER_TASK_ترجیح
+        #غلطی If configUSE_TIMERS is سیٹ منزل 1 then config_TIMER_TASK_ترجیح must also be defined.
+    #جے_انت /* configTIMER_TASK_PRIORITY */
 
-    #ifndef configTIMER_QUEUE_LENGTH
-        #error If configUSE_TIMERS is set to 1 then configTIMER_QUEUE_LENGTH must also be defined.
-    #endif /* configTIMER_QUEUE_LENGTH */
+    #جے_بنا_تعریف config_TIMER_قطار_لمائی
+        #غلطی If configUSE_TIMERS is سیٹ منزل 1 then config_TIMER_قطار_لمائی must also be defined.
+    #جے_انت /* configTIMER_QUEUE_LENGTH */
 
-    #ifndef configTIMER_TASK_STACK_DEPTH
-        #error If configUSE_TIMERS is set to 1 then configTIMER_TASK_STACK_DEPTH must also be defined.
-    #endif /* configTIMER_TASK_STACK_DEPTH */
+    #جے_بنا_تعریف config_TIMER_TASK_ڈھیر_ڈونگھائی
+        #غلطی If configUSE_TIMERS is سیٹ منزل 1 then config_TIMER_TASK_ڈھیر_ڈونگھائی must also be defined.
+    #جے_انت /* configTIMER_TASK_STACK_DEPTH */
 
-    #ifndef portTIMER_CALLBACK_ATTRIBUTE
-        #define portTIMER_CALLBACK_ATTRIBUTE
-    #endif /* portTIMER_CALLBACK_ATTRIBUTE */
+    #جے_بنا_تعریف پورٹ_TIMER_CALLBACK_ATTRIBUTE
+        #تعریف_کرو پورٹ_TIMER_CALLBACK_ATTRIBUTE
+    #جے_انت /* portTIMER_CALLBACK_ATTRIBUTE */
 
-#endif /* configUSE_TIMERS */
+#جے_انت /* configUSE_TIMERS */
 
-#ifndef portHAS_NESTED_INTERRUPTS
-    #if defined( portSET_INTERRUPT_MASK_FROM_ISR ) && defined( portCLEAR_INTERRUPT_MASK_FROM_ISR )
-        #define portHAS_NESTED_INTERRUPTS    1
-    #else
-        #define portHAS_NESTED_INTERRUPTS    0
-    #endif
-#endif
+#جے_بنا_تعریف پورٹ_HAS_NESTED_INTERRUPTS
+    #إذا defined( پورٹ_سیٹ_رکاوٹ_نقاب_FROM_ISR ) && defined( پورٹ_CLEAR_رکاوٹ_نقاب_FROM_ISR )
+        #تعریف_کرو پورٹ_HAS_NESTED_INTERRUPTS    1
+    #وإلا
+        #تعریف_کرو پورٹ_HAS_NESTED_INTERRUPTS    0
+    #جے_انت
+#جے_انت
 
-#ifndef portSET_INTERRUPT_MASK_FROM_ISR
-    #if ( portHAS_NESTED_INTERRUPTS == 1 )
-        #error portSET_INTERRUPT_MASK_FROM_ISR must be defined for ports that support nested interrupts (i.e. portHAS_NESTED_INTERRUPTS is set to 1)
-    #else
-        #define portSET_INTERRUPT_MASK_FROM_ISR()    0
-    #endif
-#else
-    #if ( portHAS_NESTED_INTERRUPTS == 0 )
-        #error portSET_INTERRUPT_MASK_FROM_ISR must not be defined for ports that do not support nested interrupts (i.e. portHAS_NESTED_INTERRUPTS is set to 0)
-    #endif
-#endif
+#جے_بنا_تعریف پورٹ_سیٹ_رکاوٹ_نقاب_FROM_ISR
+    #إذا ( پورٹ_HAS_NESTED_INTERRUPTS == 1 )
+        #غلطی پورٹ_سیٹ_رکاوٹ_نقاب_FROM_ISR must be defined لكل ports that support nested interrupts (i.e. پورٹ_HAS_NESTED_INTERRUPTS is سیٹ منزل 1)
+    #وإلا
+        #تعریف_کرو پورٹ_سیٹ_رکاوٹ_نقاب_FROM_ISR()    0
+    #جے_انت
+#وإلا
+    #إذا ( پورٹ_HAS_NESTED_INTERRUPTS == 0 )
+        #غلطی پورٹ_سیٹ_رکاوٹ_نقاب_FROM_ISR must not be defined لكل ports that افعل not support nested interrupts (i.e. پورٹ_HAS_NESTED_INTERRUPTS is سیٹ منزل 0)
+    #جے_انت
+#جے_انت
 
-#ifndef portCLEAR_INTERRUPT_MASK_FROM_ISR
-    #if ( portHAS_NESTED_INTERRUPTS == 1 )
-        #error portCLEAR_INTERRUPT_MASK_FROM_ISR must be defined for ports that support nested interrupts  (i.e. portHAS_NESTED_INTERRUPTS is set to 1)
-    #else
-        #define portCLEAR_INTERRUPT_MASK_FROM_ISR( uxSavedStatusValue )    ( void ) ( uxSavedStatusValue )
-    #endif
-#else
-    #if ( portHAS_NESTED_INTERRUPTS == 0 )
-        #error portCLEAR_INTERRUPT_MASK_FROM_ISR must not be defined for ports that do not support nested interrupts (i.e. portHAS_NESTED_INTERRUPTS is set to 0)
-    #endif
-#endif
+#جے_بنا_تعریف پورٹ_CLEAR_رکاوٹ_نقاب_FROM_ISR
+    #إذا ( پورٹ_HAS_NESTED_INTERRUPTS == 1 )
+        #غلطی پورٹ_CLEAR_رکاوٹ_نقاب_FROM_ISR must be defined لكل ports that support nested interrupts  (i.e. پورٹ_HAS_NESTED_INTERRUPTS is سیٹ منزل 1)
+    #وإلا
+        #تعریف_کرو پورٹ_CLEAR_رکاوٹ_نقاب_FROM_ISR( ux_Saved_حالت_قدر )    ( فراغ ) ( ux_Saved_حالت_قدر )
+    #جے_انت
+#وإلا
+    #إذا ( پورٹ_HAS_NESTED_INTERRUPTS == 0 )
+        #غلطی پورٹ_CLEAR_رکاوٹ_نقاب_FROM_ISR must not be defined لكل ports that افعل not support nested interrupts (i.e. پورٹ_HAS_NESTED_INTERRUPTS is سیٹ منزل 0)
+    #جے_انت
+#جے_انت
 
-#ifndef portCLEAN_UP_TCB
-    #define portCLEAN_UP_TCB( pxTCB )    ( void ) ( pxTCB )
-#endif
+#جے_بنا_تعریف پورٹ_CLEAN_اتے_TCB
+    #تعریف_کرو پورٹ_CLEAN_اتے_TCB( pxTCB )    ( فراغ ) ( pxTCB )
+#جے_انت
 
-#ifndef portPRE_TASK_DELETE_HOOK
-    #define portPRE_TASK_DELETE_HOOK( pvTaskToDelete, pxYieldPending )
-#endif
+#جے_بنا_تعریف پورٹ_PRE_TASK_DELETE_HOOK
+    #تعریف_کرو پورٹ_PRE_TASK_DELETE_HOOK( pv_Task_منزل_Delete, pxYieldPending )
+#جے_انت
 
-#ifndef portSETUP_TCB
-    #define portSETUP_TCB( pxTCB )    ( void ) ( pxTCB )
-#endif
+#جے_بنا_تعریف پورٹ_تیاری_TCB
+    #تعریف_کرو پورٹ_تیاری_TCB( pxTCB )    ( فراغ ) ( pxTCB )
+#جے_انت
 
-#ifndef portTASK_SWITCH_HOOK
-    #define portTASK_SWITCH_HOOK( pxTCB )    ( void ) ( pxTCB )
-#endif
+#جے_بنا_تعریف پورٹ_TASK_SWITCH_HOOK
+    #تعریف_کرو پورٹ_TASK_SWITCH_HOOK( pxTCB )    ( فراغ ) ( pxTCB )
+#جے_انت
 
-#ifndef configQUEUE_REGISTRY_SIZE
-    #define configQUEUE_REGISTRY_SIZE    0U
-#endif
+#جے_بنا_تعریف config_قطار_REGISTRY_ناپ
+    #تعریف_کرو config_قطار_REGISTRY_ناپ    0U
+#جے_انت
 
-#if ( configQUEUE_REGISTRY_SIZE < 1 )
-    #define vQueueAddToRegistry( xQueue, pcName )
-    #define vQueueUnregisterQueue( xQueue )
-    #define pcQueueGetName( xQueue )
-#endif
+#إذا ( config_قطار_REGISTRY_ناپ < 1 )
+    #تعریف_کرو v_قطار_جوڑو_منزل_Registry( x_قطار, pcName )
+    #تعریف_کرو v_قطار_Unregister_قطار( x_قطار )
+    #تعریف_کرو pc_قطار_Get_Name( x_قطار )
+#جے_انت
 
-#ifndef configUSE_MINI_LIST_ITEM
-    #define configUSE_MINI_LIST_ITEM    1
-#endif
+#جے_بنا_تعریف config_USE_MINI_LIST_شے
+    #تعریف_کرو config_USE_MINI_LIST_شے    1
+#جے_انت
 
-#ifndef portPOINTER_SIZE_TYPE
-    #define portPOINTER_SIZE_TYPE    uint32_t
-#endif
+#جے_بنا_تعریف پورٹ_اشارہ_گر_ناپ_TYPE
+    #تعریف_کرو پورٹ_اشارہ_گر_ناپ_TYPE    uint32_t
+#جے_انت
 
 /* Remove any unused trace macros. */
-#ifndef traceSTART
+#جے_بنا_تعریف trace_شروع
 
 /* Used to perform any necessary initialisation - for example, open a file
  * into which trace is to be written. */
-    #define traceSTART()
-#endif
+    #تعریف_کرو trace_شروع()
+#جے_انت
 
-#ifndef traceEND
+#جے_بنا_تعریف trace_سرا
 
 /* Use to close a trace, for example close a file into which trace has been
  * written. */
-    #define traceEND()
-#endif
+    #تعریف_کرو trace_سرا()
+#جے_انت
 
-#ifndef traceTASK_SWITCHED_IN
+#جے_بنا_تعریف trace_TASK_SWITCHED_وچ
 
 /* Called after a task has been selected to run.  pxCurrentTCB holds a pointer
  * to the task control block of the selected task. */
-    #define traceTASK_SWITCHED_IN()
-#endif
+    #تعریف_کرو trace_TASK_SWITCHED_وچ()
+#جے_انت
 
-#ifndef traceINCREASE_TICK_COUNT
+#جے_بنا_تعریف trace_INCREASE_TICK_گنتی
 
 /* Called before stepping the tick count after waking from tickless idle
  * sleep. */
-    #define traceINCREASE_TICK_COUNT( x )
-#endif
+    #تعریف_کرو trace_INCREASE_TICK_گنتی( x )
+#جے_انت
 
-#ifndef traceLOW_POWER_IDLE_BEGIN
+#جے_بنا_تعریف trace_کم_POWER_IDLE_BEGIN
     /* Called immediately before entering tickless idle. */
-    #define traceLOW_POWER_IDLE_BEGIN()
-#endif
+    #تعریف_کرو trace_کم_POWER_IDLE_BEGIN()
+#جے_انت
 
-#ifndef traceLOW_POWER_IDLE_END
+#جے_بنا_تعریف trace_کم_POWER_IDLE_سرا
     /* Called when returning to the Idle task after a tickless idle. */
-    #define traceLOW_POWER_IDLE_END()
-#endif
+    #تعریف_کرو trace_کم_POWER_IDLE_سرا()
+#جے_انت
 
-#ifndef traceTASK_SWITCHED_OUT
+#جے_بنا_تعریف trace_TASK_SWITCHED_باہرلا
 
 /* Called before a task has been selected to run.  pxCurrentTCB holds a pointer
  * to the task control block of the task being switched out. */
-    #define traceTASK_SWITCHED_OUT()
-#endif
+    #تعریف_کرو trace_TASK_SWITCHED_باہرلا()
+#جے_انت
 
-#ifndef traceTASK_PRIORITY_INHERIT
+#جے_بنا_تعریف trace_TASK_ترجیح_INHERIT
 
 /* Called when a task attempts to take a mutex that is already held by a
  * lower priority task.  pxTCBOfMutexHolder is a pointer to the TCB of the task
  * that holds the mutex.  uxInheritedPriority is the priority the mutex holder
  * will inherit (the priority of the task that is attempting to obtain the
  * muted. */
-    #define traceTASK_PRIORITY_INHERIT( pxTCBOfMutexHolder, uxInheritedPriority )
-#endif
+    #تعریف_کرو trace_TASK_ترجیح_INHERIT( pxTCBOfMutexHolder, ux_Inherited_ترجیح )
+#جے_انت
 
-#ifndef traceTASK_PRIORITY_DISINHERIT
+#جے_بنا_تعریف trace_TASK_ترجیح_DISINHERIT
 
 /* Called when a task releases a mutex, the holding of which had resulted in
  * the task inheriting the priority of a higher priority task.
  * pxTCBOfMutexHolder is a pointer to the TCB of the task that is releasing the
  * mutex.  uxOriginalPriority is the task's configured (base) priority. */
-    #define traceTASK_PRIORITY_DISINHERIT( pxTCBOfMutexHolder, uxOriginalPriority )
-#endif
+    #تعریف_کرو trace_TASK_ترجیح_DISINHERIT( pxTCBOfMutexHolder, ux_Original_ترجیح )
+#جے_انت
 
-#ifndef traceBLOCKING_ON_QUEUE_RECEIVE
-
-/* Task is about to block because it cannot read from a
- * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
- * upon which the read was attempted.  pxCurrentTCB points to the TCB of the
- * task that attempted the read. */
-    #define traceBLOCKING_ON_QUEUE_RECEIVE( pxQueue )
-#endif
-
-#ifndef traceBLOCKING_ON_QUEUE_PEEK
+#جے_بنا_تعریف trace_BLOCKING_ON_قطار_RECEIVE
 
 /* Task is about to block because it cannot read from a
  * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
  * upon which the read was attempted.  pxCurrentTCB points to the TCB of the
  * task that attempted the read. */
-    #define traceBLOCKING_ON_QUEUE_PEEK( pxQueue )
-#endif
+    #تعریف_کرو trace_BLOCKING_ON_قطار_RECEIVE( px_قطار )
+#جے_انت
 
-#ifndef traceBLOCKING_ON_QUEUE_SEND
+#جے_بنا_تعریف trace_BLOCKING_ON_قطار_PEEK
+
+/* Task is about to block because it cannot read from a
+ * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
+ * upon which the read was attempted.  pxCurrentTCB points to the TCB of the
+ * task that attempted the read. */
+    #تعریف_کرو trace_BLOCKING_ON_قطار_PEEK( px_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_BLOCKING_ON_قطار_SEND
 
 /* Task is about to block because it cannot write to a
  * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
  * upon which the write was attempted.  pxCurrentTCB points to the TCB of the
  * task that attempted the write. */
-    #define traceBLOCKING_ON_QUEUE_SEND( pxQueue )
-#endif
+    #تعریف_کرو trace_BLOCKING_ON_قطار_SEND( px_قطار )
+#جے_انت
 
-#ifndef configCHECK_FOR_STACK_OVERFLOW
-    #define configCHECK_FOR_STACK_OVERFLOW    0
-#endif
+#جے_بنا_تعریف config_CHECK_FOR_ڈھیر_حد_توں_ودھ
+    #تعریف_کرو config_CHECK_FOR_ڈھیر_حد_توں_ودھ    0
+#جے_انت
 
-#ifndef configRECORD_STACK_HIGH_ADDRESS
-    #define configRECORD_STACK_HIGH_ADDRESS    0
-#endif
+#جے_بنا_تعریف config_ریکارڈ_ڈھیر_بلند_پتہ
+    #تعریف_کرو config_ریکارڈ_ڈھیر_بلند_پتہ    0
+#جے_انت
 
-#ifndef configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H
-    #define configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H    0
-#endif
+#جے_بنا_تعریف configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H
+    #تعریف_کرو configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H    0
+#جے_انت
 
 /* The following event macros are embedded in the kernel API calls. */
 
-#ifndef traceMOVED_TASK_TO_READY_STATE
-    #define traceMOVED_TASK_TO_READY_STATE( pxTCB )
-#endif
-
-#ifndef tracePOST_MOVED_TASK_TO_READY_STATE
-    #define tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )
-#endif
-
-#ifndef traceMOVED_TASK_TO_DELAYED_LIST
-    #define traceMOVED_TASK_TO_DELAYED_LIST()
-#endif
-
-#ifndef traceMOVED_TASK_TO_OVERFLOW_DELAYED_LIST
-    #define traceMOVED_TASK_TO_OVERFLOW_DELAYED_LIST()
-#endif
-
-#ifndef traceQUEUE_CREATE
-    #define traceQUEUE_CREATE( pxNewQueue )
-#endif
-
-#ifndef traceQUEUE_CREATE_FAILED
-    #define traceQUEUE_CREATE_FAILED( ucQueueType )
-#endif
-
-#ifndef traceCREATE_MUTEX
-    #define traceCREATE_MUTEX( pxNewQueue )
-#endif
-
-#ifndef traceCREATE_MUTEX_FAILED
-    #define traceCREATE_MUTEX_FAILED()
-#endif
-
-#ifndef traceGIVE_MUTEX_RECURSIVE
-    #define traceGIVE_MUTEX_RECURSIVE( pxMutex )
-#endif
-
-#ifndef traceGIVE_MUTEX_RECURSIVE_FAILED
-    #define traceGIVE_MUTEX_RECURSIVE_FAILED( pxMutex )
-#endif
-
-#ifndef traceTAKE_MUTEX_RECURSIVE
-    #define traceTAKE_MUTEX_RECURSIVE( pxMutex )
-#endif
-
-#ifndef traceTAKE_MUTEX_RECURSIVE_FAILED
-    #define traceTAKE_MUTEX_RECURSIVE_FAILED( pxMutex )
-#endif
-
-#ifndef traceCREATE_COUNTING_SEMAPHORE
-    #define traceCREATE_COUNTING_SEMAPHORE()
-#endif
-
-#ifndef traceCREATE_COUNTING_SEMAPHORE_FAILED
-    #define traceCREATE_COUNTING_SEMAPHORE_FAILED()
-#endif
-
-#ifndef traceQUEUE_SET_SEND
-    #define traceQUEUE_SET_SEND    traceQUEUE_SEND
-#endif
-
-#ifndef traceQUEUE_SEND
-    #define traceQUEUE_SEND( pxQueue )
-#endif
-
-#ifndef traceQUEUE_SEND_FAILED
-    #define traceQUEUE_SEND_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE
-    #define traceQUEUE_RECEIVE( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK
-    #define traceQUEUE_PEEK( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK_FAILED
-    #define traceQUEUE_PEEK_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK_FROM_ISR
-    #define traceQUEUE_PEEK_FROM_ISR( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE_FAILED
-    #define traceQUEUE_RECEIVE_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_SEND_FROM_ISR
-    #define traceQUEUE_SEND_FROM_ISR( pxQueue )
-#endif
-
-#ifndef traceQUEUE_SEND_FROM_ISR_FAILED
-    #define traceQUEUE_SEND_FROM_ISR_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE_FROM_ISR
-    #define traceQUEUE_RECEIVE_FROM_ISR( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE_FROM_ISR_FAILED
-    #define traceQUEUE_RECEIVE_FROM_ISR_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK_FROM_ISR_FAILED
-    #define traceQUEUE_PEEK_FROM_ISR_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_DELETE
-    #define traceQUEUE_DELETE( pxQueue )
-#endif
-
-#ifndef traceTASK_CREATE
-    #define traceTASK_CREATE( pxNewTCB )
-#endif
-
-#ifndef traceTASK_CREATE_FAILED
-    #define traceTASK_CREATE_FAILED()
-#endif
-
-#ifndef traceTASK_DELETE
-    #define traceTASK_DELETE( pxTaskToDelete )
-#endif
-
-#ifndef traceTASK_DELAY_UNTIL
-    #define traceTASK_DELAY_UNTIL( x )
-#endif
-
-#ifndef traceTASK_DELAY
-    #define traceTASK_DELAY()
-#endif
-
-#ifndef traceTASK_PRIORITY_SET
-    #define traceTASK_PRIORITY_SET( pxTask, uxNewPriority )
-#endif
-
-#ifndef traceTASK_SUSPEND
-    #define traceTASK_SUSPEND( pxTaskToSuspend )
-#endif
-
-#ifndef traceTASK_RESUME
-    #define traceTASK_RESUME( pxTaskToResume )
-#endif
-
-#ifndef traceTASK_RESUME_FROM_ISR
-    #define traceTASK_RESUME_FROM_ISR( pxTaskToResume )
-#endif
-
-#ifndef traceTASK_INCREMENT_TICK
-    #define traceTASK_INCREMENT_TICK( xTickCount )
-#endif
-
-#ifndef traceTIMER_CREATE
-    #define traceTIMER_CREATE( pxNewTimer )
-#endif
-
-#ifndef traceTIMER_CREATE_FAILED
-    #define traceTIMER_CREATE_FAILED()
-#endif
-
-#ifndef traceTIMER_COMMAND_SEND
-    #define traceTIMER_COMMAND_SEND( xTimer, xMessageID, xMessageValueValue, xReturn )
-#endif
-
-#ifndef traceTIMER_EXPIRED
-    #define traceTIMER_EXPIRED( pxTimer )
-#endif
-
-#ifndef traceTIMER_COMMAND_RECEIVED
-    #define traceTIMER_COMMAND_RECEIVED( pxTimer, xMessageID, xMessageValue )
-#endif
-
-#ifndef traceMALLOC
-    #define traceMALLOC( pvAddress, uiSize )
-#endif
-
-#ifndef traceFREE
-    #define traceFREE( pvAddress, uiSize )
-#endif
-
-#ifndef traceEVENT_GROUP_CREATE
-    #define traceEVENT_GROUP_CREATE( xEventGroup )
-#endif
-
-#ifndef traceEVENT_GROUP_CREATE_FAILED
-    #define traceEVENT_GROUP_CREATE_FAILED()
-#endif
-
-#ifndef traceEVENT_GROUP_SYNC_BLOCK
-    #define traceEVENT_GROUP_SYNC_BLOCK( xEventGroup, uxBitsToSet, uxBitsToWaitFor )
-#endif
-
-#ifndef traceEVENT_GROUP_SYNC_END
-    #define traceEVENT_GROUP_SYNC_END( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTimeoutOccurred )    ( void ) ( xTimeoutOccurred )
-#endif
-
-#ifndef traceEVENT_GROUP_WAIT_BITS_BLOCK
-    #define traceEVENT_GROUP_WAIT_BITS_BLOCK( xEventGroup, uxBitsToWaitFor )
-#endif
-
-#ifndef traceEVENT_GROUP_WAIT_BITS_END
-    #define traceEVENT_GROUP_WAIT_BITS_END( xEventGroup, uxBitsToWaitFor, xTimeoutOccurred )    ( void ) ( xTimeoutOccurred )
-#endif
-
-#ifndef traceEVENT_GROUP_CLEAR_BITS
-    #define traceEVENT_GROUP_CLEAR_BITS( xEventGroup, uxBitsToClear )
-#endif
-
-#ifndef traceEVENT_GROUP_CLEAR_BITS_FROM_ISR
-    #define traceEVENT_GROUP_CLEAR_BITS_FROM_ISR( xEventGroup, uxBitsToClear )
-#endif
-
-#ifndef traceEVENT_GROUP_SET_BITS
-    #define traceEVENT_GROUP_SET_BITS( xEventGroup, uxBitsToSet )
-#endif
-
-#ifndef traceEVENT_GROUP_SET_BITS_FROM_ISR
-    #define traceEVENT_GROUP_SET_BITS_FROM_ISR( xEventGroup, uxBitsToSet )
-#endif
-
-#ifndef traceEVENT_GROUP_DELETE
-    #define traceEVENT_GROUP_DELETE( xEventGroup )
-#endif
-
-#ifndef tracePEND_FUNC_CALL
-    #define tracePEND_FUNC_CALL( xFunctionToPend, pvParameter1, ulParameter2, ret )
-#endif
-
-#ifndef tracePEND_FUNC_CALL_FROM_ISR
-    #define tracePEND_FUNC_CALL_FROM_ISR( xFunctionToPend, pvParameter1, ulParameter2, ret )
-#endif
-
-#ifndef traceQUEUE_REGISTRY_ADD
-    #define traceQUEUE_REGISTRY_ADD( xQueue, pcQueueName )
-#endif
-
-#ifndef traceTASK_NOTIFY_TAKE_BLOCK
-    #define traceTASK_NOTIFY_TAKE_BLOCK( uxIndexToWait )
-#endif
-
-#ifndef traceTASK_NOTIFY_TAKE
-    #define traceTASK_NOTIFY_TAKE( uxIndexToWait )
-#endif
-
-#ifndef traceTASK_NOTIFY_WAIT_BLOCK
-    #define traceTASK_NOTIFY_WAIT_BLOCK( uxIndexToWait )
-#endif
-
-#ifndef traceTASK_NOTIFY_WAIT
-    #define traceTASK_NOTIFY_WAIT( uxIndexToWait )
-#endif
-
-#ifndef traceTASK_NOTIFY
-    #define traceTASK_NOTIFY( uxIndexToNotify )
-#endif
-
-#ifndef traceTASK_NOTIFY_FROM_ISR
-    #define traceTASK_NOTIFY_FROM_ISR( uxIndexToNotify )
-#endif
-
-#ifndef traceTASK_NOTIFY_GIVE_FROM_ISR
-    #define traceTASK_NOTIFY_GIVE_FROM_ISR( uxIndexToNotify )
-#endif
-
-#ifndef traceISR_EXIT_TO_SCHEDULER
-    #define traceISR_EXIT_TO_SCHEDULER()
-#endif
-
-#ifndef traceISR_EXIT
-    #define traceISR_EXIT()
-#endif
-
-#ifndef traceISR_ENTER
-    #define traceISR_ENTER()
-#endif
-
-#ifndef traceSTREAM_BUFFER_CREATE_FAILED
-    #define traceSTREAM_BUFFER_CREATE_FAILED( xStreamBufferType )
-#endif
-
-#ifndef traceSTREAM_BUFFER_CREATE_STATIC_FAILED
-    #define traceSTREAM_BUFFER_CREATE_STATIC_FAILED( xReturn, xStreamBufferType )
-#endif
-
-#ifndef traceSTREAM_BUFFER_CREATE
-    #define traceSTREAM_BUFFER_CREATE( pxStreamBuffer, xStreamBufferType )
-#endif
-
-#ifndef traceSTREAM_BUFFER_DELETE
-    #define traceSTREAM_BUFFER_DELETE( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_RESET
-    #define traceSTREAM_BUFFER_RESET( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_RESET_FROM_ISR
-    #define traceSTREAM_BUFFER_RESET_FROM_ISR( xStreamBuffer )
-#endif
-
-#ifndef traceBLOCKING_ON_STREAM_BUFFER_SEND
-    #define traceBLOCKING_ON_STREAM_BUFFER_SEND( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_SEND
-    #define traceSTREAM_BUFFER_SEND( xStreamBuffer, xBytesSent )
-#endif
-
-#ifndef traceSTREAM_BUFFER_SEND_FAILED
-    #define traceSTREAM_BUFFER_SEND_FAILED( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_SEND_FROM_ISR
-    #define traceSTREAM_BUFFER_SEND_FROM_ISR( xStreamBuffer, xBytesSent )
-#endif
-
-#ifndef traceBLOCKING_ON_STREAM_BUFFER_RECEIVE
-    #define traceBLOCKING_ON_STREAM_BUFFER_RECEIVE( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_RECEIVE
-    #define traceSTREAM_BUFFER_RECEIVE( xStreamBuffer, xReceivedLength )
-#endif
-
-#ifndef traceSTREAM_BUFFER_RECEIVE_FAILED
-    #define traceSTREAM_BUFFER_RECEIVE_FAILED( xStreamBuffer )
-#endif
-
-#ifndef traceSTREAM_BUFFER_RECEIVE_FROM_ISR
-    #define traceSTREAM_BUFFER_RECEIVE_FROM_ISR( xStreamBuffer, xReceivedLength )
-#endif
-
-#ifndef traceENTER_xEventGroupCreateStatic
-    #define traceENTER_xEventGroupCreateStatic( pxEventGroupBuffer )
-#endif
-
-#ifndef traceRETURN_xEventGroupCreateStatic
-    #define traceRETURN_xEventGroupCreateStatic( pxEventBits )
-#endif
-
-#ifndef traceENTER_xEventGroupCreate
-    #define traceENTER_xEventGroupCreate()
-#endif
-
-#ifndef traceRETURN_xEventGroupCreate
-    #define traceRETURN_xEventGroupCreate( pxEventBits )
-#endif
-
-#ifndef traceENTER_xEventGroupSync
-    #define traceENTER_xEventGroupSync( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xEventGroupSync
-    #define traceRETURN_xEventGroupSync( uxReturn )
-#endif
-
-#ifndef traceENTER_xEventGroupWaitBits
-    #define traceENTER_xEventGroupWaitBits( xEventGroup, uxBitsToWaitFor, xClearOnExit, xWaitForAllBits, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xEventGroupWaitBits
-    #define traceRETURN_xEventGroupWaitBits( uxReturn )
-#endif
-
-#ifndef traceENTER_xEventGroupClearBits
-    #define traceENTER_xEventGroupClearBits( xEventGroup, uxBitsToClear )
-#endif
-
-#ifndef traceRETURN_xEventGroupClearBits
-    #define traceRETURN_xEventGroupClearBits( uxReturn )
-#endif
-
-#ifndef traceENTER_xEventGroupClearBitsFromISR
-    #define traceENTER_xEventGroupClearBitsFromISR( xEventGroup, uxBitsToClear )
-#endif
-
-#ifndef traceRETURN_xEventGroupClearBitsFromISR
-    #define traceRETURN_xEventGroupClearBitsFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xEventGroupGetBitsFromISR
-    #define traceENTER_xEventGroupGetBitsFromISR( xEventGroup )
-#endif
-
-#ifndef traceRETURN_xEventGroupGetBitsFromISR
-    #define traceRETURN_xEventGroupGetBitsFromISR( uxReturn )
-#endif
-
-#ifndef traceENTER_xEventGroupSetBits
-    #define traceENTER_xEventGroupSetBits( xEventGroup, uxBitsToSet )
-#endif
-
-#ifndef traceRETURN_xEventGroupSetBits
-    #define traceRETURN_xEventGroupSetBits( uxEventBits )
-#endif
-
-#ifndef traceENTER_vEventGroupDelete
-    #define traceENTER_vEventGroupDelete( xEventGroup )
-#endif
-
-#ifndef traceRETURN_vEventGroupDelete
-    #define traceRETURN_vEventGroupDelete()
-#endif
-
-#ifndef traceENTER_xEventGroupGetStaticBuffer
-    #define traceENTER_xEventGroupGetStaticBuffer( xEventGroup, ppxEventGroupBuffer )
-#endif
-
-#ifndef traceRETURN_xEventGroupGetStaticBuffer
-    #define traceRETURN_xEventGroupGetStaticBuffer( xReturn )
-#endif
-
-#ifndef traceENTER_vEventGroupSetBitsCallback
-    #define traceENTER_vEventGroupSetBitsCallback( pvEventGroup, ulBitsToSet )
-#endif
-
-#ifndef traceRETURN_vEventGroupSetBitsCallback
-    #define traceRETURN_vEventGroupSetBitsCallback()
-#endif
-
-#ifndef traceENTER_vEventGroupClearBitsCallback
-    #define traceENTER_vEventGroupClearBitsCallback( pvEventGroup, ulBitsToClear )
-#endif
-
-#ifndef traceRETURN_vEventGroupClearBitsCallback
-    #define traceRETURN_vEventGroupClearBitsCallback()
-#endif
-
-#ifndef traceENTER_xEventGroupSetBitsFromISR
-    #define traceENTER_xEventGroupSetBitsFromISR( xEventGroup, uxBitsToSet, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xEventGroupSetBitsFromISR
-    #define traceRETURN_xEventGroupSetBitsFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_uxEventGroupGetNumber
-    #define traceENTER_uxEventGroupGetNumber( xEventGroup )
-#endif
-
-#ifndef traceRETURN_uxEventGroupGetNumber
-    #define traceRETURN_uxEventGroupGetNumber( xReturn )
-#endif
-
-#ifndef traceENTER_vEventGroupSetNumber
-    #define traceENTER_vEventGroupSetNumber( xEventGroup, uxEventGroupNumber )
-#endif
-
-#ifndef traceRETURN_vEventGroupSetNumber
-    #define traceRETURN_vEventGroupSetNumber()
-#endif
-
-#ifndef traceENTER_xQueueGenericReset
-    #define traceENTER_xQueueGenericReset( xQueue, xNewQueue )
-#endif
-
-#ifndef traceRETURN_xQueueGenericReset
-    #define traceRETURN_xQueueGenericReset( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueGenericCreateStatic
-    #define traceENTER_xQueueGenericCreateStatic( uxQueueLength, uxItemSize, pucQueueStorage, pxStaticQueue, ucQueueType )
-#endif
-
-#ifndef traceRETURN_xQueueGenericCreateStatic
-    #define traceRETURN_xQueueGenericCreateStatic( pxNewQueue )
-#endif
-
-#ifndef traceENTER_xQueueGenericGetStaticBuffers
-    #define traceENTER_xQueueGenericGetStaticBuffers( xQueue, ppucQueueStorage, ppxStaticQueue )
-#endif
-
-#ifndef traceRETURN_xQueueGenericGetStaticBuffers
-    #define traceRETURN_xQueueGenericGetStaticBuffers( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueGenericCreate
-    #define traceENTER_xQueueGenericCreate( uxQueueLength, uxItemSize, ucQueueType )
-#endif
-
-#ifndef traceRETURN_xQueueGenericCreate
-    #define traceRETURN_xQueueGenericCreate( pxNewQueue )
-#endif
-
-#ifndef traceENTER_xQueueCreateMutex
-    #define traceENTER_xQueueCreateMutex( ucQueueType )
-#endif
-
-#ifndef traceRETURN_xQueueCreateMutex
-    #define traceRETURN_xQueueCreateMutex( xNewQueue )
-#endif
-
-#ifndef traceENTER_xQueueCreateMutexStatic
-    #define traceENTER_xQueueCreateMutexStatic( ucQueueType, pxStaticQueue )
-#endif
-
-#ifndef traceRETURN_xQueueCreateMutexStatic
-    #define traceRETURN_xQueueCreateMutexStatic( xNewQueue )
-#endif
-
-#ifndef traceENTER_xQueueGetMutexHolder
-    #define traceENTER_xQueueGetMutexHolder( xSemaphore )
-#endif
-
-#ifndef traceRETURN_xQueueGetMutexHolder
-    #define traceRETURN_xQueueGetMutexHolder( pxReturn )
-#endif
-
-#ifndef traceENTER_xQueueGetMutexHolderFromISR
-    #define traceENTER_xQueueGetMutexHolderFromISR( xSemaphore )
-#endif
-
-#ifndef traceRETURN_xQueueGetMutexHolderFromISR
-    #define traceRETURN_xQueueGetMutexHolderFromISR( pxReturn )
-#endif
-
-#ifndef traceENTER_xQueueGiveMutexRecursive
-    #define traceENTER_xQueueGiveMutexRecursive( xMutex )
-#endif
-
-#ifndef traceRETURN_xQueueGiveMutexRecursive
-    #define traceRETURN_xQueueGiveMutexRecursive( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueTakeMutexRecursive
-    #define traceENTER_xQueueTakeMutexRecursive( xMutex, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueTakeMutexRecursive
-    #define traceRETURN_xQueueTakeMutexRecursive( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueCreateCountingSemaphoreStatic
-    #define traceENTER_xQueueCreateCountingSemaphoreStatic( uxMaxCount, uxInitialCount, pxStaticQueue )
-#endif
-
-#ifndef traceRETURN_xQueueCreateCountingSemaphoreStatic
-    #define traceRETURN_xQueueCreateCountingSemaphoreStatic( xHandle )
-#endif
-
-#ifndef traceENTER_xQueueCreateCountingSemaphore
-    #define traceENTER_xQueueCreateCountingSemaphore( uxMaxCount, uxInitialCount )
-#endif
-
-#ifndef traceRETURN_xQueueCreateCountingSemaphore
-    #define traceRETURN_xQueueCreateCountingSemaphore( xHandle )
-#endif
-
-#ifndef traceENTER_xQueueGenericSend
-    #define traceENTER_xQueueGenericSend( xQueue, pvItemToQueue, xTicksToWait, xCopyPosition )
-#endif
-
-#ifndef traceRETURN_xQueueGenericSend
-    #define traceRETURN_xQueueGenericSend( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueGenericSendFromISR
-    #define traceENTER_xQueueGenericSendFromISR( xQueue, pvItemToQueue, pxHigherPriorityTaskWoken, xCopyPosition )
-#endif
-
-#ifndef traceRETURN_xQueueGenericSendFromISR
-    #define traceRETURN_xQueueGenericSendFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueGiveFromISR
-    #define traceENTER_xQueueGiveFromISR( xQueue, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xQueueGiveFromISR
-    #define traceRETURN_xQueueGiveFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueReceive
-    #define traceENTER_xQueueReceive( xQueue, pvBuffer, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueReceive
-    #define traceRETURN_xQueueReceive( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueSemaphoreTake
-    #define traceENTER_xQueueSemaphoreTake( xQueue, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueSemaphoreTake
-    #define traceRETURN_xQueueSemaphoreTake( xReturn )
-#endif
-
-#ifndef traceENTER_xQueuePeek
-    #define traceENTER_xQueuePeek( xQueue, pvBuffer, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueuePeek
-    #define traceRETURN_xQueuePeek( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueReceiveFromISR
-    #define traceENTER_xQueueReceiveFromISR( xQueue, pvBuffer, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xQueueReceiveFromISR
-    #define traceRETURN_xQueueReceiveFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xQueuePeekFromISR
-    #define traceENTER_xQueuePeekFromISR( xQueue, pvBuffer )
-#endif
-
-#ifndef traceRETURN_xQueuePeekFromISR
-    #define traceRETURN_xQueuePeekFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_uxQueueMessagesWaiting
-    #define traceENTER_uxQueueMessagesWaiting( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueMessagesWaiting
-    #define traceRETURN_uxQueueMessagesWaiting( uxReturn )
-#endif
-
-#ifndef traceENTER_uxQueueSpacesAvailable
-    #define traceENTER_uxQueueSpacesAvailable( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueSpacesAvailable
-    #define traceRETURN_uxQueueSpacesAvailable( uxReturn )
-#endif
-
-#ifndef traceENTER_uxQueueMessagesWaitingFromISR
-    #define traceENTER_uxQueueMessagesWaitingFromISR( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueMessagesWaitingFromISR
-    #define traceRETURN_uxQueueMessagesWaitingFromISR( uxReturn )
-#endif
-
-#ifndef traceENTER_vQueueDelete
-    #define traceENTER_vQueueDelete( xQueue )
-#endif
-
-#ifndef traceRETURN_vQueueDelete
-    #define traceRETURN_vQueueDelete()
-#endif
-
-#ifndef traceENTER_uxQueueGetQueueNumber
-    #define traceENTER_uxQueueGetQueueNumber( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueGetQueueNumber
-    #define traceRETURN_uxQueueGetQueueNumber( uxQueueNumber )
-#endif
-
-#ifndef traceENTER_vQueueSetQueueNumber
-    #define traceENTER_vQueueSetQueueNumber( xQueue, uxQueueNumber )
-#endif
-
-#ifndef traceRETURN_vQueueSetQueueNumber
-    #define traceRETURN_vQueueSetQueueNumber()
-#endif
-
-#ifndef traceENTER_ucQueueGetQueueType
-    #define traceENTER_ucQueueGetQueueType( xQueue )
-#endif
-
-#ifndef traceRETURN_ucQueueGetQueueType
-    #define traceRETURN_ucQueueGetQueueType( ucQueueType )
-#endif
-
-#ifndef traceENTER_uxQueueGetQueueItemSize
-    #define traceENTER_uxQueueGetQueueItemSize( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueGetQueueItemSize
-    #define traceRETURN_uxQueueGetQueueItemSize( uxItemSize )
-#endif
-
-#ifndef traceENTER_uxQueueGetQueueLength
-    #define traceENTER_uxQueueGetQueueLength( xQueue )
-#endif
-
-#ifndef traceRETURN_uxQueueGetQueueLength
-    #define traceRETURN_uxQueueGetQueueLength( uxLength )
-#endif
-
-#ifndef traceENTER_xQueueIsQueueEmptyFromISR
-    #define traceENTER_xQueueIsQueueEmptyFromISR( xQueue )
-#endif
-
-#ifndef traceRETURN_xQueueIsQueueEmptyFromISR
-    #define traceRETURN_xQueueIsQueueEmptyFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueIsQueueFullFromISR
-    #define traceENTER_xQueueIsQueueFullFromISR( xQueue )
-#endif
-
-#ifndef traceRETURN_xQueueIsQueueFullFromISR
-    #define traceRETURN_xQueueIsQueueFullFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueCRSend
-    #define traceENTER_xQueueCRSend( xQueue, pvItemToQueue, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueCRSend
-    #define traceRETURN_xQueueCRSend( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueCRReceive
-    #define traceENTER_xQueueCRReceive( xQueue, pvBuffer, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueCRReceive
-    #define traceRETURN_xQueueCRReceive( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueCRSendFromISR
-    #define traceENTER_xQueueCRSendFromISR( xQueue, pvItemToQueue, xCoRoutinePreviouslyWoken )
-#endif
-
-#ifndef traceRETURN_xQueueCRSendFromISR
-    #define traceRETURN_xQueueCRSendFromISR( xCoRoutinePreviouslyWoken )
-#endif
-
-#ifndef traceENTER_xQueueCRReceiveFromISR
-    #define traceENTER_xQueueCRReceiveFromISR( xQueue, pvBuffer, pxCoRoutineWoken )
-#endif
-
-#ifndef traceRETURN_xQueueCRReceiveFromISR
-    #define traceRETURN_xQueueCRReceiveFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_vQueueAddToRegistry
-    #define traceENTER_vQueueAddToRegistry( xQueue, pcQueueName )
-#endif
-
-#ifndef traceRETURN_vQueueAddToRegistry
-    #define traceRETURN_vQueueAddToRegistry()
-#endif
-
-#ifndef traceENTER_pcQueueGetName
-    #define traceENTER_pcQueueGetName( xQueue )
-#endif
-
-#ifndef traceRETURN_pcQueueGetName
-    #define traceRETURN_pcQueueGetName( pcReturn )
-#endif
-
-#ifndef traceENTER_vQueueUnregisterQueue
-    #define traceENTER_vQueueUnregisterQueue( xQueue )
-#endif
-
-#ifndef traceRETURN_vQueueUnregisterQueue
-    #define traceRETURN_vQueueUnregisterQueue()
-#endif
-
-#ifndef traceENTER_vQueueWaitForMessageRestricted
-    #define traceENTER_vQueueWaitForMessageRestricted( xQueue, xTicksToWait, xWaitIndefinitely )
-#endif
-
-#ifndef traceRETURN_vQueueWaitForMessageRestricted
-    #define traceRETURN_vQueueWaitForMessageRestricted()
-#endif
-
-#ifndef traceENTER_xQueueCreateSet
-    #define traceENTER_xQueueCreateSet( uxEventQueueLength )
-#endif
-
-#ifndef traceRETURN_xQueueCreateSet
-    #define traceRETURN_xQueueCreateSet( pxQueue )
-#endif
-
-#ifndef traceENTER_xQueueAddToSet
-    #define traceENTER_xQueueAddToSet( xQueueOrSemaphore, xQueueSet )
-#endif
-
-#ifndef traceRETURN_xQueueAddToSet
-    #define traceRETURN_xQueueAddToSet( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueRemoveFromSet
-    #define traceENTER_xQueueRemoveFromSet( xQueueOrSemaphore, xQueueSet )
-#endif
-
-#ifndef traceRETURN_xQueueRemoveFromSet
-    #define traceRETURN_xQueueRemoveFromSet( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueSelectFromSet
-    #define traceENTER_xQueueSelectFromSet( xQueueSet, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xQueueSelectFromSet
-    #define traceRETURN_xQueueSelectFromSet( xReturn )
-#endif
-
-#ifndef traceENTER_xQueueSelectFromSetFromISR
-    #define traceENTER_xQueueSelectFromSetFromISR( xQueueSet )
-#endif
-
-#ifndef traceRETURN_xQueueSelectFromSetFromISR
-    #define traceRETURN_xQueueSelectFromSetFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerCreateTimerTask
-    #define traceENTER_xTimerCreateTimerTask()
-#endif
-
-#ifndef traceRETURN_xTimerCreateTimerTask
-    #define traceRETURN_xTimerCreateTimerTask( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerCreate
-    #define traceENTER_xTimerCreate( pcTimerName, xTimerPeriodInTicks, xAutoReload, pvTimerID, pxCallbackFunction )
-#endif
-
-#ifndef traceRETURN_xTimerCreate
-    #define traceRETURN_xTimerCreate( pxNewTimer )
-#endif
-
-#ifndef traceENTER_xTimerCreateStatic
-    #define traceENTER_xTimerCreateStatic( pcTimerName, xTimerPeriodInTicks, xAutoReload, pvTimerID, pxCallbackFunction, pxTimerBuffer )
-#endif
-
-#ifndef traceRETURN_xTimerCreateStatic
-    #define traceRETURN_xTimerCreateStatic( pxNewTimer )
-#endif
-
-#ifndef traceENTER_xTimerGenericCommandFromTask
-    #define traceENTER_xTimerGenericCommandFromTask( xTimer, xCommandID, xOptionalValue, pxHigherPriorityTaskWoken, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xTimerGenericCommandFromTask
-    #define traceRETURN_xTimerGenericCommandFromTask( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerGenericCommandFromISR
-    #define traceENTER_xTimerGenericCommandFromISR( xTimer, xCommandID, xOptionalValue, pxHigherPriorityTaskWoken, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xTimerGenericCommandFromISR
-    #define traceRETURN_xTimerGenericCommandFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerGetTimerDaemonTaskHandle
-    #define traceENTER_xTimerGetTimerDaemonTaskHandle()
-#endif
-
-#ifndef traceRETURN_xTimerGetTimerDaemonTaskHandle
-    #define traceRETURN_xTimerGetTimerDaemonTaskHandle( xTimerTaskHandle )
-#endif
-
-#ifndef traceENTER_xTimerGetPeriod
-    #define traceENTER_xTimerGetPeriod( xTimer )
-#endif
-
-#ifndef traceRETURN_xTimerGetPeriod
-    #define traceRETURN_xTimerGetPeriod( xTimerPeriodInTicks )
-#endif
-
-#ifndef traceENTER_vTimerSetReloadMode
-    #define traceENTER_vTimerSetReloadMode( xTimer, xAutoReload )
-#endif
-
-#ifndef traceRETURN_vTimerSetReloadMode
-    #define traceRETURN_vTimerSetReloadMode()
-#endif
-
-#ifndef traceENTER_xTimerGetReloadMode
-    #define traceENTER_xTimerGetReloadMode( xTimer )
-#endif
-
-#ifndef traceRETURN_xTimerGetReloadMode
-    #define traceRETURN_xTimerGetReloadMode( xReturn )
-#endif
-
-#ifndef traceENTER_uxTimerGetReloadMode
-    #define traceENTER_uxTimerGetReloadMode( xTimer )
-#endif
-
-#ifndef traceRETURN_uxTimerGetReloadMode
-    #define traceRETURN_uxTimerGetReloadMode( uxReturn )
-#endif
-
-#ifndef traceENTER_xTimerGetExpiryTime
-    #define traceENTER_xTimerGetExpiryTime( xTimer )
-#endif
-
-#ifndef traceRETURN_xTimerGetExpiryTime
-    #define traceRETURN_xTimerGetExpiryTime( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerGetStaticBuffer
-    #define traceENTER_xTimerGetStaticBuffer( xTimer, ppxTimerBuffer )
-#endif
-
-#ifndef traceRETURN_xTimerGetStaticBuffer
-    #define traceRETURN_xTimerGetStaticBuffer( xReturn )
-#endif
-
-#ifndef traceENTER_pcTimerGetName
-    #define traceENTER_pcTimerGetName( xTimer )
-#endif
-
-#ifndef traceRETURN_pcTimerGetName
-    #define traceRETURN_pcTimerGetName( pcTimerName )
-#endif
-
-#ifndef traceENTER_xTimerIsTimerActive
-    #define traceENTER_xTimerIsTimerActive( xTimer )
-#endif
-
-#ifndef traceRETURN_xTimerIsTimerActive
-    #define traceRETURN_xTimerIsTimerActive( xReturn )
-#endif
-
-#ifndef traceENTER_pvTimerGetTimerID
-    #define traceENTER_pvTimerGetTimerID( xTimer )
-#endif
-
-#ifndef traceRETURN_pvTimerGetTimerID
-    #define traceRETURN_pvTimerGetTimerID( pvReturn )
-#endif
-
-#ifndef traceENTER_vTimerSetTimerID
-    #define traceENTER_vTimerSetTimerID( xTimer, pvNewID )
-#endif
-
-#ifndef traceRETURN_vTimerSetTimerID
-    #define traceRETURN_vTimerSetTimerID()
-#endif
-
-#ifndef traceENTER_xTimerPendFunctionCallFromISR
-    #define traceENTER_xTimerPendFunctionCallFromISR( xFunctionToPend, pvParameter1, ulParameter2, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xTimerPendFunctionCallFromISR
-    #define traceRETURN_xTimerPendFunctionCallFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xTimerPendFunctionCall
-    #define traceENTER_xTimerPendFunctionCall( xFunctionToPend, pvParameter1, ulParameter2, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xTimerPendFunctionCall
-    #define traceRETURN_xTimerPendFunctionCall( xReturn )
-#endif
-
-#ifndef traceENTER_uxTimerGetTimerNumber
-    #define traceENTER_uxTimerGetTimerNumber( xTimer )
-#endif
-
-#ifndef traceRETURN_uxTimerGetTimerNumber
-    #define traceRETURN_uxTimerGetTimerNumber( uxTimerNumber )
-#endif
-
-#ifndef traceENTER_vTimerSetTimerNumber
-    #define traceENTER_vTimerSetTimerNumber( xTimer, uxTimerNumber )
-#endif
-
-#ifndef traceRETURN_vTimerSetTimerNumber
-    #define traceRETURN_vTimerSetTimerNumber()
-#endif
-
-#ifndef traceENTER_xTaskCreateStatic
-    #define traceENTER_xTaskCreateStatic( pxTaskCode, pcName, uxStackDepth, pvParameters, uxPriority, puxStackBuffer, pxTaskBuffer )
-#endif
-
-#ifndef traceRETURN_xTaskCreateStatic
-    #define traceRETURN_xTaskCreateStatic( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateStaticAffinitySet
-    #define traceENTER_xTaskCreateStaticAffinitySet( pxTaskCode, pcName, uxStackDepth, pvParameters, uxPriority, puxStackBuffer, pxTaskBuffer, uxCoreAffinityMask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateStaticAffinitySet
-    #define traceRETURN_xTaskCreateStaticAffinitySet( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateRestrictedStatic
-    #define traceENTER_xTaskCreateRestrictedStatic( pxTaskDefinition, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateRestrictedStatic
-    #define traceRETURN_xTaskCreateRestrictedStatic( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateRestrictedStaticAffinitySet
-    #define traceENTER_xTaskCreateRestrictedStaticAffinitySet( pxTaskDefinition, uxCoreAffinityMask, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateRestrictedStaticAffinitySet
-    #define traceRETURN_xTaskCreateRestrictedStaticAffinitySet( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateRestricted
-    #define traceENTER_xTaskCreateRestricted( pxTaskDefinition, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateRestricted
-    #define traceRETURN_xTaskCreateRestricted( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateRestrictedAffinitySet
-    #define traceENTER_xTaskCreateRestrictedAffinitySet( pxTaskDefinition, uxCoreAffinityMask, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateRestrictedAffinitySet
-    #define traceRETURN_xTaskCreateRestrictedAffinitySet( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreate
-    #define traceENTER_xTaskCreate( pxTaskCode, pcName, uxStackDepth, pvParameters, uxPriority, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreate
-    #define traceRETURN_xTaskCreate( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCreateAffinitySet
-    #define traceENTER_xTaskCreateAffinitySet( pxTaskCode, pcName, uxStackDepth, pvParameters, uxPriority, uxCoreAffinityMask, pxCreatedTask )
-#endif
-
-#ifndef traceRETURN_xTaskCreateAffinitySet
-    #define traceRETURN_xTaskCreateAffinitySet( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskDelete
-    #define traceENTER_vTaskDelete( xTaskToDelete )
-#endif
-
-#ifndef traceRETURN_vTaskDelete
-    #define traceRETURN_vTaskDelete()
-#endif
-
-#ifndef traceENTER_xTaskDelayUntil
-    #define traceENTER_xTaskDelayUntil( pxPreviousWakeTime, xTimeIncrement )
-#endif
-
-#ifndef traceRETURN_xTaskDelayUntil
-    #define traceRETURN_xTaskDelayUntil( xShouldDelay )
-#endif
-
-#ifndef traceENTER_vTaskDelay
-    #define traceENTER_vTaskDelay( xTicksToDelay )
-#endif
-
-#ifndef traceRETURN_vTaskDelay
-    #define traceRETURN_vTaskDelay()
-#endif
-
-#ifndef traceENTER_eTaskGetState
-    #define traceENTER_eTaskGetState( xTask )
-#endif
-
-#ifndef traceRETURN_eTaskGetState
-    #define traceRETURN_eTaskGetState( eReturn )
-#endif
-
-#ifndef traceENTER_uxTaskPriorityGet
-    #define traceENTER_uxTaskPriorityGet( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskPriorityGet
-    #define traceRETURN_uxTaskPriorityGet( uxReturn )
-#endif
-
-#ifndef traceENTER_uxTaskPriorityGetFromISR
-    #define traceENTER_uxTaskPriorityGetFromISR( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskPriorityGetFromISR
-    #define traceRETURN_uxTaskPriorityGetFromISR( uxReturn )
-#endif
-
-#ifndef traceENTER_uxTaskBasePriorityGet
-    #define traceENTER_uxTaskBasePriorityGet( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskBasePriorityGet
-    #define traceRETURN_uxTaskBasePriorityGet( uxReturn )
-#endif
-
-#ifndef traceENTER_uxTaskBasePriorityGetFromISR
-    #define traceENTER_uxTaskBasePriorityGetFromISR( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskBasePriorityGetFromISR
-    #define traceRETURN_uxTaskBasePriorityGetFromISR( uxReturn )
-#endif
-
-#ifndef traceENTER_vTaskPrioritySet
-    #define traceENTER_vTaskPrioritySet( xTask, uxNewPriority )
-#endif
-
-#ifndef traceRETURN_vTaskPrioritySet
-    #define traceRETURN_vTaskPrioritySet()
-#endif
-
-#ifndef traceENTER_vTaskCoreAffinitySet
-    #define traceENTER_vTaskCoreAffinitySet( xTask, uxCoreAffinityMask )
-#endif
-
-#ifndef traceRETURN_vTaskCoreAffinitySet
-    #define traceRETURN_vTaskCoreAffinitySet()
-#endif
-
-#ifndef traceENTER_vTaskCoreAffinityGet
-    #define traceENTER_vTaskCoreAffinityGet( xTask )
-#endif
-
-#ifndef traceRETURN_vTaskCoreAffinityGet
-    #define traceRETURN_vTaskCoreAffinityGet( uxCoreAffinityMask )
-#endif
-
-#ifndef traceENTER_vTaskPreemptionDisable
-    #define traceENTER_vTaskPreemptionDisable( xTask )
-#endif
-
-#ifndef traceRETURN_vTaskPreemptionDisable
-    #define traceRETURN_vTaskPreemptionDisable()
-#endif
-
-#ifndef traceENTER_vTaskPreemptionEnable
-    #define traceENTER_vTaskPreemptionEnable( xTask )
-#endif
-
-#ifndef traceRETURN_vTaskPreemptionEnable
-    #define traceRETURN_vTaskPreemptionEnable()
-#endif
-
-#ifndef traceENTER_vTaskSuspend
-    #define traceENTER_vTaskSuspend( xTaskToSuspend )
-#endif
-
-#ifndef traceRETURN_vTaskSuspend
-    #define traceRETURN_vTaskSuspend()
-#endif
-
-#ifndef traceENTER_vTaskResume
-    #define traceENTER_vTaskResume( xTaskToResume )
-#endif
-
-#ifndef traceRETURN_vTaskResume
-    #define traceRETURN_vTaskResume()
-#endif
-
-#ifndef traceENTER_xTaskResumeFromISR
-    #define traceENTER_xTaskResumeFromISR( xTaskToResume )
-#endif
-
-#ifndef traceRETURN_xTaskResumeFromISR
-    #define traceRETURN_xTaskResumeFromISR( xYieldRequired )
-#endif
-
-#ifndef traceENTER_vTaskStartScheduler
-    #define traceENTER_vTaskStartScheduler()
-#endif
-
-#ifndef traceRETURN_vTaskStartScheduler
-    #define traceRETURN_vTaskStartScheduler()
-#endif
-
-#ifndef traceENTER_vTaskEndScheduler
-    #define traceENTER_vTaskEndScheduler()
-#endif
-
-#ifndef traceRETURN_vTaskEndScheduler
-    #define traceRETURN_vTaskEndScheduler()
-#endif
-
-#ifndef traceENTER_vTaskSuspendAll
-    #define traceENTER_vTaskSuspendAll()
-#endif
-
-#ifndef traceRETURN_vTaskSuspendAll
-    #define traceRETURN_vTaskSuspendAll()
-#endif
-
-#ifndef traceENTER_xTaskResumeAll
-    #define traceENTER_xTaskResumeAll()
-#endif
-
-#ifndef traceRETURN_xTaskResumeAll
-    #define traceRETURN_xTaskResumeAll( xAlreadyYielded )
-#endif
-
-#ifndef traceENTER_xTaskGetTickCount
-    #define traceENTER_xTaskGetTickCount()
-#endif
-
-#ifndef traceRETURN_xTaskGetTickCount
-    #define traceRETURN_xTaskGetTickCount( xTicks )
-#endif
-
-#ifndef traceENTER_xTaskGetTickCountFromISR
-    #define traceENTER_xTaskGetTickCountFromISR()
-#endif
-
-#ifndef traceRETURN_xTaskGetTickCountFromISR
-    #define traceRETURN_xTaskGetTickCountFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_uxTaskGetNumberOfTasks
-    #define traceENTER_uxTaskGetNumberOfTasks()
-#endif
-
-#ifndef traceRETURN_uxTaskGetNumberOfTasks
-    #define traceRETURN_uxTaskGetNumberOfTasks( uxCurrentNumberOfTasks )
-#endif
-
-#ifndef traceENTER_pcTaskGetName
-    #define traceENTER_pcTaskGetName( xTaskToQuery )
-#endif
-
-#ifndef traceRETURN_pcTaskGetName
-    #define traceRETURN_pcTaskGetName( pcTaskName )
-#endif
-
-#ifndef traceENTER_xTaskGetHandle
-    #define traceENTER_xTaskGetHandle( pcNameToQuery )
-#endif
-
-#ifndef traceRETURN_xTaskGetHandle
-    #define traceRETURN_xTaskGetHandle( pxTCB )
-#endif
-
-#ifndef traceENTER_xTaskGetStaticBuffers
-    #define traceENTER_xTaskGetStaticBuffers( xTask, ppuxStackBuffer, ppxTaskBuffer )
-#endif
-
-#ifndef traceRETURN_xTaskGetStaticBuffers
-    #define traceRETURN_xTaskGetStaticBuffers( xReturn )
-#endif
-
-#ifndef traceENTER_uxTaskGetSystemState
-    #define traceENTER_uxTaskGetSystemState( pxTaskStatusArray, uxArraySize, pulTotalRunTime )
-#endif
-
-#ifndef traceRETURN_uxTaskGetSystemState
-    #define traceRETURN_uxTaskGetSystemState( uxTask )
-#endif
-
-#if ( configNUMBER_OF_CORES == 1 )
-    #ifndef traceENTER_xTaskGetIdleTaskHandle
-        #define traceENTER_xTaskGetIdleTaskHandle()
-    #endif
-#endif
-
-#if ( configNUMBER_OF_CORES == 1 )
-    #ifndef traceRETURN_xTaskGetIdleTaskHandle
-        #define traceRETURN_xTaskGetIdleTaskHandle( xIdleTaskHandle )
-    #endif
-#endif
-
-#ifndef traceENTER_xTaskGetIdleTaskHandleForCore
-    #define traceENTER_xTaskGetIdleTaskHandleForCore( xCoreID )
-#endif
-
-#ifndef traceRETURN_xTaskGetIdleTaskHandleForCore
-    #define traceRETURN_xTaskGetIdleTaskHandleForCore( xIdleTaskHandle )
-#endif
-
-#ifndef traceENTER_vTaskStepTick
-    #define traceENTER_vTaskStepTick( xTicksToJump )
-#endif
-
-#ifndef traceRETURN_vTaskStepTick
-    #define traceRETURN_vTaskStepTick()
-#endif
-
-#ifndef traceENTER_xTaskCatchUpTicks
-    #define traceENTER_xTaskCatchUpTicks( xTicksToCatchUp )
-#endif
-
-#ifndef traceRETURN_xTaskCatchUpTicks
-    #define traceRETURN_xTaskCatchUpTicks( xYieldOccurred )
-#endif
-
-#ifndef traceENTER_xTaskAbortDelay
-    #define traceENTER_xTaskAbortDelay( xTask )
-#endif
-
-#ifndef traceRETURN_xTaskAbortDelay
-    #define traceRETURN_xTaskAbortDelay( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskIncrementTick
-    #define traceENTER_xTaskIncrementTick()
-#endif
-
-#ifndef traceRETURN_xTaskIncrementTick
-    #define traceRETURN_xTaskIncrementTick( xSwitchRequired )
-#endif
-
-#ifndef traceENTER_vTaskSetApplicationTaskTag
-    #define traceENTER_vTaskSetApplicationTaskTag( xTask, pxHookFunction )
-#endif
-
-#ifndef traceRETURN_vTaskSetApplicationTaskTag
-    #define traceRETURN_vTaskSetApplicationTaskTag()
-#endif
-
-#ifndef traceENTER_xTaskGetApplicationTaskTag
-    #define traceENTER_xTaskGetApplicationTaskTag( xTask )
-#endif
-
-#ifndef traceRETURN_xTaskGetApplicationTaskTag
-    #define traceRETURN_xTaskGetApplicationTaskTag( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskGetApplicationTaskTagFromISR
-    #define traceENTER_xTaskGetApplicationTaskTagFromISR( xTask )
-#endif
-
-#ifndef traceRETURN_xTaskGetApplicationTaskTagFromISR
-    #define traceRETURN_xTaskGetApplicationTaskTagFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskCallApplicationTaskHook
-    #define traceENTER_xTaskCallApplicationTaskHook( xTask, pvParameter )
-#endif
-
-#ifndef traceRETURN_xTaskCallApplicationTaskHook
-    #define traceRETURN_xTaskCallApplicationTaskHook( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskSwitchContext
-    #define traceENTER_vTaskSwitchContext()
-#endif
-
-#ifndef traceRETURN_vTaskSwitchContext
-    #define traceRETURN_vTaskSwitchContext()
-#endif
-
-#ifndef traceENTER_vTaskPlaceOnEventList
-    #define traceENTER_vTaskPlaceOnEventList( pxEventList, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_vTaskPlaceOnEventList
-    #define traceRETURN_vTaskPlaceOnEventList()
-#endif
-
-#ifndef traceENTER_vTaskPlaceOnUnorderedEventList
-    #define traceENTER_vTaskPlaceOnUnorderedEventList( pxEventList, xItemValue, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_vTaskPlaceOnUnorderedEventList
-    #define traceRETURN_vTaskPlaceOnUnorderedEventList()
-#endif
-
-#ifndef traceENTER_vTaskPlaceOnEventListRestricted
-    #define traceENTER_vTaskPlaceOnEventListRestricted( pxEventList, xTicksToWait, xWaitIndefinitely )
-#endif
-
-#ifndef traceRETURN_vTaskPlaceOnEventListRestricted
-    #define traceRETURN_vTaskPlaceOnEventListRestricted()
-#endif
-
-#ifndef traceENTER_xTaskRemoveFromEventList
-    #define traceENTER_xTaskRemoveFromEventList( pxEventList )
-#endif
-
-#ifndef traceRETURN_xTaskRemoveFromEventList
-    #define traceRETURN_xTaskRemoveFromEventList( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskRemoveFromUnorderedEventList
-    #define traceENTER_vTaskRemoveFromUnorderedEventList( pxEventListItem, xItemValue )
-#endif
-
-#ifndef traceRETURN_vTaskRemoveFromUnorderedEventList
-    #define traceRETURN_vTaskRemoveFromUnorderedEventList()
-#endif
-
-#ifndef traceENTER_vTaskSetTimeOutState
-    #define traceENTER_vTaskSetTimeOutState( pxTimeOut )
-#endif
-
-#ifndef traceRETURN_vTaskSetTimeOutState
-    #define traceRETURN_vTaskSetTimeOutState()
-#endif
-
-#ifndef traceENTER_vTaskInternalSetTimeOutState
-    #define traceENTER_vTaskInternalSetTimeOutState( pxTimeOut )
-#endif
-
-#ifndef traceRETURN_vTaskInternalSetTimeOutState
-    #define traceRETURN_vTaskInternalSetTimeOutState()
-#endif
-
-#ifndef traceENTER_xTaskCheckForTimeOut
-    #define traceENTER_xTaskCheckForTimeOut( pxTimeOut, pxTicksToWait )
-#endif
-
-#ifndef traceRETURN_xTaskCheckForTimeOut
-    #define traceRETURN_xTaskCheckForTimeOut( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskMissedYield
-    #define traceENTER_vTaskMissedYield()
-#endif
-
-#ifndef traceRETURN_vTaskMissedYield
-    #define traceRETURN_vTaskMissedYield()
-#endif
-
-#ifndef traceENTER_uxTaskGetTaskNumber
-    #define traceENTER_uxTaskGetTaskNumber( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskGetTaskNumber
-    #define traceRETURN_uxTaskGetTaskNumber( uxReturn )
-#endif
-
-#ifndef traceENTER_vTaskSetTaskNumber
-    #define traceENTER_vTaskSetTaskNumber( xTask, uxHandle )
-#endif
-
-#ifndef traceRETURN_vTaskSetTaskNumber
-    #define traceRETURN_vTaskSetTaskNumber()
-#endif
-
-#ifndef traceENTER_eTaskConfirmSleepModeStatus
-    #define traceENTER_eTaskConfirmSleepModeStatus()
-#endif
-
-#ifndef traceRETURN_eTaskConfirmSleepModeStatus
-    #define traceRETURN_eTaskConfirmSleepModeStatus( eReturn )
-#endif
-
-#ifndef traceENTER_vTaskSetThreadLocalStoragePointer
-    #define traceENTER_vTaskSetThreadLocalStoragePointer( xTaskToSet, xIndex, pvValue )
-#endif
-
-#ifndef traceRETURN_vTaskSetThreadLocalStoragePointer
-    #define traceRETURN_vTaskSetThreadLocalStoragePointer()
-#endif
-
-#ifndef traceENTER_pvTaskGetThreadLocalStoragePointer
-    #define traceENTER_pvTaskGetThreadLocalStoragePointer( xTaskToQuery, xIndex )
-#endif
-
-#ifndef traceRETURN_pvTaskGetThreadLocalStoragePointer
-    #define traceRETURN_pvTaskGetThreadLocalStoragePointer( pvReturn )
-#endif
-
-#ifndef traceENTER_vTaskAllocateMPURegions
-    #define traceENTER_vTaskAllocateMPURegions( xTaskToModify, pxRegions )
-#endif
-
-#ifndef traceRETURN_vTaskAllocateMPURegions
-    #define traceRETURN_vTaskAllocateMPURegions()
-#endif
-
-#ifndef traceENTER_vTaskGetInfo
-    #define traceENTER_vTaskGetInfo( xTask, pxTaskStatus, xGetFreeStackSpace, eState )
-#endif
-
-#ifndef traceRETURN_vTaskGetInfo
-    #define traceRETURN_vTaskGetInfo()
-#endif
-
-#ifndef traceENTER_uxTaskGetStackHighWaterMark2
-    #define traceENTER_uxTaskGetStackHighWaterMark2( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskGetStackHighWaterMark2
-    #define traceRETURN_uxTaskGetStackHighWaterMark2( uxReturn )
-#endif
-
-#ifndef traceENTER_uxTaskGetStackHighWaterMark
-    #define traceENTER_uxTaskGetStackHighWaterMark( xTask )
-#endif
-
-#ifndef traceRETURN_uxTaskGetStackHighWaterMark
-    #define traceRETURN_uxTaskGetStackHighWaterMark( uxReturn )
-#endif
-
-#ifndef traceENTER_xTaskGetCurrentTaskHandle
-    #define traceENTER_xTaskGetCurrentTaskHandle()
-#endif
-
-#ifndef traceRETURN_xTaskGetCurrentTaskHandle
-    #define traceRETURN_xTaskGetCurrentTaskHandle( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskGetCurrentTaskHandleForCore
-    #define traceENTER_xTaskGetCurrentTaskHandleForCore( xCoreID )
-#endif
-
-#ifndef traceRETURN_xTaskGetCurrentTaskHandleForCore
-    #define traceRETURN_xTaskGetCurrentTaskHandleForCore( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskGetSchedulerState
-    #define traceENTER_xTaskGetSchedulerState()
-#endif
-
-#ifndef traceRETURN_xTaskGetSchedulerState
-    #define traceRETURN_xTaskGetSchedulerState( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskPriorityInherit
-    #define traceENTER_xTaskPriorityInherit( pxMutexHolder )
-#endif
-
-#ifndef traceRETURN_xTaskPriorityInherit
-    #define traceRETURN_xTaskPriorityInherit( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskPriorityDisinherit
-    #define traceENTER_xTaskPriorityDisinherit( pxMutexHolder )
-#endif
-
-#ifndef traceRETURN_xTaskPriorityDisinherit
-    #define traceRETURN_xTaskPriorityDisinherit( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskPriorityDisinheritAfterTimeout
-    #define traceENTER_vTaskPriorityDisinheritAfterTimeout( pxMutexHolder, uxHighestPriorityWaitingTask )
-#endif
-
-#ifndef traceRETURN_vTaskPriorityDisinheritAfterTimeout
-    #define traceRETURN_vTaskPriorityDisinheritAfterTimeout()
-#endif
-
-#ifndef traceENTER_vTaskYieldWithinAPI
-    #define traceENTER_vTaskYieldWithinAPI()
-#endif
-
-#ifndef traceRETURN_vTaskYieldWithinAPI
-    #define traceRETURN_vTaskYieldWithinAPI()
-#endif
-
-#ifndef traceENTER_vTaskEnterCritical
-    #define traceENTER_vTaskEnterCritical()
-#endif
-
-#ifndef traceRETURN_vTaskEnterCritical
-    #define traceRETURN_vTaskEnterCritical()
-#endif
-
-#ifndef traceENTER_vTaskEnterCriticalFromISR
-    #define traceENTER_vTaskEnterCriticalFromISR()
-#endif
-
-#ifndef traceRETURN_vTaskEnterCriticalFromISR
-    #define traceRETURN_vTaskEnterCriticalFromISR( uxSavedInterruptStatus )
-#endif
-
-#ifndef traceENTER_vTaskExitCritical
-    #define traceENTER_vTaskExitCritical()
-#endif
-
-#ifndef traceRETURN_vTaskExitCritical
-    #define traceRETURN_vTaskExitCritical()
-#endif
-
-#ifndef traceENTER_vTaskExitCriticalFromISR
-    #define traceENTER_vTaskExitCriticalFromISR( uxSavedInterruptStatus )
-#endif
-
-#ifndef traceRETURN_vTaskExitCriticalFromISR
-    #define traceRETURN_vTaskExitCriticalFromISR()
-#endif
-
-#ifndef traceENTER_vTaskListTasks
-    #define traceENTER_vTaskListTasks( pcWriteBuffer, uxBufferLength )
-#endif
-
-#ifndef traceRETURN_vTaskListTasks
-    #define traceRETURN_vTaskListTasks()
-#endif
-
-#ifndef traceENTER_vTaskGetRunTimeStatistics
-    #define traceENTER_vTaskGetRunTimeStatistics( pcWriteBuffer, uxBufferLength )
-#endif
-
-#ifndef traceRETURN_vTaskGetRunTimeStatistics
-    #define traceRETURN_vTaskGetRunTimeStatistics()
-#endif
-
-#ifndef traceENTER_uxTaskResetEventItemValue
-    #define traceENTER_uxTaskResetEventItemValue()
-#endif
-
-#ifndef traceRETURN_uxTaskResetEventItemValue
-    #define traceRETURN_uxTaskResetEventItemValue( uxReturn )
-#endif
-
-#ifndef traceENTER_pvTaskIncrementMutexHeldCount
-    #define traceENTER_pvTaskIncrementMutexHeldCount()
-#endif
-
-#ifndef traceRETURN_pvTaskIncrementMutexHeldCount
-    #define traceRETURN_pvTaskIncrementMutexHeldCount( pxTCB )
-#endif
-
-#ifndef traceENTER_ulTaskGenericNotifyTake
-    #define traceENTER_ulTaskGenericNotifyTake( uxIndexToWaitOn, xClearCountOnExit, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_ulTaskGenericNotifyTake
-    #define traceRETURN_ulTaskGenericNotifyTake( ulReturn )
-#endif
-
-#ifndef traceENTER_xTaskGenericNotifyWait
-    #define traceENTER_xTaskGenericNotifyWait( uxIndexToWaitOn, ulBitsToClearOnEntry, ulBitsToClearOnExit, pulNotificationValue, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xTaskGenericNotifyWait
-    #define traceRETURN_xTaskGenericNotifyWait( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskGenericNotify
-    #define traceENTER_xTaskGenericNotify( xTaskToNotify, uxIndexToNotify, ulValue, eAction, pulPreviousNotificationValue )
-#endif
-
-#ifndef traceRETURN_xTaskGenericNotify
-    #define traceRETURN_xTaskGenericNotify( xReturn )
-#endif
-
-#ifndef traceENTER_xTaskGenericNotifyFromISR
-    #define traceENTER_xTaskGenericNotifyFromISR( xTaskToNotify, uxIndexToNotify, ulValue, eAction, pulPreviousNotificationValue, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xTaskGenericNotifyFromISR
-    #define traceRETURN_xTaskGenericNotifyFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_vTaskGenericNotifyGiveFromISR
-    #define traceENTER_vTaskGenericNotifyGiveFromISR( xTaskToNotify, uxIndexToNotify, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_vTaskGenericNotifyGiveFromISR
-    #define traceRETURN_vTaskGenericNotifyGiveFromISR()
-#endif
-
-#ifndef traceENTER_xTaskGenericNotifyStateClear
-    #define traceENTER_xTaskGenericNotifyStateClear( xTask, uxIndexToClear )
-#endif
-
-#ifndef traceRETURN_xTaskGenericNotifyStateClear
-    #define traceRETURN_xTaskGenericNotifyStateClear( xReturn )
-#endif
-
-#ifndef traceENTER_ulTaskGenericNotifyValueClear
-    #define traceENTER_ulTaskGenericNotifyValueClear( xTask, uxIndexToClear, ulBitsToClear )
-#endif
-
-#ifndef traceRETURN_ulTaskGenericNotifyValueClear
-    #define traceRETURN_ulTaskGenericNotifyValueClear( ulReturn )
-#endif
-
-#ifndef traceENTER_ulTaskGetRunTimeCounter
-    #define traceENTER_ulTaskGetRunTimeCounter( xTask )
-#endif
-
-#ifndef traceRETURN_ulTaskGetRunTimeCounter
-    #define traceRETURN_ulTaskGetRunTimeCounter( ulRunTimeCounter )
-#endif
-
-#ifndef traceENTER_ulTaskGetRunTimePercent
-    #define traceENTER_ulTaskGetRunTimePercent( xTask )
-#endif
-
-#ifndef traceRETURN_ulTaskGetRunTimePercent
-    #define traceRETURN_ulTaskGetRunTimePercent( ulReturn )
-#endif
-
-#ifndef traceENTER_ulTaskGetIdleRunTimeCounter
-    #define traceENTER_ulTaskGetIdleRunTimeCounter()
-#endif
-
-#ifndef traceRETURN_ulTaskGetIdleRunTimeCounter
-    #define traceRETURN_ulTaskGetIdleRunTimeCounter( ulReturn )
-#endif
-
-#ifndef traceENTER_ulTaskGetIdleRunTimePercent
-    #define traceENTER_ulTaskGetIdleRunTimePercent()
-#endif
-
-#ifndef traceRETURN_ulTaskGetIdleRunTimePercent
-    #define traceRETURN_ulTaskGetIdleRunTimePercent( ulReturn )
-#endif
-
-#ifndef traceENTER_xTaskGetMPUSettings
-    #define traceENTER_xTaskGetMPUSettings( xTask )
-#endif
-
-#ifndef traceRETURN_xTaskGetMPUSettings
-    #define traceRETURN_xTaskGetMPUSettings( xMPUSettings )
-#endif
-
-#ifndef traceENTER_xStreamBufferGenericCreate
-    #define traceENTER_xStreamBufferGenericCreate( xBufferSizeBytes, xTriggerLevelBytes, xStreamBufferType, pxSendCompletedCallback, pxReceiveCompletedCallback )
-#endif
-
-#ifndef traceRETURN_xStreamBufferGenericCreate
-    #define traceRETURN_xStreamBufferGenericCreate( pvAllocatedMemory )
-#endif
-
-#ifndef traceENTER_xStreamBufferGenericCreateStatic
-    #define traceENTER_xStreamBufferGenericCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, xStreamBufferType, pucStreamBufferStorageArea, pxStaticStreamBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback )
-#endif
-
-#ifndef traceRETURN_xStreamBufferGenericCreateStatic
-    #define traceRETURN_xStreamBufferGenericCreateStatic( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferGetStaticBuffers
-    #define traceENTER_xStreamBufferGetStaticBuffers( xStreamBuffer, ppucStreamBufferStorageArea, ppxStaticStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferGetStaticBuffers
-    #define traceRETURN_xStreamBufferGetStaticBuffers( xReturn )
-#endif
-
-#ifndef traceENTER_vStreamBufferDelete
-    #define traceENTER_vStreamBufferDelete( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_vStreamBufferDelete
-    #define traceRETURN_vStreamBufferDelete()
-#endif
-
-#ifndef traceENTER_xStreamBufferReset
-    #define traceENTER_xStreamBufferReset( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferReset
-    #define traceRETURN_xStreamBufferReset( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferResetFromISR
-    #define traceENTER_xStreamBufferResetFromISR( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferResetFromISR
-    #define traceRETURN_xStreamBufferResetFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferSetTriggerLevel
-    #define traceENTER_xStreamBufferSetTriggerLevel( xStreamBuffer, xTriggerLevel )
-#endif
-
-#ifndef traceRETURN_xStreamBufferSetTriggerLevel
-    #define traceRETURN_xStreamBufferSetTriggerLevel( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferSpacesAvailable
-    #define traceENTER_xStreamBufferSpacesAvailable( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferSpacesAvailable
-    #define traceRETURN_xStreamBufferSpacesAvailable( xSpace )
-#endif
-
-#ifndef traceENTER_xStreamBufferBytesAvailable
-    #define traceENTER_xStreamBufferBytesAvailable( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferBytesAvailable
-    #define traceRETURN_xStreamBufferBytesAvailable( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferSend
-    #define traceENTER_xStreamBufferSend( xStreamBuffer, pvTxData, xDataLengthBytes, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xStreamBufferSend
-    #define traceRETURN_xStreamBufferSend( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferSendFromISR
-    #define traceENTER_xStreamBufferSendFromISR( xStreamBuffer, pvTxData, xDataLengthBytes, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xStreamBufferSendFromISR
-    #define traceRETURN_xStreamBufferSendFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferReceive
-    #define traceENTER_xStreamBufferReceive( xStreamBuffer, pvRxData, xBufferLengthBytes, xTicksToWait )
-#endif
-
-#ifndef traceRETURN_xStreamBufferReceive
-    #define traceRETURN_xStreamBufferReceive( xReceivedLength )
-#endif
-
-#ifndef traceENTER_xStreamBufferNextMessageLengthBytes
-    #define traceENTER_xStreamBufferNextMessageLengthBytes( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferNextMessageLengthBytes
-    #define traceRETURN_xStreamBufferNextMessageLengthBytes( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferReceiveFromISR
-    #define traceENTER_xStreamBufferReceiveFromISR( xStreamBuffer, pvRxData, xBufferLengthBytes, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xStreamBufferReceiveFromISR
-    #define traceRETURN_xStreamBufferReceiveFromISR( xReceivedLength )
-#endif
-
-#ifndef traceENTER_xStreamBufferIsEmpty
-    #define traceENTER_xStreamBufferIsEmpty( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferIsEmpty
-    #define traceRETURN_xStreamBufferIsEmpty( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferIsFull
-    #define traceENTER_xStreamBufferIsFull( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_xStreamBufferIsFull
-    #define traceRETURN_xStreamBufferIsFull( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferSendCompletedFromISR
-    #define traceENTER_xStreamBufferSendCompletedFromISR( xStreamBuffer, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xStreamBufferSendCompletedFromISR
-    #define traceRETURN_xStreamBufferSendCompletedFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_xStreamBufferReceiveCompletedFromISR
-    #define traceENTER_xStreamBufferReceiveCompletedFromISR( xStreamBuffer, pxHigherPriorityTaskWoken )
-#endif
-
-#ifndef traceRETURN_xStreamBufferReceiveCompletedFromISR
-    #define traceRETURN_xStreamBufferReceiveCompletedFromISR( xReturn )
-#endif
-
-#ifndef traceENTER_uxStreamBufferGetStreamBufferNotificationIndex
-    #define traceENTER_uxStreamBufferGetStreamBufferNotificationIndex( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_uxStreamBufferGetStreamBufferNotificationIndex
-    #define traceRETURN_uxStreamBufferGetStreamBufferNotificationIndex( uxNotificationIndex )
-#endif
-
-#ifndef traceENTER_vStreamBufferSetStreamBufferNotificationIndex
-    #define traceENTER_vStreamBufferSetStreamBufferNotificationIndex( xStreamBuffer, uxNotificationIndex )
-#endif
-
-#ifndef traceRETURN_vStreamBufferSetStreamBufferNotificationIndex
-    #define traceRETURN_vStreamBufferSetStreamBufferNotificationIndex()
-#endif
-
-#ifndef traceENTER_uxStreamBufferGetStreamBufferNumber
-    #define traceENTER_uxStreamBufferGetStreamBufferNumber( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_uxStreamBufferGetStreamBufferNumber
-    #define traceRETURN_uxStreamBufferGetStreamBufferNumber( uxStreamBufferNumber )
-#endif
-
-#ifndef traceENTER_vStreamBufferSetStreamBufferNumber
-    #define traceENTER_vStreamBufferSetStreamBufferNumber( xStreamBuffer, uxStreamBufferNumber )
-#endif
-
-#ifndef traceRETURN_vStreamBufferSetStreamBufferNumber
-    #define traceRETURN_vStreamBufferSetStreamBufferNumber()
-#endif
-
-#ifndef traceENTER_ucStreamBufferGetStreamBufferType
-    #define traceENTER_ucStreamBufferGetStreamBufferType( xStreamBuffer )
-#endif
-
-#ifndef traceRETURN_ucStreamBufferGetStreamBufferType
-    #define traceRETURN_ucStreamBufferGetStreamBufferType( ucStreamBufferType )
-#endif
-
-#ifndef traceENTER_vListInitialise
-    #define traceENTER_vListInitialise( pxList )
-#endif
-
-#ifndef traceRETURN_vListInitialise
-    #define traceRETURN_vListInitialise()
-#endif
-
-#ifndef traceENTER_vListInitialiseItem
-    #define traceENTER_vListInitialiseItem( pxItem )
-#endif
-
-#ifndef traceRETURN_vListInitialiseItem
-    #define traceRETURN_vListInitialiseItem()
-#endif
-
-#ifndef traceENTER_vListInsertEnd
-    #define traceENTER_vListInsertEnd( pxList, pxNewListItem )
-#endif
-
-#ifndef traceRETURN_vListInsertEnd
-    #define traceRETURN_vListInsertEnd()
-#endif
-
-#ifndef traceENTER_vListInsert
-    #define traceENTER_vListInsert( pxList, pxNewListItem )
-#endif
-
-#ifndef traceRETURN_vListInsert
-    #define traceRETURN_vListInsert()
-#endif
-
-#ifndef traceENTER_uxListRemove
-    #define traceENTER_uxListRemove( pxItemToRemove )
-#endif
-
-#ifndef traceRETURN_uxListRemove
-    #define traceRETURN_uxListRemove( uxNumberOfItems )
-#endif
-
-#ifndef traceENTER_xCoRoutineCreate
-    #define traceENTER_xCoRoutineCreate( pxCoRoutineCode, uxPriority, uxIndex )
-#endif
-
-#ifndef traceRETURN_xCoRoutineCreate
-    #define traceRETURN_xCoRoutineCreate( xReturn )
-#endif
-
-#ifndef traceENTER_vCoRoutineAddToDelayedList
-    #define traceENTER_vCoRoutineAddToDelayedList( xTicksToDelay, pxEventList )
-#endif
-
-#ifndef traceRETURN_vCoRoutineAddToDelayedList
-    #define traceRETURN_vCoRoutineAddToDelayedList()
-#endif
-
-#ifndef traceENTER_vCoRoutineSchedule
-    #define traceENTER_vCoRoutineSchedule()
-#endif
-
-#ifndef traceRETURN_vCoRoutineSchedule
-    #define traceRETURN_vCoRoutineSchedule()
-#endif
-
-#ifndef traceENTER_xCoRoutineRemoveFromEventList
-    #define traceENTER_xCoRoutineRemoveFromEventList( pxEventList )
-#endif
-
-#ifndef traceRETURN_xCoRoutineRemoveFromEventList
-    #define traceRETURN_xCoRoutineRemoveFromEventList( xReturn )
-#endif
-
-#ifndef configGENERATE_RUN_TIME_STATS
-    #define configGENERATE_RUN_TIME_STATS    0
-#endif
-
-#if ( configGENERATE_RUN_TIME_STATS == 1 )
-
-    #ifndef portCONFIGURE_TIMER_FOR_RUN_TIME_STATS
-        #error If configGENERATE_RUN_TIME_STATS is defined then portCONFIGURE_TIMER_FOR_RUN_TIME_STATS must also be defined.  portCONFIGURE_TIMER_FOR_RUN_TIME_STATS should call a port layer function to setup a peripheral timer/counter that can then be used as the run time counter time base.
-    #endif /* portCONFIGURE_TIMER_FOR_RUN_TIME_STATS */
-
-    #ifndef portGET_RUN_TIME_COUNTER_VALUE
-        #ifndef portALT_GET_RUN_TIME_COUNTER_VALUE
-            #error If configGENERATE_RUN_TIME_STATS is defined then either portGET_RUN_TIME_COUNTER_VALUE or portALT_GET_RUN_TIME_COUNTER_VALUE must also be defined.  See the examples provided and the FreeRTOS web site for more information.
-        #endif /* portALT_GET_RUN_TIME_COUNTER_VALUE */
-    #endif /* portGET_RUN_TIME_COUNTER_VALUE */
-
-#endif /* configGENERATE_RUN_TIME_STATS */
-
-#ifndef portCONFIGURE_TIMER_FOR_RUN_TIME_STATS
-    #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
-#endif
-
-#ifndef portPRIVILEGE_BIT
-    #define portPRIVILEGE_BIT    ( ( UBaseType_t ) 0x00 )
-#endif
-
-#ifndef portYIELD_WITHIN_API
-    #define portYIELD_WITHIN_API    portYIELD
-#endif
-
-#ifndef portSUPPRESS_TICKS_AND_SLEEP
-    #define portSUPPRESS_TICKS_AND_SLEEP( xExpectedIdleTime )
-#endif
-
-#ifndef configEXPECTED_IDLE_TIME_BEFORE_SLEEP
-    #define configEXPECTED_IDLE_TIME_BEFORE_SLEEP    2
-#endif
-
-#if configEXPECTED_IDLE_TIME_BEFORE_SLEEP < 2
-    #error configEXPECTED_IDLE_TIME_BEFORE_SLEEP must not be less than 2
-#endif
-
-#ifndef configUSE_TICKLESS_IDLE
-    #define configUSE_TICKLESS_IDLE    0
-#endif
-
-#ifndef configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING
-    #define configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING( x )
-#endif
-
-#ifndef configPRE_SLEEP_PROCESSING
-    #define configPRE_SLEEP_PROCESSING( x )
-#endif
-
-#ifndef configPOST_SLEEP_PROCESSING
-    #define configPOST_SLEEP_PROCESSING( x )
-#endif
-
-#ifndef configUSE_QUEUE_SETS
-    #define configUSE_QUEUE_SETS    0
-#endif
-
-#ifndef portTASK_USES_FLOATING_POINT
-    #define portTASK_USES_FLOATING_POINT()
-#endif
-
-#ifndef portALLOCATE_SECURE_CONTEXT
-    #define portALLOCATE_SECURE_CONTEXT( ulSecureStackSize )
-#endif
-
-#ifndef portDONT_DISCARD
-    #define portDONT_DISCARD
-#endif
-
-#ifndef configUSE_TIME_SLICING
-    #define configUSE_TIME_SLICING    1
-#endif
-
-#ifndef configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS
-    #define configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS    0
-#endif
-
-#ifndef configUSE_STATS_FORMATTING_FUNCTIONS
-    #define configUSE_STATS_FORMATTING_FUNCTIONS    0
-#endif
-
-#ifndef portASSERT_IF_INTERRUPT_PRIORITY_INVALID
-    #define portASSERT_IF_INTERRUPT_PRIORITY_INVALID()
-#endif
-
-#ifndef configUSE_TRACE_FACILITY
-    #define configUSE_TRACE_FACILITY    0
-#endif
-
-#ifndef mtCOVERAGE_TEST_MARKER
-    #define mtCOVERAGE_TEST_MARKER()
-#endif
-
-#ifndef mtCOVERAGE_TEST_DELAY
-    #define mtCOVERAGE_TEST_DELAY()
-#endif
-
-#ifndef portASSERT_IF_IN_ISR
-    #define portASSERT_IF_IN_ISR()
-#endif
-
-#ifndef configUSE_PORT_OPTIMISED_TASK_SELECTION
-    #define configUSE_PORT_OPTIMISED_TASK_SELECTION    0
-#endif
-
-#ifndef configAPPLICATION_ALLOCATED_HEAP
-    #define configAPPLICATION_ALLOCATED_HEAP    0
-#endif
-
-#ifndef configENABLE_HEAP_PROTECTOR
-    #define configENABLE_HEAP_PROTECTOR    0
-#endif
-
-#ifndef configUSE_TASK_NOTIFICATIONS
-    #define configUSE_TASK_NOTIFICATIONS    1
-#endif
-
-#ifndef configTASK_NOTIFICATION_ARRAY_ENTRIES
-    #define configTASK_NOTIFICATION_ARRAY_ENTRIES    1
-#endif
-
-#if configTASK_NOTIFICATION_ARRAY_ENTRIES < 1
-    #error configTASK_NOTIFICATION_ARRAY_ENTRIES must be at least 1
-#endif
-
-#ifndef configUSE_POSIX_ERRNO
-    #define configUSE_POSIX_ERRNO    0
-#endif
-
-#ifndef configUSE_SB_COMPLETED_CALLBACK
+#جے_بنا_تعریف trace_MOVED_TASK_منزل_READY_STATE
+    #تعریف_کرو trace_MOVED_TASK_منزل_READY_STATE( pxTCB )
+#جے_انت
+
+#جے_بنا_تعریف trace_POST_MOVED_TASK_منزل_READY_STATE
+    #تعریف_کرو trace_POST_MOVED_TASK_منزل_READY_STATE( pxTCB )
+#جے_انت
+
+#جے_بنا_تعریف trace_MOVED_TASK_منزل_DELAYED_LIST
+    #تعریف_کرو trace_MOVED_TASK_منزل_DELAYED_LIST()
+#جے_انت
+
+#جے_بنا_تعریف trace_MOVED_TASK_منزل_حد_توں_ودھ_DELAYED_LIST
+    #تعریف_کرو trace_MOVED_TASK_منزل_حد_توں_ودھ_DELAYED_LIST()
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_CREATE
+    #تعریف_کرو trace_قطار_CREATE( px_New_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_CREATE_FAILED
+    #تعریف_کرو trace_قطار_CREATE_FAILED( uc_قطار_Type )
+#جے_انت
+
+#جے_بنا_تعریف traceCREATE_MUTEX
+    #تعریف_کرو traceCREATE_MUTEX( px_New_قطار )
+#جے_انت
+
+#جے_بنا_تعریف traceCREATE_MUTEX_FAILED
+    #تعریف_کرو traceCREATE_MUTEX_FAILED()
+#جے_انت
+
+#جے_بنا_تعریف traceGIVE_MUTEX_RECURSIVE
+    #تعریف_کرو traceGIVE_MUTEX_RECURSIVE( pxMutex )
+#جے_انت
+
+#جے_بنا_تعریف traceGIVE_MUTEX_RECURSIVE_FAILED
+    #تعریف_کرو traceGIVE_MUTEX_RECURSIVE_FAILED( pxMutex )
+#جے_انت
+
+#جے_بنا_تعریف traceTAKE_MUTEX_RECURSIVE
+    #تعریف_کرو traceTAKE_MUTEX_RECURSIVE( pxMutex )
+#جے_انت
+
+#جے_بنا_تعریف traceTAKE_MUTEX_RECURSIVE_FAILED
+    #تعریف_کرو traceTAKE_MUTEX_RECURSIVE_FAILED( pxMutex )
+#جے_انت
+
+#جے_بنا_تعریف traceCREATE_COUNTING_SEMAPHORE
+    #تعریف_کرو traceCREATE_COUNTING_SEMAPHORE()
+#جے_انت
+
+#جے_بنا_تعریف traceCREATE_COUNTING_SEMAPHORE_FAILED
+    #تعریف_کرو traceCREATE_COUNTING_SEMAPHORE_FAILED()
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_سیٹ_SEND
+    #تعریف_کرو trace_قطار_سیٹ_SEND    trace_قطار_SEND
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_SEND
+    #تعریف_کرو trace_قطار_SEND( px_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_SEND_FAILED
+    #تعریف_کرو trace_قطار_SEND_FAILED( px_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_RECEIVE
+    #تعریف_کرو trace_قطار_RECEIVE( px_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_PEEK
+    #تعریف_کرو trace_قطار_PEEK( px_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_PEEK_FAILED
+    #تعریف_کرو trace_قطار_PEEK_FAILED( px_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_PEEK_FROM_ISR
+    #تعریف_کرو trace_قطار_PEEK_FROM_ISR( px_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_RECEIVE_FAILED
+    #تعریف_کرو trace_قطار_RECEIVE_FAILED( px_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_SEND_FROM_ISR
+    #تعریف_کرو trace_قطار_SEND_FROM_ISR( px_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_SEND_FROM_ISR_FAILED
+    #تعریف_کرو trace_قطار_SEND_FROM_ISR_FAILED( px_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_RECEIVE_FROM_ISR
+    #تعریف_کرو trace_قطار_RECEIVE_FROM_ISR( px_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_RECEIVE_FROM_ISR_FAILED
+    #تعریف_کرو trace_قطار_RECEIVE_FROM_ISR_FAILED( px_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_PEEK_FROM_ISR_FAILED
+    #تعریف_کرو trace_قطار_PEEK_FROM_ISR_FAILED( px_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_DELETE
+    #تعریف_کرو trace_قطار_DELETE( px_قطار )
+#جے_انت
+
+#جے_بنا_تعریف traceTASK_CREATE
+    #تعریف_کرو traceTASK_CREATE( pxNewTCB )
+#جے_انت
+
+#جے_بنا_تعریف traceTASK_CREATE_FAILED
+    #تعریف_کرو traceTASK_CREATE_FAILED()
+#جے_انت
+
+#جے_بنا_تعریف traceTASK_DELETE
+    #تعریف_کرو traceTASK_DELETE( px_Task_منزل_Delete )
+#جے_انت
+
+#جے_بنا_تعریف traceTASK_DELAY_UNTIL
+    #تعریف_کرو traceTASK_DELAY_UNTIL( x )
+#جے_انت
+
+#جے_بنا_تعریف traceTASK_DELAY
+    #تعریف_کرو traceTASK_DELAY()
+#جے_انت
+
+#جے_بنا_تعریف trace_TASK_ترجیح_سیٹ
+    #تعریف_کرو trace_TASK_ترجیح_سیٹ( pxTask, ux_New_ترجیح )
+#جے_انت
+
+#جے_بنا_تعریف traceTASK_SUSPEND
+    #تعریف_کرو traceTASK_SUSPEND( px_Task_منزل_Suspend )
+#جے_انت
+
+#جے_بنا_تعریف traceTASK_RESUME
+    #تعریف_کرو traceTASK_RESUME( px_Task_منزل_Resume )
+#جے_انت
+
+#جے_بنا_تعریف traceTASK_RESUME_FROM_ISR
+    #تعریف_کرو traceTASK_RESUME_FROM_ISR( px_Task_منزل_Resume )
+#جے_انت
+
+#جے_بنا_تعریف traceTASK_INCREMENT_TICK
+    #تعریف_کرو traceTASK_INCREMENT_TICK( x_Tick_گنتی )
+#جے_انت
+
+#جے_بنا_تعریف traceTIMER_CREATE
+    #تعریف_کرو traceTIMER_CREATE( pxNewTimer )
+#جے_انت
+
+#جے_بنا_تعریف traceTIMER_CREATE_FAILED
+    #تعریف_کرو traceTIMER_CREATE_FAILED()
+#جے_انت
+
+#جے_بنا_تعریف traceTIMER_COMMAND_SEND
+    #تعریف_کرو traceTIMER_COMMAND_SEND( xTimer, x_سنیہا_ID, x_سنیہا_قدر_قدر, xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceTIMER_EXPIRED
+    #تعریف_کرو traceTIMER_EXPIRED( pxTimer )
+#جے_انت
+
+#جے_بنا_تعریف traceTIMER_COMMAND_RECEIVED
+    #تعریف_کرو traceTIMER_COMMAND_RECEIVED( pxTimer, x_سنیہا_ID, x_سنیہا_قدر )
+#جے_انت
+
+#جے_بنا_تعریف traceMALLOC
+    #تعریف_کرو traceMALLOC( pv_پتہ, ui_ناپ )
+#جے_انت
+
+#جے_بنا_تعریف traceFREE
+    #تعریف_کرو traceFREE( pv_پتہ, ui_ناپ )
+#جے_انت
+
+#جے_بنا_تعریف trace_EVENT_گروہ_CREATE
+    #تعریف_کرو trace_EVENT_گروہ_CREATE( x_Event_گروہ )
+#جے_انت
+
+#جے_بنا_تعریف trace_EVENT_گروہ_CREATE_FAILED
+    #تعریف_کرو trace_EVENT_گروہ_CREATE_FAILED()
+#جے_انت
+
+#جے_بنا_تعریف trace_EVENT_گروہ_SYNC_بلاک
+    #تعریف_کرو trace_EVENT_گروہ_SYNC_بلاک( x_Event_گروہ, ux_بٹ_منزل_سیٹ, ux_بٹ_منزل_Wait_For )
+#جے_انت
+
+#جے_بنا_تعریف trace_EVENT_گروہ_SYNC_سرا
+    #تعریف_کرو trace_EVENT_گروہ_SYNC_سرا( x_Event_گروہ, ux_بٹ_منزل_سیٹ, ux_بٹ_منزل_Wait_For, xTimeoutOccurred )    ( فراغ ) ( xTimeoutOccurred )
+#جے_انت
+
+#جے_بنا_تعریف trace_EVENT_گروہ_WAIT_بٹ_بلاک
+    #تعریف_کرو trace_EVENT_گروہ_WAIT_بٹ_بلاک( x_Event_گروہ, ux_بٹ_منزل_Wait_For )
+#جے_انت
+
+#جے_بنا_تعریف trace_EVENT_گروہ_WAIT_بٹ_سرا
+    #تعریف_کرو trace_EVENT_گروہ_WAIT_بٹ_سرا( x_Event_گروہ, ux_بٹ_منزل_Wait_For, xTimeoutOccurred )    ( فراغ ) ( xTimeoutOccurred )
+#جے_انت
+
+#جے_بنا_تعریف trace_EVENT_گروہ_CLEAR_بٹ
+    #تعریف_کرو trace_EVENT_گروہ_CLEAR_بٹ( x_Event_گروہ, ux_بٹ_منزل_Clear )
+#جے_انت
+
+#جے_بنا_تعریف trace_EVENT_گروہ_CLEAR_بٹ_FROM_ISR
+    #تعریف_کرو trace_EVENT_گروہ_CLEAR_بٹ_FROM_ISR( x_Event_گروہ, ux_بٹ_منزل_Clear )
+#جے_انت
+
+#جے_بنا_تعریف trace_EVENT_گروہ_سیٹ_بٹ
+    #تعریف_کرو trace_EVENT_گروہ_سیٹ_بٹ( x_Event_گروہ, ux_بٹ_منزل_سیٹ )
+#جے_انت
+
+#جے_بنا_تعریف trace_EVENT_گروہ_سیٹ_بٹ_FROM_ISR
+    #تعریف_کرو trace_EVENT_گروہ_سیٹ_بٹ_FROM_ISR( x_Event_گروہ, ux_بٹ_منزل_سیٹ )
+#جے_انت
+
+#جے_بنا_تعریف trace_EVENT_گروہ_DELETE
+    #تعریف_کرو trace_EVENT_گروہ_DELETE( x_Event_گروہ )
+#جے_انت
+
+#جے_بنا_تعریف tracePEND_FUNC_CALL
+    #تعریف_کرو tracePEND_FUNC_CALL( x_Function_منزل_Pend, pvParameter1, ulParameter2, ret )
+#جے_انت
+
+#جے_بنا_تعریف tracePEND_FUNC_CALL_FROM_ISR
+    #تعریف_کرو tracePEND_FUNC_CALL_FROM_ISR( x_Function_منزل_Pend, pvParameter1, ulParameter2, ret )
+#جے_انت
+
+#جے_بنا_تعریف trace_قطار_REGISTRY_جوڑو
+    #تعریف_کرو trace_قطار_REGISTRY_جوڑو( x_قطار, pc_قطار_Name )
+#جے_انت
+
+#جے_بنا_تعریف trace_TASK_NOTIFY_TAKE_بلاک
+    #تعریف_کرو trace_TASK_NOTIFY_TAKE_بلاک( ux_اشاریہ_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف traceTASK_NOTIFY_TAKE
+    #تعریف_کرو traceTASK_NOTIFY_TAKE( ux_اشاریہ_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف trace_TASK_NOTIFY_WAIT_بلاک
+    #تعریف_کرو trace_TASK_NOTIFY_WAIT_بلاک( ux_اشاریہ_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف traceTASK_NOTIFY_WAIT
+    #تعریف_کرو traceTASK_NOTIFY_WAIT( ux_اشاریہ_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف traceTASK_NOTIFY
+    #تعریف_کرو traceTASK_NOTIFY( ux_اشاریہ_منزل_Notify )
+#جے_انت
+
+#جے_بنا_تعریف traceTASK_NOTIFY_FROM_ISR
+    #تعریف_کرو traceTASK_NOTIFY_FROM_ISR( ux_اشاریہ_منزل_Notify )
+#جے_انت
+
+#جے_بنا_تعریف traceTASK_NOTIFY_GIVE_FROM_ISR
+    #تعریف_کرو traceTASK_NOTIFY_GIVE_FROM_ISR( ux_اشاریہ_منزل_Notify )
+#جے_انت
+
+#جے_بنا_تعریف trace_ISR_EXIT_منزل_SCHEDULER
+    #تعریف_کرو trace_ISR_EXIT_منزل_SCHEDULER()
+#جے_انت
+
+#جے_بنا_تعریف traceISR_EXIT
+    #تعریف_کرو traceISR_EXIT()
+#جے_انت
+
+#جے_بنا_تعریف traceISR_ENTER
+    #تعریف_کرو traceISR_ENTER()
+#جے_انت
+
+#جے_بنا_تعریف trace_دھارا_بفر_CREATE_FAILED
+    #تعریف_کرو trace_دھارا_بفر_CREATE_FAILED( x_دھارا_بفر_Type )
+#جے_انت
+
+#جے_بنا_تعریف trace_دھارا_بفر_CREATE_STATIC_FAILED
+    #تعریف_کرو trace_دھارا_بفر_CREATE_STATIC_FAILED( xReturn, x_دھارا_بفر_Type )
+#جے_انت
+
+#جے_بنا_تعریف trace_دھارا_بفر_CREATE
+    #تعریف_کرو trace_دھارا_بفر_CREATE( px_دھارا_بفر, x_دھارا_بفر_Type )
+#جے_انت
+
+#جے_بنا_تعریف trace_دھارا_بفر_DELETE
+    #تعریف_کرو trace_دھارا_بفر_DELETE( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_دھارا_بفر_RESET
+    #تعریف_کرو trace_دھارا_بفر_RESET( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_دھارا_بفر_RESET_FROM_ISR
+    #تعریف_کرو trace_دھارا_بفر_RESET_FROM_ISR( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_BLOCKING_ON_دھارا_بفر_SEND
+    #تعریف_کرو trace_BLOCKING_ON_دھارا_بفر_SEND( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_دھارا_بفر_SEND
+    #تعریف_کرو trace_دھارا_بفر_SEND( x_دھارا_بفر, x_بائٹاں_گھلیا )
+#جے_انت
+
+#جے_بنا_تعریف trace_دھارا_بفر_SEND_FAILED
+    #تعریف_کرو trace_دھارا_بفر_SEND_FAILED( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_دھارا_بفر_SEND_FROM_ISR
+    #تعریف_کرو trace_دھارا_بفر_SEND_FROM_ISR( x_دھارا_بفر, x_بائٹاں_گھلیا )
+#جے_انت
+
+#جے_بنا_تعریف trace_BLOCKING_ON_دھارا_بفر_RECEIVE
+    #تعریف_کرو trace_BLOCKING_ON_دھارا_بفر_RECEIVE( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_دھارا_بفر_RECEIVE
+    #تعریف_کرو trace_دھارا_بفر_RECEIVE( x_دھارا_بفر, x_Received_لمائی )
+#جے_انت
+
+#جے_بنا_تعریف trace_دھارا_بفر_RECEIVE_FAILED
+    #تعریف_کرو trace_دھارا_بفر_RECEIVE_FAILED( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_دھارا_بفر_RECEIVE_FROM_ISR
+    #تعریف_کرو trace_دھارا_بفر_RECEIVE_FROM_ISR( x_دھارا_بفر, x_Received_لمائی )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Event_گروہ_Create_Static
+    #تعریف_کرو trace_ENTER_x_Event_گروہ_Create_Static( px_Event_گروہ_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Event_گروہ_Create_Static
+    #تعریف_کرو trace_RETURN_x_Event_گروہ_Create_Static( px_Event_بٹ )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Event_گروہ_Create
+    #تعریف_کرو trace_ENTER_x_Event_گروہ_Create()
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Event_گروہ_Create
+    #تعریف_کرو trace_RETURN_x_Event_گروہ_Create( px_Event_بٹ )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Event_گروہ_Sync
+    #تعریف_کرو trace_ENTER_x_Event_گروہ_Sync( x_Event_گروہ, ux_بٹ_منزل_سیٹ, ux_بٹ_منزل_Wait_For, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Event_گروہ_Sync
+    #تعریف_کرو trace_RETURN_x_Event_گروہ_Sync( uxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Event_گروہ_Wait_بٹ
+    #تعریف_کرو trace_ENTER_x_Event_گروہ_Wait_بٹ( x_Event_گروہ, ux_بٹ_منزل_Wait_For, xClearOnExit, x_Wait_For_All_بٹ, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Event_گروہ_Wait_بٹ
+    #تعریف_کرو trace_RETURN_x_Event_گروہ_Wait_بٹ( uxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Event_گروہ_Clear_بٹ
+    #تعریف_کرو trace_ENTER_x_Event_گروہ_Clear_بٹ( x_Event_گروہ, ux_بٹ_منزل_Clear )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Event_گروہ_Clear_بٹ
+    #تعریف_کرو trace_RETURN_x_Event_گروہ_Clear_بٹ( uxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Event_گروہ_Clear_بٹ_From_ISR
+    #تعریف_کرو trace_ENTER_x_Event_گروہ_Clear_بٹ_From_ISR( x_Event_گروہ, ux_بٹ_منزل_Clear )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Event_گروہ_Clear_بٹ_From_ISR
+    #تعریف_کرو trace_RETURN_x_Event_گروہ_Clear_بٹ_From_ISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Event_گروہ_Get_بٹ_From_ISR
+    #تعریف_کرو trace_ENTER_x_Event_گروہ_Get_بٹ_From_ISR( x_Event_گروہ )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Event_گروہ_Get_بٹ_From_ISR
+    #تعریف_کرو trace_RETURN_x_Event_گروہ_Get_بٹ_From_ISR( uxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Event_گروہ_سیٹ_بٹ
+    #تعریف_کرو trace_ENTER_x_Event_گروہ_سیٹ_بٹ( x_Event_گروہ, ux_بٹ_منزل_سیٹ )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Event_گروہ_سیٹ_بٹ
+    #تعریف_کرو trace_RETURN_x_Event_گروہ_سیٹ_بٹ( ux_Event_بٹ )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Event_گروہ_Delete
+    #تعریف_کرو trace_ENTER_v_Event_گروہ_Delete( x_Event_گروہ )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Event_گروہ_Delete
+    #تعریف_کرو trace_RETURN_v_Event_گروہ_Delete()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Event_گروہ_Get_Static_بفر
+    #تعریف_کرو trace_ENTER_x_Event_گروہ_Get_Static_بفر( x_Event_گروہ, ppx_Event_گروہ_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Event_گروہ_Get_Static_بفر
+    #تعریف_کرو trace_RETURN_x_Event_گروہ_Get_Static_بفر( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Event_گروہ_سیٹ_بٹ_Callback
+    #تعریف_کرو trace_ENTER_v_Event_گروہ_سیٹ_بٹ_Callback( pv_Event_گروہ, ul_بٹ_منزل_سیٹ )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Event_گروہ_سیٹ_بٹ_Callback
+    #تعریف_کرو trace_RETURN_v_Event_گروہ_سیٹ_بٹ_Callback()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Event_گروہ_Clear_بٹ_Callback
+    #تعریف_کرو trace_ENTER_v_Event_گروہ_Clear_بٹ_Callback( pv_Event_گروہ, ul_بٹ_منزل_Clear )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Event_گروہ_Clear_بٹ_Callback
+    #تعریف_کرو trace_RETURN_v_Event_گروہ_Clear_بٹ_Callback()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Event_گروہ_سیٹ_بٹ_From_ISR
+    #تعریف_کرو trace_ENTER_x_Event_گروہ_سیٹ_بٹ_From_ISR( x_Event_گروہ, ux_بٹ_منزل_سیٹ, px_Higher_ترجیح_Task_Woken )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Event_گروہ_سیٹ_بٹ_From_ISR
+    #تعریف_کرو trace_RETURN_x_Event_گروہ_سیٹ_بٹ_From_ISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_Event_گروہ_Get_نمبر
+    #تعریف_کرو trace_ENTER_ux_Event_گروہ_Get_نمبر( x_Event_گروہ )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_Event_گروہ_Get_نمبر
+    #تعریف_کرو trace_RETURN_ux_Event_گروہ_Get_نمبر( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Event_گروہ_سیٹ_نمبر
+    #تعریف_کرو trace_ENTER_v_Event_گروہ_سیٹ_نمبر( x_Event_گروہ, ux_Event_گروہ_نمبر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Event_گروہ_سیٹ_نمبر
+    #تعریف_کرو trace_RETURN_v_Event_گروہ_سیٹ_نمبر()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Generic_Reset
+    #تعریف_کرو trace_ENTER_x_قطار_Generic_Reset( x_قطار, x_New_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Generic_Reset
+    #تعریف_کرو trace_RETURN_x_قطار_Generic_Reset( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Generic_Create_Static
+    #تعریف_کرو trace_ENTER_x_قطار_Generic_Create_Static( ux_قطار_لمائی, ux_شے_ناپ, puc_قطار_Storage, px_Static_قطار, uc_قطار_Type )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Generic_Create_Static
+    #تعریف_کرو trace_RETURN_x_قطار_Generic_Create_Static( px_New_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Generic_Get_Static_Buffers
+    #تعریف_کرو trace_ENTER_x_قطار_Generic_Get_Static_Buffers( x_قطار, ppuc_قطار_Storage, ppx_Static_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Generic_Get_Static_Buffers
+    #تعریف_کرو trace_RETURN_x_قطار_Generic_Get_Static_Buffers( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Generic_Create
+    #تعریف_کرو trace_ENTER_x_قطار_Generic_Create( ux_قطار_لمائی, ux_شے_ناپ, uc_قطار_Type )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Generic_Create
+    #تعریف_کرو trace_RETURN_x_قطار_Generic_Create( px_New_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Create_Mutex
+    #تعریف_کرو trace_ENTER_x_قطار_Create_Mutex( uc_قطار_Type )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Create_Mutex
+    #تعریف_کرو trace_RETURN_x_قطار_Create_Mutex( x_New_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Create_Mutex_Static
+    #تعریف_کرو trace_ENTER_x_قطار_Create_Mutex_Static( uc_قطار_Type, px_Static_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Create_Mutex_Static
+    #تعریف_کرو trace_RETURN_x_قطار_Create_Mutex_Static( x_New_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Get_Mutex_Holder
+    #تعریف_کرو trace_ENTER_x_قطار_Get_Mutex_Holder( xSemaphore )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Get_Mutex_Holder
+    #تعریف_کرو trace_RETURN_x_قطار_Get_Mutex_Holder( pxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Get_Mutex_Holder_From_ISR
+    #تعریف_کرو trace_ENTER_x_قطار_Get_Mutex_Holder_From_ISR( xSemaphore )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Get_Mutex_Holder_From_ISR
+    #تعریف_کرو trace_RETURN_x_قطار_Get_Mutex_Holder_From_ISR( pxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Give_Mutex_Recursive
+    #تعریف_کرو trace_ENTER_x_قطار_Give_Mutex_Recursive( xMutex )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Give_Mutex_Recursive
+    #تعریف_کرو trace_RETURN_x_قطار_Give_Mutex_Recursive( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Take_Mutex_Recursive
+    #تعریف_کرو trace_ENTER_x_قطار_Take_Mutex_Recursive( xMutex, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Take_Mutex_Recursive
+    #تعریف_کرو trace_RETURN_x_قطار_Take_Mutex_Recursive( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Create_Counting_Semaphore_Static
+    #تعریف_کرو trace_ENTER_x_قطار_Create_Counting_Semaphore_Static( ux_Max_گنتی, ux_Initial_گنتی, px_Static_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Create_Counting_Semaphore_Static
+    #تعریف_کرو trace_RETURN_x_قطار_Create_Counting_Semaphore_Static( xHandle )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Create_Counting_Semaphore
+    #تعریف_کرو trace_ENTER_x_قطار_Create_Counting_Semaphore( ux_Max_گنتی, ux_Initial_گنتی )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Create_Counting_Semaphore
+    #تعریف_کرو trace_RETURN_x_قطار_Create_Counting_Semaphore( xHandle )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Generic_Send
+    #تعریف_کرو trace_ENTER_x_قطار_Generic_Send( x_قطار, pv_شے_منزل_قطار, x_Ticks_منزل_Wait, xCopyPosition )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Generic_Send
+    #تعریف_کرو trace_RETURN_x_قطار_Generic_Send( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Generic_Send_From_ISR
+    #تعریف_کرو trace_ENTER_x_قطار_Generic_Send_From_ISR( x_قطار, pv_شے_منزل_قطار, px_Higher_ترجیح_Task_Woken, xCopyPosition )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Generic_Send_From_ISR
+    #تعریف_کرو trace_RETURN_x_قطار_Generic_Send_From_ISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Give_From_ISR
+    #تعریف_کرو trace_ENTER_x_قطار_Give_From_ISR( x_قطار, px_Higher_ترجیح_Task_Woken )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Give_From_ISR
+    #تعریف_کرو trace_RETURN_x_قطار_Give_From_ISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Receive
+    #تعریف_کرو trace_ENTER_x_قطار_Receive( x_قطار, pv_بفر, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Receive
+    #تعریف_کرو trace_RETURN_x_قطار_Receive( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Semaphore_Take
+    #تعریف_کرو trace_ENTER_x_قطار_Semaphore_Take( x_قطار, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Semaphore_Take
+    #تعریف_کرو trace_RETURN_x_قطار_Semaphore_Take( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Peek
+    #تعریف_کرو trace_ENTER_x_قطار_Peek( x_قطار, pv_بفر, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Peek
+    #تعریف_کرو trace_RETURN_x_قطار_Peek( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Receive_From_ISR
+    #تعریف_کرو trace_ENTER_x_قطار_Receive_From_ISR( x_قطار, pv_بفر, px_Higher_ترجیح_Task_Woken )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Receive_From_ISR
+    #تعریف_کرو trace_RETURN_x_قطار_Receive_From_ISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Peek_From_ISR
+    #تعریف_کرو trace_ENTER_x_قطار_Peek_From_ISR( x_قطار, pv_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Peek_From_ISR
+    #تعریف_کرو trace_RETURN_x_قطار_Peek_From_ISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_قطار_Messages_اڈیک
+    #تعریف_کرو trace_ENTER_ux_قطار_Messages_اڈیک( x_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_قطار_Messages_اڈیک
+    #تعریف_کرو trace_RETURN_ux_قطار_Messages_اڈیک( uxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_قطار_Spaces_دستیاب
+    #تعریف_کرو trace_ENTER_ux_قطار_Spaces_دستیاب( x_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_قطار_Spaces_دستیاب
+    #تعریف_کرو trace_RETURN_ux_قطار_Spaces_دستیاب( uxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_قطار_Messages_اڈیک_From_ISR
+    #تعریف_کرو trace_ENTER_ux_قطار_Messages_اڈیک_From_ISR( x_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_قطار_Messages_اڈیک_From_ISR
+    #تعریف_کرو trace_RETURN_ux_قطار_Messages_اڈیک_From_ISR( uxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_قطار_Delete
+    #تعریف_کرو trace_ENTER_v_قطار_Delete( x_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_قطار_Delete
+    #تعریف_کرو trace_RETURN_v_قطار_Delete()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_قطار_Get_قطار_نمبر
+    #تعریف_کرو trace_ENTER_ux_قطار_Get_قطار_نمبر( x_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_قطار_Get_قطار_نمبر
+    #تعریف_کرو trace_RETURN_ux_قطار_Get_قطار_نمبر( ux_قطار_نمبر )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_قطار_سیٹ_قطار_نمبر
+    #تعریف_کرو trace_ENTER_v_قطار_سیٹ_قطار_نمبر( x_قطار, ux_قطار_نمبر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_قطار_سیٹ_قطار_نمبر
+    #تعریف_کرو trace_RETURN_v_قطار_سیٹ_قطار_نمبر()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_uc_قطار_Get_قطار_Type
+    #تعریف_کرو trace_ENTER_uc_قطار_Get_قطار_Type( x_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_uc_قطار_Get_قطار_Type
+    #تعریف_کرو trace_RETURN_uc_قطار_Get_قطار_Type( uc_قطار_Type )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_قطار_Get_قطار_شے_ناپ
+    #تعریف_کرو trace_ENTER_ux_قطار_Get_قطار_شے_ناپ( x_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_قطار_Get_قطار_شے_ناپ
+    #تعریف_کرو trace_RETURN_ux_قطار_Get_قطار_شے_ناپ( ux_شے_ناپ )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_قطار_Get_قطار_لمائی
+    #تعریف_کرو trace_ENTER_ux_قطار_Get_قطار_لمائی( x_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_قطار_Get_قطار_لمائی
+    #تعریف_کرو trace_RETURN_ux_قطار_Get_قطار_لمائی( ux_لمائی )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Is_قطار_خالی_تھاواں_From_ISR
+    #تعریف_کرو trace_ENTER_x_قطار_Is_قطار_خالی_تھاواں_From_ISR( x_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Is_قطار_خالی_تھاواں_From_ISR
+    #تعریف_کرو trace_RETURN_x_قطار_Is_قطار_خالی_تھاواں_From_ISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Is_قطار_بھریا_From_ISR
+    #تعریف_کرو trace_ENTER_x_قطار_Is_قطار_بھریا_From_ISR( x_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Is_قطار_بھریا_From_ISR
+    #تعریف_کرو trace_RETURN_x_قطار_Is_قطار_بھریا_From_ISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_CRSend
+    #تعریف_کرو trace_ENTER_x_قطار_CRSend( x_قطار, pv_شے_منزل_قطار, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_CRSend
+    #تعریف_کرو trace_RETURN_x_قطار_CRSend( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_CRReceive
+    #تعریف_کرو trace_ENTER_x_قطار_CRReceive( x_قطار, pv_بفر, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_CRReceive
+    #تعریف_کرو trace_RETURN_x_قطار_CRReceive( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_CRSend_From_ISR
+    #تعریف_کرو trace_ENTER_x_قطار_CRSend_From_ISR( x_قطار, pv_شے_منزل_قطار, xCoRoutinePreviouslyWoken )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_CRSend_From_ISR
+    #تعریف_کرو trace_RETURN_x_قطار_CRSend_From_ISR( xCoRoutinePreviouslyWoken )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_CRReceive_From_ISR
+    #تعریف_کرو trace_ENTER_x_قطار_CRReceive_From_ISR( x_قطار, pv_بفر, pxCoRoutineWoken )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_CRReceive_From_ISR
+    #تعریف_کرو trace_RETURN_x_قطار_CRReceive_From_ISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_قطار_جوڑو_منزل_Registry
+    #تعریف_کرو trace_ENTER_v_قطار_جوڑو_منزل_Registry( x_قطار, pc_قطار_Name )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_قطار_جوڑو_منزل_Registry
+    #تعریف_کرو trace_RETURN_v_قطار_جوڑو_منزل_Registry()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_pc_قطار_Get_Name
+    #تعریف_کرو trace_ENTER_pc_قطار_Get_Name( x_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_pc_قطار_Get_Name
+    #تعریف_کرو trace_RETURN_pc_قطار_Get_Name( pcReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_قطار_Unregister_قطار
+    #تعریف_کرو trace_ENTER_v_قطار_Unregister_قطار( x_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_قطار_Unregister_قطار
+    #تعریف_کرو trace_RETURN_v_قطار_Unregister_قطار()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_قطار_Wait_For_سنیہا_Restricted
+    #تعریف_کرو trace_ENTER_v_قطار_Wait_For_سنیہا_Restricted( x_قطار, x_Ticks_منزل_Wait, xWaitIndefinitely )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_قطار_Wait_For_سنیہا_Restricted
+    #تعریف_کرو trace_RETURN_v_قطار_Wait_For_سنیہا_Restricted()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Create_سیٹ
+    #تعریف_کرو trace_ENTER_x_قطار_Create_سیٹ( ux_Event_قطار_لمائی )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Create_سیٹ
+    #تعریف_کرو trace_RETURN_x_قطار_Create_سیٹ( px_قطار )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_جوڑو_منزل_سیٹ
+    #تعریف_کرو trace_ENTER_x_قطار_جوڑو_منزل_سیٹ( x_قطار_Or_Semaphore, x_قطار_سیٹ )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_جوڑو_منزل_سیٹ
+    #تعریف_کرو trace_RETURN_x_قطار_جوڑو_منزل_سیٹ( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Remove_From_سیٹ
+    #تعریف_کرو trace_ENTER_x_قطار_Remove_From_سیٹ( x_قطار_Or_Semaphore, x_قطار_سیٹ )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Remove_From_سیٹ
+    #تعریف_کرو trace_RETURN_x_قطار_Remove_From_سیٹ( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Select_From_سیٹ
+    #تعریف_کرو trace_ENTER_x_قطار_Select_From_سیٹ( x_قطار_سیٹ, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Select_From_سیٹ
+    #تعریف_کرو trace_RETURN_x_قطار_Select_From_سیٹ( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_قطار_Select_From_سیٹ_From_ISR
+    #تعریف_کرو trace_ENTER_x_قطار_Select_From_سیٹ_From_ISR( x_قطار_سیٹ )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_قطار_Select_From_سیٹ_From_ISR
+    #تعریف_کرو trace_RETURN_x_قطار_Select_From_سیٹ_From_ISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTimerCreateTimerTask
+    #تعریف_کرو traceENTER_xTimerCreateTimerTask()
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTimerCreateTimerTask
+    #تعریف_کرو traceRETURN_xTimerCreateTimerTask( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTimerCreate
+    #تعریف_کرو traceENTER_xTimerCreate( pcTimerName, x_Timer_Period_وچ_Ticks, xAutoReload, pvTimerID, pxCallbackFunction )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTimerCreate
+    #تعریف_کرو traceRETURN_xTimerCreate( pxNewTimer )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTimerCreateStatic
+    #تعریف_کرو traceENTER_xTimerCreateStatic( pcTimerName, x_Timer_Period_وچ_Ticks, xAutoReload, pvTimerID, pxCallbackFunction, px_Timer_بفر )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTimerCreateStatic
+    #تعریف_کرو traceRETURN_xTimerCreateStatic( pxNewTimer )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTimerGenericCommandFromTask
+    #تعریف_کرو traceENTER_xTimerGenericCommandFromTask( xTimer, xCommandID, x_Optional_قدر, px_Higher_ترجیح_Task_Woken, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTimerGenericCommandFromTask
+    #تعریف_کرو traceRETURN_xTimerGenericCommandFromTask( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTimerGenericCommandFromISR
+    #تعریف_کرو traceENTER_xTimerGenericCommandFromISR( xTimer, xCommandID, x_Optional_قدر, px_Higher_ترجیح_Task_Woken, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTimerGenericCommandFromISR
+    #تعریف_کرو traceRETURN_xTimerGenericCommandFromISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTimerGetTimerDaemonTaskHandle
+    #تعریف_کرو traceENTER_xTimerGetTimerDaemonTaskHandle()
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTimerGetTimerDaemonTaskHandle
+    #تعریف_کرو traceRETURN_xTimerGetTimerDaemonTaskHandle( xTimerTaskHandle )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTimerGetPeriod
+    #تعریف_کرو traceENTER_xTimerGetPeriod( xTimer )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTimerGetPeriod
+    #تعریف_کرو traceRETURN_xTimerGetPeriod( x_Timer_Period_وچ_Ticks )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Timer_سیٹ_Reload_منوال
+    #تعریف_کرو trace_ENTER_v_Timer_سیٹ_Reload_منوال( xTimer, xAutoReload )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Timer_سیٹ_Reload_منوال
+    #تعریف_کرو trace_RETURN_v_Timer_سیٹ_Reload_منوال()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Timer_Get_Reload_منوال
+    #تعریف_کرو trace_ENTER_x_Timer_Get_Reload_منوال( xTimer )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Timer_Get_Reload_منوال
+    #تعریف_کرو trace_RETURN_x_Timer_Get_Reload_منوال( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_Timer_Get_Reload_منوال
+    #تعریف_کرو trace_ENTER_ux_Timer_Get_Reload_منوال( xTimer )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_Timer_Get_Reload_منوال
+    #تعریف_کرو trace_RETURN_ux_Timer_Get_Reload_منوال( uxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Timer_Get_Expiry_ویلا
+    #تعریف_کرو trace_ENTER_x_Timer_Get_Expiry_ویلا( xTimer )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Timer_Get_Expiry_ویلا
+    #تعریف_کرو trace_RETURN_x_Timer_Get_Expiry_ویلا( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Timer_Get_Static_بفر
+    #تعریف_کرو trace_ENTER_x_Timer_Get_Static_بفر( xTimer, ppx_Timer_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Timer_Get_Static_بفر
+    #تعریف_کرو trace_RETURN_x_Timer_Get_Static_بفر( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_pcTimerGetName
+    #تعریف_کرو traceENTER_pcTimerGetName( xTimer )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_pcTimerGetName
+    #تعریف_کرو traceRETURN_pcTimerGetName( pcTimerName )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Timer_Is_Timer_سرگرم
+    #تعریف_کرو trace_ENTER_x_Timer_Is_Timer_سرگرم( xTimer )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Timer_Is_Timer_سرگرم
+    #تعریف_کرو trace_RETURN_x_Timer_Is_Timer_سرگرم( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_pvTimerGetTimerID
+    #تعریف_کرو traceENTER_pvTimerGetTimerID( xTimer )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_pvTimerGetTimerID
+    #تعریف_کرو traceRETURN_pvTimerGetTimerID( pvReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Timer_سیٹ_Timer_ID
+    #تعریف_کرو trace_ENTER_v_Timer_سیٹ_Timer_ID( xTimer, pvNewID )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Timer_سیٹ_Timer_ID
+    #تعریف_کرو trace_RETURN_v_Timer_سیٹ_Timer_ID()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTimerPendFunctionCallFromISR
+    #تعریف_کرو traceENTER_xTimerPendFunctionCallFromISR( x_Function_منزل_Pend, pvParameter1, ulParameter2, px_Higher_ترجیح_Task_Woken )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTimerPendFunctionCallFromISR
+    #تعریف_کرو traceRETURN_xTimerPendFunctionCallFromISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTimerPendFunctionCall
+    #تعریف_کرو traceENTER_xTimerPendFunctionCall( x_Function_منزل_Pend, pvParameter1, ulParameter2, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTimerPendFunctionCall
+    #تعریف_کرو traceRETURN_xTimerPendFunctionCall( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_Timer_Get_Timer_نمبر
+    #تعریف_کرو trace_ENTER_ux_Timer_Get_Timer_نمبر( xTimer )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_Timer_Get_Timer_نمبر
+    #تعریف_کرو trace_RETURN_ux_Timer_Get_Timer_نمبر( ux_Timer_نمبر )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Timer_سیٹ_Timer_نمبر
+    #تعریف_کرو trace_ENTER_v_Timer_سیٹ_Timer_نمبر( xTimer, ux_Timer_نمبر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Timer_سیٹ_Timer_نمبر
+    #تعریف_کرو trace_RETURN_v_Timer_سیٹ_Timer_نمبر()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskCreateStatic
+    #تعریف_کرو traceENTER_xTaskCreateStatic( px_Task_کوڈ, pcName, ux_ڈھیر_ڈونگھائی, pvParameters, ux_ترجیح, pux_ڈھیر_بفر, px_Task_بفر )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskCreateStatic
+    #تعریف_کرو traceRETURN_xTaskCreateStatic( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Task_Create_Static_Affinity_سیٹ
+    #تعریف_کرو trace_ENTER_x_Task_Create_Static_Affinity_سیٹ( px_Task_کوڈ, pcName, ux_ڈھیر_ڈونگھائی, pvParameters, ux_ترجیح, pux_ڈھیر_بفر, px_Task_بفر, ux_Core_Affinity_نقاب )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Task_Create_Static_Affinity_سیٹ
+    #تعریف_کرو trace_RETURN_x_Task_Create_Static_Affinity_سیٹ( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskCreateRestrictedStatic
+    #تعریف_کرو traceENTER_xTaskCreateRestrictedStatic( pxTaskDefinition, pxCreatedTask )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskCreateRestrictedStatic
+    #تعریف_کرو traceRETURN_xTaskCreateRestrictedStatic( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Task_Create_Restricted_Static_Affinity_سیٹ
+    #تعریف_کرو trace_ENTER_x_Task_Create_Restricted_Static_Affinity_سیٹ( pxTaskDefinition, ux_Core_Affinity_نقاب, pxCreatedTask )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Task_Create_Restricted_Static_Affinity_سیٹ
+    #تعریف_کرو trace_RETURN_x_Task_Create_Restricted_Static_Affinity_سیٹ( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskCreateRestricted
+    #تعریف_کرو traceENTER_xTaskCreateRestricted( pxTaskDefinition, pxCreatedTask )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskCreateRestricted
+    #تعریف_کرو traceRETURN_xTaskCreateRestricted( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Task_Create_Restricted_Affinity_سیٹ
+    #تعریف_کرو trace_ENTER_x_Task_Create_Restricted_Affinity_سیٹ( pxTaskDefinition, ux_Core_Affinity_نقاب, pxCreatedTask )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Task_Create_Restricted_Affinity_سیٹ
+    #تعریف_کرو trace_RETURN_x_Task_Create_Restricted_Affinity_سیٹ( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskCreate
+    #تعریف_کرو traceENTER_xTaskCreate( px_Task_کوڈ, pcName, ux_ڈھیر_ڈونگھائی, pvParameters, ux_ترجیح, pxCreatedTask )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskCreate
+    #تعریف_کرو traceRETURN_xTaskCreate( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Task_Create_Affinity_سیٹ
+    #تعریف_کرو trace_ENTER_x_Task_Create_Affinity_سیٹ( px_Task_کوڈ, pcName, ux_ڈھیر_ڈونگھائی, pvParameters, ux_ترجیح, ux_Core_Affinity_نقاب, pxCreatedTask )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Task_Create_Affinity_سیٹ
+    #تعریف_کرو trace_RETURN_x_Task_Create_Affinity_سیٹ( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskDelete
+    #تعریف_کرو traceENTER_vTaskDelete( x_Task_منزل_Delete )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskDelete
+    #تعریف_کرو traceRETURN_vTaskDelete()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskDelayUntil
+    #تعریف_کرو traceENTER_xTaskDelayUntil( px_پچھلا_Wake_ویلا, x_ویلا_Increment )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskDelayUntil
+    #تعریف_کرو traceRETURN_xTaskDelayUntil( xShouldDelay )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskDelay
+    #تعریف_کرو traceENTER_vTaskDelay( x_Ticks_منزل_Delay )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskDelay
+    #تعریف_کرو traceRETURN_vTaskDelay()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_eTaskGetState
+    #تعریف_کرو traceENTER_eTaskGetState( xTask )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_eTaskGetState
+    #تعریف_کرو traceRETURN_eTaskGetState( eReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_Task_ترجیح_Get
+    #تعریف_کرو trace_ENTER_ux_Task_ترجیح_Get( xTask )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_Task_ترجیح_Get
+    #تعریف_کرو trace_RETURN_ux_Task_ترجیح_Get( uxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_Task_ترجیح_Get_From_ISR
+    #تعریف_کرو trace_ENTER_ux_Task_ترجیح_Get_From_ISR( xTask )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_Task_ترجیح_Get_From_ISR
+    #تعریف_کرو trace_RETURN_ux_Task_ترجیح_Get_From_ISR( uxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_Task_ادھار_ترجیح_Get
+    #تعریف_کرو trace_ENTER_ux_Task_ادھار_ترجیح_Get( xTask )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_Task_ادھار_ترجیح_Get
+    #تعریف_کرو trace_RETURN_ux_Task_ادھار_ترجیح_Get( uxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_Task_ادھار_ترجیح_Get_From_ISR
+    #تعریف_کرو trace_ENTER_ux_Task_ادھار_ترجیح_Get_From_ISR( xTask )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_Task_ادھار_ترجیح_Get_From_ISR
+    #تعریف_کرو trace_RETURN_ux_Task_ادھار_ترجیح_Get_From_ISR( uxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Task_ترجیح_سیٹ
+    #تعریف_کرو trace_ENTER_v_Task_ترجیح_سیٹ( xTask, ux_New_ترجیح )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Task_ترجیح_سیٹ
+    #تعریف_کرو trace_RETURN_v_Task_ترجیح_سیٹ()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Task_Core_Affinity_سیٹ
+    #تعریف_کرو trace_ENTER_v_Task_Core_Affinity_سیٹ( xTask, ux_Core_Affinity_نقاب )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Task_Core_Affinity_سیٹ
+    #تعریف_کرو trace_RETURN_v_Task_Core_Affinity_سیٹ()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskCoreAffinityGet
+    #تعریف_کرو traceENTER_vTaskCoreAffinityGet( xTask )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskCoreAffinityGet
+    #تعریف_کرو traceRETURN_vTaskCoreAffinityGet( ux_Core_Affinity_نقاب )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskPreemptionDisable
+    #تعریف_کرو traceENTER_vTaskPreemptionDisable( xTask )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskPreemptionDisable
+    #تعریف_کرو traceRETURN_vTaskPreemptionDisable()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskPreemptionEnable
+    #تعریف_کرو traceENTER_vTaskPreemptionEnable( xTask )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskPreemptionEnable
+    #تعریف_کرو traceRETURN_vTaskPreemptionEnable()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskSuspend
+    #تعریف_کرو traceENTER_vTaskSuspend( x_Task_منزل_Suspend )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskSuspend
+    #تعریف_کرو traceRETURN_vTaskSuspend()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskResume
+    #تعریف_کرو traceENTER_vTaskResume( x_Task_منزل_Resume )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskResume
+    #تعریف_کرو traceRETURN_vTaskResume()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskResumeFromISR
+    #تعریف_کرو traceENTER_xTaskResumeFromISR( x_Task_منزل_Resume )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskResumeFromISR
+    #تعریف_کرو traceRETURN_xTaskResumeFromISR( xYieldRequired )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Task_شروع_Scheduler
+    #تعریف_کرو trace_ENTER_v_Task_شروع_Scheduler()
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Task_شروع_Scheduler
+    #تعریف_کرو trace_RETURN_v_Task_شروع_Scheduler()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Task_سرا_Scheduler
+    #تعریف_کرو trace_ENTER_v_Task_سرا_Scheduler()
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Task_سرا_Scheduler
+    #تعریف_کرو trace_RETURN_v_Task_سرا_Scheduler()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskSuspendAll
+    #تعریف_کرو traceENTER_vTaskSuspendAll()
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskSuspendAll
+    #تعریف_کرو traceRETURN_vTaskSuspendAll()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskResumeAll
+    #تعریف_کرو traceENTER_xTaskResumeAll()
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskResumeAll
+    #تعریف_کرو traceRETURN_xTaskResumeAll( xAlreadyYielded )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Task_Get_Tick_گنتی
+    #تعریف_کرو trace_ENTER_x_Task_Get_Tick_گنتی()
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Task_Get_Tick_گنتی
+    #تعریف_کرو trace_RETURN_x_Task_Get_Tick_گنتی( xTicks )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Task_Get_Tick_گنتی_From_ISR
+    #تعریف_کرو trace_ENTER_x_Task_Get_Tick_گنتی_From_ISR()
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Task_Get_Tick_گنتی_From_ISR
+    #تعریف_کرو trace_RETURN_x_Task_Get_Tick_گنتی_From_ISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_Task_Get_نمبر_دا_Tasks
+    #تعریف_کرو trace_ENTER_ux_Task_Get_نمبر_دا_Tasks()
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_Task_Get_نمبر_دا_Tasks
+    #تعریف_کرو trace_RETURN_ux_Task_Get_نمبر_دا_Tasks( ux_Current_نمبر_دا_Tasks )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_pcTaskGetName
+    #تعریف_کرو traceENTER_pcTaskGetName( x_Task_منزل_Query )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_pcTaskGetName
+    #تعریف_کرو traceRETURN_pcTaskGetName( pcTaskName )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskGetHandle
+    #تعریف_کرو traceENTER_xTaskGetHandle( pc_Name_منزل_Query )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskGetHandle
+    #تعریف_کرو traceRETURN_xTaskGetHandle( pxTCB )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskGetStaticBuffers
+    #تعریف_کرو traceENTER_xTaskGetStaticBuffers( xTask, ppux_ڈھیر_بفر, ppx_Task_بفر )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskGetStaticBuffers
+    #تعریف_کرو traceRETURN_xTaskGetStaticBuffers( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_uxTaskGetSystemState
+    #تعریف_کرو traceENTER_uxTaskGetSystemState( px_Task_حالت_Array, ux_Array_ناپ, pul_کل_لگاتار_ویلا )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_uxTaskGetSystemState
+    #تعریف_کرو traceRETURN_uxTaskGetSystemState( uxTask )
+#جے_انت
+
+#إذا ( config_نمبر_دا_CORES == 1 )
+    #جے_بنا_تعریف traceENTER_xTaskGetIdleTaskHandle
+        #تعریف_کرو traceENTER_xTaskGetIdleTaskHandle()
+    #جے_انت
+#جے_انت
+
+#إذا ( config_نمبر_دا_CORES == 1 )
+    #جے_بنا_تعریف traceRETURN_xTaskGetIdleTaskHandle
+        #تعریف_کرو traceRETURN_xTaskGetIdleTaskHandle( xIdleTaskHandle )
+    #جے_انت
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskGetIdleTaskHandleForCore
+    #تعریف_کرو traceENTER_xTaskGetIdleTaskHandleForCore( xCoreID )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskGetIdleTaskHandleForCore
+    #تعریف_کرو traceRETURN_xTaskGetIdleTaskHandleForCore( xIdleTaskHandle )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Task_قدم_Tick
+    #تعریف_کرو trace_ENTER_v_Task_قدم_Tick( x_Ticks_منزل_Jump )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Task_قدم_Tick
+    #تعریف_کرو trace_RETURN_v_Task_قدم_Tick()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Task_Catch_اتے_Ticks
+    #تعریف_کرو trace_ENTER_x_Task_Catch_اتے_Ticks( x_Ticks_منزل_Catch_اتے )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Task_Catch_اتے_Ticks
+    #تعریف_کرو trace_RETURN_x_Task_Catch_اتے_Ticks( xYieldOccurred )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskAbortDelay
+    #تعریف_کرو traceENTER_xTaskAbortDelay( xTask )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskAbortDelay
+    #تعریف_کرو traceRETURN_xTaskAbortDelay( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskIncrementTick
+    #تعریف_کرو traceENTER_xTaskIncrementTick()
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskIncrementTick
+    #تعریف_کرو traceRETURN_xTaskIncrementTick( xSwitchRequired )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Task_سیٹ_Application_Task_ٹیگ
+    #تعریف_کرو trace_ENTER_v_Task_سیٹ_Application_Task_ٹیگ( xTask, pxHookFunction )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Task_سیٹ_Application_Task_ٹیگ
+    #تعریف_کرو trace_RETURN_v_Task_سیٹ_Application_Task_ٹیگ()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Task_Get_Application_Task_ٹیگ
+    #تعریف_کرو trace_ENTER_x_Task_Get_Application_Task_ٹیگ( xTask )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Task_Get_Application_Task_ٹیگ
+    #تعریف_کرو trace_RETURN_x_Task_Get_Application_Task_ٹیگ( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Task_Get_Application_Task_ٹیگ_From_ISR
+    #تعریف_کرو trace_ENTER_x_Task_Get_Application_Task_ٹیگ_From_ISR( xTask )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Task_Get_Application_Task_ٹیگ_From_ISR
+    #تعریف_کرو trace_RETURN_x_Task_Get_Application_Task_ٹیگ_From_ISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskCallApplicationTaskHook
+    #تعریف_کرو traceENTER_xTaskCallApplicationTaskHook( xTask, pvParameter )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskCallApplicationTaskHook
+    #تعریف_کرو traceRETURN_xTaskCallApplicationTaskHook( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskSwitchContext
+    #تعریف_کرو traceENTER_vTaskSwitchContext()
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskSwitchContext
+    #تعریف_کرو traceRETURN_vTaskSwitchContext()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Task_رکھو_On_Event_List
+    #تعریف_کرو trace_ENTER_v_Task_رکھو_On_Event_List( pxEventList, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Task_رکھو_On_Event_List
+    #تعریف_کرو trace_RETURN_v_Task_رکھو_On_Event_List()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Task_رکھو_On_Unordered_Event_List
+    #تعریف_کرو trace_ENTER_v_Task_رکھو_On_Unordered_Event_List( pxEventList, x_شے_قدر, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Task_رکھو_On_Unordered_Event_List
+    #تعریف_کرو trace_RETURN_v_Task_رکھو_On_Unordered_Event_List()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Task_رکھو_On_Event_List_Restricted
+    #تعریف_کرو trace_ENTER_v_Task_رکھو_On_Event_List_Restricted( pxEventList, x_Ticks_منزل_Wait, xWaitIndefinitely )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Task_رکھو_On_Event_List_Restricted
+    #تعریف_کرو trace_RETURN_v_Task_رکھو_On_Event_List_Restricted()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskRemoveFromEventList
+    #تعریف_کرو traceENTER_xTaskRemoveFromEventList( pxEventList )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskRemoveFromEventList
+    #تعریف_کرو traceRETURN_xTaskRemoveFromEventList( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskRemoveFromUnorderedEventList
+    #تعریف_کرو traceENTER_vTaskRemoveFromUnorderedEventList( px_Event_List_شے, x_شے_قدر )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskRemoveFromUnorderedEventList
+    #تعریف_کرو traceRETURN_vTaskRemoveFromUnorderedEventList()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Task_سیٹ_ویلا_باہرلا_State
+    #تعریف_کرو trace_ENTER_v_Task_سیٹ_ویلا_باہرلا_State( px_ویلا_باہرلا )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Task_سیٹ_ویلا_باہرلا_State
+    #تعریف_کرو trace_RETURN_v_Task_سیٹ_ویلا_باہرلا_State()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Task_اندرونی_سیٹ_ویلا_باہرلا_State
+    #تعریف_کرو trace_ENTER_v_Task_اندرونی_سیٹ_ویلا_باہرلا_State( px_ویلا_باہرلا )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Task_اندرونی_سیٹ_ویلا_باہرلا_State
+    #تعریف_کرو trace_RETURN_v_Task_اندرونی_سیٹ_ویلا_باہرلا_State()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Task_Check_For_ویلا_باہرلا
+    #تعریف_کرو trace_ENTER_x_Task_Check_For_ویلا_باہرلا( px_ویلا_باہرلا, px_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Task_Check_For_ویلا_باہرلا
+    #تعریف_کرو trace_RETURN_x_Task_Check_For_ویلا_باہرلا( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskMissedYield
+    #تعریف_کرو traceENTER_vTaskMissedYield()
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskMissedYield
+    #تعریف_کرو traceRETURN_vTaskMissedYield()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_Task_Get_Task_نمبر
+    #تعریف_کرو trace_ENTER_ux_Task_Get_Task_نمبر( xTask )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_Task_Get_Task_نمبر
+    #تعریف_کرو trace_RETURN_ux_Task_Get_Task_نمبر( uxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Task_سیٹ_Task_نمبر
+    #تعریف_کرو trace_ENTER_v_Task_سیٹ_Task_نمبر( xTask, uxHandle )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Task_سیٹ_Task_نمبر
+    #تعریف_کرو trace_RETURN_v_Task_سیٹ_Task_نمبر()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_e_Task_Confirm_Sleep_منوال_حالت
+    #تعریف_کرو trace_ENTER_e_Task_Confirm_Sleep_منوال_حالت()
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_e_Task_Confirm_Sleep_منوال_حالت
+    #تعریف_کرو trace_RETURN_e_Task_Confirm_Sleep_منوال_حالت( eReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Task_سیٹ_Thread_Local_Storage_اشارہ_گر
+    #تعریف_کرو trace_ENTER_v_Task_سیٹ_Thread_Local_Storage_اشارہ_گر( x_Task_منزل_سیٹ, x_اشاریہ, pv_قدر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Task_سیٹ_Thread_Local_Storage_اشارہ_گر
+    #تعریف_کرو trace_RETURN_v_Task_سیٹ_Thread_Local_Storage_اشارہ_گر()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_pv_Task_Get_Thread_Local_Storage_اشارہ_گر
+    #تعریف_کرو trace_ENTER_pv_Task_Get_Thread_Local_Storage_اشارہ_گر( x_Task_منزل_Query, x_اشاریہ )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_pv_Task_Get_Thread_Local_Storage_اشارہ_گر
+    #تعریف_کرو trace_RETURN_pv_Task_Get_Thread_Local_Storage_اشارہ_گر( pvReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskAllocateMPURegions
+    #تعریف_کرو traceENTER_vTaskAllocateMPURegions( x_Task_منزل_Modify, pxRegions )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskAllocateMPURegions
+    #تعریف_کرو traceRETURN_vTaskAllocateMPURegions()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskGetInfo
+    #تعریف_کرو traceENTER_vTaskGetInfo( xTask, px_Task_حالت, x_Get_Free_ڈھیر_Space, eState )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskGetInfo
+    #تعریف_کرو traceRETURN_vTaskGetInfo()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_Task_Get_ڈھیر_بلند_Water_Mark2
+    #تعریف_کرو trace_ENTER_ux_Task_Get_ڈھیر_بلند_Water_Mark2( xTask )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_Task_Get_ڈھیر_بلند_Water_Mark2
+    #تعریف_کرو trace_RETURN_ux_Task_Get_ڈھیر_بلند_Water_Mark2( uxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_Task_Get_ڈھیر_بلند_Water_Mark
+    #تعریف_کرو trace_ENTER_ux_Task_Get_ڈھیر_بلند_Water_Mark( xTask )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_Task_Get_ڈھیر_بلند_Water_Mark
+    #تعریف_کرو trace_RETURN_ux_Task_Get_ڈھیر_بلند_Water_Mark( uxReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskGetCurrentTaskHandle
+    #تعریف_کرو traceENTER_xTaskGetCurrentTaskHandle()
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskGetCurrentTaskHandle
+    #تعریف_کرو traceRETURN_xTaskGetCurrentTaskHandle( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskGetCurrentTaskHandleForCore
+    #تعریف_کرو traceENTER_xTaskGetCurrentTaskHandleForCore( xCoreID )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskGetCurrentTaskHandleForCore
+    #تعریف_کرو traceRETURN_xTaskGetCurrentTaskHandleForCore( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskGetSchedulerState
+    #تعریف_کرو traceENTER_xTaskGetSchedulerState()
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskGetSchedulerState
+    #تعریف_کرو traceRETURN_xTaskGetSchedulerState( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Task_ترجیح_Inherit
+    #تعریف_کرو trace_ENTER_x_Task_ترجیح_Inherit( pxMutexHolder )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Task_ترجیح_Inherit
+    #تعریف_کرو trace_RETURN_x_Task_ترجیح_Inherit( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_Task_ترجیح_Disinherit
+    #تعریف_کرو trace_ENTER_x_Task_ترجیح_Disinherit( pxMutexHolder )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_Task_ترجیح_Disinherit
+    #تعریف_کرو trace_RETURN_x_Task_ترجیح_Disinherit( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Task_ترجیح_Disinherit_After_Timeout
+    #تعریف_کرو trace_ENTER_v_Task_ترجیح_Disinherit_After_Timeout( pxMutexHolder, ux_Highest_ترجیح_اڈیک_Task )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Task_ترجیح_Disinherit_After_Timeout
+    #تعریف_کرو trace_RETURN_v_Task_ترجیح_Disinherit_After_Timeout()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskYieldWithinAPI
+    #تعریف_کرو traceENTER_vTaskYieldWithinAPI()
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskYieldWithinAPI
+    #تعریف_کرو traceRETURN_vTaskYieldWithinAPI()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskEnterCritical
+    #تعریف_کرو traceENTER_vTaskEnterCritical()
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskEnterCritical
+    #تعریف_کرو traceRETURN_vTaskEnterCritical()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskEnterCriticalFromISR
+    #تعریف_کرو traceENTER_vTaskEnterCriticalFromISR()
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskEnterCriticalFromISR
+    #تعریف_کرو traceRETURN_vTaskEnterCriticalFromISR( ux_Saved_رکاوٹ_حالت )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskExitCritical
+    #تعریف_کرو traceENTER_vTaskExitCritical()
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskExitCritical
+    #تعریف_کرو traceRETURN_vTaskExitCritical()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskExitCriticalFromISR
+    #تعریف_کرو traceENTER_vTaskExitCriticalFromISR( ux_Saved_رکاوٹ_حالت )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskExitCriticalFromISR
+    #تعریف_کرو traceRETURN_vTaskExitCriticalFromISR()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskListTasks
+    #تعریف_کرو traceENTER_vTaskListTasks( pc_Write_بفر, ux_بفر_لمائی )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskListTasks
+    #تعریف_کرو traceRETURN_vTaskListTasks()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Task_Get_لگاتار_ویلا_Statistics
+    #تعریف_کرو trace_ENTER_v_Task_Get_لگاتار_ویلا_Statistics( pc_Write_بفر, ux_بفر_لمائی )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Task_Get_لگاتار_ویلا_Statistics
+    #تعریف_کرو trace_RETURN_v_Task_Get_لگاتار_ویلا_Statistics()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_Task_Reset_Event_شے_قدر
+    #تعریف_کرو trace_ENTER_ux_Task_Reset_Event_شے_قدر()
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_Task_Reset_Event_شے_قدر
+    #تعریف_کرو trace_RETURN_ux_Task_Reset_Event_شے_قدر( uxReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_pv_Task_Increment_Mutex_Held_گنتی
+    #تعریف_کرو trace_ENTER_pv_Task_Increment_Mutex_Held_گنتی()
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_pv_Task_Increment_Mutex_Held_گنتی
+    #تعریف_کرو trace_RETURN_pv_Task_Increment_Mutex_Held_گنتی( pxTCB )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_ulTaskGenericNotifyTake
+    #تعریف_کرو traceENTER_ulTaskGenericNotifyTake( ux_اشاریہ_منزل_Wait_On, x_Clear_گنتی_On_Exit, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_ulTaskGenericNotifyTake
+    #تعریف_کرو traceRETURN_ulTaskGenericNotifyTake( ulReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskGenericNotifyWait
+    #تعریف_کرو traceENTER_xTaskGenericNotifyWait( ux_اشاریہ_منزل_Wait_On, ul_بٹ_منزل_Clear_On_اندراج, ul_بٹ_منزل_Clear_On_Exit, pul_Notification_قدر, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskGenericNotifyWait
+    #تعریف_کرو traceRETURN_xTaskGenericNotifyWait( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskGenericNotify
+    #تعریف_کرو traceENTER_xTaskGenericNotify( x_Task_منزل_Notify, ux_اشاریہ_منزل_Notify, ul_قدر, eAction, pul_پچھلا_Notification_قدر )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskGenericNotify
+    #تعریف_کرو traceRETURN_xTaskGenericNotify( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskGenericNotifyFromISR
+    #تعریف_کرو traceENTER_xTaskGenericNotifyFromISR( x_Task_منزل_Notify, ux_اشاریہ_منزل_Notify, ul_قدر, eAction, pul_پچھلا_Notification_قدر, px_Higher_ترجیح_Task_Woken )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskGenericNotifyFromISR
+    #تعریف_کرو traceRETURN_xTaskGenericNotifyFromISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vTaskGenericNotifyGiveFromISR
+    #تعریف_کرو traceENTER_vTaskGenericNotifyGiveFromISR( x_Task_منزل_Notify, ux_اشاریہ_منزل_Notify, px_Higher_ترجیح_Task_Woken )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vTaskGenericNotifyGiveFromISR
+    #تعریف_کرو traceRETURN_vTaskGenericNotifyGiveFromISR()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskGenericNotifyStateClear
+    #تعریف_کرو traceENTER_xTaskGenericNotifyStateClear( xTask, ux_اشاریہ_منزل_Clear )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskGenericNotifyStateClear
+    #تعریف_کرو traceRETURN_xTaskGenericNotifyStateClear( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ul_Task_Generic_Notify_قدر_Clear
+    #تعریف_کرو trace_ENTER_ul_Task_Generic_Notify_قدر_Clear( xTask, ux_اشاریہ_منزل_Clear, ul_بٹ_منزل_Clear )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ul_Task_Generic_Notify_قدر_Clear
+    #تعریف_کرو trace_RETURN_ul_Task_Generic_Notify_قدر_Clear( ulReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ul_Task_Get_لگاتار_ویلا_Counter
+    #تعریف_کرو trace_ENTER_ul_Task_Get_لگاتار_ویلا_Counter( xTask )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ul_Task_Get_لگاتار_ویلا_Counter
+    #تعریف_کرو trace_RETURN_ul_Task_Get_لگاتار_ویلا_Counter( ul_لگاتار_ویلا_Counter )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ul_Task_Get_لگاتار_ویلا_Percent
+    #تعریف_کرو trace_ENTER_ul_Task_Get_لگاتار_ویلا_Percent( xTask )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ul_Task_Get_لگاتار_ویلا_Percent
+    #تعریف_کرو trace_RETURN_ul_Task_Get_لگاتار_ویلا_Percent( ulReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ul_Task_Get_Idle_لگاتار_ویلا_Counter
+    #تعریف_کرو trace_ENTER_ul_Task_Get_Idle_لگاتار_ویلا_Counter()
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ul_Task_Get_Idle_لگاتار_ویلا_Counter
+    #تعریف_کرو trace_RETURN_ul_Task_Get_Idle_لگاتار_ویلا_Counter( ulReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ul_Task_Get_Idle_لگاتار_ویلا_Percent
+    #تعریف_کرو trace_ENTER_ul_Task_Get_Idle_لگاتار_ویلا_Percent()
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ul_Task_Get_Idle_لگاتار_ویلا_Percent
+    #تعریف_کرو trace_RETURN_ul_Task_Get_Idle_لگاتار_ویلا_Percent( ulReturn )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xTaskGetMPUSettings
+    #تعریف_کرو traceENTER_xTaskGetMPUSettings( xTask )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xTaskGetMPUSettings
+    #تعریف_کرو traceRETURN_xTaskGetMPUSettings( xMPUSettings )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_Generic_Create
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_Generic_Create( x_بفر_ناپ_بائٹاں, x_Trigger_Level_بائٹاں, x_دھارا_بفر_Type, pxSendCompletedCallback, pxReceiveCompletedCallback )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_Generic_Create
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_Generic_Create( pv_Allocated_حافظہ )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_Generic_Create_Static
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_Generic_Create_Static( x_بفر_ناپ_بائٹاں, x_Trigger_Level_بائٹاں, x_دھارا_بفر_Type, puc_دھارا_بفر_Storage_Area, px_Static_دھارا_بفر, pxSendCompletedCallback, pxReceiveCompletedCallback )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_Generic_Create_Static
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_Generic_Create_Static( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_Get_Static_Buffers
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_Get_Static_Buffers( x_دھارا_بفر, ppuc_دھارا_بفر_Storage_Area, ppx_Static_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_Get_Static_Buffers
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_Get_Static_Buffers( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_دھارا_بفر_Delete
+    #تعریف_کرو trace_ENTER_v_دھارا_بفر_Delete( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_دھارا_بفر_Delete
+    #تعریف_کرو trace_RETURN_v_دھارا_بفر_Delete()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_Reset
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_Reset( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_Reset
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_Reset( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_Reset_From_ISR
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_Reset_From_ISR( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_Reset_From_ISR
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_Reset_From_ISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_سیٹ_Trigger_Level
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_سیٹ_Trigger_Level( x_دھارا_بفر, xTriggerLevel )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_سیٹ_Trigger_Level
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_سیٹ_Trigger_Level( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_Spaces_دستیاب
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_Spaces_دستیاب( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_Spaces_دستیاب
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_Spaces_دستیاب( xSpace )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_بائٹاں_دستیاب
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_بائٹاں_دستیاب( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_بائٹاں_دستیاب
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_بائٹاں_دستیاب( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_Send
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_Send( x_دھارا_بفر, pv_Tx_انکڑے, x_انکڑے_لمائی_بائٹاں, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_Send
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_Send( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_Send_From_ISR
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_Send_From_ISR( x_دھارا_بفر, pv_Tx_انکڑے, x_انکڑے_لمائی_بائٹاں, px_Higher_ترجیح_Task_Woken )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_Send_From_ISR
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_Send_From_ISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_Receive
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_Receive( x_دھارا_بفر, pv_Rx_انکڑے, x_بفر_لمائی_بائٹاں, x_Ticks_منزل_Wait )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_Receive
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_Receive( x_Received_لمائی )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_اگلا_سنیہا_لمائی_بائٹاں
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_اگلا_سنیہا_لمائی_بائٹاں( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_اگلا_سنیہا_لمائی_بائٹاں
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_اگلا_سنیہا_لمائی_بائٹاں( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_Receive_From_ISR
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_Receive_From_ISR( x_دھارا_بفر, pv_Rx_انکڑے, x_بفر_لمائی_بائٹاں, px_Higher_ترجیح_Task_Woken )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_Receive_From_ISR
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_Receive_From_ISR( x_Received_لمائی )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_Is_خالی_تھاواں
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_Is_خالی_تھاواں( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_Is_خالی_تھاواں
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_Is_خالی_تھاواں( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_Is_بھریا
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_Is_بھریا( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_Is_بھریا
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_Is_بھریا( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_Send_Completed_From_ISR
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_Send_Completed_From_ISR( x_دھارا_بفر, px_Higher_ترجیح_Task_Woken )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_Send_Completed_From_ISR
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_Send_Completed_From_ISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_x_دھارا_بفر_Receive_Completed_From_ISR
+    #تعریف_کرو trace_ENTER_x_دھارا_بفر_Receive_Completed_From_ISR( x_دھارا_بفر, px_Higher_ترجیح_Task_Woken )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_x_دھارا_بفر_Receive_Completed_From_ISR
+    #تعریف_کرو trace_RETURN_x_دھارا_بفر_Receive_Completed_From_ISR( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_دھارا_بفر_Get_دھارا_بفر_Notification_اشاریہ
+    #تعریف_کرو trace_ENTER_ux_دھارا_بفر_Get_دھارا_بفر_Notification_اشاریہ( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_دھارا_بفر_Get_دھارا_بفر_Notification_اشاریہ
+    #تعریف_کرو trace_RETURN_ux_دھارا_بفر_Get_دھارا_بفر_Notification_اشاریہ( ux_Notification_اشاریہ )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_دھارا_بفر_سیٹ_دھارا_بفر_Notification_اشاریہ
+    #تعریف_کرو trace_ENTER_v_دھارا_بفر_سیٹ_دھارا_بفر_Notification_اشاریہ( x_دھارا_بفر, ux_Notification_اشاریہ )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_دھارا_بفر_سیٹ_دھارا_بفر_Notification_اشاریہ
+    #تعریف_کرو trace_RETURN_v_دھارا_بفر_سیٹ_دھارا_بفر_Notification_اشاریہ()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_ux_دھارا_بفر_Get_دھارا_بفر_نمبر
+    #تعریف_کرو trace_ENTER_ux_دھارا_بفر_Get_دھارا_بفر_نمبر( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_ux_دھارا_بفر_Get_دھارا_بفر_نمبر
+    #تعریف_کرو trace_RETURN_ux_دھارا_بفر_Get_دھارا_بفر_نمبر( ux_دھارا_بفر_نمبر )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_دھارا_بفر_سیٹ_دھارا_بفر_نمبر
+    #تعریف_کرو trace_ENTER_v_دھارا_بفر_سیٹ_دھارا_بفر_نمبر( x_دھارا_بفر, ux_دھارا_بفر_نمبر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_دھارا_بفر_سیٹ_دھارا_بفر_نمبر
+    #تعریف_کرو trace_RETURN_v_دھارا_بفر_سیٹ_دھارا_بفر_نمبر()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_uc_دھارا_بفر_Get_دھارا_بفر_Type
+    #تعریف_کرو trace_ENTER_uc_دھارا_بفر_Get_دھارا_بفر_Type( x_دھارا_بفر )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_uc_دھارا_بفر_Get_دھارا_بفر_Type
+    #تعریف_کرو trace_RETURN_uc_دھارا_بفر_Get_دھارا_بفر_Type( uc_دھارا_بفر_Type )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_vListInitialise
+    #تعریف_کرو traceENTER_vListInitialise( pxList )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_vListInitialise
+    #تعریف_کرو traceRETURN_vListInitialise()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_List_Initialise_شے
+    #تعریف_کرو trace_ENTER_v_List_Initialise_شے( px_شے )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_List_Initialise_شے
+    #تعریف_کرو trace_RETURN_v_List_Initialise_شے()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_List_داخل_کرو_سرا
+    #تعریف_کرو trace_ENTER_v_List_داخل_کرو_سرا( pxList, px_New_List_شے )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_List_داخل_کرو_سرا
+    #تعریف_کرو trace_RETURN_v_List_داخل_کرو_سرا()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_List_داخل_کرو
+    #تعریف_کرو trace_ENTER_v_List_داخل_کرو( pxList, px_New_List_شے )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_List_داخل_کرو
+    #تعریف_کرو trace_RETURN_v_List_داخل_کرو()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_uxListRemove
+    #تعریف_کرو traceENTER_uxListRemove( px_شے_منزل_Remove )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_uxListRemove
+    #تعریف_کرو traceRETURN_uxListRemove( ux_نمبر_دا_اشیاء )
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xCoRoutineCreate
+    #تعریف_کرو traceENTER_xCoRoutineCreate( px_Co_Routine_کوڈ, ux_ترجیح, ux_اشاریہ )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xCoRoutineCreate
+    #تعریف_کرو traceRETURN_xCoRoutineCreate( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Co_Routine_جوڑو_منزل_Delayed_List
+    #تعریف_کرو trace_ENTER_v_Co_Routine_جوڑو_منزل_Delayed_List( x_Ticks_منزل_Delay, pxEventList )
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Co_Routine_جوڑو_منزل_Delayed_List
+    #تعریف_کرو trace_RETURN_v_Co_Routine_جوڑو_منزل_Delayed_List()
+#جے_انت
+
+#جے_بنا_تعریف trace_ENTER_v_Co_Routine_ویلا_سارنی
+    #تعریف_کرو trace_ENTER_v_Co_Routine_ویلا_سارنی()
+#جے_انت
+
+#جے_بنا_تعریف trace_RETURN_v_Co_Routine_ویلا_سارنی
+    #تعریف_کرو trace_RETURN_v_Co_Routine_ویلا_سارنی()
+#جے_انت
+
+#جے_بنا_تعریف traceENTER_xCoRoutineRemoveFromEventList
+    #تعریف_کرو traceENTER_xCoRoutineRemoveFromEventList( pxEventList )
+#جے_انت
+
+#جے_بنا_تعریف traceRETURN_xCoRoutineRemoveFromEventList
+    #تعریف_کرو traceRETURN_xCoRoutineRemoveFromEventList( xReturn )
+#جے_انت
+
+#جے_بنا_تعریف config_GENERATE_لگاتار_ویلا_STATS
+    #تعریف_کرو config_GENERATE_لگاتار_ویلا_STATS    0
+#جے_انت
+
+#إذا ( config_GENERATE_لگاتار_ویلا_STATS == 1 )
+
+    #جے_بنا_تعریف پورٹ_CONFIGURE_TIMER_FOR_لگاتار_ویلا_STATS
+        #غلطی If config_GENERATE_لگاتار_ویلا_STATS is defined then پورٹ_CONFIGURE_TIMER_FOR_لگاتار_ویلا_STATS must also be defined.  پورٹ_CONFIGURE_TIMER_FOR_لگاتار_ویلا_STATS should call a پورٹ layer function منزل تیاری a peripheral timer/counter that can then be ورتیا as the لگاتار time counter time ادھار.
+    #جے_انت /* portCONFIGURE_TIMER_FOR_RUN_TIME_STATS */
+
+    #جے_بنا_تعریف پورٹ_GET_لگاتار_ویلا_COUNTER_قدر
+        #جے_بنا_تعریف پورٹ_ALT_GET_لگاتار_ویلا_COUNTER_قدر
+            #غلطی If config_GENERATE_لگاتار_ویلا_STATS is defined then either پورٹ_GET_لگاتار_ویلا_COUNTER_قدر or پورٹ_ALT_GET_لگاتار_ویلا_COUNTER_قدر must also be defined.  See the examples provided and the FreeRTOS web site لكل ہور information.
+        #جے_انت /* portALT_GET_RUN_TIME_COUNTER_VALUE */
+    #جے_انت /* portGET_RUN_TIME_COUNTER_VALUE */
+
+#جے_انت /* configGENERATE_RUN_TIME_STATS */
+
+#جے_بنا_تعریف پورٹ_CONFIGURE_TIMER_FOR_لگاتار_ویلا_STATS
+    #تعریف_کرو پورٹ_CONFIGURE_TIMER_FOR_لگاتار_ویلا_STATS()
+#جے_انت
+
+#جے_بنا_تعریف پورٹ_PRIVILEGE_ثنائی_ہندسہ
+    #تعریف_کرو پورٹ_PRIVILEGE_ثنائی_ہندسہ    ( ( UBaseType_t ) 0x00 )
+#جے_انت
+
+#جے_بنا_تعریف پورٹ_YIELD_WITHIN_API
+    #تعریف_کرو پورٹ_YIELD_WITHIN_API    پورٹ_YIELD
+#جے_انت
+
+#جے_بنا_تعریف پورٹ_SUPPRESS_TICKS_AND_SLEEP
+    #تعریف_کرو پورٹ_SUPPRESS_TICKS_AND_SLEEP( x_Expected_Idle_ویلا )
+#جے_انت
+
+#جے_بنا_تعریف config_EXPECTED_IDLE_ویلا_BEFORE_SLEEP
+    #تعریف_کرو config_EXPECTED_IDLE_ویلا_BEFORE_SLEEP    2
+#جے_انت
+
+#إذا config_EXPECTED_IDLE_ویلا_BEFORE_SLEEP < 2
+    #غلطی config_EXPECTED_IDLE_ویلا_BEFORE_SLEEP must not be less than 2
+#جے_انت
+
+#جے_بنا_تعریف configUSE_TICKLESS_IDLE
+    #تعریف_کرو configUSE_TICKLESS_IDLE    0
+#جے_انت
+
+#جے_بنا_تعریف configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING
+    #تعریف_کرو configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING( x )
+#جے_انت
+
+#جے_بنا_تعریف configPRE_SLEEP_PROCESSING
+    #تعریف_کرو configPRE_SLEEP_PROCESSING( x )
+#جے_انت
+
+#جے_بنا_تعریف configPOST_SLEEP_PROCESSING
+    #تعریف_کرو configPOST_SLEEP_PROCESSING( x )
+#جے_انت
+
+#جے_بنا_تعریف config_USE_قطار_SETS
+    #تعریف_کرو config_USE_قطار_SETS    0
+#جے_انت
+
+#جے_بنا_تعریف پورٹ_TASK_ورتدا_FLOATING_نقطہ
+    #تعریف_کرو پورٹ_TASK_ورتدا_FLOATING_نقطہ()
+#جے_انت
+
+#جے_بنا_تعریف پورٹ_ALLOCATE_SECURE_CONTEXT
+    #تعریف_کرو پورٹ_ALLOCATE_SECURE_CONTEXT( ul_Secure_ڈھیر_ناپ )
+#جے_انت
+
+#جے_بنا_تعریف پورٹ_DONT_DISCARD
+    #تعریف_کرو پورٹ_DONT_DISCARD
+#جے_انت
+
+#جے_بنا_تعریف config_USE_ویلا_SLICING
+    #تعریف_کرو config_USE_ویلا_SLICING    1
+#جے_انت
+
+#جے_بنا_تعریف configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS
+    #تعریف_کرو configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS    0
+#جے_انت
+
+#جے_بنا_تعریف configUSE_STATS_FORMATTING_FUNCTIONS
+    #تعریف_کرو configUSE_STATS_FORMATTING_FUNCTIONS    0
+#جے_انت
+
+#جے_بنا_تعریف پورٹ_ASSERT_IF_رکاوٹ_ترجیح_INVALID
+    #تعریف_کرو پورٹ_ASSERT_IF_رکاوٹ_ترجیح_INVALID()
+#جے_انت
+
+#جے_بنا_تعریف configUSE_TRACE_FACILITY
+    #تعریف_کرو configUSE_TRACE_FACILITY    0
+#جے_انت
+
+#جے_بنا_تعریف mtCOVERAGE_TEST_MARKER
+    #تعریف_کرو mtCOVERAGE_TEST_MARKER()
+#جے_انت
+
+#جے_بنا_تعریف mtCOVERAGE_TEST_DELAY
+    #تعریف_کرو mtCOVERAGE_TEST_DELAY()
+#جے_انت
+
+#جے_بنا_تعریف پورٹ_ASSERT_IF_وچ_ISR
+    #تعریف_کرو پورٹ_ASSERT_IF_وچ_ISR()
+#جے_انت
+
+#جے_بنا_تعریف config_USE_پورٹ_OPTIMISED_TASK_SELECTION
+    #تعریف_کرو config_USE_پورٹ_OPTIMISED_TASK_SELECTION    0
+#جے_انت
+
+#جے_بنا_تعریف config_APPLICATION_ALLOCATED_ڈھیر
+    #تعریف_کرو config_APPLICATION_ALLOCATED_ڈھیر    0
+#جے_انت
+
+#جے_بنا_تعریف config_ENABLE_ڈھیر_PROTECTOR
+    #تعریف_کرو config_ENABLE_ڈھیر_PROTECTOR    0
+#جے_انت
+
+#جے_بنا_تعریف configUSE_TASK_NOTIFICATIONS
+    #تعریف_کرو configUSE_TASK_NOTIFICATIONS    1
+#جے_انت
+
+#جے_بنا_تعریف configTASK_NOTIFICATION_ARRAY_ENTRIES
+    #تعریف_کرو configTASK_NOTIFICATION_ARRAY_ENTRIES    1
+#جے_انت
+
+#إذا configTASK_NOTIFICATION_ARRAY_ENTRIES < 1
+    #غلطی configTASK_NOTIFICATION_ARRAY_ENTRIES must be at گھٹ_توں_گھٹ 1
+#جے_انت
+
+#جے_بنا_تعریف configUSE_POSIX_ERRNO
+    #تعریف_کرو configUSE_POSIX_ERRNO    0
+#جے_انت
+
+#جے_بنا_تعریف configUSE_SB_COMPLETED_CALLBACK
 
 /* By default per-instance callbacks are not enabled for stream buffer or message buffer. */
-    #define configUSE_SB_COMPLETED_CALLBACK    0
-#endif
+    #تعریف_کرو configUSE_SB_COMPLETED_CALLBACK    0
+#جے_انت
 
-#ifndef portTICK_TYPE_IS_ATOMIC
-    #define portTICK_TYPE_IS_ATOMIC    0
-#endif
+#جے_بنا_تعریف پورٹ_TICK_TYPE_IS_ATOMIC
+    #تعریف_کرو پورٹ_TICK_TYPE_IS_ATOMIC    0
+#جے_انت
 
-#ifndef configSUPPORT_STATIC_ALLOCATION
+#جے_بنا_تعریف config_SUPPORT_STATIC_ونڈ
     /* Defaults to 0 for backward compatibility. */
-    #define configSUPPORT_STATIC_ALLOCATION    0
-#endif
+    #تعریف_کرو config_SUPPORT_STATIC_ونڈ    0
+#جے_انت
 
-#ifndef configKERNEL_PROVIDED_STATIC_MEMORY
-    #define configKERNEL_PROVIDED_STATIC_MEMORY    0
-#endif
+#جے_بنا_تعریف config_KERNEL_PROVIDED_STATIC_حافظہ
+    #تعریف_کرو config_KERNEL_PROVIDED_STATIC_حافظہ    0
+#جے_انت
 
-#ifndef configSUPPORT_DYNAMIC_ALLOCATION
+#جے_بنا_تعریف config_SUPPORT_DYNAMIC_ونڈ
     /* Defaults to 1 for backward compatibility. */
-    #define configSUPPORT_DYNAMIC_ALLOCATION    1
-#endif
+    #تعریف_کرو config_SUPPORT_DYNAMIC_ونڈ    1
+#جے_انت
 
-#if ( ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION != 1 ) )
-    #error configUSE_STATS_FORMATTING_FUNCTIONS cannot be used without dynamic allocation, but configSUPPORT_DYNAMIC_ALLOCATION is not set to 1.
-#endif
+#إذا ( ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( config_SUPPORT_DYNAMIC_ونڈ != 1 ) )
+    #غلطی configUSE_STATS_FORMATTING_FUNCTIONS cannot be ورتیا without dynamic ونڈ, but config_SUPPORT_DYNAMIC_ونڈ is not سیٹ منزل 1.
+#جے_انت
 
-#if ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 )
-    #if ( ( configUSE_TRACE_FACILITY != 1 ) && ( configGENERATE_RUN_TIME_STATS != 1 ) )
-        #error configUSE_STATS_FORMATTING_FUNCTIONS is 1 but the functions it enables are not used because neither configUSE_TRACE_FACILITY or configGENERATE_RUN_TIME_STATS are 1.  Set configUSE_STATS_FORMATTING_FUNCTIONS to 0 in FreeRTOSConfig.h.
-    #endif
-#endif
+#إذا ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 )
+    #إذا ( ( configUSE_TRACE_FACILITY != 1 ) && ( config_GENERATE_لگاتار_ویلا_STATS != 1 ) )
+        #غلطی configUSE_STATS_FORMATTING_FUNCTIONS is 1 but the functions it enables are not ورتیا because neither configUSE_TRACE_FACILITY or config_GENERATE_لگاتار_ویلا_STATS are 1.  سیٹ_2 configUSE_STATS_FORMATTING_FUNCTIONS منزل 0 وچ FreeRTOSConfig.h.
+    #جے_انت
+#جے_انت
 
-#ifndef configSTATS_BUFFER_MAX_LENGTH
-    #define configSTATS_BUFFER_MAX_LENGTH    0xFFFF
-#endif
+#جے_بنا_تعریف config_STATS_بفر_MAX_لمائی
+    #تعریف_کرو config_STATS_بفر_MAX_لمائی    0xFFFF
+#جے_انت
 
-#ifndef configSTACK_DEPTH_TYPE
+#جے_بنا_تعریف config_ڈھیر_ڈونگھائی_TYPE
 
 /* Defaults to StackType_t for backward compatibility, but can be overridden
  * in FreeRTOSConfig.h if StackType_t is too restrictive. */
-    #define configSTACK_DEPTH_TYPE    StackType_t
-#endif
+    #تعریف_کرو config_ڈھیر_ڈونگھائی_TYPE    ڈھیر_Type_t
+#جے_انت
 
-#ifndef configRUN_TIME_COUNTER_TYPE
+#جے_بنا_تعریف config_لگاتار_ویلا_COUNTER_TYPE
 
 /* Defaults to uint32_t for backward compatibility, but can be overridden in
  * FreeRTOSConfig.h if uint32_t is too restrictive. */
 
-    #define configRUN_TIME_COUNTER_TYPE    uint32_t
-#endif
+    #تعریف_کرو config_لگاتار_ویلا_COUNTER_TYPE    uint32_t
+#جے_انت
 
-#ifndef configMESSAGE_BUFFER_LENGTH_TYPE
+#جے_بنا_تعریف config_سنیہا_بفر_لمائی_TYPE
 
 /* Defaults to size_t for backward compatibility, but can be overridden
  * in FreeRTOSConfig.h if lengths will always be less than the number of bytes
  * in a size_t. */
-    #define configMESSAGE_BUFFER_LENGTH_TYPE    size_t
-#endif
+    #تعریف_کرو config_سنیہا_بفر_لمائی_TYPE    size_t
+#جے_انت
 
 /* Sanity check the configuration. */
-#if ( ( configSUPPORT_STATIC_ALLOCATION == 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 0 ) )
-    #error configSUPPORT_STATIC_ALLOCATION and configSUPPORT_DYNAMIC_ALLOCATION cannot both be 0, but can both be 1.
-#endif
+#إذا ( ( config_SUPPORT_STATIC_ونڈ == 0 ) && ( config_SUPPORT_DYNAMIC_ونڈ == 0 ) )
+    #غلطی config_SUPPORT_STATIC_ونڈ and config_SUPPORT_DYNAMIC_ونڈ cannot both be 0, but can both be 1.
+#جے_انت
 
-#if ( ( configUSE_RECURSIVE_MUTEXES == 1 ) && ( configUSE_MUTEXES != 1 ) )
-    #error configUSE_MUTEXES must be set to 1 to use recursive mutexes
-#endif
+#إذا ( ( configUSE_RECURSIVE_MUTEXES == 1 ) && ( configUSE_MUTEXES != 1 ) )
+    #غلطی configUSE_MUTEXES must be سیٹ منزل 1 منزل use recursive mutexes
+#جے_انت
 
-#if ( ( configRUN_MULTIPLE_PRIORITIES == 0 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
-    #error configRUN_MULTIPLE_PRIORITIES must be set to 1 to use task preemption disable
-#endif
+#إذا ( ( config_لگاتار_مضرب_PRIORITIES == 0 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
+    #غلطی config_لگاتار_مضرب_PRIORITIES must be سیٹ منزل 1 منزل use task preemption disable
+#جے_انت
 
-#if ( ( configUSE_PREEMPTION == 0 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
-    #error configUSE_PREEMPTION must be set to 1 to use task preemption disable
-#endif
+#إذا ( ( configUSE_PREEMPTION == 0 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
+    #غلطی configUSE_PREEMPTION must be سیٹ منزل 1 منزل use task preemption disable
+#جے_انت
 
-#if ( ( configNUMBER_OF_CORES == 1 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
-    #error configUSE_TASK_PREEMPTION_DISABLE is not supported in single core FreeRTOS
-#endif
+#إذا ( ( config_نمبر_دا_CORES == 1 ) && ( configUSE_TASK_PREEMPTION_DISABLE != 0 ) )
+    #غلطی configUSE_TASK_PREEMPTION_DISABLE is not supported وچ single core FreeRTOS
+#جے_انت
 
-#if ( ( configNUMBER_OF_CORES == 1 ) && ( configUSE_CORE_AFFINITY != 0 ) )
-    #error configUSE_CORE_AFFINITY is not supported in single core FreeRTOS
-#endif
+#إذا ( ( config_نمبر_دا_CORES == 1 ) && ( configUSE_CORE_AFFINITY != 0 ) )
+    #غلطی configUSE_CORE_AFFINITY is not supported وچ single core FreeRTOS
+#جے_انت
 
-#if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_PORT_OPTIMISED_TASK_SELECTION != 0 ) )
-    #error configUSE_PORT_OPTIMISED_TASK_SELECTION is not supported in SMP FreeRTOS
-#endif
+#إذا ( ( config_نمبر_دا_CORES > 1 ) && ( config_USE_پورٹ_OPTIMISED_TASK_SELECTION != 0 ) )
+    #غلطی config_USE_پورٹ_OPTIMISED_TASK_SELECTION is not supported وچ SMP FreeRTOS
+#جے_انت
 
-#ifndef configINITIAL_TICK_COUNT
-    #define configINITIAL_TICK_COUNT    0
-#endif
+#جے_بنا_تعریف config_INITIAL_TICK_گنتی
+    #تعریف_کرو config_INITIAL_TICK_گنتی    0
+#جے_انت
 
-#if ( portTICK_TYPE_IS_ATOMIC == 0 )
+#إذا ( پورٹ_TICK_TYPE_IS_ATOMIC == 0 )
 
 /* Either variables of tick type cannot be read atomically, or
  * portTICK_TYPE_IS_ATOMIC was not set - map the critical sections used when
  * the tick count is returned to the standard critical section macros. */
-    #define portTICK_TYPE_ENTER_CRITICAL()                      portENTER_CRITICAL()
-    #define portTICK_TYPE_EXIT_CRITICAL()                       portEXIT_CRITICAL()
-    #define portTICK_TYPE_SET_INTERRUPT_MASK_FROM_ISR()         portSET_INTERRUPT_MASK_FROM_ISR()
-    #define portTICK_TYPE_CLEAR_INTERRUPT_MASK_FROM_ISR( x )    portCLEAR_INTERRUPT_MASK_FROM_ISR( ( x ) )
-#else
+    #تعریف_کرو پورٹ_TICK_TYPE_ENTER_CRITICAL()                      پورٹ_ENTER_CRITICAL()
+    #تعریف_کرو پورٹ_TICK_TYPE_EXIT_CRITICAL()                       پورٹ_EXIT_CRITICAL()
+    #تعریف_کرو پورٹ_TICK_TYPE_سیٹ_رکاوٹ_نقاب_FROM_ISR()         پورٹ_سیٹ_رکاوٹ_نقاب_FROM_ISR()
+    #تعریف_کرو پورٹ_TICK_TYPE_CLEAR_رکاوٹ_نقاب_FROM_ISR( x )    پورٹ_CLEAR_رکاوٹ_نقاب_FROM_ISR( ( x ) )
+#وإلا
 
 /* The tick type can be read atomically, so critical sections used when the
  * tick count is returned can be defined away. */
-    #define portTICK_TYPE_ENTER_CRITICAL()
-    #define portTICK_TYPE_EXIT_CRITICAL()
-    #define portTICK_TYPE_SET_INTERRUPT_MASK_FROM_ISR()         0
-    #define portTICK_TYPE_CLEAR_INTERRUPT_MASK_FROM_ISR( x )    ( void ) ( x )
-#endif /* if ( portTICK_TYPE_IS_ATOMIC == 0 ) */
+    #تعریف_کرو پورٹ_TICK_TYPE_ENTER_CRITICAL()
+    #تعریف_کرو پورٹ_TICK_TYPE_EXIT_CRITICAL()
+    #تعریف_کرو پورٹ_TICK_TYPE_سیٹ_رکاوٹ_نقاب_FROM_ISR()         0
+    #تعریف_کرو پورٹ_TICK_TYPE_CLEAR_رکاوٹ_نقاب_FROM_ISR( x )    ( فراغ ) ( x )
+#جے_انت /* if ( portTICK_TYPE_IS_ATOMIC == 0 ) */
 
 /* Definitions to allow backward compatibility with FreeRTOS versions prior to
  * V8 if desired. */
-#ifndef configENABLE_BACKWARD_COMPATIBILITY
-    #define configENABLE_BACKWARD_COMPATIBILITY    1
-#endif
+#جے_بنا_تعریف configENABLE_BACKWARD_COMPATIBILITY
+    #تعریف_کرو configENABLE_BACKWARD_COMPATIBILITY    1
+#جے_انت
 
-#ifndef configPRINTF
+#جے_بنا_تعریف configPRINTF
 
 /* configPRINTF() was not defined, so define it away to nothing.  To use
  * configPRINTF() then define it as follows (where MyPrintFunction() is
@@ -2926,108 +2926,108 @@
  * Then call like a standard printf() function, but placing brackets around
  * all parameters so they are passed as a single parameter.  For example:
  * configPRINTF( ("Value = %d", MyVariable) ); */
-    #define configPRINTF( X )
-#endif
+    #تعریف_کرو configPRINTF( X )
+#جے_انت
 
-#ifndef configMAX
+#جے_بنا_تعریف configMAX
 
 /* The application writer has not provided their own MAX macro, so define
  * the following generic implementation. */
-    #define configMAX( a, b )    ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) )
-#endif
+    #تعریف_کرو configMAX( a, b )    ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) )
+#جے_انت
 
-#ifndef configMIN
+#جے_بنا_تعریف configMIN
 
 /* The application writer has not provided their own MIN macro, so define
  * the following generic implementation. */
-    #define configMIN( a, b )    ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
-#endif
+    #تعریف_کرو configMIN( a, b )    ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
+#جے_انت
 
-#if configENABLE_BACKWARD_COMPATIBILITY == 1
-    #define eTaskStateGet                 eTaskGetState
-    #define portTickType                  TickType_t
-    #define xTaskHandle                   TaskHandle_t
-    #define xQueueHandle                  QueueHandle_t
-    #define xSemaphoreHandle              SemaphoreHandle_t
-    #define xQueueSetHandle               QueueSetHandle_t
-    #define xQueueSetMemberHandle         QueueSetMemberHandle_t
-    #define xTimeOutType                  TimeOut_t
-    #define xMemoryRegion                 MemoryRegion_t
-    #define xTaskParameters               TaskParameters_t
-    #define xTaskStatusType               TaskStatus_t
-    #define xTimerHandle                  TimerHandle_t
-    #define xCoRoutineHandle              CoRoutineHandle_t
-    #define pdTASK_HOOK_CODE              TaskHookFunction_t
-    #define portTICK_RATE_MS              portTICK_PERIOD_MS
-    #define pcTaskGetTaskName             pcTaskGetName
-    #define pcTimerGetTimerName           pcTimerGetName
-    #define pcQueueGetQueueName           pcQueueGetName
-    #define vTaskGetTaskInfo              vTaskGetInfo
-    #define xTaskGetIdleRunTimeCounter    ulTaskGetIdleRunTimeCounter
+#إذا configENABLE_BACKWARD_COMPATIBILITY == 1
+    #تعریف_کرو eTaskStateGet                 eTaskGetState
+    #تعریف_کرو پورٹ_Tick_Type                  TickType_t
+    #تعریف_کرو xTaskHandle                   TaskHandle_t
+    #تعریف_کرو x_قطار_Handle                  قطار_Handle_t
+    #تعریف_کرو xSemaphoreHandle              SemaphoreHandle_t
+    #تعریف_کرو x_قطار_سیٹ_Handle               قطار_سیٹ_Handle_t
+    #تعریف_کرو x_قطار_سیٹ_Member_Handle         قطار_سیٹ_Member_Handle_t
+    #تعریف_کرو x_ویلا_باہرلا_Type                  ویلا_باہرلا_t
+    #تعریف_کرو x_حافظہ_Region                 حافظہ_Region_t
+    #تعریف_کرو xTaskParameters               TaskParameters_t
+    #تعریف_کرو x_Task_حالت_Type               Task_حالت_t
+    #تعریف_کرو xTimerHandle                  TimerHandle_t
+    #تعریف_کرو xCoRoutineHandle              CoRoutineHandle_t
+    #تعریف_کرو pd_TASK_HOOK_کوڈ              TaskHookFunction_t
+    #تعریف_کرو پورٹ_TICK_شرح_MS              پورٹ_TICK_PERIOD_MS
+    #تعریف_کرو pcTaskGetTaskName             pcTaskGetName
+    #تعریف_کرو pcTimerGetTimerName           pcTimerGetName
+    #تعریف_کرو pc_قطار_Get_قطار_Name           pc_قطار_Get_Name
+    #تعریف_کرو vTaskGetTaskInfo              vTaskGetInfo
+    #تعریف_کرو x_Task_Get_Idle_لگاتار_ویلا_Counter    ul_Task_Get_Idle_لگاتار_ویلا_Counter
 
 /* Backward compatibility within the scheduler code only - these definitions
  * are not really required but are included for completeness. */
-    #define tmrTIMER_CALLBACK             TimerCallbackFunction_t
-    #define pdTASK_CODE                   TaskFunction_t
-    #define xListItem                     ListItem_t
-    #define xList                         List_t
+    #تعریف_کرو tmrTIMER_CALLBACK             TimerCallbackFunction_t
+    #تعریف_کرو pd_TASK_کوڈ                   TaskFunction_t
+    #تعریف_کرو x_List_شے                     List_شے_t
+    #تعریف_کرو xList                         List_t
 
 /* For libraries that break the list data hiding, and access list structure
  * members directly (which is not supposed to be done). */
-    #define pxContainer                   pvContainer
-#endif /* configENABLE_BACKWARD_COMPATIBILITY */
+    #تعریف_کرو pxContainer                   pvContainer
+#جے_انت /* configENABLE_BACKWARD_COMPATIBILITY */
 
-#if ( configUSE_ALTERNATIVE_API != 0 )
-    #error The alternative API was deprecated some time ago, and was removed in FreeRTOS V9.0 0
-#endif
+#إذا ( configUSE_ALTERNATIVE_API != 0 )
+    #غلطی The alternative API was deprecated some time ago, and was removed وچ FreeRTOS V9.0 0
+#جے_انت
 
 /* Set configUSE_TASK_FPU_SUPPORT to 0 to omit floating point support even
  * if floating point hardware is otherwise supported by the FreeRTOS port in use.
  * This constant is not supported by all FreeRTOS ports that include floating
  * point support. */
-#ifndef configUSE_TASK_FPU_SUPPORT
-    #define configUSE_TASK_FPU_SUPPORT    1
-#endif
+#جے_بنا_تعریف configUSE_TASK_FPU_SUPPORT
+    #تعریف_کرو configUSE_TASK_FPU_SUPPORT    1
+#جے_انت
 
 /* Set configENABLE_MPU to 1 to enable MPU support and 0 to disable it. This is
  * currently used in ARMv8M ports. */
-#ifndef configENABLE_MPU
-    #define configENABLE_MPU    0
-#endif
+#جے_بنا_تعریف configENABLE_MPU
+    #تعریف_کرو configENABLE_MPU    0
+#جے_انت
 
 /* Set configENABLE_FPU to 1 to enable FPU support and 0 to disable it. This is
  * currently used in ARMv8M ports. */
-#ifndef configENABLE_FPU
-    #define configENABLE_FPU    1
-#endif
+#جے_بنا_تعریف configENABLE_FPU
+    #تعریف_کرو configENABLE_FPU    1
+#جے_انت
 
 /* Set configENABLE_MVE to 1 to enable MVE support and 0 to disable it. This is
  * currently used in ARMv8M ports. */
-#ifndef configENABLE_MVE
-    #define configENABLE_MVE    0
-#endif
+#جے_بنا_تعریف configENABLE_MVE
+    #تعریف_کرو configENABLE_MVE    0
+#جے_انت
 
 /* Set configENABLE_TRUSTZONE to 1 enable TrustZone support and 0 to disable it.
  * This is currently used in ARMv8M ports. */
-#ifndef configENABLE_TRUSTZONE
-    #define configENABLE_TRUSTZONE    1
-#endif
+#جے_بنا_تعریف configENABLE_TRUSTZONE
+    #تعریف_کرو configENABLE_TRUSTZONE    1
+#جے_انت
 
 /* Set configRUN_FREERTOS_SECURE_ONLY to 1 to run the FreeRTOS ARMv8M port on
  * the Secure Side only. */
-#ifndef configRUN_FREERTOS_SECURE_ONLY
-    #define configRUN_FREERTOS_SECURE_ONLY    0
-#endif
+#جے_بنا_تعریف config_لگاتار_FREERTOS_SECURE_ONLY
+    #تعریف_کرو config_لگاتار_FREERTOS_SECURE_ONLY    0
+#جے_انت
 
-#ifndef configRUN_ADDITIONAL_TESTS
-    #define configRUN_ADDITIONAL_TESTS    0
-#endif
+#جے_بنا_تعریف config_لگاتار_ADDITIONAL_TESTS
+    #تعریف_کرو config_لگاتار_ADDITIONAL_TESTS    0
+#جے_انت
 
 /* The following config allows infinite loop control. For example, control the
  * infinite loop in idle task function when performing unit tests. */
-#ifndef configCONTROL_INFINITE_LOOP
-    #define configCONTROL_INFINITE_LOOP()
-#endif
+#جے_بنا_تعریف configCONTROL_INFINITE_LOOP
+    #تعریف_کرو configCONTROL_INFINITE_LOOP()
+#جے_انت
 
 /* Sometimes the FreeRTOSConfig.h settings only allow a task to be created using
  * dynamically allocated RAM, in which case when any task is deleted it is known
@@ -3071,9 +3071,9 @@
  * |     |         |        | xTaskCreateRestrictedStatic |                                   |                  |           |
  * +-----+---------+--------+-----------------------------+-----------------------------------+------------------+-----------+
  */
-#define tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE                                                                                     \
-    ( ( ( portUSING_MPU_WRAPPERS == 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) ) || \
-      ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) ) )
+#تعریف_کرو tsk_STATIC_AND_DYNAMIC_ونڈ_POSSIBLE                                                                                     \
+    ( ( ( پورٹ_USING_MPU_WRAPPERS == 0 ) && ( config_SUPPORT_DYNAMIC_ونڈ == 1 ) && ( config_SUPPORT_STATIC_ونڈ == 1 ) ) || \
+      ( ( پورٹ_USING_MPU_WRAPPERS == 1 ) && ( config_SUPPORT_DYNAMIC_ونڈ == 1 ) ) )
 
 /*
  * In line with software engineering best practice, FreeRTOS implements a strict
@@ -3085,46 +3085,46 @@
  * real objects are used for this purpose.  The dummy list and list item
  * structures below are used for inclusion in such a dummy structure.
  */
-struct xSTATIC_LIST_ITEM
+بنية x_STATIC_LIST_شے
 {
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #إذا ( config_USE_LIST_انکڑے_INTEGRITY_CHECK_بائٹاں == 1 )
         TickType_t xDummy1;
-    #endif
+    #جے_انت
     TickType_t xDummy2;
-    void * pvDummy3[ 4 ];
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    فراغ * pvDummy3[ 4 ];
+    #إذا ( config_USE_LIST_انکڑے_INTEGRITY_CHECK_بائٹاں == 1 )
         TickType_t xDummy4;
-    #endif
+    #جے_انت
 };
-typedef struct xSTATIC_LIST_ITEM StaticListItem_t;
+تعريفنوع بنية x_STATIC_LIST_شے Static_List_شے_t;
 
-#if ( configUSE_MINI_LIST_ITEM == 1 )
+#إذا ( config_USE_MINI_LIST_شے == 1 )
     /* See the comments above the struct xSTATIC_LIST_ITEM definition. */
-    struct xSTATIC_MINI_LIST_ITEM
+    بنية x_STATIC_MINI_LIST_شے
     {
-        #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+        #إذا ( config_USE_LIST_انکڑے_INTEGRITY_CHECK_بائٹاں == 1 )
             TickType_t xDummy1;
-        #endif
+        #جے_انت
         TickType_t xDummy2;
-        void * pvDummy3[ 2 ];
+        فراغ * pvDummy3[ 2 ];
     };
-    typedef struct xSTATIC_MINI_LIST_ITEM StaticMiniListItem_t;
-#else /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
-    typedef struct xSTATIC_LIST_ITEM      StaticMiniListItem_t;
-#endif /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
+    تعريفنوع بنية x_STATIC_MINI_LIST_شے Static_Mini_List_شے_t;
+#وإلا /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
+    تعريفنوع بنية x_STATIC_LIST_شے      Static_Mini_List_شے_t;
+#جے_انت /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
 
 /* See the comments above the struct xSTATIC_LIST_ITEM definition. */
-typedef struct xSTATIC_LIST
+تعريفنوع بنية xSTATIC_LIST
 {
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #إذا ( config_USE_LIST_انکڑے_INTEGRITY_CHECK_بائٹاں == 1 )
         TickType_t xDummy1;
-    #endif
+    #جے_انت
     UBaseType_t uxDummy2;
-    void * pvDummy3;
-    StaticMiniListItem_t xDummy4;
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    فراغ * pvDummy3;
+    Static_Mini_List_شے_t xDummy4;
+    #إذا ( config_USE_LIST_انکڑے_INTEGRITY_CHECK_بائٹاں == 1 )
         TickType_t xDummy5;
-    #endif
+    #جے_انت
 } StaticList_t;
 
 /*
@@ -3140,64 +3140,64 @@ typedef struct xSTATIC_LIST
  * are set.  Its contents are somewhat obfuscated in the hope users will
  * recognise that it would be unwise to make direct use of the structure members.
  */
-typedef struct xSTATIC_TCB
+تعريفنوع بنية xSTATIC_TCB
 {
-    void * pxDummy1;
-    #if ( portUSING_MPU_WRAPPERS == 1 )
+    فراغ * pxDummy1;
+    #إذا ( پورٹ_USING_MPU_WRAPPERS == 1 )
         xMPU_SETTINGS xDummy2;
-    #endif
-    #if ( configUSE_CORE_AFFINITY == 1 ) && ( configNUMBER_OF_CORES > 1 )
+    #جے_انت
+    #إذا ( configUSE_CORE_AFFINITY == 1 ) && ( config_نمبر_دا_CORES > 1 )
         UBaseType_t uxDummy26;
-    #endif
-    StaticListItem_t xDummy3[ 2 ];
+    #جے_انت
+    Static_List_شے_t xDummy3[ 2 ];
     UBaseType_t uxDummy5;
-    void * pxDummy6;
-    #if ( configNUMBER_OF_CORES > 1 )
-        BaseType_t xDummy23;
+    فراغ * pxDummy6;
+    #إذا ( config_نمبر_دا_CORES > 1 )
+        ادھار_Type_t xDummy23;
         UBaseType_t uxDummy24;
-    #endif
+    #جے_انت
     uint8_t ucDummy7[ configMAX_TASK_NAME_LEN ];
-    #if ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
-        BaseType_t xDummy25;
-    #endif
-    #if ( ( portSTACK_GROWTH > 0 ) || ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
-        void * pxDummy8;
-    #endif
-    #if ( portCRITICAL_NESTING_IN_TCB == 1 )
+    #إذا ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
+        ادھار_Type_t xDummy25;
+    #جے_انت
+    #إذا ( ( پورٹ_ڈھیر_GROWTH > 0 ) || ( config_ریکارڈ_ڈھیر_بلند_پتہ == 1 ) )
+        فراغ * pxDummy8;
+    #جے_انت
+    #إذا ( پورٹ_CRITICAL_NESTING_وچ_TCB == 1 )
         UBaseType_t uxDummy9;
-    #endif
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #جے_انت
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy10[ 2 ];
-    #endif
-    #if ( configUSE_MUTEXES == 1 )
+    #جے_انت
+    #إذا ( configUSE_MUTEXES == 1 )
         UBaseType_t uxDummy12[ 2 ];
-    #endif
-    #if ( configUSE_APPLICATION_TASK_TAG == 1 )
-        void * pxDummy14;
-    #endif
-    #if ( configNUM_THREAD_LOCAL_STORAGE_POINTERS > 0 )
-        void * pvDummy15[ configNUM_THREAD_LOCAL_STORAGE_POINTERS ];
-    #endif
-    #if ( configGENERATE_RUN_TIME_STATS == 1 )
-        configRUN_TIME_COUNTER_TYPE ulDummy16;
-    #endif
-    #if ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 )
-        configTLS_BLOCK_TYPE xDummy17;
-    #endif
-    #if ( configUSE_TASK_NOTIFICATIONS == 1 )
+    #جے_انت
+    #إذا ( config_USE_APPLICATION_TASK_ٹیگ == 1 )
+        فراغ * pxDummy14;
+    #جے_انت
+    #إذا ( config_عدد_THREAD_LOCAL_STORAGE_سوچکاں > 0 )
+        فراغ * pvDummy15[ config_عدد_THREAD_LOCAL_STORAGE_سوچکاں ];
+    #جے_انت
+    #إذا ( config_GENERATE_لگاتار_ویلا_STATS == 1 )
+        config_لگاتار_ویلا_COUNTER_TYPE ulDummy16;
+    #جے_انت
+    #إذا ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 )
+        config_TLS_بلاک_TYPE xDummy17;
+    #جے_انت
+    #إذا ( configUSE_TASK_NOTIFICATIONS == 1 )
         uint32_t ulDummy18[ configTASK_NOTIFICATION_ARRAY_ENTRIES ];
         uint8_t ucDummy19[ configTASK_NOTIFICATION_ARRAY_ENTRIES ];
-    #endif
-    #if ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )
+    #جے_انت
+    #إذا ( tsk_STATIC_AND_DYNAMIC_ونڈ_POSSIBLE != 0 )
         uint8_t uxDummy20;
-    #endif
+    #جے_انت
 
-    #if ( INCLUDE_xTaskAbortDelay == 1 )
+    #إذا ( INCLUDE_xTaskAbortDelay == 1 )
         uint8_t ucDummy21;
-    #endif
-    #if ( configUSE_POSIX_ERRNO == 1 )
-        int iDummy22;
-    #endif
+    #جے_انت
+    #إذا ( configUSE_POSIX_ERRNO == 1 )
+        صحيح iDummy22;
+    #جے_انت
 } StaticTask_t;
 
 /*
@@ -3214,13 +3214,13 @@ typedef struct xSTATIC_TCB
  * users will recognise that it would be unwise to make direct use of the
  * structure members.
  */
-typedef struct xSTATIC_QUEUE
+تعريفنوع بنية x_STATIC_قطار
 {
-    void * pvDummy1[ 3 ];
+    فراغ * pvDummy1[ 3 ];
 
-    union
+    اتحاد
     {
-        void * pvDummy2;
+        فراغ * pvDummy2;
         UBaseType_t uxDummy2;
     } u;
 
@@ -3228,20 +3228,20 @@ typedef struct xSTATIC_QUEUE
     UBaseType_t uxDummy4[ 3 ];
     uint8_t ucDummy5[ 2 ];
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #إذا ( ( config_SUPPORT_STATIC_ونڈ == 1 ) && ( config_SUPPORT_DYNAMIC_ونڈ == 1 ) )
         uint8_t ucDummy6;
-    #endif
+    #جے_انت
 
-    #if ( configUSE_QUEUE_SETS == 1 )
-        void * pvDummy7;
-    #endif
+    #إذا ( config_USE_قطار_SETS == 1 )
+        فراغ * pvDummy7;
+    #جے_انت
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy8;
         uint8_t ucDummy9;
-    #endif
-} StaticQueue_t;
-typedef StaticQueue_t StaticSemaphore_t;
+    #جے_انت
+} Static_قطار_t;
+تعريفنوع Static_قطار_t StaticSemaphore_t;
 
 /*
  * In line with software engineering best practice, especially when supplying a
@@ -3257,19 +3257,19 @@ typedef StaticQueue_t StaticSemaphore_t;
  * obfuscated in the hope users will recognise that it would be unwise to make
  * direct use of the structure members.
  */
-typedef struct xSTATIC_EVENT_GROUP
+تعريفنوع بنية x_STATIC_EVENT_گروہ
 {
     TickType_t xDummy1;
     StaticList_t xDummy2;
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy3;
-    #endif
+    #جے_انت
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #إذا ( ( config_SUPPORT_STATIC_ونڈ == 1 ) && ( config_SUPPORT_DYNAMIC_ونڈ == 1 ) )
         uint8_t ucDummy4;
-    #endif
-} StaticEventGroup_t;
+    #جے_انت
+} Static_Event_گروہ_t;
 
 /*
  * In line with software engineering best practice, especially when supplying a
@@ -3285,16 +3285,16 @@ typedef struct xSTATIC_EVENT_GROUP
  * the hope users will recognise that it would be unwise to make direct use of
  * the structure members.
  */
-typedef struct xSTATIC_TIMER
+تعريفنوع بنية xSTATIC_TIMER
 {
-    void * pvDummy1;
-    StaticListItem_t xDummy2;
+    فراغ * pvDummy1;
+    Static_List_شے_t xDummy2;
     TickType_t xDummy3;
-    void * pvDummy5;
+    فراغ * pvDummy5;
     TaskFunction_t pvDummy6;
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy7;
-    #endif
+    #جے_انت
     uint8_t ucDummy8;
 } StaticTimer_t;
 
@@ -3312,34 +3312,34 @@ typedef struct xSTATIC_TIMER
  * somewhat obfuscated in the hope users will recognise that it would be unwise
  * to make direct use of the structure members.
  */
-typedef struct xSTATIC_STREAM_BUFFER
+تعريفنوع بنية x_STATIC_دھارا_بفر
 {
     size_t uxDummy1[ 4 ];
-    void * pvDummy2[ 3 ];
+    فراغ * pvDummy2[ 3 ];
     uint8_t ucDummy3;
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #إذا ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy4;
-    #endif
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-        void * pvDummy5[ 2 ];
-    #endif
+    #جے_انت
+    #إذا ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+        فراغ * pvDummy5[ 2 ];
+    #جے_انت
     UBaseType_t uxDummy6;
-} StaticStreamBuffer_t;
+} Static_دھارا_بفر_t;
 
 /* Message buffers are built on stream buffers. */
-typedef StaticStreamBuffer_t StaticMessageBuffer_t;
+تعريفنوع Static_دھارا_بفر_t Static_سنیہا_بفر_t;
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#جے_تعریف_شدہ __cplusplus
     }
-#endif
+#جے_انت
 /* *INDENT-ON* */
 
 /*-----------------------------------------------------------
 * IDF Compatibility
 *----------------------------------------------------------*/
 
-#ifdef ESP_PLATFORM
+#جے_تعریف_شدہ ESP_PLATFORM
 
 /*
  * Include ESP-IDF API additions implicitly for compatibility reasons.
@@ -3354,8 +3354,8 @@ typedef StaticStreamBuffer_t StaticMessageBuffer_t;
  * any existing source code can continue using these relocated APIs without
  * any additional header inclusions via this implicit inclusion.
  */
-    #include "freertos/idf_additions.h"
+    #ضمن "freertos/idf_additions.h"
 
-#endif /* ESP_PLATFORM */
+#جے_انت /* ESP_PLATFORM */
 
-#endif /* INC_FREERTOS_H */
+#جے_انت /* INC_FREERTOS_H */
