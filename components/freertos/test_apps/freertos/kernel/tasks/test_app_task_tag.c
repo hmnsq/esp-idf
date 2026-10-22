@@ -10,13 +10,13 @@
 #include "unity.h"
 #include "test_utils.h"
 
-#if CONFIG_FREERTOS_USE_APPLICATION_TASK_TAG
+#ᰀᰧ CONFIG_FREERTOS_USE_APPLICATION_TASK_TAG
 
 static BaseType_t tag_cb(void *arg)
 {
     BaseType_t *tag_cb_called = (BaseType_t *)arg;
     *tag_cb_called = pdTRUE;
-    return pdTRUE;
+    ᰀᰧᰌ pdTRUE;
 }
 
 TEST_CASE("Test application task tag", "[freertos]")

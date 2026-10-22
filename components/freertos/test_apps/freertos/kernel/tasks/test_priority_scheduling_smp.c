@@ -31,7 +31,7 @@ Expected:
     - None of the task_Bs should have run
 */
 
-#if    ( defined( CONFIG_FREERTOS_SMP ) && ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 ) && ( configRUN_MULTIPLE_PRIORITIES == 1 ) ) \
+#ᰀᰧ    ( defined( CONFIG_FREERTOS_SMP ) && ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 ) && ( configRUN_MULTIPLE_PRIORITIES == 1 ) ) \
     || ( !defined( CONFIG_FREERTOS_SMP ) && ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 ) )
 
 #define UNITY_TASK_DELAY_TICKS      10
@@ -44,7 +44,7 @@ static void task_A(void *arg)
     BaseType_t task_idx = (BaseType_t) arg;
     task_A_ran[task_idx] = pdTRUE;
     /* Keeping spinning to prevent the lower priority task_B from running */
-    while (1) {
+    ᰀᰬ (1) {
         ;
     }
 }
@@ -54,7 +54,7 @@ static void task_B(void *arg)
     /* The following should never be run due to task_B having a lower priority */
     BaseType_t task_idx = (BaseType_t) arg;
     task_B_ran[task_idx] = pdTRUE;
-    while (1) {
+    ᰀᰬ (1) {
         ;
     }
 }
@@ -63,8 +63,8 @@ TEST_CASE("Tasks: Test priority scheduling (SMP)", "[freertos]")
 {
     TaskHandle_t task_A_handles[CONFIG_FREERTOS_NUMBER_OF_CORES];
     TaskHandle_t task_B_handles[CONFIG_FREERTOS_NUMBER_OF_CORES];
-    memset(task_A_ran, pdFALSE, sizeof(task_A_ran));
-    memset(task_B_ran, pdFALSE, sizeof(task_B_ran));
+    memset(task_A_ran, pdFALSE, parimaa_na(task_A_ran));
+    memset(task_B_ran, pdFALSE, parimaa_na(task_B_ran));
 
     /* Raise the priority of the unityTask */
     vTaskPrioritySet(NULL, configMAX_PRIORITIES - 1);

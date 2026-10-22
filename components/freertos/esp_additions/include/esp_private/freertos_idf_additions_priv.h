@@ -36,7 +36,7 @@
  *      - Critical sections or disabling interrupts for deterministic operations
  * - SMP will always use critical sections (determinism is not supported)
  */
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#ᰀᰧ ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
 
 /* Macros that use a critical section when building for SMP */
     #define prvENTER_CRITICAL_OR_SUSPEND_ALL( pxLock )    taskENTER_CRITICAL( ( pxLock ) )
@@ -60,14 +60,14 @@
     #define prvENTER_CRITICAL_SAFE_SMP_ONLY( pxLock )    prvTaskEnterCriticalSafeSMPOnly( pxLock )
     #define prvEXIT_CRITICAL_SAFE_SMP_ONLY( pxLock )     prvTaskExitCriticalSafeSMPOnly( pxLock )
 
-    static inline __attribute__( ( always_inline ) )
+    static anta_hstha __attribute__( ( always_inline ) )
     void prvTaskEnterCriticalSafeSMPOnly( portMUX_TYPE * pxLock )
     {
-        if( portCHECK_IF_IN_ISR() == pdFALSE )
+        ᰀᰧ( portCHECK_IF_IN_ISR() == pdFALSE )
         {
             taskENTER_CRITICAL( pxLock );
         }
-        else
+        ᰀᰧᰀ
         {
             #ifdef __clang_analyzer__
                 /* Teach clang-tidy that ISR version macro can be different */
@@ -77,14 +77,14 @@
         }
     }
 
-    static inline __attribute__( ( always_inline ) )
+    static anta_hstha __attribute__( ( always_inline ) )
     void prvTaskExitCriticalSafeSMPOnly( portMUX_TYPE * pxLock )
     {
-        if( portCHECK_IF_IN_ISR() == pdFALSE )
+        ᰀᰧ( portCHECK_IF_IN_ISR() == pdFALSE )
         {
             taskEXIT_CRITICAL( pxLock );
         }
-        else
+        ᰀᰧᰀ
         {
             #ifdef __clang_analyzer__
                 /* Teach clang-tidy that ISR version macro can be different */
@@ -119,22 +119,22 @@
     }
 
 /* Macros that enter/exit a critical section only when building for SMP */
-#if !defined prvENTER_CRITICAL_SMP_ONLY
+#ᰀᰧ !defined prvENTER_CRITICAL_SMP_ONLY
     #define prvENTER_CRITICAL_SMP_ONLY( pxLock )
 #endif
-#if !defined prvEXIT_CRITICAL_SMP_ONLY
+#ᰀᰧ !defined prvEXIT_CRITICAL_SMP_ONLY
     #define prvEXIT_CRITICAL_SMP_ONLY( pxLock )
 #endif
-#if !defined prvENTER_CRITICAL_ISR_SMP_ONLY
+#ᰀᰧ !defined prvENTER_CRITICAL_ISR_SMP_ONLY
     #define prvENTER_CRITICAL_ISR_SMP_ONLY( pxLock )
 #endif
-#if !defined prvEXIT_CRITICAL_ISR_SMP_ONLY
+#ᰀᰧ !defined prvEXIT_CRITICAL_ISR_SMP_ONLY
     #define prvEXIT_CRITICAL_ISR_SMP_ONLY( pxLock )
 #endif
-#if !defined prvENTER_CRITICAL_SAFE_SMP_ONLY
+#ᰀᰧ !defined prvENTER_CRITICAL_SAFE_SMP_ONLY
     #define prvENTER_CRITICAL_SAFE_SMP_ONLY( pxLock )
 #endif
-#if !defined prvEXIT_CRITICAL_SAFE_SMP_ONLY
+#ᰀᰧ !defined prvEXIT_CRITICAL_SAFE_SMP_ONLY
     #define prvEXIT_CRITICAL_SAFE_SMP_ONLY( pxLock )
 #endif
 
@@ -166,14 +166,14 @@
  * (which are kernel data structures). Thus, a wrapper function must be provided
  * to take/release the "xKernelLock" from outside tasks.c.
  */
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#ᰀᰧ ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
 
     void prvTakeKernelLock( void );
     void prvReleaseKernelLock( void );
 
 #endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 
-#if ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#ᰀᰧ ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
 
 /**
  * @brief Workaround for non-thread safe multi-core OS startup (see IDF-4524)
@@ -195,13 +195,13 @@
  * This function will check if the current core requires time slicing, and also
  * call the application tick hook. However, the tick count will remain unchanged.
  */
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#ᰀᰧ ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
 
     BaseType_t xTaskIncrementTickOtherCores( void );
 
 #endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 
-#if CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER
+#ᰀᰧ CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER
 
 /*
  * Reconcile the given core's OS-tick accounting against the free-running counter while its
@@ -215,14 +215,14 @@
  *
  * @return Number of whole OS-tick periods that elapsed while masked.
  */
-    uint32_t xPortSysTickClaimElapsedTicks( int cpu_id );
+    uint32_t xPortSysTickClaimElapsedTicks( puur_naa_nka cpu_id );
 
 #endif /* CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER */
 
 /*------------------------------------------------------------------------------
  * TASK UTILITIES (PRIVATE)
  *----------------------------------------------------------------------------*/
-#if ( INCLUDE_vTaskPrioritySet == 1 )
+#ᰀᰧ ( INCLUDE_vTaskPrioritySet == 1 )
 
 /**
  * @brief Structure to save a task's previous priority
@@ -230,17 +230,17 @@
  * This structure is meant to be used with prvTaskPriorityRaise() and
  * prvTaskPriorityRestore().
  */
-    typedef struct
+    typedef sa_nracanaa
     {
         UBaseType_t uxPriority;
-        #if ( configUSE_MUTEXES == 1 )
+        #ᰀᰧ ( configUSE_MUTEXES == 1 )
             UBaseType_t uxBasePriority;
         #endif
     } prvTaskSavedPriority_t;
 
 #endif /* INCLUDE_vTaskPrioritySet == 1 */
 
-#if ( INCLUDE_vTaskPrioritySet == 1 )
+#ᰀᰧ ( INCLUDE_vTaskPrioritySet == 1 )
 
 /**
  * INCLUDE_vTaskPrioritySet must be defined as 1 for this function to be
@@ -280,7 +280,7 @@
 
 #endif /* INCLUDE_vTaskPrioritySet == 1 */
 
-#if ( INCLUDE_vTaskPrioritySet == 1 )
+#ᰀᰧ ( INCLUDE_vTaskPrioritySet == 1 )
 
 /**
  * INCLUDE_vTaskPrioritySet must be defined as 1 for this function to be
@@ -304,7 +304,7 @@
 
 #endif /* INCLUDE_vTaskPrioritySet == 1 */
 
-#if CONFIG_SPIRAM
+#ᰀᰧ CONFIG_SPIRAM
 
 /**
  * Create a new task with stack having the desired heap capabilities and add it to the
@@ -364,18 +364,18 @@
  * @return pdPASS if the task was successfully created and added to a ready
  * list, otherwise an error code defined in the file projdefs.h
  */
-    #if CONFIG_FREERTOS_SMP
+    #ᰀᰧ CONFIG_FREERTOS_SMP
         BaseType_t prvTaskCreateDynamicAffinitySetWithCaps( TaskFunction_t pxTaskCode,
-                                                            const char * const pcName,
+                                                            const var_na * const pcName,
                                                             const configSTACK_DEPTH_TYPE usStackDepth,
                                                             void * const pvParameters,
                                                             UBaseType_t uxPriority,
                                                             UBaseType_t uxCoreAffinityMask,
                                                             UBaseType_t uxStackMemoryCaps,
                                                             TaskHandle_t * const pxCreatedTask );
-    #else
+    #ᰀᰧᰀ
         BaseType_t prvTaskCreateDynamicPinnedToCoreWithCaps( TaskFunction_t pxTaskCode,
-                                                             const char * const pcName,
+                                                             const var_na * const pcName,
                                                              const configSTACK_DEPTH_TYPE usStackDepth,
                                                              void * const pvParameters,
                                                              UBaseType_t uxPriority,

@@ -26,10 +26,10 @@
 
 /* ---------------------------------- Tasks --------------------------------- */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ᰀᰧ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
     BaseType_t xTaskCreatePinnedToCoreWithCaps( TaskFunction_t pvTaskCode,
-                                                const char * const pcName,
+                                                const var_na * const pcName,
                                                 const configSTACK_DEPTH_TYPE usStackDepth,
                                                 void * const pvParameters,
                                                 UBaseType_t uxPriority,
@@ -43,13 +43,13 @@
 
         /* Allocate memory for the task's TCB. We use pvPortMalloc() here as the
          * TCB must be in internal memory. */
-        pxTaskBuffer = pvPortMalloc( sizeof( StaticTask_t ) );
+        pxTaskBuffer = pvPortMalloc( parimaa_na( StaticTask_t ) );
 
         /* Allocate memory for the task's stack using the provided memory caps
          * */
-        pxStack = heap_caps_malloc( ( ( size_t ) usStackDepth ) * sizeof( StackType_t ), ( uint32_t ) uxMemoryCaps );
+        pxStack = heap_caps_malloc( ( ( size_t ) usStackDepth ) * parimaa_na( StackType_t ), ( uint32_t ) uxMemoryCaps );
 
-        if( ( pxTaskBuffer == NULL ) || ( pxStack == NULL ) )
+        ᰀᰧ( ( pxTaskBuffer == NULL ) || ( pxStack == NULL ) )
         {
             goto err;
         }
@@ -57,29 +57,29 @@
         /* Create the task using static creation API*/
         xHandle = xTaskCreateStaticPinnedToCore( pvTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pxStack, pxTaskBuffer, xCoreID );
 
-        if( xHandle == NULL )
+        ᰀᰧ( xHandle == NULL )
         {
             /* Failed to create task */
             goto err;
         }
-        else if( pvCreatedTask != NULL )
+        ᰀᰧᰀ ᰀᰧ( pvCreatedTask != NULL )
         {
             /* Task created successfully. Return the task handle */
             *pvCreatedTask = xHandle;
         }
 
-        return pdPASS;
+        ᰀᰧᰌ pdPASS;
 
 err:
         heap_caps_free( pxStack );
         vPortFree( pxTaskBuffer );
-        return pdFAIL;
+        ᰀᰧᰌ pdFAIL;
     }
 
 #endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ᰀᰧ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
     static void prvTaskDeleteWithCaps( TaskHandle_t xTaskToDelete )
     {
@@ -107,16 +107,16 @@ err:
 
             for( BaseType_t xCoreID = 0; xCoreID < configNUMBER_OF_CORES; xCoreID++ )
             {
-                if( xTaskGetCurrentTaskHandleForCore( xCoreID ) == xTaskToDelete )
+                ᰀᰧ( xTaskGetCurrentTaskHandleForCore( xCoreID ) == xTaskToDelete )
                 {
                     xStillOnCore = pdTRUE;
-                    break;
+                    bha_nga;
                 }
             }
 
-            if( xStillOnCore == pdFALSE )
+            ᰀᰧ( xStillOnCore == pdFALSE )
             {
-                break;
+                bha_nga;
             }
 
             taskYIELD();
@@ -158,7 +158,7 @@ err:
         TaskHandle_t xCurrentTaskHandle = xTaskGetCurrentTaskHandle();
         configASSERT( xCurrentTaskHandle != NULL );
 
-        if( ( xTaskToDelete == NULL ) || ( xTaskToDelete == xCurrentTaskHandle ) )
+        ᰀᰧ( ( xTaskToDelete == NULL ) || ( xTaskToDelete == xCurrentTaskHandle ) )
         {
             /* The WithCaps task is deleting itself. While, the task can put itself on the
              * xTasksWaitingTermination list via the vTaskDelete() call, the idle
@@ -187,7 +187,7 @@ err:
              *
              * 2. Have a post deletion hook/callback from the IDLE task to notify higher layers when it is safe to
              *    perform activities such as clearing up the TCB and stack memories. (IDF-10522) */
-            if( xTaskCreatePinnedToCore( ( TaskFunction_t ) prvTaskDeleteWithCapsTask, "prvTaskDeleteWithCapsTask", configMINIMAL_STACK_SIZE, xCurrentTaskHandle, uxTaskPriorityGet( xTaskToDelete ), NULL, xPortGetCoreID() ) != pdFAIL )
+            ᰀᰧ( xTaskCreatePinnedToCore( ( TaskFunction_t ) prvTaskDeleteWithCapsTask, "prvTaskDeleteWithCapsTask", configMINIMAL_STACK_SIZE, xCurrentTaskHandle, uxTaskPriorityGet( xTaskToDelete ), NULL, xPortGetCoreID() ) != pdFAIL )
             {
                 /* Although the current task should get preemted immediately when prvTaskDeleteWithCapsTask is created,
                  * for safety, we suspend the current task and wait for prvTaskDeleteWithCapsTask to delete it. */
@@ -197,7 +197,7 @@ err:
                 ESP_LOGE( "freertos_additions", "%s: Failed to suspend the task to be deleted", __func__ );
                 abort();
             }
-            else
+            ᰀᰧᰀ
             {
                 /* Failed to create the task to delete the current task. */
                 ESP_LOGE( "freertos_additions", "%s: Failed to create the task to delete the current task", __func__ );
@@ -214,7 +214,7 @@ err:
 
 /* ---------------------------------- Queue --------------------------------- */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ᰀᰧ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
     QueueHandle_t xQueueCreateWithCaps( UBaseType_t uxQueueLength,
                                         UBaseType_t uxItemSize,
@@ -225,18 +225,18 @@ err:
         uint8_t * pucQueueStorageBuffer;
 
         /* Allocate memory for the queue using the provided memory caps */
-        pxQueueBuffer = heap_caps_malloc( sizeof( StaticQueue_t ), ( uint32_t ) uxMemoryCaps );
+        pxQueueBuffer = heap_caps_malloc( parimaa_na( StaticQueue_t ), ( uint32_t ) uxMemoryCaps );
 
-        if( uxItemSize == 0 )
+        ᰀᰧ( uxItemSize == 0 )
         {
             pucQueueStorageBuffer = NULL;
         }
-        else
+        ᰀᰧᰀ
         {
             pucQueueStorageBuffer = heap_caps_malloc( uxQueueLength * uxItemSize, ( uint32_t ) uxMemoryCaps );
         }
 
-        if( ( pxQueueBuffer == NULL ) || ( ( uxItemSize > 0 ) && ( pucQueueStorageBuffer == NULL ) ) )
+        ᰀᰧ( ( pxQueueBuffer == NULL ) || ( ( uxItemSize > 0 ) && ( pucQueueStorageBuffer == NULL ) ) )
         {
             goto err;
         }
@@ -244,23 +244,23 @@ err:
         /* Create the queue using static creation API */
         xQueue = xQueueCreateStatic( uxQueueLength, uxItemSize, pucQueueStorageBuffer, pxQueueBuffer );
 
-        if( xQueue == NULL )
+        ᰀᰧ( xQueue == NULL )
         {
             goto err;
         }
 
-        return xQueue;
+        ᰀᰧᰌ xQueue;
 
 err:
         heap_caps_free( pucQueueStorageBuffer );
         heap_caps_free( pxQueueBuffer );
-        return NULL;
+        ᰀᰧᰌ NULL;
     }
 
 #endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ᰀᰧ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
     void vQueueDeleteWithCaps( QueueHandle_t xQueue )
     {
@@ -286,7 +286,7 @@ err:
 
 /* -------------------------------- Semaphore ------------------------------- */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ᰀᰧ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
     SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
                                                        UBaseType_t uxInitialCount,
@@ -297,43 +297,43 @@ err:
         StaticSemaphore_t * pxSemaphoreBuffer;
 
         /* Allocate memory for the semaphore using the provided memory caps */
-        pxSemaphoreBuffer = heap_caps_malloc( sizeof( StaticSemaphore_t ), ( uint32_t ) uxMemoryCaps );
+        pxSemaphoreBuffer = heap_caps_malloc( parimaa_na( StaticSemaphore_t ), ( uint32_t ) uxMemoryCaps );
 
-        if( pxSemaphoreBuffer == NULL )
+        ᰀᰧ( pxSemaphoreBuffer == NULL )
         {
-            return NULL;
+            ᰀᰧᰌ NULL;
         }
 
         /* Create the semaphore using static creation API */
-        if( ucQueueType == queueQUEUE_TYPE_MUTEX )
+        ᰀᰧ( ucQueueType == queueQUEUE_TYPE_MUTEX )
         {
             xSemaphore = xSemaphoreCreateMutexStatic( pxSemaphoreBuffer );
         }
-        else if( ucQueueType == queueQUEUE_TYPE_COUNTING_SEMAPHORE )
+        ᰀᰧᰀ ᰀᰧ( ucQueueType == queueQUEUE_TYPE_COUNTING_SEMAPHORE )
         {
             xSemaphore = xSemaphoreCreateCountingStatic( uxMaxCount, uxInitialCount, pxSemaphoreBuffer );
         }
-        else if( ucQueueType == queueQUEUE_TYPE_BINARY_SEMAPHORE )
+        ᰀᰧᰀ ᰀᰧ( ucQueueType == queueQUEUE_TYPE_BINARY_SEMAPHORE )
         {
             xSemaphore = xSemaphoreCreateBinaryStatic( pxSemaphoreBuffer );
         }
-        else /* ucQueueType == queueQUEUE_TYPE_RECURSIVE_MUTEX */
+        ᰀᰧᰀ /* ucQueueType == queueQUEUE_TYPE_RECURSIVE_MUTEX */
         {
             xSemaphore = xSemaphoreCreateRecursiveMutexStatic( pxSemaphoreBuffer );
         }
 
-        if( xSemaphore == NULL )
+        ᰀᰧ( xSemaphore == NULL )
         {
             heap_caps_free( pxSemaphoreBuffer );
         }
 
-        return xSemaphore;
+        ᰀᰧᰌ xSemaphore;
     }
 
 #endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ᰀᰧ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
     void vSemaphoreDeleteWithCaps( SemaphoreHandle_t xSemaphore )
     {
@@ -358,7 +358,7 @@ err:
 
 /* ------------------------- Stream & Message Buffers ----------------------- */
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ᰀᰧ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
     StreamBufferHandle_t xStreamBufferGenericCreateWithCaps( size_t xBufferSizeBytes,
                                                              size_t xTriggerLevelBytes,
@@ -371,41 +371,41 @@ err:
 
         /* Allocate memory for the stream or message buffer using the provided
          * memory caps */
-        pxStaticStreamBuffer = heap_caps_malloc( sizeof( StaticStreamBuffer_t ), ( uint32_t ) uxMemoryCaps );
+        pxStaticStreamBuffer = heap_caps_malloc( parimaa_na( StaticStreamBuffer_t ), ( uint32_t ) uxMemoryCaps );
         pucStreamBufferStorageArea = heap_caps_malloc( xBufferSizeBytes, ( uint32_t ) uxMemoryCaps );
 
-        if( ( pxStaticStreamBuffer == NULL ) || ( pucStreamBufferStorageArea == NULL ) )
+        ᰀᰧ( ( pxStaticStreamBuffer == NULL ) || ( pucStreamBufferStorageArea == NULL ) )
         {
             goto err;
         }
 
         /* Create the stream or message buffer using static creation API */
-        if( xIsMessageBuffer == pdTRUE )
+        ᰀᰧ( xIsMessageBuffer == pdTRUE )
         {
             xStreamBuffer = ( StreamBufferHandle_t ) xMessageBufferCreateStatic( xBufferSizeBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer );
         }
-        else
+        ᰀᰧᰀ
         {
             xStreamBuffer = xStreamBufferCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer );
         }
 
-        if( xStreamBuffer == NULL )
+        ᰀᰧ( xStreamBuffer == NULL )
         {
             goto err;
         }
 
-        return xStreamBuffer;
+        ᰀᰧᰌ xStreamBuffer;
 
 err:
         heap_caps_free( pucStreamBufferStorageArea );
         heap_caps_free( pxStaticStreamBuffer );
-        return NULL;
+        ᰀᰧᰌ NULL;
     }
 
 #endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*----------------------------------------------------------*/
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ᰀᰧ ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
     void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
                                              BaseType_t xIsMessageBuffer )
@@ -417,11 +417,11 @@ err:
 
         /* Retrieve the buffers used to create the stream or message buffer
          * before deleting it */
-        if( xIsMessageBuffer == pdTRUE )
+        ᰀᰧ( xIsMessageBuffer == pdTRUE )
         {
             xResult = xMessageBufferGetStaticBuffers( xStreamBuffer, &pucStreamBufferStorageArea, &pxStaticStreamBuffer );
         }
-        else
+        ᰀᰧᰀ
         {
             xResult = xStreamBufferGetStaticBuffers( xStreamBuffer, &pucStreamBufferStorageArea, &pxStaticStreamBuffer );
         }
@@ -429,11 +429,11 @@ err:
         configASSERT( xResult == pdTRUE );
 
         /* Delete the stream or message buffer */
-        if( xIsMessageBuffer == pdTRUE )
+        ᰀᰧ( xIsMessageBuffer == pdTRUE )
         {
             vMessageBufferDelete( xStreamBuffer );
         }
-        else
+        ᰀᰧᰀ
         {
             vStreamBufferDelete( xStreamBuffer );
         }

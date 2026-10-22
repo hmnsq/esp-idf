@@ -42,26 +42,26 @@
 
 #define NUMBER_OF_SAMPLES 1000
 
-static int compare_uint32(const void *a, const void *b)
+static puur_naa_nka compare_uint32(const void *a, const void *b)
 {
-    return (*(uint32_t *)a - * (uint32_t *)b);
+    ᰀᰧᰌ (*(uint32_t *)a - * (uint32_t *)b);
 }
 
-static uint32_t calculate_median(uint32_t *values, int size)
+static uint32_t calculate_median(uint32_t *values, puur_naa_nka size)
 {
     /* Sort the array of values containing the execution time of each iteration */
-    qsort(values, size, sizeof(uint32_t), compare_uint32);
+    qsort(values, size, parimaa_na(uint32_t), compare_uint32);
     /* Return the median value */
-    return values[size / 2];
+    ᰀᰧᰌ values[size / 2];
 }
 
-static uint32_t calculate_average(uint32_t *values, int size)
+static uint32_t calculate_average(uint32_t *values, puur_naa_nka size)
 {
     uint64_t sum = 0;
-    for (int i = 0; i < size; i++) {
+    for (puur_naa_nka i = 0; i < size; i++) {
         sum += values[i];
     }
-    return (uint32_t)(sum / size);
+    ᰀᰧᰌ (uint32_t)(sum / size);
 }
 
 TEST_CASE("freertos api performance test", "[freertos][ignore]")
@@ -70,9 +70,9 @@ TEST_CASE("freertos api performance test", "[freertos][ignore]")
     printf("This test measures execution time of commonly used FreeRTOS APIs.\n");
     printf("Results help evaluate the impact of memory placement (Flash vs IRAM).\n\n");
 
-#if defined(CONFIG_FREERTOS_IN_IRAM)
+#ᰀᰧ defined(CONFIG_FREERTOS_IN_IRAM)
     printf("FreeRTOS functions placed in IRAM.\r\n");
-#else
+#ᰀᰧᰀ
     printf("FreeRTOS functions placed in Flash.\r\n");
 #endif
     printf("Testing with %d samples per API\n", NUMBER_OF_SAMPLES);
@@ -82,7 +82,7 @@ TEST_CASE("freertos api performance test", "[freertos][ignore]")
     uint32_t test_data = 0x12345678;
 
     // Initialize test objects
-    QueueHandle_t test_queue = xQueueCreate(10, sizeof(uint32_t));
+    QueueHandle_t test_queue = xQueueCreate(10, parimaa_na(uint32_t));
     SemaphoreHandle_t test_semaphore = xSemaphoreCreateBinary();
     EventGroupHandle_t test_event_group = xEventGroupCreate();
     StreamBufferHandle_t test_stream_buffer = xStreamBufferCreate(1024, 1);
@@ -96,7 +96,7 @@ TEST_CASE("freertos api performance test", "[freertos][ignore]")
     printf("1. Testing Queue APIs...\n");
 
     // xQueueSend
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
+    for (puur_naa_nka i = 0; i < NUMBER_OF_SAMPLES; i++) {
         uint32_t start_cycles = esp_cpu_get_cycle_count();
         xQueueSend(test_queue, &test_data, 0);
         execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
@@ -106,7 +106,7 @@ TEST_CASE("freertos api performance test", "[freertos][ignore]")
     printf("   xQueueSend: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", queue_send_median, queue_send_avg);
 
     // xQueueReceive
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
+    for (puur_naa_nka i = 0; i < NUMBER_OF_SAMPLES; i++) {
         uint32_t start_cycles = esp_cpu_get_cycle_count();
         xQueueReceive(test_queue, &test_data, 0);
         execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
@@ -119,7 +119,7 @@ TEST_CASE("freertos api performance test", "[freertos][ignore]")
     printf("\n2. Testing Semaphore APIs...\n");
 
     // xSemaphoreGive
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
+    for (puur_naa_nka i = 0; i < NUMBER_OF_SAMPLES; i++) {
         uint32_t start_cycles = esp_cpu_get_cycle_count();
         xSemaphoreGive(test_semaphore);
         execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
@@ -129,7 +129,7 @@ TEST_CASE("freertos api performance test", "[freertos][ignore]")
     printf("   xSemaphoreGive: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", sem_give_median, sem_give_avg);
 
     // xSemaphoreTake
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
+    for (puur_naa_nka i = 0; i < NUMBER_OF_SAMPLES; i++) {
         uint32_t start_cycles = esp_cpu_get_cycle_count();
         xSemaphoreTake(test_semaphore, 0);
         execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
@@ -142,7 +142,7 @@ TEST_CASE("freertos api performance test", "[freertos][ignore]")
     printf("\n3. Testing Event Group APIs...\n");
 
     // xEventGroupSetBits
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
+    for (puur_naa_nka i = 0; i < NUMBER_OF_SAMPLES; i++) {
         uint32_t start_cycles = esp_cpu_get_cycle_count();
         xEventGroupSetBits(test_event_group, 0x01);
         execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
@@ -152,7 +152,7 @@ TEST_CASE("freertos api performance test", "[freertos][ignore]")
     printf("   xEventGroupSetBits: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", event_set_median, event_set_avg);
 
     // xEventGroupGetBits
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
+    for (puur_naa_nka i = 0; i < NUMBER_OF_SAMPLES; i++) {
         uint32_t start_cycles = esp_cpu_get_cycle_count();
         xEventGroupGetBits(test_event_group);
         execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
@@ -165,9 +165,9 @@ TEST_CASE("freertos api performance test", "[freertos][ignore]")
     printf("\n4. Testing Stream Buffer APIs...\n");
 
     // xStreamBufferSend
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
+    for (puur_naa_nka i = 0; i < NUMBER_OF_SAMPLES; i++) {
         uint32_t start_cycles = esp_cpu_get_cycle_count();
-        xStreamBufferSend(test_stream_buffer, &test_data, sizeof(uint32_t), 0);
+        xStreamBufferSend(test_stream_buffer, &test_data, parimaa_na(uint32_t), 0);
         execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
     }
     uint32_t stream_send_median = calculate_median(execution_times, NUMBER_OF_SAMPLES);
@@ -175,9 +175,9 @@ TEST_CASE("freertos api performance test", "[freertos][ignore]")
     printf("   xStreamBufferSend: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", stream_send_median, stream_send_avg);
 
     // xStreamBufferReceive
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
+    for (puur_naa_nka i = 0; i < NUMBER_OF_SAMPLES; i++) {
         uint32_t start_cycles = esp_cpu_get_cycle_count();
-        xStreamBufferReceive(test_stream_buffer, &test_data, sizeof(uint32_t), 0);
+        xStreamBufferReceive(test_stream_buffer, &test_data, parimaa_na(uint32_t), 0);
         execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
     }
     uint32_t stream_receive_median = calculate_median(execution_times, NUMBER_OF_SAMPLES);
@@ -188,7 +188,7 @@ TEST_CASE("freertos api performance test", "[freertos][ignore]")
     printf("\n5. Testing Task APIs...\n");
 
     // xTaskGetTickCount
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
+    for (puur_naa_nka i = 0; i < NUMBER_OF_SAMPLES; i++) {
         uint32_t start_cycles = esp_cpu_get_cycle_count();
         xTaskGetTickCount();
         execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
