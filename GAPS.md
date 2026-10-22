@@ -1,0 +1,536 @@
+# What is still missing
+
+76 languages. Each line says in how many languages it is missing.
+
+## Files in languages BURP cannot read yet
+
+
+## Keywords with no word in a language's table
+
+- yantra:SP: 75
+- yantra:ENTRY: 75
+- yantra:RET: 75
+- yantra:SAR: 75
+- guru:_exit: 75
+- yantra:OUT: 75
+- yantra:XOR: 75
+- yantra:HIGH: 74
+- guru:size_t: 71
+- guru:abort: 71
+- guru:offsetof: 71
+- guru:errno: 71
+- guru:asm: 71
+- guru:time: 71
+- guru:sprintf: 71
+- guru:time_t: 71
+- guru:memcmp: 71
+- guru:ULONG_MAX: 71
+- guru:fprintf: 71
+- guru:stderr: 71
+- guru:strerror: 71
+- guru:setvbuf: 71
+- guru:stdout: 71
+- guru:SIG_ERR: 71
+- guru:close: 71
+- guru:va_list: 71
+- guru:va_start: 71
+- guru:va_arg: 71
+- guru:va_end: 71
+- guru:system: 71
+- guru:SIG_IGN: 71
+- guru:SIGSEGV: 71
+- guru:SIGINT: 71
+- guru:times: 71
+- guru:memset: 70
+- guru:strcat: 70
+- guru:rand: 70
+- guru:srand: 70
+- guru:open: 70
+- guru:strcpy: 70
+- guru:qsort: 70
+- soochee:def: 67
+- soochee:None: 67
+- shraeni:nullptr: 67
+- guru:#endif: 66
+- guru:#define: 66
+- guru:#ifndef: 66
+- guru:#ifdef: 66
+- guru:#error: 66
+- guru:#pragma: 66
+- guru:#undef: 66
+- guru:unsigned: 62
+- guru:printf: 62
+- guru:memcpy: 62
+- guru:long: 62
+- guru:strlen: 62
+- guru:malloc: 62
+- shraeni:printf: 62
+- guru:exit: 62
+- guru:calloc: 62
+- guru:short: 62
+- guru:main: 54
+- yantra:global: 45
+- yantra:call: 26
+- soochee:True: 26
+- shraeni:namespace: 26
+- guru:void: 25
+- guru:const: 25
+- guru:NULL: 25
+- guru:static: 25
+- guru:typedef: 25
+- guru:extern: 25
+- guru:do: 25
+- guru:#elif: 25
+- guru:assert: 25
+- guru:float: 25
+- yantra:OR: 25
+- guru:continue: 25
+- guru:free: 25
+- guru:switch: 25
+- guru:goto: 25
+- guru:default: 25
+- shraeni:void: 25
+- guru:write: 25
+- soochee:import: 25
+- soochee:write: 25
+- guru:read: 25
+- shraeni:extern: 25
+- soochee:from: 10
+- guru:for: 9
+- shraeni:for: 9
+- guru:volatile: 9
+- guru:struct: 9
+- guru:char: 9
+- guru:sizeof: 9
+- guru:break: 9
+- guru:inline: 9
+- guru:case: 9
+- guru:enum: 9
+- guru:union: 9
+- guru:double: 9
+- guru:signal: 9
+- guru:register: 9
+- yantra:NOT: 8
+- yantra:IN: 8
+- yantra:AND: 8
+- guru:#if: 1
+- guru:if: 1
+- guru:else: 1
+- guru:return: 1
+- guru:int: 1
+- guru:#else: 1
+- guru:while: 1
+- shraeni:if: 1
+- shraeni:return: 1
+
+## Names with no dictionary entry (the most common first)
+
+- `UBaseType_t`: 76
+- `pxTCB`: 76
+- `xReturn`: 76
+- `i`: 76
+- `pdFALSE`: 76
+- `PRIVILEGED_FUNCTION`: 76
+- `TaskHandle_t`: 76
+- `pdTRUE`: 76
+- `configASSERT`: 76
+- `TickType_t`: 76
+- `mtCOVERAGE_TEST_MARKER`: 76
+- `xTask`: 76
+- `TEST_ASSERT_EQUAL`: 76
+- `x`: 76
+- `xCoreID`: 76
+- `pxNewTCB`: 76
+- `TCB_t`: 76
+- `arg`: 76
+- `xTimer`: 76
+- `FREERTOS_SYSTEM_CALL`: 76
+- `pxList`: 76
+- `pvParameters`: 76
+- `mux`: 76
+- `vTaskDelay`: 76
+- `taskEXIT_CRITICAL`: 76
+- `pxTimer`: 76
+- `uxReturn`: 76
+- `xCurCoreID`: 76
+- `pxCurrentTCBs`: 76
+- `taskENTER_CRITICAL`: 76
+- `u`: 76
+- `TEST_CASE`: 76
+- `xSemaphore`: 76
+- `vTaskDelete`: 76
+- `configUSE_TRACE_FACILITY`: 76
+- `List_t`: 76
+- `StaticTask_t`: 76
+- `pdPASS`: 76
+- `TimerHandle_t`: 76
+- `fd`: 76
+- `pxCurrentTCB`: 76
+- `j`: 76
+- `defined`: 76
+- `core`: 76
+- `timeout`: 76
+- `ev`: 76
+- `xTaskGetCurrentTaskHandle`: 76
+- `be`: 76
+- `TaskFunction_t`: 76
+- `configUSE_MUTEXES`: 76
+- `pcName`: 76
+- `configMAX_PRIORITIES`: 76
+- `ret`: 76
+- `pxTaskDefinition`: 76
+- `pxCreatedTask`: 76
+- `must`: 76
+- `CONFIG_FREERTOS_SMP`: 76
+- `TEST_ASSERT`: 76
+- `xTaskResumeAll`: 76
+- `a`: 76
+- `pxSendCompletedCallback`: 76
+- `pxReceiveCompletedCallback`: 76
+- `SemaphoreHandle_t`: 76
+- `ptr`: 76
+- `ctx`: 76
+- `pdFAIL`: 76
+- `buf`: 76
+- `thread`: 76
+- `ucFlags`: 76
+- `Timer_t`: 76
+- `is`: 76
+- `pcTaskName`: 76
+- `handle`: 76
+- `xHandle`: 76
+- `ulTaskNotifyTake`: 76
+- `configUSE_TIMERS`: 76
+- `task`: 76
+- `eAction`: 76
+- `xSemaphoreGive`: 76
+- `xSemaphoreTake`: 76
+- `flags`: 76
+- `vTaskSuspend`: 76
+- `pxReadyTasksLists`: 76
+- `prvGetTCBFromHandle`: 76
+- `ulCurrent`: 76
+- `sockfd`: 76
+- `coreID`: 76
+- `uxSchedulerSuspended`: 76
+- `xTLSBlock`: 76
+- `pxNewTimer`: 76
+- `vTaskSuspendAll`: 76
+- `the`: 76
+- `pxEventList`: 76
+- `pxUnblockedTCB`: 76
+- `b`: 76
+- `pxCallbackFunction`: 76
+- `tskNO_AFFINITY`: 76
+- `pcReadFrom`: 76
+- `TEST_ESP_OK`: 76
+- `configMAX_TASK_NAME_LEN`: 76
+- `pxMutex`: 76
+- `ux`: 76
+- `xSpace`: 76
+- `configUSE_CORE_AFFINITY`: 76
+- `dst`: 76
+- `ucStaticallyAllocated`: 76
+- `uxListRemove`: 76
+- `always_inline`: 76
+- `xTaskNotifyGive`: 76
+- `ulReturn`: 76
+- `cpu`: 76
+- `task_handle`: 76
+- `configUSE_PREEMPTION`: 76
+- `xSchedulerRunning`: 76
+- `eReturn`: 76
+- `uxTask`: 76
+- `xAlreadyYielded`: 76
+- `INCLUDE_vTaskSuspend`: 76
+- `ucNotifyState`: 76
+- `TEST_ASSERT_NOT_EQUAL`: 76
+- `configTASK_NOTIFICATION_ARRAY_ENTRIES`: 76
+- `vSemaphoreDelete`: 76
+- `CONFIG_FREERTOS_UNICORE`: 76
+- `xTaskGetSchedulerState`: 76
+- `pxIterator`: 76
+- `task_yield_sequence`: 76
+- `xTaskRemoveFromEventList`: 76
+- `len`: 76
+- `pcTimerName`: 76
+- `pvTimerID`: 76
+- `xSwitchRequired`: 76
+- `weak`: 76
+- `UNITY_FREERTOS_CPU`: 76
+- `pvParameter1`: 76
+- `ulParameter2`: 76
+- `configUSE_TASK_NOTIFICATIONS`: 76
+- `xCopyPosition`: 76
+- `configUSE_SB_COMPLETED_CALLBACK`: 76
+- `c`: 76
+- `xYieldPendings`: 76
+- `param`: 76
+- `gptimer`: 76
+- `TEST_ASSERT_NOT_NULL`: 76
+- `configUSE_C_RUNTIME_TLS_SUPPORT`: 76
+- `pulDestination`: 76
+- `pxMutexHolder`: 76
+- `xAutoReload`: 76
+- `addr`: 76
+- `mutex`: 76
+- `xYieldRequired`: 76
+- `h`: 76
+- `configUSE_STATS_FORMATTING_FUNCTIONS`: 76
+- `xCommandID`: 76
+- `sa`: 76
+- `xPendingReadyList`: 76
+- `idx`: 76
+- `task_id`: 76
+- `MPU_WRAPPERS_INCLUDED_FROM_API_FILE`: 76
+- `vListInitialise`: 76
+- `xTimeoutOccurred`: 76
+- `xTaskCreate`: 76
+- `eBlocked`: 76
+- `LINUX_COOP_RESOLVE`: 76
+- `pxReturn`: 76
+- `xRequiredSpace`: 76
+- `pxMutexHolderTCB`: 76
+- `execution_times`: 76
+- `FreeRTOSConfig`: 76
+- `TaskHookFunction_t`: 76
+- `user_flags`: 76
+- `pxDelayedTaskList`: 76
+- `INCLUDE_vTaskDelete`: 76
+- `pxContainer`: 76
+- `ATOMIC_ENTER_CRITICAL`: 76
+- `ATOMIC_EXIT_CRITICAL`: 76
+- `xMutex`: 76
+- `thread_t`: 76
+- `xMutexHolder`: 76
+- `configUSE_TICKLESS_IDLE`: 76
+- `sem_handle`: 76
+- `eTaskGetState`: 76
+- `pulAddend`: 76
+- `configLIST_VOLATILE`: 76
+- `listIS_CONTAINED_WITHIN`: 76
+- `fds`: 76
+- `prvENTER_CRITICAL_SMP_ONLY`: 76
+- `prvEXIT_CRITICAL_SMP_ONLY`: 76
+- `vFunction`: 76
+- `ts`: 76
+- `str`: 76
+- `eg`: 76
+- `p`: 76
+- `xTaskGetCoreID`: 76
+- `systimer_hal`: 76
+- `cpuid`: 76
+- `taskSCHEDULER_SUSPENDED`: 76
+- `INCLUDE_xTimerPendFunctionCall`: 76
+- `INC_FREERTOS_H`: 76
+- `Missing`: 76
+- `definition`: 76
+- `TaskParameters_t`: 76
+- `TimerCallbackFunction_t`: 76
+- `eTaskState`: 76
+- `xTimerGenericCommand`: 76
+- `taskYIELD`: 76
+- `calling_thread`: 76
+- `core_id`: 76
+- `ucOriginalNotifyState`: 76
+- `Thread_t`: 76
+- `unity_task_handle`: 76
+- `dut`: 76
+- `tasks`: 76
+- `xSuspendedTaskList`: 76
+- `pvReturn`: 76
+- `xTimerTaskHandle`: 76
+- `params`: 76
+- `section`: 76
+- `eState`: 76
+- `taskENTER_CRITICAL_FROM_ISR`: 76
+- `taskEXIT_CRITICAL_FROM_ISR`: 76
+- `addrlen`: 76
+- `timeout_ms`: 76
+- `threadptr_reg_init`: 76
+- `xYieldPending`: 76
+- `xTimerParameters`: 76
+- `pxCurrentTimerList`: 76
+- `iter`: 76
+- `self_handle`: 76
+- `context`: 76
+- `INCLUDE_xTaskGetSchedulerState`: 76
+- `configUSE_NEWLIB_REENTRANT`: 76
+- `INCLUDE_xTaskGetIdleTaskHandle`: 76
+- `INCLUDE_xTaskAbortDelay`: 76
+- `configUSE_RECURSIVE_MUTEXES`: 76
+- `StaticTimer_t`: 76
+- `xRegions`: 76
+- `eNoAction`: 76
+- `FORCE_INLINE_ATTR`: 76
+- `created`: 76
+- `task_handles`: 76
+- `k`: 76
+- `yield`: 76
+- `test_float`: 76
+- `tl_test_struct_var`: 76
+- `configUSE_TICK_HOOK`: 76
+- `configUSE_CO_ROUTINES`: 76
+- `name`: 76
+- `xTaskGenericNotify`: 76
+- `xWaitIndefinitely`: 76
+- `nfds`: 76
+- `tcb`: 76
+- `ERR_STR1`: 76
+- `ERR_STR2`: 76
+- `dest`: 76
+- `nesting`: 76
+- `taskNOTIFICATION_RECEIVED`: 76
+- `xTCB`: 76
+- `configUSE_TASK_PREEMPTION_DISABLE`: 76
+- `sem`: 76
+- `configASSERT_DEFINED`: 76
+- `INCLUDE_xTaskDelayUntil`: 76
+- `configUSE_POSIX_ERRNO`: 76
+- `once`: 76
+- `event`: 76
+- `CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS`: 76
+- `main_task`: 76
+- `linux_coop_track_fd`: 76
+- `uxCriticalNesting`: 76
+- `xPendedTicks`: 76
+- `taskTASK_IS_RUNNING`: 76
+- `STORE_TASK_ID`: 76
+- `prvEXIT_CRITICAL_OR_RESUME_ALL`: 76
+- `pcTaskGetName`: 76
+- `pxConstList`: 76
+- `xTriggerLevel`: 76
+- `xMPUSettings`: 76
+- `xSemaphoreCreateCounting`: 76
+- `taskSCHEDULER_RUNNING`: 76
+- `readfds`: 76
+- `writefds`: 76
+- `exceptfds`: 76
+- `event_t`: 76
+- `ms`: 76
+- `event_triggered`: 76
+- `xCallbackParameters`: 76
+- `xIdleTaskHandles`: 76
+- `cst`: 76
+- `task_list`: 76
+- `offset8`: 76
+- `xClearOnExit`: 76
+- `See`: 76
+- `API`: 76
+- `details`: 76
+- `ppxIdleTaskTCBBuffer`: 76
+- `type`: 76
+- `TlsDeleteCallbackFunction_t`: 76
+- `uxMutexesHeld`: 76
+- `taskYIELD_WITHIN_API`: 76
+- `alarm_id`: 76
+- `test_objs`: 76
+
+## Comments with no translation
+
+- configNUMBER_OF_CORES > 1: 76
+- configSUPPORT_STATIC_ALLOCATION: 76
+- *INDENT-OFF*: 76
+- *INDENT-ON*: 76
+- #if ( configNUMBER_OF_CORES == 1 ): 76
+- configUSE_TRACE_FACILITY: 76
+- configUSE_QUEUE_SETS: 76
+- More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115: 76
+- coverity[misra_c_2012_rule_11_5_violation]: 76
+- configSUPPORT_DYNAMIC_ALLOCATION: 76
+- lint !e971 Unqualified char types are allowed for strings and single characters only.: 76
+- * @endcond: 76
+- ----------------------- System --------------------------: 76
+- #if ( configNUMBER_OF_CORES > 1 ): 76
+- CONFIG_FREERTOS_SMP: 76
+- configUSE_MUTEXES: 76
+- * @cond !DOC_EXCLUDE_HEADER_SECTION: 76
+- Get current core ID as we can no longer be preempted.: 76
+- ------------------ Critical Sections --------------------: 76
+- INCLUDE_vTaskSuspend: 76
+- ---------------------- Yielding -------------------------: 76
+- portSTACK_GROWTH: 76
+- --------------------- Interrupts ------------------------: 76
+- queueUSE_LOCKS == 1: 76
+- configNUM_CORES > 1: 76
+- if ( configSUPPORT_STATIC_ALLOCATION == 1 ): 76
+- Release the previously taken kernel lock.: 76
+- configSUPPORT_STATIC_ALLOCATION == 1: 76
+- CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS: 76
+- if ( configUSE_SB_COMPLETED_CALLBACK == 1 ): 76
+- MISRA Ref 4.7.1 [Return value shall be checked]: 76
+- More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#dir-47: 76
+- coverity[misra_c_2012_directive_4_7_violation]: 76
+- !CONFIG_FREERTOS_UNICORE: 76
+- Store task_id in the sequence array: 76
+- portUSING_MPU_WRAPPERS: 76
+- lint !e961 MISRA exception as the casts are only redundant for some ports.: 76
+- configUSE_TASK_NOTIFICATIONS: 76
+- Cleanup: 76
+- Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
+ * all the API function: 76
+- MISRA Ref 11.5.1 [Malloc memory assignment]: 76
+- --------------------- TCB Cleanup -----------------------: 76
+- __XTENSA_CALL0_ABI__: 76
+- Update the timeout state to see if it has expired yet.: 76
+- MISRA Ref 11.3.1 [Misaligned access]: 76
+- More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-113: 76
+- coverity[misra_c_2012_rule_11_3_violation]: 76
+- if ( configNUMBER_OF_CORES > 1 ): 76
+- configUSE_TIMERS: 76
+- if ( configUSE_MUTEXES == 1 ): 76
+- MISRA Ref 11.5.3 [Void pointer assignment]: 76
+- Delete self: 76
+- Increment task count to notify unity task: 76
+- Standard includes.: 76
+- configASSERT_DEFINED: 76
+- * In line with software engineering best practice, especially when supplying a
+ * library that is li: 76
+- The old naming convention is used to prevent breaking kernel aware debuggers.: 76
+- configQUEUE_REGISTRY_SIZE: 76
+- RTOS ports that support interrupt nesting have the concept of a maximum
+     * system call (or maxim: 76
+- lint !e9079 void * is used as this macro is used with timers and co-routines too.  Alignment is know: 76
+- #if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ): 76
+- !CONFIG_FREERTOS_SMP: 76
+- tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE: 76
+- if ( configUSE_TASK_NOTIFICATIONS == 1 ): 76
+- RTOS ports that support interrupt nesting have the concept of a
+         * maximum  system call (or : 76
+- configUSE_TICKLESS_IDLE: 76
+- ----------------------------------------------------------------------------------------------------: 76
+- FreeRTOS includes.: 76
+- CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM: 76
+- ------------------- Hook Functions ----------------------: 76
+- XCHAL_CP_NUM > 0: 76
+- Entry time was already set.: 76
+- configUSE_CO_ROUTINES: 76
+- portHAS_STACK_OVERFLOW_CHECKING: 76
+- INCLUDE_vTaskDelete: 76
+- configUSE_APPLICATION_TASK_TAG: 76
+- INCLUDE_xTimerPendFunctionCall: 76
+- Set the task's affinity before scheduling it.: 76
+- SOC_GPTIMER_SUPPORTED: 76
+- lint -restore: 76
+- *< Spinlock initializer: 76
+- (configNUM_CORES > 1): 76
+- ------------------- Run Time Stats ----------------------: 76
+- Store the stack location in the TCB.: 76
+- For SMP, we need to take the kernel lock here as we are about to
+         * access kernel data struc: 76
+- configUSE_PREEMPTION: 76
+- CONFIG_IDF_TARGET_LINUX: 76
+- Short delay to allow task memory to be freed: 76
+- Reset yield sequence index: 76
+- Reset yield sequence array: 76
+- Initialize idx lock: 76
+- Reset task count: 76
+- * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS AN
+ * INTERFACE WHICH IS FOR THE EXCL: 76
+- *< Spinlock is free. [refactor-todo] check if this is still required: 76
+- < Initialize a spinlock to its unlocked state: 76
+- Assert if the interrupt nesting count is > 0: 76
+- CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS: 76
+- null char: 76
+- configUSE_PORT_OPTIMISED_TASK_SELECTION: 76
+- CONFIG_FREERTOS_TASK_PRE_DELETION_HOOK: 76
