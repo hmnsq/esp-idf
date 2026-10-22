@@ -11,181 +11,181 @@
  vTaskNotifyGiveFromISR(), whereas the receiver task will test
  xTaskNotifyWait() and ulTaskNotifyTake().
 */
-#include "sdkconfig.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "driver/gptimer.h"
-#include "unity.h"
-#include "test_utils.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "sdkconfig.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdlib.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/FreeRTOS.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/task.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/semphr.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "driver/gptimer.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "unity.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "test_utils.h"
 
-#if SOC_GPTIMER_SUPPORTED
+#ਜੇ SOC_GPTIMER_SUPPORTED
 
-#define NO_OF_NOTIFS    4
-#define NO_OF_TASKS     2       //Sender and receiver
-#define MESSAGE         0xFF
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ NO_ਦਾ_NOTIFS    4
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ NO_ਦਾ_TASKS     2       //Sender and receiver
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਸੁਨੇਹਾ_2         0xFF
 
-static uint32_t send_core_message = 0;
-static TaskHandle_t recv_task_handle;
-static bool isr_give = false;
-static bool test_start = false;
-static gptimer_handle_t gptimers[CONFIG_FREERTOS_NUMBER_OF_CORES];
-static SemaphoreHandle_t trigger_send_semphr;
-static SemaphoreHandle_t task_delete_semphr;
+ਸਥਿਰ uint32_t send_core_ਸੁਨੇਹਾ = 0;
+ਸਥਿਰ TaskHandle_t recv_task_handle;
+ਸਥਿਰ bool isr_give = false;
+ਸਥਿਰ bool test_ਸ਼ੁਰੂ = false;
+ਸਥਿਰ gptimer_handle_t gptimers[CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES];
+ਸਥਿਰ SemaphoreHandle_t trigger_send_semphr;
+ਸਥਿਰ SemaphoreHandle_t task_delete_semphr;
 
 //Test tracking vars
-static volatile uint32_t notifs_sent = 0;
-static volatile uint32_t notifs_rec = 0;
-static bool wrong_core = false;
+ਸਥਿਰ ਅਸਥਿਰ uint32_t notifs_ਭੇਜਿਆ = 0;
+ਸਥਿਰ ਅਸਥਿਰ uint32_t notifs_rec = 0;
+ਸਥਿਰ bool wrong_core = false;
 
-static bool on_alarm_sender_cb(gptimer_handle_t timer, const gptimer_alarm_event_data_t *edata, void *user_ctx)
+ਸਥਿਰ bool on_alarm_sender_cb(gptimer_handle_t timer, ਅਚਲ gptimer_alarm_event_ਅੰਕੜੇ_t *edata, ਖਾਲੀ *user_ctx)
 {
     gptimer_stop(timer);
-    if (!test_start) {
-        return false;
+    ਜੇ (!test_ਸ਼ੁਰੂ) {
+        ਵਾਪਸ false;
     }
-    int curcore = xPortGetCoreID();
-    if (isr_give) { //Test vTaskNotifyGiveFromISR() on same core
-        notifs_sent++;
-        vTaskNotifyGiveFromISR(recv_task_handle, NULL);
-    } else { //Test xTaskNotifyFromISR()
-        notifs_sent++;
-        xTaskNotifyFromISR(recv_task_handle, (MESSAGE << curcore), eSetValueWithOverwrite, NULL);
+    ਪੂਰਨ curcore = x_ਪੋਰਟ_Get_Core_ID();
+    ਜੇ (isr_give) { //Test vTaskNotifyGiveFromISR() on same core
+        notifs_ਭੇਜਿਆ++;
+        vTaskNotifyGiveFromISR(recv_task_handle, ਨਿਰਾ);
+    } ਨਹੀਂਤਾਂ { //Test xTaskNotifyFromISR()
+        notifs_ਭੇਜਿਆ++;
+        xTaskNotifyFromISR(recv_task_handle, (ਸੁਨੇਹਾ_2 << curcore), e_ਸੈੱਟ_ਮੁੱਲ_With_Overwrite, ਨਿਰਾ);
     }
     // always trigger a task switch when exit ISR context
-    return true;
+    ਵਾਪਸ true;
 }
 
-static void test_gptimer_start(void *arg)
+ਸਥਿਰ ਖਾਲੀ test_gptimer_ਸ਼ੁਰੂ(ਖਾਲੀ *arg)
 {
     gptimer_handle_t gptimer = (gptimer_handle_t)arg;
     gptimer_alarm_config_t alarm_config = {
-        .reload_count = 0,
-        .alarm_count = 1000,
+        .reload_ਗਿਣਤੀ = 0,
+        .alarm_ਗਿਣਤੀ = 1000,
     };
-    TEST_ESP_OK(gptimer_set_raw_count(gptimer, 0));
-    TEST_ESP_OK(gptimer_set_alarm_action(gptimer, &alarm_config));
-    TEST_ESP_OK(gptimer_start(gptimer));
+    TEST_ESP_OK(gptimer_ਸੈੱਟ_raw_ਗਿਣਤੀ(gptimer, 0));
+    TEST_ESP_OK(gptimer_ਸੈੱਟ_alarm_action(gptimer, &alarm_config));
+    TEST_ESP_OK(gptimer_ਸ਼ੁਰੂ(gptimer));
 }
 
-static void sender_task(void *arg)
+ਸਥਿਰ ਖਾਲੀ sender_task(ਖਾਲੀ *arg)
 {
     gptimer_handle_t gptimer = (gptimer_handle_t)arg;
-    int curcore = xPortGetCoreID();
+    ਪੂਰਨ curcore = x_ਪੋਰਟ_Get_Core_ID();
 
     //Test xTaskNotify
-    xSemaphoreTake(trigger_send_semphr, portMAX_DELAY);
-    notifs_sent++;
-    xTaskNotify(recv_task_handle, (MESSAGE << curcore), eSetValueWithOverwrite);
+    xSemaphoreTake(trigger_send_semphr, ਪੋਰਟ_MAX_DELAY);
+    notifs_ਭੇਜਿਆ++;
+    xTaskNotify(recv_task_handle, (ਸੁਨੇਹਾ_2 << curcore), e_ਸੈੱਟ_ਮੁੱਲ_With_Overwrite);
 
     //Test xTaskNotifyGive
-    xSemaphoreTake(trigger_send_semphr, portMAX_DELAY);
-    notifs_sent++;
+    xSemaphoreTake(trigger_send_semphr, ਪੋਰਟ_MAX_DELAY);
+    notifs_ਭੇਜਿਆ++;
     xTaskNotifyGive(recv_task_handle);
 
     //Test xTaskNotifyFromISR
-    xSemaphoreTake(trigger_send_semphr, portMAX_DELAY);
+    xSemaphoreTake(trigger_send_semphr, ਪੋਰਟ_MAX_DELAY);
     isr_give = false;
-    test_gptimer_start(gptimer);
+    test_gptimer_ਸ਼ੁਰੂ(gptimer);
 
     //Test vTaskNotifyGiveFromISR
-    xSemaphoreTake(trigger_send_semphr, portMAX_DELAY);
+    xSemaphoreTake(trigger_send_semphr, ਪੋਰਟ_MAX_DELAY);
     isr_give = true;
-    test_gptimer_start(gptimer);
+    test_gptimer_ਸ਼ੁਰੂ(gptimer);
 
     //Delete Task and Semaphores
     xSemaphoreGive(task_delete_semphr);
-    vTaskDelete(NULL);
+    vTaskDelete(ਨਿਰਾ);
 }
 
-static void receiver_task(void *arg)
+ਸਥਿਰ ਖਾਲੀ receiver_task(ਖਾਲੀ *arg)
 {
-    uint32_t notify_value;
+    uint32_t notify_ਮੁੱਲ;
 
     //Test xTaskNotifyWait from task
-    xTaskNotifyWait(0, 0xFFFFFFFF, &notify_value, portMAX_DELAY);
-    if (notify_value != send_core_message) {
+    xTaskNotifyWait(0, 0xFFFFFFFF, &notify_ਮੁੱਲ, ਪੋਰਟ_MAX_DELAY);
+    ਜੇ (notify_ਮੁੱਲ != send_core_ਸੁਨੇਹਾ) {
         wrong_core = true;
     }
     notifs_rec++;
 
     //Test ulTaskNotifyTake from task
     xSemaphoreGive(trigger_send_semphr);
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, ਪੋਰਟ_MAX_DELAY);
     notifs_rec++;
 
     //Test xTaskNotifyWait from ISR
     xSemaphoreGive(trigger_send_semphr);
-    xTaskNotifyWait(0, 0xFFFFFFFF, &notify_value, portMAX_DELAY);
-    if (notify_value != send_core_message) {
+    xTaskNotifyWait(0, 0xFFFFFFFF, &notify_ਮੁੱਲ, ਪੋਰਟ_MAX_DELAY);
+    ਜੇ (notify_ਮੁੱਲ != send_core_ਸੁਨੇਹਾ) {
         wrong_core = true;
     }
     notifs_rec++;
 
     //Test ulTaskNotifyTake from ISR
     xSemaphoreGive(trigger_send_semphr);
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, ਪੋਰਟ_MAX_DELAY);
     notifs_rec++;
 
     //Test complete, stop timer and delete task
     xSemaphoreGive(task_delete_semphr);
-    vTaskDelete(NULL);
+    vTaskDelete(ਨਿਰਾ);
 }
 
-static void install_gptimer_on_core(void *arg)
+ਸਥਿਰ ਖਾਲੀ install_gptimer_on_core(ਖਾਲੀ *arg)
 {
-    int core_id = (int)arg;
+    ਪੂਰਨ core_id = (ਪੂਰਨ)arg;
     gptimer_config_t timer_config = {
         .clk_src = GPTIMER_CLK_SRC_DEFAULT,
-        .direction = GPTIMER_COUNT_UP,
+        .direction = GPTIMER_ਗਿਣਤੀ_ਉੱਪਰ,
         .resolution_hz = 1000000, // 1MHz, 1 tick = 1us
     };
     TEST_ESP_OK(gptimer_new_timer(&timer_config, &gptimers[core_id]));
     gptimer_event_callbacks_t cbs = {
         .on_alarm = on_alarm_sender_cb,
     };
-    TEST_ESP_OK(gptimer_register_event_callbacks(gptimers[core_id], &cbs, NULL));
+    TEST_ESP_OK(gptimer_ਰਜਿਸਟਰ_event_callbacks(gptimers[core_id], &cbs, ਨਿਰਾ));
     TEST_ESP_OK(gptimer_enable(gptimers[core_id]));
-    test_gptimer_start(gptimers[core_id]);
+    test_gptimer_ਸ਼ੁਰੂ(gptimers[core_id]);
     xSemaphoreGive(task_delete_semphr);
-    vTaskDelete(NULL);
+    vTaskDelete(ਨਿਰਾ);
 }
 
 TEST_CASE("Test Task_Notify", "[freertos]")
 {
-    test_start = false;
-    trigger_send_semphr = xSemaphoreCreateBinary();
-    task_delete_semphr = xQueueCreateCountingSemaphore(10, 0);
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        xTaskCreatePinnedToCore(install_gptimer_on_core, "install_gptimer", 4096, (void *const)i, UNITY_FREERTOS_PRIORITY + 1, NULL, i);
-        TEST_ASSERT(xSemaphoreTake(task_delete_semphr, pdMS_TO_TICKS(1000)));
+    test_ਸ਼ੁਰੂ = false;
+    trigger_send_semphr = x_Semaphore_Create_ਦੁਆਧਾਰੀ();
+    task_delete_semphr = x_ਕਤਾਰ_Create_Counting_Semaphore(10, 0);
+    ਲਈ (ਪੂਰਨ i = 0; i < CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES; i++) {
+        x_Task_Create_Pinned_ਮੰਜ਼ਿਲ_Core(install_gptimer_on_core, "install_gptimer", 4096, (ਖਾਲੀ *ਅਚਲ)i, UNITY_FREERTOS_ਤਰਜੀਹ + 1, ਨਿਰਾ, i);
+        TEST_ASSERT(xSemaphoreTake(task_delete_semphr, pd_MS_ਮੰਜ਼ਿਲ_TICKS(1000)));
     }
     // wait the gptimer installation done on specific core
     vTaskDelay(10);
     // test start
-    test_start = true;
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) { //Sending Core
-        for (int j = 0; j < CONFIG_FREERTOS_NUMBER_OF_CORES; j++) { //Receiving Core
+    test_ਸ਼ੁਰੂ = true;
+    ਲਈ (ਪੂਰਨ i = 0; i < CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES; i++) { //Sending Core
+        ਲਈ (ਪੂਰਨ j = 0; j < CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES; j++) { //Receiving Core
             //Reset Values
-            notifs_sent = 0;
+            notifs_ਭੇਜਿਆ = 0;
             notifs_rec = 0;
             wrong_core = false;
-            send_core_message = (0xFF << i); //0xFF if core 0, 0xFF0 if core 1
+            send_core_ਸੁਨੇਹਾ = (0xFF << i); //0xFF if core 0, 0xFF0 if core 1
             // receiver task has higher priority than sender task
-            xTaskCreatePinnedToCore(receiver_task, "recv task", 1000, NULL, UNITY_FREERTOS_PRIORITY + 2, &recv_task_handle, j);
-            xTaskCreatePinnedToCore(sender_task, "send task", 1000, gptimers[i], UNITY_FREERTOS_PRIORITY + 1, NULL, i);
+            x_Task_Create_Pinned_ਮੰਜ਼ਿਲ_Core(receiver_task, "recv task", 1000, ਨਿਰਾ, UNITY_FREERTOS_ਤਰਜੀਹ + 2, &recv_task_handle, j);
+            x_Task_Create_Pinned_ਮੰਜ਼ਿਲ_Core(sender_task, "send task", 1000, gptimers[i], UNITY_FREERTOS_ਤਰਜੀਹ + 1, ਨਿਰਾ, i);
             vTaskDelay(5);      //Wait for task creation to complete
 
             xSemaphoreGive(trigger_send_semphr);    //Trigger sender task
-            for (int k = 0; k < NO_OF_TASKS; k++) { //Wait for sender and receiver task deletion
-                TEST_ASSERT(xSemaphoreTake(task_delete_semphr, pdMS_TO_TICKS(2000)));
+            ਲਈ (ਪੂਰਨ k = 0; k < NO_ਦਾ_TASKS; k++) { //Wait for sender and receiver task deletion
+                TEST_ASSERT(xSemaphoreTake(task_delete_semphr, pd_MS_ਮੰਜ਼ਿਲ_TICKS(2000)));
             }
             vTaskDelay(5);      //Give time tasks to delete
 
-            TEST_ASSERT_EQUAL(NO_OF_NOTIFS, notifs_sent);
-            TEST_ASSERT_EQUAL(NO_OF_NOTIFS, notifs_rec);
+            TEST_ASSERT_EQUAL(NO_ਦਾ_NOTIFS, notifs_ਭੇਜਿਆ);
+            TEST_ASSERT_EQUAL(NO_ਦਾ_NOTIFS, notifs_rec);
             TEST_ASSERT_EQUAL(false, wrong_core);
         }
     }
@@ -193,20 +193,20 @@ TEST_CASE("Test Task_Notify", "[freertos]")
     //Delete Semaphroes and timer ISRs
     vSemaphoreDelete(trigger_send_semphr);
     vSemaphoreDelete(task_delete_semphr);
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    ਲਈ (ਪੂਰਨ i = 0; i < CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES; i++) {
         TEST_ESP_OK(gptimer_disable(gptimers[i]));
         TEST_ESP_OK(gptimer_del_timer(gptimers[i]));
     }
 }
-#endif //SOC_GPTIMER_SUPPORTED
+#ਜੇ_ਅੰਤ //SOC_GPTIMER_SUPPORTED
 
 /* Test causes asserts, so it cannot be run as a normal unity test case.
    Test case is ran as a separate test case in test_task_notify_too_high_index_fails
  */
 TEST_CASE("Notify too high index fails", "[ignore]")
 {
-    uint32_t notification_value = 47;
-    xTaskNotifyIndexed(xTaskGetCurrentTaskHandle(), 2, notification_value, eNoAction);
+    uint32_t notification_ਮੁੱਲ = 47;
+    x_Task_Notify_ਸੂਚਕਾਂਕਿਤ(xTaskGetCurrentTaskHandle(), 2, notification_ਮੁੱਲ, eNoAction);
 }
 
 /* Test causes asserts, so it cannot be run as a normal unity test case.
@@ -214,35 +214,35 @@ TEST_CASE("Notify too high index fails", "[ignore]")
  */
 TEST_CASE("Notify Wait too high index fails", "[ignore]")
 {
-    uint32_t notification_value;
-    xTaskNotifyWaitIndexed(2, 0, 0, &notification_value, pdMS_TO_TICKS(10));
+    uint32_t notification_ਮੁੱਲ;
+    x_Task_Notify_Wait_ਸੂਚਕਾਂਕਿਤ(2, 0, 0, &notification_ਮੁੱਲ, pd_MS_ਮੰਜ਼ਿਲ_TICKS(10));
 }
 
-#if CONFIG_FREERTOS_TASK_NOTIFICATION_ARRAY_ENTRIES > 1
-const uint32_t NOTIFICATION_VALUE_0 = 47;
-const uint32_t NOTIFICATION_VALUE_1 = 48;
+#ਜੇ CONFIG_FREERTOS_TASK_NOTIFICATION_ARRAY_ENTRIES > 1
+ਅਚਲ uint32_t NOTIFICATION_ਮੁੱਲ_0 = 47;
+ਅਚਲ uint32_t NOTIFICATION_ਮੁੱਲ_1 = 48;
 
-void notify(void *arg)
+ਖਾਲੀ notify(ਖਾਲੀ *arg)
 {
     TaskHandle_t main_task = (TaskHandle_t) arg;
-    xTaskNotifyIndexed(main_task, 0, NOTIFICATION_VALUE_0, eSetValueWithOverwrite);
-    xTaskNotifyIndexed(main_task, 1, NOTIFICATION_VALUE_1, eSetValueWithOverwrite);
-    vTaskDelete(NULL);
+    x_Task_Notify_ਸੂਚਕਾਂਕਿਤ(main_task, 0, NOTIFICATION_ਮੁੱਲ_0, e_ਸੈੱਟ_ਮੁੱਲ_With_Overwrite);
+    x_Task_Notify_ਸੂਚਕਾਂਕਿਤ(main_task, 1, NOTIFICATION_ਮੁੱਲ_1, e_ਸੈੱਟ_ਮੁੱਲ_With_Overwrite);
+    vTaskDelete(ਨਿਰਾ);
 }
-static TaskHandle_t notificator_task;
+ਸਥਿਰ TaskHandle_t notificator_task;
 
 TEST_CASE("Notify to different indexes works", "[freertos]")
 {
-    uint32_t notification_value_0 = 0;
-    uint32_t notification_value_1 = 0;
+    uint32_t notification_ਮੁੱਲ_0 = 0;
+    uint32_t notification_ਮੁੱਲ_1 = 0;
 
     TaskHandle_t main_task = xTaskGetCurrentTaskHandle();
     xTaskCreate(notify, "notificator", 2048, main_task, 2, &notificator_task);
 
-    xTaskNotifyWaitIndexed(0, 0, 0xFFFFFFFF, &notification_value_0, pdMS_TO_TICKS(10));
-    xTaskNotifyWaitIndexed(1, 0, 0xFFFFFFFF, &notification_value_1, pdMS_TO_TICKS(10));
+    x_Task_Notify_Wait_ਸੂਚਕਾਂਕਿਤ(0, 0, 0xFFFFFFFF, &notification_ਮੁੱਲ_0, pd_MS_ਮੰਜ਼ਿਲ_TICKS(10));
+    x_Task_Notify_Wait_ਸੂਚਕਾਂਕਿਤ(1, 0, 0xFFFFFFFF, &notification_ਮੁੱਲ_1, pd_MS_ਮੰਜ਼ਿਲ_TICKS(10));
 
-    TEST_ASSERT_EQUAL(notification_value_0, NOTIFICATION_VALUE_0);
-    TEST_ASSERT_EQUAL(notification_value_1, NOTIFICATION_VALUE_1);
+    TEST_ASSERT_EQUAL(notification_ਮੁੱਲ_0, NOTIFICATION_ਮੁੱਲ_0);
+    TEST_ASSERT_EQUAL(notification_ਮੁੱਲ_1, NOTIFICATION_ਮੁੱਲ_1);
 }
-#endif
+#ਜੇ_ਅੰਤ

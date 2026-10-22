@@ -4,77 +4,77 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "unity.h"
-#include "unity_test_runner.h"
-#include "esp_heap_caps.h"
-#include "test_utils.h"
-#include "esp_task_wdt.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/FreeRTOS.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/task.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "unity.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "unity_test_runner.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_heap_caps.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "test_utils.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_task_wdt.h"
 
-#define TEST_MEMORY_LEAK_THRESHOLD (-512)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ TEST_ਸਮ੍ਰਿਤੀ_LEAK_ਹੱਦ (-512)
 
-static size_t before_free_8bit;
-static size_t before_free_32bit;
+ਸਥਿਰ size_t before_free_8bit;
+ਸਥਿਰ size_t before_free_32bit;
 
-static void check_leak(size_t before_free, size_t after_free, const char *type)
+ਸਥਿਰ ਖਾਲੀ check_leak(size_t before_free, size_t after_free, ਅਚਲ ਅੱਖਰ *type)
 {
     ssize_t delta = after_free - before_free;
-    printf("MALLOC_CAP_%s: Before %u bytes free, After %u bytes free (delta %d)\n", type, before_free, after_free, delta);
-    TEST_ASSERT_MESSAGE(delta >= TEST_MEMORY_LEAK_THRESHOLD, "memory leak");
+    ਲਿਖੋ("MALLOC_CAP_%s: Before %u bytes free, After %u bytes free (delta %d)\n", type, before_free, after_free, delta);
+    TEST_ASSERT_ਸੁਨੇਹਾ(delta >= TEST_ਸਮ੍ਰਿਤੀ_LEAK_ਹੱਦ, "memory leak");
 }
 
-void setUp(void)
+ਖਾਲੀ ਸੈੱਟ_ਉੱਪਰ(ਖਾਲੀ)
 {
-    before_free_8bit = heap_caps_get_free_size(MALLOC_CAP_8BIT);
-    before_free_32bit = heap_caps_get_free_size(MALLOC_CAP_32BIT);
+    before_free_8bit = ਢੇਰ_caps_get_free_ਮਾਪ(MALLOC_CAP_8_ਦੋਆਧਾਰੀ_ਅੰਕ);
+    before_free_32bit = ਢੇਰ_caps_get_free_ਮਾਪ(MALLOC_CAP_32_ਦੋਆਧਾਰੀ_ਅੰਕ);
 
-#if SOC_WDT_SUPPORTED
-    esp_task_wdt_add(NULL);
+#ਜੇ SOC_WDT_SUPPORTED
+    esp_task_wdt_ਜੋੜੋ(ਨਿਰਾ);
     esp_task_wdt_reset();
-#endif
+#ਜੇ_ਅੰਤ
 
 }
 
-void tearDown(void)
+ਖਾਲੀ tear_ਥੱਲੇ(ਖਾਲੀ)
 {
-#if SOC_WDT_SUPPORTED
+#ਜੇ SOC_WDT_SUPPORTED
     esp_task_wdt_reset();
-    esp_task_wdt_delete(NULL);
-#endif
+    esp_task_wdt_delete(ਨਿਰਾ);
+#ਜੇ_ਅੰਤ
 
     // Add a short delay of 10 ticks to allow the idle task to free remaining memory.
     vTaskDelay(10);
-    size_t after_free_8bit = heap_caps_get_free_size(MALLOC_CAP_8BIT);
-    size_t after_free_32bit = heap_caps_get_free_size(MALLOC_CAP_32BIT);
+    size_t after_free_8bit = ਢੇਰ_caps_get_free_ਮਾਪ(MALLOC_CAP_8_ਦੋਆਧਾਰੀ_ਅੰਕ);
+    size_t after_free_32bit = ਢੇਰ_caps_get_free_ਮਾਪ(MALLOC_CAP_32_ਦੋਆਧਾਰੀ_ਅੰਕ);
     check_leak(before_free_8bit, after_free_8bit, "8BIT");
     check_leak(before_free_32bit, after_free_32bit, "32BIT");
 }
 
-void app_main(void)
+ਖਾਲੀ app_main(ਖਾਲੀ)
 {
 
-#if SOC_WDT_SUPPORTED
+#ਜੇ SOC_WDT_SUPPORTED
     // Configure the task watchdog timer to catch any tests that hang
     esp_task_wdt_config_t config = {
         .timeout_ms = 25 * 1000, // 25 seconds, smaller than the default pytest timeout
-        .idle_core_mask = 0,
+        .idle_core_ਨਕਾਬ = 0,
         .trigger_panic = true,
     };
 
     esp_task_wdt_init(&config);
-#endif // SOC_WDT_SUPPORTED
+#ਜੇ_ਅੰਤ // SOC_WDT_SUPPORTED
 
     /*
     Some FreeRTOS tests are reliant on the main task being at priority UNITY_FREERTOS_PRIORITY to test scheduling
     behavior. Thus, we raise the main task's priority before any tasks are run. See IDF-6088
     */
-    vTaskPrioritySet(NULL, UNITY_FREERTOS_PRIORITY);
-    printf(" ______             _____ _______ ____   _____\n");
-    printf("|  ____|           |  __ \\__   __/ __ \\ / ____|\n");
-    printf("| |__ _ __ ___  ___| |__) | | | | |  | | (___\n");
-    printf("|  __| '__/ _ \\/ _ \\  _  /  | | | |  | |\\___ \\\n");
-    printf("| |  | | |  __/  __/ | \\ \\  | | | |__| |____) |\n");
-    printf("|_|  |_|  \\___|\\___|_|  \\_\\ |_|  \\____/|_____/\n");
-    unity_run_menu();
+    v_Task_ਤਰਜੀਹ_ਸੈੱਟ(ਨਿਰਾ, UNITY_FREERTOS_ਤਰਜੀਹ);
+    ਲਿਖੋ(" ______             _____ _______ ____   _____\n");
+    ਲਿਖੋ("|  ____|           |  __ \\__   __/ __ \\ / ____|\n");
+    ਲਿਖੋ("| |__ _ __ ___  ___| |__) | | | | |  | | (___\n");
+    ਲਿਖੋ("|  __| '__/ _ \\/ _ \\  _  /  | | | |  | |\\___ \\\n");
+    ਲਿਖੋ("| |  | | |  __/  __/ | \\ \\  | | | |__| |____) |\n");
+    ਲਿਖੋ("|_|  |_|  \\___|\\___|_|  \\_\\ |_|  \\____/|_____/\n");
+    unity_ਲੜੀਵਾਰ_menu();
 }

@@ -64,20 +64,20 @@
  * of the message).
  */
 
-#ifndef FREERTOS_MESSAGE_BUFFER_H
-#define FREERTOS_MESSAGE_BUFFER_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ FREERTOS_ਸੁਨੇਹਾ_ਬਫਰ_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ FREERTOS_ਸੁਨੇਹਾ_ਬਫਰ_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h must appear in source files before include message_buffer.h"
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INC_FREERTOS_H
+    #ਗਲਤੀ "include FreeRTOS.h must appear in source files before include message_buffer.h"
+#ਜੇ_ਅੰਤ
 
 /* Message buffers are built onto of stream buffers. */
-#include "stream_buffer.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "stream_buffer.h"
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
-    extern "C" {
-#endif
+#ਜੇ defined( __cplusplus )
+    ਬਾਹਰੀ "C" {
+#ਜੇ_ਅੰਤ
 /* *INDENT-ON* */
 
 /**
@@ -87,7 +87,7 @@
  * etc. Message buffer is essentially built as a stream buffer hence its handle
  * is also set to same type as a stream buffer handle.
  */
-typedef StreamBufferHandle_t MessageBufferHandle_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਧਾਰਾ_ਬਫਰ_Handle_t ਸੁਨੇਹਾ_ਬਫਰ_Handle_t;
 
 /*-----------------------------------------------------------*/
 
@@ -161,13 +161,13 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferCreate xMessageBufferCreate
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferCreate( xBufferSizeBytes ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( size_t ) 0, sbTYPE_MESSAGE_BUFFER, NULL, NULL )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Create( x_ਬਫਰ_ਮਾਪ_ਬਾਈਟਾਂ ) \
+    x_ਧਾਰਾ_ਬਫਰ_Generic_Create( ( x_ਬਫਰ_ਮਾਪ_ਬਾਈਟਾਂ ), ( size_t ) 0, sb_TYPE_ਸੁਨੇਹਾ_ਬਫਰ, ਨਿਰਾ, ਨਿਰਾ )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-    #define xMessageBufferCreateWithCallback( xBufferSizeBytes, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( size_t ) 0, sbTYPE_MESSAGE_BUFFER, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
-#endif
+#ਜੇ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Create_With_Callback( x_ਬਫਰ_ਮਾਪ_ਬਾਈਟਾਂ, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
+    x_ਧਾਰਾ_ਬਫਰ_Generic_Create( ( x_ਬਫਰ_ਮਾਪ_ਬਾਈਟਾਂ ), ( size_t ) 0, sb_TYPE_ਸੁਨੇਹਾ_ਬਫਰ, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
+#ਜੇ_ਅੰਤ
 
 /**
  * message_buffer.h
@@ -246,13 +246,13 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferCreateStatic xMessageBufferCreateStatic
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferCreateStatic( xBufferSizeBytes, pucMessageBufferStorageArea, pxStaticMessageBuffer ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), 0, sbTYPE_MESSAGE_BUFFER, ( pucMessageBufferStorageArea ), ( pxStaticMessageBuffer ), NULL, NULL )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Create_Static( x_ਬਫਰ_ਮਾਪ_ਬਾਈਟਾਂ, puc_ਸੁਨੇਹਾ_ਬਫਰ_Storage_Area, px_Static_ਸੁਨੇਹਾ_ਬਫਰ ) \
+    x_ਧਾਰਾ_ਬਫਰ_Generic_Create_Static( ( x_ਬਫਰ_ਮਾਪ_ਬਾਈਟਾਂ ), 0, sb_TYPE_ਸੁਨੇਹਾ_ਬਫਰ, ( puc_ਸੁਨੇਹਾ_ਬਫਰ_Storage_Area ), ( px_Static_ਸੁਨੇਹਾ_ਬਫਰ ), ਨਿਰਾ, ਨਿਰਾ )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-    #define xMessageBufferCreateStaticWithCallback( xBufferSizeBytes, pucMessageBufferStorageArea, pxStaticMessageBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), 0, sbTYPE_MESSAGE_BUFFER, ( pucMessageBufferStorageArea ), ( pxStaticMessageBuffer ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
-#endif
+#ਜੇ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Create_Static_With_Callback( x_ਬਫਰ_ਮਾਪ_ਬਾਈਟਾਂ, puc_ਸੁਨੇਹਾ_ਬਫਰ_Storage_Area, px_Static_ਸੁਨੇਹਾ_ਬਫਰ, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
+    x_ਧਾਰਾ_ਬਫਰ_Generic_Create_Static( ( x_ਬਫਰ_ਮਾਪ_ਬਾਈਟਾਂ ), 0, sb_TYPE_ਸੁਨੇਹਾ_ਬਫਰ, ( puc_ਸੁਨੇਹਾ_ਬਫਰ_Storage_Area ), ( px_Static_ਸੁਨੇਹਾ_ਬਫਰ ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
+#ਜੇ_ਅੰਤ
 
 /**
  * message_buffer.h
@@ -283,10 +283,10 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferGetStaticBuffers xMessageBufferGetStaticBuffers
  * \ingroup MessageBufferManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xMessageBufferGetStaticBuffers( xMessageBuffer, ppucMessageBufferStorageArea, ppxStaticMessageBuffer ) \
-    xStreamBufferGetStaticBuffers( ( xMessageBuffer ), ( ppucMessageBufferStorageArea ), ( ppxStaticMessageBuffer ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#ਜੇ ( config_SUPPORT_STATIC_ਵੰਡ == 1 )
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Get_Static_Buffers( x_ਸੁਨੇਹਾ_ਬਫਰ, ppuc_ਸੁਨੇਹਾ_ਬਫਰ_Storage_Area, ppx_Static_ਸੁਨੇਹਾ_ਬਫਰ ) \
+    x_ਧਾਰਾ_ਬਫਰ_Get_Static_Buffers( ( x_ਸੁਨੇਹਾ_ਬਫਰ ), ( ppuc_ਸੁਨੇਹਾ_ਬਫਰ_Storage_Area ), ( ppx_Static_ਸੁਨੇਹਾ_ਬਫਰ ) )
+#ਜੇ_ਅੰਤ /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  * message_buffer.h
@@ -388,8 +388,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferSend xMessageBufferSend
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferSend( xMessageBuffer, pvTxData, xDataLengthBytes, xTicksToWait ) \
-    xStreamBufferSend( ( xMessageBuffer ), ( pvTxData ), ( xDataLengthBytes ), ( xTicksToWait ) )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Send( x_ਸੁਨੇਹਾ_ਬਫਰ, pv_Tx_ਅੰਕੜੇ, x_ਅੰਕੜੇ_ਲੰਮਾਈ_ਬਾਈਟਾਂ, x_Ticks_ਮੰਜ਼ਿਲ_Wait ) \
+    x_ਧਾਰਾ_ਬਫਰ_Send( ( x_ਸੁਨੇਹਾ_ਬਫਰ ), ( pv_Tx_ਅੰਕੜੇ ), ( x_ਅੰਕੜੇ_ਲੰਮਾਈ_ਬਾਈਟਾਂ ), ( x_Ticks_ਮੰਜ਼ਿਲ_Wait ) )
 
 /**
  * message_buffer.h
@@ -496,8 +496,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferSendFromISR xMessageBufferSendFromISR
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferSendFromISR( xMessageBuffer, pvTxData, xDataLengthBytes, pxHigherPriorityTaskWoken ) \
-    xStreamBufferSendFromISR( ( xMessageBuffer ), ( pvTxData ), ( xDataLengthBytes ), ( pxHigherPriorityTaskWoken ) )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Send_From_ISR( x_ਸੁਨੇਹਾ_ਬਫਰ, pv_Tx_ਅੰਕੜੇ, x_ਅੰਕੜੇ_ਲੰਮਾਈ_ਬਾਈਟਾਂ, px_Higher_ਤਰਜੀਹ_Task_Woken ) \
+    x_ਧਾਰਾ_ਬਫਰ_Send_From_ISR( ( x_ਸੁਨੇਹਾ_ਬਫਰ ), ( pv_Tx_ਅੰਕੜੇ ), ( x_ਅੰਕੜੇ_ਲੰਮਾਈ_ਬਾਈਟਾਂ ), ( px_Higher_ਤਰਜੀਹ_Task_Woken ) )
 
 /**
  * message_buffer.h
@@ -588,8 +588,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferReceive xMessageBufferReceive
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferReceive( xMessageBuffer, pvRxData, xBufferLengthBytes, xTicksToWait ) \
-    xStreamBufferReceive( ( xMessageBuffer ), ( pvRxData ), ( xBufferLengthBytes ), ( xTicksToWait ) )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Receive( x_ਸੁਨੇਹਾ_ਬਫਰ, pv_Rx_ਅੰਕੜੇ, x_ਬਫਰ_ਲੰਮਾਈ_ਬਾਈਟਾਂ, x_Ticks_ਮੰਜ਼ਿਲ_Wait ) \
+    x_ਧਾਰਾ_ਬਫਰ_Receive( ( x_ਸੁਨੇਹਾ_ਬਫਰ ), ( pv_Rx_ਅੰਕੜੇ ), ( x_ਬਫਰ_ਲੰਮਾਈ_ਬਾਈਟਾਂ ), ( x_Ticks_ਮੰਜ਼ਿਲ_Wait ) )
 
 
 /**
@@ -693,8 +693,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferReceiveFromISR xMessageBufferReceiveFromISR
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferReceiveFromISR( xMessageBuffer, pvRxData, xBufferLengthBytes, pxHigherPriorityTaskWoken ) \
-    xStreamBufferReceiveFromISR( ( xMessageBuffer ), ( pvRxData ), ( xBufferLengthBytes ), ( pxHigherPriorityTaskWoken ) )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Receive_From_ISR( x_ਸੁਨੇਹਾ_ਬਫਰ, pv_Rx_ਅੰਕੜੇ, x_ਬਫਰ_ਲੰਮਾਈ_ਬਾਈਟਾਂ, px_Higher_ਤਰਜੀਹ_Task_Woken ) \
+    x_ਧਾਰਾ_ਬਫਰ_Receive_From_ISR( ( x_ਸੁਨੇਹਾ_ਬਫਰ ), ( pv_Rx_ਅੰਕੜੇ ), ( x_ਬਫਰ_ਲੰਮਾਈ_ਬਾਈਟਾਂ ), ( px_Higher_ਤਰਜੀਹ_Task_Woken ) )
 
 /**
  * message_buffer.h
@@ -717,8 +717,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * @param xMessageBuffer The handle of the message buffer to be deleted.
  *
  */
-#define vMessageBufferDelete( xMessageBuffer ) \
-    vStreamBufferDelete( xMessageBuffer )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ v_ਸੁਨੇਹਾ_ਬਫਰ_Delete( x_ਸੁਨੇਹਾ_ਬਫਰ ) \
+    v_ਧਾਰਾ_ਬਫਰ_Delete( x_ਸੁਨੇਹਾ_ਬਫਰ )
 
 /**
  * message_buffer.h
@@ -738,8 +738,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * @return If the message buffer referenced by xMessageBuffer is full then
  * pdTRUE is returned.  Otherwise pdFALSE is returned.
  */
-#define xMessageBufferIsFull( xMessageBuffer ) \
-    xStreamBufferIsFull( xMessageBuffer )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Is_ਭਰਿਆ( x_ਸੁਨੇਹਾ_ਬਫਰ ) \
+    x_ਧਾਰਾ_ਬਫਰ_Is_ਭਰਿਆ( x_ਸੁਨੇਹਾ_ਬਫਰ )
 
 /**
  * message_buffer.h
@@ -758,8 +758,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * pdTRUE is returned.  Otherwise pdFALSE is returned.
  *
  */
-#define xMessageBufferIsEmpty( xMessageBuffer ) \
-    xStreamBufferIsEmpty( xMessageBuffer )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Is_ਖਾਲੀ_ਥਾਵਾਂ( x_ਸੁਨੇਹਾ_ਬਫਰ ) \
+    x_ਧਾਰਾ_ਬਫਰ_Is_ਖਾਲੀ_ਥਾਵਾਂ( x_ਸੁਨੇਹਾ_ਬਫਰ )
 
 /**
  * message_buffer.h
@@ -789,8 +789,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferReset xMessageBufferReset
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferReset( xMessageBuffer ) \
-    xStreamBufferReset( xMessageBuffer )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Reset( x_ਸੁਨੇਹਾ_ਬਫਰ ) \
+    x_ਧਾਰਾ_ਬਫਰ_Reset( x_ਸੁਨੇਹਾ_ਬਫਰ )
 
 
 /**
@@ -822,8 +822,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferResetFromISR xMessageBufferResetFromISR
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferResetFromISR( xMessageBuffer ) \
-    xStreamBufferResetFromISR( xMessageBuffer )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Reset_From_ISR( x_ਸੁਨੇਹਾ_ਬਫਰ ) \
+    x_ਧਾਰਾ_ਬਫਰ_Reset_From_ISR( x_ਸੁਨੇਹਾ_ਬਫਰ )
 
 /**
  * message_buffer.h
@@ -847,10 +847,10 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferSpaceAvailable xMessageBufferSpaceAvailable
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferSpaceAvailable( xMessageBuffer ) \
-    xStreamBufferSpacesAvailable( xMessageBuffer )
-#define xMessageBufferSpacesAvailable( xMessageBuffer ) \
-    xStreamBufferSpacesAvailable( xMessageBuffer ) /* Corrects typo in original macro name. */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Space_ਉਪਲਬਧ( x_ਸੁਨੇਹਾ_ਬਫਰ ) \
+    x_ਧਾਰਾ_ਬਫਰ_Spaces_ਉਪਲਬਧ( x_ਸੁਨੇਹਾ_ਬਫਰ )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Spaces_ਉਪਲਬਧ( x_ਸੁਨੇਹਾ_ਬਫਰ ) \
+    x_ਧਾਰਾ_ਬਫਰ_Spaces_ਉਪਲਬਧ( x_ਸੁਨੇਹਾ_ਬਫਰ ) /* Corrects typo in original macro name. */
 
 /**
  * message_buffer.h
@@ -872,8 +872,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferNextLengthBytes xMessageBufferNextLengthBytes
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferNextLengthBytes( xMessageBuffer ) \
-    xStreamBufferNextMessageLengthBytes( xMessageBuffer )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_ਅਗਲਾ_ਲੰਮਾਈ_ਬਾਈਟਾਂ( x_ਸੁਨੇਹਾ_ਬਫਰ ) \
+    x_ਧਾਰਾ_ਬਫਰ_ਅਗਲਾ_ਸੁਨੇਹਾ_ਲੰਮਾਈ_ਬਾਈਟਾਂ( x_ਸੁਨੇਹਾ_ਬਫਰ )
 
 /**
  * message_buffer.h
@@ -915,8 +915,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferSendCompletedFromISR xMessageBufferSendCompletedFromISR
  * \ingroup StreamBufferManagement
  */
-#define xMessageBufferSendCompletedFromISR( xMessageBuffer, pxHigherPriorityTaskWoken ) \
-    xStreamBufferSendCompletedFromISR( ( xMessageBuffer ), ( pxHigherPriorityTaskWoken ) )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Send_Completed_From_ISR( x_ਸੁਨੇਹਾ_ਬਫਰ, px_Higher_ਤਰਜੀਹ_Task_Woken ) \
+    x_ਧਾਰਾ_ਬਫਰ_Send_Completed_From_ISR( ( x_ਸੁਨੇਹਾ_ਬਫਰ ), ( px_Higher_ਤਰਜੀਹ_Task_Woken ) )
 
 /**
  * message_buffer.h
@@ -959,13 +959,13 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \defgroup xMessageBufferReceiveCompletedFromISR xMessageBufferReceiveCompletedFromISR
  * \ingroup StreamBufferManagement
  */
-#define xMessageBufferReceiveCompletedFromISR( xMessageBuffer, pxHigherPriorityTaskWoken ) \
-    xStreamBufferReceiveCompletedFromISR( ( xMessageBuffer ), ( pxHigherPriorityTaskWoken ) )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸੁਨੇਹਾ_ਬਫਰ_Receive_Completed_From_ISR( x_ਸੁਨੇਹਾ_ਬਫਰ, px_Higher_ਤਰਜੀਹ_Task_Woken ) \
+    x_ਧਾਰਾ_ਬਫਰ_Receive_Completed_From_ISR( ( x_ਸੁਨੇਹਾ_ਬਫਰ ), ( px_Higher_ਤਰਜੀਹ_Task_Woken ) )
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
+#ਜੇ defined( __cplusplus )
     } /* extern "C" */
-#endif
+#ਜੇ_ਅੰਤ
 /* *INDENT-ON* */
 
-#endif /* !defined( FREERTOS_MESSAGE_BUFFER_H ) */
+#ਜੇ_ਅੰਤ /* !defined( FREERTOS_MESSAGE_BUFFER_H ) */

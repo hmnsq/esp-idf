@@ -26,184 +26,184 @@
  * - Consider memory cost vs performance benefit trade-offs
  */
 
-#include <esp_types.h>
-#include <stdio.h>
-#include <inttypes.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "freertos/event_groups.h"
-#include "freertos/stream_buffer.h"
-#include "freertos/timers.h"
-#include "esp_cpu.h"
-#include "unity.h"
-#include "test_utils.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ <esp_types.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <inttypes.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/FreeRTOS.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/task.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/semphr.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/queue.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/event_groups.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/stream_buffer.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/timers.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_cpu.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "unity.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "test_utils.h"
 
-#define NUMBER_OF_SAMPLES 1000
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਸੰਖਿਆ_ਦਾ_SAMPLES 1000
 
-static int compare_uint32(const void *a, const void *b)
+ਸਥਿਰ ਪੂਰਨ compare_uint32(ਅਚਲ ਖਾਲੀ *a, ਅਚਲ ਖਾਲੀ *b)
 {
-    return (*(uint32_t *)a - * (uint32_t *)b);
+    ਵਾਪਸ (*(uint32_t *)a - * (uint32_t *)b);
 }
 
-static uint32_t calculate_median(uint32_t *values, int size)
+ਸਥਿਰ uint32_t calculate_median(uint32_t *ਮੁੱਲਾਂ, ਪੂਰਨ ਮਾਪ)
 {
     /* Sort the array of values containing the execution time of each iteration */
-    qsort(values, size, sizeof(uint32_t), compare_uint32);
+    qsort(ਮੁੱਲਾਂ, ਮਾਪ, ਆਕਾਰ(uint32_t), compare_uint32);
     /* Return the median value */
-    return values[size / 2];
+    ਵਾਪਸ ਮੁੱਲਾਂ[ਮਾਪ / 2];
 }
 
-static uint32_t calculate_average(uint32_t *values, int size)
+ਸਥਿਰ uint32_t calculate_ਔਸਤਨ(uint32_t *ਮੁੱਲਾਂ, ਪੂਰਨ ਮਾਪ)
 {
-    uint64_t sum = 0;
-    for (int i = 0; i < size; i++) {
-        sum += values[i];
+    uint64_t ਜੋੜ = 0;
+    ਲਈ (ਪੂਰਨ i = 0; i < ਮਾਪ; i++) {
+        ਜੋੜ += ਮੁੱਲਾਂ[i];
     }
-    return (uint32_t)(sum / size);
+    ਵਾਪਸ (uint32_t)(ਜੋੜ / ਮਾਪ);
 }
 
 TEST_CASE("freertos api performance test", "[freertos][ignore]")
 {
-    printf("=== FreeRTOS API Performance Test ===\n");
-    printf("This test measures execution time of commonly used FreeRTOS APIs.\n");
-    printf("Results help evaluate the impact of memory placement (Flash vs IRAM).\n\n");
+    ਲਿਖੋ("=== FreeRTOS API Performance Test ===\n");
+    ਲਿਖੋ("This test measures execution time of commonly used FreeRTOS APIs.\n");
+    ਲਿਖੋ("Results help evaluate the impact of memory placement (Flash vs IRAM).\n\n");
 
-#if defined(CONFIG_FREERTOS_IN_IRAM)
-    printf("FreeRTOS functions placed in IRAM.\r\n");
-#else
-    printf("FreeRTOS functions placed in Flash.\r\n");
-#endif
-    printf("Testing with %d samples per API\n", NUMBER_OF_SAMPLES);
-    printf("Note: Performance varies by target architecture, flash cache, and system load.\n\n");
+#ਜੇ defined(CONFIG_FREERTOS_ਵਿੱਚ_IRAM)
+    ਲਿਖੋ("FreeRTOS functions placed in IRAM.\r\n");
+#ਨਹੀਂਤਾਂ
+    ਲਿਖੋ("FreeRTOS functions placed in Flash.\r\n");
+#ਜੇ_ਅੰਤ
+    ਲਿਖੋ("Testing with %d samples per API\n", ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    ਲਿਖੋ("Note: Performance varies by target architecture, flash cache, and system load.\n\n");
 
-    uint32_t execution_times[NUMBER_OF_SAMPLES];
-    uint32_t test_data = 0x12345678;
+    uint32_t execution_times[ਸੰਖਿਆ_ਦਾ_SAMPLES];
+    uint32_t test_ਅੰਕੜੇ = 0x12345678;
 
     // Initialize test objects
-    QueueHandle_t test_queue = xQueueCreate(10, sizeof(uint32_t));
-    SemaphoreHandle_t test_semaphore = xSemaphoreCreateBinary();
-    EventGroupHandle_t test_event_group = xEventGroupCreate();
-    StreamBufferHandle_t test_stream_buffer = xStreamBufferCreate(1024, 1);
+    ਕਤਾਰ_Handle_t test_ਕਤਾਰ = x_ਕਤਾਰ_Create(10, ਆਕਾਰ(uint32_t));
+    SemaphoreHandle_t test_semaphore = x_Semaphore_Create_ਦੁਆਧਾਰੀ();
+    Event_ਸਮੂਹ_Handle_t test_event_ਸਮੂਹ = x_Event_ਸਮੂਹ_Create();
+    ਧਾਰਾ_ਬਫਰ_Handle_t test_ਧਾਰਾ_ਬਫਰ = x_ਧਾਰਾ_ਬਫਰ_Create(1024, 1);
 
-    TEST_ASSERT(test_queue != NULL);
-    TEST_ASSERT(test_semaphore != NULL);
-    TEST_ASSERT(test_event_group != NULL);
-    TEST_ASSERT(test_stream_buffer != NULL);
+    TEST_ASSERT(test_ਕਤਾਰ != ਨਿਰਾ);
+    TEST_ASSERT(test_semaphore != ਨਿਰਾ);
+    TEST_ASSERT(test_event_ਸਮੂਹ != ਨਿਰਾ);
+    TEST_ASSERT(test_ਧਾਰਾ_ਬਫਰ != ਨਿਰਾ);
 
     // Test 1: Queue APIs
-    printf("1. Testing Queue APIs...\n");
+    ਲਿਖੋ("1. Testing Queue APIs...\n");
 
     // xQueueSend
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
-        uint32_t start_cycles = esp_cpu_get_cycle_count();
-        xQueueSend(test_queue, &test_data, 0);
-        execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
+    ਲਈ (ਪੂਰਨ i = 0; i < ਸੰਖਿਆ_ਦਾ_SAMPLES; i++) {
+        uint32_t ਸ਼ੁਰੂ_ਚੱਕਰਾਂ = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ();
+        x_ਕਤਾਰ_Send(test_ਕਤਾਰ, &test_ਅੰਕੜੇ, 0);
+        execution_times[i] = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ() - ਸ਼ੁਰੂ_ਚੱਕਰਾਂ;
     }
-    uint32_t queue_send_median = calculate_median(execution_times, NUMBER_OF_SAMPLES);
-    uint32_t queue_send_avg = calculate_average(execution_times, NUMBER_OF_SAMPLES);
-    printf("   xQueueSend: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", queue_send_median, queue_send_avg);
+    uint32_t ਕਤਾਰ_send_median = calculate_median(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    uint32_t ਕਤਾਰ_send_avg = calculate_ਔਸਤਨ(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    ਲਿਖੋ("   xQueueSend: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", ਕਤਾਰ_send_median, ਕਤਾਰ_send_avg);
 
     // xQueueReceive
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
-        uint32_t start_cycles = esp_cpu_get_cycle_count();
-        xQueueReceive(test_queue, &test_data, 0);
-        execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
+    ਲਈ (ਪੂਰਨ i = 0; i < ਸੰਖਿਆ_ਦਾ_SAMPLES; i++) {
+        uint32_t ਸ਼ੁਰੂ_ਚੱਕਰਾਂ = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ();
+        x_ਕਤਾਰ_Receive(test_ਕਤਾਰ, &test_ਅੰਕੜੇ, 0);
+        execution_times[i] = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ() - ਸ਼ੁਰੂ_ਚੱਕਰਾਂ;
     }
-    uint32_t queue_receive_median = calculate_median(execution_times, NUMBER_OF_SAMPLES);
-    uint32_t queue_receive_avg = calculate_average(execution_times, NUMBER_OF_SAMPLES);
-    printf("   xQueueReceive: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", queue_receive_median, queue_receive_avg);
+    uint32_t ਕਤਾਰ_receive_median = calculate_median(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    uint32_t ਕਤਾਰ_receive_avg = calculate_ਔਸਤਨ(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    ਲਿਖੋ("   xQueueReceive: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", ਕਤਾਰ_receive_median, ਕਤਾਰ_receive_avg);
 
     // Test 2: Semaphore APIs
-    printf("\n2. Testing Semaphore APIs...\n");
+    ਲਿਖੋ("\n2. Testing Semaphore APIs...\n");
 
     // xSemaphoreGive
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
-        uint32_t start_cycles = esp_cpu_get_cycle_count();
+    ਲਈ (ਪੂਰਨ i = 0; i < ਸੰਖਿਆ_ਦਾ_SAMPLES; i++) {
+        uint32_t ਸ਼ੁਰੂ_ਚੱਕਰਾਂ = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ();
         xSemaphoreGive(test_semaphore);
-        execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
+        execution_times[i] = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ() - ਸ਼ੁਰੂ_ਚੱਕਰਾਂ;
     }
-    uint32_t sem_give_median = calculate_median(execution_times, NUMBER_OF_SAMPLES);
-    uint32_t sem_give_avg = calculate_average(execution_times, NUMBER_OF_SAMPLES);
-    printf("   xSemaphoreGive: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", sem_give_median, sem_give_avg);
+    uint32_t sem_give_median = calculate_median(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    uint32_t sem_give_avg = calculate_ਔਸਤਨ(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    ਲਿਖੋ("   xSemaphoreGive: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", sem_give_median, sem_give_avg);
 
     // xSemaphoreTake
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
-        uint32_t start_cycles = esp_cpu_get_cycle_count();
+    ਲਈ (ਪੂਰਨ i = 0; i < ਸੰਖਿਆ_ਦਾ_SAMPLES; i++) {
+        uint32_t ਸ਼ੁਰੂ_ਚੱਕਰਾਂ = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ();
         xSemaphoreTake(test_semaphore, 0);
-        execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
+        execution_times[i] = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ() - ਸ਼ੁਰੂ_ਚੱਕਰਾਂ;
     }
-    uint32_t sem_take_median = calculate_median(execution_times, NUMBER_OF_SAMPLES);
-    uint32_t sem_take_avg = calculate_average(execution_times, NUMBER_OF_SAMPLES);
-    printf("   xSemaphoreTake: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", sem_take_median, sem_take_avg);
+    uint32_t sem_take_median = calculate_median(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    uint32_t sem_take_avg = calculate_ਔਸਤਨ(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    ਲਿਖੋ("   xSemaphoreTake: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", sem_take_median, sem_take_avg);
 
     // Test 3: Event Group APIs
-    printf("\n3. Testing Event Group APIs...\n");
+    ਲਿਖੋ("\n3. Testing Event Group APIs...\n");
 
     // xEventGroupSetBits
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
-        uint32_t start_cycles = esp_cpu_get_cycle_count();
-        xEventGroupSetBits(test_event_group, 0x01);
-        execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
+    ਲਈ (ਪੂਰਨ i = 0; i < ਸੰਖਿਆ_ਦਾ_SAMPLES; i++) {
+        uint32_t ਸ਼ੁਰੂ_ਚੱਕਰਾਂ = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ();
+        x_Event_ਸਮੂਹ_ਸੈੱਟ_ਬਿੱਟ(test_event_ਸਮੂਹ, 0x01);
+        execution_times[i] = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ() - ਸ਼ੁਰੂ_ਚੱਕਰਾਂ;
     }
-    uint32_t event_set_median = calculate_median(execution_times, NUMBER_OF_SAMPLES);
-    uint32_t event_set_avg = calculate_average(execution_times, NUMBER_OF_SAMPLES);
-    printf("   xEventGroupSetBits: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", event_set_median, event_set_avg);
+    uint32_t event_ਸੈੱਟ_median = calculate_median(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    uint32_t event_ਸੈੱਟ_avg = calculate_ਔਸਤਨ(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    ਲਿਖੋ("   xEventGroupSetBits: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", event_ਸੈੱਟ_median, event_ਸੈੱਟ_avg);
 
     // xEventGroupGetBits
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
-        uint32_t start_cycles = esp_cpu_get_cycle_count();
-        xEventGroupGetBits(test_event_group);
-        execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
+    ਲਈ (ਪੂਰਨ i = 0; i < ਸੰਖਿਆ_ਦਾ_SAMPLES; i++) {
+        uint32_t ਸ਼ੁਰੂ_ਚੱਕਰਾਂ = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ();
+        x_Event_ਸਮੂਹ_Get_ਬਿੱਟ(test_event_ਸਮੂਹ);
+        execution_times[i] = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ() - ਸ਼ੁਰੂ_ਚੱਕਰਾਂ;
     }
-    uint32_t event_get_median = calculate_median(execution_times, NUMBER_OF_SAMPLES);
-    uint32_t event_get_avg = calculate_average(execution_times, NUMBER_OF_SAMPLES);
-    printf("   xEventGroupGetBits: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", event_get_median, event_get_avg);
+    uint32_t event_get_median = calculate_median(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    uint32_t event_get_avg = calculate_ਔਸਤਨ(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    ਲਿਖੋ("   xEventGroupGetBits: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", event_get_median, event_get_avg);
 
     // Test 4: Stream Buffer APIs
-    printf("\n4. Testing Stream Buffer APIs...\n");
+    ਲਿਖੋ("\n4. Testing Stream Buffer APIs...\n");
 
     // xStreamBufferSend
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
-        uint32_t start_cycles = esp_cpu_get_cycle_count();
-        xStreamBufferSend(test_stream_buffer, &test_data, sizeof(uint32_t), 0);
-        execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
+    ਲਈ (ਪੂਰਨ i = 0; i < ਸੰਖਿਆ_ਦਾ_SAMPLES; i++) {
+        uint32_t ਸ਼ੁਰੂ_ਚੱਕਰਾਂ = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ();
+        x_ਧਾਰਾ_ਬਫਰ_Send(test_ਧਾਰਾ_ਬਫਰ, &test_ਅੰਕੜੇ, ਆਕਾਰ(uint32_t), 0);
+        execution_times[i] = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ() - ਸ਼ੁਰੂ_ਚੱਕਰਾਂ;
     }
-    uint32_t stream_send_median = calculate_median(execution_times, NUMBER_OF_SAMPLES);
-    uint32_t stream_send_avg = calculate_average(execution_times, NUMBER_OF_SAMPLES);
-    printf("   xStreamBufferSend: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", stream_send_median, stream_send_avg);
+    uint32_t ਧਾਰਾ_send_median = calculate_median(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    uint32_t ਧਾਰਾ_send_avg = calculate_ਔਸਤਨ(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    ਲਿਖੋ("   xStreamBufferSend: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", ਧਾਰਾ_send_median, ਧਾਰਾ_send_avg);
 
     // xStreamBufferReceive
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
-        uint32_t start_cycles = esp_cpu_get_cycle_count();
-        xStreamBufferReceive(test_stream_buffer, &test_data, sizeof(uint32_t), 0);
-        execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
+    ਲਈ (ਪੂਰਨ i = 0; i < ਸੰਖਿਆ_ਦਾ_SAMPLES; i++) {
+        uint32_t ਸ਼ੁਰੂ_ਚੱਕਰਾਂ = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ();
+        x_ਧਾਰਾ_ਬਫਰ_Receive(test_ਧਾਰਾ_ਬਫਰ, &test_ਅੰਕੜੇ, ਆਕਾਰ(uint32_t), 0);
+        execution_times[i] = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ() - ਸ਼ੁਰੂ_ਚੱਕਰਾਂ;
     }
-    uint32_t stream_receive_median = calculate_median(execution_times, NUMBER_OF_SAMPLES);
-    uint32_t stream_receive_avg = calculate_average(execution_times, NUMBER_OF_SAMPLES);
-    printf("   xStreamBufferReceive: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", stream_receive_median, stream_receive_avg);
+    uint32_t ਧਾਰਾ_receive_median = calculate_median(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    uint32_t ਧਾਰਾ_receive_avg = calculate_ਔਸਤਨ(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    ਲਿਖੋ("   xStreamBufferReceive: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", ਧਾਰਾ_receive_median, ਧਾਰਾ_receive_avg);
 
     // Test 5: Task APIs
-    printf("\n5. Testing Task APIs...\n");
+    ਲਿਖੋ("\n5. Testing Task APIs...\n");
 
     // xTaskGetTickCount
-    for (int i = 0; i < NUMBER_OF_SAMPLES; i++) {
-        uint32_t start_cycles = esp_cpu_get_cycle_count();
-        xTaskGetTickCount();
-        execution_times[i] = esp_cpu_get_cycle_count() - start_cycles;
+    ਲਈ (ਪੂਰਨ i = 0; i < ਸੰਖਿਆ_ਦਾ_SAMPLES; i++) {
+        uint32_t ਸ਼ੁਰੂ_ਚੱਕਰਾਂ = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ();
+        x_Task_Get_Tick_ਗਿਣਤੀ();
+        execution_times[i] = esp_cpu_get_ਚੱਕਰ_ਗਿਣਤੀ() - ਸ਼ੁਰੂ_ਚੱਕਰਾਂ;
     }
-    uint32_t task_tick_median = calculate_median(execution_times, NUMBER_OF_SAMPLES);
-    uint32_t task_tick_avg = calculate_average(execution_times, NUMBER_OF_SAMPLES);
-    printf("   xTaskGetTickCount: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", task_tick_median, task_tick_avg);
+    uint32_t task_tick_median = calculate_median(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    uint32_t task_tick_avg = calculate_ਔਸਤਨ(execution_times, ਸੰਖਿਆ_ਦਾ_SAMPLES);
+    ਲਿਖੋ("   xTaskGetTickCount: Median=%"PRIu32" cycles, Average=%"PRIu32" cycles\n", task_tick_median, task_tick_avg);
 
-    printf("\n=== Performance Test Complete ===\n");
-    printf("Note: Compare results between Flash and IRAM configurations.\n");
-    printf("Consider memory cost vs performance benefit for your application.\n");
+    ਲਿਖੋ("\n=== Performance Test Complete ===\n");
+    ਲਿਖੋ("Note: Compare results between Flash and IRAM configurations.\n");
+    ਲਿਖੋ("Consider memory cost vs performance benefit for your application.\n");
 
     // Cleanup
-    vStreamBufferDelete(test_stream_buffer);
-    vEventGroupDelete(test_event_group);
+    v_ਧਾਰਾ_ਬਫਰ_Delete(test_ਧਾਰਾ_ਬਫਰ);
+    v_Event_ਸਮੂਹ_Delete(test_event_ਸਮੂਹ);
     vSemaphoreDelete(test_semaphore);
-    vQueueDelete(test_queue);
+    v_ਕਤਾਰ_Delete(test_ਕਤਾਰ);
 }

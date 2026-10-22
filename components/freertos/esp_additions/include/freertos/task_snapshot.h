@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-#pragma once
+#ਹਦਾਇਤ once
 
 #warning "freertos/task_snapshot.h is deprecated. Use freertos/freertos_debug.h instead. This compatibility header will be removed in ESP-IDF v7.0."
-#include "freertos/freertos_debug.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/freertos_debug.h"

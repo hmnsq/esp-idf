@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#pragma once
+#ਹਦਾਇਤ once
 
 /* Xtensa Architecture specific configuration. This file is included in the common FreeRTOSConfig.h. */
 
-#include "sdkconfig.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "sdkconfig.h"
 
 /* Required for configuration-dependent settings. */
-#include "xtensa_config.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "xtensa_config.h"
 
 /* -------------------------------------------- Xtensa Additional Config  ----------------------------------------------
  * - Provide Xtensa definitions usually given by -D option when building with xt-make (see readme_xtensa.txt)
@@ -26,16 +26,16 @@
  *      - XT_USE_SWPRI         We don't define this (unused)
  * ------------------------------------------------------------------------------------------------------------------ */
 
-#define configXT_SIMULATOR          0
-#define configXT_BOARD              1                           /* Board mode */
-#if CONFIG_FREERTOS_CORETIMER_0
-    #define configXT_TIMER_INDEX    0
-#elif CONFIG_FREERTOS_CORETIMER_1
-    #define configXT_TIMER_INDEX    1
-#endif
-#define configXT_INTEXC_HOOKS       0
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configXT_SIMULATOR          0
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configXT_BOARD              1                           /* Board mode */
+#ਜੇ CONFIG_FREERTOS_CORETIMER_0
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_XT_TIMER_ਸੂਚਕਾਂਕ    0
+#ਜਾਂਜੇ CONFIG_FREERTOS_CORETIMER_1
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_XT_TIMER_ਸੂਚਕਾਂਕ    1
+#ਜੇ_ਅੰਤ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configXT_INTEXC_HOOKS       0
 
-#define configBENCHMARK             0
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configBENCHMARK             0
 
 /* ------------------------------------------------- FreeRTOS Config ---------------------------------------------------
  * - All Vanilla FreeRTOS configuration goes into this section
@@ -43,64 +43,64 @@
 
 /* ------------------ Scheduler Related -------------------- */
 
-#ifdef CONFIG_FREERTOS_OPTIMIZED_SCHEDULER
-    #define configUSE_PORT_OPTIMISED_TASK_SELECTION    1
-#else
-    #define configUSE_PORT_OPTIMISED_TASK_SELECTION    0
-#endif /* CONFIG_FREERTOS_OPTIMIZED_SCHEDULER */
-#define configMINIMAL_STACK_SIZE                       ( CONFIG_FREERTOS_IDLE_TASK_STACKSIZE + configSTACK_OVERHEAD_TOTAL )
-#define configMAX_API_CALL_INTERRUPT_PRIORITY          XCHAL_EXCM_LEVEL
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CONFIG_FREERTOS_OPTIMIZED_SCHEDULER
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_USE_ਪੋਰਟ_OPTIMISED_TASK_SELECTION    1
+#ਨਹੀਂਤਾਂ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_USE_ਪੋਰਟ_OPTIMISED_TASK_SELECTION    0
+#ਜੇ_ਅੰਤ /* CONFIG_FREERTOS_OPTIMIZED_SCHEDULER */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_ਨਿਊਨਤਮ_ਢੇਰ_ਮਾਪ                       ( CONFIG_FREERTOS_IDLE_TASK_STACKSIZE + config_ਢੇਰ_OVERHEAD_ਕੁੱਲ )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_MAX_API_CALL_ਰੁਕਾਵਟ_ਤਰਜੀਹ          XCHAL_EXCM_LEVEL
 
 /* ---------------- Amazon SMP FreeRTOS -------------------- */
 
-#if CONFIG_FREERTOS_SMP
+#ਜੇ CONFIG_FREERTOS_SMP
 
 /* This is always enabled to call IDF style idle hooks, by can be "--Wl,--wrap"
  * if users enable CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK. */
-    #define configUSE_PASSIVE_IDLE_HOOK    1
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_PASSIVE_IDLE_HOOK    1
+#ਜੇ_ਅੰਤ
 
 /* ----------------------- System -------------------------- */
 
-#if CONFIG_LIBC_NEWLIB
-#define configUSE_NEWLIB_REENTRANT    1
-#else
-#define configUSE_NEWLIB_REENTRANT    0
-#endif
+#ਜੇ CONFIG_LIBC_NEWLIB
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_NEWLIB_REENTRANT    1
+#ਨਹੀਂਤਾਂ
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_NEWLIB_REENTRANT    0
+#ਜੇ_ਅੰਤ
 
 /* - FreeRTOS provides default for configTLS_BLOCK_TYPE.
  * - We simply provide our own INIT and DEINIT functions
  * - We set "SET" to a blank macro since there is no need to set the reentrancy
  * pointer. All newlib functions calls __getreent. */
-#if CONFIG_FREERTOS_SMP
-    #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )    esp_reent_init( &( xTLSBlock ) )
-#else /* CONFIG_FREERTOS_SMP */
-    #define configINIT_TLS_BLOCK( xTLSBlock )                  esp_reent_init( &( xTLSBlock ) )
-#endif /* CONFIG_FREERTOS_SMP */
-#define configSET_TLS_BLOCK( xTLSBlock )
-#define configDEINIT_TLS_BLOCK( xTLSBlock )                    _reclaim_reent( &( xTLSBlock ) )
+#ਜੇ CONFIG_FREERTOS_SMP
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_INIT_TLS_ਖੰਡ( xTLSBlock, px_ਸਿਖਰ_ਦਾ_ਢੇਰ )    esp_reent_init( &( xTLSBlock ) )
+#ਨਹੀਂਤਾਂ /* CONFIG_FREERTOS_SMP */
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_INIT_TLS_ਖੰਡ( xTLSBlock )                  esp_reent_init( &( xTLSBlock ) )
+#ਜੇ_ਅੰਤ /* CONFIG_FREERTOS_SMP */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_ਸੈੱਟ_TLS_ਖੰਡ( xTLSBlock )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_DEINIT_TLS_ਖੰਡ( xTLSBlock )                    _reclaim_reent( &( xTLSBlock ) )
 
-#define configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H    1
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H    1
 
 /* ----------------------- Memory  ------------------------- */
 
 /* This isn't used as FreeRTOS will only allocate from internal memory (see
  * heap_idf.c). We simply define this macro to span all non-statically-allocated
  * shared RAM. */
-#define configTOTAL_HEAP_SIZE    ( &_heap_end - &_heap_start )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_ਕੁੱਲ_ਢੇਰ_ਮਾਪ    ( &ਢੇਰ_ਸਿਰਾ - &ਢੇਰ_ਸ਼ੁਰੂ )
 
 /* ------------------- Run-time Stats ---------------------- */
 
-#if CONFIG_FREERTOS_USE_TRACE_FACILITY
+#ਜੇ CONFIG_FREERTOS_USE_TRACE_FACILITY
     /* Used by uxTaskGetSystemState(), and other trace facility functions */
-    #define configUSE_TRACE_FACILITY    1
-#endif /* CONFIG_FREERTOS_USE_TRACE_FACILITY */
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_TRACE_FACILITY    1
+#ਜੇ_ਅੰਤ /* CONFIG_FREERTOS_USE_TRACE_FACILITY */
 
 /* -------------------- API Includes ----------------------- */
 
 /* Todo: Reconcile INCLUDE_option differences (IDF-8186) */
-#define INCLUDE_xTaskDelayUntil                 1
-#define INCLUDE_uxTaskGetStackHighWaterMark2    1
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_xTaskDelayUntil                 1
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_ux_Task_Get_ਢੇਰ_ਉੱਚਾ_Water_Mark2    1
 
 /* ------------------------------------------------ ESP-IDF Additions --------------------------------------------------
  *
@@ -111,7 +111,7 @@
  * Size needs to be aligned to the stack increment, since the location of
  * the stack for the 2nd CPU will be calculated using configISR_STACK_SIZE.
  */
-#define configSTACK_ALIGNMENT       16
-#ifndef configISR_STACK_SIZE
-    #define configISR_STACK_SIZE    ( ( CONFIG_FREERTOS_ISR_STACKSIZE + configSTACK_ALIGNMENT - 1 ) & ( ~( configSTACK_ALIGNMENT - 1 ) ) )
-#endif
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_ਢੇਰ_ALIGNMENT       16
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_ISR_ਢੇਰ_ਮਾਪ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_ISR_ਢੇਰ_ਮਾਪ    ( ( CONFIG_FREERTOS_ISR_STACKSIZE + config_ਢੇਰ_ALIGNMENT - 1 ) & ( ~( config_ਢੇਰ_ALIGNMENT - 1 ) ) )
+#ਜੇ_ਅੰਤ

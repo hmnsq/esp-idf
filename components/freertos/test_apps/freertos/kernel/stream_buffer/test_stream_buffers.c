@@ -4,79 +4,79 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <stdint.h>
-#include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/stream_buffer.h"
-#include "unity.h"
-#include "test_utils.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdint.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/FreeRTOS.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/task.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/semphr.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/stream_buffer.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "unity.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "test_utils.h"
 
-#define TEST_NUM_BYTES                  100
-#define TEST_RECEIVER_TIMEOUT_TICKS     pdMS_TO_TICKS(1000)    // 1ms timeout for receiver task
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ TEST_ਅੰਕ_ਬਾਈਟਾਂ                  100
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ TEST_RECEIVER_TIMEOUT_TICKS     pd_MS_ਮੰਜ਼ਿਲ_TICKS(1000)    // 1ms timeout for receiver task
 
-typedef struct {
-    StreamBufferHandle_t stream_buffer;
-    SemaphoreHandle_t done_sem;
-} test_args_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ {
+    ਧਾਰਾ_ਬਫਰ_Handle_t ਧਾਰਾ_ਬਫਰ;
+    SemaphoreHandle_t ਪੂਰਾ_sem;
+} test_ਦਲੀਲਾਂ_t;
 
-static void sender_task(void *arg)
+ਸਥਿਰ ਖਾਲੀ sender_task(ਖਾਲੀ *arg)
 {
-    test_args_t *test_args = (test_args_t *)arg;
-    printf("Starting sender task... \n");
+    test_ਦਲੀਲਾਂ_t *test_ਦਲੀਲਾਂ = (test_ਦਲੀਲਾਂ_t *)arg;
+    ਲਿਖੋ("Starting sender task... \n");
 
-    for (int i = 0; i < TEST_NUM_BYTES; i++) {
+    ਲਈ (ਪੂਰਨ i = 0; i < TEST_ਅੰਕ_ਬਾਈਟਾਂ; i++) {
         // Send a single byte, with the byte's value being the number of bytes sent thus far
-        uint8_t data = (uint8_t)i;
-        TEST_ASSERT_EQUAL(1, xStreamBufferSend(test_args->stream_buffer, &data, 1, 0));
+        uint8_t ਅੰਕੜੇ = (uint8_t)i;
+        TEST_ASSERT_EQUAL(1, x_ਧਾਰਾ_ਬਫਰ_Send(test_ਦਲੀਲਾਂ->ਧਾਰਾ_ਬਫਰ, &ਅੰਕੜੇ, 1, 0));
         // Short delay to give a chance for receiver task to receive
         vTaskDelay(1);
     }
 
-    xSemaphoreGive(test_args->done_sem);
-    vTaskDelete(NULL);
+    xSemaphoreGive(test_ਦਲੀਲਾਂ->ਪੂਰਾ_sem);
+    vTaskDelete(ਨਿਰਾ);
 }
 
-static void receiver_task(void *arg)
+ਸਥਿਰ ਖਾਲੀ receiver_task(ਖਾਲੀ *arg)
 {
-    test_args_t *test_args = (test_args_t *)arg;
-    printf("Starting receiver task... \n");
+    test_ਦਲੀਲਾਂ_t *test_ਦਲੀਲਾਂ = (test_ਦਲੀਲਾਂ_t *)arg;
+    ਲਿਖੋ("Starting receiver task... \n");
 
-    for (int i = 0; i < TEST_NUM_BYTES; i++) {
+    ਲਈ (ਪੂਰਨ i = 0; i < TEST_ਅੰਕ_ਬਾਈਟਾਂ; i++) {
         // Receive  a single byte. The received byte's value being the number of bytes sent/received thus far
-        uint8_t data;
-        TEST_ASSERT_EQUAL(1, xStreamBufferReceive(test_args->stream_buffer, &data, 1, TEST_RECEIVER_TIMEOUT_TICKS));
-        TEST_ASSERT_EQUAL(i, data);
+        uint8_t ਅੰਕੜੇ;
+        TEST_ASSERT_EQUAL(1, x_ਧਾਰਾ_ਬਫਰ_Receive(test_ਦਲੀਲਾਂ->ਧਾਰਾ_ਬਫਰ, &ਅੰਕੜੇ, 1, TEST_RECEIVER_TIMEOUT_TICKS));
+        TEST_ASSERT_EQUAL(i, ਅੰਕੜੇ);
     }
 
-    xSemaphoreGive(test_args->done_sem);
-    vTaskDelete(NULL);
+    xSemaphoreGive(test_ਦਲੀਲਾਂ->ਪੂਰਾ_sem);
+    vTaskDelete(ਨਿਰਾ);
 }
 
 TEST_CASE("Stream Buffer: Send-receive tasks", "[freertos]")
 {
-    test_args_t test_args;
-    test_args.stream_buffer = xStreamBufferCreate(TEST_NUM_BYTES, 1);
-    test_args.done_sem = xSemaphoreCreateCounting(2, 0);
-    TEST_ASSERT_NOT_NULL(test_args.stream_buffer);
-    TEST_ASSERT_NOT_NULL(test_args.done_sem);
-    BaseType_t sender_core_id;
-    BaseType_t receiver_core_id;
+    test_ਦਲੀਲਾਂ_t test_ਦਲੀਲਾਂ;
+    test_ਦਲੀਲਾਂ.ਧਾਰਾ_ਬਫਰ = x_ਧਾਰਾ_ਬਫਰ_Create(TEST_ਅੰਕ_ਬਾਈਟਾਂ, 1);
+    test_ਦਲੀਲਾਂ.ਪੂਰਾ_sem = xSemaphoreCreateCounting(2, 0);
+    TEST_ASSERT_NOT_NULL(test_ਦਲੀਲਾਂ.ਧਾਰਾ_ਬਫਰ);
+    TEST_ASSERT_NOT_NULL(test_ਦਲੀਲਾਂ.ਪੂਰਾ_sem);
+    ਅਧਾਰ_Type_t sender_core_id;
+    ਅਧਾਰ_Type_t receiver_core_id;
     sender_core_id = 0;
-#if CONFIG_FREERTOS_UNICORE
+#ਜੇ CONFIG_FREERTOS_UNICORE
     receiver_core_id = 0;
-#else
+#ਨਹੀਂਤਾਂ
     receiver_core_id = 1;
-#endif
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(sender_task, "sender", 4096, &test_args, UNITY_FREERTOS_PRIORITY + 2, NULL, sender_core_id));
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(receiver_task, "receiver", 4096, &test_args, UNITY_FREERTOS_PRIORITY + 1, NULL, receiver_core_id));
+#ਜੇ_ਅੰਤ
+    TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_ਮੰਜ਼ਿਲ_Core(sender_task, "sender", 4096, &test_ਦਲੀਲਾਂ, UNITY_FREERTOS_ਤਰਜੀਹ + 2, ਨਿਰਾ, sender_core_id));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_ਮੰਜ਼ਿਲ_Core(receiver_task, "receiver", 4096, &test_ਦਲੀਲਾਂ, UNITY_FREERTOS_ਤਰਜੀਹ + 1, ਨਿਰਾ, receiver_core_id));
 
     // Wait for both tasks to complete
-    for (int i = 0; i < 2; i++) {
-        xSemaphoreTake(test_args.done_sem, portMAX_DELAY);
+    ਲਈ (ਪੂਰਨ i = 0; i < 2; i++) {
+        xSemaphoreTake(test_ਦਲੀਲਾਂ.ਪੂਰਾ_sem, ਪੋਰਟ_MAX_DELAY);
     }
 
-    vStreamBufferDelete(test_args.stream_buffer);
-    vSemaphoreDelete(test_args.done_sem);
+    v_ਧਾਰਾ_ਬਫਰ_Delete(test_ਦਲੀਲਾਂ.ਧਾਰਾ_ਬਫਰ);
+    vSemaphoreDelete(test_ਦਲੀਲਾਂ.ਪੂਰਾ_sem);
 }

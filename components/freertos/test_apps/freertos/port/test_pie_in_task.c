@@ -4,20 +4,20 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <math.h>
-#include "soc/soc_caps.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/idf_additions.h"
-#include "unity.h"
-#include "unity_test_runner.h"
-#include "esp_system.h"
-#include "test_utils.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "sdkconfig.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ <math.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "soc/soc_caps.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/FreeRTOS.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/task.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/semphr.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/idf_additions.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "unity.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "unity_test_runner.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_system.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "test_utils.h"
 
 /* PIE instructions set is currently only supported in GCC compiler */
-#if SOC_CPU_HAS_PIE
+#ਜੇ SOC_CPU_HAS_PIE
 
 /**
  * @brief Performs the signed sum of two 4-word vectors using the PIE.
@@ -26,7 +26,7 @@
  * @param b Second vector
  * @param dst Destination to store the sum
  */
-void pie_vector_signed_add(const int32_t a[4], const int32_t b[4], int32_t dst[4]);
+ਖਾਲੀ pie_ਸਦਿਸ਼_signed_ਜੋੜੋ(ਅਚਲ int32_t a[4], ਅਚਲ int32_t b[4], int32_t dst[4]);
 
 /**
  * @brief Performs a XOR operation on two 4-word vectors using the PIE.
@@ -35,13 +35,13 @@ void pie_vector_signed_add(const int32_t a[4], const int32_t b[4], int32_t dst[4
  * @param b Second vector
  * @param dst Destination to store the result
  */
-void pie_vector_xor(const int32_t a[4], const int32_t b[4], int32_t dst[4]);
+ਖਾਲੀ pie_ਸਦਿਸ਼_xor(ਅਚਲ int32_t a[4], ਅਚਲ int32_t b[4], int32_t dst[4]);
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-typedef struct {
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ {
     int32_t cst;
-    TaskHandle_t main;
+    TaskHandle_t ਮੁੱਖ;
     SemaphoreHandle_t sem;
 } pie_params_t;
 
@@ -64,65 +64,65 @@ Expected:
     - Each task cleans up its PIE context on deletion
 */
 
-#define TEST_PINNED_NUM_TASKS       3
-#define TEST_PINNED_NUM_ITERS       5
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ TEST_PINNED_ਅੰਕ_TASKS       3
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ TEST_PINNED_ਅੰਕ_ITERS       5
 
-static void pinned_task(void *arg)
+ਸਥਿਰ ਖਾਲੀ pinned_task(ਖਾਲੀ *arg)
 {
     pie_params_t *param = (pie_params_t*) arg;
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, ਪੋਰਟ_MAX_DELAY);
 
     int32_t constant = 42 * param->cst;
     int32_t a[4] = { constant, constant, constant, constant };
     int32_t b[4] = { 10, 20, 30, 40 };
     int32_t dst[4] = { 0 };
 
-    pie_vector_signed_add(a, b, dst);
+    pie_ਸਦਿਸ਼_signed_ਜੋੜੋ(a, b, dst);
 
-    for (int i = 0; i < sizeof(a) / sizeof(uint32_t); i++) {
+    ਲਈ (ਪੂਰਨ i = 0; i < ਆਕਾਰ(a) / ਆਕਾਰ(uint32_t); i++) {
         TEST_ASSERT_EQUAL(dst[i], a[i] + b[i]);
     }
 
     // Indicate done and wait to be deleted
     xSemaphoreGive((SemaphoreHandle_t)param->sem);
-    vTaskSuspend(NULL);
+    vTaskSuspend(ਨਿਰਾ);
 }
 
 TEST_CASE("PIE: Usage in task", "[freertos]")
 {
-    SemaphoreHandle_t done_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_NUMBER_OF_CORES * TEST_PINNED_NUM_TASKS, 0);
-    TEST_ASSERT_NOT_EQUAL(NULL, done_sem);
+    SemaphoreHandle_t ਪੂਰਾ_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES * TEST_PINNED_ਅੰਕ_TASKS, 0);
+    TEST_ASSERT_NOT_EQUAL(ਨਿਰਾ, ਪੂਰਾ_sem);
 
-    for (int iter = 0; iter < TEST_PINNED_NUM_ITERS; iter++) {
-        TaskHandle_t task_handles[CONFIG_FREERTOS_NUMBER_OF_CORES][TEST_PINNED_NUM_TASKS];
-        pie_params_t params[CONFIG_FREERTOS_NUMBER_OF_CORES][TEST_PINNED_NUM_TASKS];
+    ਲਈ (ਪੂਰਨ iter = 0; iter < TEST_PINNED_ਅੰਕ_ITERS; iter++) {
+        TaskHandle_t task_handles[CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES][TEST_PINNED_ਅੰਕ_TASKS];
+        pie_params_t params[CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES][TEST_PINNED_ਅੰਕ_TASKS];
 
         // Create test tasks for each core
-        for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-            for (int j = 0; j < TEST_PINNED_NUM_TASKS; j++) {
+        ਲਈ (ਪੂਰਨ i = 0; i < CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES; i++) {
+            ਲਈ (ਪੂਰਨ j = 0; j < TEST_PINNED_ਅੰਕ_TASKS; j++) {
                 params[i][j] = (pie_params_t) {
                     .cst = i + j + 1,
-                    .sem = done_sem,
+                    .sem = ਪੂਰਾ_sem,
                 };
-                TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(pinned_task, "task", 4096, (void *) &params[i][j], UNITY_FREERTOS_PRIORITY + 1, &task_handles[i][j], i));
+                TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_ਮੰਜ਼ਿਲ_Core(pinned_task, "task", 4096, (ਖਾਲੀ *) &params[i][j], UNITY_FREERTOS_ਤਰਜੀਹ + 1, &task_handles[i][j], i));
             }
         }
 
         // Start the created tasks
-        for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-            for (int j = 0; j < TEST_PINNED_NUM_TASKS; j++) {
+        ਲਈ (ਪੂਰਨ i = 0; i < CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES; i++) {
+            ਲਈ (ਪੂਰਨ j = 0; j < TEST_PINNED_ਅੰਕ_TASKS; j++) {
                 xTaskNotifyGive(task_handles[i][j]);
             }
         }
 
         // Wait for the tasks to complete
-        for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES * TEST_PINNED_NUM_TASKS; i++) {
-            xSemaphoreTake(done_sem, portMAX_DELAY);
+        ਲਈ (ਪੂਰਨ i = 0; i < CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES * TEST_PINNED_ਅੰਕ_TASKS; i++) {
+            xSemaphoreTake(ਪੂਰਾ_sem, ਪੋਰਟ_MAX_DELAY);
         }
 
         // Delete the tasks
-        for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-            for (int j = 0; j < TEST_PINNED_NUM_TASKS; j++) {
+        ਲਈ (ਪੂਰਨ i = 0; i < CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES; i++) {
+            ਲਈ (ਪੂਰਨ j = 0; j < TEST_PINNED_ਅੰਕ_TASKS; j++) {
                 vTaskDelete(task_handles[i][j]);
             }
         }
@@ -130,7 +130,7 @@ TEST_CASE("PIE: Usage in task", "[freertos]")
         vTaskDelay(10); // Short delay to allow idle task to be free task memory and FPU contexts
     }
 
-    vSemaphoreDelete(done_sem);
+    vSemaphoreDelete(ਪੂਰਾ_sem);
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -154,56 +154,56 @@ Expected:
     - Each task cleans up its PIE context on deletion
 */
 
-#if CONFIG_FREERTOS_NUMBER_OF_CORES > 1
+#ਜੇ CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES > 1
 
-#define TEST_UNPINNED_NUM_ITERS     5
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ TEST_UNPINNED_ਅੰਕ_ITERS     5
 
-static void check_core_affinity(void)
+ਸਥਿਰ ਖਾਲੀ check_core_affinity(ਖਾਲੀ)
 {
-#if CONFIG_IDF_TARGET_ESP32S31
+#ਜੇ CONFIG_IDF_ਨਿਸ਼ਾਨਾ_ESP32_S31
     /* On the ESP32-S31, only core 1 has PIE support, so all tasks should be pinned to core 1 */
-    BaseType_t core_num = 1;
-#else
-    BaseType_t core_num = xTaskGetCoreID(NULL);
-#endif
+    ਅਧਾਰ_Type_t core_ਅੰਕ = 1;
+#ਨਹੀਂਤਾਂ
+    ਅਧਾਰ_Type_t core_ਅੰਕ = xTaskGetCoreID(ਨਿਰਾ);
+#ਜੇ_ਅੰਤ
 
-    TEST_ASSERT_EQUAL(core_num, xTaskGetCoreID(NULL));
+    TEST_ASSERT_EQUAL(core_ਅੰਕ, xTaskGetCoreID(ਨਿਰਾ));
 }
 
-static void unpinned_task(void *arg)
+ਸਥਿਰ ਖਾਲੀ unpinned_task(ਖਾਲੀ *arg)
 {
     // Check that the task is unpinned
-#if !CONFIG_FREERTOS_UNICORE
-    TEST_ASSERT_EQUAL(tskNO_AFFINITY, xTaskGetCoreID(NULL));
-#endif // !CONFIG_FREERTOS_UNICORE
+#ਜੇ !CONFIG_FREERTOS_UNICORE
+    TEST_ASSERT_EQUAL(tskNO_AFFINITY, xTaskGetCoreID(ਨਿਰਾ));
+#ਜੇ_ਅੰਤ // !CONFIG_FREERTOS_UNICORE
 
     int32_t a[4] = { 0, 1, 2, 3};
     int32_t b[4] = { 111, 222, 333, 444 };
     int32_t dst[4] = { 0 };
 
-    pie_vector_signed_add(a, b, dst);
+    pie_ਸਦਿਸ਼_signed_ਜੋੜੋ(a, b, dst);
 
-    for (int i = 0; i < sizeof(a) / sizeof(uint32_t); i++) {
+    ਲਈ (ਪੂਰਨ i = 0; i < ਆਕਾਰ(a) / ਆਕਾਰ(uint32_t); i++) {
         TEST_ASSERT_EQUAL(dst[i], a[i] + b[i]);
     }
 
-#if !CONFIG_FREERTOS_UNICORE
+#ਜੇ !CONFIG_FREERTOS_UNICORE
     check_core_affinity();
-#endif // !CONFIG_FREERTOS_UNICORE
+#ਜੇ_ਅੰਤ // !CONFIG_FREERTOS_UNICORE
 
     // Indicate done and self delete
     xTaskNotifyGive((TaskHandle_t)arg);
-    vTaskDelete(NULL);
+    vTaskDelete(ਨਿਰਾ);
 }
 
 TEST_CASE("PIE: Usage in unpinned task", "[freertos]")
 {
     TaskHandle_t unity_task_handle = xTaskGetCurrentTaskHandle();
-    for (int iter = 0; iter < TEST_UNPINNED_NUM_ITERS; iter++) {
+    ਲਈ (ਪੂਰਨ iter = 0; iter < TEST_UNPINNED_ਅੰਕ_ITERS; iter++) {
         // Create unpinned task
-        xTaskCreate(unpinned_task, "unpin", 4096, (void *)unity_task_handle, UNITY_FREERTOS_PRIORITY + 1, NULL);
+        xTaskCreate(unpinned_task, "unpin", 4096, (ਖਾਲੀ *)unity_task_handle, UNITY_FREERTOS_ਤਰਜੀਹ + 1, ਨਿਰਾ);
         // Wait for task to complete
-        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        ulTaskNotifyTake(pdTRUE, ਪੋਰਟ_MAX_DELAY);
         vTaskDelay(10); // Short delay to allow task memory to be freed
     }
 }
@@ -212,31 +212,31 @@ TEST_CASE("PIE: Usage in unpinned task", "[freertos]")
  * @brief Function performing some simple calculation using the PIE coprocessor.
  *        The goal is to be preempted by a task that also uses the PIE on the same core.
  */
-static void pie_calculation(void* arg)
+ਸਥਿਰ ਖਾਲੀ pie_calculation(ਖਾਲੀ* arg)
 {
     pie_params_t* p = (pie_params_t*) arg;
-    const int32_t cst = p->cst;
+    ਅਚਲ int32_t cst = p->cst;
     int32_t a[4] = { cst, cst, cst, cst };
     int32_t dst[4] = { 0 };
 
-    for (int i = 0; i < 10; i++) {
-        pie_vector_signed_add(a, dst, dst);
+    ਲਈ (ਪੂਰਨ i = 0; i < 10; i++) {
+        pie_ਸਦਿਸ਼_signed_ਜੋੜੋ(a, dst, dst);
 
         /* Give some time to the other to interrupt us before checking `f` value */
         esp_rom_delay_us(1000);
 
         /* Using TEST_ASSERT_TRUE triggers a stack overflow, make sure the sign is still correct */
-        assert((dst[0] < 0 && cst < 0) || (dst[0] > 0 && cst > 0));
+        ਪ੍ਰਤਿਜ੍ਞਾ((dst[0] < 0 && cst < 0) || (dst[0] > 0 && cst > 0));
 
         /* Give the hand back to FreeRTOS to avoid any watchdog error */
         vTaskDelay(2);
     }
 
     /* Make sure the result is correct */
-    assert((dst[0] * cst == 10));
+    ਪ੍ਰਤਿਜ੍ਞਾ((dst[0] * cst == 10));
 
-    xTaskNotifyGive(p->main);
-    vTaskDelete(NULL);
+    xTaskNotifyGive(p->ਮੁੱਖ);
+    vTaskDelete(ਨਿਰਾ);
 }
 
 TEST_CASE("PIE: Unsolicited context switch between tasks using the PIE", "[freertos]")
@@ -245,41 +245,41 @@ TEST_CASE("PIE: Unsolicited context switch between tasks using the PIE", "[freer
     TaskHandle_t unity_task_handle = xTaskGetCurrentTaskHandle();
     TaskHandle_t tasks[2];
     pie_params_t params[2] = {
-        { .cst =  1, .main = unity_task_handle },
-        { .cst = -1, .main = unity_task_handle },
+        { .cst =  1, .ਮੁੱਖ = unity_task_handle },
+        { .cst = -1, .ਮੁੱਖ = unity_task_handle },
     };
 
-    xTaskCreatePinnedToCore(pie_calculation, "Task1", 2048, params + 0, UNITY_FREERTOS_PRIORITY + 1, &tasks[0], 1);
-    xTaskCreatePinnedToCore(pie_calculation, "Task2", 2048, params + 1, UNITY_FREERTOS_PRIORITY + 1, &tasks[1], 1);
+    x_Task_Create_Pinned_ਮੰਜ਼ਿਲ_Core(pie_calculation, "Task1", 2048, params + 0, UNITY_FREERTOS_ਤਰਜੀਹ + 1, &tasks[0], 1);
+    x_Task_Create_Pinned_ਮੰਜ਼ਿਲ_Core(pie_calculation, "Task2", 2048, params + 1, UNITY_FREERTOS_ਤਰਜੀਹ + 1, &tasks[1], 1);
 
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, ਪੋਰਟ_MAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, ਪੋਰਟ_MAX_DELAY);
 }
 
-#if CONFIG_IDF_TARGET_ESP32S31
+#ਜੇ CONFIG_IDF_ਨਿਸ਼ਾਨਾ_ESP32_S31
 
-static void core0_fpu_pie(void *arg)
+ਸਥਿਰ ਖਾਲੀ core0_fpu_pie(ਖਾਲੀ *arg)
 {
     /* Use the FPU in this task and make sure we are pinned to core 0 */
-    float f = 1.0f;
-    for (int i = 0; i < 10; i++) {
+    ਦਸ਼ਮਲਵ f = 1.0f;
+    ਲਈ (ਪੂਰਨ i = 0; i < 10; i++) {
         f = f * 2.0f;
     }
     TEST_ASSERT_EQUAL(1024.0f, f);
 
     /* Check that the task is pinned to core 0 */
-    TEST_ASSERT_EQUAL(0, xTaskGetCoreID(NULL));
+    TEST_ASSERT_EQUAL(0, xTaskGetCoreID(ਨਿਰਾ));
 
     /* Use the PIE in this task and make sure we are migrated to core 1 */
     int32_t a[4] = { 0, 1, 2, 3};
     int32_t b[4] = { 111, 222, 333, 444 };
     int32_t dst[4] = { 0 };
 
-    pie_vector_signed_add(a, b, dst);
+    pie_ਸਦਿਸ਼_signed_ਜੋੜੋ(a, b, dst);
 
-    TEST_ASSERT_EQUAL(1, xTaskGetCoreID(NULL));
+    TEST_ASSERT_EQUAL(1, xTaskGetCoreID(ਨਿਰਾ));
 
-    for (int i = 0; i < sizeof(a) / sizeof(uint32_t); i++) {
+    ਲਈ (ਪੂਰਨ i = 0; i < ਆਕਾਰ(a) / ਆਕਾਰ(uint32_t); i++) {
         TEST_ASSERT_EQUAL(dst[i], (a[i] + b[i]));
     }
 
@@ -289,48 +289,48 @@ static void core0_fpu_pie(void *arg)
 
     /* Indicate done and self delete */
     xTaskNotifyGive((TaskHandle_t)arg);
-    vTaskDelete(NULL);
+    vTaskDelete(ਨਿਰਾ);
 }
 
 TEST_CASE("PIE: Usage in a task that owns the FPU on core 0", "[freertos]")
 {
     /* Make sure that a task that owns the FPU on core 0 can be migrated to core 1 when using the PIE */
     TaskHandle_t unity_task_handle = xTaskGetCurrentTaskHandle();
-    xTaskCreatePinnedToCore(core0_fpu_pie, "core0_fpu_pie", 4096,
-                            (void*) unity_task_handle, UNITY_FREERTOS_PRIORITY + 1, NULL, 0);
+    x_Task_Create_Pinned_ਮੰਜ਼ਿਲ_Core(core0_fpu_pie, "core0_fpu_pie", 4096,
+                            (ਖਾਲੀ*) unity_task_handle, UNITY_FREERTOS_ਤਰਜੀਹ + 1, ਨਿਰਾ, 0);
     // Wait for task to complete
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, ਪੋਰਟ_MAX_DELAY);
     vTaskDelay(10); // Short delay to allow task memory to be freed
 }
 
-#define PIE_INSTR_COUNT 2
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ PIE_INSTR_ਗਿਣਤੀ 2
 
-static void core0_pie_instr_task(void *arg)
+ਸਥਿਰ ਖਾਲੀ core0_pie_instr_task(ਖਾਲੀ *arg)
 {
     pie_params_t *param = (pie_params_t*) arg;
 
-    switch (param->cst) {
-    case 0: {
+    ਚੋਣ (param->cst) {
+    ਹਾਲਤ 0: {
         int32_t a = 1;
         int32_t b = 2;
         int32_t dst = 0;
 
         /* Opcode of type 0b0110011 */
-        __asm__ volatile("esp.addx2 %0, %1, %2" : "=r"(dst) : "r"(a), "r"(b));
-        break;
+        __asm__ ਅਸਥਿਰ("esp.addx2 %0, %1, %2" : "=r"(dst) : "r"(a), "r"(b));
+        ਰੋਕੋ;
     }
-    case 1: {
+    ਹਾਲਤ 1: {
         int32_t a[4] = { 0xffffff, 0xaaaaaaaa, 0x11111111, 0xffffffff };
         int32_t b[4] = { 0x11111111, 0xaaaaaaaa, 0xffffff, 0xffffffff };
         int32_t dst[4] = { 0 };
         /* Opcode of type 0bxx11x11 (x: don't care) */
-        pie_vector_xor(a, b, dst);
-        break;
+        pie_ਸਦਿਸ਼_xor(a, b, dst);
+        ਰੋਕੋ;
     }
     }
     /* Indicate done and wait for deletion */
-    xTaskNotifyGive(param->main);
-    vTaskDelay(portMAX_DELAY);
+    xTaskNotifyGive(param->ਮੁੱਖ);
+    vTaskDelay(ਪੋਰਟ_MAX_DELAY);
 }
 
 /**
@@ -343,79 +343,79 @@ TEST_CASE("PIE: Core 0 parses PIE instructions properly", "[freertos]")
 {
     TaskHandle_t task_handle;
     pie_params_t param = { 0 };
-    param.main = xTaskGetCurrentTaskHandle();
+    param.ਮੁੱਖ = xTaskGetCurrentTaskHandle();
 
     /* Create tasks that will run on core 0 only. Each of them will execute one PIE instruction.
      * If they don't crash, it's a success.*/
-    for (int i = 0; i < PIE_INSTR_COUNT; i++) {
+    ਲਈ (ਪੂਰਨ i = 0; i < PIE_INSTR_ਗਿਣਤੀ; i++) {
         param.cst = i;
-        xTaskCreatePinnedToCore(core0_pie_instr_task, "Core0PIE", 2048, &param, UNITY_FREERTOS_PRIORITY + 1, &task_handle, 0);
+        x_Task_Create_Pinned_ਮੰਜ਼ਿਲ_Core(core0_pie_instr_task, "Core0PIE", 2048, &param, UNITY_FREERTOS_ਤਰਜੀਹ + 1, &task_handle, 0);
         /* Wait for the task to complete */
-        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        ulTaskNotifyTake(pdTRUE, ਪੋਰਟ_MAX_DELAY);
         /* Delete the task and start again */
         vTaskDelete(task_handle);
     }
 }
-#endif /* CONFIG_IDF_TARGET_ESP32S31 */
+#ਜੇ_ਅੰਤ /* CONFIG_IDF_TARGET_ESP32S31 */
 
-#endif /* CONFIG_FREERTOS_NUMBER_OF_CORES > 1 */
+#ਜੇ_ਅੰਤ /* CONFIG_FREERTOS_NUMBER_OF_CORES > 1 */
 
-#if CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
+#ਜੇ CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST
 
 TEST_CASE("PIE: Blacklist setter and getter", "[freertos]")
 {
-    BaseType_t before = xTaskGetPieBlacklisted(NULL);
-    vTaskSetPieBlacklisted(NULL, pdTRUE);
-    BaseType_t set = xTaskGetPieBlacklisted(NULL);
-    vTaskSetPieBlacklisted(NULL, pdFALSE);
-    BaseType_t cleared = xTaskGetPieBlacklisted(NULL);
+    ਅਧਾਰ_Type_t before = xTaskGetPieBlacklisted(ਨਿਰਾ);
+    v_Task_ਸੈੱਟ_Pie_Blacklisted(ਨਿਰਾ, pdTRUE);
+    ਅਧਾਰ_Type_t ਸੈੱਟ = xTaskGetPieBlacklisted(ਨਿਰਾ);
+    v_Task_ਸੈੱਟ_Pie_Blacklisted(ਨਿਰਾ, pdFALSE);
+    ਅਧਾਰ_Type_t cleared = xTaskGetPieBlacklisted(ਨਿਰਾ);
 
     TEST_ASSERT_EQUAL(pdFALSE, before);
-    TEST_ASSERT_EQUAL(pdTRUE, set);
+    TEST_ASSERT_EQUAL(pdTRUE, ਸੈੱਟ);
     TEST_ASSERT_EQUAL(pdFALSE, cleared);
 }
 
-static void pie_after_cleared_blacklist(void *arg)
+ਸਥਿਰ ਖਾਲੀ pie_after_cleared_blacklist(ਖਾਲੀ *arg)
 {
     int32_t a[4] = { 0, 1, 2, 3 };
     int32_t b[4] = { 1, 2, 3, 4 };
     int32_t dst[4] = { 0 };
 
-    vTaskSetPieBlacklisted(NULL, pdTRUE);
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetPieBlacklisted(NULL));
-    vTaskSetPieBlacklisted(NULL, pdFALSE);
-    pie_vector_signed_add(a, b, dst);
+    v_Task_ਸੈੱਟ_Pie_Blacklisted(ਨਿਰਾ, pdTRUE);
+    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetPieBlacklisted(ਨਿਰਾ));
+    v_Task_ਸੈੱਟ_Pie_Blacklisted(ਨਿਰਾ, pdFALSE);
+    pie_ਸਦਿਸ਼_signed_ਜੋੜੋ(a, b, dst);
 
-    for (int i = 0; i < 4; i++) {
+    ਲਈ (ਪੂਰਨ i = 0; i < 4; i++) {
         TEST_ASSERT_EQUAL(a[i] + b[i], dst[i]);
     }
 
     xTaskNotifyGive((TaskHandle_t)arg);
-    vTaskDelete(NULL);
+    vTaskDelete(ਨਿਰਾ);
 }
 
 TEST_CASE("PIE: Cleared blacklist allows PIE use", "[freertos]")
 {
     TaskHandle_t unity_task_handle = xTaskGetCurrentTaskHandle();
     TEST_ASSERT_EQUAL(pdTRUE, xTaskCreate(pie_after_cleared_blacklist, "pie_clr", 4096,
-                                          (void *)unity_task_handle, UNITY_FREERTOS_PRIORITY + 1, NULL));
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+                                          (ਖਾਲੀ *)unity_task_handle, UNITY_FREERTOS_ਤਰਜੀਹ + 1, ਨਿਰਾ));
+    ulTaskNotifyTake(pdTRUE, ਪੋਰਟ_MAX_DELAY);
     vTaskDelay(10);
 }
 
-static void pie_blacklist_then_block(void *arg)
+ਸਥਿਰ ਖਾਲੀ pie_blacklist_then_ਖੰਡ(ਖਾਲੀ *arg)
 {
-    vTaskSetPieBlacklisted(NULL, pdTRUE);
+    v_Task_ਸੈੱਟ_Pie_Blacklisted(ਨਿਰਾ, pdTRUE);
     xTaskNotifyGive((TaskHandle_t)arg);
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-    vTaskDelete(NULL);
+    ulTaskNotifyTake(pdTRUE, ਪੋਰਟ_MAX_DELAY);
+    vTaskDelete(ਨਿਰਾ);
 }
 
-static void pie_notify_then_block(void *arg)
+ਸਥਿਰ ਖਾਲੀ pie_notify_then_ਖੰਡ(ਖਾਲੀ *arg)
 {
     xTaskNotifyGive((TaskHandle_t)arg);
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-    vTaskDelete(NULL);
+    ulTaskNotifyTake(pdTRUE, ਪੋਰਟ_MAX_DELAY);
+    vTaskDelete(ਨਿਰਾ);
 }
 
 /*
@@ -426,66 +426,66 @@ static void pie_notify_then_block(void *arg)
 TEST_CASE("PIE: Deleted task is removed from blacklist", "[freertos]")
 {
     TaskHandle_t unity_task_handle = xTaskGetCurrentTaskHandle();
-    TaskHandle_t child = NULL;
-    TaskHandle_t child2 = NULL;
+    TaskHandle_t ਬੱਚਾ = ਨਿਰਾ;
+    TaskHandle_t child2 = ਨਿਰਾ;
 
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskCreate(pie_blacklist_then_block, "pie_del", 4096,
-                                          (void *)unity_task_handle, UNITY_FREERTOS_PRIORITY + 1, &child));
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetPieBlacklisted(child));
-    vTaskDelete(child);
+    TEST_ASSERT_EQUAL(pdTRUE, xTaskCreate(pie_blacklist_then_ਖੰਡ, "pie_del", 4096,
+                                          (ਖਾਲੀ *)unity_task_handle, UNITY_FREERTOS_ਤਰਜੀਹ + 1, &ਬੱਚਾ));
+    ulTaskNotifyTake(pdTRUE, ਪੋਰਟ_MAX_DELAY);
+    TEST_ASSERT_EQUAL(pdTRUE, xTaskGetPieBlacklisted(ਬੱਚਾ));
+    vTaskDelete(ਬੱਚਾ);
     vTaskDelay(10);
-    TEST_ASSERT_EQUAL(pdFALSE, xTaskGetPieBlacklisted(child));
+    TEST_ASSERT_EQUAL(pdFALSE, xTaskGetPieBlacklisted(ਬੱਚਾ));
 
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskCreate(pie_notify_then_block, "pie_del2", 4096,
-                                          (void *)unity_task_handle, UNITY_FREERTOS_PRIORITY + 1, &child2));
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    TEST_ASSERT_EQUAL(pdTRUE, xTaskCreate(pie_notify_then_ਖੰਡ, "pie_del2", 4096,
+                                          (ਖਾਲੀ *)unity_task_handle, UNITY_FREERTOS_ਤਰਜੀਹ + 1, &child2));
+    ulTaskNotifyTake(pdTRUE, ਪੋਰਟ_MAX_DELAY);
     TEST_ASSERT_EQUAL(pdFALSE, xTaskGetPieBlacklisted(child2));
     vTaskDelete(child2);
     vTaskDelay(10);
 }
 
-static void pie_blacklisted_task_executes_pie(void)
+ਸਥਿਰ ਖਾਲੀ pie_blacklisted_task_executes_pie(ਖਾਲੀ)
 {
     int32_t a[4] = { 0, 1, 2, 3 };
     int32_t b[4] = { 1, 2, 3, 4 };
     int32_t dst[4] = { 0 };
 
-    vTaskSetPieBlacklisted(NULL, pdTRUE);
-    pie_vector_signed_add(a, b, dst);
-    TEST_FAIL_MESSAGE("blacklisted task executed PIE without rebooting");
+    v_Task_ਸੈੱਟ_Pie_Blacklisted(ਨਿਰਾ, pdTRUE);
+    pie_ਸਦਿਸ਼_signed_ਜੋੜੋ(a, b, dst);
+    TEST_FAIL_ਸੁਨੇਹਾ("blacklisted task executed PIE without rebooting");
 }
 
-static void check_pie_blacklist_panic_reset(void)
+ਸਥਿਰ ਖਾਲੀ check_pie_blacklist_panic_reset(ਖਾਲੀ)
 {
     TEST_ASSERT_EQUAL(ESP_RST_PANIC, esp_reset_reason());
 }
 
-TEST_CASE_MULTIPLE_STAGES("PIE: Blacklisted task aborts on PIE use",
+TEST_CASE_ਗੁਣਜ_STAGES("PIE: Blacklisted task aborts on PIE use",
                           "[freertos][reset=SW_CPU_RESET]",
                           pie_blacklisted_task_executes_pie,
                           check_pie_blacklist_panic_reset);
 
-static void pie_blacklisted_owner_after_yield(void)
+ਸਥਿਰ ਖਾਲੀ pie_blacklisted_owner_after_yield(ਖਾਲੀ)
 {
     int32_t a[4] = { 0, 1, 2, 3 };
     int32_t b[4] = { 1, 2, 3, 4 };
     int32_t dst[4] = { 0 };
 
-    pie_vector_signed_add(a, b, dst);
-    vTaskSetPieBlacklisted(NULL, pdTRUE);
+    pie_ਸਦਿਸ਼_signed_ਜੋੜੋ(a, b, dst);
+    v_Task_ਸੈੱਟ_Pie_Blacklisted(ਨਿਰਾ, pdTRUE);
     /* A same-task yield leaves PIE enabled, so the next instruction would not trap.
      * Blocking lets another task run and disables PIE. */
     vTaskDelay(1);
-    pie_vector_signed_add(a, b, dst);
-    TEST_FAIL_MESSAGE("blacklisted owner used PIE after a switch without rebooting");
+    pie_ਸਦਿਸ਼_signed_ਜੋੜੋ(a, b, dst);
+    TEST_FAIL_ਸੁਨੇਹਾ("blacklisted owner used PIE after a switch without rebooting");
 }
 
-TEST_CASE_MULTIPLE_STAGES("PIE: Blacklisted owner aborts after yield",
+TEST_CASE_ਗੁਣਜ_STAGES("PIE: Blacklisted owner aborts after yield",
                           "[freertos][reset=SW_CPU_RESET]",
                           pie_blacklisted_owner_after_yield,
                           check_pie_blacklist_panic_reset);
 
-#endif /* CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST */
+#ਜੇ_ਅੰਤ /* CONFIG_FREERTOS_DEBUG_TASK_PIE_BLACKLIST */
 
-#endif /* SOC_CPU_HAS_PIE */
+#ਜੇ_ਅੰਤ /* SOC_CPU_HAS_PIE */

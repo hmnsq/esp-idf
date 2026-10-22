@@ -12,20 +12,20 @@
  * table functions, etc.) live in linux_port_coop_internal.h.
  */
 
-#pragma once
+#ਹਦਾਇਤ once
 
-#include <stddef.h>
-#include <sys/types.h>
-#include <sys/select.h>
-#include <sys/time.h>
-#include <sys/uio.h>
-#include <sys/socket.h>
-#include <poll.h>
-#include <signal.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stddef.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <sys/types.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <sys/select.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <sys/time.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <sys/uio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <sys/socket.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <poll.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <signal.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __cplusplus
+ਬਾਹਰੀ "C" {
+#ਜੇ_ਅੰਤ
 
 /**
  * @brief Cooperative read — retries on EAGAIN when user-visible mode is blocking.
@@ -35,7 +35,7 @@ extern "C" {
  * @param count Maximum number of bytes to read.
  * @return Number of bytes read on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_read(int fd, void *buf, size_t count);
+ssize_t freertos_linux_coop_read(ਪੂਰਨ fd, ਖਾਲੀ *buf, size_t ਗਿਣਤੀ_2);
 
 /**
  * @brief Cooperative write — retries on EAGAIN when user-visible mode is blocking.
@@ -45,7 +45,7 @@ ssize_t freertos_linux_coop_read(int fd, void *buf, size_t count);
  * @param count Number of bytes to write.
  * @return Number of bytes written on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_write(int fd, const void *buf, size_t count);
+ssize_t freertos_linux_coop_write(ਪੂਰਨ fd, ਅਚਲ ਖਾਲੀ *buf, size_t ਗਿਣਤੀ_2);
 
 /**
  * @brief Cooperative pread — retries on EAGAIN when user-visible mode is blocking.
@@ -56,7 +56,7 @@ ssize_t freertos_linux_coop_write(int fd, const void *buf, size_t count);
  * @param offset File offset to read from.
  * @return Number of bytes read on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_pread(int fd, void *buf, size_t count, off_t offset);
+ssize_t freertos_linux_coop_pread(ਪੂਰਨ fd, ਖਾਲੀ *buf, size_t ਗਿਣਤੀ_2, off_t ਵਿੱਥ);
 
 /**
  * @brief Cooperative pwrite — retries on EAGAIN when user-visible mode is blocking.
@@ -67,7 +67,7 @@ ssize_t freertos_linux_coop_pread(int fd, void *buf, size_t count, off_t offset)
  * @param offset File offset to write at.
  * @return Number of bytes written on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_pwrite(int fd, const void *buf, size_t count, off_t offset);
+ssize_t freertos_linux_coop_pwrite(ਪੂਰਨ fd, ਅਚਲ ਖਾਲੀ *buf, size_t ਗਿਣਤੀ_2, off_t ਵਿੱਥ);
 
 /**
  * @brief Cooperative readv — retries on EAGAIN when user-visible mode is blocking.
@@ -77,7 +77,7 @@ ssize_t freertos_linux_coop_pwrite(int fd, const void *buf, size_t count, off_t 
  * @param iovcnt Number of elements in the iov array.
  * @return Number of bytes read on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_readv(int fd, const struct iovec *iov, int iovcnt);
+ssize_t freertos_linux_coop_readv(ਪੂਰਨ fd, ਅਚਲ ਬਣਤਰ iovec *iov, ਪੂਰਨ iovcnt);
 
 /**
  * @brief Cooperative writev — retries on EAGAIN when user-visible mode is blocking.
@@ -87,7 +87,7 @@ ssize_t freertos_linux_coop_readv(int fd, const struct iovec *iov, int iovcnt);
  * @param iovcnt Number of elements in the iov array.
  * @return Number of bytes written on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_writev(int fd, const struct iovec *iov, int iovcnt);
+ssize_t freertos_linux_coop_writev(ਪੂਰਨ fd, ਅਚਲ ਬਣਤਰ iovec *iov, ਪੂਰਨ iovcnt);
 
 /**
  * @brief Cooperative recv — retries on EAGAIN when user-visible mode is blocking.
@@ -98,7 +98,7 @@ ssize_t freertos_linux_coop_writev(int fd, const struct iovec *iov, int iovcnt);
  * @param flags  recv flags (MSG_PEEK, etc.).
  * @return Number of bytes received on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_recv(int sockfd, void *buf, size_t len, int flags);
+ssize_t freertos_linux_coop_recv(ਪੂਰਨ sockfd, ਖਾਲੀ *buf, size_t len, ਪੂਰਨ flags);
 
 /**
  * @brief Cooperative send — retries on EAGAIN when user-visible mode is blocking.
@@ -109,7 +109,7 @@ ssize_t freertos_linux_coop_recv(int sockfd, void *buf, size_t len, int flags);
  * @param flags  send flags (MSG_NOSIGNAL, etc.).
  * @return Number of bytes sent on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_send(int sockfd, const void *buf, size_t len, int flags);
+ssize_t freertos_linux_coop_send(ਪੂਰਨ sockfd, ਅਚਲ ਖਾਲੀ *buf, size_t len, ਪੂਰਨ flags);
 
 /**
  * @brief Cooperative recvfrom — retries on EAGAIN when user-visible mode is blocking.
@@ -122,8 +122,8 @@ ssize_t freertos_linux_coop_send(int sockfd, const void *buf, size_t len, int fl
  * @param addrlen  Length of source address (may be NULL).
  * @return Number of bytes received on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_recvfrom(int sockfd, void *buf, size_t len, int flags,
-                                     struct sockaddr *src_addr, socklen_t *addrlen);
+ssize_t freertos_linux_coop_recvfrom(ਪੂਰਨ sockfd, ਖਾਲੀ *buf, size_t len, ਪੂਰਨ flags,
+                                     ਬਣਤਰ sockaddr *src_addr, socklen_t *addrlen);
 
 /**
  * @brief Cooperative sendto — retries on EAGAIN when user-visible mode is blocking.
@@ -136,8 +136,8 @@ ssize_t freertos_linux_coop_recvfrom(int sockfd, void *buf, size_t len, int flag
  * @param addrlen   Length of destination address.
  * @return Number of bytes sent on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_sendto(int sockfd, const void *buf, size_t len, int flags,
-                                   const struct sockaddr *dest_addr, socklen_t addrlen);
+ssize_t freertos_linux_coop_sendto(ਪੂਰਨ sockfd, ਅਚਲ ਖਾਲੀ *buf, size_t len, ਪੂਰਨ flags,
+                                   ਅਚਲ ਬਣਤਰ sockaddr *dest_addr, socklen_t addrlen);
 
 /**
  * @brief Cooperative recvmsg — retries on EAGAIN when user-visible mode is blocking.
@@ -147,7 +147,7 @@ ssize_t freertos_linux_coop_sendto(int sockfd, const void *buf, size_t len, int 
  * @param flags  recv flags.
  * @return Number of bytes received on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_recvmsg(int sockfd, struct msghdr *msg, int flags);
+ssize_t freertos_linux_coop_recvmsg(ਪੂਰਨ sockfd, ਬਣਤਰ msghdr *ਸੁਨੇਹਾ, ਪੂਰਨ flags);
 
 /**
  * @brief Cooperative sendmsg — retries on EAGAIN when user-visible mode is blocking.
@@ -157,7 +157,7 @@ ssize_t freertos_linux_coop_recvmsg(int sockfd, struct msghdr *msg, int flags);
  * @param flags  send flags.
  * @return Number of bytes sent on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_sendmsg(int sockfd, const struct msghdr *msg, int flags);
+ssize_t freertos_linux_coop_sendmsg(ਪੂਰਨ sockfd, ਅਚਲ ਬਣਤਰ msghdr *ਸੁਨੇਹਾ, ਪੂਰਨ flags);
 
 /**
  * @brief Cooperative connect — retries on EINPROGRESS with cooperative yield.
@@ -167,7 +167,7 @@ ssize_t freertos_linux_coop_sendmsg(int sockfd, const struct msghdr *msg, int fl
  * @param addrlen Length of destination address.
  * @return 0 on success, or -1 on error (errno is set).
  */
-int freertos_linux_coop_connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+ਪੂਰਨ freertos_linux_coop_connect(ਪੂਰਨ sockfd, ਅਚਲ ਬਣਤਰ sockaddr *addr, socklen_t addrlen);
 
 /**
  * @brief Cooperative accept — retries on EAGAIN when user-visible mode is blocking.
@@ -179,7 +179,7 @@ int freertos_linux_coop_connect(int sockfd, const struct sockaddr *addr, socklen
  * @param addrlen Length of peer address (may be NULL).
  * @return New socket file descriptor on success, or -1 on error (errno is set).
  */
-int freertos_linux_coop_accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+ਪੂਰਨ freertos_linux_coop_accept(ਪੂਰਨ sockfd, ਬਣਤਰ sockaddr *addr, socklen_t *addrlen);
 
 /**
  * @brief Cooperative open — sets the new FD to non-blocking and tracks it.
@@ -189,7 +189,7 @@ int freertos_linux_coop_accept(int sockfd, struct sockaddr *addr, socklen_t *add
  * @param mode  File creation mode (used when O_CREAT is set).
  * @return File descriptor on success, or -1 on error (errno is set).
  */
-int freertos_linux_coop_open(const char *path, int flags, int mode);
+ਪੂਰਨ freertos_linux_coop_open(ਅਚਲ ਅੱਖਰ *ਰਸਤਾ, ਪੂਰਨ flags, ਪੂਰਨ ਬਹੁਲਕ);
 
 /**
  * @brief Cooperative close — untracks the FD, retries on EINTR.
@@ -197,7 +197,7 @@ int freertos_linux_coop_open(const char *path, int flags, int mode);
  * @param fd File descriptor to close.
  * @return 0 on success, or -1 on error (errno is set).
  */
-int freertos_linux_coop_close(int fd);
+ਪੂਰਨ freertos_linux_coop_close(ਪੂਰਨ fd);
 
 /**
  * @brief Cooperative fcntl — intercepts F_GETFL/F_SETFL for shadow mode.
@@ -207,7 +207,7 @@ int freertos_linux_coop_close(int fd);
  * @param arg Command argument.
  * @return Command-dependent value on success, or -1 on error (errno is set).
  */
-int freertos_linux_coop_fcntl(int fd, int cmd, int arg);
+ਪੂਰਨ freertos_linux_coop_fcntl(ਪੂਰਨ fd, ਪੂਰਨ cmd, ਪੂਰਨ arg);
 
 /**
  * @brief Cooperative socket — sets the new socket to non-blocking and tracks it.
@@ -217,7 +217,7 @@ int freertos_linux_coop_fcntl(int fd, int cmd, int arg);
  * @param protocol Protocol number (0 for default).
  * @return Socket file descriptor on success, or -1 on error (errno is set).
  */
-int freertos_linux_coop_socket(int domain, int type, int protocol);
+ਪੂਰਨ freertos_linux_coop_socket(ਪੂਰਨ domain, ਪੂਰਨ type, ਪੂਰਨ protocol);
 
 /**
  * @brief Cooperative socketpair — sets both sockets to non-blocking and tracks them.
@@ -228,7 +228,7 @@ int freertos_linux_coop_socket(int domain, int type, int protocol);
  * @param sv       Array of two ints to receive the file descriptors.
  * @return 0 on success, or -1 on error (errno is set).
  */
-int freertos_linux_coop_socketpair(int domain, int type, int protocol, int *sv);
+ਪੂਰਨ freertos_linux_coop_socketpair(ਪੂਰਨ domain, ਪੂਰਨ type, ਪੂਰਨ protocol, ਪੂਰਨ *sv);
 
 /**
  * @brief Cooperative pipe — sets both ends to non-blocking and tracks them.
@@ -236,7 +236,7 @@ int freertos_linux_coop_socketpair(int domain, int type, int protocol, int *sv);
  * @param fds Array of two ints: fds[0] is the read end, fds[1] is the write end.
  * @return 0 on success, or -1 on error (errno is set).
  */
-int freertos_linux_coop_pipe(int *fds);
+ਪੂਰਨ freertos_linux_coop_pipe(ਪੂਰਨ *fds);
 
 /**
  * @brief Cooperative pipe2 — sets both ends to non-blocking and tracks them.
@@ -245,7 +245,7 @@ int freertos_linux_coop_pipe(int *fds);
  * @param flags Pipe flags (O_CLOEXEC, O_NONBLOCK, etc.).
  * @return 0 on success, or -1 on error (errno is set).
  */
-int freertos_linux_coop_pipe2(int *fds, int flags);
+ਪੂਰਨ freertos_linux_coop_pipe2(ਪੂਰਨ *fds, ਪੂਰਨ flags);
 
 /**
  * @brief Cooperative dup — duplicates a FD, sets the new FD to non-blocking and tracks it.
@@ -253,7 +253,7 @@ int freertos_linux_coop_pipe2(int *fds, int flags);
  * @param oldfd File descriptor to duplicate.
  * @return New file descriptor on success, or -1 on error (errno is set).
  */
-int freertos_linux_coop_dup(int oldfd);
+ਪੂਰਨ freertos_linux_coop_dup(ਪੂਰਨ oldfd);
 
 /**
  * @brief Cooperative dup2 — duplicates a FD to a specific number, sets non-blocking and tracks it.
@@ -262,7 +262,7 @@ int freertos_linux_coop_dup(int oldfd);
  * @param newfd Desired file descriptor number.
  * @return New file descriptor on success, or -1 on error (errno is set).
  */
-int freertos_linux_coop_dup2(int oldfd, int newfd);
+ਪੂਰਨ freertos_linux_coop_dup2(ਪੂਰਨ oldfd, ਪੂਰਨ newfd);
 
 /**
  * @brief Cooperative select — polls with cooperative yield.
@@ -274,8 +274,8 @@ int freertos_linux_coop_dup2(int oldfd, int newfd);
  * @param timeout   Maximum wait time (NULL for infinite).
  * @return Number of ready descriptors, 0 on timeout, or -1 on error (errno is set).
  */
-int freertos_linux_coop_select(int nfds, fd_set *readfds, fd_set *writefds,
-                               fd_set *exceptfds, struct timeval *timeout);
+ਪੂਰਨ freertos_linux_coop_select(ਪੂਰਨ nfds, fd_set *readfds, fd_set *writefds,
+                               fd_set *exceptfds, ਬਣਤਰ timeval *timeout);
 
 /**
  * @brief Cooperative pselect — polls with cooperative yield and signal mask.
@@ -288,9 +288,9 @@ int freertos_linux_coop_select(int nfds, fd_set *readfds, fd_set *writefds,
  * @param sigmask   Signal mask to apply during the wait (may be NULL).
  * @return Number of ready descriptors, 0 on timeout, or -1 on error (errno is set).
  */
-int freertos_linux_coop_pselect(int nfds, fd_set *readfds, fd_set *writefds,
-                                fd_set *exceptfds, const struct timespec *timeout,
-                                const sigset_t *sigmask);
+ਪੂਰਨ freertos_linux_coop_pselect(ਪੂਰਨ nfds, fd_set *readfds, fd_set *writefds,
+                                fd_set *exceptfds, ਅਚਲ ਬਣਤਰ timespec *timeout,
+                                ਅਚਲ sigset_t *sigmask);
 
 /**
  * @brief Cooperative poll — polls with cooperative yield.
@@ -300,15 +300,15 @@ int freertos_linux_coop_pselect(int nfds, fd_set *readfds, fd_set *writefds,
  * @param timeout Timeout in milliseconds (-1 for infinite, 0 for non-blocking).
  * @return Number of ready descriptors, 0 on timeout, or -1 on error (errno is set).
  */
-int freertos_linux_coop_poll(struct pollfd *fds, nfds_t nfds, int timeout);
+ਪੂਰਨ freertos_linux_coop_poll(ਬਣਤਰ pollfd *fds, nfds_t nfds, ਪੂਰਨ timeout);
 
 /**
  * @brief Set stdin/stdout/stderr to non-blocking and start tracking them.
  *
  * Must be called early during system init.
  */
-void freertos_linux_coop_syscalls_init(void);
+ਖਾਲੀ freertos_linux_coop_syscalls_init(ਖਾਲੀ);
 
-#ifdef __cplusplus
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __cplusplus
 }
-#endif
+#ਜੇ_ਅੰਤ

@@ -30,13 +30,13 @@
  *
  */
 
-#ifndef INC_FREERTOS_H
-#define INC_FREERTOS_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INC_FREERTOS_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INC_FREERTOS_H
 
 /*
  * Include the generic headers required for the FreeRTOS port being used.
  */
-#include <stddef.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stddef.h>
 
 /*
  * If stdint.h cannot be located then:
@@ -51,30 +51,30 @@
  *     contains the typedefs required to build FreeRTOS.  Read the instructions
  *     in FreeRTOS/source/stdint.readme for more information.
  */
-#include <stdint.h> /* READ COMMENT ABOVE. */
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdint.h> /* READ COMMENT ABOVE. */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __cplusplus
+    ਬਾਹਰੀ "C" {
+#ਜੇ_ਅੰਤ
 /* *INDENT-ON* */
 
 /* Application specific configuration options. */
-#include "FreeRTOSConfig.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "FreeRTOSConfig.h"
 
 /* Basic FreeRTOS definitions. */
-#include "projdefs.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "projdefs.h"
 
 /* Definitions specific to the port being used. */
-#include "portable.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "portable.h"
 
 /* Must be defaulted before configUSE_NEWLIB_REENTRANT is used below. */
-#ifndef configUSE_NEWLIB_REENTRANT
-    #define configUSE_NEWLIB_REENTRANT    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_NEWLIB_REENTRANT
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_NEWLIB_REENTRANT    0
+#ਜੇ_ਅੰਤ
 
 /* Required if struct _reent is used. */
-#if ( configUSE_NEWLIB_REENTRANT == 1 )
+#ਜੇ ( configUSE_NEWLIB_REENTRANT == 1 )
 
 /* Note Newlib support has been included by popular demand, but is not
  * used by the FreeRTOS maintainers themselves.  FreeRTOS is not
@@ -85,49 +85,49 @@
  *
  * See the third party link http://www.nadler.com/embedded/newlibAndFreeRTOS.html
  * for additional information. */
-    #include <reent.h>
+    #ਅਨ੍ਤਰ੍ਭਾਵ <reent.h>
 
-    #define configUSE_C_RUNTIME_TLS_SUPPORT    1
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_C_RUNTIME_TLS_SUPPORT    1
 
-    #ifndef configTLS_BLOCK_TYPE
-        #define configTLS_BLOCK_TYPE           struct _reent
-    #endif
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_TLS_ਖੰਡ_TYPE
+        #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_TLS_ਖੰਡ_TYPE           ਬਣਤਰ _reent
+    #ਜੇ_ਅੰਤ
 
-    #ifndef configINIT_TLS_BLOCK
-        #define configINIT_TLS_BLOCK( xTLSBlock )    _REENT_INIT_PTR( &( xTLSBlock ) )
-    #endif
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_INIT_TLS_ਖੰਡ
+        #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_INIT_TLS_ਖੰਡ( xTLSBlock )    _REENT_INIT_PTR( &( xTLSBlock ) )
+    #ਜੇ_ਅੰਤ
 
-    #ifndef configSET_TLS_BLOCK
-        #define configSET_TLS_BLOCK( xTLSBlock )    _impure_ptr = &( xTLSBlock )
-    #endif
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_ਸੈੱਟ_TLS_ਖੰਡ
+        #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_ਸੈੱਟ_TLS_ਖੰਡ( xTLSBlock )    _impure_ptr = &( xTLSBlock )
+    #ਜੇ_ਅੰਤ
 
-    #ifndef configDEINIT_TLS_BLOCK
-        #define configDEINIT_TLS_BLOCK( xTLSBlock )    _reclaim_reent( &( xTLSBlock ) )
-    #endif
-#endif /* if ( configUSE_NEWLIB_REENTRANT == 1 ) */
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_DEINIT_TLS_ਖੰਡ
+        #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_DEINIT_TLS_ਖੰਡ( xTLSBlock )    _reclaim_reent( &( xTLSBlock ) )
+    #ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ /* if ( configUSE_NEWLIB_REENTRANT == 1 ) */
 
-#ifndef configUSE_C_RUNTIME_TLS_SUPPORT
-    #define configUSE_C_RUNTIME_TLS_SUPPORT    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_C_RUNTIME_TLS_SUPPORT
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_C_RUNTIME_TLS_SUPPORT    0
+#ਜੇ_ਅੰਤ
 
-#if ( ( configUSE_NEWLIB_REENTRANT == 0 ) && ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) )
+#ਜੇ ( ( configUSE_NEWLIB_REENTRANT == 0 ) && ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) )
 
-    #ifndef configTLS_BLOCK_TYPE
-        #error Missing definition:  configTLS_BLOCK_TYPE must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_TLS_ਖੰਡ_TYPE
+        #ਗਲਤੀ Missing definition:  config_TLS_ਖੰਡ_TYPE must be defined ਵਿੱਚ FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is ਸੈੱਟ ਮੰਜ਼ਿਲ 1.
+    #ਜੇ_ਅੰਤ
 
-    #ifndef configINIT_TLS_BLOCK
-        #error Missing definition:  configINIT_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_INIT_TLS_ਖੰਡ
+        #ਗਲਤੀ Missing definition:  config_INIT_TLS_ਖੰਡ must be defined ਵਿੱਚ FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is ਸੈੱਟ ਮੰਜ਼ਿਲ 1.
+    #ਜੇ_ਅੰਤ
 
-    #ifndef configSET_TLS_BLOCK
-        #error Missing definition:  configSET_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_ਸੈੱਟ_TLS_ਖੰਡ
+        #ਗਲਤੀ Missing definition:  config_ਸੈੱਟ_TLS_ਖੰਡ must be defined ਵਿੱਚ FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is ਸੈੱਟ ਮੰਜ਼ਿਲ 1.
+    #ਜੇ_ਅੰਤ
 
-    #ifndef configDEINIT_TLS_BLOCK
-        #error Missing definition:  configDEINIT_TLS_BLOCK must be defined in FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is set to 1.
-    #endif
-#endif /* if ( ( configUSE_NEWLIB_REENTRANT == 0 ) && ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) ) */
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_DEINIT_TLS_ਖੰਡ
+        #ਗਲਤੀ Missing definition:  config_DEINIT_TLS_ਖੰਡ must be defined ਵਿੱਚ FreeRTOSConfig.h when configUSE_C_RUNTIME_TLS_SUPPORT is ਸੈੱਟ ਮੰਜ਼ਿਲ 1.
+    #ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ /* if ( ( configUSE_NEWLIB_REENTRANT == 0 ) && ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) ) */
 
 /*
  * Check all the required application specific macros have been defined.
@@ -135,930 +135,930 @@
  * within FreeRTOSConfig.h.
  */
 
-#ifndef configNUMBER_OF_CORES
-    #error Missing definition:  configNUMBER_OF_CORES must be defined in FreeRTOSConfig.h
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_ਸੰਖਿਆ_ਦਾ_CORES
+    #ਗਲਤੀ Missing definition:  config_ਸੰਖਿਆ_ਦਾ_CORES must be defined ਵਿੱਚ FreeRTOSConfig.h
+#ਜੇ_ਅੰਤ
 
-#if ( configNUMBER_OF_CORES > 1 )
-    #ifndef portGET_CORE_ID
-        #error "Missing definition: portGET_CORE_ID() must be defined if in portmacro.h if configNUMBER_OF_CORES > 1"
-    #endif
-    #ifndef portYIELD_CORE
-        #error "Missing definition: portYIELD_CORE() must be defined if in portmacro.h if configNUMBER_OF_CORES > 1"
-    #endif
-#elif ( configNUMBER_OF_CORES == 1 )
-    #undef portGET_CORE_ID
-    #define portGET_CORE_ID()    0
-#else
-    #error configNUMBER_OF_CORES must be defined to either 1 or > 1.
-#endif /* if ( configNUMBER_OF_CORES > 1 ) */
+#ਜੇ ( config_ਸੰਖਿਆ_ਦਾ_CORES > 1 )
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_GET_CORE_ID
+        #ਗਲਤੀ "Missing definition: portGET_CORE_ID() must be defined if in portmacro.h if configNUMBER_OF_CORES > 1"
+    #ਜੇ_ਅੰਤ
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_YIELD_CORE
+        #ਗਲਤੀ "Missing definition: portYIELD_CORE() must be defined if in portmacro.h if configNUMBER_OF_CORES > 1"
+    #ਜੇ_ਅੰਤ
+#ਜਾਂਜੇ ( config_ਸੰਖਿਆ_ਦਾ_CORES == 1 )
+    #ਪਰਿਭਾਸ਼ਾ_ਰੱਦ ਪੋਰਟ_GET_CORE_ID
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_GET_CORE_ID()    0
+#ਨਹੀਂਤਾਂ
+    #ਗਲਤੀ config_ਸੰਖਿਆ_ਦਾ_CORES must be defined ਮੰਜ਼ਿਲ either 1 or > 1.
+#ਜੇ_ਅੰਤ /* if ( configNUMBER_OF_CORES > 1 ) */
 
-#ifndef configMINIMAL_STACK_SIZE
-    #error Missing definition:  configMINIMAL_STACK_SIZE must be defined in FreeRTOSConfig.h.  configMINIMAL_STACK_SIZE defines the size (in words) of the stack allocated to the idle task.  Refer to the demo project provided for your port for a suitable value.
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_ਨਿਊਨਤਮ_ਢੇਰ_ਮਾਪ
+    #ਗਲਤੀ Missing definition:  config_ਨਿਊਨਤਮ_ਢੇਰ_ਮਾਪ must be defined ਵਿੱਚ FreeRTOSConfig.h.  config_ਨਿਊਨਤਮ_ਢੇਰ_ਮਾਪ ਨਿਰਧਾਰਤ_ਕਰਦਾ the ਮਾਪ (ਵਿੱਚ ਸ਼ਬਦ) ਦਾ the ਢੇਰ allocated ਮੰਜ਼ਿਲ the idle task.  Refer ਮੰਜ਼ਿਲ the demo project provided ਲਈ your ਪੋਰਟ ਲਈ a suitable ਮੁੱਲ.
+#ਜੇ_ਅੰਤ
 
-#ifndef configMAX_PRIORITIES
-    #error Missing definition:  configMAX_PRIORITIES must be defined in FreeRTOSConfig.h.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configMAX_PRIORITIES
+    #ਗਲਤੀ Missing definition:  configMAX_PRIORITIES must be defined ਵਿੱਚ FreeRTOSConfig.h.  See the Configuration section ਦਾ the FreeRTOS API documentation ਲਈ details.
+#ਜੇ_ਅੰਤ
 
-#if configMAX_PRIORITIES < 1
-    #error configMAX_PRIORITIES must be defined to be greater than or equal to 1.
-#endif
+#ਜੇ configMAX_PRIORITIES < 1
+    #ਗਲਤੀ configMAX_PRIORITIES must be defined ਮੰਜ਼ਿਲ be greater than or equal ਮੰਜ਼ਿਲ 1.
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_PREEMPTION
-    #error Missing definition:  configUSE_PREEMPTION must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_PREEMPTION
+    #ਗਲਤੀ Missing definition:  configUSE_PREEMPTION must be defined ਵਿੱਚ FreeRTOSConfig.h as either 1 or 0.  See the Configuration section ਦਾ the FreeRTOS API documentation ਲਈ details.
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_IDLE_HOOK
-    #error Missing definition:  configUSE_IDLE_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_IDLE_HOOK
+    #ਗਲਤੀ Missing definition:  configUSE_IDLE_HOOK must be defined ਵਿੱਚ FreeRTOSConfig.h as either 1 or 0.  See the Configuration section ਦਾ the FreeRTOS API documentation ਲਈ details.
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_TICK_HOOK
-    #error Missing definition:  configUSE_TICK_HOOK must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_TICK_HOOK
+    #ਗਲਤੀ Missing definition:  configUSE_TICK_HOOK must be defined ਵਿੱਚ FreeRTOSConfig.h as either 1 or 0.  See the Configuration section ਦਾ the FreeRTOS API documentation ਲਈ details.
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_16_BIT_TICKS
-    #error Missing definition:  configUSE_16_BIT_TICKS must be defined in FreeRTOSConfig.h as either 1 or 0.  See the Configuration section of the FreeRTOS API documentation for details.
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_USE_16_ਦੋਆਧਾਰੀ_ਅੰਕ_TICKS
+    #ਗਲਤੀ Missing definition:  config_USE_16_ਦੋਆਧਾਰੀ_ਅੰਕ_TICKS must be defined ਵਿੱਚ FreeRTOSConfig.h as either 1 or 0.  See the Configuration section ਦਾ the FreeRTOS API documentation ਲਈ details.
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_CO_ROUTINES
-    #define configUSE_CO_ROUTINES    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_CO_ROUTINES
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_CO_ROUTINES    0
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_vTaskPrioritySet
-    #define INCLUDE_vTaskPrioritySet    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_v_Task_ਤਰਜੀਹ_ਸੈੱਟ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_v_Task_ਤਰਜੀਹ_ਸੈੱਟ    0
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_uxTaskPriorityGet
-    #define INCLUDE_uxTaskPriorityGet    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_ux_Task_ਤਰਜੀਹ_Get
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_ux_Task_ਤਰਜੀਹ_Get    0
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_vTaskDelete
-    #define INCLUDE_vTaskDelete    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_vTaskDelete
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_vTaskDelete    0
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_vTaskSuspend
-    #define INCLUDE_vTaskSuspend    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_vTaskSuspend
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_vTaskSuspend    0
+#ਜੇ_ਅੰਤ
 
-#ifdef INCLUDE_xTaskDelayUntil
-    #ifdef INCLUDE_vTaskDelayUntil
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ INCLUDE_xTaskDelayUntil
+    #ਜੇ_ਪਰਿਭਾਸ਼ਿਤ INCLUDE_vTaskDelayUntil
 
 /* INCLUDE_vTaskDelayUntil was replaced by INCLUDE_xTaskDelayUntil.  Backward
  * compatibility is maintained if only one or the other is defined, but
  * there is a conflict if both are defined. */
-        #error INCLUDE_vTaskDelayUntil and INCLUDE_xTaskDelayUntil are both defined.  INCLUDE_vTaskDelayUntil is no longer required and should be removed
-    #endif
-#endif
+        #ਗਲਤੀ INCLUDE_vTaskDelayUntil and INCLUDE_xTaskDelayUntil are both defined.  INCLUDE_vTaskDelayUntil is no longer required and should be removed
+    #ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_xTaskDelayUntil
-    #ifdef INCLUDE_vTaskDelayUntil
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_xTaskDelayUntil
+    #ਜੇ_ਪਰਿਭਾਸ਼ਿਤ INCLUDE_vTaskDelayUntil
 
 /* If INCLUDE_vTaskDelayUntil is set but INCLUDE_xTaskDelayUntil is not then
  * the project's FreeRTOSConfig.h probably pre-dates the introduction of
  * xTaskDelayUntil and setting INCLUDE_xTaskDelayUntil to whatever
  * INCLUDE_vTaskDelayUntil is set to will ensure backward compatibility.
  */
-        #define INCLUDE_xTaskDelayUntil    INCLUDE_vTaskDelayUntil
-    #endif
-#endif
+        #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_xTaskDelayUntil    INCLUDE_vTaskDelayUntil
+    #ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_xTaskDelayUntil
-    #define INCLUDE_xTaskDelayUntil    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_xTaskDelayUntil
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_xTaskDelayUntil    0
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_vTaskDelay
-    #define INCLUDE_vTaskDelay    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_vTaskDelay
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_vTaskDelay    0
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_xTaskGetIdleTaskHandle
-    #define INCLUDE_xTaskGetIdleTaskHandle    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_xTaskGetIdleTaskHandle
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_xTaskGetIdleTaskHandle    0
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_xTaskAbortDelay
-    #define INCLUDE_xTaskAbortDelay    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_xTaskAbortDelay
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_xTaskAbortDelay    0
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_xQueueGetMutexHolder
-    #define INCLUDE_xQueueGetMutexHolder    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_x_ਕਤਾਰ_Get_Mutex_Holder
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_x_ਕਤਾਰ_Get_Mutex_Holder    0
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_xSemaphoreGetMutexHolder
-    #define INCLUDE_xSemaphoreGetMutexHolder    INCLUDE_xQueueGetMutexHolder
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_xSemaphoreGetMutexHolder
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_xSemaphoreGetMutexHolder    INCLUDE_x_ਕਤਾਰ_Get_Mutex_Holder
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_xTaskGetHandle
-    #define INCLUDE_xTaskGetHandle    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_xTaskGetHandle
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_xTaskGetHandle    0
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_uxTaskGetStackHighWaterMark
-    #define INCLUDE_uxTaskGetStackHighWaterMark    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_ux_Task_Get_ਢੇਰ_ਉੱਚਾ_Water_Mark
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_ux_Task_Get_ਢੇਰ_ਉੱਚਾ_Water_Mark    0
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_uxTaskGetStackHighWaterMark2
-    #define INCLUDE_uxTaskGetStackHighWaterMark2    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_ux_Task_Get_ਢੇਰ_ਉੱਚਾ_Water_Mark2
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_ux_Task_Get_ਢੇਰ_ਉੱਚਾ_Water_Mark2    0
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_eTaskGetState
-    #define INCLUDE_eTaskGetState    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_eTaskGetState
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_eTaskGetState    0
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_xTaskResumeFromISR
-    #define INCLUDE_xTaskResumeFromISR    1
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_xTaskResumeFromISR
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_xTaskResumeFromISR    1
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_xTimerPendFunctionCall
-    #define INCLUDE_xTimerPendFunctionCall    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_xTimerPendFunctionCall
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_xTimerPendFunctionCall    0
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_xTaskGetSchedulerState
-    #define INCLUDE_xTaskGetSchedulerState    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_xTaskGetSchedulerState
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_xTaskGetSchedulerState    0
+#ਜੇ_ਅੰਤ
 
-#ifndef INCLUDE_xTaskGetCurrentTaskHandle
-    #define INCLUDE_xTaskGetCurrentTaskHandle    1
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ INCLUDE_xTaskGetCurrentTaskHandle
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ INCLUDE_xTaskGetCurrentTaskHandle    1
+#ਜੇ_ਅੰਤ
 
-#if configUSE_CO_ROUTINES != 0
-    #ifndef configMAX_CO_ROUTINE_PRIORITIES
-        #error configMAX_CO_ROUTINE_PRIORITIES must be greater than or equal to 1.
-    #endif
-#endif
+#ਜੇ configUSE_CO_ROUTINES != 0
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configMAX_CO_ROUTINE_PRIORITIES
+        #ਗਲਤੀ configMAX_CO_ROUTINE_PRIORITIES must be greater than or equal ਮੰਜ਼ਿਲ 1.
+    #ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_DAEMON_TASK_STARTUP_HOOK
-    #define configUSE_DAEMON_TASK_STARTUP_HOOK    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_DAEMON_TASK_STARTUP_HOOK
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_DAEMON_TASK_STARTUP_HOOK    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_APPLICATION_TASK_TAG
-    #define configUSE_APPLICATION_TASK_TAG    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_USE_APPLICATION_TASK_ਟੈਗ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_USE_APPLICATION_TASK_ਟੈਗ    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configNUM_THREAD_LOCAL_STORAGE_POINTERS
-    #define configNUM_THREAD_LOCAL_STORAGE_POINTERS    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_ਅੰਕ_THREAD_LOCAL_STORAGE_ਸੂਚਕ_ਸਾਰੇ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_ਅੰਕ_THREAD_LOCAL_STORAGE_ਸੂਚਕ_ਸਾਰੇ    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_RECURSIVE_MUTEXES
-    #define configUSE_RECURSIVE_MUTEXES    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_RECURSIVE_MUTEXES
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_RECURSIVE_MUTEXES    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_MUTEXES
-    #define configUSE_MUTEXES    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_MUTEXES
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_MUTEXES    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_TIMERS
-    #define configUSE_TIMERS    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_TIMERS
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_TIMERS    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_COUNTING_SEMAPHORES
-    #define configUSE_COUNTING_SEMAPHORES    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_COUNTING_SEMAPHORES
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_COUNTING_SEMAPHORES    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_ALTERNATIVE_API
-    #define configUSE_ALTERNATIVE_API    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_ALTERNATIVE_API
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_ALTERNATIVE_API    0
+#ਜੇ_ਅੰਤ
 
-#ifndef portCRITICAL_NESTING_IN_TCB
-    #define portCRITICAL_NESTING_IN_TCB    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_CRITICAL_NESTING_ਵਿੱਚ_TCB
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_CRITICAL_NESTING_ਵਿੱਚ_TCB    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configMAX_TASK_NAME_LEN
-    #define configMAX_TASK_NAME_LEN    16
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configMAX_TASK_NAME_LEN
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configMAX_TASK_NAME_LEN    16
+#ਜੇ_ਅੰਤ
 
-#ifndef configIDLE_SHOULD_YIELD
-    #define configIDLE_SHOULD_YIELD    1
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configIDLE_SHOULD_YIELD
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configIDLE_SHOULD_YIELD    1
+#ਜੇ_ਅੰਤ
 
-#if configMAX_TASK_NAME_LEN < 1
-    #error configMAX_TASK_NAME_LEN must be set to a minimum of 1 in FreeRTOSConfig.h
-#endif
+#ਜੇ configMAX_TASK_NAME_LEN < 1
+    #ਗਲਤੀ configMAX_TASK_NAME_LEN must be ਸੈੱਟ ਮੰਜ਼ਿਲ a minimum ਦਾ 1 ਵਿੱਚ FreeRTOSConfig.h
+#ਜੇ_ਅੰਤ
 
-#ifndef configASSERT
-    #define configASSERT( x )
-    #define configASSERT_DEFINED    0
-#else
-    #define configASSERT_DEFINED    1
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configASSERT
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configASSERT( x )
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configASSERT_DEFINED    0
+#ਨਹੀਂਤਾਂ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configASSERT_DEFINED    1
+#ਜੇ_ਅੰਤ
 
 /* configPRECONDITION should be defined as configASSERT.
  * The CBMC proofs need a way to track assumptions and assertions.
  * A configPRECONDITION statement should express an implicit invariant or
  * assumption made.  A configASSERT statement should express an invariant that must
  * hold explicit before calling the code. */
-#ifndef configPRECONDITION
-    #define configPRECONDITION( X )    configASSERT( X )
-    #define configPRECONDITION_DEFINED    0
-#else
-    #define configPRECONDITION_DEFINED    1
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configPRECONDITION
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configPRECONDITION( X )    configASSERT( X )
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configPRECONDITION_DEFINED    0
+#ਨਹੀਂਤਾਂ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configPRECONDITION_DEFINED    1
+#ਜੇ_ਅੰਤ
 
-#ifndef portMEMORY_BARRIER
-    #define portMEMORY_BARRIER()
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_ਸਮ੍ਰਿਤੀ_BARRIER
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_ਸਮ੍ਰਿਤੀ_BARRIER()
+#ਜੇ_ਅੰਤ
 
-#ifndef portSOFTWARE_BARRIER
-    #define portSOFTWARE_BARRIER()
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_SOFTWARE_BARRIER
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_SOFTWARE_BARRIER()
+#ਜੇ_ਅੰਤ
 
 /* The timers module relies on xTaskGetSchedulerState(). */
-#if configUSE_TIMERS == 1
+#ਜੇ configUSE_TIMERS == 1
 
-    #ifndef configTIMER_TASK_PRIORITY
-        #error If configUSE_TIMERS is set to 1 then configTIMER_TASK_PRIORITY must also be defined.
-    #endif /* configTIMER_TASK_PRIORITY */
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_TIMER_TASK_ਤਰਜੀਹ
+        #ਗਲਤੀ If configUSE_TIMERS is ਸੈੱਟ ਮੰਜ਼ਿਲ 1 then config_TIMER_TASK_ਤਰਜੀਹ must also be defined.
+    #ਜੇ_ਅੰਤ /* configTIMER_TASK_PRIORITY */
 
-    #ifndef configTIMER_QUEUE_LENGTH
-        #error If configUSE_TIMERS is set to 1 then configTIMER_QUEUE_LENGTH must also be defined.
-    #endif /* configTIMER_QUEUE_LENGTH */
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_TIMER_ਕਤਾਰ_ਲੰਮਾਈ
+        #ਗਲਤੀ If configUSE_TIMERS is ਸੈੱਟ ਮੰਜ਼ਿਲ 1 then config_TIMER_ਕਤਾਰ_ਲੰਮਾਈ must also be defined.
+    #ਜੇ_ਅੰਤ /* configTIMER_QUEUE_LENGTH */
 
-    #ifndef configTIMER_TASK_STACK_DEPTH
-        #error If configUSE_TIMERS is set to 1 then configTIMER_TASK_STACK_DEPTH must also be defined.
-    #endif /* configTIMER_TASK_STACK_DEPTH */
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_TIMER_TASK_ਢੇਰ_ਡੂੰਘਾਈ
+        #ਗਲਤੀ If configUSE_TIMERS is ਸੈੱਟ ਮੰਜ਼ਿਲ 1 then config_TIMER_TASK_ਢੇਰ_ਡੂੰਘਾਈ must also be defined.
+    #ਜੇ_ਅੰਤ /* configTIMER_TASK_STACK_DEPTH */
 
-#endif /* configUSE_TIMERS */
+#ਜੇ_ਅੰਤ /* configUSE_TIMERS */
 
-#ifndef portSET_INTERRUPT_MASK_FROM_ISR
-    #define portSET_INTERRUPT_MASK_FROM_ISR()    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_ਸੈੱਟ_ਰੁਕਾਵਟ_ਨਕਾਬ_FROM_ISR
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_ਸੈੱਟ_ਰੁਕਾਵਟ_ਨਕਾਬ_FROM_ISR()    0
+#ਜੇ_ਅੰਤ
 
-#ifndef portCLEAR_INTERRUPT_MASK_FROM_ISR
-    #define portCLEAR_INTERRUPT_MASK_FROM_ISR( uxSavedStatusValue )    ( void ) ( uxSavedStatusValue )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_CLEAR_ਰੁਕਾਵਟ_ਨਕਾਬ_FROM_ISR
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_CLEAR_ਰੁਕਾਵਟ_ਨਕਾਬ_FROM_ISR( ux_Saved_ਸਥਿਤੀ_ਮੁੱਲ )    ( ਖਾਲੀ ) ( ux_Saved_ਸਥਿਤੀ_ਮੁੱਲ )
+#ਜੇ_ਅੰਤ
 
-#ifndef portCLEAN_UP_TCB
-    #define portCLEAN_UP_TCB( pxTCB )    ( void ) ( pxTCB )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_CLEAN_ਉੱਪਰ_TCB
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_CLEAN_ਉੱਪਰ_TCB( pxTCB )    ( ਖਾਲੀ ) ( pxTCB )
+#ਜੇ_ਅੰਤ
 
-#ifndef portPRE_TASK_DELETE_HOOK
-    #define portPRE_TASK_DELETE_HOOK( pvTaskToDelete, pxYieldPending )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_PRE_TASK_DELETE_HOOK
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_PRE_TASK_DELETE_HOOK( pv_Task_ਮੰਜ਼ਿਲ_Delete, pxYieldPending )
+#ਜੇ_ਅੰਤ
 
-#ifndef portSETUP_TCB
-    #define portSETUP_TCB( pxTCB )    ( void ) ( pxTCB )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_ਤਿਆਰੀ_TCB
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_ਤਿਆਰੀ_TCB( pxTCB )    ( ਖਾਲੀ ) ( pxTCB )
+#ਜੇ_ਅੰਤ
 
-#ifndef configQUEUE_REGISTRY_SIZE
-    #define configQUEUE_REGISTRY_SIZE    0U
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_ਕਤਾਰ_REGISTRY_ਮਾਪ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_ਕਤਾਰ_REGISTRY_ਮਾਪ    0U
+#ਜੇ_ਅੰਤ
 
-#if ( configQUEUE_REGISTRY_SIZE < 1 )
-    #define vQueueAddToRegistry( xQueue, pcName )
-    #define vQueueUnregisterQueue( xQueue )
-    #define pcQueueGetName( xQueue )
-#endif
+#ਜੇ ( config_ਕਤਾਰ_REGISTRY_ਮਾਪ < 1 )
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ v_ਕਤਾਰ_ਜੋੜੋ_ਮੰਜ਼ਿਲ_Registry( x_ਕਤਾਰ, pcName )
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ v_ਕਤਾਰ_Unregister_ਕਤਾਰ( x_ਕਤਾਰ )
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ pc_ਕਤਾਰ_Get_Name( x_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_MINI_LIST_ITEM
-    #define configUSE_MINI_LIST_ITEM    1
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_USE_MINI_LIST_ਵਸਤੂ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_USE_MINI_LIST_ਵਸਤੂ    1
+#ਜੇ_ਅੰਤ
 
-#ifndef portPOINTER_SIZE_TYPE
-    #define portPOINTER_SIZE_TYPE    uint32_t
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_ਸੂਚਕ_ਮਾਪ_TYPE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_ਸੂਚਕ_ਮਾਪ_TYPE    uint32_t
+#ਜੇ_ਅੰਤ
 
 /* Remove any unused trace macros. */
-#ifndef traceSTART
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਸ਼ੁਰੂ
 
 /* Used to perform any necessary initialisation - for example, open a file
  * into which trace is to be written. */
-    #define traceSTART()
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਸ਼ੁਰੂ()
+#ਜੇ_ਅੰਤ
 
-#ifndef traceEND
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਸਿਰਾ
 
 /* Use to close a trace, for example close a file into which trace has been
  * written. */
-    #define traceEND()
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਸਿਰਾ()
+#ਜੇ_ਅੰਤ
 
-#ifndef traceTASK_SWITCHED_IN
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_TASK_SWITCHED_ਵਿੱਚ
 
 /* Called after a task has been selected to run.  pxCurrentTCB holds a pointer
  * to the task control block of the selected task. */
-    #define traceTASK_SWITCHED_IN()
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_TASK_SWITCHED_ਵਿੱਚ()
+#ਜੇ_ਅੰਤ
 
-#ifndef traceINCREASE_TICK_COUNT
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_INCREASE_TICK_ਗਿਣਤੀ
 
 /* Called before stepping the tick count after waking from tickless idle
  * sleep. */
-    #define traceINCREASE_TICK_COUNT( x )
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_INCREASE_TICK_ਗਿਣਤੀ( x )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceLOW_POWER_IDLE_BEGIN
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਨੀਵਾਂ_POWER_IDLE_BEGIN
     /* Called immediately before entering tickless idle. */
-    #define traceLOW_POWER_IDLE_BEGIN()
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਨੀਵਾਂ_POWER_IDLE_BEGIN()
+#ਜੇ_ਅੰਤ
 
-#ifndef traceLOW_POWER_IDLE_END
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਨੀਵਾਂ_POWER_IDLE_ਸਿਰਾ
     /* Called when returning to the Idle task after a tickless idle. */
-    #define traceLOW_POWER_IDLE_END()
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਨੀਵਾਂ_POWER_IDLE_ਸਿਰਾ()
+#ਜੇ_ਅੰਤ
 
-#ifndef traceTASK_SWITCHED_OUT
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_TASK_SWITCHED_ਬਾਹਰਲਾ
 
 /* Called before a task has been selected to run.  pxCurrentTCB holds a pointer
  * to the task control block of the task being switched out. */
-    #define traceTASK_SWITCHED_OUT()
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_TASK_SWITCHED_ਬਾਹਰਲਾ()
+#ਜੇ_ਅੰਤ
 
-#ifndef traceTASK_PRIORITY_INHERIT
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_TASK_ਤਰਜੀਹ_INHERIT
 
 /* Called when a task attempts to take a mutex that is already held by a
  * lower priority task.  pxTCBOfMutexHolder is a pointer to the TCB of the task
  * that holds the mutex.  uxInheritedPriority is the priority the mutex holder
  * will inherit (the priority of the task that is attempting to obtain the
  * muted. */
-    #define traceTASK_PRIORITY_INHERIT( pxTCBOfMutexHolder, uxInheritedPriority )
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_TASK_ਤਰਜੀਹ_INHERIT( pxTCBOfMutexHolder, ux_Inherited_ਤਰਜੀਹ )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceTASK_PRIORITY_DISINHERIT
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_TASK_ਤਰਜੀਹ_DISINHERIT
 
 /* Called when a task releases a mutex, the holding of which had resulted in
  * the task inheriting the priority of a higher priority task.
  * pxTCBOfMutexHolder is a pointer to the TCB of the task that is releasing the
  * mutex.  uxOriginalPriority is the task's configured (base) priority. */
-    #define traceTASK_PRIORITY_DISINHERIT( pxTCBOfMutexHolder, uxOriginalPriority )
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_TASK_ਤਰਜੀਹ_DISINHERIT( pxTCBOfMutexHolder, ux_Original_ਤਰਜੀਹ )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceBLOCKING_ON_QUEUE_RECEIVE
-
-/* Task is about to block because it cannot read from a
- * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
- * upon which the read was attempted.  pxCurrentTCB points to the TCB of the
- * task that attempted the read. */
-    #define traceBLOCKING_ON_QUEUE_RECEIVE( pxQueue )
-#endif
-
-#ifndef traceBLOCKING_ON_QUEUE_PEEK
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_BLOCKING_ON_ਕਤਾਰ_RECEIVE
 
 /* Task is about to block because it cannot read from a
  * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
  * upon which the read was attempted.  pxCurrentTCB points to the TCB of the
  * task that attempted the read. */
-    #define traceBLOCKING_ON_QUEUE_PEEK( pxQueue )
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_BLOCKING_ON_ਕਤਾਰ_RECEIVE( px_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceBLOCKING_ON_QUEUE_SEND
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_BLOCKING_ON_ਕਤਾਰ_PEEK
+
+/* Task is about to block because it cannot read from a
+ * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
+ * upon which the read was attempted.  pxCurrentTCB points to the TCB of the
+ * task that attempted the read. */
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_BLOCKING_ON_ਕਤਾਰ_PEEK( px_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_BLOCKING_ON_ਕਤਾਰ_SEND
 
 /* Task is about to block because it cannot write to a
  * queue/mutex/semaphore.  pxQueue is a pointer to the queue/mutex/semaphore
  * upon which the write was attempted.  pxCurrentTCB points to the TCB of the
  * task that attempted the write. */
-    #define traceBLOCKING_ON_QUEUE_SEND( pxQueue )
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_BLOCKING_ON_ਕਤਾਰ_SEND( px_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
 
-#ifndef configCHECK_FOR_STACK_OVERFLOW
-    #define configCHECK_FOR_STACK_OVERFLOW    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_CHECK_FOR_ਢੇਰ_ਉਛਾਲ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_CHECK_FOR_ਢੇਰ_ਉਛਾਲ    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configRECORD_STACK_HIGH_ADDRESS
-    #define configRECORD_STACK_HIGH_ADDRESS    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_ਰਿਕਾਰਡ_ਢੇਰ_ਉੱਚਾ_ਪਤਾ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_ਰਿਕਾਰਡ_ਢੇਰ_ਉੱਚਾ_ਪਤਾ    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H
-    #define configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H    0
+#ਜੇ_ਅੰਤ
 
 /* The following event macros are embedded in the kernel API calls. */
 
-#ifndef traceMOVED_TASK_TO_READY_STATE
-    #define traceMOVED_TASK_TO_READY_STATE( pxTCB )
-#endif
-
-#ifndef tracePOST_MOVED_TASK_TO_READY_STATE
-    #define tracePOST_MOVED_TASK_TO_READY_STATE( pxTCB )
-#endif
-
-#ifndef traceQUEUE_CREATE
-    #define traceQUEUE_CREATE( pxNewQueue )
-#endif
-
-#ifndef traceQUEUE_CREATE_FAILED
-    #define traceQUEUE_CREATE_FAILED( ucQueueType )
-#endif
-
-#ifndef traceCREATE_MUTEX
-    #define traceCREATE_MUTEX( pxNewQueue )
-#endif
-
-#ifndef traceCREATE_MUTEX_FAILED
-    #define traceCREATE_MUTEX_FAILED()
-#endif
-
-#ifndef traceGIVE_MUTEX_RECURSIVE
-    #define traceGIVE_MUTEX_RECURSIVE( pxMutex )
-#endif
-
-#ifndef traceGIVE_MUTEX_RECURSIVE_FAILED
-    #define traceGIVE_MUTEX_RECURSIVE_FAILED( pxMutex )
-#endif
-
-#ifndef traceTAKE_MUTEX_RECURSIVE
-    #define traceTAKE_MUTEX_RECURSIVE( pxMutex )
-#endif
-
-#ifndef traceTAKE_MUTEX_RECURSIVE_FAILED
-    #define traceTAKE_MUTEX_RECURSIVE_FAILED( pxMutex )
-#endif
-
-#ifndef traceCREATE_COUNTING_SEMAPHORE
-    #define traceCREATE_COUNTING_SEMAPHORE()
-#endif
-
-#ifndef traceCREATE_COUNTING_SEMAPHORE_FAILED
-    #define traceCREATE_COUNTING_SEMAPHORE_FAILED()
-#endif
-
-#ifndef traceQUEUE_SET_SEND
-    #define traceQUEUE_SET_SEND    traceQUEUE_SEND
-#endif
-
-#ifndef traceQUEUE_SEND
-    #define traceQUEUE_SEND( pxQueue )
-#endif
-
-#ifndef traceQUEUE_SEND_FAILED
-    #define traceQUEUE_SEND_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE
-    #define traceQUEUE_RECEIVE( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK
-    #define traceQUEUE_PEEK( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK_FAILED
-    #define traceQUEUE_PEEK_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK_FROM_ISR
-    #define traceQUEUE_PEEK_FROM_ISR( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE_FAILED
-    #define traceQUEUE_RECEIVE_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_SEND_FROM_ISR
-    #define traceQUEUE_SEND_FROM_ISR( pxQueue )
-#endif
-
-#ifndef traceQUEUE_SEND_FROM_ISR_FAILED
-    #define traceQUEUE_SEND_FROM_ISR_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE_FROM_ISR
-    #define traceQUEUE_RECEIVE_FROM_ISR( pxQueue )
-#endif
-
-#ifndef traceQUEUE_RECEIVE_FROM_ISR_FAILED
-    #define traceQUEUE_RECEIVE_FROM_ISR_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_PEEK_FROM_ISR_FAILED
-    #define traceQUEUE_PEEK_FROM_ISR_FAILED( pxQueue )
-#endif
-
-#ifndef traceQUEUE_DELETE
-    #define traceQUEUE_DELETE( pxQueue )
-#endif
-
-#ifndef traceTASK_CREATE
-    #define traceTASK_CREATE( pxNewTCB )
-#endif
-
-#ifndef traceTASK_CREATE_FAILED
-    #define traceTASK_CREATE_FAILED()
-#endif
-
-#ifndef traceTASK_DELETE
-    #define traceTASK_DELETE( pxTaskToDelete )
-#endif
-
-#ifndef traceTASK_DELAY_UNTIL
-    #define traceTASK_DELAY_UNTIL( x )
-#endif
-
-#ifndef traceTASK_DELAY
-    #define traceTASK_DELAY()
-#endif
-
-#ifndef traceTASK_PRIORITY_SET
-    #define traceTASK_PRIORITY_SET( pxTask, uxNewPriority )
-#endif
-
-#ifndef traceTASK_SUSPEND
-    #define traceTASK_SUSPEND( pxTaskToSuspend )
-#endif
-
-#ifndef traceTASK_RESUME
-    #define traceTASK_RESUME( pxTaskToResume )
-#endif
-
-#ifndef traceTASK_RESUME_FROM_ISR
-    #define traceTASK_RESUME_FROM_ISR( pxTaskToResume )
-#endif
-
-#ifndef traceTASK_INCREMENT_TICK
-    #define traceTASK_INCREMENT_TICK( xTickCount )
-#endif
-
-#ifndef traceTIMER_CREATE
-    #define traceTIMER_CREATE( pxNewTimer )
-#endif
-
-#ifndef traceTIMER_CREATE_FAILED
-    #define traceTIMER_CREATE_FAILED()
-#endif
-
-#ifndef traceTIMER_COMMAND_SEND
-    #define traceTIMER_COMMAND_SEND( xTimer, xMessageID, xMessageValueValue, xReturn )
-#endif
-
-#ifndef traceTIMER_EXPIRED
-    #define traceTIMER_EXPIRED( pxTimer )
-#endif
-
-#ifndef traceTIMER_COMMAND_RECEIVED
-    #define traceTIMER_COMMAND_RECEIVED( pxTimer, xMessageID, xMessageValue )
-#endif
-
-#ifndef traceMALLOC
-    #define traceMALLOC( pvAddress, uiSize )
-#endif
-
-#ifndef traceFREE
-    #define traceFREE( pvAddress, uiSize )
-#endif
-
-#ifndef traceEVENT_GROUP_CREATE
-    #define traceEVENT_GROUP_CREATE( xEventGroup )
-#endif
-
-#ifndef traceEVENT_GROUP_CREATE_FAILED
-    #define traceEVENT_GROUP_CREATE_FAILED()
-#endif
-
-#ifndef traceEVENT_GROUP_SYNC_BLOCK
-    #define traceEVENT_GROUP_SYNC_BLOCK( xEventGroup, uxBitsToSet, uxBitsToWaitFor )
-#endif
-
-#ifndef traceEVENT_GROUP_SYNC_END
-    #define traceEVENT_GROUP_SYNC_END( xEventGroup, uxBitsToSet, uxBitsToWaitFor, xTimeoutOccurred )    ( void ) ( xTimeoutOccurred )
-#endif
-
-#ifndef traceEVENT_GROUP_WAIT_BITS_BLOCK
-    #define traceEVENT_GROUP_WAIT_BITS_BLOCK( xEventGroup, uxBitsToWaitFor )
-#endif
-
-#ifndef traceEVENT_GROUP_WAIT_BITS_END
-    #define traceEVENT_GROUP_WAIT_BITS_END( xEventGroup, uxBitsToWaitFor, xTimeoutOccurred )    ( void ) ( xTimeoutOccurred )
-#endif
-
-#ifndef traceEVENT_GROUP_CLEAR_BITS
-    #define traceEVENT_GROUP_CLEAR_BITS( xEventGroup, uxBitsToClear )
-#endif
-
-#ifndef traceEVENT_GROUP_CLEAR_BITS_FROM_ISR
-    #define traceEVENT_GROUP_CLEAR_BITS_FROM_ISR( xEventGroup, uxBitsToClear )
-#endif
-
-#ifndef traceEVENT_GROUP_SET_BITS
-    #define traceEVENT_GROUP_SET_BITS( xEventGroup, uxBitsToSet )
-#endif
-
-#ifndef traceEVENT_GROUP_SET_BITS_FROM_ISR
-    #define traceEVENT_GROUP_SET_BITS_FROM_ISR( xEventGroup, uxBitsToSet )
-#endif
-
-#ifndef traceEVENT_GROUP_DELETE
-    #define traceEVENT_GROUP_DELETE( xEventGroup )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_MOVED_TASK_ਮੰਜ਼ਿਲ_READY_STATE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_MOVED_TASK_ਮੰਜ਼ਿਲ_READY_STATE( pxTCB )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_POST_MOVED_TASK_ਮੰਜ਼ਿਲ_READY_STATE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_POST_MOVED_TASK_ਮੰਜ਼ਿਲ_READY_STATE( pxTCB )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_CREATE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_CREATE( px_New_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_CREATE_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_CREATE_FAILED( uc_ਕਤਾਰ_Type )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceCREATE_MUTEX
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceCREATE_MUTEX( px_New_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceCREATE_MUTEX_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceCREATE_MUTEX_FAILED()
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceGIVE_MUTEX_RECURSIVE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceGIVE_MUTEX_RECURSIVE( pxMutex )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceGIVE_MUTEX_RECURSIVE_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceGIVE_MUTEX_RECURSIVE_FAILED( pxMutex )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTAKE_MUTEX_RECURSIVE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTAKE_MUTEX_RECURSIVE( pxMutex )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTAKE_MUTEX_RECURSIVE_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTAKE_MUTEX_RECURSIVE_FAILED( pxMutex )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceCREATE_COUNTING_SEMAPHORE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceCREATE_COUNTING_SEMAPHORE()
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceCREATE_COUNTING_SEMAPHORE_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceCREATE_COUNTING_SEMAPHORE_FAILED()
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_ਸੈੱਟ_SEND
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_ਸੈੱਟ_SEND    trace_ਕਤਾਰ_SEND
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_SEND
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_SEND( px_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_SEND_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_SEND_FAILED( px_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_RECEIVE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_RECEIVE( px_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_PEEK
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_PEEK( px_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_PEEK_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_PEEK_FAILED( px_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_PEEK_FROM_ISR
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_PEEK_FROM_ISR( px_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_RECEIVE_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_RECEIVE_FAILED( px_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_SEND_FROM_ISR
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_SEND_FROM_ISR( px_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_SEND_FROM_ISR_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_SEND_FROM_ISR_FAILED( px_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_RECEIVE_FROM_ISR
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_RECEIVE_FROM_ISR( px_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_RECEIVE_FROM_ISR_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_RECEIVE_FROM_ISR_FAILED( px_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_PEEK_FROM_ISR_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_PEEK_FROM_ISR_FAILED( px_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_DELETE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_DELETE( px_ਕਤਾਰ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTASK_CREATE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTASK_CREATE( pxNewTCB )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTASK_CREATE_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTASK_CREATE_FAILED()
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTASK_DELETE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTASK_DELETE( px_Task_ਮੰਜ਼ਿਲ_Delete )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTASK_DELAY_UNTIL
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTASK_DELAY_UNTIL( x )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTASK_DELAY
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTASK_DELAY()
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_TASK_ਤਰਜੀਹ_ਸੈੱਟ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_TASK_ਤਰਜੀਹ_ਸੈੱਟ( pxTask, ux_New_ਤਰਜੀਹ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTASK_SUSPEND
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTASK_SUSPEND( px_Task_ਮੰਜ਼ਿਲ_Suspend )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTASK_RESUME
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTASK_RESUME( px_Task_ਮੰਜ਼ਿਲ_Resume )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTASK_RESUME_FROM_ISR
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTASK_RESUME_FROM_ISR( px_Task_ਮੰਜ਼ਿਲ_Resume )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTASK_INCREMENT_TICK
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTASK_INCREMENT_TICK( x_Tick_ਗਿਣਤੀ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTIMER_CREATE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTIMER_CREATE( pxNewTimer )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTIMER_CREATE_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTIMER_CREATE_FAILED()
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTIMER_COMMAND_SEND
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTIMER_COMMAND_SEND( xTimer, x_ਸੁਨੇਹਾ_ID, x_ਸੁਨੇਹਾ_ਮੁੱਲ_ਮੁੱਲ, xReturn )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTIMER_EXPIRED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTIMER_EXPIRED( pxTimer )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTIMER_COMMAND_RECEIVED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTIMER_COMMAND_RECEIVED( pxTimer, x_ਸੁਨੇਹਾ_ID, x_ਸੁਨੇਹਾ_ਮੁੱਲ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceMALLOC
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceMALLOC( pv_ਪਤਾ, ui_ਮਾਪ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceFREE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceFREE( pv_ਪਤਾ, ui_ਮਾਪ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_EVENT_ਸਮੂਹ_CREATE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_EVENT_ਸਮੂਹ_CREATE( x_Event_ਸਮੂਹ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_EVENT_ਸਮੂਹ_CREATE_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_EVENT_ਸਮੂਹ_CREATE_FAILED()
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_EVENT_ਸਮੂਹ_SYNC_ਖੰਡ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_EVENT_ਸਮੂਹ_SYNC_ਖੰਡ( x_Event_ਸਮੂਹ, ux_ਬਿੱਟ_ਮੰਜ਼ਿਲ_ਸੈੱਟ, ux_ਬਿੱਟ_ਮੰਜ਼ਿਲ_Wait_For )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_EVENT_ਸਮੂਹ_SYNC_ਸਿਰਾ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_EVENT_ਸਮੂਹ_SYNC_ਸਿਰਾ( x_Event_ਸਮੂਹ, ux_ਬਿੱਟ_ਮੰਜ਼ਿਲ_ਸੈੱਟ, ux_ਬਿੱਟ_ਮੰਜ਼ਿਲ_Wait_For, xTimeoutOccurred )    ( ਖਾਲੀ ) ( xTimeoutOccurred )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_EVENT_ਸਮੂਹ_WAIT_ਬਿੱਟ_ਖੰਡ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_EVENT_ਸਮੂਹ_WAIT_ਬਿੱਟ_ਖੰਡ( x_Event_ਸਮੂਹ, ux_ਬਿੱਟ_ਮੰਜ਼ਿਲ_Wait_For )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_EVENT_ਸਮੂਹ_WAIT_ਬਿੱਟ_ਸਿਰਾ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_EVENT_ਸਮੂਹ_WAIT_ਬਿੱਟ_ਸਿਰਾ( x_Event_ਸਮੂਹ, ux_ਬਿੱਟ_ਮੰਜ਼ਿਲ_Wait_For, xTimeoutOccurred )    ( ਖਾਲੀ ) ( xTimeoutOccurred )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_EVENT_ਸਮੂਹ_CLEAR_ਬਿੱਟ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_EVENT_ਸਮੂਹ_CLEAR_ਬਿੱਟ( x_Event_ਸਮੂਹ, ux_ਬਿੱਟ_ਮੰਜ਼ਿਲ_Clear )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_EVENT_ਸਮੂਹ_CLEAR_ਬਿੱਟ_FROM_ISR
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_EVENT_ਸਮੂਹ_CLEAR_ਬਿੱਟ_FROM_ISR( x_Event_ਸਮੂਹ, ux_ਬਿੱਟ_ਮੰਜ਼ਿਲ_Clear )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_EVENT_ਸਮੂਹ_ਸੈੱਟ_ਬਿੱਟ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_EVENT_ਸਮੂਹ_ਸੈੱਟ_ਬਿੱਟ( x_Event_ਸਮੂਹ, ux_ਬਿੱਟ_ਮੰਜ਼ਿਲ_ਸੈੱਟ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_EVENT_ਸਮੂਹ_ਸੈੱਟ_ਬਿੱਟ_FROM_ISR
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_EVENT_ਸਮੂਹ_ਸੈੱਟ_ਬਿੱਟ_FROM_ISR( x_Event_ਸਮੂਹ, ux_ਬਿੱਟ_ਮੰਜ਼ਿਲ_ਸੈੱਟ )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_EVENT_ਸਮੂਹ_DELETE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_EVENT_ਸਮੂਹ_DELETE( x_Event_ਸਮੂਹ )
+#ਜੇ_ਅੰਤ
 
-#ifndef tracePEND_FUNC_CALL
-    #define tracePEND_FUNC_CALL( xFunctionToPend, pvParameter1, ulParameter2, ret )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ tracePEND_FUNC_CALL
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ tracePEND_FUNC_CALL( x_Function_ਮੰਜ਼ਿਲ_Pend, pvParameter1, ulParameter2, ret )
+#ਜੇ_ਅੰਤ
 
-#ifndef tracePEND_FUNC_CALL_FROM_ISR
-    #define tracePEND_FUNC_CALL_FROM_ISR( xFunctionToPend, pvParameter1, ulParameter2, ret )
-#endif
-
-#ifndef traceQUEUE_REGISTRY_ADD
-    #define traceQUEUE_REGISTRY_ADD( xQueue, pcQueueName )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ tracePEND_FUNC_CALL_FROM_ISR
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ tracePEND_FUNC_CALL_FROM_ISR( x_Function_ਮੰਜ਼ਿਲ_Pend, pvParameter1, ulParameter2, ret )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_REGISTRY_ਜੋੜੋ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_REGISTRY_ਜੋੜੋ( x_ਕਤਾਰ, pc_ਕਤਾਰ_Name )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceTASK_NOTIFY_TAKE_BLOCK
-    #define traceTASK_NOTIFY_TAKE_BLOCK( uxIndexToWait )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_TASK_NOTIFY_TAKE_ਖੰਡ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_TASK_NOTIFY_TAKE_ਖੰਡ( ux_ਸੂਚਕਾਂਕ_ਮੰਜ਼ਿਲ_Wait )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceTASK_NOTIFY_TAKE
-    #define traceTASK_NOTIFY_TAKE( uxIndexToWait )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTASK_NOTIFY_TAKE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTASK_NOTIFY_TAKE( ux_ਸੂਚਕਾਂਕ_ਮੰਜ਼ਿਲ_Wait )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceTASK_NOTIFY_WAIT_BLOCK
-    #define traceTASK_NOTIFY_WAIT_BLOCK( uxIndexToWait )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_TASK_NOTIFY_WAIT_ਖੰਡ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_TASK_NOTIFY_WAIT_ਖੰਡ( ux_ਸੂਚਕਾਂਕ_ਮੰਜ਼ਿਲ_Wait )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceTASK_NOTIFY_WAIT
-    #define traceTASK_NOTIFY_WAIT( uxIndexToWait )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTASK_NOTIFY_WAIT
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTASK_NOTIFY_WAIT( ux_ਸੂਚਕਾਂਕ_ਮੰਜ਼ਿਲ_Wait )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceTASK_NOTIFY
-    #define traceTASK_NOTIFY( uxIndexToNotify )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTASK_NOTIFY
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTASK_NOTIFY( ux_ਸੂਚਕਾਂਕ_ਮੰਜ਼ਿਲ_Notify )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceTASK_NOTIFY_FROM_ISR
-    #define traceTASK_NOTIFY_FROM_ISR( uxIndexToNotify )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTASK_NOTIFY_FROM_ISR
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTASK_NOTIFY_FROM_ISR( ux_ਸੂਚਕਾਂਕ_ਮੰਜ਼ਿਲ_Notify )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceTASK_NOTIFY_GIVE_FROM_ISR
-    #define traceTASK_NOTIFY_GIVE_FROM_ISR( uxIndexToNotify )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceTASK_NOTIFY_GIVE_FROM_ISR
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceTASK_NOTIFY_GIVE_FROM_ISR( ux_ਸੂਚਕਾਂਕ_ਮੰਜ਼ਿਲ_Notify )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceSTREAM_BUFFER_CREATE_FAILED
-    #define traceSTREAM_BUFFER_CREATE_FAILED( xIsMessageBuffer )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਧਾਰਾ_ਬਫਰ_CREATE_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਧਾਰਾ_ਬਫਰ_CREATE_FAILED( x_Is_ਸੁਨੇਹਾ_ਬਫਰ )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceSTREAM_BUFFER_CREATE_STATIC_FAILED
-    #define traceSTREAM_BUFFER_CREATE_STATIC_FAILED( xReturn, xIsMessageBuffer )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਧਾਰਾ_ਬਫਰ_CREATE_STATIC_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਧਾਰਾ_ਬਫਰ_CREATE_STATIC_FAILED( xReturn, x_Is_ਸੁਨੇਹਾ_ਬਫਰ )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceSTREAM_BUFFER_CREATE
-    #define traceSTREAM_BUFFER_CREATE( pxStreamBuffer, xIsMessageBuffer )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਧਾਰਾ_ਬਫਰ_CREATE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਧਾਰਾ_ਬਫਰ_CREATE( px_ਧਾਰਾ_ਬਫਰ, x_Is_ਸੁਨੇਹਾ_ਬਫਰ )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceSTREAM_BUFFER_DELETE
-    #define traceSTREAM_BUFFER_DELETE( xStreamBuffer )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਧਾਰਾ_ਬਫਰ_DELETE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਧਾਰਾ_ਬਫਰ_DELETE( x_ਧਾਰਾ_ਬਫਰ )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceSTREAM_BUFFER_RESET
-    #define traceSTREAM_BUFFER_RESET( xStreamBuffer )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਧਾਰਾ_ਬਫਰ_RESET
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਧਾਰਾ_ਬਫਰ_RESET( x_ਧਾਰਾ_ਬਫਰ )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceBLOCKING_ON_STREAM_BUFFER_SEND
-    #define traceBLOCKING_ON_STREAM_BUFFER_SEND( xStreamBuffer )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_BLOCKING_ON_ਧਾਰਾ_ਬਫਰ_SEND
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_BLOCKING_ON_ਧਾਰਾ_ਬਫਰ_SEND( x_ਧਾਰਾ_ਬਫਰ )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceSTREAM_BUFFER_SEND
-    #define traceSTREAM_BUFFER_SEND( xStreamBuffer, xBytesSent )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਧਾਰਾ_ਬਫਰ_SEND
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਧਾਰਾ_ਬਫਰ_SEND( x_ਧਾਰਾ_ਬਫਰ, x_ਬਾਈਟਾਂ_ਭੇਜਿਆ )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceSTREAM_BUFFER_SEND_FAILED
-    #define traceSTREAM_BUFFER_SEND_FAILED( xStreamBuffer )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਧਾਰਾ_ਬਫਰ_SEND_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਧਾਰਾ_ਬਫਰ_SEND_FAILED( x_ਧਾਰਾ_ਬਫਰ )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceSTREAM_BUFFER_SEND_FROM_ISR
-    #define traceSTREAM_BUFFER_SEND_FROM_ISR( xStreamBuffer, xBytesSent )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਧਾਰਾ_ਬਫਰ_SEND_FROM_ISR
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਧਾਰਾ_ਬਫਰ_SEND_FROM_ISR( x_ਧਾਰਾ_ਬਫਰ, x_ਬਾਈਟਾਂ_ਭੇਜਿਆ )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceBLOCKING_ON_STREAM_BUFFER_RECEIVE
-    #define traceBLOCKING_ON_STREAM_BUFFER_RECEIVE( xStreamBuffer )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_BLOCKING_ON_ਧਾਰਾ_ਬਫਰ_RECEIVE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_BLOCKING_ON_ਧਾਰਾ_ਬਫਰ_RECEIVE( x_ਧਾਰਾ_ਬਫਰ )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceSTREAM_BUFFER_RECEIVE
-    #define traceSTREAM_BUFFER_RECEIVE( xStreamBuffer, xReceivedLength )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਧਾਰਾ_ਬਫਰ_RECEIVE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਧਾਰਾ_ਬਫਰ_RECEIVE( x_ਧਾਰਾ_ਬਫਰ, x_Received_ਲੰਮਾਈ )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceSTREAM_BUFFER_RECEIVE_FAILED
-    #define traceSTREAM_BUFFER_RECEIVE_FAILED( xStreamBuffer )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਧਾਰਾ_ਬਫਰ_RECEIVE_FAILED
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਧਾਰਾ_ਬਫਰ_RECEIVE_FAILED( x_ਧਾਰਾ_ਬਫਰ )
+#ਜੇ_ਅੰਤ
 
-#ifndef traceSTREAM_BUFFER_RECEIVE_FROM_ISR
-    #define traceSTREAM_BUFFER_RECEIVE_FROM_ISR( xStreamBuffer, xReceivedLength )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਧਾਰਾ_ਬਫਰ_RECEIVE_FROM_ISR
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਧਾਰਾ_ਬਫਰ_RECEIVE_FROM_ISR( x_ਧਾਰਾ_ਬਫਰ, x_Received_ਲੰਮਾਈ )
+#ਜੇ_ਅੰਤ
 
-#ifndef configGENERATE_RUN_TIME_STATS
-    #define configGENERATE_RUN_TIME_STATS    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_GENERATE_ਲੜੀਵਾਰ_ਸਮਾਂ_STATS
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_GENERATE_ਲੜੀਵਾਰ_ਸਮਾਂ_STATS    0
+#ਜੇ_ਅੰਤ
 
-#if ( configGENERATE_RUN_TIME_STATS == 1 )
-
-    #ifndef portCONFIGURE_TIMER_FOR_RUN_TIME_STATS
-        #error If configGENERATE_RUN_TIME_STATS is defined then portCONFIGURE_TIMER_FOR_RUN_TIME_STATS must also be defined.  portCONFIGURE_TIMER_FOR_RUN_TIME_STATS should call a port layer function to setup a peripheral timer/counter that can then be used as the run time counter time base.
-    #endif /* portCONFIGURE_TIMER_FOR_RUN_TIME_STATS */
-
-    #ifndef portGET_RUN_TIME_COUNTER_VALUE
-        #ifndef portALT_GET_RUN_TIME_COUNTER_VALUE
-            #error If configGENERATE_RUN_TIME_STATS is defined then either portGET_RUN_TIME_COUNTER_VALUE or portALT_GET_RUN_TIME_COUNTER_VALUE must also be defined.  See the examples provided and the FreeRTOS web site for more information.
-        #endif /* portALT_GET_RUN_TIME_COUNTER_VALUE */
-    #endif /* portGET_RUN_TIME_COUNTER_VALUE */
+#ਜੇ ( config_GENERATE_ਲੜੀਵਾਰ_ਸਮਾਂ_STATS == 1 )
+
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_CONFIGURE_TIMER_FOR_ਲੜੀਵਾਰ_ਸਮਾਂ_STATS
+        #ਗਲਤੀ If config_GENERATE_ਲੜੀਵਾਰ_ਸਮਾਂ_STATS is defined then ਪੋਰਟ_CONFIGURE_TIMER_FOR_ਲੜੀਵਾਰ_ਸਮਾਂ_STATS must also be defined.  ਪੋਰਟ_CONFIGURE_TIMER_FOR_ਲੜੀਵਾਰ_ਸਮਾਂ_STATS should call a ਪੋਰਟ layer function ਮੰਜ਼ਿਲ ਤਿਆਰੀ a peripheral timer/counter that can then be ਵਰਤਿਆ as the ਲੜੀਵਾਰ time counter time ਅਧਾਰ.
+    #ਜੇ_ਅੰਤ /* portCONFIGURE_TIMER_FOR_RUN_TIME_STATS */
+
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_GET_ਲੜੀਵਾਰ_ਸਮਾਂ_COUNTER_ਮੁੱਲ
+        #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_ALT_GET_ਲੜੀਵਾਰ_ਸਮਾਂ_COUNTER_ਮੁੱਲ
+            #ਗਲਤੀ If config_GENERATE_ਲੜੀਵਾਰ_ਸਮਾਂ_STATS is defined then either ਪੋਰਟ_GET_ਲੜੀਵਾਰ_ਸਮਾਂ_COUNTER_ਮੁੱਲ or ਪੋਰਟ_ALT_GET_ਲੜੀਵਾਰ_ਸਮਾਂ_COUNTER_ਮੁੱਲ must also be defined.  See the examples provided and the FreeRTOS web site ਲਈ ਹੋਰ information.
+        #ਜੇ_ਅੰਤ /* portALT_GET_RUN_TIME_COUNTER_VALUE */
+    #ਜੇ_ਅੰਤ /* portGET_RUN_TIME_COUNTER_VALUE */
 
-#endif /* configGENERATE_RUN_TIME_STATS */
-
-#ifndef portCONFIGURE_TIMER_FOR_RUN_TIME_STATS
-    #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
-#endif
-
-#ifndef configUSE_MALLOC_FAILED_HOOK
-    #define configUSE_MALLOC_FAILED_HOOK    0
-#endif
-
-#ifndef portPRIVILEGE_BIT
-    #define portPRIVILEGE_BIT    ( ( UBaseType_t ) 0x00 )
-#endif
-
-#ifndef portYIELD_WITHIN_API
-    #define portYIELD_WITHIN_API    portYIELD
-#endif
-
-#ifndef portSUPPRESS_TICKS_AND_SLEEP
-    #define portSUPPRESS_TICKS_AND_SLEEP( xExpectedIdleTime )
-#endif
+#ਜੇ_ਅੰਤ /* configGENERATE_RUN_TIME_STATS */
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_CONFIGURE_TIMER_FOR_ਲੜੀਵਾਰ_ਸਮਾਂ_STATS
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_CONFIGURE_TIMER_FOR_ਲੜੀਵਾਰ_ਸਮਾਂ_STATS()
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_MALLOC_FAILED_HOOK
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_MALLOC_FAILED_HOOK    0
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_PRIVILEGE_ਦੋਆਧਾਰੀ_ਅੰਕ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_PRIVILEGE_ਦੋਆਧਾਰੀ_ਅੰਕ    ( ( UBaseType_t ) 0x00 )
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_YIELD_WITHIN_API
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_YIELD_WITHIN_API    ਪੋਰਟ_YIELD
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_SUPPRESS_TICKS_AND_SLEEP
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_SUPPRESS_TICKS_AND_SLEEP( x_Expected_Idle_ਸਮਾਂ )
+#ਜੇ_ਅੰਤ
 
-#ifndef configEXPECTED_IDLE_TIME_BEFORE_SLEEP
-    #define configEXPECTED_IDLE_TIME_BEFORE_SLEEP    2
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_EXPECTED_IDLE_ਸਮਾਂ_BEFORE_SLEEP
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_EXPECTED_IDLE_ਸਮਾਂ_BEFORE_SLEEP    2
+#ਜੇ_ਅੰਤ
 
-#if configEXPECTED_IDLE_TIME_BEFORE_SLEEP < 2
-    #error configEXPECTED_IDLE_TIME_BEFORE_SLEEP must not be less than 2
-#endif
+#ਜੇ config_EXPECTED_IDLE_ਸਮਾਂ_BEFORE_SLEEP < 2
+    #ਗਲਤੀ config_EXPECTED_IDLE_ਸਮਾਂ_BEFORE_SLEEP must not be less than 2
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_TICKLESS_IDLE
-    #define configUSE_TICKLESS_IDLE    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_TICKLESS_IDLE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_TICKLESS_IDLE    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING
-    #define configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING( x )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configPRE_SUPPRESS_TICKS_AND_SLEEP_PROCESSING( x )
+#ਜੇ_ਅੰਤ
 
-#ifndef configPRE_SLEEP_PROCESSING
-    #define configPRE_SLEEP_PROCESSING( x )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configPRE_SLEEP_PROCESSING
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configPRE_SLEEP_PROCESSING( x )
+#ਜੇ_ਅੰਤ
 
-#ifndef configPOST_SLEEP_PROCESSING
-    #define configPOST_SLEEP_PROCESSING( x )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configPOST_SLEEP_PROCESSING
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configPOST_SLEEP_PROCESSING( x )
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_QUEUE_SETS
-    #define configUSE_QUEUE_SETS    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_USE_ਕਤਾਰ_SETS
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_USE_ਕਤਾਰ_SETS    0
+#ਜੇ_ਅੰਤ
 
-#ifndef portTASK_USES_FLOATING_POINT
-    #define portTASK_USES_FLOATING_POINT()
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_TASK_ਵਰਤਦਾ_FLOATING_ਬਿੰਦੂ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_TASK_ਵਰਤਦਾ_FLOATING_ਬਿੰਦੂ()
+#ਜੇ_ਅੰਤ
 
-#ifndef portALLOCATE_SECURE_CONTEXT
-    #define portALLOCATE_SECURE_CONTEXT( ulSecureStackSize )
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_ALLOCATE_SECURE_CONTEXT
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_ALLOCATE_SECURE_CONTEXT( ul_Secure_ਢੇਰ_ਮਾਪ )
+#ਜੇ_ਅੰਤ
 
-#ifndef portDONT_DISCARD
-    #define portDONT_DISCARD
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_DONT_DISCARD
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_DONT_DISCARD
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_TIME_SLICING
-    #define configUSE_TIME_SLICING    1
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_USE_ਸਮਾਂ_SLICING
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_USE_ਸਮਾਂ_SLICING    1
+#ਜੇ_ਅੰਤ
 
-#ifndef configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS
-    #define configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_STATS_FORMATTING_FUNCTIONS
-    #define configUSE_STATS_FORMATTING_FUNCTIONS    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_STATS_FORMATTING_FUNCTIONS
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_STATS_FORMATTING_FUNCTIONS    0
+#ਜੇ_ਅੰਤ
 
-#ifndef portASSERT_IF_INTERRUPT_PRIORITY_INVALID
-    #define portASSERT_IF_INTERRUPT_PRIORITY_INVALID()
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_ASSERT_IF_ਰੁਕਾਵਟ_ਤਰਜੀਹ_INVALID
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_ASSERT_IF_ਰੁਕਾਵਟ_ਤਰਜੀਹ_INVALID()
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_TRACE_FACILITY
-    #define configUSE_TRACE_FACILITY    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_TRACE_FACILITY
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_TRACE_FACILITY    0
+#ਜੇ_ਅੰਤ
 
-#ifndef mtCOVERAGE_TEST_MARKER
-    #define mtCOVERAGE_TEST_MARKER()
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ mtCOVERAGE_TEST_MARKER
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ mtCOVERAGE_TEST_MARKER()
+#ਜੇ_ਅੰਤ
 
-#ifndef mtCOVERAGE_TEST_DELAY
-    #define mtCOVERAGE_TEST_DELAY()
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ mtCOVERAGE_TEST_DELAY
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ mtCOVERAGE_TEST_DELAY()
+#ਜੇ_ਅੰਤ
 
-#ifndef portASSERT_IF_IN_ISR
-    #define portASSERT_IF_IN_ISR()
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_ASSERT_IF_ਵਿੱਚ_ISR
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_ASSERT_IF_ਵਿੱਚ_ISR()
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_PORT_OPTIMISED_TASK_SELECTION
-    #define configUSE_PORT_OPTIMISED_TASK_SELECTION    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_USE_ਪੋਰਟ_OPTIMISED_TASK_SELECTION
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_USE_ਪੋਰਟ_OPTIMISED_TASK_SELECTION    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configAPPLICATION_ALLOCATED_HEAP
-    #define configAPPLICATION_ALLOCATED_HEAP    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_APPLICATION_ALLOCATED_ਢੇਰ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_APPLICATION_ALLOCATED_ਢੇਰ    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_TASK_NOTIFICATIONS
-    #define configUSE_TASK_NOTIFICATIONS    1
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_TASK_NOTIFICATIONS
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_TASK_NOTIFICATIONS    1
+#ਜੇ_ਅੰਤ
 
-#ifndef configTASK_NOTIFICATION_ARRAY_ENTRIES
-    #define configTASK_NOTIFICATION_ARRAY_ENTRIES    1
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configTASK_NOTIFICATION_ARRAY_ENTRIES
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configTASK_NOTIFICATION_ARRAY_ENTRIES    1
+#ਜੇ_ਅੰਤ
 
-#if configTASK_NOTIFICATION_ARRAY_ENTRIES < 1
-    #error configTASK_NOTIFICATION_ARRAY_ENTRIES must be at least 1
-#endif
+#ਜੇ configTASK_NOTIFICATION_ARRAY_ENTRIES < 1
+    #ਗਲਤੀ configTASK_NOTIFICATION_ARRAY_ENTRIES must be at ਘੱਟ_ਤੋਂ_ਘੱਟ 1
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_POSIX_ERRNO
-    #define configUSE_POSIX_ERRNO    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_POSIX_ERRNO
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_POSIX_ERRNO    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configUSE_SB_COMPLETED_CALLBACK
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_SB_COMPLETED_CALLBACK
 
 /* By default per-instance callbacks are not enabled for stream buffer or message buffer. */
-    #define configUSE_SB_COMPLETED_CALLBACK    0
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_SB_COMPLETED_CALLBACK    0
+#ਜੇ_ਅੰਤ
 
-#ifndef portTICK_TYPE_IS_ATOMIC
-    #define portTICK_TYPE_IS_ATOMIC    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ ਪੋਰਟ_TICK_TYPE_IS_ATOMIC
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_TICK_TYPE_IS_ATOMIC    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configSUPPORT_STATIC_ALLOCATION
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_SUPPORT_STATIC_ਵੰਡ
     /* Defaults to 0 for backward compatibility. */
-    #define configSUPPORT_STATIC_ALLOCATION    0
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_SUPPORT_STATIC_ਵੰਡ    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configSUPPORT_DYNAMIC_ALLOCATION
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_SUPPORT_DYNAMIC_ਵੰਡ
     /* Defaults to 1 for backward compatibility. */
-    #define configSUPPORT_DYNAMIC_ALLOCATION    1
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_SUPPORT_DYNAMIC_ਵੰਡ    1
+#ਜੇ_ਅੰਤ
 
-#if ( ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION != 1 ) )
-    #error configUSE_STATS_FORMATTING_FUNCTIONS cannot be used without dynamic allocation, but configSUPPORT_DYNAMIC_ALLOCATION is not set to 1.
-#endif
+#ਜੇ ( ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( config_SUPPORT_DYNAMIC_ਵੰਡ != 1 ) )
+    #ਗਲਤੀ configUSE_STATS_FORMATTING_FUNCTIONS cannot be ਵਰਤਿਆ without dynamic ਵੰਡ, but config_SUPPORT_DYNAMIC_ਵੰਡ is not ਸੈੱਟ ਮੰਜ਼ਿਲ 1.
+#ਜੇ_ਅੰਤ
 
-#if ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 )
-    #if ( ( configUSE_TRACE_FACILITY != 1 ) && ( configGENERATE_RUN_TIME_STATS != 1 ) )
-        #error configUSE_STATS_FORMATTING_FUNCTIONS is 1 but the functions it enables are not used because neither configUSE_TRACE_FACILITY or configGENERATE_RUN_TIME_STATS are 1.  Set configUSE_STATS_FORMATTING_FUNCTIONS to 0 in FreeRTOSConfig.h.
-    #endif
-#endif
+#ਜੇ ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 )
+    #ਜੇ ( ( configUSE_TRACE_FACILITY != 1 ) && ( config_GENERATE_ਲੜੀਵਾਰ_ਸਮਾਂ_STATS != 1 ) )
+        #ਗਲਤੀ configUSE_STATS_FORMATTING_FUNCTIONS is 1 but the functions it enables are not ਵਰਤਿਆ because neither configUSE_TRACE_FACILITY or config_GENERATE_ਲੜੀਵਾਰ_ਸਮਾਂ_STATS are 1.  ਸੈੱਟ_2 configUSE_STATS_FORMATTING_FUNCTIONS ਮੰਜ਼ਿਲ 0 ਵਿੱਚ FreeRTOSConfig.h.
+    #ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-#ifndef configSTACK_DEPTH_TYPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_ਢੇਰ_ਡੂੰਘਾਈ_TYPE
 
 /* Defaults to uint16_t for backward compatibility, but can be overridden
  * in FreeRTOSConfig.h if uint16_t is too restrictive. */
-    #define configSTACK_DEPTH_TYPE    uint16_t
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_ਢੇਰ_ਡੂੰਘਾਈ_TYPE    uint16_t
+#ਜੇ_ਅੰਤ
 
-#ifndef configRUN_TIME_COUNTER_TYPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_ਲੜੀਵਾਰ_ਸਮਾਂ_COUNTER_TYPE
 
 /* Defaults to uint32_t for backward compatibility, but can be overridden in
  * FreeRTOSConfig.h if uint32_t is too restrictive. */
 
-    #define configRUN_TIME_COUNTER_TYPE    uint32_t
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_ਲੜੀਵਾਰ_ਸਮਾਂ_COUNTER_TYPE    uint32_t
+#ਜੇ_ਅੰਤ
 
-#ifndef configMESSAGE_BUFFER_LENGTH_TYPE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_ਸੁਨੇਹਾ_ਬਫਰ_ਲੰਮਾਈ_TYPE
 
 /* Defaults to size_t for backward compatibility, but can be overridden
  * in FreeRTOSConfig.h if lengths will always be less than the number of bytes
  * in a size_t. */
-    #define configMESSAGE_BUFFER_LENGTH_TYPE    size_t
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_ਸੁਨੇਹਾ_ਬਫਰ_ਲੰਮਾਈ_TYPE    size_t
+#ਜੇ_ਅੰਤ
 
 /* Sanity check the configuration. */
-#if ( ( configSUPPORT_STATIC_ALLOCATION == 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 0 ) )
-    #error configSUPPORT_STATIC_ALLOCATION and configSUPPORT_DYNAMIC_ALLOCATION cannot both be 0, but can both be 1.
-#endif
+#ਜੇ ( ( config_SUPPORT_STATIC_ਵੰਡ == 0 ) && ( config_SUPPORT_DYNAMIC_ਵੰਡ == 0 ) )
+    #ਗਲਤੀ config_SUPPORT_STATIC_ਵੰਡ and config_SUPPORT_DYNAMIC_ਵੰਡ cannot both be 0, but can both be 1.
+#ਜੇ_ਅੰਤ
 
-#if ( ( configUSE_RECURSIVE_MUTEXES == 1 ) && ( configUSE_MUTEXES != 1 ) )
-    #error configUSE_MUTEXES must be set to 1 to use recursive mutexes
-#endif
+#ਜੇ ( ( configUSE_RECURSIVE_MUTEXES == 1 ) && ( configUSE_MUTEXES != 1 ) )
+    #ਗਲਤੀ configUSE_MUTEXES must be ਸੈੱਟ ਮੰਜ਼ਿਲ 1 ਮੰਜ਼ਿਲ use recursive mutexes
+#ਜੇ_ਅੰਤ
 
-#if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_PORT_OPTIMISED_TASK_SELECTION != 0 ) )
-    #error configUSE_PORT_OPTIMISED_TASK_SELECTION is not supported in SMP
-#endif
+#ਜੇ ( ( config_ਸੰਖਿਆ_ਦਾ_CORES > 1 ) && ( config_USE_ਪੋਰਟ_OPTIMISED_TASK_SELECTION != 0 ) )
+    #ਗਲਤੀ config_USE_ਪੋਰਟ_OPTIMISED_TASK_SELECTION is not supported ਵਿੱਚ SMP
+#ਜੇ_ਅੰਤ
 
-#ifndef configINITIAL_TICK_COUNT
-    #define configINITIAL_TICK_COUNT    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_INITIAL_TICK_ਗਿਣਤੀ
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_INITIAL_TICK_ਗਿਣਤੀ    0
+#ਜੇ_ਅੰਤ
 
-#if ( portTICK_TYPE_IS_ATOMIC == 0 )
+#ਜੇ ( ਪੋਰਟ_TICK_TYPE_IS_ATOMIC == 0 )
 
 /* Either variables of tick type cannot be read atomically, or
  * portTICK_TYPE_IS_ATOMIC was not set - map the critical sections used when
  * the tick count is returned to the standard critical section macros. */
-    #define portTICK_TYPE_ENTER_CRITICAL()                      portENTER_CRITICAL()
-    #define portTICK_TYPE_EXIT_CRITICAL()                       portEXIT_CRITICAL()
-    #define portTICK_TYPE_SET_INTERRUPT_MASK_FROM_ISR()         portSET_INTERRUPT_MASK_FROM_ISR()
-    #define portTICK_TYPE_CLEAR_INTERRUPT_MASK_FROM_ISR( x )    portCLEAR_INTERRUPT_MASK_FROM_ISR( ( x ) )
-#else
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_TICK_TYPE_ENTER_CRITICAL()                      ਪੋਰਟ_ENTER_CRITICAL()
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_TICK_TYPE_EXIT_CRITICAL()                       ਪੋਰਟ_EXIT_CRITICAL()
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_TICK_TYPE_ਸੈੱਟ_ਰੁਕਾਵਟ_ਨਕਾਬ_FROM_ISR()         ਪੋਰਟ_ਸੈੱਟ_ਰੁਕਾਵਟ_ਨਕਾਬ_FROM_ISR()
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_TICK_TYPE_CLEAR_ਰੁਕਾਵਟ_ਨਕਾਬ_FROM_ISR( x )    ਪੋਰਟ_CLEAR_ਰੁਕਾਵਟ_ਨਕਾਬ_FROM_ISR( ( x ) )
+#ਨਹੀਂਤਾਂ
 
 /* The tick type can be read atomically, so critical sections used when the
  * tick count is returned can be defined away. */
-    #define portTICK_TYPE_ENTER_CRITICAL()
-    #define portTICK_TYPE_EXIT_CRITICAL()
-    #define portTICK_TYPE_SET_INTERRUPT_MASK_FROM_ISR()         0
-    #define portTICK_TYPE_CLEAR_INTERRUPT_MASK_FROM_ISR( x )    ( void ) ( x )
-#endif /* if ( portTICK_TYPE_IS_ATOMIC == 0 ) */
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_TICK_TYPE_ENTER_CRITICAL()
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_TICK_TYPE_EXIT_CRITICAL()
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_TICK_TYPE_ਸੈੱਟ_ਰੁਕਾਵਟ_ਨਕਾਬ_FROM_ISR()         0
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_TICK_TYPE_CLEAR_ਰੁਕਾਵਟ_ਨਕਾਬ_FROM_ISR( x )    ( ਖਾਲੀ ) ( x )
+#ਜੇ_ਅੰਤ /* if ( portTICK_TYPE_IS_ATOMIC == 0 ) */
 
 /* Definitions to allow backward compatibility with FreeRTOS versions prior to
  * V8 if desired. */
-#ifndef configENABLE_BACKWARD_COMPATIBILITY
-    #define configENABLE_BACKWARD_COMPATIBILITY    1
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configENABLE_BACKWARD_COMPATIBILITY
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configENABLE_BACKWARD_COMPATIBILITY    1
+#ਜੇ_ਅੰਤ
 
-#ifndef configPRINTF
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configPRINTF
 
 /* configPRINTF() was not defined, so define it away to nothing.  To use
  * configPRINTF() then define it as follows (where MyPrintFunction() is
@@ -1070,102 +1070,102 @@
  * Then call like a standard printf() function, but placing brackets around
  * all parameters so they are passed as a single parameter.  For example:
  * configPRINTF( ("Value = %d", MyVariable) ); */
-    #define configPRINTF( X )
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configPRINTF( X )
+#ਜੇ_ਅੰਤ
 
-#ifndef configMAX
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configMAX
 
 /* The application writer has not provided their own MAX macro, so define
  * the following generic implementation. */
-    #define configMAX( a, b )    ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) )
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configMAX( a, b )    ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) )
+#ਜੇ_ਅੰਤ
 
-#ifndef configMIN
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configMIN
 
 /* The application writer has not provided their own MIN macro, so define
  * the following generic implementation. */
-    #define configMIN( a, b )    ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
-#endif
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configMIN( a, b )    ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
+#ਜੇ_ਅੰਤ
 
-#if configENABLE_BACKWARD_COMPATIBILITY == 1
-    #define eTaskStateGet                 eTaskGetState
-    #define portTickType                  TickType_t
-    #define xTaskHandle                   TaskHandle_t
-    #define xQueueHandle                  QueueHandle_t
-    #define xSemaphoreHandle              SemaphoreHandle_t
-    #define xQueueSetHandle               QueueSetHandle_t
-    #define xQueueSetMemberHandle         QueueSetMemberHandle_t
-    #define xTimeOutType                  TimeOut_t
-    #define xMemoryRegion                 MemoryRegion_t
-    #define xTaskParameters               TaskParameters_t
-    #define xTaskStatusType               TaskStatus_t
-    #define xTimerHandle                  TimerHandle_t
-    #define xCoRoutineHandle              CoRoutineHandle_t
-    #define pdTASK_HOOK_CODE              TaskHookFunction_t
-    #define portTICK_RATE_MS              portTICK_PERIOD_MS
-    #define pcTaskGetTaskName             pcTaskGetName
-    #define pcTimerGetTimerName           pcTimerGetName
-    #define pcQueueGetQueueName           pcQueueGetName
-    #define vTaskGetTaskInfo              vTaskGetInfo
-    #define xTaskGetIdleRunTimeCounter    ulTaskGetIdleRunTimeCounter
+#ਜੇ configENABLE_BACKWARD_COMPATIBILITY == 1
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ eTaskStateGet                 eTaskGetState
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_Tick_Type                  TickType_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ xTaskHandle                   TaskHandle_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਕਤਾਰ_Handle                  ਕਤਾਰ_Handle_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ xSemaphoreHandle              SemaphoreHandle_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਕਤਾਰ_ਸੈੱਟ_Handle               ਕਤਾਰ_ਸੈੱਟ_Handle_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਕਤਾਰ_ਸੈੱਟ_Member_Handle         ਕਤਾਰ_ਸੈੱਟ_Member_Handle_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸਮਾਂ_ਬਾਹਰਲਾ_Type                  ਸਮਾਂ_ਬਾਹਰਲਾ_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_ਸਮ੍ਰਿਤੀ_Region                 ਸਮ੍ਰਿਤੀ_Region_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ xTaskParameters               TaskParameters_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_Task_ਸਥਿਤੀ_Type               Task_ਸਥਿਤੀ_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ xTimerHandle                  TimerHandle_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ xCoRoutineHandle              CoRoutineHandle_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ pd_TASK_HOOK_ਕੋਡ              TaskHookFunction_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_TICK_ਦਰ_MS              ਪੋਰਟ_TICK_PERIOD_MS
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ pcTaskGetTaskName             pcTaskGetName
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ pcTimerGetTimerName           pcTimerGetName
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ pc_ਕਤਾਰ_Get_ਕਤਾਰ_Name           pc_ਕਤਾਰ_Get_Name
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ vTaskGetTaskInfo              vTaskGetInfo
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_Task_Get_Idle_ਲੜੀਵਾਰ_ਸਮਾਂ_Counter    ul_Task_Get_Idle_ਲੜੀਵਾਰ_ਸਮਾਂ_Counter
 
 /* Backward compatibility within the scheduler code only - these definitions
  * are not really required but are included for completeness. */
-    #define tmrTIMER_CALLBACK             TimerCallbackFunction_t
-    #define pdTASK_CODE                   TaskFunction_t
-    #define xListItem                     ListItem_t
-    #define xList                         List_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ tmrTIMER_CALLBACK             TimerCallbackFunction_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ pd_TASK_ਕੋਡ                   TaskFunction_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ x_List_ਵਸਤੂ                     List_ਵਸਤੂ_t
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ xList                         List_t
 
 /* For libraries that break the list data hiding, and access list structure
  * members directly (which is not supposed to be done). */
-    #define pxContainer                   pvContainer
-#endif /* configENABLE_BACKWARD_COMPATIBILITY */
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ pxContainer                   pvContainer
+#ਜੇ_ਅੰਤ /* configENABLE_BACKWARD_COMPATIBILITY */
 
-#if ( configUSE_ALTERNATIVE_API != 0 )
-    #error The alternative API was deprecated some time ago, and was removed in FreeRTOS V9.0 0
-#endif
+#ਜੇ ( configUSE_ALTERNATIVE_API != 0 )
+    #ਗਲਤੀ The alternative API was deprecated some time ago, and was removed ਵਿੱਚ FreeRTOS V9.0 0
+#ਜੇ_ਅੰਤ
 
 /* Set configUSE_TASK_FPU_SUPPORT to 0 to omit floating point support even
  * if floating point hardware is otherwise supported by the FreeRTOS port in use.
  * This constant is not supported by all FreeRTOS ports that include floating
  * point support. */
-#ifndef configUSE_TASK_FPU_SUPPORT
-    #define configUSE_TASK_FPU_SUPPORT    1
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configUSE_TASK_FPU_SUPPORT
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configUSE_TASK_FPU_SUPPORT    1
+#ਜੇ_ਅੰਤ
 
 /* Set configENABLE_MPU to 1 to enable MPU support and 0 to disable it. This is
  * currently used in ARMv8M ports. */
-#ifndef configENABLE_MPU
-    #define configENABLE_MPU    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configENABLE_MPU
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configENABLE_MPU    0
+#ਜੇ_ਅੰਤ
 
 /* Set configENABLE_FPU to 1 to enable FPU support and 0 to disable it. This is
  * currently used in ARMv8M ports. */
-#ifndef configENABLE_FPU
-    #define configENABLE_FPU    1
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configENABLE_FPU
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configENABLE_FPU    1
+#ਜੇ_ਅੰਤ
 
 /* Set configENABLE_MVE to 1 to enable MVE support and 0 to disable it. This is
  * currently used in ARMv8M ports. */
-#ifndef configENABLE_MVE
-    #define configENABLE_MVE    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configENABLE_MVE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configENABLE_MVE    0
+#ਜੇ_ਅੰਤ
 
 /* Set configENABLE_TRUSTZONE to 1 enable TrustZone support and 0 to disable it.
  * This is currently used in ARMv8M ports. */
-#ifndef configENABLE_TRUSTZONE
-    #define configENABLE_TRUSTZONE    1
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ configENABLE_TRUSTZONE
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ configENABLE_TRUSTZONE    1
+#ਜੇ_ਅੰਤ
 
 /* Set configRUN_FREERTOS_SECURE_ONLY to 1 to run the FreeRTOS ARMv8M port on
  * the Secure Side only. */
-#ifndef configRUN_FREERTOS_SECURE_ONLY
-    #define configRUN_FREERTOS_SECURE_ONLY    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_ਲੜੀਵਾਰ_FREERTOS_SECURE_ONLY
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_ਲੜੀਵਾਰ_FREERTOS_SECURE_ONLY    0
+#ਜੇ_ਅੰਤ
 
-#ifndef configRUN_ADDITIONAL_TESTS
-    #define configRUN_ADDITIONAL_TESTS    0
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ config_ਲੜੀਵਾਰ_ADDITIONAL_TESTS
+    #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ config_ਲੜੀਵਾਰ_ADDITIONAL_TESTS    0
+#ਜੇ_ਅੰਤ
 
 
 /* Sometimes the FreeRTOSConfig.h settings only allow a task to be created using
@@ -1210,9 +1210,9 @@
  * |     |         |        | xTaskCreateRestrictedStatic |                                   |                  |           |
  * +-----+---------+--------+-----------------------------+-----------------------------------+------------------+-----------+
  */
-#define tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE                                                                                     \
-    ( ( ( portUSING_MPU_WRAPPERS == 0 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) ) || \
-      ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) ) )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ tsk_STATIC_AND_DYNAMIC_ਵੰਡ_POSSIBLE                                                                                     \
+    ( ( ( ਪੋਰਟ_USING_MPU_WRAPPERS == 0 ) && ( config_SUPPORT_DYNAMIC_ਵੰਡ == 1 ) && ( config_SUPPORT_STATIC_ਵੰਡ == 1 ) ) || \
+      ( ( ਪੋਰਟ_USING_MPU_WRAPPERS == 1 ) && ( config_SUPPORT_DYNAMIC_ਵੰਡ == 1 ) ) )
 
 /*
  * In line with software engineering best practice, FreeRTOS implements a strict
@@ -1224,46 +1224,46 @@
  * real objects are used for this purpose.  The dummy list and list item
  * structures below are used for inclusion in such a dummy structure.
  */
-struct xSTATIC_LIST_ITEM
+ਬਣਤਰ x_STATIC_LIST_ਵਸਤੂ
 {
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #ਜੇ ( config_USE_LIST_ਅੰਕੜੇ_INTEGRITY_CHECK_ਬਾਈਟਾਂ == 1 )
         TickType_t xDummy1;
-    #endif
+    #ਜੇ_ਅੰਤ
     TickType_t xDummy2;
-    void * pvDummy3[ 4 ];
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    ਖਾਲੀ * pvDummy3[ 4 ];
+    #ਜੇ ( config_USE_LIST_ਅੰਕੜੇ_INTEGRITY_CHECK_ਬਾਈਟਾਂ == 1 )
         TickType_t xDummy4;
-    #endif
+    #ਜੇ_ਅੰਤ
 };
-typedef struct xSTATIC_LIST_ITEM StaticListItem_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ x_STATIC_LIST_ਵਸਤੂ Static_List_ਵਸਤੂ_t;
 
-#if ( configUSE_MINI_LIST_ITEM == 1 )
+#ਜੇ ( config_USE_MINI_LIST_ਵਸਤੂ == 1 )
     /* See the comments above the struct xSTATIC_LIST_ITEM definition. */
-    struct xSTATIC_MINI_LIST_ITEM
+    ਬਣਤਰ x_STATIC_MINI_LIST_ਵਸਤੂ
     {
-        #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+        #ਜੇ ( config_USE_LIST_ਅੰਕੜੇ_INTEGRITY_CHECK_ਬਾਈਟਾਂ == 1 )
             TickType_t xDummy1;
-        #endif
+        #ਜੇ_ਅੰਤ
         TickType_t xDummy2;
-        void * pvDummy3[ 2 ];
+        ਖਾਲੀ * pvDummy3[ 2 ];
     };
-    typedef struct xSTATIC_MINI_LIST_ITEM StaticMiniListItem_t;
-#else /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
-    typedef struct xSTATIC_LIST_ITEM      StaticMiniListItem_t;
-#endif /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ x_STATIC_MINI_LIST_ਵਸਤੂ Static_Mini_List_ਵਸਤੂ_t;
+#ਨਹੀਂਤਾਂ /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ x_STATIC_LIST_ਵਸਤੂ      Static_Mini_List_ਵਸਤੂ_t;
+#ਜੇ_ਅੰਤ /* if ( configUSE_MINI_LIST_ITEM == 1 ) */
 
 /* See the comments above the struct xSTATIC_LIST_ITEM definition. */
-typedef struct xSTATIC_LIST
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ xSTATIC_LIST
 {
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    #ਜੇ ( config_USE_LIST_ਅੰਕੜੇ_INTEGRITY_CHECK_ਬਾਈਟਾਂ == 1 )
         TickType_t xDummy1;
-    #endif
+    #ਜੇ_ਅੰਤ
     UBaseType_t uxDummy2;
-    void * pvDummy3;
-    StaticMiniListItem_t xDummy4;
-    #if ( configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1 )
+    ਖਾਲੀ * pvDummy3;
+    Static_Mini_List_ਵਸਤੂ_t xDummy4;
+    #ਜੇ ( config_USE_LIST_ਅੰਕੜੇ_INTEGRITY_CHECK_ਬਾਈਟਾਂ == 1 )
         TickType_t xDummy5;
-    #endif
+    #ਜੇ_ਅੰਤ
 } StaticList_t;
 
 /*
@@ -1279,57 +1279,57 @@ typedef struct xSTATIC_LIST
  * are set.  Its contents are somewhat obfuscated in the hope users will
  * recognise that it would be unwise to make direct use of the structure members.
  */
-typedef struct xSTATIC_TCB
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ xSTATIC_TCB
 {
-    void * pxDummy1;
-    #if ( portUSING_MPU_WRAPPERS == 1 )
+    ਖਾਲੀ * pxDummy1;
+    #ਜੇ ( ਪੋਰਟ_USING_MPU_WRAPPERS == 1 )
         xMPU_SETTINGS xDummy2;
-    #endif
-    StaticListItem_t xDummy3[ 2 ];
+    #ਜੇ_ਅੰਤ
+    Static_List_ਵਸਤੂ_t xDummy3[ 2 ];
     UBaseType_t uxDummy5;
-    void * pxDummy6;
+    ਖਾਲੀ * pxDummy6;
     uint8_t ucDummy7[ configMAX_TASK_NAME_LEN ];
-    #if ( configNUMBER_OF_CORES > 1 )
-        BaseType_t xDummyCoreID;
-    #endif /* configNUMBER_OF_CORES > 1 */
-    #if ( ( portSTACK_GROWTH > 0 ) || ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
-        void * pxDummy8;
-    #endif
-    #if ( portCRITICAL_NESTING_IN_TCB == 1 )
+    #ਜੇ ( config_ਸੰਖਿਆ_ਦਾ_CORES > 1 )
+        ਅਧਾਰ_Type_t xDummyCoreID;
+    #ਜੇ_ਅੰਤ /* configNUMBER_OF_CORES > 1 */
+    #ਜੇ ( ( ਪੋਰਟ_ਢੇਰ_GROWTH > 0 ) || ( config_ਰਿਕਾਰਡ_ਢੇਰ_ਉੱਚਾ_ਪਤਾ == 1 ) )
+        ਖਾਲੀ * pxDummy8;
+    #ਜੇ_ਅੰਤ
+    #ਜੇ ( ਪੋਰਟ_CRITICAL_NESTING_ਵਿੱਚ_TCB == 1 )
         UBaseType_t uxDummy9;
-    #endif
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ਜੇ_ਅੰਤ
+    #ਜੇ ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy10[ 2 ];
-    #endif
-    #if ( configUSE_MUTEXES == 1 )
+    #ਜੇ_ਅੰਤ
+    #ਜੇ ( configUSE_MUTEXES == 1 )
         UBaseType_t uxDummy12[ 2 ];
-    #endif
-    #if ( configUSE_APPLICATION_TASK_TAG == 1 )
-        void * pxDummy14;
-    #endif
-    #if ( configNUM_THREAD_LOCAL_STORAGE_POINTERS > 0 )
-        void * pvDummy15[ configNUM_THREAD_LOCAL_STORAGE_POINTERS ];
-    #endif
-    #if ( configGENERATE_RUN_TIME_STATS == 1 )
-        configRUN_TIME_COUNTER_TYPE ulDummy16;
-    #endif
-    #if ( ( configUSE_NEWLIB_REENTRANT == 1 ) || ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) )
-        configTLS_BLOCK_TYPE xDummy17;
-    #endif
-    #if ( configUSE_TASK_NOTIFICATIONS == 1 )
+    #ਜੇ_ਅੰਤ
+    #ਜੇ ( config_USE_APPLICATION_TASK_ਟੈਗ == 1 )
+        ਖਾਲੀ * pxDummy14;
+    #ਜੇ_ਅੰਤ
+    #ਜੇ ( config_ਅੰਕ_THREAD_LOCAL_STORAGE_ਸੂਚਕ_ਸਾਰੇ > 0 )
+        ਖਾਲੀ * pvDummy15[ config_ਅੰਕ_THREAD_LOCAL_STORAGE_ਸੂਚਕ_ਸਾਰੇ ];
+    #ਜੇ_ਅੰਤ
+    #ਜੇ ( config_GENERATE_ਲੜੀਵਾਰ_ਸਮਾਂ_STATS == 1 )
+        config_ਲੜੀਵਾਰ_ਸਮਾਂ_COUNTER_TYPE ulDummy16;
+    #ਜੇ_ਅੰਤ
+    #ਜੇ ( ( configUSE_NEWLIB_REENTRANT == 1 ) || ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 ) )
+        config_TLS_ਖੰਡ_TYPE xDummy17;
+    #ਜੇ_ਅੰਤ
+    #ਜੇ ( configUSE_TASK_NOTIFICATIONS == 1 )
         uint32_t ulDummy18[ configTASK_NOTIFICATION_ARRAY_ENTRIES ];
         uint8_t ucDummy19[ configTASK_NOTIFICATION_ARRAY_ENTRIES ];
-    #endif
-    #if ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )
+    #ਜੇ_ਅੰਤ
+    #ਜੇ ( tsk_STATIC_AND_DYNAMIC_ਵੰਡ_POSSIBLE != 0 )
         uint8_t uxDummy20;
-    #endif
+    #ਜੇ_ਅੰਤ
 
-    #if ( INCLUDE_xTaskAbortDelay == 1 )
+    #ਜੇ ( INCLUDE_xTaskAbortDelay == 1 )
         uint8_t ucDummy21;
-    #endif
-    #if ( configUSE_POSIX_ERRNO == 1 )
-        int iDummy22;
-    #endif
+    #ਜੇ_ਅੰਤ
+    #ਜੇ ( configUSE_POSIX_ERRNO == 1 )
+        ਪੂਰਨ iDummy22;
+    #ਜੇ_ਅੰਤ
 } StaticTask_t;
 
 /*
@@ -1346,13 +1346,13 @@ typedef struct xSTATIC_TCB
  * users will recognise that it would be unwise to make direct use of the
  * structure members.
  */
-typedef struct xSTATIC_QUEUE
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ x_STATIC_ਕਤਾਰ
 {
-    void * pvDummy1[ 3 ];
+    ਖਾਲੀ * pvDummy1[ 3 ];
 
-    union
+    ਸੰਘ
     {
-        void * pvDummy2;
+        ਖਾਲੀ * pvDummy2;
         UBaseType_t uxDummy2;
     } u;
 
@@ -1360,21 +1360,21 @@ typedef struct xSTATIC_QUEUE
     UBaseType_t uxDummy4[ 3 ];
     uint8_t ucDummy5[ 2 ];
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #ਜੇ ( ( config_SUPPORT_STATIC_ਵੰਡ == 1 ) && ( config_SUPPORT_DYNAMIC_ਵੰਡ == 1 ) )
         uint8_t ucDummy6;
-    #endif
+    #ਜੇ_ਅੰਤ
 
-    #if ( configUSE_QUEUE_SETS == 1 )
-        void * pvDummy7;
-    #endif
+    #ਜੇ ( config_USE_ਕਤਾਰ_SETS == 1 )
+        ਖਾਲੀ * pvDummy7;
+    #ਜੇ_ਅੰਤ
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ਜੇ ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy8;
         uint8_t ucDummy9;
-    #endif
-    portMUX_TYPE xDummyQueueLock;
-} StaticQueue_t;
-typedef StaticQueue_t StaticSemaphore_t;
+    #ਜੇ_ਅੰਤ
+    ਪੋਰਟ_MUX_TYPE x_Dummy_ਕਤਾਰ_ਤਾਲਾ;
+} Static_ਕਤਾਰ_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ Static_ਕਤਾਰ_t StaticSemaphore_t;
 
 /*
  * In line with software engineering best practice, especially when supplying a
@@ -1390,20 +1390,20 @@ typedef StaticQueue_t StaticSemaphore_t;
  * obfuscated in the hope users will recognise that it would be unwise to make
  * direct use of the structure members.
  */
-typedef struct xSTATIC_EVENT_GROUP
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ x_STATIC_EVENT_ਸਮੂਹ
 {
     TickType_t xDummy1;
     StaticList_t xDummy2;
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ਜੇ ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy3;
-    #endif
+    #ਜੇ_ਅੰਤ
 
-    #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+    #ਜੇ ( ( config_SUPPORT_STATIC_ਵੰਡ == 1 ) && ( config_SUPPORT_DYNAMIC_ਵੰਡ == 1 ) )
         uint8_t ucDummy4;
-    #endif
-    portMUX_TYPE xDummyEventGroupLock;
-} StaticEventGroup_t;
+    #ਜੇ_ਅੰਤ
+    ਪੋਰਟ_MUX_TYPE x_Dummy_Event_ਸਮੂਹ_ਤਾਲਾ;
+} Static_Event_ਸਮੂਹ_t;
 
 /*
  * In line with software engineering best practice, especially when supplying a
@@ -1419,16 +1419,16 @@ typedef struct xSTATIC_EVENT_GROUP
  * the hope users will recognise that it would be unwise to make direct use of
  * the structure members.
  */
-typedef struct xSTATIC_TIMER
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ xSTATIC_TIMER
 {
-    void * pvDummy1;
-    StaticListItem_t xDummy2;
+    ਖਾਲੀ * pvDummy1;
+    Static_List_ਵਸਤੂ_t xDummy2;
     TickType_t xDummy3;
-    void * pvDummy5;
+    ਖਾਲੀ * pvDummy5;
     TaskFunction_t pvDummy6;
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ਜੇ ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy7;
-    #endif
+    #ਜੇ_ਅੰਤ
     uint8_t ucDummy8;
 } StaticTimer_t;
 
@@ -1446,73 +1446,73 @@ typedef struct xSTATIC_TIMER
  * somewhat obfuscated in the hope users will recognise that it would be unwise
  * to make direct use of the structure members.
  */
-typedef struct xSTATIC_STREAM_BUFFER
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ x_STATIC_ਧਾਰਾ_ਬਫਰ
 {
     size_t uxDummy1[ 4 ];
-    void * pvDummy2[ 3 ];
+    ਖਾਲੀ * pvDummy2[ 3 ];
     uint8_t ucDummy3;
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ਜੇ ( configUSE_TRACE_FACILITY == 1 )
         UBaseType_t uxDummy4;
-    #endif
-    #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-        void * pvDummy5[ 2 ];
-    #endif
-    portMUX_TYPE xDummyStreamBufferLock;
-} StaticStreamBuffer_t;
+    #ਜੇ_ਅੰਤ
+    #ਜੇ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+        ਖਾਲੀ * pvDummy5[ 2 ];
+    #ਜੇ_ਅੰਤ
+    ਪੋਰਟ_MUX_TYPE x_Dummy_ਧਾਰਾ_ਬਫਰ_ਤਾਲਾ;
+} Static_ਧਾਰਾ_ਬਫਰ_t;
 
 /* Message buffers are built on stream buffers. */
-typedef StaticStreamBuffer_t StaticMessageBuffer_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ Static_ਧਾਰਾ_ਬਫਰ_t Static_ਸੁਨੇਹਾ_ਬਫਰ_t;
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __cplusplus
     }
-#endif
+#ਜੇ_ਅੰਤ
 /* *INDENT-ON* */
 
 /*-----------------------------------------------------------
 * IDF Compatibility
 *----------------------------------------------------------*/
 
-#ifdef ESP_PLATFORM
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ ESP_PLATFORM
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __cplusplus
+    ਬਾਹਰੀ "C" {
+#ਜੇ_ਅੰਤ
 /* *INDENT-ON* */
 
 /*
  * Default values for trace macros added by ESP-IDF and are not part of Vanilla FreeRTOS
  */
 
-    #ifndef traceISR_EXIT_TO_SCHEDULER
-        #define traceISR_EXIT_TO_SCHEDULER()
-    #endif
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ISR_EXIT_ਮੰਜ਼ਿਲ_SCHEDULER
+        #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ISR_EXIT_ਮੰਜ਼ਿਲ_SCHEDULER()
+    #ਜੇ_ਅੰਤ
 
-    #ifndef traceISR_EXIT
-        #define traceISR_EXIT()
-    #endif
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceISR_EXIT
+        #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceISR_EXIT()
+    #ਜੇ_ਅੰਤ
 
-    #ifndef traceISR_ENTER
-        #define traceISR_ENTER( _n_ )
-    #endif
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ traceISR_ENTER
+        #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ traceISR_ENTER( _n_ )
+    #ਜੇ_ਅੰਤ
 
-    #ifndef traceQUEUE_SEMAPHORE_RECEIVE
-        #define traceQUEUE_SEMAPHORE_RECEIVE( pxQueue )
-    #endif
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_SEMAPHORE_RECEIVE
+        #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_SEMAPHORE_RECEIVE( px_ਕਤਾਰ )
+    #ਜੇ_ਅੰਤ
 
-    #ifndef traceQUEUE_GIVE_FROM_ISR
-        #define traceQUEUE_GIVE_FROM_ISR( pxQueue )
-    #endif
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_GIVE_FROM_ISR
+        #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_GIVE_FROM_ISR( px_ਕਤਾਰ )
+    #ਜੇ_ਅੰਤ
 
-    #ifndef traceQUEUE_GIVE_FROM_ISR_FAILED
-        #define traceQUEUE_GIVE_FROM_ISR_FAILED( pxQueue )
-    #endif
+    #ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ trace_ਕਤਾਰ_GIVE_FROM_ISR_FAILED
+        #ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ trace_ਕਤਾਰ_GIVE_FROM_ISR_FAILED( px_ਕਤਾਰ )
+    #ਜੇ_ਅੰਤ
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __cplusplus
     }
-#endif
+#ਜੇ_ਅੰਤ
 /* *INDENT-ON* */
 
 /*
@@ -1528,8 +1528,8 @@ typedef StaticStreamBuffer_t StaticMessageBuffer_t;
  * any existing source code can continue using these relocated APIs without
  * any additional header inclusions via this implicit inclusion.
  */
-    #include "freertos/idf_additions.h"
+    #ਅਨ੍ਤਰ੍ਭਾਵ "freertos/idf_additions.h"
 
-#endif /* ESP_PLATFORM */
+#ਜੇ_ਅੰਤ /* ESP_PLATFORM */
 
-#endif /* INC_FREERTOS_H */
+#ਜੇ_ਅੰਤ /* INC_FREERTOS_H */

@@ -8,70 +8,70 @@
  See if xPortInIsrContext works
 */
 
-#include <esp_types.h>
-#include <stdio.h>
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "unity.h"
-#include "esp_intr_alloc.h"
-#include "esp_rom_sys.h"
-#include "esp_freertos_hooks.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ <esp_types.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "sdkconfig.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/FreeRTOS.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/task.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/semphr.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/queue.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "unity.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_intr_alloc.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_rom_sys.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_freertos_hooks.h"
 
-#if CONFIG_FREERTOS_CORETIMER_0
+#ਜੇ CONFIG_FREERTOS_CORETIMER_0
 
-static volatile int in_int_context, int_handled;
+ਸਥਿਰ ਅਸਥਿਰ ਪੂਰਨ ਵਿੱਚ_int_context, int_handled;
 
-static void testint(void)
+ਸਥਿਰ ਖਾਲੀ testint(ਖਾਲੀ)
 {
     esp_rom_printf("INT!\n");
-    if (xPortInIsrContext()) {
-        in_int_context++;
+    ਜੇ (x_ਪੋਰਟ_ਵਿੱਚ_Isr_Context()) {
+        ਵਿੱਚ_int_context++;
     }
     int_handled++;
 }
 
-static void testthread(void *arg)
+ਸਥਿਰ ਖਾਲੀ testthread(ਖਾਲੀ *arg)
 {
-    in_int_context = 0;
+    ਵਿੱਚ_int_context = 0;
     int_handled = 0;
-    TEST_ASSERT(!xPortInIsrContext());
-    esp_err_t err = esp_register_freertos_tick_hook_for_cpu(testint, xPortGetCoreID());
+    TEST_ASSERT(!x_ਪੋਰਟ_ਵਿੱਚ_Isr_Context());
+    esp_err_t err = esp_ਰਜਿਸਟਰ_freertos_tick_hook_for_cpu(testint, x_ਪੋਰਟ_Get_Core_ID());
     TEST_ASSERT_EQUAL_HEX32(ESP_OK, err);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
+    vTaskDelay(100 / ਪੋਰਟ_TICK_PERIOD_MS);
     TEST_ASSERT(int_handled);
-    TEST_ASSERT(in_int_context);
-    esp_deregister_freertos_tick_hook_for_cpu(testint, xPortGetCoreID());
-    vTaskDelete(NULL);
+    TEST_ASSERT(ਵਿੱਚ_int_context);
+    esp_deregister_freertos_tick_hook_for_cpu(testint, x_ਪੋਰਟ_Get_Core_ID());
+    vTaskDelete(ਨਿਰਾ);
 }
 
 TEST_CASE("xPortInIsrContext test", "[freertos]")
 {
-    xTaskCreatePinnedToCore(testthread, "tst", 4096, NULL, 3, NULL, 0);
-    vTaskDelay(150 / portTICK_PERIOD_MS);
-#if CONFIG_FREERTOS_NUMBER_OF_CORES == 2
-    xTaskCreatePinnedToCore(testthread, "tst", 4096, NULL, 3, NULL, 1);
-    vTaskDelay(150 / portTICK_PERIOD_MS);
-#endif
+    x_Task_Create_Pinned_ਮੰਜ਼ਿਲ_Core(testthread, "tst", 4096, ਨਿਰਾ, 3, ਨਿਰਾ, 0);
+    vTaskDelay(150 / ਪੋਰਟ_TICK_PERIOD_MS);
+#ਜੇ CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES == 2
+    x_Task_Create_Pinned_ਮੰਜ਼ਿਲ_Core(testthread, "tst", 4096, ਨਿਰਾ, 3, ਨਿਰਾ, 1);
+    vTaskDelay(150 / ਪੋਰਟ_TICK_PERIOD_MS);
+#ਜੇ_ਅੰਤ
 }
 
-#endif
+#ਜੇ_ਅੰਤ
 
-#if !CONFIG_FREERTOS_SMP // TODO: Enable when IDF-10540 is fixed
+#ਜੇ !CONFIG_FREERTOS_SMP // TODO: Enable when IDF-10540 is fixed
 
-static void testint_assert(void)
+ਸਥਿਰ ਖਾਲੀ testint_assert(ਖਾਲੀ)
 {
     esp_rom_printf("INT!\n");
-    portASSERT_IF_IN_ISR();
+    ਪੋਰਟ_ASSERT_IF_ਵਿੱਚ_ISR();
 }
 
 TEST_CASE("port must assert if in ISR context", "[ignore]")
 {
-    esp_err_t err = esp_register_freertos_tick_hook_for_cpu(testint_assert, xPortGetCoreID());
+    esp_err_t err = esp_ਰਜਿਸਟਰ_freertos_tick_hook_for_cpu(testint_assert, x_ਪੋਰਟ_Get_Core_ID());
     TEST_ASSERT_EQUAL_HEX32(ESP_OK, err);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    esp_deregister_freertos_tick_hook_for_cpu(testint_assert, xPortGetCoreID());
+    vTaskDelay(100 / ਪੋਰਟ_TICK_PERIOD_MS);
+    esp_deregister_freertos_tick_hook_for_cpu(testint_assert, x_ਪੋਰਟ_Get_Core_ID());
 }
-#endif // !CONFIG_FREERTOS_SMP
+#ਜੇ_ਅੰਤ // !CONFIG_FREERTOS_SMP

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "sdkconfig.h"
 
 /* This file implements the heap related functions that are called by FreeRTOS.
  * ESP-IDF provides its own heap containing memory with different capabilities
@@ -23,98 +23,98 @@
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
  * task.h is included from an application file. */
-#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#include "FreeRTOS.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "FreeRTOS.h"
 
-#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 0 )
-#error This file must not be used if configSUPPORT_DYNAMIC_ALLOCATION is 0
-#endif
+#ਜੇ ( config_SUPPORT_DYNAMIC_ਵੰਡ == 0 )
+#ਗਲਤੀ This file must not be ਵਰਤਿਆ ਜੇ config_SUPPORT_DYNAMIC_ਵੰਡ is 0
+#ਜੇ_ਅੰਤ
 
-#include "esp_heap_caps.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_heap_caps.h"
 
-#if !CONFIG_IDF_TARGET_LINUX
+#ਜੇ !CONFIG_IDF_ਨਿਸ਼ਾਨਾ_LINUX
 /* Memory util functions are not implemented in the Linux simulator */
-#include "esp_memory_utils.h"
-#endif /* CONFIG_IDF_TARGET_LINUX */
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_memory_utils.h"
+#ਜੇ_ਅੰਤ /* CONFIG_IDF_TARGET_LINUX */
 
-#define portFREERTOS_HEAP_CAPS    ( MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT )
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਪੋਰਟ_FREERTOS_ਢੇਰ_CAPS    ( MALLOC_CAP_ਅੰਦਰੂਨੀ | MALLOC_CAP_8_ਦੋਆਧਾਰੀ_ਅੰਕ )
 
 /*-----------------------------------------------------------*/
 
-void * pvPortMalloc(size_t xWantedSize)
+ਖਾਲੀ * pv_ਪੋਰਟ_Malloc(size_t x_Wanted_ਮਾਪ)
 {
-    void * pvReturn = NULL;
+    ਖਾਲੀ * pvReturn = ਨਿਰਾ;
 
     /* All dynamic allocation done by FreeRTOS goes through this function. If
      * users need to allocate FreeRTOS objects into external RAM, they should
      * use the "static" equivalents of FreeRTOS API to create FreeRTOS objects
      * (e.g., queues). */
-    pvReturn = heap_caps_malloc(xWantedSize, portFREERTOS_HEAP_CAPS);
+    pvReturn = ਢੇਰ_caps_malloc(x_Wanted_ਮਾਪ, ਪੋਰਟ_FREERTOS_ਢੇਰ_CAPS);
 
-    return pvReturn;
+    ਵਾਪਸ pvReturn;
 }
 /*-----------------------------------------------------------*/
 
-void vPortFree(void * pv)
+ਖਾਲੀ v_ਪੋਰਟ_Free(ਖਾਲੀ * pv)
 {
-    heap_caps_free(pv);
+    ਢੇਰ_caps_free(pv);
 }
 /*-----------------------------------------------------------*/
 
-size_t xPortGetFreeHeapSize(void)
+size_t x_ਪੋਰਟ_Get_Free_ਢੇਰ_ਮਾਪ(ਖਾਲੀ)
 {
-    return heap_caps_get_free_size(portFREERTOS_HEAP_CAPS);
+    ਵਾਪਸ ਢੇਰ_caps_get_free_ਮਾਪ(ਪੋਰਟ_FREERTOS_ਢੇਰ_CAPS);
 }
 /*-----------------------------------------------------------*/
 
-size_t xPortGetMinimumEverFreeHeapSize(void)
+size_t x_ਪੋਰਟ_Get_Minimum_Ever_Free_ਢੇਰ_ਮਾਪ(ਖਾਲੀ)
 {
-    return heap_caps_get_minimum_free_size(portFREERTOS_HEAP_CAPS);
+    ਵਾਪਸ ਢੇਰ_caps_get_minimum_free_ਮਾਪ(ਪੋਰਟ_FREERTOS_ਢੇਰ_CAPS);
 }
 /*-----------------------------------------------------------*/
 
-bool xPortCheckValidListMem(const void * ptr)
+bool x_ਪੋਰਟ_Check_Valid_List_Mem(ਅਚਲ ਖਾਲੀ * ptr)
 {
-#if CONFIG_IDF_TARGET_LINUX
-    return true;
-#else /* CONFIG_IDF_TARGET_LINUX */
-    return esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
-#endif /* CONFIG_IDF_TARGET_LINUX */
+#ਜੇ CONFIG_IDF_ਨਿਸ਼ਾਨਾ_LINUX
+    ਵਾਪਸ true;
+#ਨਹੀਂਤਾਂ /* CONFIG_IDF_TARGET_LINUX */
+    ਵਾਪਸ esp_ptr_ਅੰਦਰੂਨੀ(ptr) && esp_ptr_byte_accessible(ptr);
+#ਜੇ_ਅੰਤ /* CONFIG_IDF_TARGET_LINUX */
 }
 
-bool xPortCheckValidTCBMem(const void * ptr)
+bool x_ਪੋਰਟ_Check_Valid_TCBMem(ਅਚਲ ਖਾਲੀ * ptr)
 {
-#if CONFIG_IDF_TARGET_LINUX
-    return true;
-#else /* CONFIG_IDF_TARGET_LINUX */
-    return esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
-#endif /* CONFIG_IDF_TARGET_LINUX */
+#ਜੇ CONFIG_IDF_ਨਿਸ਼ਾਨਾ_LINUX
+    ਵਾਪਸ true;
+#ਨਹੀਂਤਾਂ /* CONFIG_IDF_TARGET_LINUX */
+    ਵਾਪਸ esp_ptr_ਅੰਦਰੂਨੀ(ptr) && esp_ptr_byte_accessible(ptr);
+#ਜੇ_ਅੰਤ /* CONFIG_IDF_TARGET_LINUX */
 }
 
-#if CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM
-void * pvPortMallocStack(size_t xWantedSize)
+#ਜੇ CONFIG_FREERTOS_ਰੱਖੋ_TASK_STACKS_ਵਿੱਚ_EXT_RAM
+ਖਾਲੀ * pv_ਪੋਰਟ_Malloc_ਢੇਰ(size_t x_Wanted_ਮਾਪ)
 {
-    return heap_caps_malloc_prefer(xWantedSize, 2, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
+    ਵਾਪਸ ਢੇਰ_caps_malloc_prefer(x_Wanted_ਮਾਪ, 2, MALLOC_CAP_SPIRAM | MALLOC_CAP_8_ਦੋਆਧਾਰੀ_ਅੰਕ, MALLOC_CAP_ਅੰਦਰੂਨੀ | MALLOC_CAP_8_ਦੋਆਧਾਰੀ_ਅੰਕ);
 }
 
-void vPortFreeStack(void * pv)
+ਖਾਲੀ v_ਪੋਰਟ_Free_ਢੇਰ(ਖਾਲੀ * pv)
 {
-    heap_caps_free(pv);
+    ਢੇਰ_caps_free(pv);
 }
-#endif /* CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM */
+#ਜੇ_ਅੰਤ /* CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM */
 
-bool xPortcheckValidStackMem(const void * ptr)
+bool x_Portcheck_Valid_ਢੇਰ_Mem(ਅਚਲ ਖਾਲੀ * ptr)
 {
-#if CONFIG_IDF_TARGET_LINUX
-    return true;
-#else /* CONFIG_IDF_TARGET_LINUX */
-#ifdef CONFIG_FREERTOS_TASK_CREATE_ALLOW_EXT_MEM
-    return esp_ptr_byte_accessible(ptr);
-#else
-    return esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
-#endif
-#endif /* CONFIG_IDF_TARGET_LINUX */
+#ਜੇ CONFIG_IDF_ਨਿਸ਼ਾਨਾ_LINUX
+    ਵਾਪਸ true;
+#ਨਹੀਂਤਾਂ /* CONFIG_IDF_TARGET_LINUX */
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CONFIG_FREERTOS_TASK_CREATE_ALLOW_EXT_MEM
+    ਵਾਪਸ esp_ptr_byte_accessible(ptr);
+#ਨਹੀਂਤਾਂ
+    ਵਾਪਸ esp_ptr_ਅੰਦਰੂਨੀ(ptr) && esp_ptr_byte_accessible(ptr);
+#ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ /* CONFIG_IDF_TARGET_LINUX */
 }

@@ -4,54 +4,54 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <stdint.h>
-#include <stdlib.h>
-#include "FreeRTOS.h"
-#include "task.h"
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#ਅਨ੍ਤਰ੍ਭਾਵ "sdkconfig.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdint.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdlib.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "FreeRTOS.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "task.h"
+#ਜੇ ( !CONFIG_FREERTOS_SMP && ( config_ਅੰਕ_CORES > 1 ) )
 /* Required for xTaskIncrementTickOtherCores() */
-#include "esp_private/freertos_idf_additions_priv.h"
-#endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_private/freertos_idf_additions_priv.h"
+#ਜੇ_ਅੰਤ /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 
-#if CONFIG_FREERTOS_SYSTICK_USES_CCOUNT
-#if CONFIG_FREERTOS_CORETIMER_0
-#define SYSTICK_INTR_ID     (ETS_INTERNAL_TIMER0_INTR_SOURCE + ETS_INTERNAL_INTR_SOURCE_OFF)
-#else /* CONFIG_FREERTOS_CORETIMER_1 */
-#define SYSTICK_INTR_ID     (ETS_INTERNAL_TIMER1_INTR_SOURCE + ETS_INTERNAL_INTR_SOURCE_OFF)
-#endif
-#else /* CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER */
-#define SYSTICK_INTR_ID     (ETS_SYSTIMER_TARGET0_INTR_SOURCE)
-#endif /* CONFIG_FREERTOS_SYSTICK_USES_CCOUNT */
+#ਜੇ CONFIG_FREERTOS_SYSTICK_ਵਰਤਦਾ_CCOUNT
+#ਜੇ CONFIG_FREERTOS_CORETIMER_0
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ SYSTICK_INTR_ID     (ETS_ਅੰਦਰੂਨੀ_TIMER0_INTR_ਸਰੋਤ + ETS_ਅੰਦਰੂਨੀ_INTR_ਸਰੋਤ_OFF)
+#ਨਹੀਂਤਾਂ /* CONFIG_FREERTOS_CORETIMER_1 */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ SYSTICK_INTR_ID     (ETS_ਅੰਦਰੂਨੀ_TIMER1_INTR_ਸਰੋਤ + ETS_ਅੰਦਰੂਨੀ_INTR_ਸਰੋਤ_OFF)
+#ਜੇ_ਅੰਤ
+#ਨਹੀਂਤਾਂ /* CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER */
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ SYSTICK_INTR_ID     (ETS_SYSTIMER_TARGET0_INTR_ਸਰੋਤ)
+#ਜੇ_ਅੰਤ /* CONFIG_FREERTOS_SYSTICK_USES_CCOUNT */
 
-BaseType_t xPortSysTickHandler(void);
+ਅਧਾਰ_Type_t x_ਪੋਰਟ_Sys_Tick_Handler(ਖਾਲੀ);
 
 /* --------------------------------------------- SYSTIMER Implementation -----------------------------------------------
  * Implementation of a tick interrupt using the SYSTIMER perpiheral
  * Todo: Abstract setup and operation in a separate SYSTIMER driver (IDF-6976)
  * ------------------------------------------------------------------------------------------------------------------ */
 
-#if CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER
+#ਜੇ CONFIG_FREERTOS_SYSTICK_ਵਰਤਦਾ_SYSTIMER
 
-#include "soc/periph_defs.h"
-#include "hal/systimer_hal.h"
-#include "hal/systimer_ll.h"
-#include "esp_err.h"
-#include "esp_intr_alloc.h"
-#include "esp_private/systimer.h"
-#include "esp_private/periph_ctrl.h"
-#ifdef CONFIG_PM_TRACE
-#include "esp_private/pm_trace.h"
-#endif //CONFIG_PM_TRACE
+#ਅਨ੍ਤਰ੍ਭਾਵ "soc/periph_defs.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hal/systimer_hal.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "hal/systimer_ll.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_err.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_intr_alloc.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_private/systimer.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_private/periph_ctrl.h"
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CONFIG_PM_TRACE
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_private/pm_trace.h"
+#ਜੇ_ਅੰਤ //CONFIG_PM_TRACE
 
-_Static_assert(SOC_CPU_CORES_NUM <= SYSTIMER_LL_ALARM_NUM - 1, "the number of cores must match the number of core alarms in SYSTIMER");
+_Static_assert(SOC_CPU_CORES_ਅੰਕ <= SYSTIMER_LL_ALARM_ਅੰਕ - 1, "the number of cores must match the number of core alarms in SYSTIMER");
 
-void SysTickIsrHandler(void *arg);
+ਖਾਲੀ SysTickIsrHandler(ਖਾਲੀ *arg);
 
-static uint32_t s_handled_systicks[configNUM_CORES] = { 0 };
+ਸਥਿਰ uint32_t s_handled_systicks[config_ਅੰਕ_CORES] = { 0 };
 
 /* Systimer HAL layer object */
-static systimer_hal_context_t systimer_hal;
+ਸਥਿਰ systimer_hal_context_t systimer_hal;
 
 /**
  * @brief Set up the systimer peripheral to generate the tick interrupt
@@ -60,60 +60,60 @@ static systimer_hal_context_t systimer_hal;
  * It is done at the same time so SysTicks for both CPUs occur at the same time or very close.
  * Shifts a time of triggering interrupts for core 0 and core 1.
  */
-void vSystimerSetup(void)
+ਖਾਲੀ v_Systimer_ਤਿਆਰੀ(ਖਾਲੀ)
 {
-    unsigned cpuid = xPortGetCoreID();
-#ifdef CONFIG_FREERTOS_CORETIMER_SYSTIMER_LVL3
-    const unsigned level = ESP_INTR_FLAG_LEVEL3;
-#else
-    const unsigned level = ESP_INTR_FLAG_LEVEL1;
-#endif
+    ਬਿਨਾਨਿਸ਼ਾਨੀ cpuid = x_ਪੋਰਟ_Get_Core_ID();
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CONFIG_FREERTOS_CORETIMER_SYSTIMER_LVL3
+    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ level = ESP_INTR_FLAG_LEVEL3;
+#ਨਹੀਂਤਾਂ
+    ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ level = ESP_INTR_FLAG_LEVEL1;
+#ਜੇ_ਅੰਤ
     /* set system timer interrupt vector */
 
-    ESP_ERROR_CHECK(esp_intr_alloc(ETS_SYSTIMER_TARGET0_INTR_SOURCE + cpuid, ESP_INTR_FLAG_IRAM | level, SysTickIsrHandler, &systimer_hal, NULL));
+    ESP_ERROR_CHECK(esp_intr_alloc(ETS_SYSTIMER_TARGET0_INTR_ਸਰੋਤ + cpuid, ESP_INTR_FLAG_IRAM | level, SysTickIsrHandler, &systimer_hal, ਨਿਰਾ));
 
-    if (cpuid == 0) {
-        PERIPH_RCC_ACQUIRE_ATOMIC(PERIPH_SYSTIMER_MODULE, ref_count) {
-            if (ref_count == 0) {
+    ਜੇ (cpuid == 0) {
+        PERIPH_RCC_ACQUIRE_ATOMIC(PERIPH_SYSTIMER_MODULE, ref_ਗਿਣਤੀ) {
+            ਜੇ (ref_ਗਿਣਤੀ == 0) {
                 systimer_ll_enable_bus_clock(true);
                 systimer_ll_enable_sys_clock(true);
-                systimer_ll_reset_register();
+                systimer_ll_reset_ਰਜਿਸਟਰ();
             }
         }
         systimer_hal_init(&systimer_hal);
-        systimer_hal_tick_rate_ops_t ops = {
-            .ticks_to_us = systimer_ticks_to_us,
-            .us_to_ticks = systimer_us_to_ticks,
+        systimer_hal_tick_ਦਰ_ops_t ops = {
+            .ticks_ਮੰਜ਼ਿਲ_us = systimer_ticks_ਮੰਜ਼ਿਲ_us,
+            .us_ਮੰਜ਼ਿਲ_ticks = systimer_us_ਮੰਜ਼ਿਲ_ticks,
         };
-        systimer_hal_set_tick_rate_ops(&systimer_hal, &ops);
-        systimer_ll_set_counter_value(systimer_hal.dev, SYSTIMER_COUNTER_OS_TICK, 0);
-        systimer_ll_apply_counter_value(systimer_hal.dev, SYSTIMER_COUNTER_OS_TICK);
+        systimer_hal_ਸੈੱਟ_tick_ਦਰ_ops(&systimer_hal, &ops);
+        systimer_ll_ਸੈੱਟ_counter_ਮੁੱਲ(systimer_hal.dev, SYSTIMER_COUNTER_OS_TICK, 0);
+        systimer_ll_apply_counter_ਮੁੱਲ(systimer_hal.dev, SYSTIMER_COUNTER_OS_TICK);
 
-        for (cpuid = 0; cpuid < SOC_CPU_CORES_NUM; cpuid++) {
+        ਲਈ (cpuid = 0; cpuid < SOC_CPU_CORES_ਅੰਕ; cpuid++) {
             // Set stall option and alarm mode to default state. Below they will be set to a required state.
             systimer_hal_counter_can_stall_by_cpu(&systimer_hal, SYSTIMER_COUNTER_OS_TICK, cpuid, false);
             uint32_t alarm_id = SYSTIMER_ALARM_OS_TICK_CORE0 + cpuid;
-            systimer_hal_select_alarm_mode(&systimer_hal, alarm_id, SYSTIMER_ALARM_MODE_ONESHOT);
+            systimer_hal_select_alarm_ਬਹੁਲਕ(&systimer_hal, alarm_id, SYSTIMER_ALARM_ਬਹੁਲਕ_ONESHOT);
         }
 
-        for (cpuid = 0; cpuid < configNUM_CORES; ++cpuid) {
+        ਲਈ (cpuid = 0; cpuid < config_ਅੰਕ_CORES; ++cpuid) {
             uint32_t alarm_id = SYSTIMER_ALARM_OS_TICK_CORE0 + cpuid;
 
             /* configure the timer */
             systimer_hal_connect_alarm_counter(&systimer_hal, alarm_id, SYSTIMER_COUNTER_OS_TICK);
-            systimer_hal_set_alarm_period(&systimer_hal, alarm_id, 1000000UL / CONFIG_FREERTOS_HZ);
-            systimer_hal_select_alarm_mode(&systimer_hal, alarm_id, SYSTIMER_ALARM_MODE_PERIOD);
+            systimer_hal_ਸੈੱਟ_alarm_period(&systimer_hal, alarm_id, 1000000UL / CONFIG_FREERTOS_HZ);
+            systimer_hal_select_alarm_ਬਹੁਲਕ(&systimer_hal, alarm_id, SYSTIMER_ALARM_ਬਹੁਲਕ_PERIOD);
             systimer_hal_counter_can_stall_by_cpu(&systimer_hal, SYSTIMER_COUNTER_OS_TICK, cpuid, true);
-            if (cpuid == 0) {
+            ਜੇ (cpuid == 0) {
                 systimer_hal_enable_alarm_int(&systimer_hal, alarm_id);
                 systimer_hal_enable_counter(&systimer_hal, SYSTIMER_COUNTER_OS_TICK);
-#ifndef CONFIG_FREERTOS_UNICORE
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ CONFIG_FREERTOS_UNICORE
                 // SysTick of core 0 and core 1 are shifted by half of period
-                systimer_hal_counter_value_advance(&systimer_hal, SYSTIMER_COUNTER_OS_TICK, 1000000UL / CONFIG_FREERTOS_HZ / 2);
-#endif
+                systimer_hal_counter_ਮੁੱਲ_advance(&systimer_hal, SYSTIMER_COUNTER_OS_TICK, 1000000UL / CONFIG_FREERTOS_HZ / 2);
+#ਜੇ_ਅੰਤ
             }
         }
-    } else {
+    } ਨਹੀਂਤਾਂ {
         uint32_t alarm_id = SYSTIMER_ALARM_OS_TICK_CORE0 + cpuid;
         systimer_hal_enable_alarm_int(&systimer_hal, alarm_id);
     }
@@ -125,50 +125,50 @@ void vSystimerSetup(void)
  * The Systimer interrupt for SysTick works in periodic mode no need to calc the next alarm.
  * If a timer interrupt is ever serviced more than one tick late, it is necessary to process multiple ticks.
  */
-void SysTickIsrHandler(void *arg)
+ਖਾਲੀ SysTickIsrHandler(ਖਾਲੀ *arg)
 {
-    uint32_t cpuid = xPortGetCoreID();
+    uint32_t cpuid = x_ਪੋਰਟ_Get_Core_ID();
     systimer_hal_context_t *systimer_hal = (systimer_hal_context_t *)arg;
-#ifdef CONFIG_PM_TRACE
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CONFIG_PM_TRACE
     ESP_PM_TRACE_ENTER(TICK, cpuid);
-#endif
+#ਜੇ_ਅੰਤ
 
     uint32_t alarm_id = SYSTIMER_ALARM_OS_TICK_CORE0 + cpuid;
-    do {
+    ਕਰੋ {
         systimer_ll_clear_alarm_int(systimer_hal->dev, alarm_id);
 
-        uint32_t diff = systimer_hal_get_counter_value(systimer_hal, SYSTIMER_COUNTER_OS_TICK) / systimer_ll_get_alarm_period(systimer_hal->dev, alarm_id) - s_handled_systicks[cpuid];
-        if (diff > 0) {
-            if (s_handled_systicks[cpuid] == 0) {
+        uint32_t diff = systimer_hal_get_counter_ਮੁੱਲ(systimer_hal, SYSTIMER_COUNTER_OS_TICK) / systimer_ll_get_alarm_period(systimer_hal->dev, alarm_id) - s_handled_systicks[cpuid];
+        ਜੇ (diff > 0) {
+            ਜੇ (s_handled_systicks[cpuid] == 0) {
                 s_handled_systicks[cpuid] = diff;
                 diff = 1;
-            } else {
+            } ਨਹੀਂਤਾਂ {
                 s_handled_systicks[cpuid] += diff;
             }
 
-            do {
-                xPortSysTickHandler();
-            } while (--diff);
+            ਕਰੋ {
+                x_ਪੋਰਟ_Sys_Tick_Handler();
+            } ਜਦੋਂ (--diff);
         }
-    } while (systimer_ll_is_alarm_int_fired(systimer_hal->dev, alarm_id));
+    } ਜਦੋਂ (systimer_ll_is_alarm_int_fired(systimer_hal->dev, alarm_id));
 
-#ifdef CONFIG_PM_TRACE
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CONFIG_PM_TRACE
     ESP_PM_TRACE_EXIT(TICK, cpuid);
-#endif
+#ਜੇ_ਅੰਤ
 }
 
-uint32_t xPortSysTickClaimElapsedTicks(int cpu_id)
+uint32_t x_ਪੋਰਟ_Sys_Tick_Claim_Elapsed_Ticks(ਪੂਰਨ cpu_id)
 {
     uint32_t alarm_id = SYSTIMER_ALARM_OS_TICK_CORE0 + (uint32_t)cpu_id;
-    uint32_t total = systimer_hal_get_counter_value(&systimer_hal, SYSTIMER_COUNTER_OS_TICK) / systimer_ll_get_alarm_period(systimer_hal.dev, alarm_id);
-    uint32_t elapsed = total - s_handled_systicks[cpu_id];
-    if (elapsed == 0) {
-        return 0;
+    uint32_t ਕੁੱਲ = systimer_hal_get_counter_ਮੁੱਲ(&systimer_hal, SYSTIMER_COUNTER_OS_TICK) / systimer_ll_get_alarm_period(systimer_hal.dev, alarm_id);
+    uint32_t elapsed = ਕੁੱਲ - s_handled_systicks[cpu_id];
+    ਜੇ (elapsed == 0) {
+        ਵਾਪਸ 0;
     }
-    s_handled_systicks[cpu_id] = total;
-    return elapsed;
+    s_handled_systicks[cpu_id] = ਕੁੱਲ;
+    ਵਾਪਸ elapsed;
 }
-#endif /* CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER */
+#ਜੇ_ਅੰਤ /* CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER */
 
 /* ------------------------------------------------ Common Port Tick ---------------------------------------------------
  * Tick related functions common across all ports
@@ -180,17 +180,17 @@ uint32_t xPortSysTickClaimElapsedTicks(int cpu_id)
  * - CCOUNT timer is used if CONFIG_FREERTOS_SYSTICK_USES_CCOUNT is set
  * - SYSTIMER is used if CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER is set
  */
-void vPortSetupTimer(void)
+ਖਾਲੀ v_ਪੋਰਟ_ਤਿਆਰੀ_Timer(ਖਾਲੀ)
 {
-#if CONFIG_FREERTOS_SYSTICK_USES_CCOUNT
-    extern void _frxt_tick_timer_init(void);
-    extern void _xt_tick_divisor_init(void);
+#ਜੇ CONFIG_FREERTOS_SYSTICK_ਵਰਤਦਾ_CCOUNT
+    ਬਾਹਰੀ ਖਾਲੀ _frxt_tick_timer_init(ਖਾਲੀ);
+    ਬਾਹਰੀ ਖਾਲੀ xt_tick_ਭਾਜਕ_init(ਖਾਲੀ);
     /* Init the tick divisor value */
-    _xt_tick_divisor_init();
+    xt_tick_ਭਾਜਕ_init();
     _frxt_tick_timer_init();
-#else /* CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER */
-    vSystimerSetup();
-#endif /* CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER */
+#ਨਹੀਂਤਾਂ /* CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER */
+    v_Systimer_ਤਿਆਰੀ();
+#ਜੇ_ਅੰਤ /* CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER */
 }
 
 /**
@@ -201,60 +201,60 @@ void vPortSetupTimer(void)
  *  - SysTickIsrHandler for xtensa with CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER
  *  - SysTickIsrHandler for riscv
  */
-BaseType_t xPortSysTickHandler(void)
+ਅਧਾਰ_Type_t x_ਪੋਰਟ_Sys_Tick_Handler(ਖਾਲੀ)
 {
-#if configBENCHMARK
+#ਜੇ configBENCHMARK
     portbenchmarkIntLatency();
-#endif //configBENCHMARK
+#ਜੇ_ਅੰਤ //configBENCHMARK
     traceISR_ENTER(SYSTICK_INTR_ID);
 
     // Call IDF Tick Hook
-    extern void esp_vApplicationTickHook(void);
+    ਬਾਹਰੀ ਖਾਲੀ esp_vApplicationTickHook(ਖਾਲੀ);
     esp_vApplicationTickHook();
 
     // Call FreeRTOS Increment tick function
-    BaseType_t xSwitchRequired;
-#if CONFIG_FREERTOS_SMP
-    UBaseType_t uxSavedStatus = taskENTER_CRITICAL_FROM_ISR();
+    ਅਧਾਰ_Type_t xSwitchRequired;
+#ਜੇ CONFIG_FREERTOS_SMP
+    UBaseType_t ux_Saved_ਸਥਿਤੀ = taskENTER_CRITICAL_FROM_ISR();
     // Amazon SMP FreeRTOS requires that only core 0 calls xTaskIncrementTick()
-#if ( configNUM_CORES > 1 )
-    if (portGET_CORE_ID() == 0) {
+#ਜੇ ( config_ਅੰਕ_CORES > 1 )
+    ਜੇ (ਪੋਰਟ_GET_CORE_ID() == 0) {
         xSwitchRequired = xTaskIncrementTick();
-    } else {
+    } ਨਹੀਂਤਾਂ {
         xSwitchRequired = pdFALSE;
     }
-#else /* configNUM_CORES > 1 */
+#ਨਹੀਂਤਾਂ /* configNUM_CORES > 1 */
     xSwitchRequired = xTaskIncrementTick();
-#endif /* configNUM_CORES > 1 */
-    taskEXIT_CRITICAL_FROM_ISR(uxSavedStatus);
-#else /* !CONFIG_FREERTOS_SMP */
-#if ( configNUM_CORES > 1 )
+#ਜੇ_ਅੰਤ /* configNUM_CORES > 1 */
+    taskEXIT_CRITICAL_FROM_ISR(ux_Saved_ਸਥਿਤੀ);
+#ਨਹੀਂਤਾਂ /* !CONFIG_FREERTOS_SMP */
+#ਜੇ ( config_ਅੰਕ_CORES > 1 )
     /*
     Multi-core IDF FreeRTOS requires that...
         - core 0 calls xTaskIncrementTick()
         - core 1 calls xTaskIncrementTickOtherCores()
     */
-    if (xPortGetCoreID() == 0) {
+    ਜੇ (x_ਪੋਰਟ_Get_Core_ID() == 0) {
         xSwitchRequired = xTaskIncrementTick();
-    } else {
+    } ਨਹੀਂਤਾਂ {
         xSwitchRequired = xTaskIncrementTickOtherCores();
     }
-#else /* configNUM_CORES > 1 */
+#ਨਹੀਂਤਾਂ /* configNUM_CORES > 1 */
     /*
     Vanilla (single core) FreeRTOS expects that xTaskIncrementTick() cannot be interrupted (i.e., no nested
     interrupts). Thus we have to disable interrupts before calling it.
     */
-    UBaseType_t uxSavedInterruptStatus = portSET_INTERRUPT_MASK_FROM_ISR();
+    UBaseType_t ux_Saved_ਰੁਕਾਵਟ_ਸਥਿਤੀ = ਪੋਰਟ_ਸੈੱਟ_ਰੁਕਾਵਟ_ਨਕਾਬ_FROM_ISR();
     xSwitchRequired = xTaskIncrementTick();
-    portCLEAR_INTERRUPT_MASK_FROM_ISR(uxSavedInterruptStatus);
-#endif /* configNUM_CORES > 1 */
-#endif /* !CONFIG_FREERTOS_SMP */
+    ਪੋਰਟ_CLEAR_ਰੁਕਾਵਟ_ਨਕਾਬ_FROM_ISR(ux_Saved_ਰੁਕਾਵਟ_ਸਥਿਤੀ);
+#ਜੇ_ਅੰਤ /* configNUM_CORES > 1 */
+#ਜੇ_ਅੰਤ /* !CONFIG_FREERTOS_SMP */
 
     // Check if yield is required
-    if (xSwitchRequired != pdFALSE) {
-        portYIELD_FROM_ISR();
-    } else {
+    ਜੇ (xSwitchRequired != pdFALSE) {
+        ਪੋਰਟ_YIELD_FROM_ISR();
+    } ਨਹੀਂਤਾਂ {
         traceISR_EXIT();
     }
-    return xSwitchRequired;
+    ਵਾਪਸ xSwitchRequired;
 }

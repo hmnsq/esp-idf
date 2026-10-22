@@ -8,19 +8,19 @@
   Unit tests for FreeRTOS task priority get/set
 */
 
-#include <esp_types.h>
-#include <stdio.h>
-#include <strings.h>
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "unity.h"
-#include "test_utils.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ <esp_types.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <strings.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "sdkconfig.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/FreeRTOS.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "freertos/task.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "unity.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "test_utils.h"
 
-static void counter_task(void *param)
+ਸਥਿਰ ਖਾਲੀ counter_task(ਖਾਲੀ *param)
 {
-    volatile uint32_t *counter = (volatile uint32_t *)param;
-    while (1) {
+    ਅਸਥਿਰ uint32_t *counter = (ਅਸਥਿਰ uint32_t *)param;
+    ਜਦੋਂ (1) {
         (*counter)++;
     }
 }
@@ -28,48 +28,48 @@ static void counter_task(void *param)
 TEST_CASE("Get/Set Priorities", "[freertos]")
 {
     /* Two tasks per processor */
-    TaskHandle_t tasks[CONFIG_FREERTOS_NUMBER_OF_CORES][2] = { 0 };
-    unsigned volatile counters[CONFIG_FREERTOS_NUMBER_OF_CORES][2] = { 0 };
+    TaskHandle_t tasks[CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES][2] = { 0 };
+    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਸਥਿਰ counters[CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES][2] = { 0 };
 
-    TEST_ASSERT_EQUAL(UNITY_FREERTOS_PRIORITY, uxTaskPriorityGet(NULL));
+    TEST_ASSERT_EQUAL(UNITY_FREERTOS_ਤਰਜੀਹ, ux_Task_ਤਰਜੀਹ_Get(ਨਿਰਾ));
 
     /* create a matrix of counter tasks on each core */
-    for (int cpu = 0; cpu < CONFIG_FREERTOS_NUMBER_OF_CORES; cpu++) {
-        for (int task = 0; task < 2; task++) {
-            xTaskCreatePinnedToCore(counter_task, "count", 2048, (void *) & (counters[cpu][task]), UNITY_FREERTOS_PRIORITY - task, &(tasks[cpu][task]), cpu);
+    ਲਈ (ਪੂਰਨ cpu = 0; cpu < CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES; cpu++) {
+        ਲਈ (ਪੂਰਨ task = 0; task < 2; task++) {
+            x_Task_Create_Pinned_ਮੰਜ਼ਿਲ_Core(counter_task, "count", 2048, (ਖਾਲੀ *) & (counters[cpu][task]), UNITY_FREERTOS_ਤਰਜੀਹ - task, &(tasks[cpu][task]), cpu);
         }
     }
 
     /* check they were created with the expected priorities */
-    for (int cpu = 0; cpu < CONFIG_FREERTOS_NUMBER_OF_CORES; cpu++) {
-        for (int task = 0; task < 2; task++) {
-            TEST_ASSERT_EQUAL(UNITY_FREERTOS_PRIORITY - task, uxTaskPriorityGet(tasks[cpu][task]));
+    ਲਈ (ਪੂਰਨ cpu = 0; cpu < CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES; cpu++) {
+        ਲਈ (ਪੂਰਨ task = 0; task < 2; task++) {
+            TEST_ASSERT_EQUAL(UNITY_FREERTOS_ਤਰਜੀਹ - task, ux_Task_ਤਰਜੀਹ_Get(tasks[cpu][task]));
         }
     }
 
     vTaskDelay(10);
 
     /* at this point, only the higher priority tasks (first index) should be counting */
-    for (int cpu = 0; cpu < CONFIG_FREERTOS_NUMBER_OF_CORES; cpu++) {
+    ਲਈ (ਪੂਰਨ cpu = 0; cpu < CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES; cpu++) {
         TEST_ASSERT_NOT_EQUAL(0, counters[cpu][0]);
         TEST_ASSERT_EQUAL(0, counters[cpu][1]);
     }
 
     /* swap priorities! */
-    for (int cpu = 0; cpu < CONFIG_FREERTOS_NUMBER_OF_CORES; cpu++) {
-        vTaskPrioritySet(tasks[cpu][0], UNITY_FREERTOS_PRIORITY - 1);
-        vTaskPrioritySet(tasks[cpu][1], UNITY_FREERTOS_PRIORITY);
+    ਲਈ (ਪੂਰਨ cpu = 0; cpu < CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES; cpu++) {
+        v_Task_ਤਰਜੀਹ_ਸੈੱਟ(tasks[cpu][0], UNITY_FREERTOS_ਤਰਜੀਹ - 1);
+        v_Task_ਤਰਜੀਹ_ਸੈੱਟ(tasks[cpu][1], UNITY_FREERTOS_ਤਰਜੀਹ);
     }
 
     /* check priorities have swapped... */
-    for (int cpu = 0; cpu < CONFIG_FREERTOS_NUMBER_OF_CORES; cpu++) {
-        TEST_ASSERT_EQUAL(UNITY_FREERTOS_PRIORITY - 1, uxTaskPriorityGet(tasks[cpu][0]));
-        TEST_ASSERT_EQUAL(UNITY_FREERTOS_PRIORITY, uxTaskPriorityGet(tasks[cpu][1]));
+    ਲਈ (ਪੂਰਨ cpu = 0; cpu < CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES; cpu++) {
+        TEST_ASSERT_EQUAL(UNITY_FREERTOS_ਤਰਜੀਹ - 1, ux_Task_ਤਰਜੀਹ_Get(tasks[cpu][0]));
+        TEST_ASSERT_EQUAL(UNITY_FREERTOS_ਤਰਜੀਹ, ux_Task_ਤਰਜੀਹ_Get(tasks[cpu][1]));
     }
 
     /* check the tasks which are counting have also swapped now... */
-    for (int cpu = 0; cpu < CONFIG_FREERTOS_NUMBER_OF_CORES; cpu++) {
-        unsigned old_counters[2];
+    ਲਈ (ਪੂਰਨ cpu = 0; cpu < CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES; cpu++) {
+        ਬਿਨਾਨਿਸ਼ਾਨੀ old_counters[2];
         old_counters[0] = counters[cpu][0];
         old_counters[1] = counters[cpu][1];
         vTaskDelay(10);
@@ -78,8 +78,8 @@ TEST_CASE("Get/Set Priorities", "[freertos]")
     }
 
     /* clean up */
-    for (int cpu = 0; cpu < CONFIG_FREERTOS_NUMBER_OF_CORES; cpu++) {
-        for (int task = 0; task < 2; task++) {
+    ਲਈ (ਪੂਰਨ cpu = 0; cpu < CONFIG_FREERTOS_ਸੰਖਿਆ_ਦਾ_CORES; cpu++) {
+        ਲਈ (ਪੂਰਨ task = 0; task < 2; task++) {
             vTaskDelete(tasks[cpu][task]);
         }
     }

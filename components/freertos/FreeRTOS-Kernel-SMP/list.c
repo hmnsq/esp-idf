@@ -31,128 +31,128 @@
  */
 
 
-#include <stdlib.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdlib.h>
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
  * task.h is included from an application file. */
-#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#include "FreeRTOS.h"
-#include "list.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "FreeRTOS.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "list.h"
 
 /* The MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be
  * defined for the header files above, but not in this file, in order to
  * generate the correct privileged Vs unprivileged linkage and placement. */
-#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /*-----------------------------------------------------------
 * PUBLIC LIST API documented in list.h
 *----------------------------------------------------------*/
 
-void vListInitialise( List_t * const pxList )
+ਖਾਲੀ vListInitialise( List_t * ਅਚਲ pxList )
 {
     traceENTER_vListInitialise( pxList );
 
     /* The list structure contains a list item which is used to mark the
      * end of the list.  To initialise the list the list end is inserted
      * as the only list entry. */
-    pxList->pxIndex = ( ListItem_t * ) &( pxList->xListEnd );
+    pxList->px_ਸੂਚਕਾਂਕ = ( List_ਵਸਤੂ_t * ) &( pxList->x_List_ਸਿਰਾ );
 
-    listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( &( pxList->xListEnd ) );
+    list_ਸੈੱਟ_ਪਹਿਲਾ_LIST_ਵਸਤੂ_INTEGRITY_CHECK_ਮੁੱਲ( &( pxList->x_List_ਸਿਰਾ ) );
 
     /* The list end value is the highest possible value in the list to
      * ensure it remains at the end of the list. */
-    pxList->xListEnd.xItemValue = portMAX_DELAY;
+    pxList->x_List_ਸਿਰਾ.x_ਵਸਤੂ_ਮੁੱਲ = ਪੋਰਟ_MAX_DELAY;
 
     /* The list end next and previous pointers point to itself so we know
      * when the list is empty. */
-    pxList->xListEnd.pxNext = ( ListItem_t * ) &( pxList->xListEnd );
-    pxList->xListEnd.pxPrevious = ( ListItem_t * ) &( pxList->xListEnd );
+    pxList->x_List_ਸਿਰਾ.px_ਅਗਲਾ = ( List_ਵਸਤੂ_t * ) &( pxList->x_List_ਸਿਰਾ );
+    pxList->x_List_ਸਿਰਾ.px_ਪਿਛਲਾ = ( List_ਵਸਤੂ_t * ) &( pxList->x_List_ਸਿਰਾ );
 
     /* Initialize the remaining fields of xListEnd when it is a proper ListItem_t */
-    #if ( configUSE_MINI_LIST_ITEM == 0 )
+    #ਜੇ ( config_USE_MINI_LIST_ਵਸਤੂ == 0 )
     {
-        pxList->xListEnd.pvOwner = NULL;
-        pxList->xListEnd.pxContainer = NULL;
-        listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( &( pxList->xListEnd ) );
+        pxList->x_List_ਸਿਰਾ.pvOwner = ਨਿਰਾ;
+        pxList->x_List_ਸਿਰਾ.pxContainer = ਨਿਰਾ;
+        list_ਸੈੱਟ_ਦੂਜਾ_LIST_ਵਸਤੂ_INTEGRITY_CHECK_ਮੁੱਲ( &( pxList->x_List_ਸਿਰਾ ) );
     }
-    #endif
+    #ਜੇ_ਅੰਤ
 
-    pxList->uxNumberOfItems = ( UBaseType_t ) 0U;
+    pxList->ux_ਸੰਖਿਆ_ਦਾ_ਚੀਜ਼ਾਂ = ( UBaseType_t ) 0U;
 
     /* Write known values into the list if
      * configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    listSET_LIST_INTEGRITY_CHECK_1_VALUE( pxList );
-    listSET_LIST_INTEGRITY_CHECK_2_VALUE( pxList );
+    list_ਸੈੱਟ_LIST_INTEGRITY_CHECK_1_ਮੁੱਲ( pxList );
+    list_ਸੈੱਟ_LIST_INTEGRITY_CHECK_2_ਮੁੱਲ( pxList );
 
     traceRETURN_vListInitialise();
 }
 /*-----------------------------------------------------------*/
 
-void vListInitialiseItem( ListItem_t * const pxItem )
+ਖਾਲੀ v_List_Initialise_ਵਸਤੂ( List_ਵਸਤੂ_t * ਅਚਲ px_ਵਸਤੂ )
 {
-    traceENTER_vListInitialiseItem( pxItem );
+    trace_ENTER_v_List_Initialise_ਵਸਤੂ( px_ਵਸਤੂ );
 
     /* Make sure the list item is not recorded as being on a list. */
-    pxItem->pxContainer = NULL;
+    px_ਵਸਤੂ->pxContainer = ਨਿਰਾ;
 
     /* Write known values into the list item if
      * configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem );
-    listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem );
+    list_ਸੈੱਟ_ਪਹਿਲਾ_LIST_ਵਸਤੂ_INTEGRITY_CHECK_ਮੁੱਲ( px_ਵਸਤੂ );
+    list_ਸੈੱਟ_ਦੂਜਾ_LIST_ਵਸਤੂ_INTEGRITY_CHECK_ਮੁੱਲ( px_ਵਸਤੂ );
 
-    traceRETURN_vListInitialiseItem();
+    trace_RETURN_v_List_Initialise_ਵਸਤੂ();
 }
 /*-----------------------------------------------------------*/
 
-void vListInsertEnd( List_t * const pxList,
-                     ListItem_t * const pxNewListItem )
+ਖਾਲੀ v_List_ਪਾਓ_ਸਿਰਾ( List_t * ਅਚਲ pxList,
+                     List_ਵਸਤੂ_t * ਅਚਲ px_New_List_ਵਸਤੂ )
 {
-    ListItem_t * const pxIndex = pxList->pxIndex;
+    List_ਵਸਤੂ_t * ਅਚਲ px_ਸੂਚਕਾਂਕ = pxList->px_ਸੂਚਕਾਂਕ;
 
-    traceENTER_vListInsertEnd( pxList, pxNewListItem );
+    trace_ENTER_v_List_ਪਾਓ_ਸਿਰਾ( pxList, px_New_List_ਵਸਤੂ );
 
     /* Only effective when configASSERT() is also defined, these tests may catch
      * the list data structures being overwritten in memory.  They will not catch
      * data errors caused by incorrect configuration or use of FreeRTOS. */
     listTEST_LIST_INTEGRITY( pxList );
-    listTEST_LIST_ITEM_INTEGRITY( pxNewListItem );
+    list_TEST_LIST_ਵਸਤੂ_INTEGRITY( px_New_List_ਵਸਤੂ );
 
     /* Insert a new list item into pxList, but rather than sort the list,
      * makes the new list item the last item to be removed by a call to
      * listGET_OWNER_OF_NEXT_ENTRY(). */
-    pxNewListItem->pxNext = pxIndex;
-    pxNewListItem->pxPrevious = pxIndex->pxPrevious;
+    px_New_List_ਵਸਤੂ->px_ਅਗਲਾ = px_ਸੂਚਕਾਂਕ;
+    px_New_List_ਵਸਤੂ->px_ਪਿਛਲਾ = px_ਸੂਚਕਾਂਕ->px_ਪਿਛਲਾ;
 
     /* Only used during decision coverage testing. */
     mtCOVERAGE_TEST_DELAY();
 
-    pxIndex->pxPrevious->pxNext = pxNewListItem;
-    pxIndex->pxPrevious = pxNewListItem;
+    px_ਸੂਚਕਾਂਕ->px_ਪਿਛਲਾ->px_ਅਗਲਾ = px_New_List_ਵਸਤੂ;
+    px_ਸੂਚਕਾਂਕ->px_ਪਿਛਲਾ = px_New_List_ਵਸਤੂ;
 
     /* Remember which list the item is in. */
-    pxNewListItem->pxContainer = pxList;
+    px_New_List_ਵਸਤੂ->pxContainer = pxList;
 
-    ( pxList->uxNumberOfItems ) = ( UBaseType_t ) ( pxList->uxNumberOfItems + 1U );
+    ( pxList->ux_ਸੰਖਿਆ_ਦਾ_ਚੀਜ਼ਾਂ ) = ( UBaseType_t ) ( pxList->ux_ਸੰਖਿਆ_ਦਾ_ਚੀਜ਼ਾਂ + 1U );
 
-    traceRETURN_vListInsertEnd();
+    trace_RETURN_v_List_ਪਾਓ_ਸਿਰਾ();
 }
 /*-----------------------------------------------------------*/
 
-void vListInsert( List_t * const pxList,
-                  ListItem_t * const pxNewListItem )
+ਖਾਲੀ v_List_ਪਾਓ( List_t * ਅਚਲ pxList,
+                  List_ਵਸਤੂ_t * ਅਚਲ px_New_List_ਵਸਤੂ )
 {
-    ListItem_t * pxIterator;
-    const TickType_t xValueOfInsertion = pxNewListItem->xItemValue;
+    List_ਵਸਤੂ_t * pxIterator;
+    ਅਚਲ TickType_t x_ਮੁੱਲ_ਦਾ_Insertion = px_New_List_ਵਸਤੂ->x_ਵਸਤੂ_ਮੁੱਲ;
 
-    traceENTER_vListInsert( pxList, pxNewListItem );
+    trace_ENTER_v_List_ਪਾਓ( pxList, px_New_List_ਵਸਤੂ );
 
     /* Only effective when configASSERT() is also defined, these tests may catch
      * the list data structures being overwritten in memory.  They will not catch
      * data errors caused by incorrect configuration or use of FreeRTOS. */
     listTEST_LIST_INTEGRITY( pxList );
-    listTEST_LIST_ITEM_INTEGRITY( pxNewListItem );
+    list_TEST_LIST_ਵਸਤੂ_INTEGRITY( px_New_List_ਵਸਤੂ );
 
     /* Insert the new list item into the list, sorted in xItemValue order.
      *
@@ -162,11 +162,11 @@ void vListInsert( List_t * const pxList,
      * share of the CPU.  However, if the xItemValue is the same as the back marker
      * the iteration loop below will not end.  Therefore the value is checked
      * first, and the algorithm slightly modified if necessary. */
-    if( xValueOfInsertion == portMAX_DELAY )
+    ਜੇ( x_ਮੁੱਲ_ਦਾ_Insertion == ਪੋਰਟ_MAX_DELAY )
     {
-        pxIterator = pxList->xListEnd.pxPrevious;
+        pxIterator = pxList->x_List_ਸਿਰਾ.px_ਪਿਛਲਾ;
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
         /* *** NOTE ***********************************************************
         *  If you find your application is crashing here then likely causes are
@@ -193,58 +193,58 @@ void vListInsert( List_t * const pxList,
         *      configMAX_SYSCALL_INTERRUPT_PRIORITY.
         **********************************************************************/
 
-        for( pxIterator = ( ListItem_t * ) &( pxList->xListEnd ); pxIterator->pxNext->xItemValue <= xValueOfInsertion; pxIterator = pxIterator->pxNext )
+        ਲਈ( pxIterator = ( List_ਵਸਤੂ_t * ) &( pxList->x_List_ਸਿਰਾ ); pxIterator->px_ਅਗਲਾ->x_ਵਸਤੂ_ਮੁੱਲ <= x_ਮੁੱਲ_ਦਾ_Insertion; pxIterator = pxIterator->px_ਅਗਲਾ )
         {
             /* There is nothing to do here, just iterating to the wanted
              * insertion position. */
         }
     }
 
-    pxNewListItem->pxNext = pxIterator->pxNext;
-    pxNewListItem->pxNext->pxPrevious = pxNewListItem;
-    pxNewListItem->pxPrevious = pxIterator;
-    pxIterator->pxNext = pxNewListItem;
+    px_New_List_ਵਸਤੂ->px_ਅਗਲਾ = pxIterator->px_ਅਗਲਾ;
+    px_New_List_ਵਸਤੂ->px_ਅਗਲਾ->px_ਪਿਛਲਾ = px_New_List_ਵਸਤੂ;
+    px_New_List_ਵਸਤੂ->px_ਪਿਛਲਾ = pxIterator;
+    pxIterator->px_ਅਗਲਾ = px_New_List_ਵਸਤੂ;
 
     /* Remember which list the item is in.  This allows fast removal of the
      * item later. */
-    pxNewListItem->pxContainer = pxList;
+    px_New_List_ਵਸਤੂ->pxContainer = pxList;
 
-    ( pxList->uxNumberOfItems ) = ( UBaseType_t ) ( pxList->uxNumberOfItems + 1U );
+    ( pxList->ux_ਸੰਖਿਆ_ਦਾ_ਚੀਜ਼ਾਂ ) = ( UBaseType_t ) ( pxList->ux_ਸੰਖਿਆ_ਦਾ_ਚੀਜ਼ਾਂ + 1U );
 
-    traceRETURN_vListInsert();
+    trace_RETURN_v_List_ਪਾਓ();
 }
 /*-----------------------------------------------------------*/
 
 
-UBaseType_t uxListRemove( ListItem_t * const pxItemToRemove )
+UBaseType_t uxListRemove( List_ਵਸਤੂ_t * ਅਚਲ px_ਵਸਤੂ_ਮੰਜ਼ਿਲ_Remove )
 {
     /* The list item knows which list it is in.  Obtain the list from the list
      * item. */
-    List_t * const pxList = pxItemToRemove->pxContainer;
+    List_t * ਅਚਲ pxList = px_ਵਸਤੂ_ਮੰਜ਼ਿਲ_Remove->pxContainer;
 
-    traceENTER_uxListRemove( pxItemToRemove );
+    traceENTER_uxListRemove( px_ਵਸਤੂ_ਮੰਜ਼ਿਲ_Remove );
 
-    pxItemToRemove->pxNext->pxPrevious = pxItemToRemove->pxPrevious;
-    pxItemToRemove->pxPrevious->pxNext = pxItemToRemove->pxNext;
+    px_ਵਸਤੂ_ਮੰਜ਼ਿਲ_Remove->px_ਅਗਲਾ->px_ਪਿਛਲਾ = px_ਵਸਤੂ_ਮੰਜ਼ਿਲ_Remove->px_ਪਿਛਲਾ;
+    px_ਵਸਤੂ_ਮੰਜ਼ਿਲ_Remove->px_ਪਿਛਲਾ->px_ਅਗਲਾ = px_ਵਸਤੂ_ਮੰਜ਼ਿਲ_Remove->px_ਅਗਲਾ;
 
     /* Only used during decision coverage testing. */
     mtCOVERAGE_TEST_DELAY();
 
     /* Make sure the index is left pointing to a valid item. */
-    if( pxList->pxIndex == pxItemToRemove )
+    ਜੇ( pxList->px_ਸੂਚਕਾਂਕ == px_ਵਸਤੂ_ਮੰਜ਼ਿਲ_Remove )
     {
-        pxList->pxIndex = pxItemToRemove->pxPrevious;
+        pxList->px_ਸੂਚਕਾਂਕ = px_ਵਸਤੂ_ਮੰਜ਼ਿਲ_Remove->px_ਪਿਛਲਾ;
     }
-    else
+    ਨਹੀਂਤਾਂ
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    pxItemToRemove->pxContainer = NULL;
-    ( pxList->uxNumberOfItems ) = ( UBaseType_t ) ( pxList->uxNumberOfItems - 1U );
+    px_ਵਸਤੂ_ਮੰਜ਼ਿਲ_Remove->pxContainer = ਨਿਰਾ;
+    ( pxList->ux_ਸੰਖਿਆ_ਦਾ_ਚੀਜ਼ਾਂ ) = ( UBaseType_t ) ( pxList->ux_ਸੰਖਿਆ_ਦਾ_ਚੀਜ਼ਾਂ - 1U );
 
-    traceRETURN_uxListRemove( pxList->uxNumberOfItems );
+    traceRETURN_uxListRemove( pxList->ux_ਸੰਖਿਆ_ਦਾ_ਚੀਜ਼ਾਂ );
 
-    return pxList->uxNumberOfItems;
+    ਵਾਪਸ pxList->ux_ਸੰਖਿਆ_ਦਾ_ਚੀਜ਼ਾਂ;
 }
 /*-----------------------------------------------------------*/

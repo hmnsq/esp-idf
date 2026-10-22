@@ -3,213 +3,213 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <sys/queue.h>
-#include <time.h>
-#include "string.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "utils/wait_for_event.h"
-#include "esp_private/freertos_linux_coop_syscalls.h"
-#include "utils/linux_port_utils.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdio.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdlib.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <stdint.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <unistd.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <pthread.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <sys/queue.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ <time.h>
+#ਅਨ੍ਤਰ੍ਭਾਵ "string.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "FreeRTOS.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "task.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "utils/wait_for_event.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_private/freertos_linux_coop_syscalls.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "utils/linux_port_utils.h"
 
-#define FREERTOS_SIM_TICK_PERIOD_US (1000000 / CONFIG_FREERTOS_HZ)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ FREERTOS_SIM_TICK_PERIOD_US (1000000 / CONFIG_FREERTOS_HZ)
 
-typedef struct thread {
-    const char *name;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ thread {
+    ਅਚਲ ਅੱਖਰ *name;
     pthread_t pthread;
-    TaskFunction_t pxCode;
-    void *pvParams;
+    TaskFunction_t px_ਕੋਡ;
+    ਖਾਲੀ *pvParams;
     bool is_dying;
     bool yield_needed;
-    struct event *ev;
+    ਬਣਤਰ event *ev;
 } thread_t;
 
-typedef struct task_thread_node {
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ task_thread_ਗੰਢ {
     TaskHandle_t handle;
     thread_t *thread;
-    SLIST_ENTRY(task_thread_node) next;
-} task_thread_node_t;
+    SLIST_ENTRY(task_thread_ਗੰਢ) ਅਗਲਾ;
+} task_thread_ਗੰਢ_t;
 
 
-static SLIST_HEAD(task_thread_node_ll, task_thread_node) s_task_thread_list = SLIST_HEAD_INITIALIZER(task_thread_node);
-static pthread_mutex_t s_thread_map_mutex = PTHREAD_MUTEX_INITIALIZER;
+ਸਥਿਰ SLIST_HEAD(task_thread_ਗੰਢ_ll, task_thread_ਗੰਢ) s_task_thread_list = SLIST_HEAD_INITIALIZER(task_thread_ਗੰਢ);
+ਸਥਿਰ pthread_mutex_t s_thread_map_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-static pthread_mutex_t s_port_mutex;
-static pthread_t s_scheduler_thread;
-static bool s_scheduler_started = false;
-static int s_ux_critical_nesting = 0;
+ਸਥਿਰ pthread_mutex_t s_ਪੋਰਟ_mutex;
+ਸਥਿਰ pthread_t s_scheduler_thread;
+ਸਥਿਰ bool s_scheduler_started = false;
+ਸਥਿਰ ਪੂਰਨ s_ux_critical_nesting = 0;
 
 /* TLS flag: true only when inside a real FreeRTOS task pthread */
-static __thread bool s_in_freertos_task = false;
+ਸਥਿਰ __thread bool s_ਵਿੱਚ_freertos_task = false;
 
-bool linux_port_in_freertos_task(void)
+bool linux_ਪੋਰਟ_ਵਿੱਚ_freertos_task(ਖਾਲੀ)
 {
-    return s_in_freertos_task;
+    ਵਾਪਸ s_ਵਿੱਚ_freertos_task;
 }
 
-static void linux_port_initialize_mutexes(void)
+ਸਥਿਰ ਖਾਲੀ linux_ਪੋਰਟ_initialize_mutexes(ਖਾਲੀ)
 {
     pthread_mutexattr_t attr;
     pthread_mutexattr_init(&attr);
     pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
-    pthread_mutex_init(&s_port_mutex, &attr);
+    pthread_mutex_init(&s_ਪੋਰਟ_mutex, &attr);
     pthread_mutexattr_destroy(&attr);
 }
 
-static void linux_port_fatal_error(const char *msg, int err)
+ਸਥਿਰ ਖਾਲੀ linux_ਪੋਰਟ_fatal_error(ਅਚਲ ਅੱਖਰ *ਸੁਨੇਹਾ, ਪੂਰਨ err)
 {
-    fprintf(stderr, "%s: %s\n", msg, strerror(err));
+    fprintf(stderr, "%s: %s\n", ਸੁਨੇਹਾ, strerror(err));
     abort();
 }
 
-static void linux_port_register_thread(TaskHandle_t handle, thread_t *thread)
+ਸਥਿਰ ਖਾਲੀ linux_ਪੋਰਟ_ਰਜਿਸਟਰ_thread(TaskHandle_t handle, thread_t *thread)
 {
-    if (handle == NULL) {
-        return;
+    ਜੇ (handle == ਨਿਰਾ) {
+        ਵਾਪਸ;
     }
 
-    task_thread_node_t *node = malloc(sizeof(task_thread_node_t));
-    if (!node) {
-        linux_port_fatal_error("Failed to allocate thread map node", -1);
+    task_thread_ਗੰਢ_t *ਗੰਢ = ਸਮ੍ਰਿਤੀ_ਦਿਓ(ਆਕਾਰ(task_thread_ਗੰਢ_t));
+    ਜੇ (!ਗੰਢ) {
+        linux_ਪੋਰਟ_fatal_error("Failed to allocate thread map node", -1);
     }
 
-    node->handle = handle;
-    node->thread = thread;
+    ਗੰਢ->handle = handle;
+    ਗੰਢ->thread = thread;
 
     pthread_mutex_lock(&s_thread_map_mutex);
-    SLIST_INSERT_HEAD(&s_task_thread_list, node, next);
+    SLIST_INSERT_HEAD(&s_task_thread_list, ਗੰਢ, ਅਗਲਾ);
     pthread_mutex_unlock(&s_thread_map_mutex);
 }
 
-static void linux_port_unregister_thread(TaskHandle_t handle)
+ਸਥਿਰ ਖਾਲੀ linux_ਪੋਰਟ_unregister_thread(TaskHandle_t handle)
 {
-    if (handle == NULL) {
-        return;
+    ਜੇ (handle == ਨਿਰਾ) {
+        ਵਾਪਸ;
     }
 
     pthread_mutex_lock(&s_thread_map_mutex);
 
-    task_thread_node_t *cur_node = SLIST_FIRST(&s_task_thread_list);
-    task_thread_node_t *prev_node = NULL;
+    task_thread_ਗੰਢ_t *cur_ਗੰਢ = SLIST_FIRST(&s_task_thread_list);
+    task_thread_ਗੰਢ_t *prev_ਗੰਢ = ਨਿਰਾ;
 
-    while (cur_node) {
-        if (cur_node->handle == handle) {
-            if (prev_node) {
-                prev_node->next.sle_next = SLIST_NEXT(cur_node, next);
-            } else {
-                SLIST_REMOVE_HEAD(&s_task_thread_list, next);
+    ਜਦੋਂ (cur_ਗੰਢ) {
+        ਜੇ (cur_ਗੰਢ->handle == handle) {
+            ਜੇ (prev_ਗੰਢ) {
+                prev_ਗੰਢ->ਅਗਲਾ.sle_ਅਗਲਾ = SLIST_NEXT(cur_ਗੰਢ, ਅਗਲਾ);
+            } ਨਹੀਂਤਾਂ {
+                SLIST_REMOVE_HEAD(&s_task_thread_list, ਅਗਲਾ);
             }
 
-            free(cur_node);
+            ਮੁਕਤ(cur_ਗੰਢ);
             pthread_mutex_unlock(&s_thread_map_mutex);
-            return;
+            ਵਾਪਸ;
         }
 
-        prev_node = cur_node;
-        cur_node = SLIST_NEXT(cur_node, next);
+        prev_ਗੰਢ = cur_ਗੰਢ;
+        cur_ਗੰਢ = SLIST_NEXT(cur_ਗੰਢ, ਅਗਲਾ);
     }
 
     pthread_mutex_unlock(&s_thread_map_mutex);
 }
 
-static thread_t *linux_port_get_thread_from_handle(TaskHandle_t handle)
+ਸਥਿਰ thread_t *linux_ਪੋਰਟ_get_thread_from_handle(TaskHandle_t handle)
 {
-    if (handle == NULL) {
-        return NULL;
+    ਜੇ (handle == ਨਿਰਾ) {
+        ਵਾਪਸ ਨਿਰਾ;
     }
 
     pthread_mutex_lock(&s_thread_map_mutex);
-    task_thread_node_t *node = NULL;
-    SLIST_FOREACH(node, &s_task_thread_list, next) {
-        if (node->handle == (TaskHandle_t)(*(StackType_t **)(handle))) {
-            thread_t *t = node->thread;
+    task_thread_ਗੰਢ_t *ਗੰਢ = ਨਿਰਾ;
+    SLIST_FOREACH(ਗੰਢ, &s_task_thread_list, ਅਗਲਾ) {
+        ਜੇ (ਗੰਢ->handle == (TaskHandle_t)(*(ਢੇਰ_Type_t **)(handle))) {
+            thread_t *t = ਗੰਢ->thread;
             pthread_mutex_unlock(&s_thread_map_mutex);
-            return t;
+            ਵਾਪਸ t;
         }
     }
     pthread_mutex_unlock(&s_thread_map_mutex);
-    return NULL;
+    ਵਾਪਸ ਨਿਰਾ;
 }
 
-static thread_t *linux_port_get_calling_thread(void)
+ਸਥਿਰ thread_t *linux_ਪੋਰਟ_get_calling_thread(ਖਾਲੀ)
 {
     pthread_t self = pthread_self();
     pthread_mutex_lock(&s_thread_map_mutex);
-    task_thread_node_t *node = NULL;
-    SLIST_FOREACH(node, &s_task_thread_list, next) {
-        if (pthread_equal(node->thread->pthread, self)) {
-            thread_t *thread = node->thread;
+    task_thread_ਗੰਢ_t *ਗੰਢ = ਨਿਰਾ;
+    SLIST_FOREACH(ਗੰਢ, &s_task_thread_list, ਅਗਲਾ) {
+        ਜੇ (pthread_equal(ਗੰਢ->thread->pthread, self)) {
+            thread_t *thread = ਗੰਢ->thread;
             pthread_mutex_unlock(&s_thread_map_mutex);
-            return thread;
+            ਵਾਪਸ thread;
         }
     }
     pthread_mutex_unlock(&s_thread_map_mutex);
-    return NULL;
+    ਵਾਪਸ ਨਿਰਾ;
 }
 
-pthread_t linux_port_get_scheduled_task_pthread(void)
+pthread_t linux_ਪੋਰਟ_get_scheduled_task_pthread(ਖਾਲੀ)
 {
-    thread_t *thread = linux_port_get_thread_from_handle(xTaskGetCurrentTaskHandle());
-    return thread ? thread->pthread : pthread_self();
+    thread_t *thread = linux_ਪੋਰਟ_get_thread_from_handle(xTaskGetCurrentTaskHandle());
+    ਵਾਪਸ thread ? thread->pthread : pthread_self();
 }
 
-static void *linux_port_task_runner(void *arg)
+ਸਥਿਰ ਖਾਲੀ *linux_ਪੋਰਟ_task_runner(ਖਾਲੀ *arg)
 {
     /* Allow this thread to be cancelled */
-    pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+    pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, ਨਿਰਾ);
 
     /* set the flag showing that this is a freertos task */
-    s_in_freertos_task = true;
+    s_ਵਿੱਚ_freertos_task = true;
 
     /* setup the backtrace signal. ONLY triggered before abort so
      * it will not interfere with the simulation while its running */
-    linux_port_setup_backtrace_signal();
+    linux_ਪੋਰਟ_ਤਿਆਰੀ_backtrace_signal();
 
     thread_t *thread = arg;
 
     /* Block until scheduler signals first time, then run the task body. */
     event_wait(thread->ev);
-    thread->pxCode(thread->pvParams);
+    thread->px_ਕੋਡ(thread->pvParams);
 
-    return NULL;
+    ਵਾਪਸ ਨਿਰਾ;
 }
 
-static void linux_port_unblock_thread(thread_t *thread)
+ਸਥਿਰ ਖਾਲੀ linux_ਪੋਰਟ_unblock_thread(thread_t *thread)
 {
     event_signal(thread->ev);
 }
 
-static void linux_port_block_thread(thread_t *thread)
+ਸਥਿਰ ਖਾਲੀ linux_ਪੋਰਟ_ਖੰਡ_thread(thread_t *thread)
 {
     event_wait(thread->ev);
 }
 
-static void linux_port_increment_tick(void)
+ਸਥਿਰ ਖਾਲੀ linux_ਪੋਰਟ_increment_tick(ਖਾਲੀ)
 {
-    (void)xTaskIncrementTick();
+    (ਖਾਲੀ)xTaskIncrementTick();
 }
 
-static void linux_port_switch_context(TaskHandle_t current_task_hdl)
+ਸਥਿਰ ਖਾਲੀ linux_ਪੋਰਟ_switch_context(TaskHandle_t current_task_hdl)
 {
-    pthread_mutex_lock(&s_port_mutex);
+    pthread_mutex_lock(&s_ਪੋਰਟ_mutex);
 
-    thread_t *current_thread = linux_port_get_thread_from_handle(current_task_hdl);
+    thread_t *current_thread = linux_ਪੋਰਟ_get_thread_from_handle(current_task_hdl);
 
     /* get the task that should be scheduled next */
     vTaskSwitchContext();
 
     /* get the new task to schedule and the associated thread item */
-    TaskHandle_t next_task_hdl = xTaskGetCurrentTaskHandle();
-    thread_t *next_thread = linux_port_get_thread_from_handle(next_task_hdl);
+    TaskHandle_t ਅਗਲਾ_task_hdl = xTaskGetCurrentTaskHandle();
+    thread_t *ਅਗਲਾ_thread = linux_ਪੋਰਟ_get_thread_from_handle(ਅਗਲਾ_task_hdl);
 
     /* unblock the newly scheduled task if it is different from
      * the one already scheduled */
-    if (next_thread) {
+    ਜੇ (ਅਗਲਾ_thread) {
         /* Only unblock the thread if we are actually switching to a
          * different one. Signaling the already-running thread would
          * leave a stale event_triggered flag, causing its next
@@ -219,7 +219,7 @@ static void linux_port_switch_context(TaskHandle_t current_task_hdl)
          * Exception: on the very first switch, the task is still blocked
          * in its initial event_wait (linux_port_task_runner), so we must
          * signal it even though current_thread == next_thread. */
-        if (next_thread != current_thread || !s_scheduler_started) {
+        ਜੇ (ਅਗਲਾ_thread != current_thread || !s_scheduler_started) {
             /* Discard any stale wake on the task being switched out.
              *
              * Because tasks are pthreads that cannot be forcibly paused,
@@ -244,37 +244,37 @@ static void linux_port_switch_context(TaskHandle_t current_task_hdl)
              * which the current_thread NULL-check below also tolerates.
              * The NULL-check additionally guards the deleted-task path
              * where the outgoing task has no thread mapping. */
-            if (current_thread) {
+            ਜੇ (current_thread) {
                 event_clear(current_thread->ev);
             }
-            linux_port_unblock_thread(next_thread);
+            linux_ਪੋਰਟ_unblock_thread(ਅਗਲਾ_thread);
         }
     }
 
-    if (!s_scheduler_started) {
+    ਜੇ (!s_scheduler_started) {
         s_scheduler_started = true;
     }
 
     /* fill the name of the task in the thread item if not done already. */
-    if (next_thread && next_thread->name == NULL) {
+    ਜੇ (ਅਗਲਾ_thread && ਅਗਲਾ_thread->name == ਨਿਰਾ) {
         /* fill the name of the thread now */
-        next_thread->name = pcTaskGetName(next_task_hdl);
+        ਅਗਲਾ_thread->name = pcTaskGetName(ਅਗਲਾ_task_hdl);
     }
 
     /* fill the name of the task in the thread item if not done already. */
-    if (current_thread && current_thread->name == NULL) {
+    ਜੇ (current_thread && current_thread->name == ਨਿਰਾ) {
         /* fill the name of the thread now */
         current_thread->name = pcTaskGetName(current_task_hdl);
     }
 
-    pthread_mutex_unlock(&s_port_mutex);
+    pthread_mutex_unlock(&s_ਪੋਰਟ_mutex);
 }
 
-static void *linux_port_scheduler_runner(void *arg)
+ਸਥਿਰ ਖਾਲੀ *linux_ਪੋਰਟ_scheduler_runner(ਖਾਲੀ *arg)
 {
-    (void)arg;
+    (ਖਾਲੀ)arg;
 
-    while (1) {
+    ਜਦੋਂ (1) {
         /* sleep for a period of 1 tick */
         usleep(FREERTOS_SIM_TICK_PERIOD_US);
 
@@ -283,252 +283,252 @@ static void *linux_port_scheduler_runner(void *arg)
 
         /* Lock the port mutex. This will block while any task is in a
          * critical section, ensuring ticks don't preempt critical code. */
-        pthread_mutex_lock(&s_port_mutex);
+        pthread_mutex_lock(&s_ਪੋਰਟ_mutex);
 
         /* increment the freertos tick */
-        linux_port_increment_tick();
+        linux_ਪੋਰਟ_increment_tick();
 
         /* schedule a new task, and schedule out the currently running one */
-        linux_port_switch_context(current_task_hdl);
+        linux_ਪੋਰਟ_switch_context(current_task_hdl);
 
-        pthread_mutex_unlock(&s_port_mutex);
+        pthread_mutex_unlock(&s_ਪੋਰਟ_mutex);
     }
-    return NULL;
+    ਵਾਪਸ ਨਿਰਾ;
 }
 
-StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack,
-                                   StackType_t *pxEndOfStack,
-                                   TaskFunction_t pxCode,
-                                   void *pvParameters)
+ਢੇਰ_Type_t *px_ਪੋਰਟ_Initialise_ਢੇਰ(ਢੇਰ_Type_t *px_ਸਿਖਰ_ਦਾ_ਢੇਰ,
+                                   ਢੇਰ_Type_t *px_ਸਿਰਾ_ਦਾ_ਢੇਰ,
+                                   TaskFunction_t px_ਕੋਡ,
+                                   ਖਾਲੀ *pvParameters)
 {
     pthread_attr_t thread_attr;
-    size_t thread_stack_size;
+    size_t thread_ਢੇਰ_ਮਾਪ;
 
     /* Store the thread data at the start of the stack. */
-    thread_stack_size = (pxTopOfStack - pxEndOfStack) * sizeof(*pxTopOfStack);
+    thread_ਢੇਰ_ਮਾਪ = (px_ਸਿਖਰ_ਦਾ_ਢੇਰ - px_ਸਿਰਾ_ਦਾ_ਢੇਰ) * ਆਕਾਰ(*px_ਸਿਖਰ_ਦਾ_ਢੇਰ);
     pthread_attr_init(&thread_attr);
-    pthread_attr_setstack(&thread_attr, pxEndOfStack, thread_stack_size);
+    pthread_attr_setstack(&thread_attr, px_ਸਿਰਾ_ਦਾ_ਢੇਰ, thread_ਢੇਰ_ਮਾਪ);
 
-    thread_t *thread = malloc(sizeof(thread_t));
-    if (!thread) {
-        linux_port_fatal_error("Failed to allocate thread metadata", -1);
+    thread_t *thread = ਸਮ੍ਰਿਤੀ_ਦਿਓ(ਆਕਾਰ(thread_t));
+    ਜੇ (!thread) {
+        linux_ਪੋਰਟ_fatal_error("Failed to allocate thread metadata", -1);
     }
-    thread->name = NULL; // this will be filled later when we know about the task name
-    thread->pxCode = pxCode;
+    thread->name = ਨਿਰਾ; // this will be filled later when we know about the task name
+    thread->px_ਕੋਡ = px_ਕੋਡ;
     thread->pvParams = pvParameters;
     thread->is_dying = false;
     thread->yield_needed = false;
     thread->ev = event_create();
 
-    linux_port_register_thread((TaskHandle_t)pxTopOfStack, thread);
+    linux_ਪੋਰਟ_ਰਜਿਸਟਰ_thread((TaskHandle_t)px_ਸਿਖਰ_ਦਾ_ਢੇਰ, thread);
 
     /* create the thread associated with the task being created */
-    const int ret = pthread_create(&thread->pthread, &thread_attr, linux_port_task_runner, thread);
-    if (ret != 0) {
-        linux_port_fatal_error("pthread_create", ret);
+    ਅਚਲ ਪੂਰਨ ret = pthread_create(&thread->pthread, &thread_attr, linux_ਪੋਰਟ_task_runner, thread);
+    ਜੇ (ret != 0) {
+        linux_ਪੋਰਟ_fatal_error("pthread_create", ret);
     }
-    return pxTopOfStack;
+    ਵਾਪਸ px_ਸਿਖਰ_ਦਾ_ਢੇਰ;
 }
 
-BaseType_t xPortStartScheduler(void)
+ਅਧਾਰ_Type_t x_ਪੋਰਟ_ਸ਼ੁਰੂ_Scheduler(ਖਾਲੀ)
 {
     /* set the port mutex to be recursive. Must be done before
      * vPortEnableInterrupts() which calls vPortExitCritical(). */
-    linux_port_initialize_mutexes();
+    linux_ਪੋਰਟ_initialize_mutexes();
 
     /* enable interrupt that were disabled in vTaskStartScheduler */
-    vPortEnableInterrupts();
+    v_ਪੋਰਟ_Enable_Interrupts();
 
     /* init the cooperative syscall layer (sets stdio non-blocking).
      * Provided by VFS component; weak no-op when VFS is not linked. */
     freertos_linux_coop_syscalls_init();
 
     /* Start scheduler thread */
-    int ret = pthread_create(&s_scheduler_thread, NULL, linux_port_scheduler_runner, NULL);
-    if (ret != 0) {
-       linux_port_fatal_error("pthread_create", ret);
+    ਪੂਰਨ ret = pthread_create(&s_scheduler_thread, ਨਿਰਾ, linux_ਪੋਰਟ_scheduler_runner, ਨਿਰਾ);
+    ਜੇ (ret != 0) {
+       linux_ਪੋਰਟ_fatal_error("pthread_create", ret);
     }
 
     /* Should never return */
-    pthread_join(s_scheduler_thread, NULL);
+    pthread_join(s_scheduler_thread, ਨਿਰਾ);
 
-    return 0;
+    ਵਾਪਸ 0;
 }
 
-void vPortEndScheduler(void)
+ਖਾਲੀ v_ਪੋਰਟ_ਸਿਰਾ_Scheduler(ਖਾਲੀ)
 {
-    exit(0);
+    ਬਾਹਰ_ਨਿਕਲੋ(0);
 }
 
-void vPortEnterCritical(void)
+ਖਾਲੀ v_ਪੋਰਟ_Enter_Critical(ਖਾਲੀ)
 {
-    if (!s_scheduler_started) {
-        return;
+    ਜੇ (!s_scheduler_started) {
+        ਵਾਪਸ;
     }
 
-    pthread_mutex_lock(&s_port_mutex);
+    pthread_mutex_lock(&s_ਪੋਰਟ_mutex);
 
     /* Non-FreeRTOS thread or recursive enter: just bump the counter.
      * The mutex is already held (recursive lock succeeds for same thread). */
-    if (!linux_port_in_freertos_task() || s_ux_critical_nesting > 0) {
+    ਜੇ (!linux_ਪੋਰਟ_ਵਿੱਚ_freertos_task() || s_ux_critical_nesting > 0) {
         s_ux_critical_nesting++;
-        return;
+        ਵਾਪਸ;
     }
 
     /* First enter from a FreeRTOS task: ensure we're the scheduled task.
      * If not, release the mutex, block until the scheduler switches to us,
      * then re-acquire. */
-    thread_t *calling_thread = linux_port_get_calling_thread();
-    thread_t *scheduled_thread = linux_port_get_thread_from_handle(xTaskGetCurrentTaskHandle());
+    thread_t *calling_thread = linux_ਪੋਰਟ_get_calling_thread();
+    thread_t *scheduled_thread = linux_ਪੋਰਟ_get_thread_from_handle(xTaskGetCurrentTaskHandle());
 
-    while (calling_thread && !calling_thread->is_dying && calling_thread != scheduled_thread) {
-        pthread_mutex_unlock(&s_port_mutex);
-        linux_port_block_thread(calling_thread);
-        pthread_mutex_lock(&s_port_mutex);
-        calling_thread = linux_port_get_calling_thread();
-        scheduled_thread = linux_port_get_thread_from_handle(xTaskGetCurrentTaskHandle());
+    ਜਦੋਂ (calling_thread && !calling_thread->is_dying && calling_thread != scheduled_thread) {
+        pthread_mutex_unlock(&s_ਪੋਰਟ_mutex);
+        linux_ਪੋਰਟ_ਖੰਡ_thread(calling_thread);
+        pthread_mutex_lock(&s_ਪੋਰਟ_mutex);
+        calling_thread = linux_ਪੋਰਟ_get_calling_thread();
+        scheduled_thread = linux_ਪੋਰਟ_get_thread_from_handle(xTaskGetCurrentTaskHandle());
     }
 
-    if (!calling_thread || calling_thread->is_dying) {
-        linux_port_switch_context(xTaskGetCurrentTaskHandle());
-        pthread_mutex_unlock(&s_port_mutex);
-        return;
+    ਜੇ (!calling_thread || calling_thread->is_dying) {
+        linux_ਪੋਰਟ_switch_context(xTaskGetCurrentTaskHandle());
+        pthread_mutex_unlock(&s_ਪੋਰਟ_mutex);
+        ਵਾਪਸ;
     }
 
     s_ux_critical_nesting = 1;
 }
 
-void vPortExitCritical(void)
+ਖਾਲੀ v_ਪੋਰਟ_Exit_Critical(ਖਾਲੀ)
 {
-    if (!s_scheduler_started || s_ux_critical_nesting == 0) {
-        return;
+    ਜੇ (!s_scheduler_started || s_ux_critical_nesting == 0) {
+        ਵਾਪਸ;
     }
 
     s_ux_critical_nesting--;
 
     /* Check for deferred yield on final exit from a FreeRTOS task */
-    if (s_ux_critical_nesting == 0 && linux_port_in_freertos_task()) {
-        thread_t *calling_thread = linux_port_get_calling_thread();
-        if (calling_thread && calling_thread->yield_needed) {
+    ਜੇ (s_ux_critical_nesting == 0 && linux_ਪੋਰਟ_ਵਿੱਚ_freertos_task()) {
+        thread_t *calling_thread = linux_ਪੋਰਟ_get_calling_thread();
+        ਜੇ (calling_thread && calling_thread->yield_needed) {
             calling_thread->yield_needed = false;
-            pthread_mutex_unlock(&s_port_mutex);
-            vPortYield();
-            return;
+            pthread_mutex_unlock(&s_ਪੋਰਟ_mutex);
+            v_ਪੋਰਟ_Yield();
+            ਵਾਪਸ;
         }
     }
 
-    pthread_mutex_unlock(&s_port_mutex);
+    pthread_mutex_unlock(&s_ਪੋਰਟ_mutex);
 }
 
 /* Handle the case where the calling pthread is not a registered FreeRTOS task.
  * If the calling thread has been deleted but is still the scheduled task,
  * perform a context switch. Otherwise just release the mutex and return.
  * Returns true if the caller should return early. */
-static bool linux_port_handle_deleted_task(TaskHandle_t scheduled_task_hdl,
+ਸਥਿਰ bool linux_ਪੋਰਟ_handle_deleted_task(TaskHandle_t scheduled_task_hdl,
                                            thread_t *calling_thread)
 {
-    if (calling_thread != NULL) {
-        return false;
+    ਜੇ (calling_thread != ਨਿਰਾ) {
+        ਵਾਪਸ false;
     }
 
-    thread_t *scheduled_thread = linux_port_get_thread_from_handle(scheduled_task_hdl);
-    if (scheduled_thread == NULL) {
-        linux_port_switch_context(scheduled_task_hdl);
+    thread_t *scheduled_thread = linux_ਪੋਰਟ_get_thread_from_handle(scheduled_task_hdl);
+    ਜੇ (scheduled_thread == ਨਿਰਾ) {
+        linux_ਪੋਰਟ_switch_context(scheduled_task_hdl);
     }
-    pthread_mutex_unlock(&s_port_mutex);
-    return true;
+    pthread_mutex_unlock(&s_ਪੋਰਟ_mutex);
+    ਵਾਪਸ true;
 }
 
-void vPortYield(void)
+ਖਾਲੀ v_ਪੋਰਟ_Yield(ਖਾਲੀ)
 {
-    pthread_mutex_lock(&s_port_mutex);
+    pthread_mutex_lock(&s_ਪੋਰਟ_mutex);
 
-    thread_t *calling_thread = linux_port_get_calling_thread();
+    thread_t *calling_thread = linux_ਪੋਰਟ_get_calling_thread();
     TaskHandle_t scheduled_task_hdl = xTaskGetCurrentTaskHandle();
 
-    if (linux_port_handle_deleted_task(scheduled_task_hdl, calling_thread)) {
-        return;
+    ਜੇ (linux_ਪੋਰਟ_handle_deleted_task(scheduled_task_hdl, calling_thread)) {
+        ਵਾਪਸ;
     }
 
     /* If in a critical section, defer the yield until the section exits. */
-    if (s_ux_critical_nesting != 0) {
+    ਜੇ (s_ux_critical_nesting != 0) {
         calling_thread->yield_needed = true;
-        pthread_mutex_unlock(&s_port_mutex);
-        return;
+        pthread_mutex_unlock(&s_ਪੋਰਟ_mutex);
+        ਵਾਪਸ;
     }
 
     /* Hand the CPU to the next ready task right now (mimics PendSV on real
      * hardware). */
-    linux_port_switch_context(scheduled_task_hdl);
-    pthread_mutex_unlock(&s_port_mutex);
+    linux_ਪੋਰਟ_switch_context(scheduled_task_hdl);
+    pthread_mutex_unlock(&s_ਪੋਰਟ_mutex);
 
     /* If the newly scheduled task is different from the calling thread,
      * block until the scheduler resumes this task. */
-    TaskHandle_t next_task_hdl = xTaskGetCurrentTaskHandle();
-    thread_t *next_thread = linux_port_get_thread_from_handle(next_task_hdl);
-    if (calling_thread != next_thread) {
-        linux_port_block_thread(calling_thread);
+    TaskHandle_t ਅਗਲਾ_task_hdl = xTaskGetCurrentTaskHandle();
+    thread_t *ਅਗਲਾ_thread = linux_ਪੋਰਟ_get_thread_from_handle(ਅਗਲਾ_task_hdl);
+    ਜੇ (calling_thread != ਅਗਲਾ_thread) {
+        linux_ਪੋਰਟ_ਖੰਡ_thread(calling_thread);
     }
 }
 
-void vPortYieldWithinApi(void)
+ਖਾਲੀ v_ਪੋਰਟ_Yield_Within_Api(ਖਾਲੀ)
 {
-    vPortYield();
+    v_ਪੋਰਟ_Yield();
 }
 
-void vPortSuspendScheduler(void)
+ਖਾਲੀ v_ਪੋਰਟ_Suspend_Scheduler(ਖਾਲੀ)
 {
     /* scheduled out task trying to suspend the scheduler should get blocked here */
-    pthread_mutex_lock(&s_port_mutex);
+    pthread_mutex_lock(&s_ਪੋਰਟ_mutex);
 
    /* get the metadata of the pthread calling this function */
-    thread_t *calling_thread = linux_port_get_calling_thread();
+    thread_t *calling_thread = linux_ਪੋਰਟ_get_calling_thread();
 
     /* get the thread metadata from the scheduled task */
     TaskHandle_t scheduled_task_hdl = xTaskGetCurrentTaskHandle();
 
-    if (linux_port_handle_deleted_task(scheduled_task_hdl, calling_thread)) {
-        return;
+    ਜੇ (linux_ਪੋਰਟ_handle_deleted_task(scheduled_task_hdl, calling_thread)) {
+        ਵਾਪਸ;
     }
 
-    thread_t *scheduled_thread = linux_port_get_thread_from_handle(scheduled_task_hdl);
-    if (calling_thread != scheduled_thread) {
-        pthread_mutex_unlock(&s_port_mutex);
-        vPortYield();
-        return;
+    thread_t *scheduled_thread = linux_ਪੋਰਟ_get_thread_from_handle(scheduled_task_hdl);
+    ਜੇ (calling_thread != scheduled_thread) {
+        pthread_mutex_unlock(&s_ਪੋਰਟ_mutex);
+        v_ਪੋਰਟ_Yield();
+        ਵਾਪਸ;
     }
-    pthread_mutex_unlock(&s_port_mutex);
+    pthread_mutex_unlock(&s_ਪੋਰਟ_mutex);
 }
 
-void vPortDisableInterrupts(void)
+ਖਾਲੀ v_ਪੋਰਟ_Disable_Interrupts(ਖਾਲੀ)
 {
-    vPortEnterCritical();
+    v_ਪੋਰਟ_Enter_Critical();
 }
 
-void vPortEnableInterrupts(void)
+ਖਾਲੀ v_ਪੋਰਟ_Enable_Interrupts(ਖਾਲੀ)
 {
-    vPortExitCritical();
+    v_ਪੋਰਟ_Exit_Critical();
 }
 
-BaseType_t xPortSetInterruptMask(void)
+ਅਧਾਰ_Type_t x_ਪੋਰਟ_ਸੈੱਟ_ਰੁਕਾਵਟ_ਨਕਾਬ(ਖਾਲੀ)
 {
-    vPortEnterCritical();
-    return pdTRUE;
+    v_ਪੋਰਟ_Enter_Critical();
+    ਵਾਪਸ pdTRUE;
 }
 
-void vPortClearInterruptMask(BaseType_t xMask)
+ਖਾਲੀ v_ਪੋਰਟ_Clear_ਰੁਕਾਵਟ_ਨਕਾਬ(ਅਧਾਰ_Type_t x_ਨਕਾਬ)
 {
-    vPortExitCritical();
+    v_ਪੋਰਟ_Exit_Critical();
 }
 
-void vPortThreadDying(void *pxTaskToDelete, volatile BaseType_t *pxPendYield)
+ਖਾਲੀ v_ਪੋਰਟ_Thread_Dying(ਖਾਲੀ *px_Task_ਮੰਜ਼ਿਲ_Delete, ਅਸਥਿਰ ਅਧਾਰ_Type_t *pxPendYield)
 {
-    pthread_mutex_lock(&s_port_mutex);
+    pthread_mutex_lock(&s_ਪੋਰਟ_mutex);
 
-    thread_t *thread = linux_port_get_thread_from_handle((TaskHandle_t)pxTaskToDelete);
-    if (thread == NULL) {
-        pthread_mutex_unlock(&s_port_mutex);
-        return;
+    thread_t *thread = linux_ਪੋਰਟ_get_thread_from_handle((TaskHandle_t)px_Task_ਮੰਜ਼ਿਲ_Delete);
+    ਜੇ (thread == ਨਿਰਾ) {
+        pthread_mutex_unlock(&s_ਪੋਰਟ_mutex);
+        ਵਾਪਸ;
     }
 
     /* Mark the thread as dying, cancel the thread. the pthread
@@ -537,40 +537,40 @@ void vPortThreadDying(void *pxTaskToDelete, volatile BaseType_t *pxPendYield)
     thread->is_dying = true;
     pthread_cancel(thread->pthread);
 
-    pthread_mutex_unlock(&s_port_mutex);
+    pthread_mutex_unlock(&s_ਪੋਰਟ_mutex);
 }
 
-#if CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
-static void vPortTLSPointersDelCb(void *pxTCB)
+#ਜੇ CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
+ਸਥਿਰ ਖਾਲੀ v_ਪੋਰਟ_TLSPointers_Del_Cb(ਖਾਲੀ *pxTCB)
 {
     StaticTask_t *tcb = (StaticTask_t *)pxTCB;
-    TlsDeleteCallbackFunction_t *pvDelCbs = (TlsDeleteCallbackFunction_t *)(&tcb->pvDummy15[configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2]);
+    TlsDeleteCallbackFunction_t *pvDelCbs = (TlsDeleteCallbackFunction_t *)(&tcb->pvDummy15[config_ਅੰਕ_THREAD_LOCAL_STORAGE_ਸੂਚਕ_ਸਾਰੇ / 2]);
 
-    for (int x = 0; x < (configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2); x++) {
-        if (pvDelCbs[x] != NULL) {
+    ਲਈ (ਪੂਰਨ x = 0; x < (config_ਅੰਕ_THREAD_LOCAL_STORAGE_ਸੂਚਕ_ਸਾਰੇ / 2); x++) {
+        ਜੇ (pvDelCbs[x] != ਨਿਰਾ) {
             pvDelCbs[x](x, tcb->pvDummy15[x]);
         }
     }
 }
-#endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+#ਜੇ_ਅੰਤ /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 
-void vPortCancelThread(void *pxTaskToDelete)
+ਖਾਲੀ v_ਪੋਰਟ_Cancel_Thread(ਖਾਲੀ *px_Task_ਮੰਜ਼ਿਲ_Delete)
 {
-    pthread_mutex_lock(&s_port_mutex);
+    pthread_mutex_lock(&s_ਪੋਰਟ_mutex);
 
-#if CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
-    vPortTLSPointersDelCb(pxTaskToDelete);
-#endif
+#ਜੇ CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
+    v_ਪੋਰਟ_TLSPointers_Del_Cb(px_Task_ਮੰਜ਼ਿਲ_Delete);
+#ਜੇ_ਅੰਤ
 
-    thread_t *thread = linux_port_get_thread_from_handle((TaskHandle_t)pxTaskToDelete);
-    if (!thread) {
-        pthread_mutex_unlock(&s_port_mutex);
-        return;
+    thread_t *thread = linux_ਪੋਰਟ_get_thread_from_handle((TaskHandle_t)px_Task_ਮੰਜ਼ਿਲ_Delete);
+    ਜੇ (!thread) {
+        pthread_mutex_unlock(&s_ਪੋਰਟ_mutex);
+        ਵਾਪਸ;
     }
 
-    if (thread->is_dying) {
+    ਜੇ (thread->is_dying) {
         /* vPortThreadDying already called */
-    } else {
+    } ਨਹੀਂਤਾਂ {
         thread->is_dying = true;
         pthread_cancel(thread->pthread);
     }
@@ -578,30 +578,30 @@ void vPortCancelThread(void *pxTaskToDelete)
     /* Save fields and unregister while holding the lock. */
     pthread_t pt = thread->pthread;
     event_t *ev = thread->ev;
-    linux_port_unregister_thread((TaskHandle_t)pxTaskToDelete);
+    linux_ਪੋਰਟ_unregister_thread((TaskHandle_t)px_Task_ਮੰਜ਼ਿਲ_Delete);
 
     /* Release the mutex before joining – the dying thread may need the
      * scheduler (which also takes s_port_mutex) to reach a cancellation
      * point. */
-    pthread_mutex_unlock(&s_port_mutex);
+    pthread_mutex_unlock(&s_ਪੋਰਟ_mutex);
 
-    pthread_join(pt, NULL);
+    pthread_join(pt, ਨਿਰਾ);
     event_delete(ev);
-    free(thread);
+    ਮੁਕਤ(thread);
 }
 
-void vPortSetStackWatchpoint(void *pxStackStart)
+ਖਾਲੀ v_ਪੋਰਟ_ਸੈੱਟ_ਢੇਰ_Watchpoint(ਖਾਲੀ *px_ਢੇਰ_ਸ਼ੁਰੂ)
 {
 }
 
-#if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
-configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void )
+#ਜੇ ( CONFIG_FREERTOS_GENERATE_ਲੜੀਵਾਰ_ਸਮਾਂ_STATS )
+config_ਲੜੀਵਾਰ_ਸਮਾਂ_COUNTER_TYPE x_ਪੋਰਟ_Get_ਲੜੀਵਾਰ_ਸਮਾਂ_Counter_ਮੁੱਲ( ਖਾਲੀ )
 {
-    struct timespec ts;
+    ਬਣਤਰ timespec ts;
 
     clock_gettime(CLOCK_MONOTONIC, &ts);
 
-    return ( configRUN_TIME_COUNTER_TYPE ) ( ( ( uint64_t ) ts.tv_sec * 1000000ULL ) +
+    ਵਾਪਸ ( config_ਲੜੀਵਾਰ_ਸਮਾਂ_COUNTER_TYPE ) ( ( ( uint64_t ) ts.tv_sec * 1000000ULL ) +
                                             ( ( uint64_t ) ts.tv_nsec / 1000ULL ) );
 }
-#endif /* CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS */
+#ਜੇ_ਅੰਤ /* CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS */

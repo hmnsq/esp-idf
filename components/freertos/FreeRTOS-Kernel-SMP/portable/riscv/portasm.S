@@ -13,22 +13,22 @@
 #define pxCurrentTCBs   pxCurrentTCB
 #endif
 
-    .global uxInterruptNesting
-    .global uxSchedulerRunning
-    .global xIsrStackTop
-    .global pxCurrentTCBs
-    .global vTaskSwitchContext
-    .global xPortSwitchFlag
+    .ਵੈਸ਼੍ਵਿਕ uxInterruptNesting
+    .ਵੈਸ਼੍ਵਿਕ uxSchedulerRunning
+    .ਵੈਸ਼੍ਵਿਕ xIsrStackTop
+    .ਵੈਸ਼੍ਵਿਕ pxCurrentTCBs
+    .ਵੈਸ਼੍ਵਿਕ vTaskSwitchContext
+    .ਵੈਸ਼੍ਵਿਕ xPortSwitchFlag
 #if ( configNUM_CORES > 1 )
-    .global port_uxCoreStartupDone
+    .ਵੈਸ਼੍ਵਿਕ port_uxCoreStartupDone
 #endif
 #if CONFIG_ESP_SYSTEM_HW_STACK_GUARD
-    .global xIsrStack
-    .global port_offset_pxStack
-    .global port_offset_pxEndOfStack
-    .global esp_hw_stack_guard_monitor_stop
-    .global esp_hw_stack_guard_monitor_start
-    .global esp_hw_stack_guard_set_bounds
+    .ਵੈਸ਼੍ਵਿਕ xIsrStack
+    .ਵੈਸ਼੍ਵਿਕ port_offset_pxStack
+    .ਵੈਸ਼੍ਵਿਕ port_offset_pxEndOfStack
+    .ਵੈਸ਼੍ਵਿਕ esp_hw_stack_guard_monitor_stop
+    .ਵੈਸ਼੍ਵਿਕ esp_hw_stack_guard_monitor_start
+    .ਵੈਸ਼੍ਵਿਕ esp_hw_stack_guard_set_bounds
 #endif /* CONFIG_ESP_SYSTEM_HW_STACK_GUARD */
 
     .section .text
@@ -39,7 +39,7 @@
  * TODO: ISR nesting code improvements ?
  */
 
-    .global rtos_int_enter
+    .ਵੈਸ਼੍ਵਿਕ rtos_int_enter
     .type rtos_int_enter, @function
 rtos_int_enter:
     /* scheduler not enabled, jump directly to ISR handler */
@@ -84,7 +84,7 @@ rtos_enter_end:
  *
  * @returns New mstatus
  */
-    .global rtos_int_exit
+    .ਵੈਸ਼੍ਵਿਕ rtos_int_exit
     .type rtos_int_exit, @function
 rtos_int_exit:
     /* To speed up this routine and because this current routine is only meant to be called from the interrupt
@@ -120,7 +120,7 @@ isr_skip_decrement:
     sw  ra, 0(sp)
     /* vTaskSwitchContext(xCoreID) now expects xCoreID as an argument, so the assembly calls below have been modified. xCoreID is hard-wired to 0 for single-core risc-v. */
     li a0, 0
-    call vTaskSwitchContext
+    ਬੁਲਾਓ vTaskSwitchContext
     lw  ra, 0(sp)
     addi sp, sp, 16
 

@@ -5,9 +5,9 @@
  */
 
 /* Check that freeRTOS headers can be included without the 'freertos/' directory path prefix */
-#include "FreeRTOS.h"
-#include "task.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "FreeRTOS.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "task.h"
 
-void app_main(void)
+ਖਾਲੀ app_main(ਖਾਲੀ)
 {
 }

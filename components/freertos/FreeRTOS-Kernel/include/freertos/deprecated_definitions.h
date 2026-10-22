@@ -30,8 +30,8 @@
  *
  */
 
-#ifndef DEPRECATED_DEFINITIONS_H
-#define DEPRECATED_DEFINITIONS_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ DEPRECATED_DEFINITIONS_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ DEPRECATED_DEFINITIONS_H
 
 
 /* Each FreeRTOS port has a unique portmacro.h header file.  Originally a
@@ -43,243 +43,243 @@
  * definitions below remain in the code for backward compatibility only.  New
  * projects should not use them. */
 
-#ifdef OPEN_WATCOM_INDUSTRIAL_PC_PORT
-    #include "..\..\Source\portable\owatcom\16bitdos\pc\portmacro.h"
-    typedef void ( __interrupt __far * pxISR )();
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ OPEN_WATCOM_INDUSTRIAL_PC_ਪੋਰਟ
+    #ਅਨ੍ਤਰ੍ਭਾਵ "..\..\Source\portable\owatcom\16bitdos\pc\portmacro.h"
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਖਾਲੀ ( __interrupt __far * pxISR )();
+#ਜੇ_ਅੰਤ
 
-#ifdef OPEN_WATCOM_FLASH_LITE_186_PORT
-    #include "..\..\Source\portable\owatcom\16bitdos\flsh186\portmacro.h"
-    typedef void ( __interrupt __far * pxISR )();
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ OPEN_WATCOM_FLASH_LITE_186_ਪੋਰਟ
+    #ਅਨ੍ਤਰ੍ਭਾਵ "..\..\Source\portable\owatcom\16bitdos\flsh186\portmacro.h"
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਖਾਲੀ ( __interrupt __far * pxISR )();
+#ਜੇ_ਅੰਤ
 
-#ifdef GCC_MEGA_AVR
-    #include "../portable/GCC/ATMega323/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ GCC_MEGA_AVR
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../portable/GCC/ATMega323/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef IAR_MEGA_AVR
-    #include "../portable/IAR/ATMega323/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ IAR_MEGA_AVR
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../portable/IAR/ATMega323/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef MPLAB_PIC24_PORT
-    #include "../../Source/portable/MPLAB/PIC24_dsPIC/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ MPLAB_PIC24_ਪੋਰਟ
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/MPLAB/PIC24_dsPIC/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef MPLAB_DSPIC_PORT
-    #include "../../Source/portable/MPLAB/PIC24_dsPIC/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ MPLAB_DSPIC_ਪੋਰਟ
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/MPLAB/PIC24_dsPIC/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef MPLAB_PIC18F_PORT
-    #include "../../Source/portable/MPLAB/PIC18F/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ MPLAB_PIC18_F_ਪੋਰਟ
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/MPLAB/PIC18F/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef MPLAB_PIC32MX_PORT
-    #include "../../Source/portable/MPLAB/PIC32MX/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ MPLAB_PIC32_MX_ਪੋਰਟ
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/MPLAB/PIC32MX/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef _FEDPICC
-    #include "libFreeRTOS/Include/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ _FEDPICC
+    #ਅਨ੍ਤਰ੍ਭਾਵ "libFreeRTOS/Include/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef SDCC_CYGNAL
-    #include "../../Source/portable/SDCC/Cygnal/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SDCC_CYGNAL
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/SDCC/Cygnal/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef GCC_ARM7
-    #include "../../Source/portable/GCC/ARM7_LPC2000/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ GCC_ARM7
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/GCC/ARM7_LPC2000/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef GCC_ARM7_ECLIPSE
-    #include "portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ GCC_ARM7_ECLIPSE
+    #ਅਨ੍ਤਰ੍ਭਾਵ "portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef ROWLEY_LPC23xx
-    #include "../../Source/portable/GCC/ARM7_LPC23xx/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ ROWLEY_LPC23xx
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/GCC/ARM7_LPC23xx/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef IAR_MSP430
-    #include "..\..\Source\portable\IAR\MSP430\portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ IAR_MSP430
+    #ਅਨ੍ਤਰ੍ਭਾਵ "..\..\Source\portable\IAR\MSP430\portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef GCC_MSP430
-    #include "../../Source/portable/GCC/MSP430F449/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ GCC_MSP430
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/GCC/MSP430F449/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef ROWLEY_MSP430
-    #include "../../Source/portable/Rowley/MSP430F449/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ ROWLEY_MSP430
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/Rowley/MSP430F449/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef ARM7_LPC21xx_KEIL_RVDS
-    #include "..\..\Source\portable\RVDS\ARM7_LPC21xx\portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ ARM7_LPC21xx_KEIL_RVDS
+    #ਅਨ੍ਤਰ੍ਭਾਵ "..\..\Source\portable\RVDS\ARM7_LPC21xx\portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef SAM7_GCC
-    #include "../../Source/portable/GCC/ARM7_AT91SAM7S/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SAM7_GCC
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/GCC/ARM7_AT91SAM7S/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef SAM7_IAR
-    #include "..\..\Source\portable\IAR\AtmelSAM7S64\portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SAM7_IAR
+    #ਅਨ੍ਤਰ੍ਭਾਵ "..\..\Source\portable\IAR\AtmelSAM7S64\portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef SAM9XE_IAR
-    #include "..\..\Source\portable\IAR\AtmelSAM9XE\portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ SAM9XE_IAR
+    #ਅਨ੍ਤਰ੍ਭਾਵ "..\..\Source\portable\IAR\AtmelSAM9XE\portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef LPC2000_IAR
-    #include "..\..\Source\portable\IAR\LPC2000\portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ LPC2000_IAR
+    #ਅਨ੍ਤਰ੍ਭਾਵ "..\..\Source\portable\IAR\LPC2000\portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef STR71X_IAR
-    #include "..\..\Source\portable\IAR\STR71x\portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ STR71X_IAR
+    #ਅਨ੍ਤਰ੍ਭਾਵ "..\..\Source\portable\IAR\STR71x\portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef STR75X_IAR
-    #include "..\..\Source\portable\IAR\STR75x\portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ STR75X_IAR
+    #ਅਨ੍ਤਰ੍ਭਾਵ "..\..\Source\portable\IAR\STR75x\portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef STR75X_GCC
-    #include "..\..\Source\portable\GCC\STR75x\portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ STR75X_GCC
+    #ਅਨ੍ਤਰ੍ਭਾਵ "..\..\Source\portable\GCC\STR75x\portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef STR91X_IAR
-    #include "..\..\Source\portable\IAR\STR91x\portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ STR91X_IAR
+    #ਅਨ੍ਤਰ੍ਭਾਵ "..\..\Source\portable\IAR\STR91x\portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef GCC_H8S
-    #include "../../Source/portable/GCC/H8S2329/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ GCC_H8S
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/GCC/H8S2329/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef GCC_AT91FR40008
-    #include "../../Source/portable/GCC/ARM7_AT91FR40008/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ GCC_AT91FR40008
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/GCC/ARM7_AT91FR40008/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef RVDS_ARMCM3_LM3S102
-    #include "../../Source/portable/RVDS/ARM_CM3/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ RVDS_ARMCM3_LM3S102
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/RVDS/ARM_CM3/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef GCC_ARMCM3_LM3S102
-    #include "../../Source/portable/GCC/ARM_CM3/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ GCC_ARMCM3_LM3S102
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/GCC/ARM_CM3/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef GCC_ARMCM3
-    #include "../../Source/portable/GCC/ARM_CM3/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ GCC_ARMCM3
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/GCC/ARM_CM3/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef IAR_ARM_CM3
-    #include "../../Source/portable/IAR/ARM_CM3/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ IAR_ARM_CM3
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/IAR/ARM_CM3/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef IAR_ARMCM3_LM
-    #include "../../Source/portable/IAR/ARM_CM3/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ IAR_ARMCM3_LM
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/IAR/ARM_CM3/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef HCS12_CODE_WARRIOR
-    #include "../../Source/portable/CodeWarrior/HCS12/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HCS12_ਕੋਡ_WARRIOR
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/CodeWarrior/HCS12/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef MICROBLAZE_GCC
-    #include "../../Source/portable/GCC/MicroBlaze/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ MICROBLAZE_GCC
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/GCC/MicroBlaze/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef TERN_EE
-    #include "..\..\Source\portable\Paradigm\Tern_EE\small\portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ TERN_EE
+    #ਅਨ੍ਤਰ੍ਭਾਵ "..\..\Source\portable\Paradigm\Tern_EE\small\portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef GCC_HCS12
-    #include "../../Source/portable/GCC/HCS12/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ GCC_HCS12
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/GCC/HCS12/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef GCC_MCF5235
-    #include "../../Source/portable/GCC/MCF5235/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ GCC_MCF5235
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/GCC/MCF5235/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef COLDFIRE_V2_GCC
-    #include "../../../Source/portable/GCC/ColdFire_V2/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ COLDFIRE_V2_GCC
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../../Source/portable/GCC/ColdFire_V2/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef COLDFIRE_V2_CODEWARRIOR
-    #include "../../Source/portable/CodeWarrior/ColdFire_V2/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ COLDFIRE_V2_CODEWARRIOR
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/CodeWarrior/ColdFire_V2/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef GCC_PPC405
-    #include "../../Source/portable/GCC/PPC405_Xilinx/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ GCC_PPC405
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/GCC/PPC405_Xilinx/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef GCC_PPC440
-    #include "../../Source/portable/GCC/PPC440_Xilinx/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ GCC_PPC440
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/GCC/PPC440_Xilinx/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef _16FX_SOFTUNE
-    #include "..\..\Source\portable\Softune\MB96340\portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ _16FX_SOFTUNE
+    #ਅਨ੍ਤਰ੍ਭਾਵ "..\..\Source\portable\Softune\MB96340\portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef BCC_INDUSTRIAL_PC_PORT
-
-/* A short file name has to be used in place of the normal
- * FreeRTOSConfig.h when using the Borland compiler. */
-    #include "frconfig.h"
-    #include "..\portable\BCC\16BitDOS\PC\prtmacro.h"
-    typedef void ( __interrupt __far * pxISR )();
-#endif
-
-#ifdef BCC_FLASH_LITE_186_PORT
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ BCC_INDUSTRIAL_PC_ਪੋਰਟ
 
 /* A short file name has to be used in place of the normal
  * FreeRTOSConfig.h when using the Borland compiler. */
-    #include "frconfig.h"
-    #include "..\portable\BCC\16BitDOS\flsh186\prtmacro.h"
-    typedef void ( __interrupt __far * pxISR )();
-#endif
+    #ਅਨ੍ਤਰ੍ਭਾਵ "frconfig.h"
+    #ਅਨ੍ਤਰ੍ਭਾਵ "..\portable\BCC\16BitDOS\PC\prtmacro.h"
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਖਾਲੀ ( __interrupt __far * pxISR )();
+#ਜੇ_ਅੰਤ
 
-#ifdef __GNUC__
-    #ifdef __AVR32_AVR32A__
-        #include "portmacro.h"
-    #endif
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ BCC_FLASH_LITE_186_ਪੋਰਟ
 
-#ifdef __ICCAVR32__
-    #ifdef __CORE__
-        #if __CORE__ == __AVR32A__
-            #include "portmacro.h"
-        #endif
-    #endif
-#endif
+/* A short file name has to be used in place of the normal
+ * FreeRTOSConfig.h when using the Borland compiler. */
+    #ਅਨ੍ਤਰ੍ਭਾਵ "frconfig.h"
+    #ਅਨ੍ਤਰ੍ਭਾਵ "..\portable\BCC\16BitDOS\flsh186\prtmacro.h"
+    ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਖਾਲੀ ( __interrupt __far * pxISR )();
+#ਜੇ_ਅੰਤ
 
-#ifdef __91467D
-    #include "portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __GNUC__
+    #ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __AVR32_AVR32A__
+        #ਅਨ੍ਤਰ੍ਭਾਵ "portmacro.h"
+    #ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
 
-#ifdef __96340
-    #include "portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __ICCAVR32__
+    #ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __CORE__
+        #ਜੇ __CORE__ == __AVR32A__
+            #ਅਨ੍ਤਰ੍ਭਾਵ "portmacro.h"
+        #ਜੇ_ਅੰਤ
+    #ਜੇ_ਅੰਤ
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __91467D
+    #ਅਨ੍ਤਰ੍ਭਾਵ "portmacro.h"
+#ਜੇ_ਅੰਤ
+
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __96340
+    #ਅਨ੍ਤਰ੍ਭਾਵ "portmacro.h"
+#ਜੇ_ਅੰਤ
 
 
-#ifdef __IAR_V850ES_Fx3__
-    #include "../../Source/portable/IAR/V850ES/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __IAR_V850ES_Fx3__
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/IAR/V850ES/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef __IAR_V850ES_Jx3__
-    #include "../../Source/portable/IAR/V850ES/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __IAR_V850ES_Jx3__
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/IAR/V850ES/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef __IAR_V850ES_Jx3_L__
-    #include "../../Source/portable/IAR/V850ES/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __IAR_V850ES_Jx3_L__
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/IAR/V850ES/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef __IAR_V850ES_Jx2__
-    #include "../../Source/portable/IAR/V850ES/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __IAR_V850ES_Jx2__
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/IAR/V850ES/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef __IAR_V850ES_Hx2__
-    #include "../../Source/portable/IAR/V850ES/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __IAR_V850ES_Hx2__
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/IAR/V850ES/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef __IAR_78K0R_Kx3__
-    #include "../../Source/portable/IAR/78K0R/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __IAR_78K0R_Kx3__
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/IAR/78K0R/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#ifdef __IAR_78K0R_Kx3L__
-    #include "../../Source/portable/IAR/78K0R/portmacro.h"
-#endif
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ __IAR_78K0R_Kx3L__
+    #ਅਨ੍ਤਰ੍ਭਾਵ "../../Source/portable/IAR/78K0R/portmacro.h"
+#ਜੇ_ਅੰਤ
 
-#endif /* DEPRECATED_DEFINITIONS_H */
+#ਜੇ_ਅੰਤ /* DEPRECATED_DEFINITIONS_H */

@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include "unity.h"
-#include "esp_intr_alloc.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "sdkconfig.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "unity.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "esp_intr_alloc.h"
 
-#if defined(__XTENSA__) && CONFIG_FREERTOS_CORETIMER_0
-#include "xtensa/config/core-isa.h"
-#include "xtensa/hal.h"
-#if defined(XCHAL_HAVE_WINDOWED)
+#ਜੇ defined(__XTENSA__) && CONFIG_FREERTOS_CORETIMER_0
+#ਅਨ੍ਤਰ੍ਭਾਵ "xtensa/config/core-isa.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "xtensa/hal.h"
+#ਜੇ defined(XCHAL_HAVE_WINDOWED)
 /* Regression test for a0 register being corrupted in _xt_context_save.
  *
  * The idea in this test is to have a function which recursively calls itself
@@ -22,21 +22,21 @@
  */
 
 /* See test_context_save_clober_func.S */
-extern void test_context_save_clober_func(void);
+ਬਾਹਰੀ ਖਾਲੀ test_context_save_clober_func(ਖਾਲੀ);
 
-static void int_timer_handler(void *arg)
+ਸਥਿਰ ਖਾਲੀ int_timer_handler(ਖਾਲੀ *arg)
 {
-    xthal_set_ccompare(1, xthal_get_ccount() + 10000);
-    (*(int*) arg)++;
+    xthal_ਸੈੱਟ_ccompare(1, xthal_get_ccount() + 10000);
+    (*(ਪੂਰਨ*) arg)++;
 }
 
 TEST_CASE("context save doesn't corrupt return address register", "[freertos]")
 {
     /* set up an interrupt */
     intr_handle_t ih;
-    int int_triggered = 0;
-    TEST_ESP_OK(esp_intr_alloc(ETS_INTERNAL_TIMER1_INTR_SOURCE, 0, int_timer_handler, &int_triggered, &ih));
-    xthal_set_ccompare(1, xthal_get_ccount() + 10000);
+    ਪੂਰਨ int_triggered = 0;
+    TEST_ESP_OK(esp_intr_alloc(ETS_ਅੰਦਰੂਨੀ_TIMER1_INTR_ਸਰੋਤ, 0, int_timer_handler, &int_triggered, &ih));
+    xthal_ਸੈੱਟ_ccompare(1, xthal_get_ccount() + 10000);
 
     /* fill all the windows and delay a bit, waiting for an interrupt to happen */
     test_context_save_clober_func();
@@ -45,5 +45,5 @@ TEST_CASE("context save doesn't corrupt return address register", "[freertos]")
     TEST_ASSERT_GREATER_THAN(0, int_triggered);
 }
 
-#endif // XCHAL_HAVE_WINDOWED
-#endif // __XTENSA__ && CONFIG_FREERTOS_CORETIMER_0
+#ਜੇ_ਅੰਤ // XCHAL_HAVE_WINDOWED
+#ਜੇ_ਅੰਤ // __XTENSA__ && CONFIG_FREERTOS_CORETIMER_0

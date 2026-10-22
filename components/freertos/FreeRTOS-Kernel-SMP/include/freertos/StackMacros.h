@@ -31,8 +31,8 @@
  */
 
 
-#ifndef _MSC_VER /* Visual Studio doesn't support #warning. */
-    #warning The name of this file has changed to stack_macros.h.  Please update your code accordingly.  This source file (which has the original name) will be removed in a future release.
-#endif
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ _MSC_VER /* Visual Studio doesn't support #warning. */
+    #warning The name ਦਾ this file has ਬਦਲਿਆ ਮੰਜ਼ਿਲ ਢੇਰ_macros.h.  Please update your ਕੋਡ accordingly.  This ਸਰੋਤ file (which has the original name) will be removed ਵਿੱਚ a future release.
+#ਜੇ_ਅੰਤ
 
-#include "stack_macros.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "stack_macros.h"
