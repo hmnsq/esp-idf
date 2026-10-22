@@ -4,27 +4,27 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <esp_types.h>
-#include <stdio.h>
-#include <inttypes.h>
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "esp_intr_alloc.h"
-#include "esp_cpu.h"
-#include "unity.h"
-#include "test_utils.h"
-#include "freertos_performance.h"
+#अन्तर्भाव <esp_types.h>
+#अन्तर्भाव <stdio.h>
+#अन्तर्भाव <inttypes.h>
+#अन्तर्भाव "sdkconfig.h"
+#अन्तर्भाव "freertos/FreeRTOS.h"
+#अन्तर्भाव "freertos/task.h"
+#अन्तर्भाव "freertos/semphr.h"
+#अन्तर्भाव "freertos/queue.h"
+#अन्तर्भाव "esp_intr_alloc.h"
+#अन्तर्भाव "esp_cpu.h"
+#अन्तर्भाव "unity.h"
+#अन्तर्भाव "test_utils.h"
+#अन्तर्भाव "freertos_performance.h"
 
-#if CONFIG_IDF_TARGET_ARCH_XTENSA
-#include "xtensa/hal.h"
-#include "xtensa_api.h"     // Replace with interrupt allocator API (IDF-3891)
+#जर CONFIG_IDF_TARGET_ARCH_XTENSA
+#अन्तर्भाव "xtensa/hal.h"
+#अन्तर्भाव "xtensa_api.h"     // Replace with interrupt allocator API (IDF-3891)
 #define TEST_SET_INT_MASK(mask) xt_set_intset(mask)
 #define TEST_CLR_INT_MASK(mask) xt_set_intclear(mask)
-#elif CONFIG_IDF_TARGET_ARCH_RISCV
-#include "riscv/interrupt.h"
+#किंवाजर CONFIG_IDF_TARGET_ARCH_RISCV
+#अन्तर्भाव "riscv/interrupt.h"
 #define TEST_SET_INT_MASK(mask) esprv_int_enable(mask)
 #define TEST_CLR_INT_MASK(mask) esprv_int_disable(mask)
 #endif
@@ -33,70 +33,70 @@
 
 #define SW_ISR_LEVEL_1  7
 
-static SemaphoreHandle_t sync;
-static SemaphoreHandle_t end_sema;
-static uint32_t cycle_before_trigger;
-static uint32_t cycle_before_exit;
-static uint32_t delta_enter_cycles = 0;
-static uint32_t delta_exit_cycles = 0;
+स्थिर SemaphoreHandle_t sync;
+स्थिर SemaphoreHandle_t end_sema;
+स्थिर uint32_t cycle_before_trigger;
+स्थिर uint32_t cycle_before_exit;
+स्थिर uint32_t delta_enter_cycles = 0;
+स्थिर uint32_t delta_exit_cycles = 0;
 
-static void software_isr_using_parameter_vportyield(void *arg)
+स्थिर शून्य software_isr_using_parameter_vportyield(शून्य *arg)
 {
-    (void)arg;
+    (शून्य)arg;
     BaseType_t yield;
-    delta_enter_cycles += esp_cpu_get_cycle_count() - cycle_before_trigger;
+    delta_enter_cycles += esp_cpu_get_cycle_मोजणी() - cycle_before_trigger;
     TEST_CLR_INT_MASK(1 << SW_ISR_LEVEL_1);
 
     xSemaphoreGiveFromISR(sync, &yield);
     portYIELD_FROM_ISR(yield);
 
-    cycle_before_exit = esp_cpu_get_cycle_count();
+    cycle_before_exit = esp_cpu_get_cycle_मोजणी();
 }
 
-static void software_isr_using_no_argument_vportyield(void *arg)
+स्थिर शून्य software_isr_using_no_argument_vportyield(शून्य *arg)
 {
-    (void)arg;
+    (शून्य)arg;
     BaseType_t yield;
-    delta_enter_cycles += esp_cpu_get_cycle_count() - cycle_before_trigger;
+    delta_enter_cycles += esp_cpu_get_cycle_मोजणी() - cycle_before_trigger;
 
     TEST_CLR_INT_MASK(1 << SW_ISR_LEVEL_1);
 
     xSemaphoreGiveFromISR(sync, &yield);
-    if (yield) {
+    जर (yield) {
         portYIELD_FROM_ISR();
     }
-    cycle_before_exit = esp_cpu_get_cycle_count();
+    cycle_before_exit = esp_cpu_get_cycle_मोजणी();
 }
 
-static void test_task(void *arg)
+स्थिर शून्य test_task(शून्य *arg)
 {
-    (void) arg;
+    (शून्य) arg;
 
-    for (int i = 0; i < 10000; i++) {
-        cycle_before_trigger = esp_cpu_get_cycle_count();
+    साठी (पूर्णांक i = 0; i < 10000; i++) {
+        cycle_before_trigger = esp_cpu_get_cycle_मोजणी();
         TEST_SET_INT_MASK(1 << SW_ISR_LEVEL_1);
         xSemaphoreTake(sync, portMAX_DELAY);
-        delta_exit_cycles += esp_cpu_get_cycle_count() - cycle_before_exit;
+        delta_exit_cycles += esp_cpu_get_cycle_मोजणी() - cycle_before_exit;
     }
 
     delta_enter_cycles /= 10000;
     delta_exit_cycles /= 10000;
 
     xSemaphoreGive(end_sema);
-    vTaskDelete(NULL);
+    vTaskDelete(रिक्त);
 }
 
 TEST_CASE("isr latency test vport-yield-from-isr with no parameter", "[freertos] [ignore]")
 {
     intr_handle_t handle;
-    esp_err_t err = esp_intr_alloc(ETS_INTERNAL_SW0_INTR_SOURCE, ESP_INTR_FLAG_LEVEL1, &software_isr_using_no_argument_vportyield, NULL, &handle);
+    esp_err_t err = esp_intr_alloc(ETS_INTERNAL_SW0_INTR_SOURCE, ESP_INTR_FLAG_LEVEL1, &software_isr_using_no_argument_vportyield, रिक्त, &handle);
     TEST_ASSERT_EQUAL_HEX32(ESP_OK, err);
 
-    sync = xSemaphoreCreateBinary();
-    TEST_ASSERT(sync != NULL);
-    end_sema = xSemaphoreCreateBinary();
-    TEST_ASSERT(end_sema != NULL);
-    xTaskCreatePinnedToCore(test_task, "tst", 4096, NULL, configMAX_PRIORITIES - 1, NULL, 0);
+    sync = x_Semaphore_Create_द्विमान();
+    TEST_ASSERT(sync != रिक्त);
+    end_sema = x_Semaphore_Create_द्विमान();
+    TEST_ASSERT(end_sema != रिक्त);
+    xTaskCreatePinnedToCore(test_task, "tst", 4096, रिक्त, configMAX_PRIORITIES - 1, रिक्त, 0);
     vTaskDelay(100);
     BaseType_t result = xSemaphoreTake(end_sema, portMAX_DELAY);
     TEST_ASSERT_EQUAL_HEX32(pdTRUE, result);
@@ -109,14 +109,14 @@ TEST_CASE("isr latency test vport-yield-from-isr with no parameter", "[freertos]
 TEST_CASE("isr latency test vport-yield-from-isr with parameter", "[freertos][ignore]")
 {
     intr_handle_t handle;
-    esp_err_t err = esp_intr_alloc(ETS_INTERNAL_SW0_INTR_SOURCE, ESP_INTR_FLAG_LEVEL1, &software_isr_using_parameter_vportyield, NULL, &handle);
+    esp_err_t err = esp_intr_alloc(ETS_INTERNAL_SW0_INTR_SOURCE, ESP_INTR_FLAG_LEVEL1, &software_isr_using_parameter_vportyield, रिक्त, &handle);
     TEST_ASSERT_EQUAL_HEX32(ESP_OK, err);
 
-    sync = xSemaphoreCreateBinary();
-    TEST_ASSERT(sync != NULL);
-    end_sema = xSemaphoreCreateBinary();
-    TEST_ASSERT(end_sema != NULL);
-    xTaskCreatePinnedToCore(test_task, "tst", 4096, NULL, configMAX_PRIORITIES - 1, NULL, 0);
+    sync = x_Semaphore_Create_द्विमान();
+    TEST_ASSERT(sync != रिक्त);
+    end_sema = x_Semaphore_Create_द्विमान();
+    TEST_ASSERT(end_sema != रिक्त);
+    xTaskCreatePinnedToCore(test_task, "tst", 4096, रिक्त, configMAX_PRIORITIES - 1, रिक्त, 0);
     BaseType_t result = xSemaphoreTake(end_sema, portMAX_DELAY);
     TEST_ASSERT_EQUAL_HEX32(pdTRUE, result);
     TEST_PERFORMANCE_LESS_THAN(ISR_ENTER_CYCLES, "%"PRIu32" cycles", delta_enter_cycles);

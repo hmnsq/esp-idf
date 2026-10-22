@@ -47,8 +47,8 @@
 #define SYSTEM_CALL_xTaskGetIdleTaskHandle                 10
 #define SYSTEM_CALL_vTaskSuspend                           11
 #define SYSTEM_CALL_vTaskResume                            12
-#define SYSTEM_CALL_xTaskGetTickCount                      13
-#define SYSTEM_CALL_uxTaskGetNumberOfTasks                 14
+#define SYSTEM_CALL_x_Task_Get_Tick_मोजणी                      13
+#define SYSTEM_CALL_ux_Task_Get_संख्या_Of_Tasks                 14
 #define SYSTEM_CALL_ulTaskGetRunTimeCounter                15
 #define SYSTEM_CALL_ulTaskGetRunTimePercent                16
 #define SYSTEM_CALL_ulTaskGetIdleRunTimePercent            17
@@ -58,15 +58,15 @@
 #define SYSTEM_CALL_vTaskSetThreadLocalStoragePointer      21
 #define SYSTEM_CALL_pvTaskGetThreadLocalStoragePointer     22
 #define SYSTEM_CALL_uxTaskGetSystemState                   23
-#define SYSTEM_CALL_uxTaskGetStackHighWaterMark            24
-#define SYSTEM_CALL_uxTaskGetStackHighWaterMark2           25
+#define SYSTEM_CALL_ux_Task_Get_चळत_वरचा_Water_Mark            24
+#define SYSTEM_CALL_ux_Task_Get_चळत_वरचा_Water_Mark2           25
 #define SYSTEM_CALL_xTaskGetCurrentTaskHandle              26
 #define SYSTEM_CALL_xTaskGetSchedulerState                 27
 #define SYSTEM_CALL_vTaskSetTimeOutState                   28
 #define SYSTEM_CALL_xTaskCheckForTimeOut                   29
 #define SYSTEM_CALL_ulTaskGenericNotifyTake                30
 #define SYSTEM_CALL_xTaskGenericNotifyStateClear           31
-#define SYSTEM_CALL_ulTaskGenericNotifyValueClear          32
+#define SYSTEM_CALL_ul_Task_Generic_Notify_मूल्य_Clear          32
 #define SYSTEM_CALL_xQueueGenericSend                      33
 #define SYSTEM_CALL_uxQueueMessagesWaiting                 34
 #define SYSTEM_CALL_uxQueueSpacesAvailable                 35
@@ -94,8 +94,8 @@
 #define SYSTEM_CALL_xEventGroupClearBits                   57
 #define SYSTEM_CALL_xEventGroupSetBits                     58
 #define SYSTEM_CALL_xEventGroupSync                        59
-#define SYSTEM_CALL_uxEventGroupGetNumber                  60
-#define SYSTEM_CALL_vEventGroupSetNumber                   61
+#define SYSTEM_CALL_ux_Event_Group_Get_संख्या                  60
+#define SYSTEM_CALL_v_Event_Group_Set_संख्या                   61
 #define SYSTEM_CALL_xStreamBufferSend                      62
 #define SYSTEM_CALL_xStreamBufferReceive                   63
 #define SYSTEM_CALL_xStreamBufferIsFull                    64
@@ -104,6 +104,6 @@
 #define SYSTEM_CALL_xStreamBufferBytesAvailable            67
 #define SYSTEM_CALL_xStreamBufferSetTriggerLevel           68
 #define SYSTEM_CALL_xStreamBufferNextMessageLengthBytes    69
-#define NUM_SYSTEM_CALLS                                   70  /* Total number of system calls. */
+#define अंक_SYSTEM_CALLS                                   70  /* Total number of system calls. */
 
 #endif /* MPU_SYSCALL_NUMBERS_H */

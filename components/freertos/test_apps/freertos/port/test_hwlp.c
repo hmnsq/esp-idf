@@ -4,18 +4,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <string.h>
-#include "soc/soc_caps.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "unity.h"
-#if SOC_CPU_HAS_HWLOOP
-#include "esp_intr_alloc.h"
-#include "esp_cpu.h"
-#include "soc/system_intr.h"
-#include "soc/system_reg.h"
+#अन्तर्भाव "sdkconfig.h"
+#अन्तर्भाव <string.h>
+#अन्तर्भाव "soc/soc_caps.h"
+#अन्तर्भाव "freertos/FreeRTOS.h"
+#अन्तर्भाव "freertos/task.h"
+#अन्तर्भाव "freertos/semphr.h"
+#अन्तर्भाव "unity.h"
+#जर SOC_CPU_HAS_HWLOOP
+#अन्तर्भाव "esp_intr_alloc.h"
+#अन्तर्भाव "esp_cpu.h"
+#अन्तर्भाव "soc/system_intr.h"
+#अन्तर्भाव "soc/system_reg.h"
 #endif
 
 /**
@@ -24,18 +24,18 @@
  * As such, the port layer of FreeRTOS will adjust the lowest address of the stack when a coprocessor
  * context is saved.
  */
-#if SOC_CPU_HAS_HWLOOP
+#जर SOC_CPU_HAS_HWLOOP
 
-uint32_t use_hwlp(uint32_t count);
+uint32_t use_hwlp(uint32_t मोजणी);
 
 TEST_CASE("HWLP: Context save does not affect stack watermark", "[freertos]")
 {
     /* Force the FreeRTOS port layer to store a HWLP context in the current task.
      * So let's use the it and make sure another task, on the SAME CORE, also uses it */
-    const TaskHandle_t current_handle = xTaskGetCurrentTaskHandle();
+    स्थिरांक TaskHandle_t current_handle = xTaskGetCurrentTaskHandle();
 
     /* Get the current stack watermark */
-    const UBaseType_t before_watermark = uxTaskGetStackHighWaterMark(current_handle);
+    स्थिरांक UBaseType_t before_watermark = ux_Task_Get_चळत_वरचा_Water_Mark(current_handle);
 
     /* Use the HWLP unit, the context will NOT be flushed until a context switch is done */
     use_hwlp(20);
@@ -44,39 +44,39 @@ TEST_CASE("HWLP: Context save does not affect stack watermark", "[freertos]")
      * the HWLP current context */
     vTaskDelay(10);
 
-    const UBaseType_t after_watermark = uxTaskGetStackHighWaterMark(current_handle);
+    स्थिरांक UBaseType_t after_watermark = ux_Task_Get_चळत_वरचा_Water_Mark(current_handle);
 
     TEST_ASSERT_TRUE(after_watermark > before_watermark / 2);
 }
 
-#if CONFIG_FREERTOS_NUMBER_OF_CORES > 1
+#जर CONFIG_FREERTOS_संख्या_OF_CORES > 1
 
-typedef struct {
-    uint32_t count;
+प्रकारव्याख्या संरचना {
+    uint32_t मोजणी;
     TaskHandle_t main;
 } hwlp_params_t;
 
-static void calculation(void* arg)
+स्थिर शून्य calculation(शून्य* arg)
 {
     hwlp_params_t* p = (hwlp_params_t*) arg;
-    const uint32_t count = p->count;
+    स्थिरांक uint32_t मोजणी = p->मोजणी;
     uint32_t result = 0;
-    int i = 0;
+    पूर्णांक i = 0;
 
-    for (i = 0; i < 50000; i++) {
-        uint32_t current = use_hwlp(count);
+    साठी (i = 0; i < 50000; i++) {
+        uint32_t current = use_hwlp(मोजणी);
         result += current;
 
         /* Using TEST_ASSERT_TRUE triggers a stack overflow, make sure the count is still correct.
          * The function `use_hwlp` should return (count * 16)  */
-        assert(count * 16 == current);
+        प्रतिज्ञा(मोजणी * 16 == current);
     }
 
     /* Make sure the result is correct */
-    assert(count * 16 * i == result);
+    प्रतिज्ञा(मोजणी * 16 * i == result);
 
     xTaskNotifyGive(p->main);
-    vTaskDelete(NULL);
+    vTaskDelete(रिक्त);
 }
 
 TEST_CASE("HWLP: Unsolicited context switch between tasks using HWLP", "[freertos]")
@@ -85,8 +85,8 @@ TEST_CASE("HWLP: Unsolicited context switch between tasks using HWLP", "[freerto
     TaskHandle_t unity_task_handle = xTaskGetCurrentTaskHandle();
     TaskHandle_t tasks[2];
     hwlp_params_t params[2] = {
-        { .count = 1024, .main = unity_task_handle },
-        { .count = 2048, .main = unity_task_handle },
+        { .मोजणी = 1024, .main = unity_task_handle },
+        { .मोजणी = 2048, .main = unity_task_handle },
     };
 
     xTaskCreatePinnedToCore(calculation, "Task1", 2048, params + 0, CONFIG_UNITY_FREERTOS_PRIORITY + 1, &tasks[0], 1);
@@ -114,30 +114,30 @@ TEST_CASE("HWLP: Unsolicited context switch between tasks using HWLP", "[freerto
  * state erratum), the victim's result will be wrong (or the loop will never
  * terminate).
  */
-uint32_t use_hwlp_irq(uint32_t count, volatile uint32_t *trig_reg, uint32_t trig_val);
+uint32_t use_hwlp_irq(uint32_t मोजणी, अस्थिर uint32_t *trig_reg, uint32_t trig_val);
 
-static SemaphoreHandle_t s_go;
-static volatile uint32_t s_contender_runs;
+स्थिर SemaphoreHandle_t s_go;
+स्थिर अस्थिर uint32_t s_contender_runs;
 
-static void from_cpu_isr(void *arg)
+स्थिर शून्य from_cpu_isr(शून्य *arg)
 {
-    (void) arg;
+    (शून्य) arg;
     /* Clear the from-CPU interrupt pending bit */
     REG_WRITE(SYSTEM_CPU_INTR_FROM_CPU_2_REG, 0);
     BaseType_t yield = pdFALSE;
     xSemaphoreGiveFromISR(s_go, &yield);
-    if (yield) {
+    जर (yield) {
         portYIELD_FROM_ISR();
     }
 }
 
-static void hwlp_contender_task(void *arg)
+स्थिर शून्य hwlp_contender_task(शून्य *arg)
 {
-    (void) arg;
-    for (;;) {
-        if (xSemaphoreTake(s_go, portMAX_DELAY) == pdTRUE) {
+    (शून्य) arg;
+    साठी (;;) {
+        जर (xSemaphoreTake(s_go, portMAX_DELAY) == pdTRUE) {
             /* Use a different loop context to clobber the victim's live registers */
-            (void) use_hwlp(333);
+            (शून्य) use_hwlp(333);
             s_contender_runs++;
         }
     }
@@ -145,29 +145,29 @@ static void hwlp_contender_task(void *arg)
 
 TEST_CASE("HWLP: Deterministic preemption inside a live hardware loop", "[freertos]")
 {
-    s_go = xSemaphoreCreateBinary();
+    s_go = x_Semaphore_Create_द्विमान();
     TEST_ASSERT_NOT_NULL(s_go);
     s_contender_runs = 0;
 
     intr_handle_t ih;
-    TEST_ESP_OK(esp_intr_alloc(SYS_CPU_INTR_FROM_CPU_2_SOURCE, ESP_INTR_FLAG_LEVEL1, from_cpu_isr, NULL, &ih));
+    TEST_ESP_OK(esp_intr_alloc(SYS_CPU_INTR_FROM_CPU_2_SOURCE, ESP_INTR_FLAG_LEVEL1, from_cpu_isr, रिक्त, &ih));
 
-    const BaseType_t core = xPortGetCoreID();
-    TaskHandle_t contender = NULL;
-    xTaskCreatePinnedToCore(hwlp_contender_task, "hwlpC", 2048, NULL, CONFIG_UNITY_FREERTOS_PRIORITY + 2, &contender, core);
+    स्थिरांक BaseType_t core = xPortGetCoreID();
+    TaskHandle_t contender = रिक्त;
+    xTaskCreatePinnedToCore(hwlp_contender_task, "hwlpC", 2048, रिक्त, CONFIG_UNITY_FREERTOS_PRIORITY + 2, &contender, core);
 
-    const uint32_t count = 64;
+    स्थिरांक uint32_t मोजणी = 64;
     bool corrupted = false;
     uint32_t first_bad = 0;
 
-    for (int i = 0; i < 2000 && !corrupted; i++) {
-        uint32_t r = use_hwlp_irq(count, (volatile uint32_t *)SYSTEM_CPU_INTR_FROM_CPU_2_REG, SYSTEM_CPU_INTR_FROM_CPU_2);
-        if (r != count * 16) {
+    साठी (पूर्णांक i = 0; i < 2000 && !corrupted; i++) {
+        uint32_t r = use_hwlp_irq(मोजणी, (अस्थिर uint32_t *)SYSTEM_CPU_INTR_FROM_CPU_2_REG, SYSTEM_CPU_INTR_FROM_CPU_2);
+        जर (r != मोजणी * 16) {
             corrupted = true;
             first_bad = r;
         }
         /* Give the contender a chance to drain if it is still pending */
-        if ((i & 0x3f) == 0) {
+        जर ((i & 0x3f) == 0) {
             taskYIELD();
         }
     }
@@ -176,7 +176,7 @@ TEST_CASE("HWLP: Deterministic preemption inside a live hardware loop", "[freert
     esp_intr_free(ih);
     vSemaphoreDelete(s_go);
 
-    printf("HWLP deterministic preemption: contender_runs=%u, result=%s (bad=%u)\n", (unsigned)s_contender_runs, corrupted ? "CORRUPTED" : "ok", (unsigned)first_bad);
+    म_लिखो("HWLP deterministic preemption: contender_runs=%u, result=%s (bad=%u)\n", (अचिन्हित)s_contender_runs, corrupted ? "CORRUPTED" : "ok", (अचिन्हित)first_bad);
 
     TEST_ASSERT_TRUE_MESSAGE(s_contender_runs > 0, "Contender never ran: the mid-loop interrupt was not delivered");
     TEST_ASSERT_FALSE_MESSAGE(corrupted, "HWLOOP context corrupted by mid-loop preemption (erratum reproduced)");
@@ -189,30 +189,30 @@ TEST_CASE("HWLP: Deterministic preemption inside a live hardware loop", "[freert
  * preempted at its boundaries. Body size and instruction types are kept valid.
  * Marked [ignore] because it will fault/hang.
  */
-uint32_t use_hwlp_broken(uint32_t count, volatile uint32_t *trig_reg, uint32_t trig_val);
+uint32_t use_hwlp_broken(uint32_t मोजणी, अस्थिर uint32_t *trig_reg, uint32_t trig_val);
 
 TEST_CASE("HWLP: Violate loop alignment/size constraints", "[freertos][ignore]")
 {
-    s_go = xSemaphoreCreateBinary();
+    s_go = x_Semaphore_Create_द्विमान();
     TEST_ASSERT_NOT_NULL(s_go);
     s_contender_runs = 0;
 
     intr_handle_t ih;
-    TEST_ESP_OK(esp_intr_alloc(SYS_CPU_INTR_FROM_CPU_2_SOURCE, ESP_INTR_FLAG_LEVEL1, from_cpu_isr, NULL, &ih));
+    TEST_ESP_OK(esp_intr_alloc(SYS_CPU_INTR_FROM_CPU_2_SOURCE, ESP_INTR_FLAG_LEVEL1, from_cpu_isr, रिक्त, &ih));
 
-    const BaseType_t core = xPortGetCoreID();
-    TaskHandle_t contender = NULL;
-    xTaskCreatePinnedToCore(hwlp_contender_task, "hwlpC", 2048, NULL, CONFIG_UNITY_FREERTOS_PRIORITY + 2, &contender, core);
+    स्थिरांक BaseType_t core = xPortGetCoreID();
+    TaskHandle_t contender = रिक्त;
+    xTaskCreatePinnedToCore(hwlp_contender_task, "hwlpC", 2048, रिक्त, CONFIG_UNITY_FREERTOS_PRIORITY + 2, &contender, core);
 
     bool bad = false;
     uint32_t first_bad = 0;
-    for (int i = 0; i < 100000 && !bad; i++) {
-        uint32_t r = use_hwlp_broken(64, (volatile uint32_t *)SYSTEM_CPU_INTR_FROM_CPU_2_REG, SYSTEM_CPU_INTR_FROM_CPU_2);
-        if (r != 64 * 9) {
+    साठी (पूर्णांक i = 0; i < 100000 && !bad; i++) {
+        uint32_t r = use_hwlp_broken(64, (अस्थिर uint32_t *)SYSTEM_CPU_INTR_FROM_CPU_2_REG, SYSTEM_CPU_INTR_FROM_CPU_2);
+        जर (r != 64 * 9) {
             bad = true;
             first_bad = r;
         }
-        if ((i & 0x3f) == 0) {
+        जर ((i & 0x3f) == 0) {
             taskYIELD();
         }
     }
@@ -220,7 +220,7 @@ TEST_CASE("HWLP: Violate loop alignment/size constraints", "[freertos][ignore]")
     vTaskDelete(contender);
     esp_intr_free(ih);
     vSemaphoreDelete(s_go);
-    printf("use_hwlp_broken (misaligned boundaries): contender_runs=%u result=%s (bad=%u)\n", (unsigned)s_contender_runs, bad ? "CORRUPTED" : "ok", (unsigned)first_bad);
+    म_लिखो("use_hwlp_broken (misaligned boundaries): contender_runs=%u result=%s (bad=%u)\n", (अचिन्हित)s_contender_runs, bad ? "CORRUPTED" : "ok", (अचिन्हित)first_bad);
 }
 
 #endif // SOC_CPU_HAS_HWLOOP
