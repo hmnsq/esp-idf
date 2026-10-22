@@ -35,61 +35,61 @@
 #include "linux_port_coop_internal.h"
 #include "esp_private/freertos_linux_coop_syscalls.h"
 
-static ssize_t  (*real_readv)(int, const struct iovec *, int);
-static ssize_t  (*real_writev)(int, const struct iovec *, int);
-static ssize_t  (*real_recv)(int, void *, size_t, int);
-static ssize_t  (*real_send)(int, const void *, size_t, int);
-static ssize_t  (*real_recvfrom)(int, void *, size_t, int,
-                                 struct sockaddr *, socklen_t *);
-static ssize_t  (*real_sendto)(int, const void *, size_t, int,
-                                const struct sockaddr *, socklen_t);
-static ssize_t  (*real_recvmsg)(int, struct msghdr *, int);
-static ssize_t  (*real_sendmsg)(int, const struct msghdr *, int);
-static int      (*real_connect)(int, const struct sockaddr *, socklen_t);
-static int      (*real_accept)(int, struct sockaddr *, socklen_t *);
-static int      (*real_pselect)(int, fd_set *, fd_set *, fd_set *,
-                                const struct timespec *, const sigset_t *);
-static int      (*real_poll)(struct pollfd *, nfds_t, int);
-static int      (*real_socket)(int, int, int);
-static int      (*real_socketpair)(int, int, int, int[2]);
-static int      (*real_pipe)(int[2]);
-static int      (*real_pipe2)(int[2], int);
-static int      (*real_dup)(int);
-static int      (*real_dup2)(int, int);
-static int      (*real_nanosleep)(const struct timespec *, struct timespec *);
-static ssize_t  (*real_read)(int, void *, size_t);
-static ssize_t  (*real_write)(int, const void *, size_t);
-static ssize_t  (*real_pread)(int, void *, size_t, off_t);
-static ssize_t  (*real_pwrite)(int, const void *, size_t, off_t);
-static int      (*real_close)(int);
-static int      (*real_select)(int, fd_set *, fd_set *, fd_set *,
-                                struct timeval *);
+static ssize_t  (*real_readv)(จำนวนเต็ม, const sa_nracanaa iovec *, จำนวนเต็ม);
+static ssize_t  (*real_writev)(จำนวนเต็ม, const sa_nracanaa iovec *, จำนวนเต็ม);
+static ssize_t  (*real_recv)(จำนวนเต็ม, void *, size_t, จำนวนเต็ม);
+static ssize_t  (*real_send)(จำนวนเต็ม, const void *, size_t, จำนวนเต็ม);
+static ssize_t  (*real_recvfrom)(จำนวนเต็ม, void *, size_t, จำนวนเต็ม,
+                                 sa_nracanaa sockaddr *, socklen_t *);
+static ssize_t  (*real_sendto)(จำนวนเต็ม, const void *, size_t, จำนวนเต็ม,
+                                const sa_nracanaa sockaddr *, socklen_t);
+static ssize_t  (*real_recvmsg)(จำนวนเต็ม, sa_nracanaa msghdr *, จำนวนเต็ม);
+static ssize_t  (*real_sendmsg)(จำนวนเต็ม, const sa_nracanaa msghdr *, จำนวนเต็ม);
+static จำนวนเต็ม      (*real_connect)(จำนวนเต็ม, const sa_nracanaa sockaddr *, socklen_t);
+static จำนวนเต็ม      (*real_accept)(จำนวนเต็ม, sa_nracanaa sockaddr *, socklen_t *);
+static จำนวนเต็ม      (*real_pselect)(จำนวนเต็ม, fd_set *, fd_set *, fd_set *,
+                                const sa_nracanaa timespec *, const sigset_t *);
+static จำนวนเต็ม      (*real_poll)(sa_nracanaa pollfd *, nfds_t, จำนวนเต็ม);
+static จำนวนเต็ม      (*real_socket)(จำนวนเต็ม, จำนวนเต็ม, จำนวนเต็ม);
+static จำนวนเต็ม      (*real_socketpair)(จำนวนเต็ม, จำนวนเต็ม, จำนวนเต็ม, จำนวนเต็ม[2]);
+static จำนวนเต็ม      (*real_pipe)(จำนวนเต็ม[2]);
+static จำนวนเต็ม      (*real_pipe2)(จำนวนเต็ม[2], จำนวนเต็ม);
+static จำนวนเต็ม      (*real_dup)(จำนวนเต็ม);
+static จำนวนเต็ม      (*real_dup2)(จำนวนเต็ม, จำนวนเต็ม);
+static จำนวนเต็ม      (*real_nanosleep)(const sa_nracanaa timespec *, sa_nracanaa timespec *);
+static ssize_t  (*real_read)(จำนวนเต็ม, void *, size_t);
+static ssize_t  (*real_write)(จำนวนเต็ม, const void *, size_t);
+static ssize_t  (*real_pread)(จำนวนเต็ม, void *, size_t, off_t);
+static ssize_t  (*real_pwrite)(จำนวนเต็ม, const void *, size_t, off_t);
+static จำนวนเต็ม      (*real_close)(จำนวนเต็ม);
+static จำนวนเต็ม      (*real_select)(จำนวนเต็ม, fd_set *, fd_set *, fd_set *,
+                                sa_nracanaa timeval *);
 
-typedef int (*linux_coop_fcntl_fn_t)(int, int, ...);
+typedef จำนวนเต็ม (*linux_coop_fcntl_fn_t)(จำนวนเต็ม, จำนวนเต็ม, ...);
 static linux_coop_fcntl_fn_t real_fcntl;
 
-typedef int (*linux_coop_open_fn_t)(const char *, int, mode_t);
+typedef จำนวนเต็ม (*linux_coop_open_fn_t)(const var_na *, จำนวนเต็ม, mode_t);
 static linux_coop_open_fn_t real_open;
 
-typedef struct linux_coop_fd_state {
-    int fd;
-    int user_flags;
-    struct linux_coop_fd_state *next;
+typedef sa_nracanaa linux_coop_fd_state {
+    จำนวนเต็ม fd;
+    จำนวนเต็ม user_flags;
+    sa_nracanaa linux_coop_fd_state *next;
 } linux_coop_fd_state_t;
 
 static linux_coop_fd_state_t *s_fd_state_list;
 static pthread_mutex_t s_fd_state_lock = PTHREAD_MUTEX_INITIALIZER;
 
-static linux_coop_fd_state_t *linux_coop_find_fd_locked(int fd)
+static linux_coop_fd_state_t *linux_coop_find_fd_locked(จำนวนเต็ม fd)
 {
     linux_coop_fd_state_t *node = s_fd_state_list;
-    while (node != NULL) {
-        if (node->fd == fd) {
-            return node;
+    ขณะ (node != NULL) {
+        ถ้า (node->fd == fd) {
+            คืน node;
         }
         node = node->next;
     }
-    return NULL;
+    คืน NULL;
 }
 
 static void __attribute__((constructor)) linux_coop_resolve_all(void)
@@ -123,32 +123,32 @@ static void __attribute__((constructor)) linux_coop_resolve_all(void)
     LINUX_COOP_RESOLVE(open);
 }
 
-void linux_coop_set_nonblocking(int fd)
+void linux_coop_set_nonblocking(จำนวนเต็ม fd)
 {
-    if (fd >= 0) {
-        int flags = real_fcntl(fd, F_GETFL, 0);
-        if (flags >= 0) {
+    ถ้า (fd >= 0) {
+        จำนวนเต็ม flags = real_fcntl(fd, F_GETFL, 0);
+        ถ้า (flags >= 0) {
             real_fcntl(fd, F_SETFL, flags | O_NONBLOCK);
         }
     }
 }
 
-void linux_coop_track_fd(int fd, int user_flags)
+void linux_coop_track_fd(จำนวนเต็ม fd, จำนวนเต็ม user_flags)
 {
-    if (fd < 0) {
-        return;
+    ถ้า (fd < 0) {
+        คืน;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
     linux_coop_fd_state_t *node = linux_coop_find_fd_locked(fd);
-    if (node != NULL) {
+    ถ้า (node != NULL) {
         node->user_flags = user_flags;
         pthread_mutex_unlock(&s_fd_state_lock);
-        return;
+        คืน;
     }
 
-    node = calloc(1, sizeof(*node));
-    if (node != NULL) {
+    node = calloc(1, parimaa_na(*node));
+    ถ้า (node != NULL) {
         node->fd = fd;
         node->user_flags = user_flags;
         node->next = s_fd_state_list;
@@ -157,24 +157,24 @@ void linux_coop_track_fd(int fd, int user_flags)
     pthread_mutex_unlock(&s_fd_state_lock);
 }
 
-void linux_coop_untrack_fd(int fd)
+void linux_coop_untrack_fd(จำนวนเต็ม fd)
 {
-    if (fd < 0) {
-        return;
+    ถ้า (fd < 0) {
+        คืน;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
     linux_coop_fd_state_t *prev = NULL;
     linux_coop_fd_state_t *node = s_fd_state_list;
-    while (node != NULL) {
-        if (node->fd == fd) {
-            if (prev == NULL) {
+    ขณะ (node != NULL) {
+        ถ้า (node->fd == fd) {
+            ถ้า (prev == NULL) {
                 s_fd_state_list = node->next;
-            } else {
+            } มิฉะนั้น {
                 prev->next = node->next;
             }
             free(node);
-            break;
+            bha_nga;
         }
         prev = node;
         node = node->next;
@@ -182,110 +182,110 @@ void linux_coop_untrack_fd(int fd)
     pthread_mutex_unlock(&s_fd_state_lock);
 }
 
-void linux_coop_set_user_flags(int fd, int user_flags)
+void linux_coop_set_user_flags(จำนวนเต็ม fd, จำนวนเต็ม user_flags)
 {
     linux_coop_track_fd(fd, user_flags);
 }
 
-bool linux_coop_get_user_flags(int fd, int *flags)
+bool linux_coop_get_user_flags(จำนวนเต็ม fd, จำนวนเต็ม *flags)
 {
-    if (fd < 0 || flags == NULL) {
-        return false;
+    ถ้า (fd < 0 || flags == NULL) {
+        คืน false;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
     linux_coop_fd_state_t *node = linux_coop_find_fd_locked(fd);
-    if (node == NULL) {
+    ถ้า (node == NULL) {
         pthread_mutex_unlock(&s_fd_state_lock);
-        return false;
+        คืน false;
     }
     *flags = node->user_flags;
     pthread_mutex_unlock(&s_fd_state_lock);
-    return true;
+    คืน true;
 }
 
-bool linux_coop_fd_user_nonblocking(int fd)
+bool linux_coop_fd_user_nonblocking(จำนวนเต็ม fd)
 {
-    int user_flags = 0;
-    if (linux_coop_get_user_flags(fd, &user_flags)) {
-        return (user_flags & O_NONBLOCK) != 0;
+    จำนวนเต็ม user_flags = 0;
+    ถ้า (linux_coop_get_user_flags(fd, &user_flags)) {
+        คืน (user_flags & O_NONBLOCK) != 0;
     }
-    return false;
+    คืน false;
 }
 
 
-ssize_t freertos_linux_coop_read(int fd, void *buf, size_t count)
+ssize_t freertos_linux_coop_read(จำนวนเต็ม fd, void *buf, size_t count)
 {
     LINUX_COOP_IO_LOOP(fd, real_read(fd, buf, count))
 }
 
-ssize_t freertos_linux_coop_write(int fd, const void *buf, size_t count)
+ssize_t freertos_linux_coop_write(จำนวนเต็ม fd, const void *buf, size_t count)
 {
     LINUX_COOP_IO_LOOP(fd, real_write(fd, buf, count))
 }
 
-ssize_t freertos_linux_coop_pread(int fd, void *buf, size_t count, off_t offset)
+ssize_t freertos_linux_coop_pread(จำนวนเต็ม fd, void *buf, size_t count, off_t offset)
 {
     LINUX_COOP_IO_LOOP(fd, real_pread(fd, buf, count, offset))
 }
 
-ssize_t freertos_linux_coop_pwrite(int fd, const void *buf, size_t count, off_t offset)
+ssize_t freertos_linux_coop_pwrite(จำนวนเต็ม fd, const void *buf, size_t count, off_t offset)
 {
     LINUX_COOP_IO_LOOP(fd, real_pwrite(fd, buf, count, offset))
 }
 
-int freertos_linux_coop_open(const char *path, int flags, int mode)
+จำนวนเต็ม freertos_linux_coop_open(const var_na *path, จำนวนเต็ม flags, จำนวนเต็ม mode)
 {
-    int fd = real_open(path, flags, (mode_t)mode);
+    จำนวนเต็ม fd = real_open(path, flags, (mode_t)mode);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, flags & O_NONBLOCK);
-    return fd;
+    คืน fd;
 }
 
-int freertos_linux_coop_close(int fd)
+จำนวนเต็ม freertos_linux_coop_close(จำนวนเต็ม fd)
 {
-    int ret = real_close(fd);
-    if (ret == 0 || errno == EINTR) {
+    จำนวนเต็ม ret = real_close(fd);
+    ถ้า (ret == 0 || errno == EINTR) {
         /* On Linux, close() always releases the fd even when returning
          * EINTR.  Retrying would risk closing a fd reused by another
          * thread.  Treat EINTR as success. */
         linux_coop_untrack_fd(fd);
-        return 0;
+        คืน 0;
     }
-    return -1;
+    คืน -1;
 }
 
-int freertos_linux_coop_fcntl(int fd, int cmd, int arg)
+จำนวนเต็ม freertos_linux_coop_fcntl(จำนวนเต็ม fd, จำนวนเต็ม cmd, จำนวนเต็ม arg)
 {
-    if (cmd == F_GETFL) {
-        int real_flags = real_fcntl(fd, F_GETFL, 0);
-        if (real_flags < 0) {
-            return -1;
+    ถ้า (cmd == F_GETFL) {
+        จำนวนเต็ม real_flags = real_fcntl(fd, F_GETFL, 0);
+        ถ้า (real_flags < 0) {
+            คืน -1;
         }
-        int user_flags = 0;
-        if (linux_coop_get_user_flags(fd, &user_flags)) {
+        จำนวนเต็ม user_flags = 0;
+        ถ้า (linux_coop_get_user_flags(fd, &user_flags)) {
             real_flags &= ~O_NONBLOCK;
             real_flags |= (user_flags & O_NONBLOCK);
         }
-        return real_flags;
+        คืน real_flags;
     }
-    if (cmd == F_SETFL) {
+    ถ้า (cmd == F_SETFL) {
         linux_coop_set_user_flags(fd, arg);
-        int internal_flags = arg | O_NONBLOCK;
-        return real_fcntl(fd, F_SETFL, internal_flags);
+        จำนวนเต็ม internal_flags = arg | O_NONBLOCK;
+        คืน real_fcntl(fd, F_SETFL, internal_flags);
     }
-    return real_fcntl(fd, cmd, arg);
+    คืน real_fcntl(fd, cmd, arg);
 }
 
-int freertos_linux_coop_select(int nfds, fd_set *readfds, fd_set *writefds,
-                      fd_set *exceptfds, struct timeval *timeout)
+จำนวนเต็ม freertos_linux_coop_select(จำนวนเต็ม nfds, fd_set *readfds, fd_set *writefds,
+                      fd_set *exceptfds, sa_nracanaa timeval *timeout)
 {
     long timeout_ms = -1;
-    if (timeout != NULL) {
+    ถ้า (timeout != NULL) {
         timeout_ms = (long)timeout->tv_sec * 1000 +
                      (timeout->tv_usec + 999) / 1000;
-        if (timeout_ms == 0) {
-            return real_select(nfds, readfds, writefds, exceptfds, timeout);
+        ถ้า (timeout_ms == 0) {
+            คืน real_select(nfds, readfds, writefds, exceptfds, timeout);
         }
     }
 
@@ -294,38 +294,38 @@ int freertos_linux_coop_select(int nfds, fd_set *readfds, fd_set *writefds,
      * iterations we must snapshot the caller's sets and restore them on every
      * loop. */
     fd_set rfds_in, wfds_in, efds_in;
-    if (readfds != NULL) {
+    ถ้า (readfds != NULL) {
         rfds_in = *readfds;
     }
-    if (writefds != NULL) {
+    ถ้า (writefds != NULL) {
         wfds_in = *writefds;
     }
-    if (exceptfds != NULL) {
+    ถ้า (exceptfds != NULL) {
         efds_in = *exceptfds;
     }
 
     long waited_ms = 0;
-    while (1) {
-        if (readfds != NULL) {
+    ขณะ (1) {
+        ถ้า (readfds != NULL) {
             *readfds = rfds_in;
         }
-        if (writefds != NULL) {
+        ถ้า (writefds != NULL) {
             *writefds = wfds_in;
         }
-        if (exceptfds != NULL) {
+        ถ้า (exceptfds != NULL) {
             *exceptfds = efds_in;
         }
 
-        struct timeval zero_tv = {0, 0};
-        int ret = real_select(nfds, readfds, writefds, exceptfds, &zero_tv);
-        if (ret != 0) {
-            return ret;
+        sa_nracanaa timeval zero_tv = {0, 0};
+        จำนวนเต็ม ret = real_select(nfds, readfds, writefds, exceptfds, &zero_tv);
+        ถ้า (ret != 0) {
+            คืน ret;
         }
-        if (timeout_ms == 0) {
-            return 0;
+        ถ้า (timeout_ms == 0) {
+            คืน 0;
         }
-        if (timeout_ms > 0 && waited_ms >= timeout_ms) {
-            return 0;
+        ถ้า (timeout_ms > 0 && waited_ms >= timeout_ms) {
+            คืน 0;
         }
         linux_coop_yield(LINUX_COOP_TICK_MS);
         waited_ms += LINUX_COOP_TICK_MS;
@@ -346,189 +346,189 @@ void freertos_linux_coop_syscalls_init(void)
  * is linked.  When VFS is absent the weak versions provide cooperative
  * behaviour directly via real libc. */
 
-__attribute__((weak)) ssize_t read(int fd, void *buf, size_t count)
+__attribute__((weak)) ssize_t read(จำนวนเต็ม fd, void *buf, size_t count)
 {
-    return freertos_linux_coop_read(fd, buf, count);
+    คืน freertos_linux_coop_read(fd, buf, count);
 }
 
-__attribute__((weak)) ssize_t write(int fd, const void *buf, size_t count)
+__attribute__((weak)) ssize_t write(จำนวนเต็ม fd, const void *buf, size_t count)
 {
-    return freertos_linux_coop_write(fd, buf, count);
+    คืน freertos_linux_coop_write(fd, buf, count);
 }
 
-__attribute__((weak)) ssize_t pread(int fd, void *buf, size_t count, off_t offset)
+__attribute__((weak)) ssize_t pread(จำนวนเต็ม fd, void *buf, size_t count, off_t offset)
 {
-    return freertos_linux_coop_pread(fd, buf, count, offset);
+    คืน freertos_linux_coop_pread(fd, buf, count, offset);
 }
 
-__attribute__((weak)) ssize_t pwrite(int fd, const void *buf, size_t count, off_t offset)
+__attribute__((weak)) ssize_t pwrite(จำนวนเต็ม fd, const void *buf, size_t count, off_t offset)
 {
-    return freertos_linux_coop_pwrite(fd, buf, count, offset);
+    คืน freertos_linux_coop_pwrite(fd, buf, count, offset);
 }
 
-__attribute__((weak)) int open(const char *path, int flags, ...)
+__attribute__((weak)) จำนวนเต็ม open(const var_na *path, จำนวนเต็ม flags, ...)
 {
-    int mode = 0;
-    if (flags & O_CREAT) {
+    จำนวนเต็ม mode = 0;
+    ถ้า (flags & O_CREAT) {
         va_list ap;
         va_start(ap, flags);
-        mode = va_arg(ap, int);
+        mode = va_arg(ap, จำนวนเต็ม);
         va_end(ap);
     }
-    return freertos_linux_coop_open(path, flags, mode);
+    คืน freertos_linux_coop_open(path, flags, mode);
 }
 
-__attribute__((weak)) int close(int fd)
+__attribute__((weak)) จำนวนเต็ม close(จำนวนเต็ม fd)
 {
-    return freertos_linux_coop_close(fd);
+    คืน freertos_linux_coop_close(fd);
 }
 
-__attribute__((weak)) int fcntl(int fd, int cmd, ...)
+__attribute__((weak)) จำนวนเต็ม fcntl(จำนวนเต็ม fd, จำนวนเต็ม cmd, ...)
 {
-    int arg = 0;
-    if (cmd != F_GETFL) {
+    จำนวนเต็ม arg = 0;
+    ถ้า (cmd != F_GETFL) {
         va_list list;
         va_start(list, cmd);
-        arg = va_arg(list, int);
+        arg = va_arg(list, จำนวนเต็ม);
         va_end(list);
     }
-    return freertos_linux_coop_fcntl(fd, cmd, arg);
+    คืน freertos_linux_coop_fcntl(fd, cmd, arg);
 }
 
-__attribute__((weak)) int select(int nfds, fd_set *readfds, fd_set *writefds,
-                                 fd_set *exceptfds, struct timeval *timeout)
+__attribute__((weak)) จำนวนเต็ม select(จำนวนเต็ม nfds, fd_set *readfds, fd_set *writefds,
+                                 fd_set *exceptfds, sa_nracanaa timeval *timeout)
 {
-    return freertos_linux_coop_select(nfds, readfds, writefds, exceptfds, timeout);
+    คืน freertos_linux_coop_select(nfds, readfds, writefds, exceptfds, timeout);
 }
 
-ssize_t freertos_linux_coop_readv(int fd, const struct iovec *iov, int iovcnt)
+ssize_t freertos_linux_coop_readv(จำนวนเต็ม fd, const sa_nracanaa iovec *iov, จำนวนเต็ม iovcnt)
 {
     LINUX_COOP_IO_LOOP(fd, real_readv(fd, iov, iovcnt))
 }
 
-ssize_t freertos_linux_coop_writev(int fd, const struct iovec *iov, int iovcnt)
+ssize_t freertos_linux_coop_writev(จำนวนเต็ม fd, const sa_nracanaa iovec *iov, จำนวนเต็ม iovcnt)
 {
     LINUX_COOP_IO_LOOP(fd, real_writev(fd, iov, iovcnt))
 }
 
-ssize_t freertos_linux_coop_recv(int sockfd, void *buf, size_t len, int flags)
+ssize_t freertos_linux_coop_recv(จำนวนเต็ม sockfd, void *buf, size_t len, จำนวนเต็ม flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recv(sockfd, buf, len, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_send(int sockfd, const void *buf, size_t len, int flags)
+ssize_t freertos_linux_coop_send(จำนวนเต็ม sockfd, const void *buf, size_t len, จำนวนเต็ม flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_send(sockfd, buf, len, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_recvfrom(int sockfd, void *buf, size_t len, int flags,
-                 struct sockaddr *src_addr, socklen_t *addrlen)
+ssize_t freertos_linux_coop_recvfrom(จำนวนเต็ม sockfd, void *buf, size_t len, จำนวนเต็ม flags,
+                 sa_nracanaa sockaddr *src_addr, socklen_t *addrlen)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recvfrom(sockfd, buf, len, flags | MSG_DONTWAIT,
                             src_addr, addrlen))
 }
 
-ssize_t freertos_linux_coop_sendto(int sockfd, const void *buf, size_t len, int flags,
-               const struct sockaddr *dest_addr, socklen_t addrlen)
+ssize_t freertos_linux_coop_sendto(จำนวนเต็ม sockfd, const void *buf, size_t len, จำนวนเต็ม flags,
+               const sa_nracanaa sockaddr *dest_addr, socklen_t addrlen)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_sendto(sockfd, buf, len, flags | MSG_DONTWAIT,
                           dest_addr, addrlen))
 }
 
-ssize_t freertos_linux_coop_recvmsg(int sockfd, struct msghdr *msg, int flags)
+ssize_t freertos_linux_coop_recvmsg(จำนวนเต็ม sockfd, sa_nracanaa msghdr *msg, จำนวนเต็ม flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recvmsg(sockfd, msg, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_sendmsg(int sockfd, const struct msghdr *msg, int flags)
+ssize_t freertos_linux_coop_sendmsg(จำนวนเต็ม sockfd, const sa_nracanaa msghdr *msg, จำนวนเต็ม flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_sendmsg(sockfd, msg, flags | MSG_DONTWAIT))
 }
 
-__attribute__((weak)) ssize_t readv(int fd, const struct iovec *iov, int iovcnt)
+__attribute__((weak)) ssize_t readv(จำนวนเต็ม fd, const sa_nracanaa iovec *iov, จำนวนเต็ม iovcnt)
 {
-    return freertos_linux_coop_readv(fd, iov, iovcnt);
+    คืน freertos_linux_coop_readv(fd, iov, iovcnt);
 }
 
-__attribute__((weak)) ssize_t writev(int fd, const struct iovec *iov, int iovcnt)
+__attribute__((weak)) ssize_t writev(จำนวนเต็ม fd, const sa_nracanaa iovec *iov, จำนวนเต็ม iovcnt)
 {
-    return freertos_linux_coop_writev(fd, iov, iovcnt);
+    คืน freertos_linux_coop_writev(fd, iov, iovcnt);
 }
 
-__attribute__((weak)) ssize_t recv(int sockfd, void *buf, size_t len, int flags)
+__attribute__((weak)) ssize_t recv(จำนวนเต็ม sockfd, void *buf, size_t len, จำนวนเต็ม flags)
 {
-    return freertos_linux_coop_recv(sockfd, buf, len, flags);
+    คืน freertos_linux_coop_recv(sockfd, buf, len, flags);
 }
 
-__attribute__((weak)) ssize_t send(int sockfd, const void *buf, size_t len, int flags)
+__attribute__((weak)) ssize_t send(จำนวนเต็ม sockfd, const void *buf, size_t len, จำนวนเต็ม flags)
 {
-    return freertos_linux_coop_send(sockfd, buf, len, flags);
+    คืน freertos_linux_coop_send(sockfd, buf, len, flags);
 }
 
-__attribute__((weak)) ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
-                 struct sockaddr *src_addr, socklen_t *addrlen)
+__attribute__((weak)) ssize_t recvfrom(จำนวนเต็ม sockfd, void *buf, size_t len, จำนวนเต็ม flags,
+                 sa_nracanaa sockaddr *src_addr, socklen_t *addrlen)
 {
-    return freertos_linux_coop_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
+    คืน freertos_linux_coop_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
 }
 
-__attribute__((weak)) ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
-               const struct sockaddr *dest_addr, socklen_t addrlen)
+__attribute__((weak)) ssize_t sendto(จำนวนเต็ม sockfd, const void *buf, size_t len, จำนวนเต็ม flags,
+               const sa_nracanaa sockaddr *dest_addr, socklen_t addrlen)
 {
-    return freertos_linux_coop_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
+    คืน freertos_linux_coop_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
 }
 
-__attribute__((weak)) ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
+__attribute__((weak)) ssize_t recvmsg(จำนวนเต็ม sockfd, sa_nracanaa msghdr *msg, จำนวนเต็ม flags)
 {
-    return freertos_linux_coop_recvmsg(sockfd, msg, flags);
+    คืน freertos_linux_coop_recvmsg(sockfd, msg, flags);
 }
 
-__attribute__((weak)) ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags)
+__attribute__((weak)) ssize_t sendmsg(จำนวนเต็ม sockfd, const sa_nracanaa msghdr *msg, จำนวนเต็ม flags)
 {
-    return freertos_linux_coop_sendmsg(sockfd, msg, flags);
+    คืน freertos_linux_coop_sendmsg(sockfd, msg, flags);
 }
 
-int freertos_linux_coop_connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+จำนวนเต็ม freertos_linux_coop_connect(จำนวนเต็ม sockfd, const sa_nracanaa sockaddr *addr, socklen_t addrlen)
 {
-    while (1)
+    ขณะ (1)
     {
-        int ret = real_connect(sockfd, addr, addrlen);
-        if (ret == 0) {
-            return ret;
+        จำนวนเต็ม ret = real_connect(sockfd, addr, addrlen);
+        ถ้า (ret == 0) {
+            คืน ret;
         }
 
-        if (errno == EINPROGRESS || errno == EALREADY) {
-            struct pollfd pfd;
+        ถ้า (errno == EINPROGRESS || errno == EALREADY) {
+            sa_nracanaa pollfd pfd;
             pfd.fd = sockfd;
             pfd.events = POLLOUT;
             pfd.revents = 0;
 
-            int poll_retries = 0;
-            while (1)
+            จำนวนเต็ม poll_retries = 0;
+            ขณะ (1)
             {
-                int press = real_poll(&pfd, 1, 0);
-                if (press > 0) {
-                    int so_err = 0;
-                    socklen_t len = sizeof(so_err);
-                    if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
+                จำนวนเต็ม press = real_poll(&pfd, 1, 0);
+                ถ้า (press > 0) {
+                    จำนวนเต็ม so_err = 0;
+                    socklen_t len = parimaa_na(so_err);
+                    ถ้า (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
                                    &so_err, &len) < 0) {
-                        return -1;
+                        คืน -1;
                     }
-                    if (so_err == 0) {
-                        return 0;
-                    } else {
+                    ถ้า (so_err == 0) {
+                        คืน 0;
+                    } มิฉะนั้น {
                         errno = so_err;
-                        return -1;
+                        คืน -1;
                     }
-                } else if (press == 0) {
+                } มิฉะนั้น ถ้า (press == 0) {
                     linux_coop_yield(LINUX_COOP_TICK_MS);
                     continue;
-                } else {
-                    if (errno == EINTR) {
+                } มิฉะนั้น {
+                    ถ้า (errno == EINTR) {
                         continue;
                     }
                     /* Non-EINTR poll error; bail out after a few retries */
-                    if (++poll_retries > 3) {
-                        return -1;
+                    ถ้า (++poll_retries > 3) {
+                        คืน -1;
                     }
                     linux_coop_yield(LINUX_COOP_TICK_MS);
                     continue;
@@ -536,62 +536,62 @@ int freertos_linux_coop_connect(int sockfd, const struct sockaddr *addr, socklen
             }
         }
 
-        if (errno == EINTR) {
-            return -1;
+        ถ้า (errno == EINTR) {
+            คืน -1;
         }
 
-        return -1;
+        คืน -1;
     }
 }
 
-int freertos_linux_coop_accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+จำนวนเต็ม freertos_linux_coop_accept(จำนวนเต็ม sockfd, sa_nracanaa sockaddr *addr, socklen_t *addrlen)
 {
-    while (1)
+    ขณะ (1)
     {
-        int fd = real_accept(sockfd, addr, addrlen);
-        if (fd >= 0) {
+        จำนวนเต็ม fd = real_accept(sockfd, addr, addrlen);
+        ถ้า (fd >= 0) {
             linux_coop_set_nonblocking(fd);
             linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(sockfd) ? O_NONBLOCK : 0);
-            return fd;
+            คืน fd;
         }
-        if (errno == EAGAIN || errno == EWOULDBLOCK) {
-            if (linux_coop_fd_user_nonblocking(sockfd)) {
-                return -1;
+        ถ้า (errno == EAGAIN || errno == EWOULDBLOCK) {
+            ถ้า (linux_coop_fd_user_nonblocking(sockfd)) {
+                คืน -1;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
             continue;
         }
-        return -1;
+        คืน -1;
     }
 }
 
-int freertos_linux_coop_pselect(int nfds, fd_set *readfds, fd_set *writefds,
-            fd_set *exceptfds, const struct timespec *timeout,
+จำนวนเต็ม freertos_linux_coop_pselect(จำนวนเต็ม nfds, fd_set *readfds, fd_set *writefds,
+            fd_set *exceptfds, const sa_nracanaa timespec *timeout,
             const sigset_t *sigmask)
 {
     long timeout_ms = -1;
-    if (timeout != NULL) {
+    ถ้า (timeout != NULL) {
         timeout_ms = (long)timeout->tv_sec * 1000 +
                      (timeout->tv_nsec + 999999) / 1000000;
-        if (timeout_ms == 0) {
-            return real_pselect(nfds, readfds, writefds, exceptfds,
+        ถ้า (timeout_ms == 0) {
+            คืน real_pselect(nfds, readfds, writefds, exceptfds,
                                 timeout, sigmask);
         }
     }
 
     long waited_ms = 0;
-    while (1)
+    ขณะ (1)
     {
-        struct timespec zero_ts = {0, 0};
-        int ret = real_pselect(nfds, readfds, writefds, exceptfds,
+        sa_nracanaa timespec zero_ts = {0, 0};
+        จำนวนเต็ม ret = real_pselect(nfds, readfds, writefds, exceptfds,
                                &zero_ts, sigmask);
-        if (ret != 0) {
-            return ret;
+        ถ้า (ret != 0) {
+            คืน ret;
         }
 
-        if (timeout_ms == 0 ||
+        ถ้า (timeout_ms == 0 ||
             (timeout_ms > 0 && waited_ms >= timeout_ms)) {
-            return 0;
+            คืน 0;
         }
 
         linux_coop_yield(LINUX_COOP_TICK_MS);
@@ -599,197 +599,197 @@ int freertos_linux_coop_pselect(int nfds, fd_set *readfds, fd_set *writefds,
     }
 }
 
-int freertos_linux_coop_poll(struct pollfd *fds, nfds_t nfds, int timeout)
+จำนวนเต็ม freertos_linux_coop_poll(sa_nracanaa pollfd *fds, nfds_t nfds, จำนวนเต็ม timeout)
 {
-    if (timeout == 0) {
-        return real_poll(fds, nfds, 0);
+    ถ้า (timeout == 0) {
+        คืน real_poll(fds, nfds, 0);
     }
 
     long timeout_ms = -1;
-    if (timeout > 0) {
+    ถ้า (timeout > 0) {
         timeout_ms = timeout;
     }
 
     long waited_ms = 0;
 
-    while (1)
+    ขณะ (1)
     {
-        int ret = real_poll(fds, nfds, 0);
-        if (ret > 0) {
-            return ret;
-        } else if (ret == 0) {
-            if (timeout_ms == 0 ||
+        จำนวนเต็ม ret = real_poll(fds, nfds, 0);
+        ถ้า (ret > 0) {
+            คืน ret;
+        } มิฉะนั้น ถ้า (ret == 0) {
+            ถ้า (timeout_ms == 0 ||
                 (timeout_ms > 0 && waited_ms >= timeout_ms)) {
-                return 0;
+                คืน 0;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
             waited_ms += LINUX_COOP_TICK_MS;
             continue;
-        } else {
-            if (errno == EINTR) {
+        } มิฉะนั้น {
+            ถ้า (errno == EINTR) {
                 continue;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
-            if (timeout_ms > 0 && waited_ms >= timeout_ms) {
-                return -1;
+            ถ้า (timeout_ms > 0 && waited_ms >= timeout_ms) {
+                คืน -1;
             }
             waited_ms += LINUX_COOP_TICK_MS;
         }
     }
 }
 
-int nanosleep(const struct timespec *req, struct timespec *rem)
+จำนวนเต็ม nanosleep(const sa_nracanaa timespec *req, sa_nracanaa timespec *rem)
 {
-    if (req == NULL) {
+    ถ้า (req == NULL) {
         errno = EFAULT;
-        return -1;
+        คืน -1;
     }
-    if (!linux_port_in_freertos_task()) {
-        return real_nanosleep(req, rem);
+    ถ้า (!linux_port_in_freertos_task()) {
+        คืน real_nanosleep(req, rem);
     }
     long ms = req->tv_sec * 1000 + (req->tv_nsec + 999999) / 1000000;
-    if (ms <= 0) {
+    ถ้า (ms <= 0) {
         ms = 1;
     }
     vTaskDelay(ms);
-    if (rem) {
+    ถ้า (rem) {
         rem->tv_sec = 0;
         rem->tv_nsec = 0;
     }
-    return 0;
+    คืน 0;
 }
 
-unsigned int sleep(unsigned int seconds)
+unsigned จำนวนเต็ม sleep(unsigned จำนวนเต็ม seconds)
 {
     linux_coop_yield(seconds * 1000);
-    return 0;
+    คืน 0;
 }
 
-int usleep(useconds_t usec)
+จำนวนเต็ม usleep(useconds_t usec)
 {
     linux_coop_yield(usec / 1000);
-    return 0;
+    คืน 0;
 }
 
-int freertos_linux_coop_socket(int domain, int type, int protocol)
+จำนวนเต็ม freertos_linux_coop_socket(จำนวนเต็ม domain, จำนวนเต็ม type, จำนวนเต็ม protocol)
 {
-    int fd = real_socket(domain, type, protocol);
+    จำนวนเต็ม fd = real_socket(domain, type, protocol);
     linux_coop_set_nonblocking(fd);
 #ifdef SOCK_NONBLOCK
-    const int user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
-#else
-    const int user_flags = 0;
+    const จำนวนเต็ม user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
+#มิฉะนั้น
+    const จำนวนเต็ม user_flags = 0;
 #endif
     linux_coop_track_fd(fd, user_flags);
-    return fd;
+    คืน fd;
 }
 
-int freertos_linux_coop_socketpair(int domain, int type, int protocol, int *sv)
+จำนวนเต็ม freertos_linux_coop_socketpair(จำนวนเต็ม domain, จำนวนเต็ม type, จำนวนเต็ม protocol, จำนวนเต็ม *sv)
 {
-    int ret = real_socketpair(domain, type, protocol, sv);
-    if (ret == 0) {
+    จำนวนเต็ม ret = real_socketpair(domain, type, protocol, sv);
+    ถ้า (ret == 0) {
         linux_coop_set_nonblocking(sv[0]);
         linux_coop_set_nonblocking(sv[1]);
 #ifdef SOCK_NONBLOCK
-        const int user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
-#else
-        const int user_flags = 0;
+        const จำนวนเต็ม user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
+#มิฉะนั้น
+        const จำนวนเต็ม user_flags = 0;
 #endif
         linux_coop_track_fd(sv[0], user_flags);
         linux_coop_track_fd(sv[1], user_flags);
     }
-    return ret;
+    คืน ret;
 }
 
-int freertos_linux_coop_pipe(int *fds)
+จำนวนเต็ม freertos_linux_coop_pipe(จำนวนเต็ม *fds)
 {
-    int ret = real_pipe(fds);
-    if (ret == 0) {
+    จำนวนเต็ม ret = real_pipe(fds);
+    ถ้า (ret == 0) {
         linux_coop_set_nonblocking(fds[0]);
         linux_coop_set_nonblocking(fds[1]);
         linux_coop_track_fd(fds[0], 0);
         linux_coop_track_fd(fds[1], 0);
     }
-    return ret;
+    คืน ret;
 }
 
-int freertos_linux_coop_pipe2(int *fds, int flags)
+จำนวนเต็ม freertos_linux_coop_pipe2(จำนวนเต็ม *fds, จำนวนเต็ม flags)
 {
-    int ret = real_pipe2(fds, flags);
-    if (ret == 0) {
+    จำนวนเต็ม ret = real_pipe2(fds, flags);
+    ถ้า (ret == 0) {
         linux_coop_set_nonblocking(fds[0]);
         linux_coop_set_nonblocking(fds[1]);
-        const int user_flags = (flags & O_NONBLOCK) ? O_NONBLOCK : 0;
+        const จำนวนเต็ม user_flags = (flags & O_NONBLOCK) ? O_NONBLOCK : 0;
         linux_coop_track_fd(fds[0], user_flags);
         linux_coop_track_fd(fds[1], user_flags);
     }
-    return ret;
+    คืน ret;
 }
 
-int freertos_linux_coop_dup(int oldfd)
+จำนวนเต็ม freertos_linux_coop_dup(จำนวนเต็ม oldfd)
 {
-    int fd = real_dup(oldfd);
+    จำนวนเต็ม fd = real_dup(oldfd);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(oldfd) ? O_NONBLOCK : 0);
-    return fd;
+    คืน fd;
 }
 
-int freertos_linux_coop_dup2(int oldfd, int newfd)
+จำนวนเต็ม freertos_linux_coop_dup2(จำนวนเต็ม oldfd, จำนวนเต็ม newfd)
 {
-    int fd = real_dup2(oldfd, newfd);
+    จำนวนเต็ม fd = real_dup2(oldfd, newfd);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(oldfd) ? O_NONBLOCK : 0);
-    return fd;
+    คืน fd;
 }
 
-__attribute__((weak)) int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+__attribute__((weak)) จำนวนเต็ม connect(จำนวนเต็ม sockfd, const sa_nracanaa sockaddr *addr, socklen_t addrlen)
 {
-    return freertos_linux_coop_connect(sockfd, addr, addrlen);
+    คืน freertos_linux_coop_connect(sockfd, addr, addrlen);
 }
 
-__attribute__((weak)) int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+__attribute__((weak)) จำนวนเต็ม accept(จำนวนเต็ม sockfd, sa_nracanaa sockaddr *addr, socklen_t *addrlen)
 {
-    return freertos_linux_coop_accept(sockfd, addr, addrlen);
+    คืน freertos_linux_coop_accept(sockfd, addr, addrlen);
 }
 
-__attribute__((weak)) int pselect(int nfds, fd_set *readfds, fd_set *writefds,
-            fd_set *exceptfds, const struct timespec *timeout,
+__attribute__((weak)) จำนวนเต็ม pselect(จำนวนเต็ม nfds, fd_set *readfds, fd_set *writefds,
+            fd_set *exceptfds, const sa_nracanaa timespec *timeout,
             const sigset_t *sigmask)
 {
-    return freertos_linux_coop_pselect(nfds, readfds, writefds, exceptfds, timeout, sigmask);
+    คืน freertos_linux_coop_pselect(nfds, readfds, writefds, exceptfds, timeout, sigmask);
 }
 
-__attribute__((weak)) int poll(struct pollfd *fds, nfds_t nfds, int timeout)
+__attribute__((weak)) จำนวนเต็ม poll(sa_nracanaa pollfd *fds, nfds_t nfds, จำนวนเต็ม timeout)
 {
-    return freertos_linux_coop_poll(fds, nfds, timeout);
+    คืน freertos_linux_coop_poll(fds, nfds, timeout);
 }
 
-__attribute__((weak)) int socket(int domain, int type, int protocol)
+__attribute__((weak)) จำนวนเต็ม socket(จำนวนเต็ม domain, จำนวนเต็ม type, จำนวนเต็ม protocol)
 {
-    return freertos_linux_coop_socket(domain, type, protocol);
+    คืน freertos_linux_coop_socket(domain, type, protocol);
 }
 
-__attribute__((weak)) int socketpair(int domain, int type, int protocol, int sv[2])
+__attribute__((weak)) จำนวนเต็ม socketpair(จำนวนเต็ม domain, จำนวนเต็ม type, จำนวนเต็ม protocol, จำนวนเต็ม sv[2])
 {
-    return freertos_linux_coop_socketpair(domain, type, protocol, sv);
+    คืน freertos_linux_coop_socketpair(domain, type, protocol, sv);
 }
 
-__attribute__((weak)) int pipe(int fds[2])
+__attribute__((weak)) จำนวนเต็ม pipe(จำนวนเต็ม fds[2])
 {
-    return freertos_linux_coop_pipe(fds);
+    คืน freertos_linux_coop_pipe(fds);
 }
 
-__attribute__((weak)) int pipe2(int fds[2], int flags)
+__attribute__((weak)) จำนวนเต็ม pipe2(จำนวนเต็ม fds[2], จำนวนเต็ม flags)
 {
-    return freertos_linux_coop_pipe2(fds, flags);
+    คืน freertos_linux_coop_pipe2(fds, flags);
 }
 
-__attribute__((weak)) int dup(int oldfd)
+__attribute__((weak)) จำนวนเต็ม dup(จำนวนเต็ม oldfd)
 {
-    return freertos_linux_coop_dup(oldfd);
+    คืน freertos_linux_coop_dup(oldfd);
 }
 
-__attribute__((weak)) int dup2(int oldfd, int newfd)
+__attribute__((weak)) จำนวนเต็ม dup2(จำนวนเต็ม oldfd, จำนวนเต็ม newfd)
 {
-    return freertos_linux_coop_dup2(oldfd, newfd);
+    คืน freertos_linux_coop_dup2(oldfd, newfd);
 }

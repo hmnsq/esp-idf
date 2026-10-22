@@ -29,13 +29,13 @@
 
 #undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 0 )
-#error This file must not be used if configSUPPORT_DYNAMIC_ALLOCATION is 0
+#ถ้า ( configSUPPORT_DYNAMIC_ALLOCATION == 0 )
+#error This file must not be used ถ้า configSUPPORT_DYNAMIC_ALLOCATION is 0
 #endif
 
 #include "esp_heap_caps.h"
 
-#if !CONFIG_IDF_TARGET_LINUX
+#ถ้า !CONFIG_IDF_TARGET_LINUX
 /* Memory util functions are not implemented in the Linux simulator */
 #include "esp_memory_utils.h"
 #endif /* CONFIG_IDF_TARGET_LINUX */
@@ -54,7 +54,7 @@ void * pvPortMalloc(size_t xWantedSize)
      * (e.g., queues). */
     pvReturn = heap_caps_malloc(xWantedSize, portFREERTOS_HEAP_CAPS);
 
-    return pvReturn;
+    คืน pvReturn;
 }
 /*-----------------------------------------------------------*/
 
@@ -66,38 +66,38 @@ void vPortFree(void * pv)
 
 size_t xPortGetFreeHeapSize(void)
 {
-    return heap_caps_get_free_size(portFREERTOS_HEAP_CAPS);
+    คืน heap_caps_get_free_size(portFREERTOS_HEAP_CAPS);
 }
 /*-----------------------------------------------------------*/
 
 size_t xPortGetMinimumEverFreeHeapSize(void)
 {
-    return heap_caps_get_minimum_free_size(portFREERTOS_HEAP_CAPS);
+    คืน heap_caps_get_minimum_free_size(portFREERTOS_HEAP_CAPS);
 }
 /*-----------------------------------------------------------*/
 
 bool xPortCheckValidListMem(const void * ptr)
 {
-#if CONFIG_IDF_TARGET_LINUX
-    return true;
-#else /* CONFIG_IDF_TARGET_LINUX */
-    return esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
+#ถ้า CONFIG_IDF_TARGET_LINUX
+    คืน true;
+#มิฉะนั้น /* CONFIG_IDF_TARGET_LINUX */
+    คืน esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
 #endif /* CONFIG_IDF_TARGET_LINUX */
 }
 
 bool xPortCheckValidTCBMem(const void * ptr)
 {
-#if CONFIG_IDF_TARGET_LINUX
-    return true;
-#else /* CONFIG_IDF_TARGET_LINUX */
-    return esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
+#ถ้า CONFIG_IDF_TARGET_LINUX
+    คืน true;
+#มิฉะนั้น /* CONFIG_IDF_TARGET_LINUX */
+    คืน esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
 #endif /* CONFIG_IDF_TARGET_LINUX */
 }
 
-#if CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM
+#ถ้า CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM
 void * pvPortMallocStack(size_t xWantedSize)
 {
-    return heap_caps_malloc_prefer(xWantedSize, 2, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
+    คืน heap_caps_malloc_prefer(xWantedSize, 2, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
 }
 
 void vPortFreeStack(void * pv)
@@ -108,13 +108,13 @@ void vPortFreeStack(void * pv)
 
 bool xPortcheckValidStackMem(const void * ptr)
 {
-#if CONFIG_IDF_TARGET_LINUX
-    return true;
-#else /* CONFIG_IDF_TARGET_LINUX */
+#ถ้า CONFIG_IDF_TARGET_LINUX
+    คืน true;
+#มิฉะนั้น /* CONFIG_IDF_TARGET_LINUX */
 #ifdef CONFIG_FREERTOS_TASK_CREATE_ALLOW_EXT_MEM
-    return esp_ptr_byte_accessible(ptr);
-#else
-    return esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
+    คืน esp_ptr_byte_accessible(ptr);
+#มิฉะนั้น
+    คืน esp_ptr_internal(ptr) && esp_ptr_byte_accessible(ptr);
 #endif
 #endif /* CONFIG_IDF_TARGET_LINUX */
 }

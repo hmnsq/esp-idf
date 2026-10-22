@@ -35,7 +35,7 @@
 
 /* This file redefines API functions to be called through a wrapper macro, but
  * only for ports that are using the MPU. */
-#if ( portUSING_MPU_WRAPPERS == 1 )
+#ถ้า ( portUSING_MPU_WRAPPERS == 1 )
 
 /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE will be defined when this file is
  * included from queue.c or task.c to prevent it from having an effect within
@@ -117,7 +117,7 @@
         #define xQueueSelectFromSet                    MPU_xQueueSelectFromSet
         #define xQueueGenericReset                     MPU_xQueueGenericReset
 
-        #if ( configQUEUE_REGISTRY_SIZE > 0 )
+        #ถ้า ( configQUEUE_REGISTRY_SIZE > 0 )
             #define vQueueAddToRegistry                MPU_vQueueAddToRegistry
             #define vQueueUnregisterQueue              MPU_vQueueUnregisterQueue
             #define pcQueueGetName                     MPU_pcQueueGetName
@@ -167,7 +167,7 @@
         #define PRIVILEGED_DATA    __attribute__( ( section( "privileged_data" ) ) )
         #define FREERTOS_SYSTEM_CALL
 
-    #else /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
+    #มิฉะนั้น /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
 
 /* Ensure API functions go in the privileged execution section. */
         #define PRIVILEGED_FUNCTION     __attribute__( ( section( "privileged_functions" ) ) )
@@ -176,7 +176,7 @@
 
     #endif /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
 
-#else /* portUSING_MPU_WRAPPERS */
+#มิฉะนั้น /* portUSING_MPU_WRAPPERS */
 
     #define PRIVILEGED_FUNCTION
     #define PRIVILEGED_DATA

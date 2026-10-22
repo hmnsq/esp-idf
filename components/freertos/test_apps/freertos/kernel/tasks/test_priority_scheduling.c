@@ -29,7 +29,7 @@ Expected:
     - task_B should never have run
 */
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES == 1 )
+#ถ้า ( CONFIG_FREERTOS_NUMBER_OF_CORES == 1 )
 
 #define UNITY_TASK_DELAY_TICKS      10
 
@@ -40,7 +40,7 @@ static void task_A(void *arg)
 {
     task_A_ran = pdTRUE;
     /* Keeping spinning to prevent the lower priority task_B from running */
-    while (1) {
+    ขณะ (1) {
         ;
     }
 }
@@ -49,7 +49,7 @@ static void task_B(void *arg)
 {
     /* The following should never run due to task_B having a lower priority */
     task_B_ran = pdTRUE;
-    while (1) {
+    ขณะ (1) {
         ;
     }
 }
