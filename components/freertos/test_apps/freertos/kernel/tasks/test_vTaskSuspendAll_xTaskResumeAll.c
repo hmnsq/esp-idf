@@ -17,14 +17,14 @@
 /*
 Scheduler suspension behavior differs significantly in SMP FreeRTOS, thus none of these tests apply to SMP FreeRTOS
 */
-#if !CONFIG_FREERTOS_SMP
+#якщо !CONFIG_FREERTOS_SMP
 
 /*
 GP timer is used to trigger an interrupt. Test cases will register an interrupt callback called from the timer's
 interrupt callback. The functions below simply the interrupt registration/trigger/deregistration process.
 */
 
-#if SOC_GPTIMER_SUPPORTED
+#якщо SOC_GPTIMER_SUPPORTED
 
 static gptimer_handle_t gptimer = NULL;
 static bool (*registered_intr_callback)(void *) = NULL;
@@ -32,12 +32,12 @@ static bool (*registered_intr_callback)(void *) = NULL;
 static bool on_timer_alarm_cb(gptimer_handle_t timer, const gptimer_alarm_event_data_t *edata, void *user_ctx)
 {
     bool yield;
-    if (registered_intr_callback) {
+    якщо (registered_intr_callback) {
         yield = registered_intr_callback(user_ctx);
-    } else {
+    } інакше {
         yield = false;
     }
-    return yield;
+    повернути yield;
 }
 
 static void register_intr_cb(bool (*callback)(void *), void *callback_arg)
@@ -135,11 +135,11 @@ Expected:
     - Scheduler on core B should remain enabled
 --------------------------------------------------------------------------------------------------------------------- */
 
-#if !CONFIG_FREERTOS_UNICORE
+#якщо !CONFIG_FREERTOS_UNICORE
 #define TEST_BASIC_BUSY_DELAY_US    10000
 
-static volatile int taskA_sync;
-static volatile int taskB_sync;
+static volatile ціле taskA_sync;
+static volatile ціле taskB_sync;
 
 static void test_multicore_taskA(void *arg)
 {
@@ -149,7 +149,7 @@ static void test_multicore_taskA(void *arg)
     // Check scheduler on core A is enabled
     TEST_ASSERT_EQUAL(taskSCHEDULER_RUNNING, xTaskGetSchedulerState());
     taskA_sync++;
-    while (taskB_sync != 1) {
+    поки (taskB_sync != 1) {
         ;   // Wait for task B to complete its check
     }
 
@@ -158,7 +158,7 @@ static void test_multicore_taskA(void *arg)
     // Check scheduler is suspended on core A
     TEST_ASSERT_EQUAL(taskSCHEDULER_SUSPENDED, xTaskGetSchedulerState());
     taskA_sync++;
-    while (taskB_sync != 2) {
+    поки (taskB_sync != 2) {
         ;   // Wait for task B to complete its check
     }
 
@@ -168,7 +168,7 @@ static void test_multicore_taskA(void *arg)
     // Check scheduler is still suspended on core A
     TEST_ASSERT_EQUAL(taskSCHEDULER_SUSPENDED, xTaskGetSchedulerState());
     taskA_sync++;
-    while (taskB_sync != 3) {
+    поки (taskB_sync != 3) {
         ;   // Wait for task B to complete its check
     }
 
@@ -177,7 +177,7 @@ static void test_multicore_taskA(void *arg)
     // Check that scheduler has resumed resumed on core A
     TEST_ASSERT_EQUAL(taskSCHEDULER_RUNNING, xTaskGetSchedulerState());
     taskA_sync++;
-    while (taskB_sync != 4) {
+    поки (taskB_sync != 4) {
         ;   // Wait for task B to complete its check
     }
 
@@ -192,9 +192,9 @@ static void test_multicore_taskB(void *arg)
     // Wait to be started
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
-    for (int i = 1; i <= 4; i++) {
+    для (ціле i = 1; i <= 4; i++) {
         // Wait for suspended trigger from task A
-        while (taskA_sync != i) {
+        поки (taskA_sync != i) {
             ;
         }
         // Check that scheduler is still running on core B
@@ -213,7 +213,7 @@ TEST_CASE("Test vTaskSuspendAll() and xTaskResumeAll() multicore", "[freertos]")
     SemaphoreHandle_t done_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_NUMBER_OF_CORES, 0);
     TEST_ASSERT_NOT_EQUAL(NULL, done_sem);
 
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    для (ціле i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         // Create tasks on core A and core B
         TaskHandle_t taskA_hdl;
         TaskHandle_t taskB_hdl;
@@ -224,7 +224,7 @@ TEST_CASE("Test vTaskSuspendAll() and xTaskResumeAll() multicore", "[freertos]")
         taskB_sync = 0;
         xTaskNotifyGive(taskA_hdl);
         xTaskNotifyGive(taskB_hdl);
-        for (int j = 0; j < 2; j++) {
+        для (ціле j = 0; j < 2; j++) {
             xSemaphoreTake(done_sem, portMAX_DELAY);
         }
 
@@ -274,11 +274,11 @@ Expected:
         - A2 should be unblocked by core A ISR and run without issue
 --------------------------------------------------------------------------------------------------------------------- */
 
-#if !CONFIG_FREERTOS_UNICORE
+#якщо !CONFIG_FREERTOS_UNICORE
 
-#if SOC_GPTIMER_SUPPORTED
+#якщо SOC_GPTIMER_SUPPORTED
 
-static volatile int test_unblk_sync;
+static volatile ціле test_unblk_sync;
 static SemaphoreHandle_t test_unblk_done_sem;
 
 static bool test_unblk_coreA_isr(void *arg)
@@ -287,12 +287,12 @@ static bool test_unblk_coreA_isr(void *arg)
     BaseType_t task_woken = pdFALSE;
     // Unblock task b2
     vTaskNotifyGiveFromISR(a2_task_hdl, &task_woken);
-    return (task_woken == pdTRUE);
+    повернути (task_woken == pdTRUE);
 }
 
 static void test_unblk_a2_task(void *arg)
 {
-    volatile int *a2_task_run_count = (volatile int *)arg;
+    volatile ціле *a2_task_run_count = (volatile ціле *)arg;
     // Wait to be unblocked by A1
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
     (*a2_task_run_count)++;
@@ -305,7 +305,7 @@ static void test_unblk_a2_task(void *arg)
 
 static void test_unblk_a1_task(void *arg)
 {
-    volatile int a2_task_run_count = 0;
+    volatile ціле a2_task_run_count = 0;
 
     // Create task A2 to block on this core (i.e., core A)
     TaskHandle_t a2_task_hdl;
@@ -318,7 +318,7 @@ static void test_unblk_a1_task(void *arg)
 
     // Start B1
     xTaskNotifyGive((TaskHandle_t)arg);
-    while (test_unblk_sync != 1) {
+    поки (test_unblk_sync != 1) {
         ; // Wait for confirmation from B1 that scheduler has been suspended on Core B
     }
     // Verify that the scheduler is still enabled on core A
@@ -337,7 +337,7 @@ static void test_unblk_a1_task(void *arg)
 
     // Trigger B1 to resume scheduling on core B
     test_unblk_sync = 2;
-    while (test_unblk_sync != 3) {
+    поки (test_unblk_sync != 3) {
         ; // Wait for confirmation from B1 that scheduler has been resumed
     }
     // Verify that the scheduler is still enabled on core A
@@ -368,7 +368,7 @@ static void test_unblk_b1_task(void *arg)
     // Indicate to A1 that core B scheduler has been suspended
     test_unblk_sync = 1;
 
-    while (test_unblk_sync != 2) {
+    поки (test_unblk_sync != 2) {
         ;   // Wait for trigger from A1
     }
     // Resume the scheduler on core B
@@ -387,7 +387,7 @@ TEST_CASE("Test vTaskSuspendAll allows scheduling on other cores", "[freertos]")
     test_unblk_done_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_NUMBER_OF_CORES, 0);
     TEST_ASSERT_NOT_EQUAL(NULL, test_unblk_done_sem);
 
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    для (ціле i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         test_unblk_sync = 0;
         // Create a tasks
         TaskHandle_t a1_task_hdl;
@@ -396,7 +396,7 @@ TEST_CASE("Test vTaskSuspendAll allows scheduling on other cores", "[freertos]")
         TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_unblk_a1_task, "A1", 8192, (void *)b1_task_hdl, UNITY_FREERTOS_PRIORITY + 1, &a1_task_hdl, i));
         // Start A1 to and wait for both tasks to complete
         xTaskNotifyGive(a1_task_hdl);
-        for (int j = 0; j < 2; j++) {
+        для (ціле j = 0; j < 2; j++) {
             xSemaphoreTake(test_unblk_done_sem, portMAX_DELAY);
         }
         // Suspend the test tasks in case they haven't suspended themselves yet
@@ -489,7 +489,7 @@ static void test_pinned_task(void* arg)
     vTaskNotifyGiveFromISR(unpinned_task_hdl, &yield);
 
     // Busy wait to ensure that the unpinned task is scheduled
-    while (unpinned_task_running == 0)
+    поки (unpinned_task_running == 0)
         ;
 
     // Resume scheduler on core B
@@ -525,7 +525,7 @@ TEST_CASE("Test vTaskSuspendAll doesn't block unpinned tasks from being schedule
     xTaskNotifyGive(pinned_task_hdl);
 
     // Wait for test completion
-    for (int i = 0; i < 2; i++) {
+    для (ціле i = 0; i < 2; i++) {
         xSemaphoreTake(test_unpinned_sem, portMAX_DELAY);
     }
     // Suspend the test tasks in case they haven't suspended themselves yet
@@ -566,18 +566,18 @@ Expected:
 
 #define TEST_PENDED_NUM_BLOCKED_TASKS   4
 
-#if SOC_GPTIMER_SUPPORTED
+#якщо SOC_GPTIMER_SUPPORTED
 
 static bool test_pended_isr(void *arg)
 {
     TaskHandle_t *blkd_tsks = (TaskHandle_t *)arg;
     BaseType_t task_woken = pdFALSE;
     // Unblock the blocked tasks
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+    для (ціле i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
         vTaskNotifyGiveFromISR(blkd_tsks[i], &task_woken);
     }
 
-    return (task_woken == pdTRUE);
+    повернути (task_woken == pdTRUE);
 }
 
 static void test_pended_blkd_task(void *arg)
@@ -598,7 +598,7 @@ static void test_pended_running_task(void *arg)
     volatile bool has_run[TEST_PENDED_NUM_BLOCKED_TASKS];
 
     // Created blocked tasks pinned to each core
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+    для (ціле i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
         has_run[i] = false;
         TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_pended_blkd_task, "blkd", 4096, (void *)&has_run[i], UNITY_FREERTOS_PRIORITY + 2, &blkd_tsks[i], i % CONFIG_FREERTOS_NUMBER_OF_CORES));
     }
@@ -608,7 +608,7 @@ static void test_pended_running_task(void *arg)
     register_intr_cb(test_pended_isr, (void *)blkd_tsks);
 
     // Checked that all tasks are blocked and have no run yet
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+    для (ціле i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
         TEST_ASSERT_EQUAL(eBlocked, eTaskGetState(blkd_tsks[i])); // Should be eSuspended due to portMAX_DELAY
         TEST_ASSERT_EQUAL(false, has_run[i]);
     }
@@ -622,12 +622,12 @@ static void test_pended_running_task(void *arg)
 
     // Check that tasks which have affinity to the current core are blocked and have not run as the scheduler is suspended.
     // While tasks which do not have affinity to the current core are unblocked.
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+    для (ціле i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
         // Note: We use eBlocked instead of eReady due to a bug in eTaskGetState(). See (IDF-5543)
-        if (xTaskGetCoreID(blkd_tsks[i]) == xPortGetCoreID()) {
+        якщо (xTaskGetCoreID(blkd_tsks[i]) == xPortGetCoreID()) {
             TEST_ASSERT_EQUAL(eBlocked, eTaskGetState(blkd_tsks[i]));
             TEST_ASSERT_EQUAL(false, has_run[i]);
-        } else {
+        } інакше {
             TEST_ASSERT_NOT_EQUAL(eBlocked, eTaskGetState(blkd_tsks[i]));
         }
     }
@@ -637,13 +637,13 @@ static void test_pended_running_task(void *arg)
     esp_rom_delay_us(10000); // Busy delay to ensure each task has enough time to run
 
     // Check that all tasks have run
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+    для (ціле i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
         TEST_ASSERT_EQUAL(true, has_run[i]);
     }
 
     // Clean up the interrupt and tasks
     deregister_intr_cb();
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+    для (ціле i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
         vTaskDelete(blkd_tsks[i]);
     }
 
@@ -655,7 +655,7 @@ static void test_pended_running_task(void *arg)
 TEST_CASE("Test xTaskResumeAll resumes pended tasks", "[freertos]")
 {
     // Run the test on each core
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    для (ціле i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
         TaskHandle_t susp_tsk_hdl;
         TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_pended_running_task, "susp", 2048, (void *)xTaskGetCurrentTaskHandle(), UNITY_FREERTOS_PRIORITY + 1, &susp_tsk_hdl, i));
         // Wait for to be notified to test completion
@@ -695,7 +695,7 @@ Expected:
     - When the scheduler is resumed, the tasks should be scheduled and run without issue
 --------------------------------------------------------------------------------------------------------------------- */
 
-#if !CONFIG_FREERTOS_UNICORE
+#якщо !CONFIG_FREERTOS_UNICORE
 TaskHandle_t blkd_tasks[TEST_PENDED_NUM_BLOCKED_TASKS];
 SemaphoreHandle_t done_sem;
 
@@ -706,8 +706,8 @@ static void test_susp_task(void *arg)
     // Suspend the scheduler on this core
     vTaskSuspendAll();
 
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
-        if ((i % CONFIG_FREERTOS_NUMBER_OF_CORES) == xPortGetCoreID()) {
+    для (ціле i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+        якщо ((i % CONFIG_FREERTOS_NUMBER_OF_CORES) == xPortGetCoreID()) {
             // Unblock the blocked tasks pinned to this core.
             // We use the FromISR() call to create an ISR scenario and to force the unblocked task to be placed
             // on the pending ready list
@@ -730,14 +730,14 @@ static void test_susp_task(void *arg)
     vTaskSuspend(NULL);
 }
 
-#if SOC_GPTIMER_SUPPORTED
+#якщо SOC_GPTIMER_SUPPORTED
 TEST_CASE("Test xTaskSuspendAll on all cores pends all tasks and xTaskResumeAll on all cores resumes all tasks", "[freertos]")
 {
     volatile bool has_run[TEST_PENDED_NUM_BLOCKED_TASKS];
     done_sem = xSemaphoreCreateBinary();
 
     // Creat blocked tasks pinned to each core
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+    для (ціле i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
         has_run[i] = false;
         TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_pended_blkd_task, "blkd", 4096, (void *)&has_run[i], UNITY_FREERTOS_PRIORITY + 2, &blkd_tasks[i], i % CONFIG_FREERTOS_NUMBER_OF_CORES));
     }
@@ -750,8 +750,8 @@ TEST_CASE("Test xTaskSuspendAll on all cores pends all tasks and xTaskResumeAll 
     // Suspend the scheduler on this core
     vTaskSuspendAll();
 
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
-        if ((i % CONFIG_FREERTOS_NUMBER_OF_CORES) == xPortGetCoreID()) {
+    для (ціле i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+        якщо ((i % CONFIG_FREERTOS_NUMBER_OF_CORES) == xPortGetCoreID()) {
             // Unblock the blocked tasks pinned to this core.
             // We use the FromISR() call to create an ISR scenario and to force the unblocked task to be placed
             // on the pending ready list
@@ -771,13 +771,13 @@ TEST_CASE("Test xTaskSuspendAll on all cores pends all tasks and xTaskResumeAll 
     xSemaphoreTake(done_sem, portMAX_DELAY);
 
     // Verify that all blocked tasks have resumed and run when the schdulers are resumed on both cores
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+    для (ціле i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
         TEST_ASSERT_NOT_EQUAL(eBlocked, eTaskGetState(blkd_tasks[i]));
         TEST_ASSERT_EQUAL(true, has_run[i]);
     }
 
     // Cleanup
-    for (int i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
+    для (ціле i = 0; i < TEST_PENDED_NUM_BLOCKED_TASKS; i++) {
         vTaskSuspend(blkd_tasks[i]);
         vTaskDelay(10);
         vTaskDelete(blkd_tasks[i]);
@@ -881,7 +881,7 @@ void test_suspend_task(void *arg)
 
 TEST_CASE("Test vTaskSuspendAll pinned task scheduling", "[freertos]")
 {
-    for (int x = 0; x < portNUM_PROCESSORS; x++) {
+    для (ціле x = 0; x < portNUM_PROCESSORS; x++) {
         TaskHandle_t susp_task;
         TaskHandle_t blkd_task;
         done_sem1 = xSemaphoreCreateBinary();

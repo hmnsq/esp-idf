@@ -14,7 +14,7 @@
 
 #include "sdkconfig.h"
 
-#if CONFIG_FREERTOS_USE_TICKLESS_IDLE && CONFIG_PM_ENABLE
+#якщо CONFIG_FREERTOS_USE_TICKLESS_IDLE && CONFIG_PM_ENABLE
 
 #define MHZ (1000000)
 
@@ -23,7 +23,7 @@ static volatile bool test_timeout_occurred = false;
 
 static void producer_task(void *arg)
 {
-    while (1) {
+    поки (1) {
         xSemaphoreGive(test_sem);
         vTaskDelay(pdMS_TO_TICKS(5));  // Give semaphore every 5ms
     }
@@ -31,10 +31,10 @@ static void producer_task(void *arg)
 
 static void consumer_task(void *arg)
 {
-    while (1) {
+    поки (1) {
         // Try to take semaphore with 1 second timeout
         // Should never timeout as producer is giving the semaphore every 5ms
-        if (xSemaphoreTake(test_sem, pdMS_TO_TICKS(1000)) == pdFALSE) {
+        якщо (xSemaphoreTake(test_sem, pdMS_TO_TICKS(1000)) == pdFALSE) {
             test_timeout_occurred = true;  // Mark that timeout occurred
             break;
         }

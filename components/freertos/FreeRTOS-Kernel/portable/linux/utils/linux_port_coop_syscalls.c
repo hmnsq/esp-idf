@@ -35,61 +35,61 @@
 #include "linux_port_coop_internal.h"
 #include "esp_private/freertos_linux_coop_syscalls.h"
 
-static ssize_t  (*real_readv)(int, const struct iovec *, int);
-static ssize_t  (*real_writev)(int, const struct iovec *, int);
-static ssize_t  (*real_recv)(int, void *, size_t, int);
-static ssize_t  (*real_send)(int, const void *, size_t, int);
-static ssize_t  (*real_recvfrom)(int, void *, size_t, int,
+static ssize_t  (*real_readv)(ціле, const struct iovec *, ціле);
+static ssize_t  (*real_writev)(ціле, const struct iovec *, ціле);
+static ssize_t  (*real_recv)(ціле, void *, size_t, ціле);
+static ssize_t  (*real_send)(ціле, const void *, size_t, ціле);
+static ssize_t  (*real_recvfrom)(ціле, void *, size_t, ціле,
                                  struct sockaddr *, socklen_t *);
-static ssize_t  (*real_sendto)(int, const void *, size_t, int,
+static ssize_t  (*real_sendto)(ціле, const void *, size_t, ціле,
                                 const struct sockaddr *, socklen_t);
-static ssize_t  (*real_recvmsg)(int, struct msghdr *, int);
-static ssize_t  (*real_sendmsg)(int, const struct msghdr *, int);
-static int      (*real_connect)(int, const struct sockaddr *, socklen_t);
-static int      (*real_accept)(int, struct sockaddr *, socklen_t *);
-static int      (*real_pselect)(int, fd_set *, fd_set *, fd_set *,
+static ssize_t  (*real_recvmsg)(ціле, struct msghdr *, ціле);
+static ssize_t  (*real_sendmsg)(ціле, const struct msghdr *, ціле);
+static ціле      (*real_connect)(ціле, const struct sockaddr *, socklen_t);
+static ціле      (*real_accept)(ціле, struct sockaddr *, socklen_t *);
+static ціле      (*real_pselect)(ціле, fd_set *, fd_set *, fd_set *,
                                 const struct timespec *, const sigset_t *);
-static int      (*real_poll)(struct pollfd *, nfds_t, int);
-static int      (*real_socket)(int, int, int);
-static int      (*real_socketpair)(int, int, int, int[2]);
-static int      (*real_pipe)(int[2]);
-static int      (*real_pipe2)(int[2], int);
-static int      (*real_dup)(int);
-static int      (*real_dup2)(int, int);
-static int      (*real_nanosleep)(const struct timespec *, struct timespec *);
-static ssize_t  (*real_read)(int, void *, size_t);
-static ssize_t  (*real_write)(int, const void *, size_t);
-static ssize_t  (*real_pread)(int, void *, size_t, off_t);
-static ssize_t  (*real_pwrite)(int, const void *, size_t, off_t);
-static int      (*real_close)(int);
-static int      (*real_select)(int, fd_set *, fd_set *, fd_set *,
+static ціле      (*real_poll)(struct pollfd *, nfds_t, ціле);
+static ціле      (*real_socket)(ціле, ціле, ціле);
+static ціле      (*real_socketpair)(ціле, ціле, ціле, ціле[2]);
+static ціле      (*real_pipe)(ціле[2]);
+static ціле      (*real_pipe2)(ціле[2], ціле);
+static ціле      (*real_dup)(ціле);
+static ціле      (*real_dup2)(ціле, ціле);
+static ціле      (*real_nanosleep)(const struct timespec *, struct timespec *);
+static ssize_t  (*real_read)(ціле, void *, size_t);
+static ssize_t  (*real_write)(ціле, const void *, size_t);
+static ssize_t  (*real_pread)(ціле, void *, size_t, off_t);
+static ssize_t  (*real_pwrite)(ціле, const void *, size_t, off_t);
+static ціле      (*real_close)(ціле);
+static ціле      (*real_select)(ціле, fd_set *, fd_set *, fd_set *,
                                 struct timeval *);
 
-typedef int (*linux_coop_fcntl_fn_t)(int, int, ...);
+typedef ціле (*linux_coop_fcntl_fn_t)(ціле, ціле, ...);
 static linux_coop_fcntl_fn_t real_fcntl;
 
-typedef int (*linux_coop_open_fn_t)(const char *, int, mode_t);
+typedef ціле (*linux_coop_open_fn_t)(const char *, ціле, mode_t);
 static linux_coop_open_fn_t real_open;
 
 typedef struct linux_coop_fd_state {
-    int fd;
-    int user_flags;
+    ціле fd;
+    ціле user_flags;
     struct linux_coop_fd_state *next;
 } linux_coop_fd_state_t;
 
 static linux_coop_fd_state_t *s_fd_state_list;
 static pthread_mutex_t s_fd_state_lock = PTHREAD_MUTEX_INITIALIZER;
 
-static linux_coop_fd_state_t *linux_coop_find_fd_locked(int fd)
+static linux_coop_fd_state_t *linux_coop_find_fd_locked(ціле fd)
 {
     linux_coop_fd_state_t *node = s_fd_state_list;
-    while (node != NULL) {
-        if (node->fd == fd) {
-            return node;
+    поки (node != NULL) {
+        якщо (node->fd == fd) {
+            повернути node;
         }
         node = node->next;
     }
-    return NULL;
+    повернути NULL;
 }
 
 static void __attribute__((constructor)) linux_coop_resolve_all(void)
@@ -123,32 +123,32 @@ static void __attribute__((constructor)) linux_coop_resolve_all(void)
     LINUX_COOP_RESOLVE(open);
 }
 
-void linux_coop_set_nonblocking(int fd)
+void linux_coop_set_nonblocking(ціле fd)
 {
-    if (fd >= 0) {
-        int flags = real_fcntl(fd, F_GETFL, 0);
-        if (flags >= 0) {
+    якщо (fd >= 0) {
+        ціле flags = real_fcntl(fd, F_GETFL, 0);
+        якщо (flags >= 0) {
             real_fcntl(fd, F_SETFL, flags | O_NONBLOCK);
         }
     }
 }
 
-void linux_coop_track_fd(int fd, int user_flags)
+void linux_coop_track_fd(ціле fd, ціле user_flags)
 {
-    if (fd < 0) {
-        return;
+    якщо (fd < 0) {
+        повернути;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
     linux_coop_fd_state_t *node = linux_coop_find_fd_locked(fd);
-    if (node != NULL) {
+    якщо (node != NULL) {
         node->user_flags = user_flags;
         pthread_mutex_unlock(&s_fd_state_lock);
-        return;
+        повернути;
     }
 
     node = calloc(1, sizeof(*node));
-    if (node != NULL) {
+    якщо (node != NULL) {
         node->fd = fd;
         node->user_flags = user_flags;
         node->next = s_fd_state_list;
@@ -157,20 +157,20 @@ void linux_coop_track_fd(int fd, int user_flags)
     pthread_mutex_unlock(&s_fd_state_lock);
 }
 
-void linux_coop_untrack_fd(int fd)
+void linux_coop_untrack_fd(ціле fd)
 {
-    if (fd < 0) {
-        return;
+    якщо (fd < 0) {
+        повернути;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
     linux_coop_fd_state_t *prev = NULL;
     linux_coop_fd_state_t *node = s_fd_state_list;
-    while (node != NULL) {
-        if (node->fd == fd) {
-            if (prev == NULL) {
+    поки (node != NULL) {
+        якщо (node->fd == fd) {
+            якщо (prev == NULL) {
                 s_fd_state_list = node->next;
-            } else {
+            } інакше {
                 prev->next = node->next;
             }
             free(node);
@@ -182,110 +182,110 @@ void linux_coop_untrack_fd(int fd)
     pthread_mutex_unlock(&s_fd_state_lock);
 }
 
-void linux_coop_set_user_flags(int fd, int user_flags)
+void linux_coop_set_user_flags(ціле fd, ціле user_flags)
 {
     linux_coop_track_fd(fd, user_flags);
 }
 
-bool linux_coop_get_user_flags(int fd, int *flags)
+bool linux_coop_get_user_flags(ціле fd, ціле *flags)
 {
-    if (fd < 0 || flags == NULL) {
-        return false;
+    якщо (fd < 0 || flags == NULL) {
+        повернути false;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
     linux_coop_fd_state_t *node = linux_coop_find_fd_locked(fd);
-    if (node == NULL) {
+    якщо (node == NULL) {
         pthread_mutex_unlock(&s_fd_state_lock);
-        return false;
+        повернути false;
     }
     *flags = node->user_flags;
     pthread_mutex_unlock(&s_fd_state_lock);
-    return true;
+    повернути true;
 }
 
-bool linux_coop_fd_user_nonblocking(int fd)
+bool linux_coop_fd_user_nonblocking(ціле fd)
 {
-    int user_flags = 0;
-    if (linux_coop_get_user_flags(fd, &user_flags)) {
-        return (user_flags & O_NONBLOCK) != 0;
+    ціле user_flags = 0;
+    якщо (linux_coop_get_user_flags(fd, &user_flags)) {
+        повернути (user_flags & O_NONBLOCK) != 0;
     }
-    return false;
+    повернути false;
 }
 
 
-ssize_t freertos_linux_coop_read(int fd, void *buf, size_t count)
+ssize_t freertos_linux_coop_read(ціле fd, void *buf, size_t count)
 {
     LINUX_COOP_IO_LOOP(fd, real_read(fd, buf, count))
 }
 
-ssize_t freertos_linux_coop_write(int fd, const void *buf, size_t count)
+ssize_t freertos_linux_coop_write(ціле fd, const void *buf, size_t count)
 {
     LINUX_COOP_IO_LOOP(fd, real_write(fd, buf, count))
 }
 
-ssize_t freertos_linux_coop_pread(int fd, void *buf, size_t count, off_t offset)
+ssize_t freertos_linux_coop_pread(ціле fd, void *buf, size_t count, off_t offset)
 {
     LINUX_COOP_IO_LOOP(fd, real_pread(fd, buf, count, offset))
 }
 
-ssize_t freertos_linux_coop_pwrite(int fd, const void *buf, size_t count, off_t offset)
+ssize_t freertos_linux_coop_pwrite(ціле fd, const void *buf, size_t count, off_t offset)
 {
     LINUX_COOP_IO_LOOP(fd, real_pwrite(fd, buf, count, offset))
 }
 
-int freertos_linux_coop_open(const char *path, int flags, int mode)
+ціле freertos_linux_coop_open(const char *path, ціле flags, ціле mode)
 {
-    int fd = real_open(path, flags, (mode_t)mode);
+    ціле fd = real_open(path, flags, (mode_t)mode);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, flags & O_NONBLOCK);
-    return fd;
+    повернути fd;
 }
 
-int freertos_linux_coop_close(int fd)
+ціле freertos_linux_coop_close(ціле fd)
 {
-    int ret = real_close(fd);
-    if (ret == 0 || errno == EINTR) {
+    ціле ret = real_close(fd);
+    якщо (ret == 0 || errno == EINTR) {
         /* On Linux, close() always releases the fd even when returning
          * EINTR.  Retrying would risk closing a fd reused by another
          * thread.  Treat EINTR as success. */
         linux_coop_untrack_fd(fd);
-        return 0;
+        повернути 0;
     }
-    return -1;
+    повернути -1;
 }
 
-int freertos_linux_coop_fcntl(int fd, int cmd, int arg)
+ціле freertos_linux_coop_fcntl(ціле fd, ціле cmd, ціле arg)
 {
-    if (cmd == F_GETFL) {
-        int real_flags = real_fcntl(fd, F_GETFL, 0);
-        if (real_flags < 0) {
-            return -1;
+    якщо (cmd == F_GETFL) {
+        ціле real_flags = real_fcntl(fd, F_GETFL, 0);
+        якщо (real_flags < 0) {
+            повернути -1;
         }
-        int user_flags = 0;
-        if (linux_coop_get_user_flags(fd, &user_flags)) {
+        ціле user_flags = 0;
+        якщо (linux_coop_get_user_flags(fd, &user_flags)) {
             real_flags &= ~O_NONBLOCK;
             real_flags |= (user_flags & O_NONBLOCK);
         }
-        return real_flags;
+        повернути real_flags;
     }
-    if (cmd == F_SETFL) {
+    якщо (cmd == F_SETFL) {
         linux_coop_set_user_flags(fd, arg);
-        int internal_flags = arg | O_NONBLOCK;
-        return real_fcntl(fd, F_SETFL, internal_flags);
+        ціле internal_flags = arg | O_NONBLOCK;
+        повернути real_fcntl(fd, F_SETFL, internal_flags);
     }
-    return real_fcntl(fd, cmd, arg);
+    повернути real_fcntl(fd, cmd, arg);
 }
 
-int freertos_linux_coop_select(int nfds, fd_set *readfds, fd_set *writefds,
+ціле freertos_linux_coop_select(ціле nfds, fd_set *readfds, fd_set *writefds,
                       fd_set *exceptfds, struct timeval *timeout)
 {
     long timeout_ms = -1;
-    if (timeout != NULL) {
+    якщо (timeout != NULL) {
         timeout_ms = (long)timeout->tv_sec * 1000 +
                      (timeout->tv_usec + 999) / 1000;
-        if (timeout_ms == 0) {
-            return real_select(nfds, readfds, writefds, exceptfds, timeout);
+        якщо (timeout_ms == 0) {
+            повернути real_select(nfds, readfds, writefds, exceptfds, timeout);
         }
     }
 
@@ -294,38 +294,38 @@ int freertos_linux_coop_select(int nfds, fd_set *readfds, fd_set *writefds,
      * iterations we must snapshot the caller's sets and restore them on every
      * loop. */
     fd_set rfds_in, wfds_in, efds_in;
-    if (readfds != NULL) {
+    якщо (readfds != NULL) {
         rfds_in = *readfds;
     }
-    if (writefds != NULL) {
+    якщо (writefds != NULL) {
         wfds_in = *writefds;
     }
-    if (exceptfds != NULL) {
+    якщо (exceptfds != NULL) {
         efds_in = *exceptfds;
     }
 
     long waited_ms = 0;
-    while (1) {
-        if (readfds != NULL) {
+    поки (1) {
+        якщо (readfds != NULL) {
             *readfds = rfds_in;
         }
-        if (writefds != NULL) {
+        якщо (writefds != NULL) {
             *writefds = wfds_in;
         }
-        if (exceptfds != NULL) {
+        якщо (exceptfds != NULL) {
             *exceptfds = efds_in;
         }
 
         struct timeval zero_tv = {0, 0};
-        int ret = real_select(nfds, readfds, writefds, exceptfds, &zero_tv);
-        if (ret != 0) {
-            return ret;
+        ціле ret = real_select(nfds, readfds, writefds, exceptfds, &zero_tv);
+        якщо (ret != 0) {
+            повернути ret;
         }
-        if (timeout_ms == 0) {
-            return 0;
+        якщо (timeout_ms == 0) {
+            повернути 0;
         }
-        if (timeout_ms > 0 && waited_ms >= timeout_ms) {
-            return 0;
+        якщо (timeout_ms > 0 && waited_ms >= timeout_ms) {
+            повернути 0;
         }
         linux_coop_yield(LINUX_COOP_TICK_MS);
         waited_ms += LINUX_COOP_TICK_MS;
@@ -346,189 +346,189 @@ void freertos_linux_coop_syscalls_init(void)
  * is linked.  When VFS is absent the weak versions provide cooperative
  * behaviour directly via real libc. */
 
-__attribute__((weak)) ssize_t read(int fd, void *buf, size_t count)
+__attribute__((weak)) ssize_t read(ціле fd, void *buf, size_t count)
 {
-    return freertos_linux_coop_read(fd, buf, count);
+    повернути freertos_linux_coop_read(fd, buf, count);
 }
 
-__attribute__((weak)) ssize_t write(int fd, const void *buf, size_t count)
+__attribute__((weak)) ssize_t write(ціле fd, const void *buf, size_t count)
 {
-    return freertos_linux_coop_write(fd, buf, count);
+    повернути freertos_linux_coop_write(fd, buf, count);
 }
 
-__attribute__((weak)) ssize_t pread(int fd, void *buf, size_t count, off_t offset)
+__attribute__((weak)) ssize_t pread(ціле fd, void *buf, size_t count, off_t offset)
 {
-    return freertos_linux_coop_pread(fd, buf, count, offset);
+    повернути freertos_linux_coop_pread(fd, buf, count, offset);
 }
 
-__attribute__((weak)) ssize_t pwrite(int fd, const void *buf, size_t count, off_t offset)
+__attribute__((weak)) ssize_t pwrite(ціле fd, const void *buf, size_t count, off_t offset)
 {
-    return freertos_linux_coop_pwrite(fd, buf, count, offset);
+    повернути freertos_linux_coop_pwrite(fd, buf, count, offset);
 }
 
-__attribute__((weak)) int open(const char *path, int flags, ...)
+__attribute__((weak)) ціле open(const char *path, ціле flags, ...)
 {
-    int mode = 0;
-    if (flags & O_CREAT) {
+    ціле mode = 0;
+    якщо (flags & O_CREAT) {
         va_list ap;
         va_start(ap, flags);
-        mode = va_arg(ap, int);
+        mode = va_arg(ap, ціле);
         va_end(ap);
     }
-    return freertos_linux_coop_open(path, flags, mode);
+    повернути freertos_linux_coop_open(path, flags, mode);
 }
 
-__attribute__((weak)) int close(int fd)
+__attribute__((weak)) ціле close(ціле fd)
 {
-    return freertos_linux_coop_close(fd);
+    повернути freertos_linux_coop_close(fd);
 }
 
-__attribute__((weak)) int fcntl(int fd, int cmd, ...)
+__attribute__((weak)) ціле fcntl(ціле fd, ціле cmd, ...)
 {
-    int arg = 0;
-    if (cmd != F_GETFL) {
+    ціле arg = 0;
+    якщо (cmd != F_GETFL) {
         va_list list;
         va_start(list, cmd);
-        arg = va_arg(list, int);
+        arg = va_arg(list, ціле);
         va_end(list);
     }
-    return freertos_linux_coop_fcntl(fd, cmd, arg);
+    повернути freertos_linux_coop_fcntl(fd, cmd, arg);
 }
 
-__attribute__((weak)) int select(int nfds, fd_set *readfds, fd_set *writefds,
+__attribute__((weak)) ціле select(ціле nfds, fd_set *readfds, fd_set *writefds,
                                  fd_set *exceptfds, struct timeval *timeout)
 {
-    return freertos_linux_coop_select(nfds, readfds, writefds, exceptfds, timeout);
+    повернути freertos_linux_coop_select(nfds, readfds, writefds, exceptfds, timeout);
 }
 
-ssize_t freertos_linux_coop_readv(int fd, const struct iovec *iov, int iovcnt)
+ssize_t freertos_linux_coop_readv(ціле fd, const struct iovec *iov, ціле iovcnt)
 {
     LINUX_COOP_IO_LOOP(fd, real_readv(fd, iov, iovcnt))
 }
 
-ssize_t freertos_linux_coop_writev(int fd, const struct iovec *iov, int iovcnt)
+ssize_t freertos_linux_coop_writev(ціле fd, const struct iovec *iov, ціле iovcnt)
 {
     LINUX_COOP_IO_LOOP(fd, real_writev(fd, iov, iovcnt))
 }
 
-ssize_t freertos_linux_coop_recv(int sockfd, void *buf, size_t len, int flags)
+ssize_t freertos_linux_coop_recv(ціле sockfd, void *buf, size_t len, ціле flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recv(sockfd, buf, len, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_send(int sockfd, const void *buf, size_t len, int flags)
+ssize_t freertos_linux_coop_send(ціле sockfd, const void *buf, size_t len, ціле flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_send(sockfd, buf, len, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_recvfrom(int sockfd, void *buf, size_t len, int flags,
+ssize_t freertos_linux_coop_recvfrom(ціле sockfd, void *buf, size_t len, ціле flags,
                  struct sockaddr *src_addr, socklen_t *addrlen)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recvfrom(sockfd, buf, len, flags | MSG_DONTWAIT,
                             src_addr, addrlen))
 }
 
-ssize_t freertos_linux_coop_sendto(int sockfd, const void *buf, size_t len, int flags,
+ssize_t freertos_linux_coop_sendto(ціле sockfd, const void *buf, size_t len, ціле flags,
                const struct sockaddr *dest_addr, socklen_t addrlen)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_sendto(sockfd, buf, len, flags | MSG_DONTWAIT,
                           dest_addr, addrlen))
 }
 
-ssize_t freertos_linux_coop_recvmsg(int sockfd, struct msghdr *msg, int flags)
+ssize_t freertos_linux_coop_recvmsg(ціле sockfd, struct msghdr *msg, ціле flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recvmsg(sockfd, msg, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_sendmsg(int sockfd, const struct msghdr *msg, int flags)
+ssize_t freertos_linux_coop_sendmsg(ціле sockfd, const struct msghdr *msg, ціле flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_sendmsg(sockfd, msg, flags | MSG_DONTWAIT))
 }
 
-__attribute__((weak)) ssize_t readv(int fd, const struct iovec *iov, int iovcnt)
+__attribute__((weak)) ssize_t readv(ціле fd, const struct iovec *iov, ціле iovcnt)
 {
-    return freertos_linux_coop_readv(fd, iov, iovcnt);
+    повернути freertos_linux_coop_readv(fd, iov, iovcnt);
 }
 
-__attribute__((weak)) ssize_t writev(int fd, const struct iovec *iov, int iovcnt)
+__attribute__((weak)) ssize_t writev(ціле fd, const struct iovec *iov, ціле iovcnt)
 {
-    return freertos_linux_coop_writev(fd, iov, iovcnt);
+    повернути freertos_linux_coop_writev(fd, iov, iovcnt);
 }
 
-__attribute__((weak)) ssize_t recv(int sockfd, void *buf, size_t len, int flags)
+__attribute__((weak)) ssize_t recv(ціле sockfd, void *buf, size_t len, ціле flags)
 {
-    return freertos_linux_coop_recv(sockfd, buf, len, flags);
+    повернути freertos_linux_coop_recv(sockfd, buf, len, flags);
 }
 
-__attribute__((weak)) ssize_t send(int sockfd, const void *buf, size_t len, int flags)
+__attribute__((weak)) ssize_t send(ціле sockfd, const void *buf, size_t len, ціле flags)
 {
-    return freertos_linux_coop_send(sockfd, buf, len, flags);
+    повернути freertos_linux_coop_send(sockfd, buf, len, flags);
 }
 
-__attribute__((weak)) ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
+__attribute__((weak)) ssize_t recvfrom(ціле sockfd, void *buf, size_t len, ціле flags,
                  struct sockaddr *src_addr, socklen_t *addrlen)
 {
-    return freertos_linux_coop_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
+    повернути freertos_linux_coop_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
 }
 
-__attribute__((weak)) ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
+__attribute__((weak)) ssize_t sendto(ціле sockfd, const void *buf, size_t len, ціле flags,
                const struct sockaddr *dest_addr, socklen_t addrlen)
 {
-    return freertos_linux_coop_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
+    повернути freertos_linux_coop_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
 }
 
-__attribute__((weak)) ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
+__attribute__((weak)) ssize_t recvmsg(ціле sockfd, struct msghdr *msg, ціле flags)
 {
-    return freertos_linux_coop_recvmsg(sockfd, msg, flags);
+    повернути freertos_linux_coop_recvmsg(sockfd, msg, flags);
 }
 
-__attribute__((weak)) ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags)
+__attribute__((weak)) ssize_t sendmsg(ціле sockfd, const struct msghdr *msg, ціле flags)
 {
-    return freertos_linux_coop_sendmsg(sockfd, msg, flags);
+    повернути freertos_linux_coop_sendmsg(sockfd, msg, flags);
 }
 
-int freertos_linux_coop_connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+ціле freertos_linux_coop_connect(ціле sockfd, const struct sockaddr *addr, socklen_t addrlen)
 {
-    while (1)
+    поки (1)
     {
-        int ret = real_connect(sockfd, addr, addrlen);
-        if (ret == 0) {
-            return ret;
+        ціле ret = real_connect(sockfd, addr, addrlen);
+        якщо (ret == 0) {
+            повернути ret;
         }
 
-        if (errno == EINPROGRESS || errno == EALREADY) {
+        якщо (errno == EINPROGRESS || errno == EALREADY) {
             struct pollfd pfd;
             pfd.fd = sockfd;
             pfd.events = POLLOUT;
             pfd.revents = 0;
 
-            int poll_retries = 0;
-            while (1)
+            ціле poll_retries = 0;
+            поки (1)
             {
-                int press = real_poll(&pfd, 1, 0);
-                if (press > 0) {
-                    int so_err = 0;
+                ціле press = real_poll(&pfd, 1, 0);
+                якщо (press > 0) {
+                    ціле so_err = 0;
                     socklen_t len = sizeof(so_err);
-                    if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
+                    якщо (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
                                    &so_err, &len) < 0) {
-                        return -1;
+                        повернути -1;
                     }
-                    if (so_err == 0) {
-                        return 0;
-                    } else {
+                    якщо (so_err == 0) {
+                        повернути 0;
+                    } інакше {
                         errno = so_err;
-                        return -1;
+                        повернути -1;
                     }
-                } else if (press == 0) {
+                } інакше якщо (press == 0) {
                     linux_coop_yield(LINUX_COOP_TICK_MS);
                     continue;
-                } else {
-                    if (errno == EINTR) {
+                } інакше {
+                    якщо (errno == EINTR) {
                         continue;
                     }
                     /* Non-EINTR poll error; bail out after a few retries */
-                    if (++poll_retries > 3) {
-                        return -1;
+                    якщо (++poll_retries > 3) {
+                        повернути -1;
                     }
                     linux_coop_yield(LINUX_COOP_TICK_MS);
                     continue;
@@ -536,62 +536,62 @@ int freertos_linux_coop_connect(int sockfd, const struct sockaddr *addr, socklen
             }
         }
 
-        if (errno == EINTR) {
-            return -1;
+        якщо (errno == EINTR) {
+            повернути -1;
         }
 
-        return -1;
+        повернути -1;
     }
 }
 
-int freertos_linux_coop_accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+ціле freertos_linux_coop_accept(ціле sockfd, struct sockaddr *addr, socklen_t *addrlen)
 {
-    while (1)
+    поки (1)
     {
-        int fd = real_accept(sockfd, addr, addrlen);
-        if (fd >= 0) {
+        ціле fd = real_accept(sockfd, addr, addrlen);
+        якщо (fd >= 0) {
             linux_coop_set_nonblocking(fd);
             linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(sockfd) ? O_NONBLOCK : 0);
-            return fd;
+            повернути fd;
         }
-        if (errno == EAGAIN || errno == EWOULDBLOCK) {
-            if (linux_coop_fd_user_nonblocking(sockfd)) {
-                return -1;
+        якщо (errno == EAGAIN || errno == EWOULDBLOCK) {
+            якщо (linux_coop_fd_user_nonblocking(sockfd)) {
+                повернути -1;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
             continue;
         }
-        return -1;
+        повернути -1;
     }
 }
 
-int freertos_linux_coop_pselect(int nfds, fd_set *readfds, fd_set *writefds,
+ціле freertos_linux_coop_pselect(ціле nfds, fd_set *readfds, fd_set *writefds,
             fd_set *exceptfds, const struct timespec *timeout,
             const sigset_t *sigmask)
 {
     long timeout_ms = -1;
-    if (timeout != NULL) {
+    якщо (timeout != NULL) {
         timeout_ms = (long)timeout->tv_sec * 1000 +
                      (timeout->tv_nsec + 999999) / 1000000;
-        if (timeout_ms == 0) {
-            return real_pselect(nfds, readfds, writefds, exceptfds,
+        якщо (timeout_ms == 0) {
+            повернути real_pselect(nfds, readfds, writefds, exceptfds,
                                 timeout, sigmask);
         }
     }
 
     long waited_ms = 0;
-    while (1)
+    поки (1)
     {
         struct timespec zero_ts = {0, 0};
-        int ret = real_pselect(nfds, readfds, writefds, exceptfds,
+        ціле ret = real_pselect(nfds, readfds, writefds, exceptfds,
                                &zero_ts, sigmask);
-        if (ret != 0) {
-            return ret;
+        якщо (ret != 0) {
+            повернути ret;
         }
 
-        if (timeout_ms == 0 ||
+        якщо (timeout_ms == 0 ||
             (timeout_ms > 0 && waited_ms >= timeout_ms)) {
-            return 0;
+            повернути 0;
         }
 
         linux_coop_yield(LINUX_COOP_TICK_MS);
@@ -599,197 +599,197 @@ int freertos_linux_coop_pselect(int nfds, fd_set *readfds, fd_set *writefds,
     }
 }
 
-int freertos_linux_coop_poll(struct pollfd *fds, nfds_t nfds, int timeout)
+ціле freertos_linux_coop_poll(struct pollfd *fds, nfds_t nfds, ціле timeout)
 {
-    if (timeout == 0) {
-        return real_poll(fds, nfds, 0);
+    якщо (timeout == 0) {
+        повернути real_poll(fds, nfds, 0);
     }
 
     long timeout_ms = -1;
-    if (timeout > 0) {
+    якщо (timeout > 0) {
         timeout_ms = timeout;
     }
 
     long waited_ms = 0;
 
-    while (1)
+    поки (1)
     {
-        int ret = real_poll(fds, nfds, 0);
-        if (ret > 0) {
-            return ret;
-        } else if (ret == 0) {
-            if (timeout_ms == 0 ||
+        ціле ret = real_poll(fds, nfds, 0);
+        якщо (ret > 0) {
+            повернути ret;
+        } інакше якщо (ret == 0) {
+            якщо (timeout_ms == 0 ||
                 (timeout_ms > 0 && waited_ms >= timeout_ms)) {
-                return 0;
+                повернути 0;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
             waited_ms += LINUX_COOP_TICK_MS;
             continue;
-        } else {
-            if (errno == EINTR) {
+        } інакше {
+            якщо (errno == EINTR) {
                 continue;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
-            if (timeout_ms > 0 && waited_ms >= timeout_ms) {
-                return -1;
+            якщо (timeout_ms > 0 && waited_ms >= timeout_ms) {
+                повернути -1;
             }
             waited_ms += LINUX_COOP_TICK_MS;
         }
     }
 }
 
-int nanosleep(const struct timespec *req, struct timespec *rem)
+ціле nanosleep(const struct timespec *req, struct timespec *rem)
 {
-    if (req == NULL) {
+    якщо (req == NULL) {
         errno = EFAULT;
-        return -1;
+        повернути -1;
     }
-    if (!linux_port_in_freertos_task()) {
-        return real_nanosleep(req, rem);
+    якщо (!linux_port_in_freertos_task()) {
+        повернути real_nanosleep(req, rem);
     }
     long ms = req->tv_sec * 1000 + (req->tv_nsec + 999999) / 1000000;
-    if (ms <= 0) {
+    якщо (ms <= 0) {
         ms = 1;
     }
     vTaskDelay(ms);
-    if (rem) {
+    якщо (rem) {
         rem->tv_sec = 0;
         rem->tv_nsec = 0;
     }
-    return 0;
+    повернути 0;
 }
 
-unsigned int sleep(unsigned int seconds)
+unsigned ціле sleep(unsigned ціле seconds)
 {
     linux_coop_yield(seconds * 1000);
-    return 0;
+    повернути 0;
 }
 
-int usleep(useconds_t usec)
+ціле usleep(useconds_t usec)
 {
     linux_coop_yield(usec / 1000);
-    return 0;
+    повернути 0;
 }
 
-int freertos_linux_coop_socket(int domain, int type, int protocol)
+ціле freertos_linux_coop_socket(ціле domain, ціле type, ціле protocol)
 {
-    int fd = real_socket(domain, type, protocol);
+    ціле fd = real_socket(domain, type, protocol);
     linux_coop_set_nonblocking(fd);
 #ifdef SOCK_NONBLOCK
-    const int user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
-#else
-    const int user_flags = 0;
+    const ціле user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
+#інакше
+    const ціле user_flags = 0;
 #endif
     linux_coop_track_fd(fd, user_flags);
-    return fd;
+    повернути fd;
 }
 
-int freertos_linux_coop_socketpair(int domain, int type, int protocol, int *sv)
+ціле freertos_linux_coop_socketpair(ціле domain, ціле type, ціле protocol, ціле *sv)
 {
-    int ret = real_socketpair(domain, type, protocol, sv);
-    if (ret == 0) {
+    ціле ret = real_socketpair(domain, type, protocol, sv);
+    якщо (ret == 0) {
         linux_coop_set_nonblocking(sv[0]);
         linux_coop_set_nonblocking(sv[1]);
 #ifdef SOCK_NONBLOCK
-        const int user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
-#else
-        const int user_flags = 0;
+        const ціле user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
+#інакше
+        const ціле user_flags = 0;
 #endif
         linux_coop_track_fd(sv[0], user_flags);
         linux_coop_track_fd(sv[1], user_flags);
     }
-    return ret;
+    повернути ret;
 }
 
-int freertos_linux_coop_pipe(int *fds)
+ціле freertos_linux_coop_pipe(ціле *fds)
 {
-    int ret = real_pipe(fds);
-    if (ret == 0) {
+    ціле ret = real_pipe(fds);
+    якщо (ret == 0) {
         linux_coop_set_nonblocking(fds[0]);
         linux_coop_set_nonblocking(fds[1]);
         linux_coop_track_fd(fds[0], 0);
         linux_coop_track_fd(fds[1], 0);
     }
-    return ret;
+    повернути ret;
 }
 
-int freertos_linux_coop_pipe2(int *fds, int flags)
+ціле freertos_linux_coop_pipe2(ціле *fds, ціле flags)
 {
-    int ret = real_pipe2(fds, flags);
-    if (ret == 0) {
+    ціле ret = real_pipe2(fds, flags);
+    якщо (ret == 0) {
         linux_coop_set_nonblocking(fds[0]);
         linux_coop_set_nonblocking(fds[1]);
-        const int user_flags = (flags & O_NONBLOCK) ? O_NONBLOCK : 0;
+        const ціле user_flags = (flags & O_NONBLOCK) ? O_NONBLOCK : 0;
         linux_coop_track_fd(fds[0], user_flags);
         linux_coop_track_fd(fds[1], user_flags);
     }
-    return ret;
+    повернути ret;
 }
 
-int freertos_linux_coop_dup(int oldfd)
+ціле freertos_linux_coop_dup(ціле oldfd)
 {
-    int fd = real_dup(oldfd);
+    ціле fd = real_dup(oldfd);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(oldfd) ? O_NONBLOCK : 0);
-    return fd;
+    повернути fd;
 }
 
-int freertos_linux_coop_dup2(int oldfd, int newfd)
+ціле freertos_linux_coop_dup2(ціле oldfd, ціле newfd)
 {
-    int fd = real_dup2(oldfd, newfd);
+    ціле fd = real_dup2(oldfd, newfd);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(oldfd) ? O_NONBLOCK : 0);
-    return fd;
+    повернути fd;
 }
 
-__attribute__((weak)) int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+__attribute__((weak)) ціле connect(ціле sockfd, const struct sockaddr *addr, socklen_t addrlen)
 {
-    return freertos_linux_coop_connect(sockfd, addr, addrlen);
+    повернути freertos_linux_coop_connect(sockfd, addr, addrlen);
 }
 
-__attribute__((weak)) int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+__attribute__((weak)) ціле accept(ціле sockfd, struct sockaddr *addr, socklen_t *addrlen)
 {
-    return freertos_linux_coop_accept(sockfd, addr, addrlen);
+    повернути freertos_linux_coop_accept(sockfd, addr, addrlen);
 }
 
-__attribute__((weak)) int pselect(int nfds, fd_set *readfds, fd_set *writefds,
+__attribute__((weak)) ціле pselect(ціле nfds, fd_set *readfds, fd_set *writefds,
             fd_set *exceptfds, const struct timespec *timeout,
             const sigset_t *sigmask)
 {
-    return freertos_linux_coop_pselect(nfds, readfds, writefds, exceptfds, timeout, sigmask);
+    повернути freertos_linux_coop_pselect(nfds, readfds, writefds, exceptfds, timeout, sigmask);
 }
 
-__attribute__((weak)) int poll(struct pollfd *fds, nfds_t nfds, int timeout)
+__attribute__((weak)) ціле poll(struct pollfd *fds, nfds_t nfds, ціле timeout)
 {
-    return freertos_linux_coop_poll(fds, nfds, timeout);
+    повернути freertos_linux_coop_poll(fds, nfds, timeout);
 }
 
-__attribute__((weak)) int socket(int domain, int type, int protocol)
+__attribute__((weak)) ціле socket(ціле domain, ціле type, ціле protocol)
 {
-    return freertos_linux_coop_socket(domain, type, protocol);
+    повернути freertos_linux_coop_socket(domain, type, protocol);
 }
 
-__attribute__((weak)) int socketpair(int domain, int type, int protocol, int sv[2])
+__attribute__((weak)) ціле socketpair(ціле domain, ціле type, ціле protocol, ціле sv[2])
 {
-    return freertos_linux_coop_socketpair(domain, type, protocol, sv);
+    повернути freertos_linux_coop_socketpair(domain, type, protocol, sv);
 }
 
-__attribute__((weak)) int pipe(int fds[2])
+__attribute__((weak)) ціле pipe(ціле fds[2])
 {
-    return freertos_linux_coop_pipe(fds);
+    повернути freertos_linux_coop_pipe(fds);
 }
 
-__attribute__((weak)) int pipe2(int fds[2], int flags)
+__attribute__((weak)) ціле pipe2(ціле fds[2], ціле flags)
 {
-    return freertos_linux_coop_pipe2(fds, flags);
+    повернути freertos_linux_coop_pipe2(fds, flags);
 }
 
-__attribute__((weak)) int dup(int oldfd)
+__attribute__((weak)) ціле dup(ціле oldfd)
 {
-    return freertos_linux_coop_dup(oldfd);
+    повернути freertos_linux_coop_dup(oldfd);
 }
 
-__attribute__((weak)) int dup2(int oldfd, int newfd)
+__attribute__((weak)) ціле dup2(ціле oldfd, ціле newfd)
 {
-    return freertos_linux_coop_dup2(oldfd, newfd);
+    повернути freertos_linux_coop_dup2(oldfd, newfd);
 }

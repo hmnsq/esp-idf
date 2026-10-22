@@ -6,7 +6,7 @@
 
 #include "sdkconfig.h"
 
-#if CONFIG_IDF_TARGET_ARCH_XTENSA
+#якщо CONFIG_IDF_TARGET_ARCH_XTENSA
 
 #include <stdint.h>
 #include "esp_intr_alloc.h"
@@ -18,7 +18,7 @@
 #include "xtensa/xt_specreg.h"
 #include "xtensa_api.h"
 
-#if XCHAL_HAVE_LOOPS
+#якщо XCHAL_HAVE_LOOPS
 
 #define SW_ISR_LEVEL_1      7
 #define SW_ISR_MASK         (1U << SW_ISR_LEVEL_1)
@@ -29,21 +29,21 @@ static inline uint32_t read_lbeg(void)
 {
     uint32_t val;
     __asm__ volatile("rsr.lbeg %0" : "=r"(val));
-    return val;
+    повернути val;
 }
 
 static inline uint32_t read_lend(void)
 {
     uint32_t val;
     __asm__ volatile("rsr.lend %0" : "=r"(val));
-    return val;
+    повернути val;
 }
 
 static inline uint32_t read_lcount(void)
 {
     uint32_t val;
     __asm__ volatile("rsr.lcount %0" : "=r"(val));
-    return val;
+    повернути val;
 }
 
 /*
@@ -79,7 +79,7 @@ static uint32_t IRAM_ATTR __attribute__((noinline, noclone)) zol_reentry_probe(u
         : "memory"
     );
 
-    return body_hits;
+    повернути body_hits;
 }
 
 static void IRAM_ATTR lcount_probe_isr(void *arg)
@@ -91,7 +91,7 @@ static void IRAM_ATTR lcount_probe_isr(void *arg)
     s_isr_body_hits = zol_reentry_probe(0);
 
     vTaskNotifyGiveFromISR(waiter_task, &should_yield);
-    if (should_yield == pdTRUE) {
+    якщо (should_yield == pdTRUE) {
         portYIELD_FROM_ISR();
     }
 }

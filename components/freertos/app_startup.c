@@ -34,7 +34,7 @@
 For now, AMP is not supported (i.e., running FreeRTOS on one core and a bare metal/other OS on the other). Therefore,
 CONFIG_FREERTOS_UNICORE and CONFIG_ESP_SYSTEM_SINGLE_CORE_MODE should be identical. We add a check for this here.
 */
-#if CONFIG_FREERTOS_UNICORE != CONFIG_ESP_SYSTEM_SINGLE_CORE_MODE
+#якщо CONFIG_FREERTOS_UNICORE != CONFIG_ESP_SYSTEM_SINGLE_CORE_MODE
 #error "AMP not supported. FreeRTOS number of cores and system number of cores must be identical"
 #endif
 
@@ -74,7 +74,7 @@ void esp_startup_start_app(void)
     port_start_app_hook(void);
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-    if (port_start_app_hook != NULL) {
+    якщо (port_start_app_hook != NULL) {
         ESP_EARLY_LOGW(APP_START_TAG,
                        "port_start_app_hook is deprecated and will be removed in IDF 7.0. "
                        "Use ESP_PRE_SCHEDULER_HANDLER_REGISTER instead.");
@@ -88,17 +88,17 @@ void esp_startup_start_app(void)
 
 // --------------- CPU[1:N-1] App Startup ------------------
 
-#if !CONFIG_FREERTOS_UNICORE
+#якщо !CONFIG_FREERTOS_UNICORE
 void esp_startup_start_app_other_cores(void)
 {
     // For now, we only support up to two core: 0 and 1.
-    if (xPortGetCoreID() >= 2) {
+    якщо (xPortGetCoreID() >= 2) {
         abort();
     }
 
     // Wait for CPU0 to start FreeRTOS before progressing
     extern volatile unsigned port_xSchedulerRunning[CONFIG_FREERTOS_NUMBER_OF_CORES];
-    while (port_xSchedulerRunning[0] == 0) {
+    поки (port_xSchedulerRunning[0] == 0) {
         ;
     }
 
@@ -125,21 +125,21 @@ ESP_LOG_ATTR_TAG(MAIN_TAG, "main_task");
 */
 static void wait_for_all_cores_ready(void)
 {
-#if !CONFIG_FREERTOS_UNICORE
+#якщо !CONFIG_FREERTOS_UNICORE
     extern volatile unsigned port_uxCoreStartupDone[CONFIG_FREERTOS_NUMBER_OF_CORES];
     bool all_cpus_has_been_started;
     do {
         all_cpus_has_been_started = true;
-        for (int cpu = 0; cpu < CONFIG_FREERTOS_NUMBER_OF_CORES; cpu++) {
+        для (ціле cpu = 0; cpu < CONFIG_FREERTOS_NUMBER_OF_CORES; cpu++) {
             all_cpus_has_been_started &= port_uxCoreStartupDone[cpu] != 0;
         }
-    } while (!all_cpus_has_been_started);
+    } поки (!all_cpus_has_been_started);
 #endif // !CONFIG_FREERTOS_UNICORE
 }
 
 static void main_task(void* args)
 {
-    ESP_LOGI(MAIN_TAG, "Started on CPU%d", (int)xPortGetCoreID());
+    ESP_LOGI(MAIN_TAG, "Started on CPU%d", (ціле)xPortGetCoreID());
 
     wait_for_all_cores_ready();
 

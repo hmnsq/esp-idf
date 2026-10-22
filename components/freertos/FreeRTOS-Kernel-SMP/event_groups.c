@@ -53,18 +53,18 @@
  * to include event groups functionality. This #if is closed at the very bottom
  * of this file. If you want to include event groups then ensure
  * configUSE_EVENT_GROUPS is set to 1 in FreeRTOSConfig.h. */
-#if ( configUSE_EVENT_GROUPS == 1 )
+#якщо ( configUSE_EVENT_GROUPS == 1 )
 
     typedef struct EventGroupDef_t
     {
         EventBits_t uxEventBits;
         List_t xTasksWaitingForBits; /**< List of tasks waiting for a bit to be set. */
 
-        #if ( configUSE_TRACE_FACILITY == 1 )
+        #якщо ( configUSE_TRACE_FACILITY == 1 )
             UBaseType_t uxEventGroupNumber;
         #endif
 
-        #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+        #якщо ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
             uint8_t ucStaticallyAllocated; /**< Set to pdTRUE if the event group is statically allocated to ensure no attempt is made to free the memory. */
         #endif
     } EventGroup_t;
@@ -85,7 +85,7 @@
 
 /*-----------------------------------------------------------*/
 
-    #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+    #якщо ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
         EventGroupHandle_t xEventGroupCreateStatic( StaticEventGroup_t * pxEventGroupBuffer )
         {
@@ -96,7 +96,7 @@
             /* A StaticEventGroup_t object must be provided. */
             configASSERT( pxEventGroupBuffer );
 
-            #if ( configASSERT_DEFINED == 1 )
+            #якщо ( configASSERT_DEFINED == 1 )
             {
                 /* Sanity check that the size of the structure used to declare a
                  * variable of type StaticEventGroup_t equals the size of the real
@@ -112,12 +112,12 @@
             /* coverity[misra_c_2012_rule_11_3_violation] */
             pxEventBits = ( EventGroup_t * ) pxEventGroupBuffer;
 
-            if( pxEventBits != NULL )
+            якщо( pxEventBits != NULL )
             {
                 pxEventBits->uxEventBits = 0;
                 vListInitialise( &( pxEventBits->xTasksWaitingForBits ) );
 
-                #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+                #якщо ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
                 {
                     /* Both static and dynamic allocation can be used, so note that
                      * this event group was created statically in case the event group
@@ -128,7 +128,7 @@
 
                 traceEVENT_GROUP_CREATE( pxEventBits );
             }
-            else
+            інакше
             {
                 /* xEventGroupCreateStatic should only ever be called with
                  * pxEventGroupBuffer pointing to a pre-allocated (compile time
@@ -138,13 +138,13 @@
 
             traceRETURN_xEventGroupCreateStatic( pxEventBits );
 
-            return pxEventBits;
+            повернути pxEventBits;
         }
 
     #endif /* configSUPPORT_STATIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-    #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+    #якщо ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
 
         EventGroupHandle_t xEventGroupCreate( void )
         {
@@ -157,12 +157,12 @@
             /* coverity[misra_c_2012_rule_11_5_violation] */
             pxEventBits = ( EventGroup_t * ) pvPortMalloc( sizeof( EventGroup_t ) );
 
-            if( pxEventBits != NULL )
+            якщо( pxEventBits != NULL )
             {
                 pxEventBits->uxEventBits = 0;
                 vListInitialise( &( pxEventBits->xTasksWaitingForBits ) );
 
-                #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+                #якщо ( configSUPPORT_STATIC_ALLOCATION == 1 )
                 {
                     /* Both static and dynamic allocation can be used, so note this
                      * event group was allocated statically in case the event group is
@@ -173,14 +173,14 @@
 
                 traceEVENT_GROUP_CREATE( pxEventBits );
             }
-            else
+            інакше
             {
                 traceEVENT_GROUP_CREATE_FAILED();
             }
 
             traceRETURN_xEventGroupCreate( pxEventBits );
 
-            return pxEventBits;
+            повернути pxEventBits;
         }
 
     #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
@@ -200,7 +200,7 @@
 
         configASSERT( ( uxBitsToWaitFor & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
         configASSERT( uxBitsToWaitFor != 0 );
-        #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+        #якщо ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
         {
             configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
         }
@@ -212,7 +212,7 @@
 
             ( void ) xEventGroupSetBits( xEventGroup, uxBitsToSet );
 
-            if( ( ( uxOriginalBitValue | uxBitsToSet ) & uxBitsToWaitFor ) == uxBitsToWaitFor )
+            якщо( ( ( uxOriginalBitValue | uxBitsToSet ) & uxBitsToWaitFor ) == uxBitsToWaitFor )
             {
                 /* All the rendezvous bits are now set - no need to block. */
                 uxReturn = ( uxOriginalBitValue | uxBitsToSet );
@@ -223,9 +223,9 @@
 
                 xTicksToWait = 0;
             }
-            else
+            інакше
             {
-                if( xTicksToWait != ( TickType_t ) 0 )
+                якщо( xTicksToWait != ( TickType_t ) 0 )
                 {
                     traceEVENT_GROUP_SYNC_BLOCK( xEventGroup, uxBitsToSet, uxBitsToWaitFor );
 
@@ -240,7 +240,7 @@
                      * assignment is omitted. */
                     uxReturn = 0;
                 }
-                else
+                інакше
                 {
                     /* The rendezvous bits were not set, but no block time was
                      * specified - just return the current event bit value. */
@@ -251,13 +251,13 @@
         }
         xAlreadyYielded = xTaskResumeAll();
 
-        if( xTicksToWait != ( TickType_t ) 0 )
+        якщо( xTicksToWait != ( TickType_t ) 0 )
         {
-            if( xAlreadyYielded == pdFALSE )
+            якщо( xAlreadyYielded == pdFALSE )
             {
                 taskYIELD_WITHIN_API();
             }
-            else
+            інакше
             {
                 mtCOVERAGE_TEST_MARKER();
             }
@@ -268,7 +268,7 @@
              * event list item, and they should now be retrieved then cleared. */
             uxReturn = uxTaskResetEventItemValue();
 
-            if( ( uxReturn & eventUNBLOCKED_DUE_TO_BIT_SET ) == ( EventBits_t ) 0 )
+            якщо( ( uxReturn & eventUNBLOCKED_DUE_TO_BIT_SET ) == ( EventBits_t ) 0 )
             {
                 /* The task timed out, just return the current event bit value. */
                 taskENTER_CRITICAL();
@@ -279,11 +279,11 @@
                      * bits it was waiting for were set, it is possible that since it
                      * unblocked another task has set the bits.  If this is the case
                      * then it needs to clear the bits before exiting. */
-                    if( ( uxReturn & uxBitsToWaitFor ) == uxBitsToWaitFor )
+                    якщо( ( uxReturn & uxBitsToWaitFor ) == uxBitsToWaitFor )
                     {
                         pxEventBits->uxEventBits &= ~uxBitsToWaitFor;
                     }
-                    else
+                    інакше
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
@@ -292,7 +292,7 @@
 
                 xTimeoutOccurred = pdTRUE;
             }
-            else
+            інакше
             {
                 /* The task unblocked because the bits were set. */
             }
@@ -309,7 +309,7 @@
 
         traceRETURN_xEventGroupSync( uxReturn );
 
-        return uxReturn;
+        повернути uxReturn;
     }
 /*-----------------------------------------------------------*/
 
@@ -331,7 +331,7 @@
         configASSERT( xEventGroup );
         configASSERT( ( uxBitsToWaitFor & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
         configASSERT( uxBitsToWaitFor != 0 );
-        #if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+        #якщо ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
         {
             configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
         }
@@ -344,7 +344,7 @@
             /* Check to see if the wait condition is already met or not. */
             xWaitConditionMet = prvTestWaitCondition( uxCurrentEventBits, uxBitsToWaitFor, xWaitForAllBits );
 
-            if( xWaitConditionMet != pdFALSE )
+            якщо( xWaitConditionMet != pdFALSE )
             {
                 /* The wait condition has already been met so there is no need to
                  * block. */
@@ -352,42 +352,42 @@
                 xTicksToWait = ( TickType_t ) 0;
 
                 /* Clear the wait bits if requested to do so. */
-                if( xClearOnExit != pdFALSE )
+                якщо( xClearOnExit != pdFALSE )
                 {
                     pxEventBits->uxEventBits &= ~uxBitsToWaitFor;
                 }
-                else
+                інакше
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            else if( xTicksToWait == ( TickType_t ) 0 )
+            інакше якщо( xTicksToWait == ( TickType_t ) 0 )
             {
                 /* The wait condition has not been met, but no block time was
                  * specified, so just return the current value. */
                 uxReturn = uxCurrentEventBits;
                 xTimeoutOccurred = pdTRUE;
             }
-            else
+            інакше
             {
                 /* The task is going to block to wait for its required bits to be
                  * set.  uxControlBits are used to remember the specified behaviour of
                  * this call to xEventGroupWaitBits() - for use when the event bits
                  * unblock the task. */
-                if( xClearOnExit != pdFALSE )
+                якщо( xClearOnExit != pdFALSE )
                 {
                     uxControlBits |= eventCLEAR_EVENTS_ON_EXIT_BIT;
                 }
-                else
+                інакше
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
 
-                if( xWaitForAllBits != pdFALSE )
+                якщо( xWaitForAllBits != pdFALSE )
                 {
                     uxControlBits |= eventWAIT_FOR_ALL_BITS;
                 }
-                else
+                інакше
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
@@ -407,13 +407,13 @@
         }
         xAlreadyYielded = xTaskResumeAll();
 
-        if( xTicksToWait != ( TickType_t ) 0 )
+        якщо( xTicksToWait != ( TickType_t ) 0 )
         {
-            if( xAlreadyYielded == pdFALSE )
+            якщо( xAlreadyYielded == pdFALSE )
             {
                 taskYIELD_WITHIN_API();
             }
-            else
+            інакше
             {
                 mtCOVERAGE_TEST_MARKER();
             }
@@ -424,7 +424,7 @@
              * event list item, and they should now be retrieved then cleared. */
             uxReturn = uxTaskResetEventItemValue();
 
-            if( ( uxReturn & eventUNBLOCKED_DUE_TO_BIT_SET ) == ( EventBits_t ) 0 )
+            якщо( ( uxReturn & eventUNBLOCKED_DUE_TO_BIT_SET ) == ( EventBits_t ) 0 )
             {
                 taskENTER_CRITICAL();
                 {
@@ -433,18 +433,18 @@
 
                     /* It is possible that the event bits were updated between this
                      * task leaving the Blocked state and running again. */
-                    if( prvTestWaitCondition( uxReturn, uxBitsToWaitFor, xWaitForAllBits ) != pdFALSE )
+                    якщо( prvTestWaitCondition( uxReturn, uxBitsToWaitFor, xWaitForAllBits ) != pdFALSE )
                     {
-                        if( xClearOnExit != pdFALSE )
+                        якщо( xClearOnExit != pdFALSE )
                         {
                             pxEventBits->uxEventBits &= ~uxBitsToWaitFor;
                         }
-                        else
+                        інакше
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
                     }
-                    else
+                    інакше
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
@@ -453,7 +453,7 @@
                 }
                 taskEXIT_CRITICAL();
             }
-            else
+            інакше
             {
                 /* The task unblocked because the bits were set. */
             }
@@ -469,7 +469,7 @@
 
         traceRETURN_xEventGroupWaitBits( uxReturn );
 
-        return uxReturn;
+        повернути uxReturn;
     }
 /*-----------------------------------------------------------*/
 
@@ -501,11 +501,11 @@
 
         traceRETURN_xEventGroupClearBits( uxReturn );
 
-        return uxReturn;
+        повернути uxReturn;
     }
 /*-----------------------------------------------------------*/
 
-    #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) )
+    #якщо ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) )
 
         BaseType_t xEventGroupClearBitsFromISR( EventGroupHandle_t xEventGroup,
                                                 const EventBits_t uxBitsToClear )
@@ -519,7 +519,7 @@
 
             traceRETURN_xEventGroupClearBitsFromISR( xReturn );
 
-            return xReturn;
+            повернути xReturn;
         }
 
     #endif /* if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) ) */
@@ -544,7 +544,7 @@
 
         traceRETURN_xEventGroupGetBitsFromISR( uxReturn );
 
-        return uxReturn;
+        повернути uxReturn;
     }
 /*-----------------------------------------------------------*/
 
@@ -578,7 +578,7 @@
             pxEventBits->uxEventBits |= uxBitsToSet;
 
             /* See if the new bit value should unblock any tasks. */
-            while( pxListItem != pxListEnd )
+            поки( pxListItem != pxListEnd )
             {
                 pxNext = listGET_NEXT( pxListItem );
                 uxBitsWaitedFor = listGET_LIST_ITEM_VALUE( pxListItem );
@@ -588,36 +588,36 @@
                 uxControlBits = uxBitsWaitedFor & eventEVENT_BITS_CONTROL_BYTES;
                 uxBitsWaitedFor &= ~eventEVENT_BITS_CONTROL_BYTES;
 
-                if( ( uxControlBits & eventWAIT_FOR_ALL_BITS ) == ( EventBits_t ) 0 )
+                якщо( ( uxControlBits & eventWAIT_FOR_ALL_BITS ) == ( EventBits_t ) 0 )
                 {
                     /* Just looking for single bit being set. */
-                    if( ( uxBitsWaitedFor & pxEventBits->uxEventBits ) != ( EventBits_t ) 0 )
+                    якщо( ( uxBitsWaitedFor & pxEventBits->uxEventBits ) != ( EventBits_t ) 0 )
                     {
                         xMatchFound = pdTRUE;
                     }
-                    else
+                    інакше
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                else if( ( uxBitsWaitedFor & pxEventBits->uxEventBits ) == uxBitsWaitedFor )
+                інакше якщо( ( uxBitsWaitedFor & pxEventBits->uxEventBits ) == uxBitsWaitedFor )
                 {
                     /* All bits are set. */
                     xMatchFound = pdTRUE;
                 }
-                else
+                інакше
                 {
                     /* Need all bits to be set, but not all the bits were set. */
                 }
 
-                if( xMatchFound != pdFALSE )
+                якщо( xMatchFound != pdFALSE )
                 {
                     /* The bits match.  Should the bits be cleared on exit? */
-                    if( ( uxControlBits & eventCLEAR_EVENTS_ON_EXIT_BIT ) != ( EventBits_t ) 0 )
+                    якщо( ( uxControlBits & eventCLEAR_EVENTS_ON_EXIT_BIT ) != ( EventBits_t ) 0 )
                     {
                         uxBitsToClear |= uxBitsWaitedFor;
                     }
-                    else
+                    інакше
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
@@ -644,7 +644,7 @@
 
         traceRETURN_xEventGroupSetBits( pxEventBits->uxEventBits );
 
-        return pxEventBits->uxEventBits;
+        повернути pxEventBits->uxEventBits;
     }
 /*-----------------------------------------------------------*/
 
@@ -663,7 +663,7 @@
         {
             traceEVENT_GROUP_DELETE( xEventGroup );
 
-            while( listCURRENT_LIST_LENGTH( pxTasksWaitingForBits ) > ( UBaseType_t ) 0 )
+            поки( listCURRENT_LIST_LENGTH( pxTasksWaitingForBits ) > ( UBaseType_t ) 0 )
             {
                 /* Unblock the task, returning 0 as the event list is being deleted
                  * and cannot therefore have any bits set. */
@@ -673,7 +673,7 @@
         }
         ( void ) xTaskResumeAll();
 
-        #if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 0 ) )
+        #якщо ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 0 ) )
         {
             /* The event group can only have been allocated dynamically - free
              * it again. */
@@ -683,11 +683,11 @@
         {
             /* The event group could have been allocated statically or
              * dynamically, so check before attempting to free the memory. */
-            if( pxEventBits->ucStaticallyAllocated == ( uint8_t ) pdFALSE )
+            якщо( pxEventBits->ucStaticallyAllocated == ( uint8_t ) pdFALSE )
             {
                 vPortFree( pxEventBits );
             }
-            else
+            інакше
             {
                 mtCOVERAGE_TEST_MARKER();
             }
@@ -698,7 +698,7 @@
     }
 /*-----------------------------------------------------------*/
 
-    #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+    #якщо ( configSUPPORT_STATIC_ALLOCATION == 1 )
         BaseType_t xEventGroupGetStaticBuffer( EventGroupHandle_t xEventGroup,
                                                StaticEventGroup_t ** ppxEventGroupBuffer )
         {
@@ -710,10 +710,10 @@
             configASSERT( pxEventBits );
             configASSERT( ppxEventGroupBuffer );
 
-            #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+            #якщо ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
             {
                 /* Check if the event group was statically allocated. */
-                if( pxEventBits->ucStaticallyAllocated == ( uint8_t ) pdTRUE )
+                якщо( pxEventBits->ucStaticallyAllocated == ( uint8_t ) pdTRUE )
                 {
                     /* MISRA Ref 11.3.1 [Misaligned access] */
                     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-113 */
@@ -721,12 +721,12 @@
                     *ppxEventGroupBuffer = ( StaticEventGroup_t * ) pxEventBits;
                     xReturn = pdTRUE;
                 }
-                else
+                інакше
                 {
                     xReturn = pdFALSE;
                 }
             }
-            #else /* configSUPPORT_DYNAMIC_ALLOCATION */
+            #інакше /* configSUPPORT_DYNAMIC_ALLOCATION */
             {
                 /* Event group must have been statically allocated. */
                 /* MISRA Ref 11.3.1 [Misaligned access] */
@@ -739,7 +739,7 @@
 
             traceRETURN_xEventGroupGetStaticBuffer( xReturn );
 
-            return xReturn;
+            повернути xReturn;
         }
     #endif /* configSUPPORT_STATIC_ALLOCATION */
 /*-----------------------------------------------------------*/
@@ -782,38 +782,38 @@
     {
         BaseType_t xWaitConditionMet = pdFALSE;
 
-        if( xWaitForAllBits == pdFALSE )
+        якщо( xWaitForAllBits == pdFALSE )
         {
             /* Task only has to wait for one bit within uxBitsToWaitFor to be
              * set.  Is one already set? */
-            if( ( uxCurrentEventBits & uxBitsToWaitFor ) != ( EventBits_t ) 0 )
+            якщо( ( uxCurrentEventBits & uxBitsToWaitFor ) != ( EventBits_t ) 0 )
             {
                 xWaitConditionMet = pdTRUE;
             }
-            else
+            інакше
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
-        else
+        інакше
         {
             /* Task has to wait for all the bits in uxBitsToWaitFor to be set.
              * Are they set already? */
-            if( ( uxCurrentEventBits & uxBitsToWaitFor ) == uxBitsToWaitFor )
+            якщо( ( uxCurrentEventBits & uxBitsToWaitFor ) == uxBitsToWaitFor )
             {
                 xWaitConditionMet = pdTRUE;
             }
-            else
+            інакше
             {
                 mtCOVERAGE_TEST_MARKER();
             }
         }
 
-        return xWaitConditionMet;
+        повернути xWaitConditionMet;
     }
 /*-----------------------------------------------------------*/
 
-    #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) )
+    #якщо ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) )
 
         BaseType_t xEventGroupSetBitsFromISR( EventGroupHandle_t xEventGroup,
                                               const EventBits_t uxBitsToSet,
@@ -828,13 +828,13 @@
 
             traceRETURN_xEventGroupSetBitsFromISR( xReturn );
 
-            return xReturn;
+            повернути xReturn;
         }
 
     #endif /* if ( ( configUSE_TRACE_FACILITY == 1 ) && ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #якщо ( configUSE_TRACE_FACILITY == 1 )
 
         UBaseType_t uxEventGroupGetNumber( void * xEventGroup )
         {
@@ -847,24 +847,24 @@
 
             traceENTER_uxEventGroupGetNumber( xEventGroup );
 
-            if( xEventGroup == NULL )
+            якщо( xEventGroup == NULL )
             {
                 xReturn = 0;
             }
-            else
+            інакше
             {
                 xReturn = pxEventBits->uxEventGroupNumber;
             }
 
             traceRETURN_uxEventGroupGetNumber( xReturn );
 
-            return xReturn;
+            повернути xReturn;
         }
 
     #endif /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #якщо ( configUSE_TRACE_FACILITY == 1 )
 
         void vEventGroupSetNumber( void * xEventGroup,
                                    UBaseType_t uxEventGroupNumber )
