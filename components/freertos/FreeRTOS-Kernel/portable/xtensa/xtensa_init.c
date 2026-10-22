@@ -54,9 +54,9 @@ void _xt_tick_divisor_init(void)
 }
 
 /* Deprecated, to be removed */
-int xt_clock_freq(void)
+整数 xt_clock_freq(void)
 {
-    return esp_clk_cpu_freq();
+    返回 esp_clk_cpu_freq();
 }
 
 #endif /* XT_RTOS_TIMER_INT */

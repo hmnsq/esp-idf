@@ -19,18 +19,18 @@
 #include "test_utils.h"
 #include "sdkconfig.h"
 
-#if defined(__XTENSA__)
-#define GET_THREADPTR(tp_dest)  do { asm volatile ("rur.threadptr %0":"=r"(tp_dest)); } while(0)
+#如果 defined(__XTENSA__)
+#define GET_THREADPTR(tp_dest)  do { asm volatile ("rur.threadptr %0":"=r"(tp_dest)); } 当(0)
 #elif defined (__riscv)
-#define GET_THREADPTR(tp_dest)  do { register uint32_t _tp asm("tp"); tp_dest = _tp; } while(0)
+#define GET_THREADPTR(tp_dest)  do { register uint32_t _tp asm("tp"); tp_dest = _tp; } 当(0)
 #endif
 
-static __thread int tl_test_var1;
+static __thread 整数 tl_test_var1;
 static __thread uint8_t tl_test_var2 = 55;
 static __thread uint16_t tl_test_var3 = 44;
 static __thread uint8_t tl_test_arr_var[10];
 static __thread struct test_tls_var {
-    int f32;
+    整数 f32;
     uint8_t f8;
     uint16_t f16;
     uint8_t farr[10];
@@ -40,42 +40,42 @@ static void task_test_tls(void *arg)
 {
     bool *running = (bool *)arg;
     uint32_t tp = (uint32_t) -1;
-    int test_var1_old = 0;
+    整数 test_var1_old = 0;
     uint8_t test_var2_old = 0;
     uint16_t test_var3_old = 0;
-    int f32_old = 0;
+    整数 f32_old = 0;
     uint8_t f8_old = 0;
     uint16_t f16_old = 0;
-    srand((int) xTaskGetCurrentTaskHandle());
-    int step = (rand() % 10) + 1;
+    srand((整数) xTaskGetCurrentTaskHandle());
+    整数 step = (rand() % 10) + 1;
 
     GET_THREADPTR(tp);
-    for (int i = 0; i < 5; i++) {
+    为 (整数 i = 0; i < 5; i++) {
         printf("Task[%"PRIx32"]: var1 = %d var2 = 0x%"PRIx8" step=%d\n", tp, tl_test_var1, tl_test_var2, step);
-        if (i == 0) {
+        如果 (i == 0) {
             TEST_ASSERT_EQUAL(0, tl_test_var1);
             TEST_ASSERT_EQUAL(55, tl_test_var2);
             TEST_ASSERT_EQUAL(44, tl_test_var3);
-            for (int k = 0; k < sizeof(tl_test_arr_var); k++) {
+            为 (整数 k = 0; k < sizeof(tl_test_arr_var); k++) {
                 TEST_ASSERT_EQUAL(0, tl_test_arr_var[k]);
             }
             TEST_ASSERT_EQUAL(0, tl_test_struct_var.f32);
             TEST_ASSERT_EQUAL(0, tl_test_struct_var.f8);
             TEST_ASSERT_EQUAL(0, tl_test_struct_var.f16);
-            for (int k = 0; k < sizeof(tl_test_struct_var.farr); k++) {
+            为 (整数 k = 0; k < sizeof(tl_test_struct_var.farr); k++) {
                 TEST_ASSERT_EQUAL(0, tl_test_struct_var.farr[k]);
             }
-        } else {
+        } 否则 {
             TEST_ASSERT_EQUAL(test_var1_old + step, tl_test_var1);
             TEST_ASSERT_EQUAL(test_var2_old + step, tl_test_var2);
             TEST_ASSERT_EQUAL(test_var3_old + step, tl_test_var3);
-            for (int k = 0; k < sizeof(tl_test_arr_var); k++) {
+            为 (整数 k = 0; k < sizeof(tl_test_arr_var); k++) {
                 TEST_ASSERT_EQUAL((i - 1) * step, tl_test_arr_var[k]);
             }
             TEST_ASSERT_EQUAL(f32_old + step, tl_test_struct_var.f32);
             TEST_ASSERT_EQUAL(f8_old + step, tl_test_struct_var.f8);
             TEST_ASSERT_EQUAL(f16_old + step, tl_test_struct_var.f16);
-            for (int k = 0; k < sizeof(tl_test_struct_var.farr); k++) {
+            为 (整数 k = 0; k < sizeof(tl_test_struct_var.farr); k++) {
                 TEST_ASSERT_EQUAL((i - 1) * step, tl_test_struct_var.farr[k]);
             }
         }
@@ -97,7 +97,7 @@ static void task_test_tls(void *arg)
         vTaskDelay(10);
     }
 
-    if (running) {
+    如果 (running) {
         *running = false;
         vTaskDelete(NULL);
     }
@@ -109,17 +109,17 @@ TEST_CASE("TLS test", "[freertos]")
     StackType_t s_stack[stack_size]; /* with 8KB test task stack (default) this test still has ~3KB headroom */
     StaticTask_t s_task;
     bool running[2] = {true, true};
-#if CONFIG_FREERTOS_UNICORE == 0
-    int other_core = 1;
-#else
-    int other_core = 0;
+#如果 CONFIG_FREERTOS_UNICORE == 0
+    整数 other_core = 1;
+#否则
+    整数 other_core = 0;
 #endif
 
     xTaskCreatePinnedToCore((TaskFunction_t)&task_test_tls, "task_test_tls", stack_size, &running[0],
                             UNITY_FREERTOS_PRIORITY, NULL, 0);
     xTaskCreateStaticPinnedToCore((TaskFunction_t)&task_test_tls, "task_test_tls", stack_size, &running[1],
                                   UNITY_FREERTOS_PRIORITY, s_stack, &s_task, other_core);
-    while (running[0] || running[1]) {
+    当 (running[0] || running[1]) {
         vTaskDelay(10);
     }
     vTaskDelay(10); /* Make sure idle task can clean up s_task, before it goes out of scope */
