@@ -43,16 +43,16 @@
  * See the third party link http://www.nadler.com/embedded/newlibAndFreeRTOS.html
  * for additional information. */
 
-#include <reent.h>
+#ضمن <reent.h>
 
 #define configUSE_C_RUNTIME_TLS_SUPPORT    1
 
 #ifndef configTLS_BLOCK_TYPE
-    #define configTLS_BLOCK_TYPE           struct _reent
+    #define configTLS_BLOCK_TYPE           بنية _reent
 #endif
 
 #ifndef configINIT_TLS_BLOCK
-    #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )    _REENT_INIT_PTR( &( xTLSBlock ) )
+    #define configINIT_TLS_BLOCK( xTLSBlock, px_قمة_Of_مكدس )    _REENT_INIT_PTR( &( xTLSBlock ) )
 #endif
 
 #ifndef configSET_TLS_BLOCK
