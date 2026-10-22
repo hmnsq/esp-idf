@@ -57,7 +57,7 @@
     #include "portmacro.h"
 #endif
 
-#if portBYTE_ALIGNMENT == 32
+#ако portBYTE_ALIGNMENT == 32
     #define portBYTE_ALIGNMENT_MASK    ( 0x001f )
 #elif portBYTE_ALIGNMENT == 16
     #define portBYTE_ALIGNMENT_MASK    ( 0x000f )
@@ -69,7 +69,7 @@
     #define portBYTE_ALIGNMENT_MASK    ( 0x0001 )
 #elif portBYTE_ALIGNMENT == 1
     #define portBYTE_ALIGNMENT_MASK    ( 0x0000 )
-#else /* if portBYTE_ALIGNMENT == 32 */
+#иначе /* if portBYTE_ALIGNMENT == 32 */
     #error "Invalid portBYTE_ALIGNMENT definition"
 #endif /* if portBYTE_ALIGNMENT == 32 */
 
@@ -108,26 +108,26 @@
  * the order that the port expects to find them.
  *
  */
-#if ( portUSING_MPU_WRAPPERS == 1 )
-    #if ( portHAS_STACK_OVERFLOW_CHECKING == 1 )
+#ако ( portUSING_MPU_WRAPPERS == 1 )
+    #ако ( portHAS_STACK_OVERFLOW_CHECKING == 1 )
         StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
                                              StackType_t * pxEndOfStack,
                                              TaskFunction_t pxCode,
                                              void * pvParameters,
                                              BaseType_t xRunPrivileged ) PRIVILEGED_FUNCTION;
-    #else
+    #иначе
         StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
                                              TaskFunction_t pxCode,
                                              void * pvParameters,
                                              BaseType_t xRunPrivileged ) PRIVILEGED_FUNCTION;
     #endif
-#else /* if ( portUSING_MPU_WRAPPERS == 1 ) */
-    #if ( portHAS_STACK_OVERFLOW_CHECKING == 1 )
+#иначе /* if ( portUSING_MPU_WRAPPERS == 1 ) */
+    #ако ( portHAS_STACK_OVERFLOW_CHECKING == 1 )
         StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
                                              StackType_t * pxEndOfStack,
                                              TaskFunction_t pxCode,
                                              void * pvParameters ) PRIVILEGED_FUNCTION;
-    #else
+    #иначе
         StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
                                              TaskFunction_t pxCode,
                                              void * pvParameters ) PRIVILEGED_FUNCTION;
@@ -184,15 +184,15 @@ void vPortInitialiseBlocks( void ) PRIVILEGED_FUNCTION;
 size_t xPortGetFreeHeapSize( void ) PRIVILEGED_FUNCTION;
 size_t xPortGetMinimumEverFreeHeapSize( void ) PRIVILEGED_FUNCTION;
 
-#if ( configSTACK_ALLOCATION_FROM_SEPARATE_HEAP == 1 )
+#ако ( configSTACK_ALLOCATION_FROM_SEPARATE_HEAP == 1 )
     void * pvPortMallocStack( size_t xSize ) PRIVILEGED_FUNCTION;
     void vPortFreeStack( void * pv ) PRIVILEGED_FUNCTION;
-#else
+#иначе
     #define pvPortMallocStack    pvPortMalloc
     #define vPortFreeStack       vPortFree
 #endif
 
-#if ( configUSE_MALLOC_FAILED_HOOK == 1 )
+#ако ( configUSE_MALLOC_FAILED_HOOK == 1 )
 
 /**
  * task.h
@@ -225,7 +225,7 @@ void vPortEndScheduler( void ) PRIVILEGED_FUNCTION;
  * Fills the xMPUSettings structure with the memory region information
  * contained in xRegions.
  */
-#if ( portUSING_MPU_WRAPPERS == 1 )
+#ако ( portUSING_MPU_WRAPPERS == 1 )
     struct xMEMORY_REGION;
     void vPortStoreTaskMPUSettings( xMPU_SETTINGS * xMPUSettings,
                                     const struct xMEMORY_REGION * const xRegions,

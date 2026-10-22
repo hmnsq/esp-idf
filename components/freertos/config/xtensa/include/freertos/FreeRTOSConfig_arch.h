@@ -28,7 +28,7 @@
 
 #define configXT_SIMULATOR          0
 #define configXT_BOARD              1                           /* Board mode */
-#if CONFIG_FREERTOS_CORETIMER_0
+#ако CONFIG_FREERTOS_CORETIMER_0
     #define configXT_TIMER_INDEX    0
 #elif CONFIG_FREERTOS_CORETIMER_1
     #define configXT_TIMER_INDEX    1
@@ -45,7 +45,7 @@
 
 #ifdef CONFIG_FREERTOS_OPTIMIZED_SCHEDULER
     #define configUSE_PORT_OPTIMISED_TASK_SELECTION    1
-#else
+#иначе
     #define configUSE_PORT_OPTIMISED_TASK_SELECTION    0
 #endif /* CONFIG_FREERTOS_OPTIMIZED_SCHEDULER */
 #define configMINIMAL_STACK_SIZE                       ( CONFIG_FREERTOS_IDLE_TASK_STACKSIZE + configSTACK_OVERHEAD_TOTAL )
@@ -53,7 +53,7 @@
 
 /* ---------------- Amazon SMP FreeRTOS -------------------- */
 
-#if CONFIG_FREERTOS_SMP
+#ако CONFIG_FREERTOS_SMP
 
 /* This is always enabled to call IDF style idle hooks, by can be "--Wl,--wrap"
  * if users enable CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK. */
@@ -62,9 +62,9 @@
 
 /* ----------------------- System -------------------------- */
 
-#if CONFIG_LIBC_NEWLIB
+#ако CONFIG_LIBC_NEWLIB
 #define configUSE_NEWLIB_REENTRANT    1
-#else
+#иначе
 #define configUSE_NEWLIB_REENTRANT    0
 #endif
 
@@ -72,9 +72,9 @@
  * - We simply provide our own INIT and DEINIT functions
  * - We set "SET" to a blank macro since there is no need to set the reentrancy
  * pointer. All newlib functions calls __getreent. */
-#if CONFIG_FREERTOS_SMP
+#ако CONFIG_FREERTOS_SMP
     #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )    esp_reent_init( &( xTLSBlock ) )
-#else /* CONFIG_FREERTOS_SMP */
+#иначе /* CONFIG_FREERTOS_SMP */
     #define configINIT_TLS_BLOCK( xTLSBlock )                  esp_reent_init( &( xTLSBlock ) )
 #endif /* CONFIG_FREERTOS_SMP */
 #define configSET_TLS_BLOCK( xTLSBlock )
@@ -91,7 +91,7 @@
 
 /* ------------------- Run-time Stats ---------------------- */
 
-#if CONFIG_FREERTOS_USE_TRACE_FACILITY
+#ако CONFIG_FREERTOS_USE_TRACE_FACILITY
     /* Used by uxTaskGetSystemState(), and other trace facility functions */
     #define configUSE_TRACE_FACILITY    1
 #endif /* CONFIG_FREERTOS_USE_TRACE_FACILITY */

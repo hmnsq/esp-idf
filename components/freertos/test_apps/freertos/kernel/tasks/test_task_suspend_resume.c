@@ -25,13 +25,13 @@ static void task_count(void *vp_counter)
     volatile unsigned *counter = (volatile unsigned *)vp_counter;
     *counter = 0;
 
-    while (1) {
+    докато (1) {
         (*counter)++;
         vTaskDelay(1);
     }
 }
 
-static void test_suspend_resume(int target_core)
+static void test_suspend_resume(цяло target_core)
 {
     volatile unsigned counter = 0;
     TaskHandle_t counter_task;
@@ -46,8 +46,8 @@ static void test_suspend_resume(int target_core)
 
     // Do the next part a few times, just to be sure multiple suspends & resumes
     // work as expected...
-    const int TEST_ITERATIONS = 5;
-    for (int i = 0; i < TEST_ITERATIONS; i++) {
+    const цяло TEST_ITERATIONS = 5;
+    за (цяло i = 0; i < TEST_ITERATIONS; i++) {
         vTaskSuspend(counter_task);
         unsigned suspend_count = counter;
         printf("Suspending @ %d\n", suspend_count);
@@ -118,7 +118,7 @@ TEST_CASE("Suspend the current running task", "[freertos]")
     TEST_ASSERT_TRUE(resumed);
 }
 
-#if SOC_GPTIMER_SUPPORTED
+#ако SOC_GPTIMER_SUPPORTED
 
 static volatile bool timer_isr_fired;
 static gptimer_handle_t gptimer = NULL;
@@ -133,7 +133,7 @@ bool on_timer_alarm_cb(gptimer_handle_t timer, const gptimer_alarm_event_data_t 
     gptimer_stop(timer);
     timer_isr_fired = true;
     higherPriorityTaskWoken = xTaskResumeFromISR(handle);
-    return higherPriorityTaskWoken == pdTRUE;
+    върни higherPriorityTaskWoken == pdTRUE;
 }
 
 /* Task suspends itself, then sets parameter value to the current timer group counter and deletes itself */
@@ -148,7 +148,7 @@ static IRAM_ATTR void task_suspend_self_with_timer(void *vp_resumed)
 
 /* Create a task which suspends itself, then resume it from a timer
  * interrupt. */
-static void test_resume_task_from_isr(int target_core)
+static void test_resume_task_from_isr(цяло target_core)
 {
     volatile uint64_t resumed_counter = 99;
     TaskHandle_t suspend_task;
