@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include "FreeRTOS.h"
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
+#if ( CONFIG_FREERTOS_नुमेरो_OF_CORES > 1 )
 
 /**
  * @brief Prototype for test function.
@@ -28,6 +28,6 @@ typedef void (* TestFunction_t)(void *);
  * @param ulStackDepth Stack depth of the created tasks
  * @param uxPriority Priority of the created tasks
  */
-void vTestOnAllCores(TestFunction_t pxTestCode, void * pvTestCodeArg, uint32_t ulStackDepth, UBaseType_t uxPriority);
+void vTestOnAllCores(TestFunction_t pxTestCode, void * pvTestCodeArg, uint32_t ul_सालानसान_Depth, UBaseType_t uxPriority);
 
 #endif /* ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 ) */

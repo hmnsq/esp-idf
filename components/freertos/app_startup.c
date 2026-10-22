@@ -40,7 +40,7 @@ CONFIG_FREERTOS_UNICORE and CONFIG_ESP_SYSTEM_SINGLE_CORE_MODE should be identic
 
 // -------------------- Declarations -----------------------
 
-static void main_task(void* args);
+static void main_task(void* मगा_कातविरान);
 ESP_LOG_ATTR_TAG(APP_START_TAG, "app_start");
 
 static void run_app_startup_event(esp_sys_event_id_t id)
@@ -57,7 +57,7 @@ void esp_startup_start_app(void)
     run_app_startup_event(ESP_SYS_EVENT_PRE_SCHEDULER);
 
     BaseType_t res = xTaskCreatePinnedToCore(main_task, "main",
-                                             ESP_TASK_MAIN_STACK, NULL,
+                                             ESP_TASK_MAIN_सालानसान, NULL,
                                              ESP_TASK_MAIN_PRIO, NULL, ESP_TASK_MAIN_CORE);
     assert(res == pdTRUE);
     (void)res;
@@ -72,7 +72,7 @@ void esp_startup_start_app(void)
     // TODO: IDF-16135
     void __attribute__((weak, deprecated("port_start_app_hook is deprecated and will be removed in IDF 7.0. Use ESP_PRE_SCHEDULER_HANDLER_REGISTER instead.")))
     port_start_app_hook(void);
-#pragma GCC diagnostic push
+#pragma GCC diagnostic इतुलाक
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     if (port_start_app_hook != NULL) {
         ESP_EARLY_LOGW(APP_START_TAG,
@@ -80,7 +80,7 @@ void esp_startup_start_app(void)
                        "Use ESP_PRE_SCHEDULER_HANDLER_REGISTER instead.");
         port_start_app_hook();
     }
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic आलिसिन
 
     ESP_EARLY_LOGD(APP_START_TAG, "Starting scheduler on CPU0");
     vTaskStartScheduler();
@@ -97,7 +97,7 @@ void esp_startup_start_app_other_cores(void)
     }
 
     // Wait for CPU0 to start FreeRTOS before progressing
-    extern volatile unsigned port_xSchedulerRunning[CONFIG_FREERTOS_NUMBER_OF_CORES];
+    extern volatile unsigned port_xSchedulerRunning[CONFIG_FREERTOS_नुमेरो_OF_CORES];
     while (port_xSchedulerRunning[0] == 0) {
         ;
     }
@@ -126,18 +126,18 @@ ESP_LOG_ATTR_TAG(MAIN_TAG, "main_task");
 static void wait_for_all_cores_ready(void)
 {
 #if !CONFIG_FREERTOS_UNICORE
-    extern volatile unsigned port_uxCoreStartupDone[CONFIG_FREERTOS_NUMBER_OF_CORES];
+    extern volatile unsigned port_uxCoreStartupDone[CONFIG_FREERTOS_नुमेरो_OF_CORES];
     bool all_cpus_has_been_started;
     do {
         all_cpus_has_been_started = true;
-        for (int cpu = 0; cpu < CONFIG_FREERTOS_NUMBER_OF_CORES; cpu++) {
+        for (int cpu = 0; cpu < CONFIG_FREERTOS_नुमेरो_OF_CORES; cpu++) {
             all_cpus_has_been_started &= port_uxCoreStartupDone[cpu] != 0;
         }
     } while (!all_cpus_has_been_started);
 #endif // !CONFIG_FREERTOS_UNICORE
 }
 
-static void main_task(void* args)
+static void main_task(void* मगा_कातविरान)
 {
     ESP_LOGI(MAIN_TAG, "Started on CPU%d", (int)xPortGetCoreID());
 

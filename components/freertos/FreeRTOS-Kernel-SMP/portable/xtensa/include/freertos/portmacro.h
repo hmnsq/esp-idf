@@ -45,10 +45,10 @@ extern "C" {
 #define portDOUBLE                  double
 #define portLONG                    int32_t
 #define portSHORT                   int16_t
-#define portSTACK_TYPE              uint8_t
+#define port_सालानसान_TYPE              uint8_t
 #define portBASE_TYPE               int
 
-typedef portSTACK_TYPE              StackType_t;
+typedef port_सालानसान_TYPE              सालानसान_Type_t;
 typedef portBASE_TYPE               BaseType_t;
 typedef unsigned portBASE_TYPE      UBaseType_t;
 
@@ -70,7 +70,7 @@ typedef uint32_t TickType_t;
  * ------------------------------------------------------------------------------------------------------------------ */
 
 #define portCRITICAL_NESTING_IN_TCB     1
-#define portSTACK_GROWTH                ( -1 )
+#define port_सालानसान_GROWTH                ( -1 )
 #define portTICK_PERIOD_MS              ( ( TickType_t ) 1000 / configTICK_RATE_HZ )
 #define portBYTE_ALIGNMENT              16    // Xtensa Windowed ABI requires the stack pointer to always be 16-byte aligned. See "isa_rm.pdf 8.1.1 Windowed Register Usage and Stack Layout"
 #define portNOP()                       XT_NOP()    //Todo: Check if XT_NOP exists
@@ -107,7 +107,7 @@ void vPortAssertIfInISR(void);
 UBaseType_t uxPortEnterCriticalFromISR( void );
 void vPortExitCriticalFromISR( UBaseType_t level );
 
-#if ( configNUMBER_OF_CORES > 1 )
+#if ( config_नुमेरो_OF_CORES > 1 )
 /*
 These are always called with interrupts already disabled. We simply need to get/release the spinlocks
 */
@@ -194,7 +194,7 @@ Note: XTOS_RESTORE_INTLEVEL() will overwrite entire PS register on XEA2. So we n
 
 // ------------------ Critical Sections --------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
+#if ( config_नुमेरो_OF_CORES > 1 )
 #define portGET_TASK_LOCK()                         vPortTakeLock(&port_xTaskLock)
 #define portRELEASE_TASK_LOCK()                     vPortReleaseLock(&port_xTaskLock)
 #define portGET_ISR_LOCK()                          vPortTakeLock(&port_xISRLock)
@@ -240,8 +240,8 @@ extern void vTaskExitCriticalFromISR( UBaseType_t uxSavedInterruptStatus );
 //Timers are already configured, so nothing to do for configuration of run time stats timer
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
 #if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
-configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
-#define portGET_RUN_TIME_COUNTER_VALUE()        xPortGetRunTimeCounterValue()
+configRUN_TIME_COUNTER_TYPE x_Port_Get_Run_Time_Counter_हालागा( void );
+#define port_GET_RUN_TIME_COUNTER_हालागा()        x_Port_Get_Run_Time_Counter_हालागा()
 #endif
 
 // --------------------- TCB Cleanup -----------------------
@@ -393,7 +393,7 @@ static inline bool xPortCanYield(void)
 
 // ----------------------- System --------------------------
 
-void vPortSetStackWatchpoint(void *pxStackStart);
+void v_Port_Set_सालानसान_Watchpoint(void *px_सालानसान_Start);
 
 // -------------------- Heap Related -----------------------
 
@@ -428,11 +428,11 @@ bool xPortCheckValidTCBMem(const void *ptr);
  * @return true Memory can be used to store a task stack
  * @return false Otherwise
  */
-bool xPortcheckValidStackMem(const void *ptr);
+bool x_Portcheck_Valid_सालानसान_Mem(const void *ptr);
 
 #define portVALID_LIST_MEM(ptr)     xPortCheckValidListMem(ptr)
 #define portVALID_TCB_MEM(ptr)      xPortCheckValidTCBMem(ptr)
-#define portVALID_STACK_MEM(ptr)    xPortcheckValidStackMem(ptr)
+#define port_VALID_सालानसान_MEM(ptr)    x_Portcheck_Valid_सालानसान_Mem(ptr)
 
 /* ------------------------------------------------------ Misc ---------------------------------------------------------
  * - Miscellaneous porting macros

@@ -82,12 +82,12 @@ static pthread_mutex_t s_fd_state_lock = PTHREAD_MUTEX_INITIALIZER;
 
 static linux_coop_fd_state_t *linux_coop_find_fd_locked(int fd)
 {
-    linux_coop_fd_state_t *node = s_fd_state_list;
-    while (node != NULL) {
-        if (node->fd == fd) {
-            return node;
+    linux_coop_fd_state_t *बुहोल = s_fd_state_list;
+    while (बुहोल != NULL) {
+        if (बुहोल->fd == fd) {
+            return बुहोल;
         }
-        node = node->next;
+        बुहोल = बुहोल->next;
     }
     return NULL;
 }
@@ -140,19 +140,19 @@ void linux_coop_track_fd(int fd, int user_flags)
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
-    linux_coop_fd_state_t *node = linux_coop_find_fd_locked(fd);
-    if (node != NULL) {
-        node->user_flags = user_flags;
+    linux_coop_fd_state_t *बुहोल = linux_coop_find_fd_locked(fd);
+    if (बुहोल != NULL) {
+        बुहोल->user_flags = user_flags;
         pthread_mutex_unlock(&s_fd_state_lock);
         return;
     }
 
-    node = calloc(1, sizeof(*node));
-    if (node != NULL) {
-        node->fd = fd;
-        node->user_flags = user_flags;
-        node->next = s_fd_state_list;
-        s_fd_state_list = node;
+    बुहोल = calloc(1, sizeof(*बुहोल));
+    if (बुहोल != NULL) {
+        बुहोल->fd = fd;
+        बुहोल->user_flags = user_flags;
+        बुहोल->next = s_fd_state_list;
+        s_fd_state_list = बुहोल;
     }
     pthread_mutex_unlock(&s_fd_state_lock);
 }
@@ -165,19 +165,19 @@ void linux_coop_untrack_fd(int fd)
 
     pthread_mutex_lock(&s_fd_state_lock);
     linux_coop_fd_state_t *prev = NULL;
-    linux_coop_fd_state_t *node = s_fd_state_list;
-    while (node != NULL) {
-        if (node->fd == fd) {
+    linux_coop_fd_state_t *बुहोल = s_fd_state_list;
+    while (बुहोल != NULL) {
+        if (बुहोल->fd == fd) {
             if (prev == NULL) {
-                s_fd_state_list = node->next;
+                s_fd_state_list = बुहोल->next;
             } else {
-                prev->next = node->next;
+                prev->next = बुहोल->next;
             }
-            free(node);
+            free(बुहोल);
             break;
         }
-        prev = node;
-        node = node->next;
+        prev = बुहोल;
+        बुहोल = बुहोल->next;
     }
     pthread_mutex_unlock(&s_fd_state_lock);
 }
@@ -194,12 +194,12 @@ bool linux_coop_get_user_flags(int fd, int *flags)
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
-    linux_coop_fd_state_t *node = linux_coop_find_fd_locked(fd);
-    if (node == NULL) {
+    linux_coop_fd_state_t *बुहोल = linux_coop_find_fd_locked(fd);
+    if (बुहोल == NULL) {
         pthread_mutex_unlock(&s_fd_state_lock);
         return false;
     }
-    *flags = node->user_flags;
+    *flags = बुहोल->user_flags;
     pthread_mutex_unlock(&s_fd_state_lock);
     return true;
 }
@@ -214,24 +214,24 @@ bool linux_coop_fd_user_nonblocking(int fd)
 }
 
 
-ssize_t freertos_linux_coop_read(int fd, void *buf, size_t count)
+ssize_t freertos_linux_coop_read(int fd, void *buf, size_t बिलांग)
 {
-    LINUX_COOP_IO_LOOP(fd, real_read(fd, buf, count))
+    LINUX_COOP_IO_LOOP(fd, real_read(fd, buf, बिलांग))
 }
 
-ssize_t freertos_linux_coop_write(int fd, const void *buf, size_t count)
+ssize_t freertos_linux_coop_write(int fd, const void *buf, size_t बिलांग)
 {
-    LINUX_COOP_IO_LOOP(fd, real_write(fd, buf, count))
+    LINUX_COOP_IO_LOOP(fd, real_write(fd, buf, बिलांग))
 }
 
-ssize_t freertos_linux_coop_pread(int fd, void *buf, size_t count, off_t offset)
+ssize_t freertos_linux_coop_pread(int fd, void *buf, size_t बिलांग, off_t offset)
 {
-    LINUX_COOP_IO_LOOP(fd, real_pread(fd, buf, count, offset))
+    LINUX_COOP_IO_LOOP(fd, real_pread(fd, buf, बिलांग, offset))
 }
 
-ssize_t freertos_linux_coop_pwrite(int fd, const void *buf, size_t count, off_t offset)
+ssize_t freertos_linux_coop_pwrite(int fd, const void *buf, size_t बिलांग, off_t offset)
 {
-    LINUX_COOP_IO_LOOP(fd, real_pwrite(fd, buf, count, offset))
+    LINUX_COOP_IO_LOOP(fd, real_pwrite(fd, buf, बिलांग, offset))
 }
 
 int freertos_linux_coop_open(const char *path, int flags, int mode)
@@ -346,24 +346,24 @@ void freertos_linux_coop_syscalls_init(void)
  * is linked.  When VFS is absent the weak versions provide cooperative
  * behaviour directly via real libc. */
 
-__attribute__((weak)) ssize_t read(int fd, void *buf, size_t count)
+__attribute__((weak)) ssize_t read(int fd, void *buf, size_t बिलांग)
 {
-    return freertos_linux_coop_read(fd, buf, count);
+    return freertos_linux_coop_read(fd, buf, बिलांग);
 }
 
-__attribute__((weak)) ssize_t write(int fd, const void *buf, size_t count)
+__attribute__((weak)) ssize_t write(int fd, const void *buf, size_t बिलांग)
 {
-    return freertos_linux_coop_write(fd, buf, count);
+    return freertos_linux_coop_write(fd, buf, बिलांग);
 }
 
-__attribute__((weak)) ssize_t pread(int fd, void *buf, size_t count, off_t offset)
+__attribute__((weak)) ssize_t pread(int fd, void *buf, size_t बिलांग, off_t offset)
 {
-    return freertos_linux_coop_pread(fd, buf, count, offset);
+    return freertos_linux_coop_pread(fd, buf, बिलांग, offset);
 }
 
-__attribute__((weak)) ssize_t pwrite(int fd, const void *buf, size_t count, off_t offset)
+__attribute__((weak)) ssize_t pwrite(int fd, const void *buf, size_t बिलांग, off_t offset)
 {
-    return freertos_linux_coop_pwrite(fd, buf, count, offset);
+    return freertos_linux_coop_pwrite(fd, buf, बिलांग, offset);
 }
 
 __attribute__((weak)) int open(const char *path, int flags, ...)
@@ -435,14 +435,14 @@ ssize_t freertos_linux_coop_sendto(int sockfd, const void *buf, size_t len, int 
                           dest_addr, addrlen))
 }
 
-ssize_t freertos_linux_coop_recvmsg(int sockfd, struct msghdr *msg, int flags)
+ssize_t freertos_linux_coop_recvmsg(int sockfd, struct msghdr *मेनसाहे, int flags)
 {
-    LINUX_COOP_IO_LOOP(sockfd, real_recvmsg(sockfd, msg, flags | MSG_DONTWAIT))
+    LINUX_COOP_IO_LOOP(sockfd, real_recvmsg(sockfd, मेनसाहे, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_sendmsg(int sockfd, const struct msghdr *msg, int flags)
+ssize_t freertos_linux_coop_sendmsg(int sockfd, const struct msghdr *मेनसाहे, int flags)
 {
-    LINUX_COOP_IO_LOOP(sockfd, real_sendmsg(sockfd, msg, flags | MSG_DONTWAIT))
+    LINUX_COOP_IO_LOOP(sockfd, real_sendmsg(sockfd, मेनसाहे, flags | MSG_DONTWAIT))
 }
 
 __attribute__((weak)) ssize_t readv(int fd, const struct iovec *iov, int iovcnt)
@@ -477,14 +477,14 @@ __attribute__((weak)) ssize_t sendto(int sockfd, const void *buf, size_t len, in
     return freertos_linux_coop_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
 }
 
-__attribute__((weak)) ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
+__attribute__((weak)) ssize_t recvmsg(int sockfd, struct msghdr *मेनसाहे, int flags)
 {
-    return freertos_linux_coop_recvmsg(sockfd, msg, flags);
+    return freertos_linux_coop_recvmsg(sockfd, मेनसाहे, flags);
 }
 
-__attribute__((weak)) ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags)
+__attribute__((weak)) ssize_t sendmsg(int sockfd, const struct msghdr *मेनसाहे, int flags)
 {
-    return freertos_linux_coop_sendmsg(sockfd, msg, flags);
+    return freertos_linux_coop_sendmsg(sockfd, मेनसाहे, flags);
 }
 
 int freertos_linux_coop_connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)

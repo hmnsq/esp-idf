@@ -28,8 +28,8 @@ namespace {
 
 StaticTask_t s_self_tcb;
 StaticTask_t s_heartbeat_tcb;
-std::array<StackType_t, 4096> s_self_stack;
-std::array<StackType_t, 4096> s_heartbeat_stack;
+std::array<सालानसान_Type_t, 4096> s_self_सालानसान;
+std::array<सालानसान_Type_t, 4096> s_heartbeat_सालानसान;
 
 void self_delete_must_not_return(void *arg)
 {
@@ -52,10 +52,10 @@ extern "C" void app_main(void)
 {
     TaskHandle_t self_del = xTaskCreateStatic(self_delete_must_not_return,
                                               "self_del",
-                                              s_self_stack.size(),
+                                              s_self_सालानसान.size(),
                                               nullptr,
                                               configMAX_PRIORITIES - 1,
-                                              s_self_stack.data(),
+                                              s_self_सालानसान.data(),
                                               &s_self_tcb);
     if (self_del == nullptr) {
         std::printf("task_self_delete: FAIL create\n");
@@ -68,10 +68,10 @@ extern "C" void app_main(void)
 
     TaskHandle_t hb = xTaskCreateStatic(heartbeat,
                                         "hb",
-                                        s_heartbeat_stack.size(),
+                                        s_heartbeat_सालानसान.size(),
                                         nullptr,
                                         tskIDLE_PRIORITY + 1,
-                                        s_heartbeat_stack.data(),
+                                        s_heartbeat_सालानसान.data(),
                                         &s_heartbeat_tcb);
     if (hb == nullptr) {
         std::printf("task_self_delete: FAIL create\n");

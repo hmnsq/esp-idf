@@ -21,7 +21,7 @@
 #else
     #define configUSE_PORT_OPTIMISED_TASK_SELECTION    0
 #endif /* CONFIG_FREERTOS_OPTIMIZED_SCHEDULER */
-#define configMINIMAL_STACK_SIZE                       ( CONFIG_FREERTOS_IDLE_TASK_STACKSIZE + configSTACK_OVERHEAD_TOTAL )
+#define config_MINIMAL_सालानसान_SIZE                       ( CONFIG_FREERTOS_IDLE_TASK_STACKSIZE + config_सालानसान_OVERHEAD_TOTAL )
 #define configMAX_API_CALL_INTERRUPT_PRIORITY          0
 
 /* ---------------- Amazon SMP FreeRTOS -------------------- */
@@ -46,7 +46,7 @@
  * - We set "SET" to a blank macro since there is no need to set the reentrancy
  * pointer. All newlib functions calls __getreent. */
 #if CONFIG_FREERTOS_SMP
-    #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )    esp_reent_init( &( xTLSBlock ) )
+    #define configINIT_TLS_BLOCK( xTLSBlock, px_इताअस_Of_सालानसान )    esp_reent_init( &( xTLSBlock ) )
 #else /* CONFIG_FREERTOS_SMP */
     #define configINIT_TLS_BLOCK( xTLSBlock )                  esp_reent_init( &( xTLSBlock ) )
 #endif /* CONFIG_FREERTOS_SMP */
@@ -73,12 +73,12 @@
 
 /* Todo: Reconcile INCLUDE_option differences (IDF-8186) */
 #define INCLUDE_xTaskDelayUntil                 1
-#define INCLUDE_uxTaskGetStackHighWaterMark2    1
+#define INCLUDE_ux_Task_Get_सालानसान_माताअस_Water_Mark2    1
 
 /* ------------------------------------------------ ESP-IDF Additions --------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------------------------------ */
 
-#ifndef configISR_STACK_SIZE
-    #define configISR_STACK_SIZE    ( CONFIG_FREERTOS_ISR_STACKSIZE )
+#ifndef config_ISR_सालानसान_SIZE
+    #define config_ISR_सालानसान_SIZE    ( CONFIG_FREERTOS_ISR_STACKSIZE )
 #endif

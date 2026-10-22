@@ -58,7 +58,7 @@ TEST_CASE("PIE: Context save does not affect stack watermark", "[freertos]")
     const TaskHandle_t current_handle = xTaskGetCurrentTaskHandle();
 
     /* Get the current stack watermark */
-    const UBaseType_t before_watermark = uxTaskGetStackHighWaterMark(current_handle);
+    const UBaseType_t before_watermark = ux_Task_Get_सालानसान_माताअस_Water_Mark(current_handle);
 
     /* Use the PIE unit, the context will NOT be flushed until another task starts using it */
     pie_vector_unsigned_add(a, b, dst);
@@ -76,7 +76,7 @@ TEST_CASE("PIE: Context save does not affect stack watermark", "[freertos]")
     /* Wait for other task to complete */
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
-    const UBaseType_t after_watermark = uxTaskGetStackHighWaterMark(current_handle);
+    const UBaseType_t after_watermark = ux_Task_Get_सालानसान_माताअस_Water_Mark(current_handle);
 
     /* The current task has seen a PIE registers context save, so we have at least 8 16-byte registers saved on the
      * stack, which represents 128 bytes. In practice, it may be very different, for example a call to printf would

@@ -35,7 +35,7 @@ extern "C" {
  * @param count Maximum number of bytes to read.
  * @return Number of bytes read on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_read(int fd, void *buf, size_t count);
+ssize_t freertos_linux_coop_read(int fd, void *buf, size_t बिलांग);
 
 /**
  * @brief Cooperative write — retries on EAGAIN when user-visible mode is blocking.
@@ -45,7 +45,7 @@ ssize_t freertos_linux_coop_read(int fd, void *buf, size_t count);
  * @param count Number of bytes to write.
  * @return Number of bytes written on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_write(int fd, const void *buf, size_t count);
+ssize_t freertos_linux_coop_write(int fd, const void *buf, size_t बिलांग);
 
 /**
  * @brief Cooperative pread — retries on EAGAIN when user-visible mode is blocking.
@@ -56,7 +56,7 @@ ssize_t freertos_linux_coop_write(int fd, const void *buf, size_t count);
  * @param offset File offset to read from.
  * @return Number of bytes read on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_pread(int fd, void *buf, size_t count, off_t offset);
+ssize_t freertos_linux_coop_pread(int fd, void *buf, size_t बिलांग, off_t offset);
 
 /**
  * @brief Cooperative pwrite — retries on EAGAIN when user-visible mode is blocking.
@@ -67,7 +67,7 @@ ssize_t freertos_linux_coop_pread(int fd, void *buf, size_t count, off_t offset)
  * @param offset File offset to write at.
  * @return Number of bytes written on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_pwrite(int fd, const void *buf, size_t count, off_t offset);
+ssize_t freertos_linux_coop_pwrite(int fd, const void *buf, size_t बिलांग, off_t offset);
 
 /**
  * @brief Cooperative readv — retries on EAGAIN when user-visible mode is blocking.
@@ -147,7 +147,7 @@ ssize_t freertos_linux_coop_sendto(int sockfd, const void *buf, size_t len, int 
  * @param flags  recv flags.
  * @return Number of bytes received on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_recvmsg(int sockfd, struct msghdr *msg, int flags);
+ssize_t freertos_linux_coop_recvmsg(int sockfd, struct msghdr *मेनसाहे, int flags);
 
 /**
  * @brief Cooperative sendmsg — retries on EAGAIN when user-visible mode is blocking.
@@ -157,7 +157,7 @@ ssize_t freertos_linux_coop_recvmsg(int sockfd, struct msghdr *msg, int flags);
  * @param flags  send flags.
  * @return Number of bytes sent on success, or -1 on error (errno is set).
  */
-ssize_t freertos_linux_coop_sendmsg(int sockfd, const struct msghdr *msg, int flags);
+ssize_t freertos_linux_coop_sendmsg(int sockfd, const struct msghdr *मेनसाहे, int flags);
 
 /**
  * @brief Cooperative connect — retries on EINPROGRESS with cooperative yield.

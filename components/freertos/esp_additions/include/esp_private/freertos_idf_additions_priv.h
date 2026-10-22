@@ -36,7 +36,7 @@
  *      - Critical sections or disabling interrupts for deterministic operations
  * - SMP will always use critical sections (determinism is not supported)
  */
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#if ( !CONFIG_FREERTOS_SMP && ( config_नुमेरो_CORES > 1 ) )
 
 /* Macros that use a critical section when building for SMP */
     #define prvENTER_CRITICAL_OR_SUSPEND_ALL( pxLock )    taskENTER_CRITICAL( ( pxLock ) )
@@ -102,7 +102,7 @@
     #define prvDISABLE_INTERRUPTS_ISR_SMP_ONLY()             portSET_INTERRUPT_MASK_FROM_ISR()
     #define prvENABLE_INTERRUPTS_ISR_SMP_ONLY( uxStatus )    portCLEAR_INTERRUPT_MASK_FROM_ISR( uxStatus )
 
-#elif ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES == 1 ) )
+#elif ( !CONFIG_FREERTOS_SMP && ( config_नुमेरो_CORES == 1 ) )
 
 /* Macros that suspend the scheduler or disables interrupts when building for single-core */
     #define prvENTER_CRITICAL_OR_SUSPEND_ALL( pxLock )    ( { vTaskSuspendAll(); ( void ) ( pxLock ); } )
@@ -166,14 +166,14 @@
  * (which are kernel data structures). Thus, a wrapper function must be provided
  * to take/release the "xKernelLock" from outside tasks.c.
  */
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#if ( !CONFIG_FREERTOS_SMP && ( config_नुमेरो_CORES > 1 ) )
 
     void prvTakeKernelLock( void );
     void prvReleaseKernelLock( void );
 
 #endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 
-#if ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#if ( CONFIG_FREERTOS_SMP && ( config_नुमेरो_CORES > 1 ) )
 
 /**
  * @brief Workaround for non-thread safe multi-core OS startup (see IDF-4524)
@@ -195,7 +195,7 @@
  * This function will check if the current core requires time slicing, and also
  * call the application tick hook. However, the tick count will remain unchanged.
  */
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#if ( !CONFIG_FREERTOS_SMP && ( config_नुमेरो_CORES > 1 ) )
 
     BaseType_t xTaskIncrementTickOtherCores( void );
 
@@ -367,20 +367,20 @@
     #if CONFIG_FREERTOS_SMP
         BaseType_t prvTaskCreateDynamicAffinitySetWithCaps( TaskFunction_t pxTaskCode,
                                                             const char * const pcName,
-                                                            const configSTACK_DEPTH_TYPE usStackDepth,
+                                                            const config_सालानसान_DEPTH_TYPE us_सालानसान_Depth,
                                                             void * const pvParameters,
                                                             UBaseType_t uxPriority,
                                                             UBaseType_t uxCoreAffinityMask,
-                                                            UBaseType_t uxStackMemoryCaps,
+                                                            UBaseType_t ux_सालानसान_Memory_Caps,
                                                             TaskHandle_t * const pxCreatedTask );
     #else
         BaseType_t prvTaskCreateDynamicPinnedToCoreWithCaps( TaskFunction_t pxTaskCode,
                                                              const char * const pcName,
-                                                             const configSTACK_DEPTH_TYPE usStackDepth,
+                                                             const config_सालानसान_DEPTH_TYPE us_सालानसान_Depth,
                                                              void * const pvParameters,
                                                              UBaseType_t uxPriority,
                                                              const BaseType_t xCoreID,
-                                                             UBaseType_t uxStackMemoryCaps,
+                                                             UBaseType_t ux_सालानसान_Memory_Caps,
                                                              TaskHandle_t * const pxCreatedTask );
     #endif // CONFIG_FREERTOS_SMP
 

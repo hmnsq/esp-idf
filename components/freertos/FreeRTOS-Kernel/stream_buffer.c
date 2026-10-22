@@ -238,7 +238,7 @@ typedef struct StreamBufferDef_t                 /*lint !e9058 Style convention 
     uint8_t ucFlags;
 
     #if ( configUSE_TRACE_FACILITY == 1 )
-        UBaseType_t uxStreamBufferNumber; /* Used for tracing purposes. */
+        UBaseType_t ux_Stream_Buffer_नुमेरो; /* Used for tracing purposes. */
     #endif
 
     #if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
@@ -267,7 +267,7 @@ static size_t prvBytesInBuffer( const StreamBuffer_t * const pxStreamBuffer ) PR
  */
 static size_t prvWriteBytesToBuffer( StreamBuffer_t * const pxStreamBuffer,
                                      const uint8_t * pucData,
-                                     size_t xCount,
+                                     size_t x_बिलांग,
                                      size_t xHead ) PRIVILEGED_FUNCTION;
 
 /*
@@ -309,7 +309,7 @@ static size_t prvWriteMessageToBuffer( StreamBuffer_t * const pxStreamBuffer,
  */
 static size_t prvReadBytesFromBuffer( StreamBuffer_t * pxStreamBuffer,
                                       uint8_t * pucData,
-                                      size_t xCount,
+                                      size_t x_बिलांग,
                                       size_t xTail ) PRIVILEGED_FUNCTION;
 
 /*
@@ -561,7 +561,7 @@ BaseType_t xStreamBufferReset( StreamBufferHandle_t xStreamBuffer )
     StreamBufferCallbackFunction_t pxSendCallback = NULL, pxReceiveCallback = NULL;
 
     #if ( configUSE_TRACE_FACILITY == 1 )
-        UBaseType_t uxStreamBufferNumber;
+        UBaseType_t ux_Stream_Buffer_नुमेरो;
     #endif
 
     configASSERT( pxStreamBuffer );
@@ -570,7 +570,7 @@ BaseType_t xStreamBufferReset( StreamBufferHandle_t xStreamBuffer )
     {
         /* Store the stream buffer number so it can be restored after the
          * reset. */
-        uxStreamBufferNumber = pxStreamBuffer->uxStreamBufferNumber;
+        ux_Stream_Buffer_नुमेरो = pxStreamBuffer->ux_Stream_Buffer_नुमेरो;
     }
     #endif
 
@@ -596,7 +596,7 @@ BaseType_t xStreamBufferReset( StreamBufferHandle_t xStreamBuffer )
 
             #if ( configUSE_TRACE_FACILITY == 1 )
             {
-                pxStreamBuffer->uxStreamBufferNumber = uxStreamBufferNumber;
+                pxStreamBuffer->ux_Stream_Buffer_नुमेरो = ux_Stream_Buffer_नुमेरो;
             }
             #endif
 
@@ -777,13 +777,13 @@ size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
             /* In SMP mode, the task may have been woken and scheduled on
              * another core. Hence, we must clear the xTaskWaitingToSend
              * handle in a critical section. */
-            #if ( configNUMBER_OF_CORES > 1 )
+            #if ( config_नुमेरो_OF_CORES > 1 )
                 taskENTER_CRITICAL( &( pxStreamBuffer->xStreamBufferLock ) );
             #endif /* configNUMBER_OF_CORES > 1 */
             {
                 pxStreamBuffer->xTaskWaitingToSend = NULL;
             }
-            #if ( configNUMBER_OF_CORES > 1 )
+            #if ( config_नुमेरो_OF_CORES > 1 )
                 taskEXIT_CRITICAL( &( pxStreamBuffer->xStreamBufferLock ) );
             #endif /* configNUMBER_OF_CORES > 1 */
         } while( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE );
@@ -992,13 +992,13 @@ size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
             /* In SMP mode, the task may have been woken and scheduled on
              * another core. Hence, we must clear the xTaskWaitingToReceive
              * handle in a critical section. */
-            #if ( configNUMBER_OF_CORES > 1 )
+            #if ( config_नुमेरो_OF_CORES > 1 )
                 taskENTER_CRITICAL( &( pxStreamBuffer->xStreamBufferLock ) );
             #endif /* configNUMBER_OF_CORES > 1 */
             {
                 pxStreamBuffer->xTaskWaitingToReceive = NULL;
             }
-            #if ( configNUMBER_OF_CORES > 1 )
+            #if ( config_नुमेरो_OF_CORES > 1 )
                 taskEXIT_CRITICAL( &( pxStreamBuffer->xStreamBufferLock ) );
             #endif /* configNUMBER_OF_CORES > 1 */
 
@@ -1147,7 +1147,7 @@ static size_t prvReadMessageFromBuffer( StreamBuffer_t * pxStreamBuffer,
                                         size_t xBufferLengthBytes,
                                         size_t xBytesAvailable )
 {
-    size_t xCount, xNextMessageLength;
+    size_t x_बिलांग, xNextMessageLength;
     configMESSAGE_BUFFER_LENGTH_TYPE xTempNextMessageLength;
     size_t xNextTail = pxStreamBuffer->xTail;
 
@@ -1182,15 +1182,15 @@ static size_t prvReadMessageFromBuffer( StreamBuffer_t * pxStreamBuffer,
     }
 
     /* Use the minimum of the wanted bytes and the available bytes. */
-    xCount = configMIN( xNextMessageLength, xBytesAvailable );
+    x_बिलांग = configMIN( xNextMessageLength, xBytesAvailable );
 
-    if( xCount != ( size_t ) 0 )
+    if( x_बिलांग != ( size_t ) 0 )
     {
         /* Read the actual data and update the tail to mark the data as officially consumed. */
-        pxStreamBuffer->xTail = prvReadBytesFromBuffer( pxStreamBuffer, ( uint8_t * ) pvRxData, xCount, xNextTail ); /*lint !e9079 Data storage area is implemented as uint8_t array for ease of sizing, indexing and alignment. */
+        pxStreamBuffer->xTail = prvReadBytesFromBuffer( pxStreamBuffer, ( uint8_t * ) pvRxData, x_बिलांग, xNextTail ); /*lint !e9079 Data storage area is implemented as uint8_t array for ease of sizing, indexing and alignment. */
     }
 
-    return xCount;
+    return x_बिलांग;
 }
 /*-----------------------------------------------------------*/
 
@@ -1317,17 +1317,17 @@ BaseType_t xStreamBufferReceiveCompletedFromISR( StreamBufferHandle_t xStreamBuf
 
 static size_t prvWriteBytesToBuffer( StreamBuffer_t * const pxStreamBuffer,
                                      const uint8_t * pucData,
-                                     size_t xCount,
+                                     size_t x_बिलांग,
                                      size_t xHead )
 {
     size_t xFirstLength;
 
-    configASSERT( xCount > ( size_t ) 0 );
+    configASSERT( x_बिलांग > ( size_t ) 0 );
 
     /* Calculate the number of bytes that can be added in the first write -
      * which may be less than the total number of bytes that need to be added if
      * the buffer will wrap back to the beginning. */
-    xFirstLength = configMIN( pxStreamBuffer->xLength - xHead, xCount );
+    xFirstLength = configMIN( pxStreamBuffer->xLength - xHead, x_बिलांग );
 
     /* Write as many bytes as can be written in the first write. */
     configASSERT( ( xHead + xFirstLength ) <= pxStreamBuffer->xLength );
@@ -1335,18 +1335,18 @@ static size_t prvWriteBytesToBuffer( StreamBuffer_t * const pxStreamBuffer,
 
     /* If the number of bytes written was less than the number that could be
      * written in the first write... */
-    if( xCount > xFirstLength )
+    if( x_बिलांग > xFirstLength )
     {
         /* ...then write the remaining bytes to the start of the buffer. */
-        configASSERT( ( xCount - xFirstLength ) <= pxStreamBuffer->xLength );
-        ( void ) memcpy( ( void * ) pxStreamBuffer->pucBuffer, ( const void * ) &( pucData[ xFirstLength ] ), xCount - xFirstLength ); /*lint !e9087 memcpy() requires void *. */
+        configASSERT( ( x_बिलांग - xFirstLength ) <= pxStreamBuffer->xLength );
+        ( void ) memcpy( ( void * ) pxStreamBuffer->pucBuffer, ( const void * ) &( pucData[ xFirstLength ] ), x_बिलांग - xFirstLength ); /*lint !e9087 memcpy() requires void *. */
     }
     else
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    xHead += xCount;
+    xHead += x_बिलांग;
 
     if( xHead >= pxStreamBuffer->xLength )
     {
@@ -1363,30 +1363,30 @@ static size_t prvWriteBytesToBuffer( StreamBuffer_t * const pxStreamBuffer,
 
 static size_t prvReadBytesFromBuffer( StreamBuffer_t * pxStreamBuffer,
                                       uint8_t * pucData,
-                                      size_t xCount,
+                                      size_t x_बिलांग,
                                       size_t xTail )
 {
     size_t xFirstLength;
 
-    configASSERT( xCount != ( size_t ) 0 );
+    configASSERT( x_बिलांग != ( size_t ) 0 );
 
     /* Calculate the number of bytes that can be read - which may be
      * less than the number wanted if the data wraps around to the start of
      * the buffer. */
-    xFirstLength = configMIN( pxStreamBuffer->xLength - xTail, xCount );
+    xFirstLength = configMIN( pxStreamBuffer->xLength - xTail, x_बिलांग );
 
     /* Obtain the number of bytes it is possible to obtain in the first
      * read.  Asserts check bounds of read and write. */
-    configASSERT( xFirstLength <= xCount );
+    configASSERT( xFirstLength <= x_बिलांग );
     configASSERT( ( xTail + xFirstLength ) <= pxStreamBuffer->xLength );
     ( void ) memcpy( ( void * ) pucData, ( const void * ) &( pxStreamBuffer->pucBuffer[ xTail ] ), xFirstLength ); /*lint !e9087 memcpy() requires void *. */
 
     /* If the total number of wanted bytes is greater than the number
      * that could be read in the first read... */
-    if( xCount > xFirstLength )
+    if( x_बिलांग > xFirstLength )
     {
         /* ...then read the remaining bytes from the start of the buffer. */
-        ( void ) memcpy( ( void * ) &( pucData[ xFirstLength ] ), ( void * ) ( pxStreamBuffer->pucBuffer ), xCount - xFirstLength ); /*lint !e9087 memcpy() requires void *. */
+        ( void ) memcpy( ( void * ) &( pucData[ xFirstLength ] ), ( void * ) ( pxStreamBuffer->pucBuffer ), x_बिलांग - xFirstLength ); /*lint !e9087 memcpy() requires void *. */
     }
     else
     {
@@ -1394,7 +1394,7 @@ static size_t prvReadBytesFromBuffer( StreamBuffer_t * pxStreamBuffer,
     }
 
     /* Move the tail pointer to effectively remove the data read from the buffer. */
-    xTail += xCount;
+    xTail += x_बिलांग;
 
     if( xTail >= pxStreamBuffer->xLength )
     {
@@ -1408,21 +1408,21 @@ static size_t prvReadBytesFromBuffer( StreamBuffer_t * pxStreamBuffer,
 static size_t prvBytesInBuffer( const StreamBuffer_t * const pxStreamBuffer )
 {
 /* Returns the distance between xTail and xHead. */
-    size_t xCount;
+    size_t x_बिलांग;
 
-    xCount = pxStreamBuffer->xLength + pxStreamBuffer->xHead;
-    xCount -= pxStreamBuffer->xTail;
+    x_बिलांग = pxStreamBuffer->xLength + pxStreamBuffer->xHead;
+    x_बिलांग -= pxStreamBuffer->xTail;
 
-    if( xCount >= pxStreamBuffer->xLength )
+    if( x_बिलांग >= pxStreamBuffer->xLength )
     {
-        xCount -= pxStreamBuffer->xLength;
+        x_बिलांग -= pxStreamBuffer->xLength;
     }
     else
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    return xCount;
+    return x_बिलांग;
 }
 /*-----------------------------------------------------------*/
 
@@ -1442,9 +1442,9 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
         /* The value written just has to be identifiable when looking at the
          * memory.  Don't use 0xA5 as that is the stack fill value and could
          * result in confusion as to what is actually being observed. */
-        const BaseType_t xWriteValue = 0x55;
-        configASSERT( memset( pucBuffer, ( int ) xWriteValue, xBufferSizeBytes ) == pucBuffer );
-        ( void ) xWriteValue;
+        const BaseType_t x_Write_हालागा = 0x55;
+        configASSERT( memset( pucBuffer, ( int ) x_Write_हालागा, xBufferSizeBytes ) == pucBuffer );
+        ( void ) x_Write_हालागा;
     } /*lint !e529 !e438 xWriteValue is only used if configASSERT() is defined. */
     #endif
 
@@ -1457,7 +1457,7 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
     pxStreamBuffer->xTaskWaitingToReceive = ( TaskHandle_t ) 0;
     pxStreamBuffer->xTaskWaitingToSend = ( TaskHandle_t ) 0;
     #if ( configUSE_TRACE_FACILITY == 1 )
-        pxStreamBuffer->uxStreamBufferNumber = ( UBaseType_t ) 0;
+        pxStreamBuffer->ux_Stream_Buffer_नुमेरो = ( UBaseType_t ) 0;
     #endif
     pxStreamBuffer->pucBuffer = pucBuffer;
     pxStreamBuffer->xLength = xBufferSizeBytes;
@@ -1478,9 +1478,9 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
 
 #if ( configUSE_TRACE_FACILITY == 1 )
 
-    UBaseType_t uxStreamBufferGetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer )
+    UBaseType_t ux_Stream_Buffer_Get_Stream_Buffer_नुमेरो( StreamBufferHandle_t xStreamBuffer )
     {
-        return xStreamBuffer->uxStreamBufferNumber;
+        return xStreamBuffer->ux_Stream_Buffer_नुमेरो;
     }
 
 #endif /* configUSE_TRACE_FACILITY */
@@ -1488,10 +1488,10 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
 
 #if ( configUSE_TRACE_FACILITY == 1 )
 
-    void vStreamBufferSetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer,
-                                             UBaseType_t uxStreamBufferNumber )
+    void v_Stream_Buffer_Set_Stream_Buffer_नुमेरो( StreamBufferHandle_t xStreamBuffer,
+                                             UBaseType_t ux_Stream_Buffer_नुमेरो )
     {
-        xStreamBuffer->uxStreamBufferNumber = uxStreamBufferNumber;
+        xStreamBuffer->ux_Stream_Buffer_नुमेरो = ux_Stream_Buffer_नुमेरो;
     }
 
 #endif /* configUSE_TRACE_FACILITY */

@@ -65,12 +65,12 @@
         #define vTaskResume                            MPU_vTaskResume
         #define vTaskSuspendAll                        MPU_vTaskSuspendAll
         #define xTaskResumeAll                         MPU_xTaskResumeAll
-        #define xTaskGetTickCount                      MPU_xTaskGetTickCount
-        #define uxTaskGetNumberOfTasks                 MPU_uxTaskGetNumberOfTasks
+        #define x_Task_Get_Tick_बिलांग                      MPU_x_Task_Get_Tick_बिलांग
+        #define ux_Task_Get_नुमेरो_Of_Tasks                 MPU_ux_Task_Get_नुमेरो_Of_Tasks
         #define pcTaskGetName                          MPU_pcTaskGetName
         #define xTaskGetHandle                         MPU_xTaskGetHandle
-        #define uxTaskGetStackHighWaterMark            MPU_uxTaskGetStackHighWaterMark
-        #define uxTaskGetStackHighWaterMark2           MPU_uxTaskGetStackHighWaterMark2
+        #define ux_Task_Get_सालानसान_माताअस_Water_Mark            MPU_ux_Task_Get_सालानसान_माताअस_Water_Mark
+        #define ux_Task_Get_सालानसान_माताअस_Water_Mark2           MPU_ux_Task_Get_सालानसान_माताअस_Water_Mark2
         #define vTaskSetApplicationTaskTag             MPU_vTaskSetApplicationTaskTag
         #define xTaskGetApplicationTaskTag             MPU_xTaskGetApplicationTaskTag
         #define vTaskSetThreadLocalStoragePointer      MPU_vTaskSetThreadLocalStoragePointer
@@ -86,7 +86,7 @@
         #define xTaskGenericNotifyWait                 MPU_xTaskGenericNotifyWait
         #define ulTaskGenericNotifyTake                MPU_ulTaskGenericNotifyTake
         #define xTaskGenericNotifyStateClear           MPU_xTaskGenericNotifyStateClear
-        #define ulTaskGenericNotifyValueClear          MPU_ulTaskGenericNotifyValueClear
+        #define ul_Task_Generic_Notify_हालागा_Clear          MPU_ul_Task_Generic_Notify_हालागा_Clear
         #define xTaskCatchUpTicks                      MPU_xTaskCatchUpTicks
 
         #define xTaskGetCurrentTaskHandle              MPU_xTaskGetCurrentTaskHandle

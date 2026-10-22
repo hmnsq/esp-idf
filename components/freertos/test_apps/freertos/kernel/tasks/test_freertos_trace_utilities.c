@@ -27,8 +27,8 @@
 #ifdef CONFIG_FREERTOS_USE_TRACE_FACILITY
 #define TSK_PRIORITY    (UNITY_FREERTOS_PRIORITY + 1)
 
-#define NO_OF_CORES CONFIG_FREERTOS_NUMBER_OF_CORES
-#define BIN_SEM_QUEUE_TYPE queueQUEUE_TYPE_BINARY_SEMAPHORE     //Expected Queue Type
+#define NO_OF_CORES CONFIG_FREERTOS_नुमेरो_OF_CORES
+#define BIN_SEM_QUEUE_TYPE queue_QUEUE_TYPE_दालावाहान_SEMAPHORE     //Expected Queue Type
 
 static QueueHandle_t test_queues[NO_OF_CORES];
 static TaskHandle_t task_handles[NO_OF_CORES];
@@ -39,21 +39,21 @@ void task_test_trace_utilities(void *arg)
     TaskHandle_t handle = xTaskGetCurrentTaskHandle();
     uint32_t id = (uint32_t)arg;
 
-    vTaskSetTaskNumber(handle, (UBaseType_t)id);    //cast and store id as task number
-    vQueueSetQueueNumber(test_queues[core], id);    //store id as queue number
+    v_Task_Set_Task_नुमेरो(handle, (UBaseType_t)id);    //cast and store id as task number
+    v_Queue_Set_Queue_नुमेरो(test_queues[core], id);    //store id as queue number
 
     //Wait to start
     xSemaphoreTake(test_queues[core], portMAX_DELAY);
 
     //Tests on this core
-    TEST_ASSERT(uxTaskGetTaskNumber(task_handles[core]) == (0x0F << (core)));
-    TEST_ASSERT(uxQueueGetQueueNumber(test_queues[core]) == (0x0F << (core)));
+    TEST_ASSERT(ux_Task_Get_Task_नुमेरो(task_handles[core]) == (0x0F << (core)));
+    TEST_ASSERT(ux_Queue_Get_Queue_नुमेरो(test_queues[core]) == (0x0F << (core)));
     TEST_ASSERT(ucQueueGetQueueType(test_queues[core]) == BIN_SEM_QUEUE_TYPE);
 
     //Test on other core
 #ifndef CONFIG_FREERTOS_UNICORE
-    TEST_ASSERT(uxTaskGetTaskNumber(task_handles[!core]) == (0x0F << (!core)));
-    TEST_ASSERT(uxQueueGetQueueNumber(test_queues[!core]) == (0x0F << (!core)));
+    TEST_ASSERT(ux_Task_Get_Task_नुमेरो(task_handles[!core]) == (0x0F << (!core)));
+    TEST_ASSERT(ux_Queue_Get_Queue_नुमेरो(test_queues[!core]) == (0x0F << (!core)));
     TEST_ASSERT(ucQueueGetQueueType(test_queues[!core]) == BIN_SEM_QUEUE_TYPE);
 #endif
 
@@ -64,7 +64,7 @@ void task_test_trace_utilities(void *arg)
 TEST_CASE("Test freertos trace facility functions", "[freertos]")
 {
     for (int i = 0; i < NO_OF_CORES; i++) {
-        test_queues[i] = xSemaphoreCreateBinary();   //Create a queue as binary semaphore for each core
+        test_queues[i] = x_Semaphore_Create_दालावाहान();   //Create a queue as binary semaphore for each core
         xTaskCreatePinnedToCore(task_test_trace_utilities, "Test Task", 4096, (void *)(0x0F << i), TSK_PRIORITY, &task_handles[i], i);
     }
 

@@ -75,10 +75,10 @@ extern "C" {
 #define portDOUBLE                  double
 #define portLONG                    int32_t
 #define portSHORT                   int16_t
-#define portSTACK_TYPE              uint8_t
+#define port_सालानसान_TYPE              uint8_t
 #define portBASE_TYPE               int
 
-typedef portSTACK_TYPE              StackType_t;
+typedef port_सालानसान_TYPE              सालानसान_Type_t;
 typedef portBASE_TYPE               BaseType_t;
 typedef unsigned portBASE_TYPE      UBaseType_t;
 
@@ -102,7 +102,7 @@ typedef uint32_t TickType_t;
  * ------------------------------------------------------------------------------------------------------------------ */
 
 #define portCRITICAL_NESTING_IN_TCB     0
-#define portSTACK_GROWTH                ( -1 )
+#define port_सालानसान_GROWTH                ( -1 )
 #define portTICK_PERIOD_MS              ( ( TickType_t ) 1000 / configTICK_RATE_HZ )
 #define portBYTE_ALIGNMENT              16    // Xtensa Windowed ABI requires the stack pointer to always be 16-byte aligned. See "isa_rm.pdf 8.1.1 Windowed Register Usage and Stack Layout"
 #define portTICK_TYPE_IS_ATOMIC         1
@@ -377,7 +377,7 @@ uint32_t xPortGetTickRateHz(void) __attribute__((deprecated("This function will 
  *
  * @param pxStackStart Pointer to the start of the stack
  */
-void vPortSetStackWatchpoint( void *pxStackStart );
+void v_Port_Set_सालानसान_Watchpoint( void *px_सालानसान_Start );
 
 /**
  * @brief Get the current core's ID
@@ -407,7 +407,7 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 
 // ----------------------- System --------------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
+#if ( config_नुमेरो_OF_CORES > 1 )
     #define portGET_CORE_ID()       xPortGetCoreID()
 #else /* configNUMBER_OF_CORES > 1 */
     #define portGET_CORE_ID()       ((BaseType_t) 0);
@@ -438,7 +438,7 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 /**
  * @brief Used by FreeRTOS functions to call the correct version of critical section API
  */
-#if ( configNUM_CORES > 1 )
+#if ( config_नुमेरो_CORES > 1 )
 #define portCHECK_IF_IN_ISR()   xPortInIsrContext()
 #endif
 
@@ -507,7 +507,7 @@ extern void _frxt_setup_switch( void );     //Defined in portasm.S
 */
 #define portYIELD_WITHIN_API() esp_crosscore_int_send_yield(xPortGetCoreID())
 
-#if ( configNUMBER_OF_CORES > 1 )
+#if ( config_नुमेरो_OF_CORES > 1 )
     #define portYIELD_CORE( xCoreID )     vPortYieldOtherCore( xCoreID )
 #endif /* configNUMBER_OF_CORES > 1 */
 
@@ -520,8 +520,8 @@ extern void _frxt_setup_switch( void );     //Defined in portasm.S
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
 
 #if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
-configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
-#define portGET_RUN_TIME_COUNTER_VALUE()        xPortGetRunTimeCounterValue()
+configRUN_TIME_COUNTER_TYPE x_Port_Get_Run_Time_Counter_हालागा( void );
+#define port_GET_RUN_TIME_COUNTER_हालागा()        x_Port_Get_Run_Time_Counter_हालागा()
 #endif
 
 // --------------------- TCB Cleanup -----------------------
@@ -539,7 +539,7 @@ configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
 /* Store/clear the ready priorities in a bit map. */
 #define portRECORD_READY_PRIORITY( uxPriority, uxReadyPriorities ) ( uxReadyPriorities ) |= ( 1UL << ( uxPriority ) )
 #define portRESET_READY_PRIORITY( uxPriority, uxReadyPriorities ) ( uxReadyPriorities ) &= ~( 1UL << ( uxPriority ) )
-#define portGET_HIGHEST_PRIORITY( uxTopPriority, uxReadyPriorities ) uxTopPriority = ( 31 - __builtin_clz( ( uxReadyPriorities ) ) )
+#define portGET_HIGHEST_PRIORITY( ux_इताअस_Priority, uxReadyPriorities ) ux_इताअस_Priority = ( 31 - __builtin_clz( ( uxReadyPriorities ) ) )
 #endif /* configUSE_PORT_OPTIMISED_TASK_SELECTION */
 
 
@@ -668,16 +668,16 @@ bool xPortCheckValidTCBMem(const void *ptr);
  * @return true Memory can be used to store a task stack
  * @return false Otherwise
  */
-bool xPortcheckValidStackMem(const void *ptr);
+bool x_Portcheck_Valid_सालानसान_Mem(const void *ptr);
 
 #define portVALID_LIST_MEM(ptr)     xPortCheckValidListMem(ptr)
 #define portVALID_TCB_MEM(ptr)      xPortCheckValidTCBMem(ptr)
-#define portVALID_STACK_MEM(ptr)    xPortcheckValidStackMem(ptr)
+#define port_VALID_सालानसान_MEM(ptr)    x_Portcheck_Valid_सालानसान_Mem(ptr)
 
 // --------------------- App-Trace -------------------------
 
 #if CONFIG_ESP_TRACE_ENABLE
-extern volatile uint32_t port_switch_flag[portNUM_PROCESSORS];
+extern volatile uint32_t port_switch_flag[port_नुमेरो_PROCESSORS];
 #define os_task_switch_is_pended(_cpu_) (port_switch_flag[_cpu_])
 #else
 #define os_task_switch_is_pended(_cpu_) (false)

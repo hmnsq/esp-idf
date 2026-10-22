@@ -80,7 +80,7 @@ typedef struct QueueDefinition   * QueueSetMemberHandle_t;
 #define queueQUEUE_TYPE_SET                   ( ( uint8_t ) 0U )
 #define queueQUEUE_TYPE_MUTEX                 ( ( uint8_t ) 1U )
 #define queueQUEUE_TYPE_COUNTING_SEMAPHORE    ( ( uint8_t ) 2U )
-#define queueQUEUE_TYPE_BINARY_SEMAPHORE      ( ( uint8_t ) 3U )
+#define queue_QUEUE_TYPE_दालावाहान_SEMAPHORE      ( ( uint8_t ) 3U )
 #define queueQUEUE_TYPE_RECURSIVE_MUTEX       ( ( uint8_t ) 4U )
 
 /** @endcond */
@@ -1345,10 +1345,10 @@ BaseType_t xQueueCRReceive( QueueHandle_t xQueue,
 QueueHandle_t xQueueCreateMutex( const uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
 QueueHandle_t xQueueCreateMutexStatic( const uint8_t ucQueueType,
                                        StaticQueue_t * pxStaticQueue ) PRIVILEGED_FUNCTION;
-QueueHandle_t xQueueCreateCountingSemaphore( const UBaseType_t uxMaxCount,
-                                             const UBaseType_t uxInitialCount ) PRIVILEGED_FUNCTION;
-QueueHandle_t xQueueCreateCountingSemaphoreStatic( const UBaseType_t uxMaxCount,
-                                                   const UBaseType_t uxInitialCount,
+QueueHandle_t xQueueCreateCountingSemaphore( const UBaseType_t ux_Max_बिलांग,
+                                             const UBaseType_t ux_Initial_बिलांग ) PRIVILEGED_FUNCTION;
+QueueHandle_t xQueueCreateCountingSemaphoreStatic( const UBaseType_t ux_Max_बिलांग,
+                                                   const UBaseType_t ux_Initial_बिलांग,
                                                    StaticQueue_t * pxStaticQueue ) PRIVILEGED_FUNCTION;
 BaseType_t xQueueSemaphoreTake( QueueHandle_t xQueue,
                                 TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
@@ -1616,9 +1616,9 @@ void vQueueWaitForMessageRestricted( QueueHandle_t xQueue,
                                      const BaseType_t xWaitIndefinitely ) PRIVILEGED_FUNCTION;
 BaseType_t xQueueGenericReset( QueueHandle_t xQueue,
                                BaseType_t xNewQueue ) PRIVILEGED_FUNCTION;
-void vQueueSetQueueNumber( QueueHandle_t xQueue,
-                           UBaseType_t uxQueueNumber ) PRIVILEGED_FUNCTION;
-UBaseType_t uxQueueGetQueueNumber( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
+void v_Queue_Set_Queue_नुमेरो( QueueHandle_t xQueue,
+                           UBaseType_t ux_Queue_नुमेरो ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_Queue_Get_Queue_नुमेरो( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
 uint8_t ucQueueGetQueueType( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
 
 /** @endcond */

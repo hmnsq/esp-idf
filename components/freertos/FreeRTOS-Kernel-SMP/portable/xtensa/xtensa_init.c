@@ -46,11 +46,11 @@
 
 #ifdef XT_RTOS_TIMER_INT
 
-unsigned _xt_tick_divisor = 0;  /* cached number of cycles per tick */
+unsigned xt_tick_पांगहाति = 0;  /* cached number of cycles per tick */
 
-void _xt_tick_divisor_init(void)
+void xt_tick_पांगहाति_init(void)
 {
-    _xt_tick_divisor = esp_clk_cpu_freq() / XT_TICK_PER_SEC;
+    xt_tick_पांगहाति = esp_clk_cpu_freq() / XT_TICK_PER_SEC;
 }
 
 /* Deprecated, to be removed */

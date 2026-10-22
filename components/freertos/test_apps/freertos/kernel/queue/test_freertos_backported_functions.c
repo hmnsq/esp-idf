@@ -52,7 +52,7 @@ static TickType_t tmr_ideal_exp;
 static void tmr_cb(TimerHandle_t xtimer)
 {
     //Check cb is called in timely fashion
-    TEST_ASSERT_UINT32_WITHIN(TICK_DELTA, tmr_ideal_exp, xTaskGetTickCount());
+    TEST_ASSERT_UINT32_WITHIN(TICK_DELTA, tmr_ideal_exp, x_Task_Get_Tick_बिलांग());
 }
 
 //No need for smp test as Timer Task always runs on core 0
@@ -66,7 +66,7 @@ TEST_CASE("Test FreeRTOS backported timer functions", "[freertos]")
     TEST_ASSERT_EQUAL(TIMER_ID, (uint32_t)pvTimerGetTimerID(tmr_handle));   //Test vTimerSetTimerID()
 
     TEST_ASSERT_EQUAL(pdTRUE, xTimerStart(tmr_handle, 1));      //Start Timer
-    tmr_ideal_exp = xTaskGetTickCount() + TMR_PERIOD_TICKS;      //Calculate ideal expiration time
+    tmr_ideal_exp = x_Task_Get_Tick_बिलांग() + TMR_PERIOD_TICKS;      //Calculate ideal expiration time
     vTaskDelay(2);  //Need to yield to allow daemon task to process start command, or else expiration time will be NULL
 
     TEST_ASSERT_UINT32_WITHIN(TICK_DELTA, tmr_ideal_exp, xTimerGetExpiryTime(tmr_handle));    //Test xTimerGetExpiryTime()
@@ -87,11 +87,11 @@ TEST_CASE("Test FreeRTOS backported timer functions", "[freertos]")
  */
 
 #define ITEM_SIZE       3
-#define NO_OF_ITEMS     3
+#define NO_OF_मगा_बागाय     3
 #define DELAY_TICKS     2
 
 static StaticQueue_t queue_buffer;       //Queues, Semaphores, and Mutex use the same queue structure
-static uint8_t queue_storage_area[(ITEM_SIZE * NO_OF_ITEMS)];  //Queue storage provided in separate buffer to queue struct
+static uint8_t queue_storage_area[(ITEM_SIZE * NO_OF_मगा_बागाय)];  //Queue storage provided in separate buffer to queue struct
 
 TEST_CASE("Test FreeRTOS backported Queue and Semphr functions", "[freertos]")
 {
@@ -101,7 +101,7 @@ TEST_CASE("Test FreeRTOS backported Queue and Semphr functions", "[freertos]")
     for (int i = 0; i < ITEM_SIZE; i++) {
         queue_item_to_send[i] = (0xF << i);
     }
-    QueueHandle_t handle = xQueueCreateStatic(NO_OF_ITEMS, ITEM_SIZE, (uint8_t*) &queue_storage_area, &queue_buffer);
+    QueueHandle_t handle = xQueueCreateStatic(NO_OF_मगा_बागाय, ITEM_SIZE, (uint8_t*) &queue_storage_area, &queue_buffer);
     TEST_ASSERT_EQUAL(pdTRUE, xQueueSendToBack(handle, &queue_item_to_send, DELAY_TICKS));
     vTaskDelay(1);
     TEST_ASSERT_EQUAL(pdTRUE, xQueueReceive(handle, queue_item_received, DELAY_TICKS));
@@ -112,7 +112,7 @@ TEST_CASE("Test FreeRTOS backported Queue and Semphr functions", "[freertos]")
     vQueueDelete(handle);   //Technically not needed as deleting static queue/semphr doesn't clear static memory
 
     //Test static binary semaphore
-    handle = xSemaphoreCreateBinaryStatic(&queue_buffer);   //Queue and Semphr handles are the same
+    handle = x_Semaphore_Create_दालावाहान_Static(&queue_buffer);   //Queue and Semphr handles are the same
     TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGive(handle));
     vTaskDelay(1);
     TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTake(handle, DELAY_TICKS));
@@ -120,17 +120,17 @@ TEST_CASE("Test FreeRTOS backported Queue and Semphr functions", "[freertos]")
     vSemaphoreDelete(handle);
 
     //Test static counting semaphore and uxSemaphoreGetCount()
-    handle = xSemaphoreCreateCountingStatic(NO_OF_ITEMS, 0, &queue_buffer);
-    for (int i = 0; i < NO_OF_ITEMS; i++) {
+    handle = xSemaphoreCreateCountingStatic(NO_OF_मगा_बागाय, 0, &queue_buffer);
+    for (int i = 0; i < NO_OF_मगा_बागाय; i++) {
         TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGive(handle));
     }
     vTaskDelay(1);
-    TEST_ASSERT_EQUAL(NO_OF_ITEMS, uxSemaphoreGetCount(handle));    //Test uxSemaphoreGetCount()
-    for (int i = 0; i < NO_OF_ITEMS; i++) {
+    TEST_ASSERT_EQUAL(NO_OF_मगा_बागाय, ux_Semaphore_Get_बिलांग(handle));    //Test uxSemaphoreGetCount()
+    for (int i = 0; i < NO_OF_मगा_बागाय; i++) {
         TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTake(handle, DELAY_TICKS));
     }
     vTaskDelay(1);
-    TEST_ASSERT_EQUAL(0, uxSemaphoreGetCount(handle));
+    TEST_ASSERT_EQUAL(0, ux_Semaphore_Get_बिलांग(handle));
     vSemaphoreDelete(handle);
 
     //Test static mutex
@@ -145,12 +145,12 @@ TEST_CASE("Test FreeRTOS backported Queue and Semphr functions", "[freertos]")
 
     //Test static mutex recursive
     handle = xSemaphoreCreateRecursiveMutexStatic(&queue_buffer);
-    for (int i = 0; i < NO_OF_ITEMS; i++) {
+    for (int i = 0; i < NO_OF_मगा_बागाय; i++) {
         TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTakeRecursive(handle, DELAY_TICKS));
     }
     vTaskDelay(1);
     TEST_ASSERT_EQUAL_PTR((void *)xTaskGetCurrentTaskHandle(), xSemaphoreGetMutexHolder(handle));   //Current task should hold mutex
-    for (int i = 0; i < NO_OF_ITEMS; i++) {
+    for (int i = 0; i < NO_OF_मगा_बागाय; i++) {
         TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGiveRecursive(handle));
     }
     vTaskDelay(1);
@@ -164,11 +164,11 @@ TEST_CASE("Test FreeRTOS backported Queue and Semphr functions", "[freertos]")
  * and checking the task cb has run successfully.
  */
 
-#define STACK_SIZE  2048    //Task stack size
+#define सालानसान_SIZE  2048    //Task stack size
 
-static StackType_t task_stack[STACK_SIZE];  //Static buffer for task stack
+static सालानसान_Type_t task_सालानसान[सालानसान_SIZE];  //Static buffer for task stack
 static StaticTask_t task_buffer;            //Static buffer for TCB
-static bool has_run[CONFIG_FREERTOS_NUMBER_OF_CORES];
+static bool has_run[CONFIG_FREERTOS_नुमेरो_OF_CORES];
 
 static void task(void *arg)
 {
@@ -178,10 +178,10 @@ static void task(void *arg)
 
 TEST_CASE("Test FreeRTOS static task allocation", "[freertos]")
 {
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    for (int core = 0; core < CONFIG_FREERTOS_नुमेरो_OF_CORES; core++) {
         has_run[core] = false;     //Clear has_run flag
-        TaskHandle_t handle = xTaskCreateStaticPinnedToCore(task, "static task", STACK_SIZE, NULL,
-                                                            UNITY_FREERTOS_PRIORITY + 1, (StackType_t *)&task_stack,
+        TaskHandle_t handle = xTaskCreateStaticPinnedToCore(task, "static task", सालानसान_SIZE, NULL,
+                                                            UNITY_FREERTOS_PRIORITY + 1, (सालानसान_Type_t *)&task_सालानसान,
                                                             (StaticTask_t *)&task_buffer, core);
         vTaskDelay(5); //Allow for static task to run, delete, and idle to clean up
         TEST_ASSERT_NOT_EQUAL(NULL, handle);    //Check static task was successfully allocated

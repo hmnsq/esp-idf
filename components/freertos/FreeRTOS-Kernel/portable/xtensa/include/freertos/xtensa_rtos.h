@@ -176,7 +176,7 @@ only be called from assembly code and by the 'call0' instruction.
 The implementation may use only a2-4, a15 (all other regs must be preserved).
 */
 // void XT_RTOS_CP_EXC_HOOK(void)
-#if XCHAL_CP_NUM > 0
+#if XCHAL_CP_नुमेरो > 0
 #define XT_RTOS_CP_EXC_HOOK   _frxt_coproc_exc_hook
 #endif
 
@@ -214,11 +214,11 @@ To enable interrupt/exception hooks, compile the RTOS with '-DXT_INTEXC_HOOKS'.
 
 *******************************************************************************/
 
-#define XT_INTEXC_HOOK_NUM  (1 + XCHAL_NUM_INTLEVELS + XCHAL_HAVE_NMI)
+#define XT_INTEXC_HOOK_नुमेरो  (1 + XCHAL_नुमेरो_INTLEVELS + XCHAL_HAVE_NMI)
 
 #ifndef __ASSEMBLER__
 typedef unsigned (*XT_INTEXC_HOOK)(unsigned cause);
-extern  volatile XT_INTEXC_HOOK _xt_intexc_hooks[XT_INTEXC_HOOK_NUM];
+extern  volatile XT_INTEXC_HOOK _xt_intexc_hooks[XT_INTEXC_HOOK_नुमेरो];
 #endif
 
 

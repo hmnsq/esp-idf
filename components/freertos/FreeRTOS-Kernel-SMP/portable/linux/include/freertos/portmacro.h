@@ -55,11 +55,11 @@ extern "C" {
 #define portDOUBLE      double
 #define portLONG        long
 #define portSHORT       short
-#define portSTACK_TYPE  unsigned long
+#define port_सालानसान_TYPE  unsigned long
 #define portBASE_TYPE   long
 #define portPOINTER_SIZE_TYPE intptr_t
 
-typedef portSTACK_TYPE StackType_t;
+typedef port_सालानसान_TYPE सालानसान_Type_t;
 typedef portBASE_TYPE BaseType_t;
 typedef unsigned portBASE_TYPE UBaseType_t;
 
@@ -79,8 +79,8 @@ typedef unsigned long TickType_t;
  * ------------------------------------------------------------------------------------------------------------------ */
 
 #define portCRITICAL_NESTING_IN_TCB     1
-#define portSTACK_GROWTH                ( -1 )
-#define portHAS_STACK_OVERFLOW_CHECKING ( 1 )   // Set in non-SMP POSIX port
+#define port_सालानसान_GROWTH                ( -1 )
+#define port_HAS_सालानसान_OVERFLOW_CHECKING ( 1 )   // Set in non-SMP POSIX port
 #define portTICK_PERIOD_MS              ( ( TickType_t ) 1000 / configTICK_RATE_HZ )
 #define portTICK_RATE_MICROSECONDS      ( ( TickType_t ) 1000000 / configTICK_RATE_HZ )
 #define portBYTE_ALIGNMENT              8
@@ -110,7 +110,7 @@ BaseType_t xPortCheckIfInISR(void);
 
 // ------------------ Critical Sections --------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
+#if ( config_नुमेरो_OF_CORES > 1 )
 /*
 These are always called with interrupts already disabled. We simply need to get/release the spinlocks
 */
@@ -199,7 +199,7 @@ extern void vPortClearInterruptMask( BaseType_t xMask );
 
 extern unsigned long ulPortGetRunTime( void );
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() /* no-op */
-#define portGET_RUN_TIME_COUNTER_VALUE()         ulPortGetRunTime()
+#define port_GET_RUN_TIME_COUNTER_हालागा()         ulPortGetRunTime()
 // TODO IDF-5723: no esp_timer implementation
 
 // ------------------- TCB Cleanup ----------------------
@@ -291,7 +291,7 @@ extern void vPortYield( void );
 
 bool portVALID_LIST_MEM(const void *ptr);
 bool portVALID_TCB_MEM(const void *ptr);
-bool portVALID_STACK_MEM(const void *ptr);
+bool port_VALID_सालानसान_MEM(const void *ptr);
 
 /*-----------------------------------------------------------*/
 

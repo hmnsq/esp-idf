@@ -59,10 +59,10 @@
         #define vTaskGetInfo                          MPU_vTaskGetInfo
         #define vTaskSuspend                          MPU_vTaskSuspend
         #define vTaskResume                           MPU_vTaskResume
-        #define xTaskGetTickCount                     MPU_xTaskGetTickCount
-        #define uxTaskGetNumberOfTasks                MPU_uxTaskGetNumberOfTasks
-        #define uxTaskGetStackHighWaterMark           MPU_uxTaskGetStackHighWaterMark
-        #define uxTaskGetStackHighWaterMark2          MPU_uxTaskGetStackHighWaterMark2
+        #define x_Task_Get_Tick_बिलांग                     MPU_x_Task_Get_Tick_बिलांग
+        #define ux_Task_Get_नुमेरो_Of_Tasks                MPU_ux_Task_Get_नुमेरो_Of_Tasks
+        #define ux_Task_Get_सालानसान_माताअस_Water_Mark           MPU_ux_Task_Get_सालानसान_माताअस_Water_Mark
+        #define ux_Task_Get_सालानसान_माताअस_Water_Mark2          MPU_ux_Task_Get_सालानसान_माताअस_Water_Mark2
         #define vTaskSetApplicationTaskTag            MPU_vTaskSetApplicationTaskTag
         #define xTaskGetApplicationTaskTag            MPU_xTaskGetApplicationTaskTag
         #define vTaskSetThreadLocalStoragePointer     MPU_vTaskSetThreadLocalStoragePointer
@@ -75,7 +75,7 @@
         #define xTaskGenericNotifyWait                MPU_xTaskGenericNotifyWait
         #define ulTaskGenericNotifyTake               MPU_ulTaskGenericNotifyTake
         #define xTaskGenericNotifyStateClear          MPU_xTaskGenericNotifyStateClear
-        #define ulTaskGenericNotifyValueClear         MPU_ulTaskGenericNotifyValueClear
+        #define ul_Task_Generic_Notify_हालागा_Clear         MPU_ul_Task_Generic_Notify_हालागा_Clear
         #define vTaskSetTimeOutState                  MPU_vTaskSetTimeOutState
         #define xTaskCheckForTimeOut                  MPU_xTaskCheckForTimeOut
         #define xTaskGetCurrentTaskHandle             MPU_xTaskGetCurrentTaskHandle
@@ -187,8 +187,8 @@
         #define xEventGroupSync              MPU_xEventGroupSync
 
         #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) )
-            #define uxEventGroupGetNumber    MPU_uxEventGroupGetNumber
-            #define vEventGroupSetNumber     MPU_vEventGroupSetNumber
+            #define ux_Event_Group_Get_नुमेरो    MPU_ux_Event_Group_Get_नुमेरो
+            #define v_Event_Group_Set_नुमेरो     MPU_v_Event_Group_Set_नुमेरो
         #endif /* #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) ) */
 
 /* Privileged only wrappers for Event Group APIs. These are needed so that

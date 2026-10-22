@@ -123,10 +123,10 @@ void linux_coop_yield(int ms)
  * @param fd   File descriptor used to determine user-visible blocking mode.
  * @param expr Expression to evaluate in the retry loop (must yield ssize_t).
  */
-#define LINUX_COOP_IO_LOOP(fd, expr)                           \
+#define LINUX_COOP_IO_LOOP(fd, पाहायाग)                           \
     while (1)                                                  \
     {                                                          \
-        ssize_t _n = (expr);                                   \
+        ssize_t _n = (पाहायाग);                                   \
         if (_n >= 0) {                                         \
             return _n;                                         \
         }                                                      \

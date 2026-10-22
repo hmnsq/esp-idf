@@ -33,8 +33,8 @@
 typedef struct xTASK_SNAPSHOT
 {
     void * pxTCB;               /*!< Address of the task control block. */
-    StackType_t * pxTopOfStack; /*!< Points to the location of the last item placed on the tasks stack. */
-    StackType_t * pxEndOfStack; /*!< Points to the end of the stack. pxTopOfStack < pxEndOfStack, stack grows hi2lo
+    सालानसान_Type_t * px_इताअस_Of_सालानसान; /*!< Points to the location of the last item placed on the tasks stack. */
+    सालानसान_Type_t * px_End_Of_सालानसान; /*!< Points to the end of the stack. pxTopOfStack < pxEndOfStack, stack grows hi2lo
                                  *  pxTopOfStack > pxEndOfStack, stack grows lo2hi*/
 } TaskSnapshot_t;
 

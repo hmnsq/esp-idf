@@ -76,11 +76,11 @@ typedef void (* TaskFunction_t)( void * arg );
 #endif
 
 #if ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS )
-    #define pdINTEGRITY_CHECK_VALUE    0x5a5a
+    #define pd_INTEGRITY_CHECK_हालागा    0x5a5a
 #elif ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_32_BITS )
-    #define pdINTEGRITY_CHECK_VALUE    0x5a5a5a5aUL
+    #define pd_INTEGRITY_CHECK_हालागा    0x5a5a5a5aUL
 #elif ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_64_BITS )
-    #define pdINTEGRITY_CHECK_VALUE    0x5a5a5a5a5a5a5a5aULL
+    #define pd_INTEGRITY_CHECK_हालागा    0x5a5a5a5a5a5a5a5aULL
 #else
     #error configTICK_TYPE_WIDTH_IN_BITS set to unsupported tick type width.
 #endif

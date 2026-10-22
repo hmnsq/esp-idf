@@ -16,7 +16,7 @@ xStateListItem (28) +
 xEventListItem (28) +
 uxPriority (4)
 */
-#define PORT_OFFSET_PX_STACK 0x40
+#define PORT_OFFSET_PX_सालानसान 0x40
 #else
 /*
 pxTopOfStack (4) +
@@ -24,10 +24,10 @@ xStateListItem (20) +
 xEventListItem (20) +
 uxPriority (4)
 */
-#define PORT_OFFSET_PX_STACK 0x30
+#define PORT_OFFSET_PX_सालानसान 0x30
 #endif /* #if CONFIG_FREERTOS_USE_LIST_DATA_INTEGRITY_CHECK_BYTES */
 
-#if ( configNUMBER_OF_CORES > 1 )
+#if ( config_नुमेरो_OF_CORES > 1 )
 #define PORT_TCB_CORE_FIELDS_SIZE 8
 #else
 #define PORT_TCB_CORE_FIELDS_SIZE 0
@@ -40,10 +40,10 @@ uxPriority (4)
 #endif
 
 /* Align the value up to the nearest multiple of 4 */
-#define PORT_ALIGN_UP_TO_4(value) (((value) + 3) & ~3)
+#define PORT_ALIGN_UP_TO_4(हालागा) (((हालागा) + 3) & ~3)
 
-#define PORT_OFFSET_PX_END_OF_STACK ( \
-    PORT_OFFSET_PX_STACK \
+#define PORT_OFFSET_PX_END_OF_सालानसान ( \
+    PORT_OFFSET_PX_सालानसान \
     + 4                                 /* StackType_t * pxStack */ \
     + PORT_TCB_CORE_FIELDS_SIZE                     /* BaseType_t xDummy23 + UBaseType_t uxDummy24 */ \
     + PORT_ALIGN_UP_TO_4(configMAX_TASK_NAME_LEN)   /* pcTaskName[ configMAX_TASK_NAME_LEN ] */ \
@@ -76,10 +76,10 @@ extern "C" {
 #define portDOUBLE                  double
 #define portLONG                    int32_t
 #define portSHORT                   int16_t
-#define portSTACK_TYPE              uint8_t
+#define port_सालानसान_TYPE              uint8_t
 #define portBASE_TYPE               int
 
-typedef portSTACK_TYPE              StackType_t;
+typedef port_सालानसान_TYPE              सालानसान_Type_t;
 typedef portBASE_TYPE               BaseType_t;
 typedef unsigned portBASE_TYPE      UBaseType_t;
 
@@ -101,7 +101,7 @@ typedef uint32_t TickType_t;
  * ------------------------------------------------------------------------------------------------------------------ */
 
 #define portCRITICAL_NESTING_IN_TCB     1
-#define portSTACK_GROWTH                ( -1 )
+#define port_सालानसान_GROWTH                ( -1 )
 #define portTICK_PERIOD_MS              ( ( TickType_t ) ( 1000 / configTICK_RATE_HZ ) )
 #define portBYTE_ALIGNMENT              16
 #define portNOP() __asm volatile        (" nop ")
@@ -136,7 +136,7 @@ void vPortAssertIfInISR(void);
 
 // ------------------ Critical Sections --------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
+#if ( config_नुमेरो_OF_CORES > 1 )
 /*
 These are always called with interrupts already disabled. We simply need to get/release the spinlocks
 */
@@ -229,7 +229,7 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 
 // ------------------ Critical Sections --------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
+#if ( config_नुमेरो_OF_CORES > 1 )
 #define portGET_TASK_LOCK()                         vPortTakeLock(&port_xTaskLock)
 #define portRELEASE_TASK_LOCK()                     vPortReleaseLock(&port_xTaskLock)
 #define portGET_ISR_LOCK()                          vPortTakeLock(&port_xISRLock)
@@ -272,8 +272,8 @@ extern void vTaskExitCritical( void );
 
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
 #if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
-configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
-#define portGET_RUN_TIME_COUNTER_VALUE()        xPortGetRunTimeCounterValue()
+configRUN_TIME_COUNTER_TYPE x_Port_Get_Run_Time_Counter_हालागा( void );
+#define port_GET_RUN_TIME_COUNTER_हालागा()        x_Port_Get_Run_Time_Counter_हालागा()
 #endif
 
 // --------------------- TCB Cleanup -----------------------
@@ -390,7 +390,7 @@ static inline bool xPortCanYield(void)
 
 // ----------------------- System --------------------------
 
-void vPortSetStackWatchpoint(void *pxStackStart);
+void v_Port_Set_सालानसान_Watchpoint(void *px_सालानसान_Start);
 
 // -------------------- Heap Related -----------------------
 
@@ -425,11 +425,11 @@ bool xPortCheckValidTCBMem(const void *ptr);
  * @return true Memory can be used to store a task stack
  * @return false Otherwise
  */
-bool xPortcheckValidStackMem(const void *ptr);
+bool x_Portcheck_Valid_सालानसान_Mem(const void *ptr);
 
 #define portVALID_LIST_MEM(ptr)     xPortCheckValidListMem(ptr)
 #define portVALID_TCB_MEM(ptr)      xPortCheckValidTCBMem(ptr)
-#define portVALID_STACK_MEM(ptr)    xPortcheckValidStackMem(ptr)
+#define port_VALID_सालानसान_MEM(ptr)    x_Portcheck_Valid_सालानसान_Mem(ptr)
 
 /* ------------------------------------------------------ Misc ---------------------------------------------------------
  * - Miscellaneous porting macros

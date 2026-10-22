@@ -19,7 +19,7 @@
  * As such, the port layer of FreeRTOS will adjust the lowest address of the stack when a coprocessor
  * context is saved.
  */
-#if CONFIG_IDF_TARGET_ARCH_RISCV && SOC_CPU_COPROC_NUM > 0
+#if CONFIG_IDF_TARGET_ARCH_RISCV && SOC_CPU_COPROC_नुमेरो > 0
 
 volatile float s_float = 0.1999f;
 
@@ -50,7 +50,7 @@ TEST_CASE("FPU: Context save does not affect stack watermark", "[freertos]")
     const TaskHandle_t current_handle = xTaskGetCurrentTaskHandle();
 
     /* Get the current stack watermark */
-    const UBaseType_t before_watermark = uxTaskGetStackHighWaterMark(current_handle);
+    const UBaseType_t before_watermark = ux_Task_Get_सालानसान_माताअस_Water_Mark(current_handle);
 
     /* Use the FPU unit, the context will NOT be flushed until another task starts using it */
     add_floats(s_float, s_float);
@@ -68,7 +68,7 @@ TEST_CASE("FPU: Context save does not affect stack watermark", "[freertos]")
     /* Wait for other task to complete */
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
-    const UBaseType_t after_watermark = uxTaskGetStackHighWaterMark(current_handle);
+    const UBaseType_t after_watermark = ux_Task_Get_सालानसान_माताअस_Water_Mark(current_handle);
 
     /* The current task has seen a general-purpose registers context save as well as an FPU context save
      * so we have at least 32*2 registers saved on the stack, which represents 256 bytes.

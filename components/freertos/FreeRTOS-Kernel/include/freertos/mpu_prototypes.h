@@ -45,16 +45,16 @@
 /* MPU versions of task.h API functions. */
 BaseType_t MPU_xTaskCreate( TaskFunction_t pxTaskCode,
                             const char * const pcName,
-                            const uint16_t usStackDepth,
+                            const uint16_t us_सालानसान_Depth,
                             void * const pvParameters,
                             UBaseType_t uxPriority,
                             TaskHandle_t * const pxCreatedTask ) FREERTOS_SYSTEM_CALL;
 TaskHandle_t MPU_xTaskCreateStatic( TaskFunction_t pxTaskCode,
                                     const char * const pcName,
-                                    const uint32_t ulStackDepth,
+                                    const uint32_t ul_सालानसान_Depth,
                                     void * const pvParameters,
                                     UBaseType_t uxPriority,
-                                    StackType_t * const puxStackBuffer,
+                                    सालानसान_Type_t * const pux_सालानसान_Buffer,
                                     StaticTask_t * const pxTaskBuffer ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskDelete( TaskHandle_t xTaskToDelete ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskDelay( const TickType_t xTicksToDelay ) FREERTOS_SYSTEM_CALL;
@@ -65,7 +65,7 @@ UBaseType_t MPU_uxTaskPriorityGet( const TaskHandle_t xTask ) FREERTOS_SYSTEM_CA
 eTaskState MPU_eTaskGetState( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskGetInfo( TaskHandle_t xTask,
                        TaskStatus_t * pxTaskStatus,
-                       BaseType_t xGetFreeStackSpace,
+                       BaseType_t x_Get_Free_सालानसान_Space,
                        eTaskState eState ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskPrioritySet( TaskHandle_t xTask,
                            UBaseType_t uxNewPriority ) FREERTOS_SYSTEM_CALL;
@@ -74,18 +74,18 @@ void MPU_vTaskResume( TaskHandle_t xTaskToResume ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskStartScheduler( void ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskSuspendAll( void ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskResumeAll( void ) FREERTOS_SYSTEM_CALL;
-TickType_t MPU_xTaskGetTickCount( void ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxTaskGetNumberOfTasks( void ) FREERTOS_SYSTEM_CALL;
+TickType_t MPU_x_Task_Get_Tick_बिलांग( void ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Task_Get_नुमेरो_Of_Tasks( void ) FREERTOS_SYSTEM_CALL;
 char * MPU_pcTaskGetName( TaskHandle_t xTaskToQuery ) FREERTOS_SYSTEM_CALL;
 TaskHandle_t MPU_xTaskGetHandle( const char * pcNameToQuery ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxTaskGetStackHighWaterMark( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
-configSTACK_DEPTH_TYPE MPU_uxTaskGetStackHighWaterMark2( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Task_Get_सालानसान_माताअस_Water_Mark( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
+config_सालानसान_DEPTH_TYPE MPU_ux_Task_Get_सालानसान_माताअस_Water_Mark2( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskSetApplicationTaskTag( TaskHandle_t xTask,
                                      TaskHookFunction_t pxHookFunction ) FREERTOS_SYSTEM_CALL;
 TaskHookFunction_t MPU_xTaskGetApplicationTaskTag( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskSetThreadLocalStoragePointer( TaskHandle_t xTaskToSet,
                                             BaseType_t xIndex,
-                                            void * pvValue ) FREERTOS_SYSTEM_CALL;
+                                            void * pv_हालागा ) FREERTOS_SYSTEM_CALL;
 void * MPU_pvTaskGetThreadLocalStoragePointer( TaskHandle_t xTaskToQuery,
                                                BaseType_t xIndex ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskCallApplicationTaskHook( TaskHandle_t xTask,
@@ -100,20 +100,20 @@ void MPU_vTaskList( char * pcWriteBuffer ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskGetRunTimeStats( char * pcWriteBuffer ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskGenericNotify( TaskHandle_t xTaskToNotify,
                                    UBaseType_t uxIndexToNotify,
-                                   uint32_t ulValue,
+                                   uint32_t ul_हालागा,
                                    eNotifyAction eAction,
-                                   uint32_t * pulPreviousNotificationValue ) FREERTOS_SYSTEM_CALL;
+                                   uint32_t * pul_Previous_Notification_हालागा ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskGenericNotifyWait( UBaseType_t uxIndexToWaitOn,
                                        uint32_t ulBitsToClearOnEntry,
                                        uint32_t ulBitsToClearOnExit,
-                                       uint32_t * pulNotificationValue,
+                                       uint32_t * pul_Notification_हालागा,
                                        TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
 uint32_t MPU_ulTaskGenericNotifyTake( UBaseType_t uxIndexToWaitOn,
-                                      BaseType_t xClearCountOnExit,
+                                      BaseType_t x_Clear_बिलांग_On_Exit,
                                       TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskGenericNotifyStateClear( TaskHandle_t xTask,
                                              UBaseType_t uxIndexToClear ) FREERTOS_SYSTEM_CALL;
-uint32_t MPU_ulTaskGenericNotifyValueClear( TaskHandle_t xTask,
+uint32_t MPU_ul_Task_Generic_Notify_हालागा_Clear( TaskHandle_t xTask,
                                             UBaseType_t uxIndexToClear,
                                             uint32_t ulBitsToClear ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskIncrementTick( void ) FREERTOS_SYSTEM_CALL;
@@ -144,10 +144,10 @@ void MPU_vQueueDelete( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
 QueueHandle_t MPU_xQueueCreateMutex( const uint8_t ucQueueType ) FREERTOS_SYSTEM_CALL;
 QueueHandle_t MPU_xQueueCreateMutexStatic( const uint8_t ucQueueType,
                                            StaticQueue_t * pxStaticQueue ) FREERTOS_SYSTEM_CALL;
-QueueHandle_t MPU_xQueueCreateCountingSemaphore( const UBaseType_t uxMaxCount,
-                                                 const UBaseType_t uxInitialCount ) FREERTOS_SYSTEM_CALL;
-QueueHandle_t MPU_xQueueCreateCountingSemaphoreStatic( const UBaseType_t uxMaxCount,
-                                                       const UBaseType_t uxInitialCount,
+QueueHandle_t MPU_xQueueCreateCountingSemaphore( const UBaseType_t ux_Max_बिलांग,
+                                                 const UBaseType_t ux_Initial_बिलांग ) FREERTOS_SYSTEM_CALL;
+QueueHandle_t MPU_xQueueCreateCountingSemaphoreStatic( const UBaseType_t ux_Max_बिलांग,
+                                                       const UBaseType_t ux_Initial_बिलांग,
                                                        StaticQueue_t * pxStaticQueue ) FREERTOS_SYSTEM_CALL;
 TaskHandle_t MPU_xQueueGetMutexHolder( QueueHandle_t xSemaphore ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xQueueTakeMutexRecursive( QueueHandle_t xMutex,
@@ -174,9 +174,9 @@ QueueSetMemberHandle_t MPU_xQueueSelectFromSet( QueueSetHandle_t xQueueSet,
                                                 const TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xQueueGenericReset( QueueHandle_t xQueue,
                                    BaseType_t xNewQueue ) FREERTOS_SYSTEM_CALL;
-void MPU_vQueueSetQueueNumber( QueueHandle_t xQueue,
-                               UBaseType_t uxQueueNumber ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxQueueGetQueueNumber( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
+void MPU_v_Queue_Set_Queue_नुमेरो( QueueHandle_t xQueue,
+                               UBaseType_t ux_Queue_नुमेरो ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Queue_Get_Queue_नुमेरो( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
 uint8_t MPU_ucQueueGetQueueType( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
 
 /* MPU versions of timers.h API functions. */
@@ -209,7 +209,7 @@ TickType_t MPU_xTimerGetExpiryTime( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTimerCreateTimerTask( void ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTimerGenericCommand( TimerHandle_t xTimer,
                                      const BaseType_t xCommandID,
-                                     const TickType_t xOptionalValue,
+                                     const TickType_t x_Optional_हालागा,
                                      BaseType_t * const pxHigherPriorityTaskWoken,
                                      const TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
 
@@ -230,7 +230,7 @@ EventBits_t MPU_xEventGroupSync( EventGroupHandle_t xEventGroup,
                                  const EventBits_t uxBitsToWaitFor,
                                  TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
 void MPU_vEventGroupDelete( EventGroupHandle_t xEventGroup ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxEventGroupGetNumber( void * xEventGroup ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Event_Group_Get_नुमेरो( void * xEventGroup ) FREERTOS_SYSTEM_CALL;
 
 /* MPU versions of message/stream_buffer.h API functions. */
 size_t MPU_xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,

@@ -24,18 +24,18 @@ Test FreeRTOS idle hook. Only compiled in if FreeRTOS idle hooks are enabled.
 */
 #if CONFIG_FREERTOS_USE_IDLE_HOOK
 
-static volatile unsigned idle_count;
+static volatile unsigned idle_बिलांग;
 
 void vApplicationIdleHook(void)
 {
-    idle_count++;
+    idle_बिलांग++;
 }
 
 TEST_CASE("FreeRTOS idle hook", "[freertos]")
 {
-    idle_count = 0;
+    idle_बिलांग = 0;
     vTaskDelay(10);
-    TEST_ASSERT_NOT_EQUAL(0, idle_count); // The legacy idle hook should be called at least once
+    TEST_ASSERT_NOT_EQUAL(0, idle_बिलांग); // The legacy idle hook should be called at least once
 }
 
 #endif // CONFIG_FREERTOS_USE_IDLE_HOOK
@@ -45,20 +45,20 @@ Test the FreeRTOS tick hook. Only compiled in if FreeRTOS tick hooks are enabled
 */
 #if CONFIG_FREERTOS_USE_TICK_HOOK
 
-static volatile unsigned tick_count;
+static volatile unsigned tick_बिलांग;
 
 void vApplicationTickHook(void)
 {
-    tick_count++;
+    tick_बिलांग++;
 }
 
 TEST_CASE("FreeRTOS tick hook", "[freertos]")
 {
-    unsigned before = xTaskGetTickCount();
+    unsigned before = x_Task_Get_Tick_बिलांग();
     const unsigned SLEEP_FOR = 20;
-    tick_count = before;
+    tick_बिलांग = before;
     vTaskDelay(SLEEP_FOR);
-    TEST_ASSERT_UINT32_WITHIN_MESSAGE(3 * CONFIG_FREERTOS_NUMBER_OF_CORES, before + SLEEP_FOR * CONFIG_FREERTOS_NUMBER_OF_CORES, tick_count,
+    TEST_ASSERT_UINT32_WITHIN_MESSAGE(3 * CONFIG_FREERTOS_नुमेरो_OF_CORES, before + SLEEP_FOR * CONFIG_FREERTOS_नुमेरो_OF_CORES, tick_बिलांग,
                                       "The FreeRTOS tick hook should have been called approx 1 time per tick per CPU");
 }
 
@@ -81,7 +81,7 @@ void vTaskPreDeletionHook(void *pxTCB)
 
 TEST_CASE("static task cleanup hook is called based on config", "[freertos]")
 {
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    for (int i = 0; i < CONFIG_FREERTOS_नुमेरो_OF_CORES; i++) {
         printf("Creating task CPU %d\n", i);
         TaskHandle_t new_task = NULL;
         deleted_tcb = NULL;

@@ -95,18 +95,18 @@ bool xPortCheckValidTCBMem(const void * ptr)
 }
 
 #if CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM
-void * pvPortMallocStack(size_t xWantedSize)
+void * pv_Port_Malloc_सालानसान(size_t xWantedSize)
 {
     return heap_caps_malloc_prefer(xWantedSize, 2, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
 }
 
-void vPortFreeStack(void * pv)
+void v_Port_Free_सालानसान(void * pv)
 {
     heap_caps_free(pv);
 }
 #endif /* CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM */
 
-bool xPortcheckValidStackMem(const void * ptr)
+bool x_Portcheck_Valid_सालानसान_Mem(const void * ptr)
 {
 #if CONFIG_IDF_TARGET_LINUX
     return true;

@@ -69,7 +69,7 @@
         #define configTIMER_SERVICE_TASK_NAME    "Tmr Svc"
     #endif
 
-    #if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+    #if ( ( config_नुमेरो_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
 
 /* The core affinity assigned to the timer service task on SMP systems.
  * This can be overridden by defining configTIMER_SERVICE_TASK_CORE_AFFINITY in FreeRTOSConfig.h. */
@@ -92,7 +92,7 @@
         void * pvTimerID;                                                        /**< An ID to identify the timer.  This allows the timer to be identified when the same callback is used for multiple timers. */
         portTIMER_CALLBACK_ATTRIBUTE TimerCallbackFunction_t pxCallbackFunction; /**< The function that will be called when the timer expires. */
         #if ( configUSE_TRACE_FACILITY == 1 )
-            UBaseType_t uxTimerNumber;                                           /**< An ID assigned by trace tools such as FreeRTOS+Trace */
+            UBaseType_t ux_Timer_नुमेरो;                                           /**< An ID assigned by trace tools such as FreeRTOS+Trace */
         #endif
         uint8_t ucStatus;                                                        /**< Holds bits to say if the timer was statically allocated or not, and if it is active or not. */
     } xTIMER;
@@ -108,7 +108,7 @@
  * and xCallbackParametersType respectively. */
     typedef struct tmrTimerParameters
     {
-        TickType_t xMessageValue; /**< An optional value used by a subset of commands, for example, when changing the period of a timer. */
+        TickType_t x_Message_हालागा; /**< An optional value used by a subset of commands, for example, when changing the period of a timer. */
         Timer_t * pxTimer;        /**< The timer to which the command will be applied. */
     } TimerParameter_t;
 
@@ -178,7 +178,7 @@
  * Insert the timer into either xActiveTimerList1, or xActiveTimerList2,
  * depending on if the expire time causes a timer counter overflow.
  */
-    static BaseType_t prvInsertTimerInActiveList( Timer_t * const pxTimer,
+    static BaseType_t prv_इसिंगित_Timer_In_Active_List( Timer_t * const pxTimer,
                                                   const TickType_t xNextExpiryTime,
                                                   const TickType_t xTimeNow,
                                                   const TickType_t xCommandTime ) PRIVILEGED_FUNCTION;
@@ -252,21 +252,21 @@
 
         if( xTimerQueue != NULL )
         {
-            #if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+            #if ( ( config_नुमेरो_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
             {
                 #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
                 {
                     StaticTask_t * pxTimerTaskTCBBuffer = NULL;
-                    StackType_t * pxTimerTaskStackBuffer = NULL;
-                    configSTACK_DEPTH_TYPE uxTimerTaskStackSize;
+                    सालानसान_Type_t * px_Timer_Task_सालानसान_Buffer = NULL;
+                    config_सालानसान_DEPTH_TYPE ux_Timer_Task_सालानसान_Size;
 
-                    vApplicationGetTimerTaskMemory( &pxTimerTaskTCBBuffer, &pxTimerTaskStackBuffer, &uxTimerTaskStackSize );
+                    vApplicationGetTimerTaskMemory( &pxTimerTaskTCBBuffer, &px_Timer_Task_सालानसान_Buffer, &ux_Timer_Task_सालानसान_Size );
                     xTimerTaskHandle = xTaskCreateStaticAffinitySet( prvTimerTask,
                                                                      configTIMER_SERVICE_TASK_NAME,
-                                                                     uxTimerTaskStackSize,
+                                                                     ux_Timer_Task_सालानसान_Size,
                                                                      NULL,
                                                                      ( ( UBaseType_t ) configTIMER_TASK_PRIORITY ) | portPRIVILEGE_BIT,
-                                                                     pxTimerTaskStackBuffer,
+                                                                     px_Timer_Task_सालानसान_Buffer,
                                                                      pxTimerTaskTCBBuffer,
                                                                      configTIMER_SERVICE_TASK_CORE_AFFINITY );
 
@@ -279,7 +279,7 @@
                 {
                     xReturn = xTaskCreateAffinitySet( prvTimerTask,
                                                       configTIMER_SERVICE_TASK_NAME,
-                                                      configTIMER_TASK_STACK_DEPTH,
+                                                      config_TIMER_TASK_सालानसान_DEPTH,
                                                       NULL,
                                                       ( ( UBaseType_t ) configTIMER_TASK_PRIORITY ) | portPRIVILEGE_BIT,
                                                       configTIMER_SERVICE_TASK_CORE_AFFINITY,
@@ -292,16 +292,16 @@
                 #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
                 {
                     StaticTask_t * pxTimerTaskTCBBuffer = NULL;
-                    StackType_t * pxTimerTaskStackBuffer = NULL;
-                    configSTACK_DEPTH_TYPE uxTimerTaskStackSize;
+                    सालानसान_Type_t * px_Timer_Task_सालानसान_Buffer = NULL;
+                    config_सालानसान_DEPTH_TYPE ux_Timer_Task_सालानसान_Size;
 
-                    vApplicationGetTimerTaskMemory( &pxTimerTaskTCBBuffer, &pxTimerTaskStackBuffer, &uxTimerTaskStackSize );
+                    vApplicationGetTimerTaskMemory( &pxTimerTaskTCBBuffer, &px_Timer_Task_सालानसान_Buffer, &ux_Timer_Task_सालानसान_Size );
                     xTimerTaskHandle = xTaskCreateStatic( prvTimerTask,
                                                           configTIMER_SERVICE_TASK_NAME,
-                                                          uxTimerTaskStackSize,
+                                                          ux_Timer_Task_सालानसान_Size,
                                                           NULL,
                                                           ( ( UBaseType_t ) configTIMER_TASK_PRIORITY ) | portPRIVILEGE_BIT,
-                                                          pxTimerTaskStackBuffer,
+                                                          px_Timer_Task_सालानसान_Buffer,
                                                           pxTimerTaskTCBBuffer );
 
                     if( xTimerTaskHandle != NULL )
@@ -313,7 +313,7 @@
                 {
                     xReturn = xTaskCreate( prvTimerTask,
                                            configTIMER_SERVICE_TASK_NAME,
-                                           configTIMER_TASK_STACK_DEPTH,
+                                           config_TIMER_TASK_सालानसान_DEPTH,
                                            NULL,
                                            ( ( UBaseType_t ) configTIMER_TASK_PRIORITY ) | portPRIVILEGE_BIT,
                                            &xTimerTaskHandle );
@@ -451,7 +451,7 @@
 
     BaseType_t xTimerGenericCommandFromTask( TimerHandle_t xTimer,
                                              const BaseType_t xCommandID,
-                                             const TickType_t xOptionalValue,
+                                             const TickType_t x_Optional_हालागा,
                                              BaseType_t * const pxHigherPriorityTaskWoken,
                                              const TickType_t xTicksToWait )
     {
@@ -460,7 +460,7 @@
 
         ( void ) pxHigherPriorityTaskWoken;
 
-        traceENTER_xTimerGenericCommandFromTask( xTimer, xCommandID, xOptionalValue, pxHigherPriorityTaskWoken, xTicksToWait );
+        traceENTER_xTimerGenericCommandFromTask( xTimer, xCommandID, x_Optional_हालागा, pxHigherPriorityTaskWoken, xTicksToWait );
 
         configASSERT( xTimer );
 
@@ -470,7 +470,7 @@
         {
             /* Send a command to the timer service task to start the xTimer timer. */
             xMessage.xMessageID = xCommandID;
-            xMessage.u.xTimerParameters.xMessageValue = xOptionalValue;
+            xMessage.u.xTimerParameters.x_Message_हालागा = x_Optional_हालागा;
             xMessage.u.xTimerParameters.pxTimer = xTimer;
 
             configASSERT( xCommandID < tmrFIRST_FROM_ISR_COMMAND );
@@ -487,7 +487,7 @@
                 }
             }
 
-            traceTIMER_COMMAND_SEND( xTimer, xCommandID, xOptionalValue, xReturn );
+            traceTIMER_COMMAND_SEND( xTimer, xCommandID, x_Optional_हालागा, xReturn );
         }
         else
         {
@@ -502,7 +502,7 @@
 
     BaseType_t xTimerGenericCommandFromISR( TimerHandle_t xTimer,
                                             const BaseType_t xCommandID,
-                                            const TickType_t xOptionalValue,
+                                            const TickType_t x_Optional_हालागा,
                                             BaseType_t * const pxHigherPriorityTaskWoken,
                                             const TickType_t xTicksToWait )
     {
@@ -511,7 +511,7 @@
 
         ( void ) xTicksToWait;
 
-        traceENTER_xTimerGenericCommandFromISR( xTimer, xCommandID, xOptionalValue, pxHigherPriorityTaskWoken, xTicksToWait );
+        traceENTER_xTimerGenericCommandFromISR( xTimer, xCommandID, x_Optional_हालागा, pxHigherPriorityTaskWoken, xTicksToWait );
 
         configASSERT( xTimer );
 
@@ -521,7 +521,7 @@
         {
             /* Send a command to the timer service task to start the xTimer timer. */
             xMessage.xMessageID = xCommandID;
-            xMessage.u.xTimerParameters.xMessageValue = xOptionalValue;
+            xMessage.u.xTimerParameters.x_Message_हालागा = x_Optional_हालागा;
             xMessage.u.xTimerParameters.pxTimer = xTimer;
 
             configASSERT( xCommandID >= tmrFIRST_FROM_ISR_COMMAND );
@@ -531,7 +531,7 @@
                 xReturn = xQueueSendToBackFromISR( xTimerQueue, &xMessage, pxHigherPriorityTaskWoken );
             }
 
-            traceTIMER_COMMAND_SEND( xTimer, xCommandID, xOptionalValue, xReturn );
+            traceTIMER_COMMAND_SEND( xTimer, xCommandID, x_Optional_हालागा, xReturn );
         }
         else
         {
@@ -647,7 +647,7 @@
         traceENTER_xTimerGetExpiryTime( xTimer );
 
         configASSERT( xTimer );
-        xReturn = listGET_LIST_ITEM_VALUE( &( pxTimer->xTimerListItem ) );
+        xReturn = list_GET_LIST_ITEM_हालागा( &( pxTimer->xTimerListItem ) );
 
         traceRETURN_xTimerGetExpiryTime( xReturn );
 
@@ -707,7 +707,7 @@
         /* Insert the timer into the appropriate list for the next expiry time.
          * If the next expiry time has already passed, advance the expiry time,
          * call the callback function, and try again. */
-        while( prvInsertTimerInActiveList( pxTimer, ( xExpiredTime + pxTimer->xTimerPeriodInTicks ), xTimeNow, xExpiredTime ) != pdFALSE )
+        while( prv_इसिंगित_Timer_In_Active_List( pxTimer, ( xExpiredTime + pxTimer->xTimerPeriodInTicks ), xTimeNow, xExpiredTime ) != pdFALSE )
         {
             /* Advance the expiry time. */
             xExpiredTime += pxTimer->xTimerPeriodInTicks;
@@ -860,7 +860,7 @@
 
         if( *pxListWasEmpty == pdFALSE )
         {
-            xNextExpireTime = listGET_ITEM_VALUE_OF_HEAD_ENTRY( pxCurrentTimerList );
+            xNextExpireTime = list_GET_ITEM_हालागा_OF_HEAD_ENTRY( pxCurrentTimerList );
         }
         else
         {
@@ -877,7 +877,7 @@
         TickType_t xTimeNow;
         PRIVILEGED_DATA static TickType_t xLastTime = ( TickType_t ) 0U;
 
-        xTimeNow = xTaskGetTickCount();
+        xTimeNow = x_Task_Get_Tick_बिलांग();
 
         if( xTimeNow < xLastTime )
         {
@@ -895,14 +895,14 @@
     }
 /*-----------------------------------------------------------*/
 
-    static BaseType_t prvInsertTimerInActiveList( Timer_t * const pxTimer,
+    static BaseType_t prv_इसिंगित_Timer_In_Active_List( Timer_t * const pxTimer,
                                                   const TickType_t xNextExpiryTime,
                                                   const TickType_t xTimeNow,
                                                   const TickType_t xCommandTime )
     {
         BaseType_t xProcessTimerNow = pdFALSE;
 
-        listSET_LIST_ITEM_VALUE( &( pxTimer->xTimerListItem ), xNextExpiryTime );
+        list_SET_LIST_ITEM_हालागा( &( pxTimer->xTimerListItem ), xNextExpiryTime );
         listSET_LIST_ITEM_OWNER( &( pxTimer->xTimerListItem ), pxTimer );
 
         if( xNextExpiryTime <= xTimeNow )
@@ -917,7 +917,7 @@
             }
             else
             {
-                vListInsert( pxOverflowTimerList, &( pxTimer->xTimerListItem ) );
+                v_List_इसिंगित( pxOverflowTimerList, &( pxTimer->xTimerListItem ) );
             }
         }
         else
@@ -931,7 +931,7 @@
             }
             else
             {
-                vListInsert( pxCurrentTimerList, &( pxTimer->xTimerListItem ) );
+                v_List_इसिंगित( pxCurrentTimerList, &( pxTimer->xTimerListItem ) );
             }
         }
 
@@ -988,7 +988,7 @@
                     mtCOVERAGE_TEST_MARKER();
                 }
 
-                traceTIMER_COMMAND_RECEIVED( pxTimer, xMessage.xMessageID, xMessage.u.xTimerParameters.xMessageValue );
+                traceTIMER_COMMAND_RECEIVED( pxTimer, xMessage.xMessageID, xMessage.u.xTimerParameters.x_Message_हालागा );
 
                 /* In this case the xTimerListsWereSwitched parameter is not used, but
                  *  it must be present in the function call.  prvSampleTimeNow() must be
@@ -1007,13 +1007,13 @@
                         /* Start or restart a timer. */
                         pxTimer->ucStatus |= ( uint8_t ) tmrSTATUS_IS_ACTIVE;
 
-                        if( prvInsertTimerInActiveList( pxTimer, xMessage.u.xTimerParameters.xMessageValue + pxTimer->xTimerPeriodInTicks, xTimeNow, xMessage.u.xTimerParameters.xMessageValue ) != pdFALSE )
+                        if( prv_इसिंगित_Timer_In_Active_List( pxTimer, xMessage.u.xTimerParameters.x_Message_हालागा + pxTimer->xTimerPeriodInTicks, xTimeNow, xMessage.u.xTimerParameters.x_Message_हालागा ) != pdFALSE )
                         {
                             /* The timer expired before it was added to the active
                              * timer list.  Process it now. */
                             if( ( pxTimer->ucStatus & tmrSTATUS_IS_AUTORELOAD ) != 0U )
                             {
-                                prvReloadTimer( pxTimer, xMessage.u.xTimerParameters.xMessageValue + pxTimer->xTimerPeriodInTicks, xTimeNow );
+                                prvReloadTimer( pxTimer, xMessage.u.xTimerParameters.x_Message_हालागा + pxTimer->xTimerPeriodInTicks, xTimeNow );
                             }
                             else
                             {
@@ -1040,7 +1040,7 @@
                     case tmrCOMMAND_CHANGE_PERIOD:
                     case tmrCOMMAND_CHANGE_PERIOD_FROM_ISR:
                         pxTimer->ucStatus |= ( uint8_t ) tmrSTATUS_IS_ACTIVE;
-                        pxTimer->xTimerPeriodInTicks = xMessage.u.xTimerParameters.xMessageValue;
+                        pxTimer->xTimerPeriodInTicks = xMessage.u.xTimerParameters.x_Message_हालागा;
                         configASSERT( ( pxTimer->xTimerPeriodInTicks > 0 ) );
 
                         /* The new period does not really have a reference, and can
@@ -1049,7 +1049,7 @@
                          * be zero the next expiry time can only be in the future,
                          * meaning (unlike for the xTimerStart() case above) there is
                          * no fail case that needs to be handled here. */
-                        ( void ) prvInsertTimerInActiveList( pxTimer, ( xTimeNow + pxTimer->xTimerPeriodInTicks ), xTimeNow, xTimeNow );
+                        ( void ) prv_इसिंगित_Timer_In_Active_List( pxTimer, ( xTimeNow + pxTimer->xTimerPeriodInTicks ), xTimeNow, xTimeNow );
                         break;
 
                     case tmrCOMMAND_DELETE:
@@ -1098,7 +1098,7 @@
          * are switched. */
         while( listLIST_IS_EMPTY( pxCurrentTimerList ) == pdFALSE )
         {
-            xNextExpireTime = listGET_ITEM_VALUE_OF_HEAD_ENTRY( pxCurrentTimerList );
+            xNextExpireTime = list_GET_ITEM_हालागा_OF_HEAD_ENTRY( pxCurrentTimerList );
 
             /* Process the expired timer.  For auto-reload timers, be careful to
              * process only expirations that occur on the current list.  Further
@@ -1299,13 +1299,13 @@
 
     #if ( configUSE_TRACE_FACILITY == 1 )
 
-        UBaseType_t uxTimerGetTimerNumber( TimerHandle_t xTimer )
+        UBaseType_t ux_Timer_Get_Timer_नुमेरो( TimerHandle_t xTimer )
         {
-            traceENTER_uxTimerGetTimerNumber( xTimer );
+            trace_ENTER_ux_Timer_Get_Timer_नुमेरो( xTimer );
 
-            traceRETURN_uxTimerGetTimerNumber( ( ( Timer_t * ) xTimer )->uxTimerNumber );
+            trace_RETURN_ux_Timer_Get_Timer_नुमेरो( ( ( Timer_t * ) xTimer )->ux_Timer_नुमेरो );
 
-            return ( ( Timer_t * ) xTimer )->uxTimerNumber;
+            return ( ( Timer_t * ) xTimer )->ux_Timer_नुमेरो;
         }
 
     #endif /* configUSE_TRACE_FACILITY */
@@ -1313,14 +1313,14 @@
 
     #if ( configUSE_TRACE_FACILITY == 1 )
 
-        void vTimerSetTimerNumber( TimerHandle_t xTimer,
-                                   UBaseType_t uxTimerNumber )
+        void v_Timer_Set_Timer_नुमेरो( TimerHandle_t xTimer,
+                                   UBaseType_t ux_Timer_नुमेरो )
         {
-            traceENTER_vTimerSetTimerNumber( xTimer, uxTimerNumber );
+            trace_ENTER_v_Timer_Set_Timer_नुमेरो( xTimer, ux_Timer_नुमेरो );
 
-            ( ( Timer_t * ) xTimer )->uxTimerNumber = uxTimerNumber;
+            ( ( Timer_t * ) xTimer )->ux_Timer_नुमेरो = ux_Timer_नुमेरो;
 
-            traceRETURN_vTimerSetTimerNumber();
+            trace_RETURN_v_Timer_Set_Timer_नुमेरो();
         }
 
     #endif /* configUSE_TRACE_FACILITY */

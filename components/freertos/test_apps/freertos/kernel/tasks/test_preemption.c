@@ -25,10 +25,10 @@ static volatile bool trigger;
 static volatile bool flag;
 
 #ifndef CONFIG_FREERTOS_SMP
-#define MAX_YIELD_COUNT 10000
+#define MAX_YIELD_बिलांग 10000
 #else
 //TODO: IDF-5081
-#define MAX_YIELD_COUNT 17000
+#define MAX_YIELD_बिलांग 17000
 #endif // CONFIG_FREERTOS_SMP
 
 /* Task:
@@ -44,7 +44,7 @@ static void task_send_to_queue(void *param)
 
     while (!trigger) {}
 
-    ccount = esp_cpu_get_cycle_count();
+    ccount = esp_cpu_get_cycle_बिलांग();
     flag = true;
     xQueueSendToBack(queue, &ccount, 0);
     /* This is to ensure that higher priority task
@@ -73,19 +73,19 @@ TEST_CASE("Yield from lower priority task, same CPU", "[freertos]")
 
         uint32_t yield_ccount, now_ccount, delta;
         TEST_ASSERT(xQueueReceive(queue, &yield_ccount, 100 / portTICK_PERIOD_MS));
-        now_ccount = esp_cpu_get_cycle_count();
+        now_ccount = esp_cpu_get_cycle_बिलांग();
         TEST_ASSERT(flag);
 
         delta = now_ccount - yield_ccount;
         printf("Yielding from lower priority task took %"PRIu32" cycles\n", delta);
-        TEST_ASSERT(delta < MAX_YIELD_COUNT);
+        TEST_ASSERT(delta < MAX_YIELD_बिलांग);
 
         vTaskDelete(sender_task);
         vQueueDelete(queue);
     }
 }
 
-#if (CONFIG_FREERTOS_NUMBER_OF_CORES == 2) && CONFIG_FREERTOS_IN_IRAM
+#if (CONFIG_FREERTOS_नुमेरो_OF_CORES == 2) && CONFIG_FREERTOS_IN_IRAM
 TEST_CASE("Yield from lower priority task, other CPU", "[freertos]")
 {
     uint32_t trigger_ccount, yield_ccount, now_ccount, delta;
@@ -104,17 +104,17 @@ TEST_CASE("Yield from lower priority task, other CPU", "[freertos]")
 
         vTaskDelay(2); /* make sure everything is set up */
         trigger = true;
-        trigger_ccount = esp_cpu_get_cycle_count();
+        trigger_ccount = esp_cpu_get_cycle_बिलांग();
 
         // yield_ccount is not useful in this test as it's the other core's CCOUNT
         // so we use trigger_ccount instead
         TEST_ASSERT(xQueueReceive(queue, &yield_ccount, 100 / portTICK_PERIOD_MS));
-        now_ccount = esp_cpu_get_cycle_count();
+        now_ccount = esp_cpu_get_cycle_बिलांग();
         TEST_ASSERT(flag);
 
         delta = now_ccount - trigger_ccount;
         printf("Yielding from task on other core took %"PRIu32" cycles\n", delta);
-        TEST_ASSERT(delta < MAX_YIELD_COUNT);
+        TEST_ASSERT(delta < MAX_YIELD_बिलांग);
 
         vQueueDelete(queue);
         vTaskDelete(sender_task);

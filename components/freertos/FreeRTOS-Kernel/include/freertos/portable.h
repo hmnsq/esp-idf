@@ -77,21 +77,21 @@
     #define portUSING_MPU_WRAPPERS    0
 #endif
 
-#ifndef portNUM_CONFIGURABLE_REGIONS
-    #define portNUM_CONFIGURABLE_REGIONS    1
+#ifndef port_नुमेरो_CONFIGURABLE_REGIONS
+    #define port_नुमेरो_CONFIGURABLE_REGIONS    1
 #endif
 
-#ifndef portHAS_STACK_OVERFLOW_CHECKING
-    #define portHAS_STACK_OVERFLOW_CHECKING    0
+#ifndef port_HAS_सालानसान_OVERFLOW_CHECKING
+    #define port_HAS_सालानसान_OVERFLOW_CHECKING    0
 #endif
 
 #ifndef portARCH_NAME
     #define portARCH_NAME    NULL
 #endif
 
-#ifndef configSTACK_ALLOCATION_FROM_SEPARATE_HEAP
+#ifndef config_सालानसान_ALLOCATION_FROM_SEPARATE_HEAP
     /* Defaults to 0 for backward compatibility. */
-    #define configSTACK_ALLOCATION_FROM_SEPARATE_HEAP    0
+    #define config_सालानसान_ALLOCATION_FROM_SEPARATE_HEAP    0
 #endif
 
 /* *INDENT-OFF* */
@@ -109,26 +109,26 @@
  *
  */
 #if ( portUSING_MPU_WRAPPERS == 1 )
-    #if ( portHAS_STACK_OVERFLOW_CHECKING == 1 )
-        StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
-                                             StackType_t * pxEndOfStack,
+    #if ( port_HAS_सालानसान_OVERFLOW_CHECKING == 1 )
+        सालानसान_Type_t * px_Port_Initialise_सालानसान( सालानसान_Type_t * px_इताअस_Of_सालानसान,
+                                             सालानसान_Type_t * px_End_Of_सालानसान,
                                              TaskFunction_t pxCode,
                                              void * pvParameters,
                                              BaseType_t xRunPrivileged ) PRIVILEGED_FUNCTION;
     #else
-        StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
+        सालानसान_Type_t * px_Port_Initialise_सालानसान( सालानसान_Type_t * px_इताअस_Of_सालानसान,
                                              TaskFunction_t pxCode,
                                              void * pvParameters,
                                              BaseType_t xRunPrivileged ) PRIVILEGED_FUNCTION;
     #endif
 #else /* if ( portUSING_MPU_WRAPPERS == 1 ) */
-    #if ( portHAS_STACK_OVERFLOW_CHECKING == 1 )
-        StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
-                                             StackType_t * pxEndOfStack,
+    #if ( port_HAS_सालानसान_OVERFLOW_CHECKING == 1 )
+        सालानसान_Type_t * px_Port_Initialise_सालानसान( सालानसान_Type_t * px_इताअस_Of_सालानसान,
+                                             सालानसान_Type_t * px_End_Of_सालानसान,
                                              TaskFunction_t pxCode,
                                              void * pvParameters ) PRIVILEGED_FUNCTION;
     #else
-        StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
+        सालानसान_Type_t * px_Port_Initialise_सालानसान( सालानसान_Type_t * px_इताअस_Of_सालानसान,
                                              TaskFunction_t pxCode,
                                              void * pvParameters ) PRIVILEGED_FUNCTION;
     #endif
@@ -148,10 +148,10 @@ typedef struct xHeapStats
     size_t xAvailableHeapSpaceInBytes;      /* The total heap size currently available - this is the sum of all the free blocks, not the largest block that can be allocated. */
     size_t xSizeOfLargestFreeBlockInBytes;  /* The maximum size, in bytes, of all the free blocks within the heap at the time vPortGetHeapStats() is called. */
     size_t xSizeOfSmallestFreeBlockInBytes; /* The minimum size, in bytes, of all the free blocks within the heap at the time vPortGetHeapStats() is called. */
-    size_t xNumberOfFreeBlocks;             /* The number of free memory blocks within the heap at the time vPortGetHeapStats() is called. */
+    size_t x_नुमेरो_Of_Free_Blocks;             /* The number of free memory blocks within the heap at the time vPortGetHeapStats() is called. */
     size_t xMinimumEverFreeBytesRemaining;  /* The minimum amount of total free memory (sum of all free blocks) there has been in the heap since the system booted. */
-    size_t xNumberOfSuccessfulAllocations;  /* The number of calls to pvPortMalloc() that have returned a valid memory block. */
-    size_t xNumberOfSuccessfulFrees;        /* The number of calls to vPortFree() that has successfully freed a block of memory. */
+    size_t x_नुमेरो_Of_Successful_Allocations;  /* The number of calls to pvPortMalloc() that have returned a valid memory block. */
+    size_t x_नुमेरो_Of_Successful_Frees;        /* The number of calls to vPortFree() that has successfully freed a block of memory. */
 } HeapStats_t;
 
 /*
@@ -177,19 +177,19 @@ void vPortGetHeapStats( HeapStats_t * pxHeapStats );
  * Map to the memory management routines required for the port.
  */
 void * pvPortMalloc( size_t xSize ) PRIVILEGED_FUNCTION;
-void * pvPortCalloc( size_t xNum,
+void * pvPortCalloc( size_t x_नुमेरो,
                      size_t xSize ) PRIVILEGED_FUNCTION;
 void vPortFree( void * pv ) PRIVILEGED_FUNCTION;
 void vPortInitialiseBlocks( void ) PRIVILEGED_FUNCTION;
 size_t xPortGetFreeHeapSize( void ) PRIVILEGED_FUNCTION;
 size_t xPortGetMinimumEverFreeHeapSize( void ) PRIVILEGED_FUNCTION;
 
-#if ( configSTACK_ALLOCATION_FROM_SEPARATE_HEAP == 1 )
-    void * pvPortMallocStack( size_t xSize ) PRIVILEGED_FUNCTION;
-    void vPortFreeStack( void * pv ) PRIVILEGED_FUNCTION;
+#if ( config_सालानसान_ALLOCATION_FROM_SEPARATE_HEAP == 1 )
+    void * pv_Port_Malloc_सालानसान( size_t xSize ) PRIVILEGED_FUNCTION;
+    void v_Port_Free_सालानसान( void * pv ) PRIVILEGED_FUNCTION;
 #else
-    #define pvPortMallocStack    pvPortMalloc
-    #define vPortFreeStack       vPortFree
+    #define pv_Port_Malloc_सालानसान    pvPortMalloc
+    #define v_Port_Free_सालानसान       vPortFree
 #endif
 
 #if ( configUSE_MALLOC_FAILED_HOOK == 1 )
@@ -229,8 +229,8 @@ void vPortEndScheduler( void ) PRIVILEGED_FUNCTION;
     struct xMEMORY_REGION;
     void vPortStoreTaskMPUSettings( xMPU_SETTINGS * xMPUSettings,
                                     const struct xMEMORY_REGION * const xRegions,
-                                    StackType_t * pxBottomOfStack,
-                                    uint32_t ulStackDepth ) PRIVILEGED_FUNCTION;
+                                    सालानसान_Type_t * px_Bottom_Of_सालानसान,
+                                    uint32_t ul_सालानसान_Depth ) PRIVILEGED_FUNCTION;
 #endif
 
 /* *INDENT-OFF* */

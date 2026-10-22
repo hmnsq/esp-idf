@@ -847,9 +847,9 @@ void vEventGroupClearBitsCallback( void * pvEventGroup,
 
 
 #if ( configUSE_TRACE_FACILITY == 1 )
-    UBaseType_t uxEventGroupGetNumber( void * xEventGroup ) PRIVILEGED_FUNCTION;
-    void vEventGroupSetNumber( void * xEventGroup,
-                               UBaseType_t uxEventGroupNumber ) PRIVILEGED_FUNCTION;
+    UBaseType_t ux_Event_Group_Get_नुमेरो( void * xEventGroup ) PRIVILEGED_FUNCTION;
+    void v_Event_Group_Set_नुमेरो( void * xEventGroup,
+                               UBaseType_t ux_Event_Group_नुमेरो ) PRIVILEGED_FUNCTION;
 #endif
 
 /* *INDENT-OFF* */

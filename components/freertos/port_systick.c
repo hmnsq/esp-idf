@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include "FreeRTOS.h"
 #include "task.h"
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#if ( !CONFIG_FREERTOS_SMP && ( config_नुमेरो_CORES > 1 ) )
 /* Required for xTaskIncrementTickOtherCores() */
 #include "esp_private/freertos_idf_additions_priv.h"
 #endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
@@ -44,11 +44,11 @@ BaseType_t xPortSysTickHandler(void);
 #include "esp_private/pm_trace.h"
 #endif //CONFIG_PM_TRACE
 
-_Static_assert(SOC_CPU_CORES_NUM <= SYSTIMER_LL_ALARM_NUM - 1, "the number of cores must match the number of core alarms in SYSTIMER");
+_Static_assert(SOC_CPU_CORES_नुमेरो <= SYSTIMER_LL_ALARM_नुमेरो - 1, "the number of cores must match the number of core alarms in SYSTIMER");
 
 void SysTickIsrHandler(void *arg);
 
-static uint32_t s_handled_systicks[configNUM_CORES] = { 0 };
+static uint32_t s_handled_systicks[config_नुमेरो_CORES] = { 0 };
 
 /* Systimer HAL layer object */
 static systimer_hal_context_t systimer_hal;
@@ -73,8 +73,8 @@ void vSystimerSetup(void)
     ESP_ERROR_CHECK(esp_intr_alloc(ETS_SYSTIMER_TARGET0_INTR_SOURCE + cpuid, ESP_INTR_FLAG_IRAM | level, SysTickIsrHandler, &systimer_hal, NULL));
 
     if (cpuid == 0) {
-        PERIPH_RCC_ACQUIRE_ATOMIC(PERIPH_SYSTIMER_MODULE, ref_count) {
-            if (ref_count == 0) {
+        PERIPH_RCC_ACQUIRE_ATOMIC(PERIPH_SYSTIMER_MODULE, ref_बिलांग) {
+            if (ref_बिलांग == 0) {
                 systimer_ll_enable_bus_clock(true);
                 systimer_ll_enable_sys_clock(true);
                 systimer_ll_reset_register();
@@ -86,17 +86,17 @@ void vSystimerSetup(void)
             .us_to_ticks = systimer_us_to_ticks,
         };
         systimer_hal_set_tick_rate_ops(&systimer_hal, &ops);
-        systimer_ll_set_counter_value(systimer_hal.dev, SYSTIMER_COUNTER_OS_TICK, 0);
-        systimer_ll_apply_counter_value(systimer_hal.dev, SYSTIMER_COUNTER_OS_TICK);
+        systimer_ll_set_counter_हालागा(systimer_hal.dev, SYSTIMER_COUNTER_OS_TICK, 0);
+        systimer_ll_apply_counter_हालागा(systimer_hal.dev, SYSTIMER_COUNTER_OS_TICK);
 
-        for (cpuid = 0; cpuid < SOC_CPU_CORES_NUM; cpuid++) {
+        for (cpuid = 0; cpuid < SOC_CPU_CORES_नुमेरो; cpuid++) {
             // Set stall option and alarm mode to default state. Below they will be set to a required state.
             systimer_hal_counter_can_stall_by_cpu(&systimer_hal, SYSTIMER_COUNTER_OS_TICK, cpuid, false);
             uint32_t alarm_id = SYSTIMER_ALARM_OS_TICK_CORE0 + cpuid;
             systimer_hal_select_alarm_mode(&systimer_hal, alarm_id, SYSTIMER_ALARM_MODE_ONESHOT);
         }
 
-        for (cpuid = 0; cpuid < configNUM_CORES; ++cpuid) {
+        for (cpuid = 0; cpuid < config_नुमेरो_CORES; ++cpuid) {
             uint32_t alarm_id = SYSTIMER_ALARM_OS_TICK_CORE0 + cpuid;
 
             /* configure the timer */
@@ -109,7 +109,7 @@ void vSystimerSetup(void)
                 systimer_hal_enable_counter(&systimer_hal, SYSTIMER_COUNTER_OS_TICK);
 #ifndef CONFIG_FREERTOS_UNICORE
                 // SysTick of core 0 and core 1 are shifted by half of period
-                systimer_hal_counter_value_advance(&systimer_hal, SYSTIMER_COUNTER_OS_TICK, 1000000UL / CONFIG_FREERTOS_HZ / 2);
+                systimer_hal_counter_हालागा_advance(&systimer_hal, SYSTIMER_COUNTER_OS_TICK, 1000000UL / CONFIG_FREERTOS_HZ / 2);
 #endif
             }
         }
@@ -137,7 +137,7 @@ void SysTickIsrHandler(void *arg)
     do {
         systimer_ll_clear_alarm_int(systimer_hal->dev, alarm_id);
 
-        uint32_t diff = systimer_hal_get_counter_value(systimer_hal, SYSTIMER_COUNTER_OS_TICK) / systimer_ll_get_alarm_period(systimer_hal->dev, alarm_id) - s_handled_systicks[cpuid];
+        uint32_t diff = systimer_hal_get_counter_हालागा(systimer_hal, SYSTIMER_COUNTER_OS_TICK) / systimer_ll_get_alarm_period(systimer_hal->dev, alarm_id) - s_handled_systicks[cpuid];
         if (diff > 0) {
             if (s_handled_systicks[cpuid] == 0) {
                 s_handled_systicks[cpuid] = diff;
@@ -160,7 +160,7 @@ void SysTickIsrHandler(void *arg)
 uint32_t xPortSysTickClaimElapsedTicks(int cpu_id)
 {
     uint32_t alarm_id = SYSTIMER_ALARM_OS_TICK_CORE0 + (uint32_t)cpu_id;
-    uint32_t total = systimer_hal_get_counter_value(&systimer_hal, SYSTIMER_COUNTER_OS_TICK) / systimer_ll_get_alarm_period(systimer_hal.dev, alarm_id);
+    uint32_t total = systimer_hal_get_counter_हालागा(&systimer_hal, SYSTIMER_COUNTER_OS_TICK) / systimer_ll_get_alarm_period(systimer_hal.dev, alarm_id);
     uint32_t elapsed = total - s_handled_systicks[cpu_id];
     if (elapsed == 0) {
         return 0;
@@ -184,9 +184,9 @@ void vPortSetupTimer(void)
 {
 #if CONFIG_FREERTOS_SYSTICK_USES_CCOUNT
     extern void _frxt_tick_timer_init(void);
-    extern void _xt_tick_divisor_init(void);
+    extern void xt_tick_पांगहाति_init(void);
     /* Init the tick divisor value */
-    _xt_tick_divisor_init();
+    xt_tick_पांगहाति_init();
     _frxt_tick_timer_init();
 #else /* CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER */
     vSystimerSetup();
@@ -217,7 +217,7 @@ BaseType_t xPortSysTickHandler(void)
 #if CONFIG_FREERTOS_SMP
     UBaseType_t uxSavedStatus = taskENTER_CRITICAL_FROM_ISR();
     // Amazon SMP FreeRTOS requires that only core 0 calls xTaskIncrementTick()
-#if ( configNUM_CORES > 1 )
+#if ( config_नुमेरो_CORES > 1 )
     if (portGET_CORE_ID() == 0) {
         xSwitchRequired = xTaskIncrementTick();
     } else {
@@ -228,7 +228,7 @@ BaseType_t xPortSysTickHandler(void)
 #endif /* configNUM_CORES > 1 */
     taskEXIT_CRITICAL_FROM_ISR(uxSavedStatus);
 #else /* !CONFIG_FREERTOS_SMP */
-#if ( configNUM_CORES > 1 )
+#if ( config_नुमेरो_CORES > 1 )
     /*
     Multi-core IDF FreeRTOS requires that...
         - core 0 calls xTaskIncrementTick()

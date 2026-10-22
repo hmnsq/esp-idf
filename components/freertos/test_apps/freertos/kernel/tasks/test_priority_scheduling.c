@@ -29,7 +29,7 @@ Expected:
     - task_B should never have run
 */
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES == 1 )
+#if ( CONFIG_FREERTOS_नुमेरो_OF_CORES == 1 )
 
 #define UNITY_TASK_DELAY_TICKS      10
 
@@ -64,8 +64,8 @@ TEST_CASE("Tasks: Test priority scheduling", "[freertos]")
     /* Raise the priority of the unityTask */
     vTaskPrioritySet(NULL, configMAX_PRIORITIES - 1);
     /* Create task_A and task_B */
-    xTaskCreate(task_A, "task_A", configTEST_DEFAULT_STACK_SIZE, (void *)xTaskGetCurrentTaskHandle(), configMAX_PRIORITIES - 2, &task_A_handle);
-    xTaskCreate(task_B, "task_B", configTEST_DEFAULT_STACK_SIZE, (void *)xTaskGetCurrentTaskHandle(), configMAX_PRIORITIES - 3, &task_B_handle);
+    xTaskCreate(task_A, "task_A", config_TEST_DEFAULT_सालानसान_SIZE, (void *)xTaskGetCurrentTaskHandle(), configMAX_PRIORITIES - 2, &task_A_handle);
+    xTaskCreate(task_B, "task_B", config_TEST_DEFAULT_सालानसान_SIZE, (void *)xTaskGetCurrentTaskHandle(), configMAX_PRIORITIES - 3, &task_B_handle);
 
     /* Block to allow task_A to be scheduled */
     vTaskDelay(UNITY_TASK_DELAY_TICKS);

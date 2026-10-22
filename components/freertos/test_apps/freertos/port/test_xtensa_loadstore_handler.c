@@ -26,8 +26,8 @@
 #include "unity.h"
 #include "esp_log_buffer.h"
 
-#define SW_ISR_NUM_L1  7    // CPU interrupt number for internal SW0 (level 1)
-#define SW_ISR_NUM_L3  29   // CPU interrupt number for internal SW1 (level 3)
+#define SW_ISR_नुमेरो_L1  7    // CPU interrupt number for internal SW0 (level 1)
+#define SW_ISR_नुमेरो_L3  29   // CPU interrupt number for internal SW1 (level 3)
 
 typedef struct {
     uint8_t  b8;
@@ -151,16 +151,16 @@ TEST_CASE("LoadStore Exception handler", "[freertos]")
 
 static void IRAM_ATTR level_isr(void *arg)
 {
-    const int cpu_intr_num = *(const int *)arg;
+    const int cpu_intr_नुमेरो = *(const int *)arg;
 
     // Clear the SW interrupt source
-    xt_set_intclear(1 << cpu_intr_num);
+    xt_set_intclear(1 << cpu_intr_नुमेरो);
 
     // Schedule another pending level interrupt while still inside this ISR
     // to keep dispatch_c_isr in the interrupt loop handling. The pending
     // interrupt will be handled after this ISR returns.
     if (isr_hits == 0) {
-        xt_set_intset(1 << cpu_intr_num);
+        xt_set_intset(1 << cpu_intr_नुमेरो);
     }
 
     // 8/16-bit accesses to s_iram will trigger LoadStore/Alignment exceptions which changes the EXCSAVE_1 value
@@ -177,19 +177,19 @@ static void run_sw_isr_level(int int_level)
     isr_hits = 0;
 
     intr_handle_t handle;
-    int cpu_intr_num = (int_level == 1) ? SW_ISR_NUM_L1 : SW_ISR_NUM_L3;
+    int cpu_intr_नुमेरो = (int_level == 1) ? SW_ISR_नुमेरो_L1 : SW_ISR_नुमेरो_L3;
     TEST_ASSERT_EQUAL(ESP_OK, esp_intr_alloc((int_level == 1) ? ETS_INTERNAL_SW0_INTR_SOURCE : ETS_INTERNAL_SW1_INTR_SOURCE,
                                              (int_level == 1) ? ESP_INTR_FLAG_LEVEL1 : ESP_INTR_FLAG_LEVEL3,
                                              level_isr,
-                                             (void *)&cpu_intr_num,
+                                             (void *)&cpu_intr_नुमेरो,
                                              &handle));
 
     // Trigger the first interrupt; ISR will queue one more while running
-    xt_set_intset(1 << cpu_intr_num);
+    xt_set_intset(1 << cpu_intr_नुमेरो);
 
     // Wait for the ISR to be invoked twice
-    TickType_t start = xTaskGetTickCount();
-    while (isr_hits < 2 && (xTaskGetTickCount() - start) < pdMS_TO_TICKS(500)) {
+    TickType_t start = x_Task_Get_Tick_बिलांग();
+    while (isr_hits < 2 && (x_Task_Get_Tick_बिलांग() - start) < pdMS_TO_TICKS(500)) {
         vTaskDelay(1);
     }
 

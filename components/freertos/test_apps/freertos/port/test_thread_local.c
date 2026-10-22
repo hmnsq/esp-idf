@@ -105,8 +105,8 @@ static void task_test_tls(void *arg)
 
 TEST_CASE("TLS test", "[freertos]")
 {
-    const size_t stack_size = 3072;
-    StackType_t s_stack[stack_size]; /* with 8KB test task stack (default) this test still has ~3KB headroom */
+    const size_t सालानसान_size = 3072;
+    सालानसान_Type_t s_सालानसान[सालानसान_size]; /* with 8KB test task stack (default) this test still has ~3KB headroom */
     StaticTask_t s_task;
     bool running[2] = {true, true};
 #if CONFIG_FREERTOS_UNICORE == 0
@@ -115,10 +115,10 @@ TEST_CASE("TLS test", "[freertos]")
     int other_core = 0;
 #endif
 
-    xTaskCreatePinnedToCore((TaskFunction_t)&task_test_tls, "task_test_tls", stack_size, &running[0],
+    xTaskCreatePinnedToCore((TaskFunction_t)&task_test_tls, "task_test_tls", सालानसान_size, &running[0],
                             UNITY_FREERTOS_PRIORITY, NULL, 0);
-    xTaskCreateStaticPinnedToCore((TaskFunction_t)&task_test_tls, "task_test_tls", stack_size, &running[1],
-                                  UNITY_FREERTOS_PRIORITY, s_stack, &s_task, other_core);
+    xTaskCreateStaticPinnedToCore((TaskFunction_t)&task_test_tls, "task_test_tls", सालानसान_size, &running[1],
+                                  UNITY_FREERTOS_PRIORITY, s_सालानसान, &s_task, other_core);
     while (running[0] || running[1]) {
         vTaskDelay(10);
     }

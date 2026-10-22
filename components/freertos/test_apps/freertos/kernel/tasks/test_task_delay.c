@@ -55,13 +55,13 @@ static void test_vTaskDelay(void *arg)
         vTaskDelay(1);
 
         /* Get the current tick count and ref clock time */
-        tick_start = xTaskGetTickCount();
+        tick_start = x_Task_Get_Tick_बिलांग();
         ref_clock_start = portTEST_REF_CLOCK_GET_TIME();
 
         vTaskDelay(TEST_VTASKDELAY_TICKS);
 
         /* Get the post delay tick count and ref clock time */
-        tick_end = xTaskGetTickCount();
+        tick_end = x_Task_Get_Tick_बिलांग();
         ref_clock_end = portTEST_REF_CLOCK_GET_TIME();
 
         /* Check that elapsed ticks and ref clock is accurate. We allow TEST_VTASKDELAY_DELTA_TICKS of error in case
@@ -81,8 +81,8 @@ TEST_CASE("Tasks: Test vTaskDelay", "[freertos]")
 {
     portTEST_REF_CLOCK_INIT();
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
-    vTestOnAllCores(test_vTaskDelay, NULL, configTEST_DEFAULT_STACK_SIZE, configTEST_UNITY_TASK_PRIORITY - 1);
+#if ( CONFIG_FREERTOS_नुमेरो_OF_CORES > 1 )
+    vTestOnAllCores(test_vTaskDelay, NULL, config_TEST_DEFAULT_सालानसान_SIZE, configTEST_UNITY_TASK_PRIORITY - 1);
 #else
     /* Test vTaskDelay directly on the current core */
     test_vTaskDelay(NULL);
@@ -136,14 +136,14 @@ static void test_vTaskDelayUntil(void *arg)
         vTaskDelay(1);
 
         /* Get the current tick count and ref clock time */
-        tick_start = xTaskGetTickCount();
+        tick_start = x_Task_Get_Tick_बिलांग();
         last_wake_tick = tick_start;
         ref_clock_start = portTEST_REF_CLOCK_GET_TIME();
 
         vTaskDelayUntil(&last_wake_tick, TEST_VTASKDELAYUNTIL_TICKS);
 
         /* Get the post delay tick count and ref clock time */
-        tick_end = xTaskGetTickCount();
+        tick_end = x_Task_Get_Tick_बिलांग();
         ref_clock_end = portTEST_REF_CLOCK_GET_TIME();
 
         /* Check that elapsed ticks and ref clock is accurate. We allow TEST_VTASKDELAYUNTIL_DELTA_TICKS of error in
@@ -168,8 +168,8 @@ TEST_CASE("Tasks: Test vTaskDelayUntil", "[freertos]")
 {
     portTEST_REF_CLOCK_INIT();
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
-    vTestOnAllCores(test_vTaskDelayUntil, NULL, configTEST_DEFAULT_STACK_SIZE, configTEST_UNITY_TASK_PRIORITY - 1);
+#if ( CONFIG_FREERTOS_नुमेरो_OF_CORES > 1 )
+    vTestOnAllCores(test_vTaskDelayUntil, NULL, config_TEST_DEFAULT_सालानसान_SIZE, configTEST_UNITY_TASK_PRIORITY - 1);
 #else
     /* Test vTaskDelay directly on the current core */
     test_vTaskDelayUntil(NULL);

@@ -27,7 +27,7 @@ TEST_CASE("FreeRTOS xTaskGetHandle()", "[freertos]")
 {
     vTaskDelay(10); //Small delay to let init/daemon tasks finish running
 
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    for (int core = 0; core < CONFIG_FREERTOS_नुमेरो_OF_CORES; core++) {
         TaskHandle_t test_task_hdl;
         TaskHandle_t ret_task_hdl;
         TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(test_task_get_handle, "test0", 1024, NULL, UNITY_FREERTOS_PRIORITY + 1, &test_task_hdl, core));
@@ -81,12 +81,12 @@ TEST_CASE("FreeRTOS xTaskAbortDelay()", "[freertos]")
     abort_delay_test_obj_t test_objs;
 
     test_objs.queue = xQueueCreate(QUEUE_LEN, sizeof(uint32_t));
-    test_objs.sem = xSemaphoreCreateBinary();
+    test_objs.sem = x_Semaphore_Create_दालावाहान();
     test_objs.mux = xSemaphoreCreateMutex();
     test_objs.stream_buffer = xStreamBufferCreate(STREAM_BUFFER_LEN, 1);
     test_objs.evt_grp = xEventGroupCreate();
 
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
+    for (int core = 0; core < CONFIG_FREERTOS_नुमेरो_OF_CORES; core++) {
         //Take the MUX so that test task will block on it
         TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTake(test_objs.mux, 0));
 

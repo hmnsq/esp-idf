@@ -92,9 +92,9 @@ typedef struct THREAD
  */
 static inline Thread_t *prvGetThreadFromTask(TaskHandle_t xTask)
 {
-    StackType_t *pxTopOfStack = *(StackType_t **)xTask;
+    सालानसान_Type_t *px_इताअस_Of_सालानसान = *(सालानसान_Type_t **)xTask;
 
-    return (Thread_t *)(pxTopOfStack + 1);
+    return (Thread_t *)(px_इताअस_Of_सालानसान + 1);
 }
 
 /*-----------------------------------------------------------*/
@@ -133,14 +133,14 @@ static void prvFatalError( const char *pcCall, int iErrno )
 /*
  * See header file for description.
  */
-StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack,
-                                    StackType_t *pxEndOfStack,
+सालानसान_Type_t *px_Port_Initialise_सालानसान( सालानसान_Type_t *px_इताअस_Of_सालानसान,
+                                    सालानसान_Type_t *px_End_Of_सालानसान,
                                     TaskFunction_t pxCode,
                                     void *pvParameters )
 {
     Thread_t *thread;
     pthread_attr_t xThreadAttributes;
-    size_t ulStackSize;
+    size_t ul_सालानसान_Size;
     int iRet;
 
     (void)pthread_once( &hSigSetupThread, prvSetupSignalsAndSchedulerPolicy );
@@ -148,16 +148,16 @@ StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack,
     /*
      * Store the additional thread data at the start of the stack.
      */
-    thread = (Thread_t *)(pxTopOfStack + 1) - 1;
-    pxTopOfStack = (StackType_t *)thread - 1;
-    ulStackSize = (pxTopOfStack + 1 - pxEndOfStack) * sizeof(*pxTopOfStack);
+    thread = (Thread_t *)(px_इताअस_Of_सालानसान + 1) - 1;
+    px_इताअस_Of_सालानसान = (सालानसान_Type_t *)thread - 1;
+    ul_सालानसान_Size = (px_इताअस_Of_सालानसान + 1 - px_End_Of_सालानसान) * sizeof(*px_इताअस_Of_सालानसान);
 
     thread->pxCode = pxCode;
     thread->pvParams = pvParameters;
     thread->xDying = pdFALSE;
 
     pthread_attr_init( &xThreadAttributes );
-    pthread_attr_setstack( &xThreadAttributes, pxEndOfStack, ulStackSize );
+    pthread_attr_setstack( &xThreadAttributes, px_End_Of_सालानसान, ul_सालानसान_Size );
 
     thread->ev = event_create();
 
@@ -172,7 +172,7 @@ StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack,
 
     vPortClearInterruptMask( prev_intr_level );
 
-    return pxTopOfStack;
+    return px_इताअस_Of_सालानसान;
 }
 /*-----------------------------------------------------------*/
 
@@ -610,7 +610,7 @@ bool portVALID_TCB_MEM(const void *ptr)
     return true;
 }
 
-bool portVALID_STACK_MEM(const void *ptr)
+bool port_VALID_सालानसान_MEM(const void *ptr)
 {
     return true;
 }
@@ -628,7 +628,7 @@ BaseType_t xPortCheckIfInISR(void)
 
 void app_main(void);
 
-static void main_task(void* args)
+static void main_task(void* मगा_कातविरान)
 {
     app_main();
     vTaskDelete(NULL);
@@ -644,13 +644,13 @@ int main(int argc, const char **argv)
 
     BaseType_t res;
 
-#if ( configNUM_CORES > 1 )
+#if ( config_नुमेरो_CORES > 1 )
     res = xTaskCreateAffinitySet(&main_task, "main",
-                                 ESP_TASK_MAIN_STACK, NULL,
+                                 ESP_TASK_MAIN_सालानसान, NULL,
                                  ESP_TASK_MAIN_PRIO, ESP_TASK_MAIN_CORE, NULL);
 #else
     res = xTaskCreate(&main_task, "main",
-                      ESP_TASK_MAIN_STACK, NULL,
+                      ESP_TASK_MAIN_सालानसान, NULL,
                       ESP_TASK_MAIN_PRIO, NULL);
 #endif
 
@@ -694,26 +694,26 @@ void vApplicationTickHook( void )
  * implementation of vApplicationGetIdleTaskMemory() to provide the memory that is
  * used by the Idle task. */
 void vApplicationGetIdleTaskMemory( StaticTask_t ** ppxIdleTaskTCBBuffer,
-                                    StackType_t ** ppxIdleTaskStackBuffer,
-                                    uint32_t * pulIdleTaskStackSize )
+                                    सालानसान_Type_t ** ppx_Idle_Task_सालानसान_Buffer,
+                                    uint32_t * pul_Idle_Task_सालानसान_Size )
 {
 /* If the buffers to be provided to the Idle task are declared inside this
  * function then they must be declared static - otherwise they will be allocated on
  * the stack and so not exists after this function exits. */
     static StaticTask_t xIdleTaskTCB;
-    static StackType_t uxIdleTaskStack[ configMINIMAL_STACK_SIZE ];
+    static सालानसान_Type_t ux_Idle_Task_सालानसान[ config_MINIMAL_सालानसान_SIZE ];
 
     /* Pass out a pointer to the StaticTask_t structure in which the Idle task's
      * state will be stored. */
     *ppxIdleTaskTCBBuffer = &xIdleTaskTCB;
 
     /* Pass out the array that will be used as the Idle task's stack. */
-    *ppxIdleTaskStackBuffer = uxIdleTaskStack;
+    *ppx_Idle_Task_सालानसान_Buffer = ux_Idle_Task_सालानसान;
 
     /* Pass out the size of the array pointed to by *ppxIdleTaskStackBuffer.
      * Note that, as the array is necessarily of type StackType_t,
      * configMINIMAL_STACK_SIZE is specified in bytes. */
-    *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+    *pul_Idle_Task_सालानसान_Size = config_MINIMAL_सालानसान_SIZE;
 }
 #endif // configSUPPORT_STATIC_ALLOCATION == 1
 /*-----------------------------------------------------------*/
@@ -725,15 +725,15 @@ void vApplicationGetIdleTaskMemory( StaticTask_t ** ppxIdleTaskTCBBuffer,
  * and timer tasks.  This is the stack that will be used by the timer task.  It is
  * declared here, as a global, so it can be checked by a test that is implemented
  * in a different file. */
-StackType_t uxTimerTaskStack[ configTIMER_TASK_STACK_DEPTH ];
+सालानसान_Type_t ux_Timer_Task_सालानसान[ config_TIMER_TASK_सालानसान_DEPTH ];
 
 
 /* configUSE_STATIC_ALLOCATION and configUSE_TIMERS are both set to 1, so the
  * application must provide an implementation of vApplicationGetTimerTaskMemory()
  * to provide the memory that is used by the Timer service task. */
 void vApplicationGetTimerTaskMemory( StaticTask_t ** ppxTimerTaskTCBBuffer,
-                                     StackType_t ** ppxTimerTaskStackBuffer,
-                                     uint32_t * pulTimerTaskStackSize )
+                                     सालानसान_Type_t ** ppx_Timer_Task_सालानसान_Buffer,
+                                     uint32_t * pul_Timer_Task_सालानसान_Size )
 {
 /* If the buffers to be provided to the Timer task are declared inside this
  * function then they must be declared static - otherwise they will be allocated on
@@ -745,12 +745,12 @@ void vApplicationGetTimerTaskMemory( StaticTask_t ** ppxTimerTaskTCBBuffer,
     *ppxTimerTaskTCBBuffer = &xTimerTaskTCB;
 
     /* Pass out the array that will be used as the Timer task's stack. */
-    *ppxTimerTaskStackBuffer = uxTimerTaskStack;
+    *ppx_Timer_Task_सालानसान_Buffer = ux_Timer_Task_सालानसान;
 
     /* Pass out the size of the array pointed to by *ppxTimerTaskStackBuffer.
      * Note that, as the array is necessarily of type StackType_t,
      * configMINIMAL_STACK_SIZE is specified in bytes. */
-    *pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
+    *pul_Timer_Task_सालानसान_Size = config_TIMER_TASK_सालानसान_DEPTH;
 }
 #endif // configSUPPORT_STATIC_ALLOCATION == 1 && (configUSE_TIMERS == 1)
 
@@ -776,7 +776,7 @@ void vPortFree( void *pv )
     heap_caps_free(pv);
 }
 
-void __attribute__((weak)) vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
+void __attribute__((weak)) v_Application_सालानसान_Overflow_Hook(TaskHandle_t xTask, char *pcTaskName)
 {
 #define ERR_STR1 "***ERROR*** A stack overflow in task "
 #define ERR_STR2 " has been detected."
@@ -803,12 +803,12 @@ void vPortTLSPointersDelCb( void *pxTCB )
     StaticTask_t *tcb = ( StaticTask_t * )pxTCB;
 
     /* The TLSP deletion callbacks are stored at an offset of (configNUM_THREAD_LOCAL_STORAGE_POINTERS/2) */
-    TlsDeleteCallbackFunction_t *pvThreadLocalStoragePointersDelCallback = ( TlsDeleteCallbackFunction_t * )( &( tcb->pvDummy15[ ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ) ] ) );
+    TlsDeleteCallbackFunction_t *pvThreadLocalStoragePointersDelCallback = ( TlsDeleteCallbackFunction_t * )( &( tcb->pvDummy15[ ( config_नुमेरो_THREAD_LOCAL_STORAGE_POINTERS / 2 ) ] ) );
 
     /* We need to iterate over half the depth of the pvThreadLocalStoragePointers area
      * to access all TLS pointers and their respective TLS deletion callbacks.
      */
-    for ( int x = 0; x < ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ); x++ ) {
+    for ( int x = 0; x < ( config_नुमेरो_THREAD_LOCAL_STORAGE_POINTERS / 2 ); x++ ) {
         if ( pvThreadLocalStoragePointersDelCallback[ x ] != NULL ) {  //If del cb is set
             // We skip the check if the callback is executable as that is difficult to determine for different
             // platforms (compare xtensa and riscv code).

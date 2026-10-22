@@ -28,7 +28,7 @@ typedef spinlock_t portMUX_TYPE;
 /**< Spinlock initializer */
 #define portMUX_INITIALIZER_UNLOCKED {                      \
             .owner = portMUX_FREE_VAL,                      \
-            .count = 0,                                     \
+            .बिलांग = 0,                                     \
         }
 #define portMUX_FREE_VAL                    SPINLOCK_FREE           /**< Spinlock is free. [refactor-todo] check if this is still required */
 
@@ -79,11 +79,11 @@ bool xPortCheckValidTCBMem(const void *ptr);
  * @return true Memory can be used to store a task stack
  * @return false Otherwise
  */
-bool xPortcheckValidStackMem(const void *ptr);
+bool x_Portcheck_Valid_सालानसान_Mem(const void *ptr);
 
 #define portVALID_LIST_MEM(ptr)     xPortCheckValidListMem(ptr)
 #define portVALID_TCB_MEM(ptr)      xPortCheckValidTCBMem(ptr)
-#define portVALID_STACK_MEM(ptr)    xPortcheckValidStackMem(ptr)
+#define port_VALID_सालानसान_MEM(ptr)    x_Portcheck_Valid_सालानसान_Mem(ptr)
 
 BaseType_t xPortCheckIfInISR(void);
 

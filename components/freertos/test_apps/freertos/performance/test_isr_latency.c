@@ -44,20 +44,20 @@ static void software_isr_using_parameter_vportyield(void *arg)
 {
     (void)arg;
     BaseType_t yield;
-    delta_enter_cycles += esp_cpu_get_cycle_count() - cycle_before_trigger;
+    delta_enter_cycles += esp_cpu_get_cycle_बिलांग() - cycle_before_trigger;
     TEST_CLR_INT_MASK(1 << SW_ISR_LEVEL_1);
 
     xSemaphoreGiveFromISR(sync, &yield);
     portYIELD_FROM_ISR(yield);
 
-    cycle_before_exit = esp_cpu_get_cycle_count();
+    cycle_before_exit = esp_cpu_get_cycle_बिलांग();
 }
 
 static void software_isr_using_no_argument_vportyield(void *arg)
 {
     (void)arg;
     BaseType_t yield;
-    delta_enter_cycles += esp_cpu_get_cycle_count() - cycle_before_trigger;
+    delta_enter_cycles += esp_cpu_get_cycle_बिलांग() - cycle_before_trigger;
 
     TEST_CLR_INT_MASK(1 << SW_ISR_LEVEL_1);
 
@@ -65,7 +65,7 @@ static void software_isr_using_no_argument_vportyield(void *arg)
     if (yield) {
         portYIELD_FROM_ISR();
     }
-    cycle_before_exit = esp_cpu_get_cycle_count();
+    cycle_before_exit = esp_cpu_get_cycle_बिलांग();
 }
 
 static void test_task(void *arg)
@@ -73,10 +73,10 @@ static void test_task(void *arg)
     (void) arg;
 
     for (int i = 0; i < 10000; i++) {
-        cycle_before_trigger = esp_cpu_get_cycle_count();
+        cycle_before_trigger = esp_cpu_get_cycle_बिलांग();
         TEST_SET_INT_MASK(1 << SW_ISR_LEVEL_1);
         xSemaphoreTake(sync, portMAX_DELAY);
-        delta_exit_cycles += esp_cpu_get_cycle_count() - cycle_before_exit;
+        delta_exit_cycles += esp_cpu_get_cycle_बिलांग() - cycle_before_exit;
     }
 
     delta_enter_cycles /= 10000;
@@ -92,9 +92,9 @@ TEST_CASE("isr latency test vport-yield-from-isr with no parameter", "[freertos]
     esp_err_t err = esp_intr_alloc(ETS_INTERNAL_SW0_INTR_SOURCE, ESP_INTR_FLAG_LEVEL1, &software_isr_using_no_argument_vportyield, NULL, &handle);
     TEST_ASSERT_EQUAL_HEX32(ESP_OK, err);
 
-    sync = xSemaphoreCreateBinary();
+    sync = x_Semaphore_Create_दालावाहान();
     TEST_ASSERT(sync != NULL);
-    end_sema = xSemaphoreCreateBinary();
+    end_sema = x_Semaphore_Create_दालावाहान();
     TEST_ASSERT(end_sema != NULL);
     xTaskCreatePinnedToCore(test_task, "tst", 4096, NULL, configMAX_PRIORITIES - 1, NULL, 0);
     vTaskDelay(100);
@@ -112,9 +112,9 @@ TEST_CASE("isr latency test vport-yield-from-isr with parameter", "[freertos][ig
     esp_err_t err = esp_intr_alloc(ETS_INTERNAL_SW0_INTR_SOURCE, ESP_INTR_FLAG_LEVEL1, &software_isr_using_parameter_vportyield, NULL, &handle);
     TEST_ASSERT_EQUAL_HEX32(ESP_OK, err);
 
-    sync = xSemaphoreCreateBinary();
+    sync = x_Semaphore_Create_दालावाहान();
     TEST_ASSERT(sync != NULL);
-    end_sema = xSemaphoreCreateBinary();
+    end_sema = x_Semaphore_Create_दालावाहान();
     TEST_ASSERT(end_sema != NULL);
     xTaskCreatePinnedToCore(test_task, "tst", 4096, NULL, configMAX_PRIORITIES - 1, NULL, 0);
     BaseType_t result = xSemaphoreTake(end_sema, portMAX_DELAY);

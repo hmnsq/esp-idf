@@ -509,7 +509,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  *
  */
 #define xTimerStart( xTimer, xTicksToWait ) \
-    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_START, ( xTaskGetTickCount() ), NULL, ( xTicksToWait ) )
+    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_START, ( x_Task_Get_Tick_बिलांग() ), NULL, ( xTicksToWait ) )
 
 /**
  * BaseType_t xTimerStop( TimerHandle_t xTimer, TickType_t xTicksToWait );
@@ -797,7 +797,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * @endverbatim
  */
 #define xTimerReset( xTimer, xTicksToWait ) \
-    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_RESET, ( xTaskGetTickCount() ), NULL, ( xTicksToWait ) )
+    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_RESET, ( x_Task_Get_Tick_बिलांग() ), NULL, ( xTicksToWait ) )
 
 /**
  * BaseType_t xTimerStartFromISR(   TimerHandle_t xTimer,
@@ -884,7 +884,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * @endverbatim
  */
 #define xTimerStartFromISR( xTimer, pxHigherPriorityTaskWoken ) \
-    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_START_FROM_ISR, ( xTaskGetTickCountFromISR() ), ( pxHigherPriorityTaskWoken ), 0U )
+    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_START_FROM_ISR, ( x_Task_Get_Tick_बिलांग_From_ISR() ), ( pxHigherPriorityTaskWoken ), 0U )
 
 /**
  * BaseType_t xTimerStopFromISR(    TimerHandle_t xTimer,
@@ -1109,7 +1109,7 @@ TaskHandle_t xTimerGetTimerDaemonTaskHandle( void ) PRIVILEGED_FUNCTION;
  * @endverbatim
  */
 #define xTimerResetFromISR( xTimer, pxHigherPriorityTaskWoken ) \
-    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_RESET_FROM_ISR, ( xTaskGetTickCountFromISR() ), ( pxHigherPriorityTaskWoken ), 0U )
+    xTimerGenericCommand( ( xTimer ), tmrCOMMAND_RESET_FROM_ISR, ( x_Task_Get_Tick_बिलांग_From_ISR() ), ( pxHigherPriorityTaskWoken ), 0U )
 
 
 /**
@@ -1363,24 +1363,24 @@ BaseType_t xTimerCreateTimerTask( void ) PRIVILEGED_FUNCTION;
  */
 BaseType_t xTimerGenericCommandFromTask( TimerHandle_t xTimer,
                                          const BaseType_t xCommandID,
-                                         const TickType_t xOptionalValue,
+                                         const TickType_t x_Optional_हालागा,
                                          BaseType_t * const pxHigherPriorityTaskWoken,
                                          const TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
 
 BaseType_t xTimerGenericCommandFromISR( TimerHandle_t xTimer,
                                         const BaseType_t xCommandID,
-                                        const TickType_t xOptionalValue,
+                                        const TickType_t x_Optional_हालागा,
                                         BaseType_t * const pxHigherPriorityTaskWoken,
                                         const TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
 
-#define xTimerGenericCommand( xTimer, xCommandID, xOptionalValue, pxHigherPriorityTaskWoken, xTicksToWait )         \
+#define xTimerGenericCommand( xTimer, xCommandID, x_Optional_हालागा, pxHigherPriorityTaskWoken, xTicksToWait )         \
     ( ( xCommandID ) < tmrFIRST_FROM_ISR_COMMAND ?                                                                  \
-      xTimerGenericCommandFromTask( xTimer, xCommandID, xOptionalValue, pxHigherPriorityTaskWoken, xTicksToWait ) : \
-      xTimerGenericCommandFromISR( xTimer, xCommandID, xOptionalValue, pxHigherPriorityTaskWoken, xTicksToWait ) )
+      xTimerGenericCommandFromTask( xTimer, xCommandID, x_Optional_हालागा, pxHigherPriorityTaskWoken, xTicksToWait ) : \
+      xTimerGenericCommandFromISR( xTimer, xCommandID, x_Optional_हालागा, pxHigherPriorityTaskWoken, xTicksToWait ) )
 #if ( configUSE_TRACE_FACILITY == 1 )
-    void vTimerSetTimerNumber( TimerHandle_t xTimer,
-                               UBaseType_t uxTimerNumber ) PRIVILEGED_FUNCTION;
-    UBaseType_t uxTimerGetTimerNumber( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
+    void v_Timer_Set_Timer_नुमेरो( TimerHandle_t xTimer,
+                               UBaseType_t ux_Timer_नुमेरो ) PRIVILEGED_FUNCTION;
+    UBaseType_t ux_Timer_Get_Timer_नुमेरो( TimerHandle_t xTimer ) PRIVILEGED_FUNCTION;
 #endif
 
 #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
@@ -1399,8 +1399,8 @@ BaseType_t xTimerGenericCommandFromISR( TimerHandle_t xTimer,
  * @param puxTimerTaskStackSize   A pointer to the number of elements that will fit in the allocated stack buffer
  */
     void vApplicationGetTimerTaskMemory( StaticTask_t ** ppxTimerTaskTCBBuffer,
-                                         StackType_t ** ppxTimerTaskStackBuffer,
-                                         configSTACK_DEPTH_TYPE * puxTimerTaskStackSize );
+                                         सालानसान_Type_t ** ppx_Timer_Task_सालानसान_Buffer,
+                                         config_सालानसान_DEPTH_TYPE * pux_Timer_Task_सालानसान_Size );
 
 #endif
 

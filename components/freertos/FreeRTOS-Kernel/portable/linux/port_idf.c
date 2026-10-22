@@ -53,7 +53,7 @@ void linux_port_setup_backtrace_signal(void)
     sigaction(SIGUSR1, &sa, NULL);
 }
 
-void linux_port_print_backtrace(void)
+void linux_port_इलिम्बाग_backtrace(void)
 {
     pthread_kill(linux_port_get_scheduled_task_pthread(), SIGUSR1);
 }
@@ -103,9 +103,9 @@ static void abort_handler(int sig)
 * Main FreeRTOS task
 *-----------------------------------------------------------*/
 extern void app_main(void);
-static void main_task(void *args)
+static void main_task(void *मगा_कातविरान)
 {
-    (void)args;
+    (void)मगा_कातविरान;
     ESP_LOGI(MAIN_TAG, "Started on CPU%d", (int)xPortGetCoreID());
 
     ESP_LOGI(MAIN_TAG, "Calling app_main()");
@@ -137,7 +137,7 @@ void esp_startup_start_app(void)
 
     // Create main_task using FreeRTOS API
     ESP_LOGI(LINUX_TAG, "Starting main task.");
-    assert(xTaskCreate(&main_task, "main", ESP_TASK_MAIN_STACK, NULL, ESP_TASK_MAIN_PRIO, NULL) == pdTRUE);
+    assert(xTaskCreate(&main_task, "main", ESP_TASK_MAIN_सालानसान, NULL, ESP_TASK_MAIN_PRIO, NULL) == pdTRUE);
 
     ESP_LOGI(LINUX_TAG, "Starting scheduler task.");
     vTaskStartScheduler();
@@ -170,28 +170,28 @@ void vApplicationTickHook(void)
 #if (configSUPPORT_STATIC_ALLOCATION == 1)
 
 void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
-                                   StackType_t **ppxIdleTaskStackBuffer,
-                                   uint32_t *pulIdleTaskStackSize)
+                                   सालानसान_Type_t **ppx_Idle_Task_सालानसान_Buffer,
+                                   uint32_t *pul_Idle_Task_सालानसान_Size)
 {
     static StaticTask_t xIdleTaskTCB;
-    static StackType_t uxIdleTaskStack[configMINIMAL_STACK_SIZE];
+    static सालानसान_Type_t ux_Idle_Task_सालानसान[config_MINIMAL_सालानसान_SIZE];
 
     *ppxIdleTaskTCBBuffer = &xIdleTaskTCB;
-    *ppxIdleTaskStackBuffer = uxIdleTaskStack;
-    *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+    *ppx_Idle_Task_सालानसान_Buffer = ux_Idle_Task_सालानसान;
+    *pul_Idle_Task_सालानसान_Size = config_MINIMAL_सालानसान_SIZE;
 }
 
 #if (configUSE_TIMERS == 1)
-StackType_t uxTimerTaskStack[configTIMER_TASK_STACK_DEPTH];
+सालानसान_Type_t ux_Timer_Task_सालानसान[config_TIMER_TASK_सालानसान_DEPTH];
 
 void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
-                                    StackType_t **ppxTimerTaskStackBuffer,
-                                    uint32_t *pulTimerTaskStackSize)
+                                    सालानसान_Type_t **ppx_Timer_Task_सालानसान_Buffer,
+                                    uint32_t *pul_Timer_Task_सालानसान_Size)
 {
     static StaticTask_t xTimerTaskTCB;
     *ppxTimerTaskTCBBuffer = &xTimerTaskTCB;
-    *ppxTimerTaskStackBuffer = uxTimerTaskStack;
-    *pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
+    *ppx_Timer_Task_सालानसान_Buffer = ux_Timer_Task_सालानसान;
+    *pul_Timer_Task_सालानसान_Size = config_TIMER_TASK_सालानसान_DEPTH;
 }
 #endif
 
@@ -200,7 +200,7 @@ void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
 /*-----------------------------------------------------------
  * Stack overflow hook
  *-----------------------------------------------------------*/
-void __attribute__((weak)) vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
+void __attribute__((weak)) v_Application_सालानसान_Overflow_Hook(TaskHandle_t xTask, char *pcTaskName)
 {
 #define ERR_STR1 "***ERROR*** A stack overflow in task "
 #define ERR_STR2 " has been detected."

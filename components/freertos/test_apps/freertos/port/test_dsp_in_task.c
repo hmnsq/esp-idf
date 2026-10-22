@@ -15,7 +15,7 @@
 
 #if SOC_CPU_HAS_DSP
 
-#define TEST_NUM_TASKS       4
+#define TEST_नुमेरो_TASKS       4
 
 typedef struct {
     int32_t  id;
@@ -51,17 +51,17 @@ static void pinned_task(void *arg)
 
 TEST_CASE("DSP: Usage in task", "[freertos]")
 {
-    TaskHandle_t task_handles[CONFIG_FREERTOS_NUMBER_OF_CORES][TEST_NUM_TASKS];
-    dsp_params_t params[CONFIG_FREERTOS_NUMBER_OF_CORES][TEST_NUM_TASKS];
+    TaskHandle_t task_handles[CONFIG_FREERTOS_नुमेरो_OF_CORES][TEST_नुमेरो_TASKS];
+    dsp_params_t params[CONFIG_FREERTOS_नुमेरो_OF_CORES][TEST_नुमेरो_TASKS];
 
-    SemaphoreHandle_t done_sem = xSemaphoreCreateCounting(TEST_NUM_TASKS, 0);
+    SemaphoreHandle_t done_sem = xSemaphoreCreateCounting(TEST_नुमेरो_TASKS, 0);
     TEST_ASSERT_NOT_EQUAL(NULL, done_sem);
 
     // Create test tasks for each core
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        for (int j = 0; j < TEST_NUM_TASKS; j++) {
+    for (int i = 0; i < CONFIG_FREERTOS_नुमेरो_OF_CORES; i++) {
+        for (int j = 0; j < TEST_नुमेरो_TASKS; j++) {
             params[i][j] = (dsp_params_t) {
-                .id = i * TEST_NUM_TASKS + j + 1,
+                .id = i * TEST_नुमेरो_TASKS + j + 1,
                 .sem = done_sem,
             };
             TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(pinned_task, "task", 4096, (void *) &params[i][j], UNITY_FREERTOS_PRIORITY + 1, &task_handles[i][j], i));
@@ -69,27 +69,27 @@ TEST_CASE("DSP: Usage in task", "[freertos]")
     }
 
     // Start the created tasks
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        for (int j = 0; j < TEST_NUM_TASKS; j++) {
+    for (int i = 0; i < CONFIG_FREERTOS_नुमेरो_OF_CORES; i++) {
+        for (int j = 0; j < TEST_नुमेरो_TASKS; j++) {
             xTaskNotifyGive(task_handles[i][j]);
         }
     }
 
     // Wait for the tasks to complete
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES * TEST_NUM_TASKS; i++) {
+    for (int i = 0; i < CONFIG_FREERTOS_नुमेरो_OF_CORES * TEST_नुमेरो_TASKS; i++) {
         xSemaphoreTake(done_sem, portMAX_DELAY);
     }
 
     // Delete the tasks
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        for (int j = 0; j < TEST_NUM_TASKS; j++) {
+    for (int i = 0; i < CONFIG_FREERTOS_नुमेरो_OF_CORES; i++) {
+        for (int j = 0; j < TEST_नुमेरो_TASKS; j++) {
             vTaskDelete(task_handles[i][j]);
         }
     }
 
     // Check the values
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        for (int j = 0; j < TEST_NUM_TASKS; j++) {
+    for (int i = 0; i < CONFIG_FREERTOS_नुमेरो_OF_CORES; i++) {
+        for (int j = 0; j < TEST_नुमेरो_TASKS; j++) {
             dsp_params_t* param = &params[i][j];
             TEST_ASSERT_EQUAL(param->id * g_dsp_constant, param->result);
         }

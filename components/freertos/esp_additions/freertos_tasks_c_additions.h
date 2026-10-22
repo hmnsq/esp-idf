@@ -26,15 +26,15 @@
  * Both StaticTask_t and TCB_t structures are provided by FreeRTOS sources.
  * This is just an additional check of the consistency of these structures.
  */
-_Static_assert( offsetof( StaticTask_t, pxDummy6 ) == offsetof( TCB_t, pxStack ) );
-_Static_assert( offsetof( StaticTask_t, pxDummy8 ) == offsetof( TCB_t, pxEndOfStack ) );
+_Static_assert( offsetof( StaticTask_t, pxDummy6 ) == offsetof( TCB_t, px_सालानसान ) );
+_Static_assert( offsetof( StaticTask_t, pxDummy8 ) == offsetof( TCB_t, px_End_Of_सालानसान ) );
 #if !CONFIG_IDF_TARGET_LINUX    // Disabled for linux builds due to differences in types
 _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "CONFIG_FREERTOS_NO_AFFINITY must be the same as tskNO_AFFINITY" );
 #endif
 
 /* ------------------------------------------------- Kernel Control ------------------------------------------------- */
 
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#if ( !CONFIG_FREERTOS_SMP && ( config_नुमेरो_CORES > 1 ) )
 
 /*
  * Wrapper function to take "xKerneLock"
@@ -48,7 +48,7 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
 #endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 /*----------------------------------------------------------*/
 
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#if ( !CONFIG_FREERTOS_SMP && ( config_नुमेरो_CORES > 1 ) )
 
 /*
  * Wrapper function to release "xKerneLock"
@@ -62,7 +62,7 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
 #endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 /*----------------------------------------------------------*/
 
-#if ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#if ( CONFIG_FREERTOS_SMP && ( config_नुमेरो_CORES > 1 ) )
 
 /*
  * Workaround for non-thread safe multi-core OS startup (see IDF-4524)
@@ -76,7 +76,7 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
 #endif /* ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 /*----------------------------------------------------------*/
 
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#if ( !CONFIG_FREERTOS_SMP && ( config_नुमेरो_CORES > 1 ) )
 
     BaseType_t xTaskIncrementTickOtherCores( void )
     {
@@ -90,7 +90,7 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
 
         /* Called by the portable layer each time a tick interrupt occurs
          * on a core other than core 0. */
-        traceTASK_INCREMENT_TICK( xTickCount );
+        traceTASK_INCREMENT_TICK( x_Tick_बिलांग );
 
         if( uxSchedulerSuspended[ xCoreID ] == ( UBaseType_t ) 0U )
         {
@@ -150,7 +150,7 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
 
     BaseType_t xTaskCreatePinnedToCore( TaskFunction_t pxTaskCode,
                                         const char * const pcName,
-                                        const uint32_t usStackDepth,
+                                        const uint32_t us_सालानसान_Depth,
                                         void * const pvParameters,
                                         UBaseType_t uxPriority,
                                         TaskHandle_t * const pxCreatedTask,
@@ -164,14 +164,14 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
         {
             /* If using Amazon SMP FreeRTOS. This function is just a wrapper around
              * xTaskCreate() or xTaskCreateAffinitySet(). */
-            #if ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+            #if ( ( config_नुमेरो_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
             {
                 /* Convert xCoreID into an affinity mask */
                 UBaseType_t uxCoreAffinityMask;
 
                 /* Bit shifting << xCoreID is only valid if we have less than
                  * 32 cores. */
-                ESP_STATIC_ASSERT( configNUM_CORES < 32 );
+                ESP_STATIC_ASSERT( config_नुमेरो_CORES < 32 );
 
                 if( xCoreID == tskNO_AFFINITY )
                 {
@@ -182,11 +182,11 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
                     uxCoreAffinityMask = ( 1 << xCoreID );
                 }
 
-                xReturn = xTaskCreateAffinitySet( pxTaskCode, pcName, usStackDepth, pvParameters, uxPriority, uxCoreAffinityMask, pxCreatedTask );
+                xReturn = xTaskCreateAffinitySet( pxTaskCode, pcName, us_सालानसान_Depth, pvParameters, uxPriority, uxCoreAffinityMask, pxCreatedTask );
             }
             #else /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
             {
-                xReturn = xTaskCreate( pxTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pxCreatedTask );
+                xReturn = xTaskCreate( pxTaskCode, pcName, us_सालानसान_Depth, pvParameters, uxPriority, pxCreatedTask );
             }
             #endif /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
         }
@@ -197,7 +197,7 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
             /* If the stack grows down then allocate the stack then the TCB so the
              * stack does not grow into the TCB.  Likewise if the stack grows up
              * then allocate the TCB then the stack. */
-            #if ( portSTACK_GROWTH > 0 )
+            #if ( port_सालानसान_GROWTH > 0 )
             {
                 /* Allocate space for the TCB.  Where the memory comes from depends on
                  * the implementation of the port malloc function and whether or not static
@@ -211,9 +211,9 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
                     /* Allocate space for the stack used by the task being created.
                      * The base of the stack memory stored in the TCB so the task can
                      * be deleted later if required. */
-                    pxNewTCB->pxStack = ( StackType_t * ) pvPortMallocStack( ( ( ( size_t ) usStackDepth ) * sizeof( StackType_t ) ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
+                    pxNewTCB->px_सालानसान = ( सालानसान_Type_t * ) pv_Port_Malloc_सालानसान( ( ( ( size_t ) us_सालानसान_Depth ) * sizeof( सालानसान_Type_t ) ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
 
-                    if( pxNewTCB->pxStack == NULL )
+                    if( pxNewTCB->px_सालानसान == NULL )
                     {
                         /* Could not allocate the stack.  Delete the allocated TCB. */
                         vPortFree( pxNewTCB );
@@ -223,12 +223,12 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
             }
             #else /* portSTACK_GROWTH */
             {
-                StackType_t * pxStack;
+                सालानसान_Type_t * px_सालानसान;
 
                 /* Allocate space for the stack used by the task being created. */
-                pxStack = pvPortMallocStack( ( ( ( size_t ) usStackDepth ) * sizeof( StackType_t ) ) ); /*lint !e9079 All values returned by pvPortMalloc() have at least the alignment required by the MCU's stack and this allocation is the stack. */
+                px_सालानसान = pv_Port_Malloc_सालानसान( ( ( ( size_t ) us_सालानसान_Depth ) * sizeof( सालानसान_Type_t ) ) ); /*lint !e9079 All values returned by pvPortMalloc() have at least the alignment required by the MCU's stack and this allocation is the stack. */
 
-                if( pxStack != NULL )
+                if( px_सालानसान != NULL )
                 {
                     /* Allocate space for the TCB. */
                     pxNewTCB = ( TCB_t * ) pvPortMalloc( sizeof( TCB_t ) ); /*lint !e9087 !e9079 All values returned by pvPortMalloc() have at least the alignment required by the MCU's stack, and the first member of TCB_t is always a pointer to the task's stack. */
@@ -238,13 +238,13 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
                         memset( ( void * ) pxNewTCB, 0x00, sizeof( TCB_t ) );
 
                         /* Store the stack location in the TCB. */
-                        pxNewTCB->pxStack = pxStack;
+                        pxNewTCB->px_सालानसान = px_सालानसान;
                     }
                     else
                     {
                         /* The stack cannot be used as the TCB was not created.  Free
                          * it again. */
-                        vPortFreeStack( pxStack );
+                        v_Port_Free_सालानसान( px_सालानसान );
                     }
                 }
                 else
@@ -260,11 +260,11 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
                 {
                     /* Tasks can be created statically or dynamically, so note this
                      * task was created dynamically in case it is later deleted. */
-                    pxNewTCB->ucStaticallyAllocated = tskDYNAMICALLY_ALLOCATED_STACK_AND_TCB;
+                    pxNewTCB->ucStaticallyAllocated = tsk_DYNAMICALLY_ALLOCATED_सालानसान_AND_TCB;
                 }
                 #endif /* tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE */
 
-                prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) usStackDepth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL, xCoreID );
+                prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) us_सालानसान_Depth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL, xCoreID );
                 prvAddNewTaskToReadyList( pxNewTCB );
                 xReturn = pdPASS;
             }
@@ -285,16 +285,16 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
 
     TaskHandle_t xTaskCreateStaticPinnedToCore( TaskFunction_t pxTaskCode,
                                                 const char * const pcName,
-                                                const uint32_t ulStackDepth,
+                                                const uint32_t ul_सालानसान_Depth,
                                                 void * const pvParameters,
                                                 UBaseType_t uxPriority,
-                                                StackType_t * const puxStackBuffer,
+                                                सालानसान_Type_t * const pux_सालानसान_Buffer,
                                                 StaticTask_t * const pxTaskBuffer,
                                                 const BaseType_t xCoreID )
     {
         TaskHandle_t xReturn;
 
-        configASSERT( portVALID_STACK_MEM( puxStackBuffer ) );
+        configASSERT( port_VALID_सालानसान_MEM( pux_सालानसान_Buffer ) );
         configASSERT( portVALID_TCB_MEM( pxTaskBuffer ) );
         configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE || xCoreID == tskNO_AFFINITY );
 
@@ -302,14 +302,14 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
         {
             /* If using Amazon SMP FreeRTOS. This function is just a wrapper around
              * xTaskCreateStatic() or xTaskCreateStaticAffinitySet(). */
-            #if ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+            #if ( ( config_नुमेरो_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
             {
                 /* Convert xCoreID into an affinity mask */
                 UBaseType_t uxCoreAffinityMask;
 
                 /* Bit shifting << xCoreID is only valid if we have less than
                  * 32 cores. */
-                ESP_STATIC_ASSERT( configNUM_CORES < 32 );
+                ESP_STATIC_ASSERT( config_नुमेरो_CORES < 32 );
 
                 if( xCoreID == tskNO_AFFINITY )
                 {
@@ -320,11 +320,11 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
                     uxCoreAffinityMask = ( 1 << xCoreID );
                 }
 
-                xReturn = xTaskCreateStaticAffinitySet( pxTaskCode, pcName, ulStackDepth, pvParameters, uxPriority, puxStackBuffer, pxTaskBuffer, uxCoreAffinityMask );
+                xReturn = xTaskCreateStaticAffinitySet( pxTaskCode, pcName, ul_सालानसान_Depth, pvParameters, uxPriority, pux_सालानसान_Buffer, pxTaskBuffer, uxCoreAffinityMask );
             }
             #else /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
             {
-                xReturn = xTaskCreateStatic( pxTaskCode, pcName, ulStackDepth, pvParameters, uxPriority, puxStackBuffer, pxTaskBuffer );
+                xReturn = xTaskCreateStatic( pxTaskCode, pcName, ul_सालानसान_Depth, pvParameters, uxPriority, pux_सालानसान_Buffer, pxTaskBuffer );
             }
             #endif /* ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
         }
@@ -343,23 +343,23 @@ _Static_assert( tskNO_AFFINITY == ( BaseType_t ) CONFIG_FREERTOS_NO_AFFINITY, "C
             }
             #endif /* configASSERT_DEFINED */
 
-            if( ( pxTaskBuffer != NULL ) && ( puxStackBuffer != NULL ) )
+            if( ( pxTaskBuffer != NULL ) && ( pux_सालानसान_Buffer != NULL ) )
             {
                 /* The memory used for the task's TCB and stack are passed into this
                  * function - use them. */
                 pxNewTCB = ( TCB_t * ) pxTaskBuffer; /*lint !e740 !e9087 Unusual cast is ok as the structures are designed to have the same alignment, and the size is checked by an assert. */
                 memset( ( void * ) pxNewTCB, 0x00, sizeof( TCB_t ) );
-                pxNewTCB->pxStack = ( StackType_t * ) puxStackBuffer;
+                pxNewTCB->px_सालानसान = ( सालानसान_Type_t * ) pux_सालानसान_Buffer;
 
                 #if ( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 ) /*lint !e731 !e9029 Macro has been consolidated for readability reasons. */
                 {
                     /* Tasks can be created statically or dynamically, so note this
                      * task was created statically in case the task is later deleted. */
-                    pxNewTCB->ucStaticallyAllocated = tskSTATICALLY_ALLOCATED_STACK_AND_TCB;
+                    pxNewTCB->ucStaticallyAllocated = tsk_STATICALLY_ALLOCATED_सालानसान_AND_TCB;
                 }
                 #endif /* tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE */
 
-                prvInitialiseNewTask( pxTaskCode, pcName, ulStackDepth, pvParameters, uxPriority, &xReturn, pxNewTCB, NULL, xCoreID );
+                prvInitialiseNewTask( pxTaskCode, pcName, ul_सालानसान_Depth, pvParameters, uxPriority, &xReturn, pxNewTCB, NULL, xCoreID );
                 prvAddNewTaskToReadyList( pxNewTCB );
             }
             else
@@ -402,7 +402,7 @@ BaseType_t xTaskGetCoreID( TaskHandle_t xTask )
 {
     BaseType_t xReturn;
 
-    #if ( configNUM_CORES > 1 )
+    #if ( config_नुमेरो_CORES > 1 )
     {
         #if CONFIG_FREERTOS_SMP
             UBaseType_t uxCoreAffinityMask;
@@ -512,10 +512,10 @@ BaseType_t xTaskGetCoreID( TaskHandle_t xTask )
 
         configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE );
 
-        #ifdef portALT_GET_RUN_TIME_COUNTER_VALUE
-            portALT_GET_RUN_TIME_COUNTER_VALUE( ulTotalTime );
+        #ifdef port_ALT_GET_RUN_TIME_COUNTER_हालागा
+            port_ALT_GET_RUN_TIME_COUNTER_हालागा( ulTotalTime );
         #else
-            ulTotalTime = portGET_RUN_TIME_COUNTER_VALUE();
+            ulTotalTime = port_GET_RUN_TIME_COUNTER_हालागा();
         #endif
 
         /* For percentage calculations. */
@@ -544,18 +544,18 @@ BaseType_t xTaskGetCoreID( TaskHandle_t xTask )
 #endif /* ( !CONFIG_FREERTOS_SMP && ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-StackType_t * xTaskGetStackStart( TaskHandle_t xTask )
+सालानसान_Type_t * x_Task_Get_सालानसान_Start( TaskHandle_t xTask )
 {
     TCB_t * pxTCB;
 
     pxTCB = prvGetTCBFromHandle( xTask );
-    return pxTCB->pxStack;
+    return pxTCB->px_सालानसान;
 }
 /*----------------------------------------------------------*/
 
-uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
+uint8_t * px_Task_Get_सालानसान_Start( TaskHandle_t xTask )
 {
-    return (uint8_t *)xTaskGetStackStart( xTask );
+    return (uint8_t *)x_Task_Get_सालानसान_Start( xTask );
 }
 /*----------------------------------------------------------*/
 
@@ -606,9 +606,9 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
 
                         /* Only reset the event list item value if the value is not
                          * being used for anything else. */
-                        if( ( listGET_LIST_ITEM_VALUE( &( pxTCB->xEventListItem ) ) & taskEVENT_LIST_ITEM_VALUE_IN_USE ) == 0UL )
+                        if( ( list_GET_LIST_ITEM_हालागा( &( pxTCB->xEventListItem ) ) & task_EVENT_LIST_ITEM_हालागा_IN_USE ) == 0UL )
                         {
-                            listSET_LIST_ITEM_VALUE( &( pxTCB->xEventListItem ), ( ( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) uxNewPriority ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
+                            list_SET_LIST_ITEM_हालागा( &( pxTCB->xEventListItem ), ( ( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) uxNewPriority ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
                         }
 
                         /* If the task is in the blocked or suspended list we need do
@@ -625,7 +625,7 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
                                 /* It is known that the task is in its ready list so
                                  * there is no need to check again and the port level
                                  * reset macro can be called directly. */
-                                portRESET_READY_PRIORITY( uxPriorityUsedOnEntry, uxTopReadyPriority );
+                                portRESET_READY_PRIORITY( uxPriorityUsedOnEntry, ux_इताअस_Ready_Priority );
                             }
 
                             prvAddTaskToReadyList( pxTCB );
@@ -723,9 +723,9 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
 
                         /* Only reset the event list item value if the value is not
                          * being used for anything else. */
-                        if( ( listGET_LIST_ITEM_VALUE( &( pxTCB->xEventListItem ) ) & taskEVENT_LIST_ITEM_VALUE_IN_USE ) == 0UL )
+                        if( ( list_GET_LIST_ITEM_हालागा( &( pxTCB->xEventListItem ) ) & task_EVENT_LIST_ITEM_हालागा_IN_USE ) == 0UL )
                         {
-                            listSET_LIST_ITEM_VALUE( &( pxTCB->xEventListItem ), ( ( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) uxNewPriority ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
+                            list_SET_LIST_ITEM_हालागा( &( pxTCB->xEventListItem ), ( ( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) uxNewPriority ) ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
                         }
 
                         /* If the task is in the blocked or suspended list we need do
@@ -742,7 +742,7 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
                                 /* It is known that the task is in its ready list so
                                  * there is no need to check again and the port level
                                  * reset macro can be called directly. */
-                                portRESET_READY_PRIORITY( uxPriorityUsedOnEntry, uxTopReadyPriority );
+                                portRESET_READY_PRIORITY( uxPriorityUsedOnEntry, ux_इताअस_Ready_Priority );
                             }
 
                             prvAddTaskToReadyList( pxTCB );
@@ -781,17 +781,17 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
 
     void vTaskSetThreadLocalStoragePointerAndDelCallback( TaskHandle_t xTaskToSet,
                                                           BaseType_t xIndex,
-                                                          void * pvValue,
+                                                          void * pv_हालागा,
                                                           TlsDeleteCallbackFunction_t pvDelCallback )
     {
         /* If TLSP deletion callbacks are enabled, then configNUM_THREAD_LOCAL_STORAGE_POINTERS
          * is doubled in size so that the latter half of the pvThreadLocalStoragePointers
          * stores the deletion callbacks. */
-        if( xIndex < ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ) )
+        if( xIndex < ( config_नुमेरो_THREAD_LOCAL_STORAGE_POINTERS / 2 ) )
         {
             TCB_t * pxTCB;
 
-            #if ( configNUM_CORES > 1 )
+            #if ( config_नुमेरो_CORES > 1 )
             {
                 /* For SMP, we need a critical section as another core could also
                  * update this task's TLSP at the same time. */
@@ -809,13 +809,13 @@ uint8_t * pxTaskGetStackStart( TaskHandle_t xTask )
 
             pxTCB = prvGetTCBFromHandle( xTaskToSet );
             /* Store the TLSP by indexing the first half of the array */
-            pxTCB->pvThreadLocalStoragePointers[ xIndex ] = pvValue;
+            pxTCB->pvThreadLocalStoragePointers[ xIndex ] = pv_हालागा;
 
             /* Store the TLSP deletion callback by indexing the second half
              * of the array. */
-            pxTCB->pvThreadLocalStoragePointers[ ( xIndex + ( configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2 ) ) ] = ( void * ) pvDelCallback;
+            pxTCB->pvThreadLocalStoragePointers[ ( xIndex + ( config_नुमेरो_THREAD_LOCAL_STORAGE_POINTERS / 2 ) ) ] = ( void * ) pvDelCallback;
 
-            #if ( configNUM_CORES > 1 )
+            #if ( config_नुमेरो_CORES > 1 )
             {
                 #if CONFIG_FREERTOS_SMP
                 {
@@ -952,7 +952,7 @@ static List_t * pxGetTaskListByIndex( UBaseType_t uxListIndex )
  * @return The total count of task lists.
  *
  */
-static inline UBaseType_t pxGetTaskListCount( void )
+static inline UBaseType_t px_Get_Task_List_बिलांग( void )
 {
     return configMAX_PRIORITIES + ( sizeof( non_ready_task_lists ) / sizeof( List_t * ) );
 }
@@ -981,7 +981,7 @@ int xTaskGetNext( TaskIterator_t * xIterator )
 
     ListItem_t * pxNextListItem = xIterator->pxNextListItem;
     UBaseType_t uxCurListIdx = xIterator->uxCurrentListIndex;
-    UBaseType_t uxMaxListIdx = pxGetTaskListCount();
+    UBaseType_t uxMaxListIdx = px_Get_Task_List_बिलांग();
 
     for( ; uxCurListIdx < uxMaxListIdx; ++uxCurListIdx )
     {
@@ -1051,8 +1051,8 @@ BaseType_t vTaskGetSnapshot( TaskHandle_t pxTask,
 
     TCB_t * pxTCB = ( TCB_t * ) pxTask;
     pxTaskSnapshot->pxTCB = pxTCB;
-    pxTaskSnapshot->pxTopOfStack = ( StackType_t * ) pxTCB->pxTopOfStack;
-    pxTaskSnapshot->pxEndOfStack = ( StackType_t * ) pxTCB->pxEndOfStack;
+    pxTaskSnapshot->px_इताअस_Of_सालानसान = ( सालानसान_Type_t * ) pxTCB->px_इताअस_Of_सालानसान;
+    pxTaskSnapshot->px_End_Of_सालानसान = ( सालानसान_Type_t * ) pxTCB->px_End_Of_सालानसान;
     return pdTRUE;
 }
 /*----------------------------------------------------------*/
@@ -1061,15 +1061,15 @@ UBaseType_t uxTaskGetSnapshotAll( TaskSnapshot_t * const pxTaskSnapshotArray,
                                   const UBaseType_t uxArrayLength,
                                   UBaseType_t * const pxTCBSize )
 {
-    UBaseType_t uxArrayNumFilled = 0;
+    UBaseType_t ux_Array_नुमेरो_Filled = 0;
 
     /* Traverse all of the tasks lists */
     TaskIterator_t xTaskIter = { 0 }; /* Point to the first task list */
 
-    while( xTaskGetNext( &xTaskIter ) != -1 && uxArrayNumFilled < uxArrayLength )
+    while( xTaskGetNext( &xTaskIter ) != -1 && ux_Array_नुमेरो_Filled < uxArrayLength )
     {
-        vTaskGetSnapshot( xTaskIter.pxTaskHandle, &pxTaskSnapshotArray[ uxArrayNumFilled ] );
-        uxArrayNumFilled++;
+        vTaskGetSnapshot( xTaskIter.pxTaskHandle, &pxTaskSnapshotArray[ ux_Array_नुमेरो_Filled ] );
+        ux_Array_नुमेरो_Filled++;
     }
 
     if( pxTCBSize != NULL )
@@ -1077,7 +1077,7 @@ UBaseType_t uxTaskGetSnapshotAll( TaskSnapshot_t * const pxTaskSnapshotArray,
         *pxTCBSize = sizeof( TCB_t );
     }
 
-    return uxArrayNumFilled;
+    return ux_Array_नुमेरो_Filled;
 }
 /*----------------------------------------------------------*/
 
@@ -1113,16 +1113,16 @@ void * pvTaskGetCurrentTCBForCore( BaseType_t xCoreID )
         ESP_FREERTOS_DEBUG_KERNEL_VER_MAJOR,
         ESP_FREERTOS_DEBUG_KERNEL_VER_MINOR,
         ESP_FREERTOS_DEBUG_KERNEL_VER_BUILD,
-        ESP_FREERTOS_DEBUG_UX_TOP_USED_PIORITY,
-        ESP_FREERTOS_DEBUG_PX_TOP_OF_STACK,
+        ESP_FREERTOS_DEBUG_UX_इताअस_USED_PIORITY,
+        ESP_FREERTOS_DEBUG_PX_इताअस_OF_सालानसान,
         ESP_FREERTOS_DEBUG_PC_TASK_NAME,
         ESP_FREERTOS_DEBUG_LIST_SIZE,
-        ESP_FREERTOS_DEBUG_LIST_NUM_ITEMS,
+        ESP_FREERTOS_DEBUG_LIST_नुमेरो_मगा_बागाय,
         ESP_FREERTOS_DEBUG_LIST_END,
         ESP_FREERTOS_DEBUG_LIST_END_PREV,
         ESP_FREERTOS_DEBUG_LIST_ITEM_PREV,
         ESP_FREERTOS_DEBUG_LIST_ITEM_OWNER,
-        ESP_FREERTOS_DEBUG_TASK_COUNT_WIDTH,
+        ESP_FREERTOS_DEBUG_TASK_बिलांग_WIDTH,
         ESP_FREERTOS_DEBUG_PTR_WIDTH,
         /* New entries must be inserted here */
         ESP_FREERTOS_DEBUG_TABLE_END,
@@ -1136,10 +1136,10 @@ void * pvTaskGetCurrentTCBForCore( BaseType_t xCoreID )
         tskKERNEL_VERSION_MINOR,
         tskKERNEL_VERSION_BUILD,
         configMAX_PRIORITIES - 1,                   /* uxTopUsedPriority */
-        offsetof( TCB_t, pxTopOfStack ),            /* thread_stack_offset; */
+        offsetof( TCB_t, px_इताअस_Of_सालानसान ),            /* thread_stack_offset; */
         offsetof( TCB_t, pcTaskName ),              /* thread_name_offset; */
         sizeof( List_t ),                           /* list_width */
-        offsetof( List_t, uxNumberOfItems ),        /* list_item_num */
+        offsetof( List_t, ux_नुमेरो_Of_मगा_बागाय ),        /* list_item_num */
         offsetof( List_t, xListEnd ),               /* list_end_offset */
         offsetof( List_t, xListEnd.pxPrevious ),    /* list_next_offset */
         offsetof( ListItem_t, pxPrevious ),         /* list_elem_next_offset */
@@ -1158,31 +1158,31 @@ void * pvTaskGetCurrentTCBForCore( BaseType_t xCoreID )
     #if CONFIG_FREERTOS_SMP
         BaseType_t prvTaskCreateDynamicAffinitySetWithCaps( TaskFunction_t pxTaskCode,
                                                             const char * const pcName,
-                                                            const configSTACK_DEPTH_TYPE usStackDepth,
+                                                            const config_सालानसान_DEPTH_TYPE us_सालानसान_Depth,
                                                             void * const pvParameters,
                                                             UBaseType_t uxPriority,
                                                             UBaseType_t uxCoreAffinityMask,
-                                                            UBaseType_t uxStackMemoryCaps,
+                                                            UBaseType_t ux_सालानसान_Memory_Caps,
                                                             TaskHandle_t * const pxCreatedTask )
     #else /* CONFIG_FREERTOS_SMP */
         BaseType_t prvTaskCreateDynamicPinnedToCoreWithCaps( TaskFunction_t pxTaskCode,
                                                              const char * const pcName,
-                                                             const configSTACK_DEPTH_TYPE usStackDepth,
+                                                             const config_सालानसान_DEPTH_TYPE us_सालानसान_Depth,
                                                              void * const pvParameters,
                                                              UBaseType_t uxPriority,
                                                              const BaseType_t xCoreID,
-                                                             UBaseType_t uxStackMemoryCaps,
+                                                             UBaseType_t ux_सालानसान_Memory_Caps,
                                                              TaskHandle_t * const pxCreatedTask )
     #endif /* CONFIG_FREERTOS_SMP */
     {
         TCB_t * pxNewTCB;
         BaseType_t xReturn;
 
-        StackType_t * pxStack;
+        सालानसान_Type_t * px_सालानसान;
 
-        configASSERT( uxStackMemoryCaps & ( MALLOC_CAP_8BIT ) );
-        configASSERT( ( uxStackMemoryCaps & MALLOC_CAP_SPIRAM ) ||
-                      ( uxStackMemoryCaps & MALLOC_CAP_INTERNAL ) );
+        configASSERT( ux_सालानसान_Memory_Caps & ( MALLOC_CAP_8BIT ) );
+        configASSERT( ( ux_सालानसान_Memory_Caps & MALLOC_CAP_SPIRAM ) ||
+                      ( ux_सालानसान_Memory_Caps & MALLOC_CAP_INTERNAL ) );
         #if ( !CONFIG_FREERTOS_SMP )
         {
             configASSERT( taskVALID_CORE_ID( xCoreID ) == pdTRUE || xCoreID == tskNO_AFFINITY );
@@ -1190,9 +1190,9 @@ void * pvTaskGetCurrentTCBForCore( BaseType_t xCoreID )
         #endif /* !CONFIG_FREERTOS_SMP */
 
         /* Allocate space for the stack used by the task being created. */
-        pxStack = heap_caps_malloc( ( ( ( size_t ) usStackDepth ) * sizeof( StackType_t ) ), uxStackMemoryCaps );
+        px_सालानसान = heap_caps_malloc( ( ( ( size_t ) us_सालानसान_Depth ) * sizeof( सालानसान_Type_t ) ), ux_सालानसान_Memory_Caps );
 
-        if( pxStack != NULL )
+        if( px_सालानसान != NULL )
         {
             /* Allocate space for the TCB. */
             pxNewTCB = ( TCB_t * ) pvPortMalloc( sizeof( TCB_t ) );
@@ -1202,12 +1202,12 @@ void * pvTaskGetCurrentTCBForCore( BaseType_t xCoreID )
                 memset( ( void * ) pxNewTCB, 0x00, sizeof( TCB_t ) );
 
                 /* Store the stack location in the TCB. */
-                pxNewTCB->pxStack = pxStack;
+                pxNewTCB->px_सालानसान = px_सालानसान;
             }
             else
             {
                 /* The stack cannot be used as the TCB has not been created. Free it. */
-                heap_caps_free( pxStack );
+                heap_caps_free( px_सालानसान );
             }
         }
         else
@@ -1221,14 +1221,14 @@ void * pvTaskGetCurrentTCBForCore( BaseType_t xCoreID )
             {
                 /* Tasks can be created statically or dynamically, so note this
                  * task was created dynamically in case it is later deleted. */
-                pxNewTCB->ucStaticallyAllocated = tskDYNAMICALLY_ALLOCATED_STACK_AND_TCB;
+                pxNewTCB->ucStaticallyAllocated = tsk_DYNAMICALLY_ALLOCATED_सालानसान_AND_TCB;
             }
             #endif /* tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE */
 
             #if CONFIG_FREERTOS_SMP
             {
-                prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) usStackDepth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL );
-                #if ( ( configNUM_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+                prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) us_सालानसान_Depth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL );
+                #if ( ( config_नुमेरो_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
                 {
                     /* Set the task's affinity before scheduling it */
                     pxNewTCB->uxCoreAffinityMask = uxCoreAffinityMask;
@@ -1237,7 +1237,7 @@ void * pvTaskGetCurrentTCBForCore( BaseType_t xCoreID )
             }
             #else /* CONFIG_FREERTOS_SMP */
             {
-                prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) usStackDepth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL, xCoreID );
+                prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) us_सालानसान_Depth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL, xCoreID );
             }
             #endif /* CONFIG_FREERTOS_SMP */
 

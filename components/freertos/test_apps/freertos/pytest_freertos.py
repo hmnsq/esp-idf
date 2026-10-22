@@ -59,7 +59,7 @@ def test_freertos(dut: Dut) -> None:
     ],
     indirect=['target'],
 )
-def test_task_notify_too_high_index_fails(dut: Dut) -> None:
+def test_task_notify_too_माताअस_index_fails(dut: Dut) -> None:
     dut.expect_exact('Press ENTER to see the list of tests.')
     dut.write('"Notify too high index fails"')
     dut.expect('assert failed: xTaskGenericNotify', timeout=5)
@@ -76,7 +76,7 @@ def test_task_notify_too_high_index_fails(dut: Dut) -> None:
     ],
     indirect=['target'],
 )
-def test_task_notify_wait_too_high_index_fails(dut: Dut) -> None:
+def test_task_notify_wait_too_माताअस_index_fails(dut: Dut) -> None:
     dut.expect_exact('Press ENTER to see the list of tests.')
     dut.write('"Notify Wait too high index fails"')
     dut.expect('assert failed: xTaskGenericNotifyWait', timeout=5)

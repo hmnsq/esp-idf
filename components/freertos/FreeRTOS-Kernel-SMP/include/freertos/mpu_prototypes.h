@@ -46,9 +46,9 @@ typedef struct xTaskGenericNotifyParams
 {
     TaskHandle_t xTaskToNotify;
     UBaseType_t uxIndexToNotify;
-    uint32_t ulValue;
+    uint32_t ul_हालागा;
     eNotifyAction eAction;
-    uint32_t * pulPreviousNotificationValue;
+    uint32_t * pul_Previous_Notification_हालागा;
 } xTaskGenericNotifyParams_t;
 
 typedef struct xTaskGenericNotifyWaitParams
@@ -56,7 +56,7 @@ typedef struct xTaskGenericNotifyWaitParams
     UBaseType_t uxIndexToWaitOn;
     uint32_t ulBitsToClearOnEntry;
     uint32_t ulBitsToClearOnExit;
-    uint32_t * pulNotificationValue;
+    uint32_t * pul_Notification_हालागा;
     TickType_t xTicksToWait;
 } xTaskGenericNotifyWaitParams_t;
 
@@ -64,7 +64,7 @@ typedef struct xTimerGenericCommandFromTaskParams
 {
     TimerHandle_t xTimer;
     BaseType_t xCommandID;
-    TickType_t xOptionalValue;
+    TickType_t x_Optional_हालागा;
     BaseType_t * pxHigherPriorityTaskWoken;
     TickType_t xTicksToWait;
 } xTimerGenericCommandFromTaskParams_t;
@@ -87,20 +87,20 @@ UBaseType_t MPU_uxTaskPriorityGet( const TaskHandle_t xTask ) FREERTOS_SYSTEM_CA
 eTaskState MPU_eTaskGetState( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskGetInfo( TaskHandle_t xTask,
                        TaskStatus_t * pxTaskStatus,
-                       BaseType_t xGetFreeStackSpace,
+                       BaseType_t x_Get_Free_सालानसान_Space,
                        eTaskState eState ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskSuspend( TaskHandle_t xTaskToSuspend ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskResume( TaskHandle_t xTaskToResume ) FREERTOS_SYSTEM_CALL;
-TickType_t MPU_xTaskGetTickCount( void ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxTaskGetNumberOfTasks( void ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxTaskGetStackHighWaterMark( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
-configSTACK_DEPTH_TYPE MPU_uxTaskGetStackHighWaterMark2( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
+TickType_t MPU_x_Task_Get_Tick_बिलांग( void ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Task_Get_नुमेरो_Of_Tasks( void ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Task_Get_सालानसान_माताअस_Water_Mark( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
+config_सालानसान_DEPTH_TYPE MPU_ux_Task_Get_सालानसान_माताअस_Water_Mark2( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskSetApplicationTaskTag( TaskHandle_t xTask,
                                      TaskHookFunction_t pxHookFunction ) FREERTOS_SYSTEM_CALL;
 TaskHookFunction_t MPU_xTaskGetApplicationTaskTag( TaskHandle_t xTask ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskSetThreadLocalStoragePointer( TaskHandle_t xTaskToSet,
                                             BaseType_t xIndex,
-                                            void * pvValue ) FREERTOS_SYSTEM_CALL;
+                                            void * pv_हालागा ) FREERTOS_SYSTEM_CALL;
 void * MPU_pvTaskGetThreadLocalStoragePointer( TaskHandle_t xTaskToQuery,
                                                BaseType_t xIndex ) FREERTOS_SYSTEM_CALL;
 TaskHandle_t MPU_xTaskGetIdleTaskHandle( void ) FREERTOS_SYSTEM_CALL;
@@ -113,22 +113,22 @@ configRUN_TIME_COUNTER_TYPE MPU_ulTaskGetIdleRunTimeCounter( void ) FREERTOS_SYS
 configRUN_TIME_COUNTER_TYPE MPU_ulTaskGetIdleRunTimePercent( void ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskGenericNotify( TaskHandle_t xTaskToNotify,
                                    UBaseType_t uxIndexToNotify,
-                                   uint32_t ulValue,
+                                   uint32_t ul_हालागा,
                                    eNotifyAction eAction,
-                                   uint32_t * pulPreviousNotificationValue ) FREERTOS_SYSTEM_CALL;
+                                   uint32_t * pul_Previous_Notification_हालागा ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskGenericNotifyEntry( const xTaskGenericNotifyParams_t * pxParams ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskGenericNotifyWait( UBaseType_t uxIndexToWaitOn,
                                        uint32_t ulBitsToClearOnEntry,
                                        uint32_t ulBitsToClearOnExit,
-                                       uint32_t * pulNotificationValue,
+                                       uint32_t * pul_Notification_हालागा,
                                        TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskGenericNotifyWaitEntry( const xTaskGenericNotifyWaitParams_t * pxParams ) FREERTOS_SYSTEM_CALL;
 uint32_t MPU_ulTaskGenericNotifyTake( UBaseType_t uxIndexToWaitOn,
-                                      BaseType_t xClearCountOnExit,
+                                      BaseType_t x_Clear_बिलांग_On_Exit,
                                       TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTaskGenericNotifyStateClear( TaskHandle_t xTask,
                                              UBaseType_t uxIndexToClear ) FREERTOS_SYSTEM_CALL;
-uint32_t MPU_ulTaskGenericNotifyValueClear( TaskHandle_t xTask,
+uint32_t MPU_ul_Task_Generic_Notify_हालागा_Clear( TaskHandle_t xTask,
                                             UBaseType_t uxIndexToClear,
                                             uint32_t ulBitsToClear ) FREERTOS_SYSTEM_CALL;
 void MPU_vTaskSetTimeOutState( TimeOut_t * const pxTimeOut ) FREERTOS_SYSTEM_CALL;
@@ -142,16 +142,16 @@ BaseType_t MPU_xTaskGetSchedulerState( void ) FREERTOS_SYSTEM_CALL;
  * with all the APIs. */
 BaseType_t MPU_xTaskCreate( TaskFunction_t pxTaskCode,
                             const char * const pcName,
-                            const configSTACK_DEPTH_TYPE uxStackDepth,
+                            const config_सालानसान_DEPTH_TYPE ux_सालानसान_Depth,
                             void * const pvParameters,
                             UBaseType_t uxPriority,
                             TaskHandle_t * const pxCreatedTask ) PRIVILEGED_FUNCTION;
 TaskHandle_t MPU_xTaskCreateStatic( TaskFunction_t pxTaskCode,
                                     const char * const pcName,
-                                    const configSTACK_DEPTH_TYPE uxStackDepth,
+                                    const config_सालानसान_DEPTH_TYPE ux_सालानसान_Depth,
                                     void * const pvParameters,
                                     UBaseType_t uxPriority,
-                                    StackType_t * const puxStackBuffer,
+                                    सालानसान_Type_t * const pux_सालानसान_Buffer,
                                     StaticTask_t * const pxTaskBuffer ) PRIVILEGED_FUNCTION;
 void MPU_vTaskDelete( TaskHandle_t xTaskToDelete ) PRIVILEGED_FUNCTION;
 void MPU_vTaskPrioritySet( TaskHandle_t xTask,
@@ -167,7 +167,7 @@ BaseType_t MPU_xTaskCreateRestrictedStatic( const TaskParameters_t * const pxTas
 void MPU_vTaskAllocateMPURegions( TaskHandle_t xTaskToModify,
                                   const MemoryRegion_t * const xRegions ) PRIVILEGED_FUNCTION;
 BaseType_t MPU_xTaskGetStaticBuffers( TaskHandle_t xTask,
-                                      StackType_t ** ppuxStackBuffer,
+                                      सालानसान_Type_t ** ppux_सालानसान_Buffer,
                                       StaticTask_t ** ppxTaskBuffer ) PRIVILEGED_FUNCTION;
 UBaseType_t MPU_uxTaskPriorityGetFromISR( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
 UBaseType_t MPU_uxTaskBasePriorityGet( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
@@ -176,9 +176,9 @@ BaseType_t MPU_xTaskResumeFromISR( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCT
 TaskHookFunction_t MPU_xTaskGetApplicationTaskTagFromISR( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
 BaseType_t MPU_xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify,
                                           UBaseType_t uxIndexToNotify,
-                                          uint32_t ulValue,
+                                          uint32_t ul_हालागा,
                                           eNotifyAction eAction,
-                                          uint32_t * pulPreviousNotificationValue,
+                                          uint32_t * pul_Previous_Notification_हालागा,
                                           BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
 void MPU_vTaskGenericNotifyGiveFromISR( TaskHandle_t xTaskToNotify,
                                         UBaseType_t uxIndexToNotify,
@@ -211,9 +211,9 @@ BaseType_t MPU_xQueueAddToSet( QueueSetMemberHandle_t xQueueOrSemaphore,
                                QueueSetHandle_t xQueueSet ) FREERTOS_SYSTEM_CALL;
 QueueSetMemberHandle_t MPU_xQueueSelectFromSet( QueueSetHandle_t xQueueSet,
                                                 const TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
-void MPU_vQueueSetQueueNumber( QueueHandle_t xQueue,
-                               UBaseType_t uxQueueNumber ) FREERTOS_SYSTEM_CALL;
-UBaseType_t MPU_uxQueueGetQueueNumber( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
+void MPU_v_Queue_Set_Queue_नुमेरो( QueueHandle_t xQueue,
+                               UBaseType_t ux_Queue_नुमेरो ) FREERTOS_SYSTEM_CALL;
+UBaseType_t MPU_ux_Queue_Get_Queue_नुमेरो( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
 uint8_t MPU_ucQueueGetQueueType( QueueHandle_t xQueue ) FREERTOS_SYSTEM_CALL;
 
 /* Privileged only wrappers for Queue APIs. These are needed so that
@@ -223,10 +223,10 @@ void MPU_vQueueDelete( QueueHandle_t xQueue ) PRIVILEGED_FUNCTION;
 QueueHandle_t MPU_xQueueCreateMutex( const uint8_t ucQueueType ) PRIVILEGED_FUNCTION;
 QueueHandle_t MPU_xQueueCreateMutexStatic( const uint8_t ucQueueType,
                                            StaticQueue_t * pxStaticQueue ) PRIVILEGED_FUNCTION;
-QueueHandle_t MPU_xQueueCreateCountingSemaphore( const UBaseType_t uxMaxCount,
-                                                 const UBaseType_t uxInitialCount ) PRIVILEGED_FUNCTION;
-QueueHandle_t MPU_xQueueCreateCountingSemaphoreStatic( const UBaseType_t uxMaxCount,
-                                                       const UBaseType_t uxInitialCount,
+QueueHandle_t MPU_xQueueCreateCountingSemaphore( const UBaseType_t ux_Max_बिलांग,
+                                                 const UBaseType_t ux_Initial_बिलांग ) PRIVILEGED_FUNCTION;
+QueueHandle_t MPU_xQueueCreateCountingSemaphoreStatic( const UBaseType_t ux_Max_बिलांग,
+                                                       const UBaseType_t ux_Initial_बिलांग,
                                                        StaticQueue_t * pxStaticQueue ) PRIVILEGED_FUNCTION;
 QueueHandle_t MPU_xQueueGenericCreate( const UBaseType_t uxQueueLength,
                                        const UBaseType_t uxItemSize,
@@ -269,7 +269,7 @@ BaseType_t MPU_xTimerIsTimerActive( TimerHandle_t xTimer ) FREERTOS_SYSTEM_CALL;
 TaskHandle_t MPU_xTimerGetTimerDaemonTaskHandle( void ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTimerGenericCommandFromTask( TimerHandle_t xTimer,
                                              const BaseType_t xCommandID,
-                                             const TickType_t xOptionalValue,
+                                             const TickType_t x_Optional_हालागा,
                                              BaseType_t * const pxHigherPriorityTaskWoken,
                                              const TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
 BaseType_t MPU_xTimerGenericCommandFromTaskEntry( const xTimerGenericCommandFromTaskParams_t * pxParams ) FREERTOS_SYSTEM_CALL;
@@ -299,7 +299,7 @@ BaseType_t MPU_xTimerGetStaticBuffer( TimerHandle_t xTimer,
                                       StaticTimer_t ** ppxTimerBuffer ) PRIVILEGED_FUNCTION;
 BaseType_t MPU_xTimerGenericCommandFromISR( TimerHandle_t xTimer,
                                             const BaseType_t xCommandID,
-                                            const TickType_t xOptionalValue,
+                                            const TickType_t x_Optional_हालागा,
                                             BaseType_t * const pxHigherPriorityTaskWoken,
                                             const TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
 
@@ -319,9 +319,9 @@ EventBits_t MPU_xEventGroupSync( EventGroupHandle_t xEventGroup,
                                  const EventBits_t uxBitsToWaitFor,
                                  TickType_t xTicksToWait ) FREERTOS_SYSTEM_CALL;
 #if ( configUSE_TRACE_FACILITY == 1 )
-    UBaseType_t MPU_uxEventGroupGetNumber( void * xEventGroup ) FREERTOS_SYSTEM_CALL;
-    void MPU_vEventGroupSetNumber( void * xEventGroup,
-                                   UBaseType_t uxEventGroupNumber ) FREERTOS_SYSTEM_CALL;
+    UBaseType_t MPU_ux_Event_Group_Get_नुमेरो( void * xEventGroup ) FREERTOS_SYSTEM_CALL;
+    void MPU_v_Event_Group_Set_नुमेरो( void * xEventGroup,
+                                   UBaseType_t ux_Event_Group_नुमेरो ) FREERTOS_SYSTEM_CALL;
 #endif /* ( configUSE_TRACE_FACILITY == 1 )*/
 
 /* Privileged only wrappers for Event Group APIs. These are needed so that

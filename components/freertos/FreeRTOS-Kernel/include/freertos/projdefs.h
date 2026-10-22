@@ -73,9 +73,9 @@ typedef void (* TaskFunction_t)( void * );
 #endif
 
 #if ( configUSE_16_BIT_TICKS == 1 )
-    #define pdINTEGRITY_CHECK_VALUE    0x5a5a
+    #define pd_INTEGRITY_CHECK_हालागा    0x5a5a
 #else
-    #define pdINTEGRITY_CHECK_VALUE    0x5a5a5a5aUL
+    #define pd_INTEGRITY_CHECK_हालागा    0x5a5a5a5aUL
 #endif
 
 /* The following errno values are used by FreeRTOS+ components, not FreeRTOS

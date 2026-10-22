@@ -20,7 +20,7 @@
 #include "esp_rom_sys.h"
 
 /* Counter task counts a target variable forever */
-static void task_count(void *vp_counter)
+static void task_बिलांग(void *vp_counter)
 {
     volatile unsigned *counter = (volatile unsigned *)vp_counter;
     *counter = 0;
@@ -36,7 +36,7 @@ static void test_suspend_resume(int target_core)
     volatile unsigned counter = 0;
     TaskHandle_t counter_task;
 
-    xTaskCreatePinnedToCore(task_count, "Count", 2048,
+    xTaskCreatePinnedToCore(task_बिलांग, "Count", 2048,
                             (void *)&counter, UNITY_FREERTOS_PRIORITY + 1,
                             &counter_task, target_core);
 
@@ -49,21 +49,21 @@ static void test_suspend_resume(int target_core)
     const int TEST_ITERATIONS = 5;
     for (int i = 0; i < TEST_ITERATIONS; i++) {
         vTaskSuspend(counter_task);
-        unsigned suspend_count = counter;
-        printf("Suspending @ %d\n", suspend_count);
+        unsigned suspend_बिलांग = counter;
+        printf("Suspending @ %d\n", suspend_बिलांग);
 
         vTaskDelay(2);
 
         printf("Still suspended @ %d\n", counter);
 
         /* check the counter hasn't gone up while the task is suspended */
-        TEST_ASSERT_EQUAL(suspend_count, counter);
+        TEST_ASSERT_EQUAL(suspend_बिलांग, counter);
         vTaskResume(counter_task);
         vTaskDelay(2);
 
         printf("Resumed @ %d\n", counter);
         /* check the counter is going up again now the task is resumed */
-        TEST_ASSERT_NOT_EQUAL(suspend_count, counter);
+        TEST_ASSERT_NOT_EQUAL(suspend_बिलांग, counter);
     }
 
     vTaskDelete(counter_task);
@@ -142,7 +142,7 @@ static IRAM_ATTR void task_suspend_self_with_timer(void *vp_resumed)
     volatile uint64_t *resumed_counter = vp_resumed;
     *resumed_counter = 0;
     vTaskSuspend(NULL);
-    gptimer_get_raw_count(gptimer, (uint64_t *)resumed_counter);
+    gptimer_get_raw_बिलांग(gptimer, (uint64_t *)resumed_counter);
     vTaskDelete(NULL);
 }
 
@@ -163,15 +163,15 @@ static void test_resume_task_from_isr(int target_core)
     /* Configure timer ISR */
     gptimer_config_t timer_config = {
         .clk_src = GPTIMER_CLK_SRC_DEFAULT,
-        .direction = GPTIMER_COUNT_UP,
+        .direction = GPTIMER_बिलांग_UP,
         .resolution_hz = 1000000, // 1MHz, 1 tick = 1us
     };
     TEST_ESP_OK(gptimer_new_timer(&timer_config, &gptimer));
     timer_isr_fired = false;
     vTaskDelay(1); // Make sure we're at the start of a new tick
     gptimer_alarm_config_t alarm_config = {
-        .alarm_count = 1000000 / configTICK_RATE_HZ / 2,
-        .reload_count = 0,
+        .alarm_बिलांग = 1000000 / configTICK_RATE_HZ / 2,
+        .reload_बिलांग = 0,
     };
     gptimer_event_callbacks_t cbs = {
         .on_alarm = on_timer_alarm_cb,
@@ -186,8 +186,8 @@ static void test_resume_task_from_isr(int target_core)
     // check the task was resumed
     TEST_ASSERT_NOT_EQUAL(0, resumed_counter);
     // The task should have woken within 500us of the timer interrupt event (note: task may be a flash cache miss)
-    printf("alarm value %llu task resumed at %u\n", alarm_config.alarm_count, (unsigned)resumed_counter);
-    TEST_ASSERT_UINT32_WITHIN(100, alarm_config.alarm_count, (unsigned)resumed_counter);
+    printf("alarm value %llu task resumed at %u\n", alarm_config.alarm_बिलांग, (unsigned)resumed_counter);
+    TEST_ASSERT_UINT32_WITHIN(100, alarm_config.alarm_बिलांग, (unsigned)resumed_counter);
 
     // clean up
     TEST_ESP_OK(gptimer_disable(gptimer));

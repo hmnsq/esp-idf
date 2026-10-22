@@ -36,8 +36,8 @@ Expected:
     - Each task cleans up its FPU context on deletion
 */
 
-#define TEST_PINNED_NUM_TASKS       3
-#define TEST_PINNED_NUM_ITERS       5
+#define TEST_PINNED_नुमेरो_TASKS       3
+#define TEST_PINNED_नुमेरो_ITERS       5
 
 static void pinned_task(void *arg)
 {
@@ -64,34 +64,34 @@ static void pinned_task(void *arg)
 
 TEST_CASE("FPU: Usage in task", "[freertos]")
 {
-    SemaphoreHandle_t done_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_NUMBER_OF_CORES * TEST_PINNED_NUM_TASKS, 0);
+    SemaphoreHandle_t done_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_नुमेरो_OF_CORES * TEST_PINNED_नुमेरो_TASKS, 0);
     TEST_ASSERT_NOT_EQUAL(NULL, done_sem);
 
-    for (int iter = 0; iter < TEST_PINNED_NUM_ITERS; iter++) {
-        TaskHandle_t task_handles[CONFIG_FREERTOS_NUMBER_OF_CORES][TEST_PINNED_NUM_TASKS];
+    for (int iter = 0; iter < TEST_PINNED_नुमेरो_ITERS; iter++) {
+        TaskHandle_t task_handles[CONFIG_FREERTOS_नुमेरो_OF_CORES][TEST_PINNED_नुमेरो_TASKS];
 
         // Create test tasks for each core
-        for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-            for (int j = 0; j < TEST_PINNED_NUM_TASKS; j++) {
+        for (int i = 0; i < CONFIG_FREERTOS_नुमेरो_OF_CORES; i++) {
+            for (int j = 0; j < TEST_PINNED_नुमेरो_TASKS; j++) {
                 TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(pinned_task, "task", 4096, (void *)done_sem, UNITY_FREERTOS_PRIORITY + 1, &task_handles[i][j], i));
             }
         }
 
         // Start the created tasks simultaneously
-        for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-            for (int j = 0; j < TEST_PINNED_NUM_TASKS; j++) {
+        for (int i = 0; i < CONFIG_FREERTOS_नुमेरो_OF_CORES; i++) {
+            for (int j = 0; j < TEST_PINNED_नुमेरो_TASKS; j++) {
                 xTaskNotifyGive(task_handles[i][j]);
             }
         }
 
         // Wait for the tasks to complete
-        for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES * TEST_PINNED_NUM_TASKS; i++) {
+        for (int i = 0; i < CONFIG_FREERTOS_नुमेरो_OF_CORES * TEST_PINNED_नुमेरो_TASKS; i++) {
             xSemaphoreTake(done_sem, portMAX_DELAY);
         }
 
         // Delete the tasks
-        for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-            for (int j = 0; j < TEST_PINNED_NUM_TASKS; j++) {
+        for (int i = 0; i < CONFIG_FREERTOS_नुमेरो_OF_CORES; i++) {
+            for (int j = 0; j < TEST_PINNED_नुमेरो_TASKS; j++) {
                 vTaskDelete(task_handles[i][j]);
             }
         }
@@ -123,9 +123,9 @@ Expected:
     - Each task cleans up its FPU context on deletion
 */
 
-#if CONFIG_FREERTOS_NUMBER_OF_CORES > 1
+#if CONFIG_FREERTOS_नुमेरो_OF_CORES > 1
 
-#define TEST_UNPINNED_NUM_ITERS     5
+#define TEST_UNPINNED_नुमेरो_ITERS     5
 
 static void unpinned_task(void *arg)
 {
@@ -135,7 +135,7 @@ static void unpinned_task(void *arg)
 #else
     vTaskSuspendAll();
 #endif
-    BaseType_t cur_core_num = xPortGetCoreID();
+    BaseType_t cur_core_नुमेरो = xPortGetCoreID();
     // Check that the task is unpinned
 #if !CONFIG_FREERTOS_UNICORE
 #if CONFIG_FREERTOS_SMP
@@ -160,9 +160,9 @@ static void unpinned_task(void *arg)
 
 #if !CONFIG_FREERTOS_UNICORE
 #if CONFIG_FREERTOS_SMP
-    TEST_ASSERT_EQUAL(1 << cur_core_num, vTaskCoreAffinityGet(NULL));
+    TEST_ASSERT_EQUAL(1 << cur_core_नुमेरो, vTaskCoreAffinityGet(NULL));
 #else
-    TEST_ASSERT_EQUAL(cur_core_num, xTaskGetCoreID(NULL));
+    TEST_ASSERT_EQUAL(cur_core_नुमेरो, xTaskGetCoreID(NULL));
 #endif
 #endif // !CONFIG_FREERTOS_UNICORE
     // Re-enable scheduling/preemption
@@ -180,7 +180,7 @@ static void unpinned_task(void *arg)
 TEST_CASE("FPU: Usage in unpinned task", "[freertos]")
 {
     TaskHandle_t unity_task_handle = xTaskGetCurrentTaskHandle();
-    for (int iter = 0; iter < TEST_UNPINNED_NUM_ITERS; iter++) {
+    for (int iter = 0; iter < TEST_UNPINNED_नुमेरो_ITERS; iter++) {
         // Create unpinned task
         xTaskCreate(unpinned_task, "unpin", 4096, (void *)unity_task_handle, UNITY_FREERTOS_PRIORITY + 1, NULL);
         // Wait for task to complete

@@ -55,7 +55,7 @@ static inline uint32_t read_lcount(void)
 static uint32_t IRAM_ATTR __attribute__((noinline, noclone)) zol_reentry_probe(uint32_t setup_loop)
 {
     uint32_t body_hits = 0;
-    uint32_t loop_count = 256;
+    uint32_t loop_बिलांग = 256;
     uint32_t trigger_once = setup_loop == 1;
 
     esp_rom_printf("From %s: setup_loop=%u\n", xPortInIsrContext() ? "ISR" : "TASK", setup_loop);
@@ -72,7 +72,7 @@ static uint32_t IRAM_ATTR __attribute__((noinline, noclone)) zol_reentry_probe(u
         "nop\n"
         ".loopEnd:\n"
         : [hits] "+r"(body_hits),
-        [cnt] "+r"(loop_count),
+        [cnt] "+r"(loop_बिलांग),
         [trigger] "+r"(trigger_once)
         : [setup] "r"(setup_loop),
         [int_mask] "r"(SW_ISR_MASK)

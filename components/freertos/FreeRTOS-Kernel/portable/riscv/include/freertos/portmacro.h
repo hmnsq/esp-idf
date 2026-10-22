@@ -38,9 +38,9 @@
 
 /* Macros used instead ofsetoff() for better performance of interrupt handler */
 #if CONFIG_FREERTOS_USE_LIST_DATA_INTEGRITY_CHECK_BYTES
-#define PORT_OFFSET_PX_STACK 0x40
+#define PORT_OFFSET_PX_सालानसान 0x40
 #else
-#define PORT_OFFSET_PX_STACK 0x30
+#define PORT_OFFSET_PX_सालानसान 0x30
 #endif /* #if CONFIG_FREERTOS_USE_LIST_DATA_INTEGRITY_CHECK_BYTES */
 
 #if CONFIG_FREERTOS_UNICORE
@@ -50,10 +50,10 @@
 #endif
 
 /* Align the value up to the nearest multiple of 4 */
-#define PORT_ALIGN_UP_TO_4(value) (((value) + 3) & ~3)
+#define PORT_ALIGN_UP_TO_4(हालागा) (((हालागा) + 3) & ~3)
 
-#define PORT_OFFSET_PX_END_OF_STACK ( \
-    PORT_OFFSET_PX_STACK \
+#define PORT_OFFSET_PX_END_OF_सालानसान ( \
+    PORT_OFFSET_PX_सालानसान \
     + 4                                 /* void * pxDummy6 */ \
     + PORT_ALIGN_UP_TO_4(configMAX_TASK_NAME_LEN) /* uint8_t ucDummy7[ configMAX_TASK_NAME_LEN ] */ \
     + CORE_ID_SIZE                      /* BaseType_t xDummyCoreID */ \
@@ -92,10 +92,10 @@ extern "C" {
 #define portDOUBLE                  double
 #define portLONG                    int32_t
 #define portSHORT                   int16_t
-#define portSTACK_TYPE              uint8_t
+#define port_सालानसान_TYPE              uint8_t
 #define portBASE_TYPE               int
 
-typedef portSTACK_TYPE              StackType_t;
+typedef port_सालानसान_TYPE              सालानसान_Type_t;
 typedef portBASE_TYPE               BaseType_t;
 typedef unsigned portBASE_TYPE      UBaseType_t;
 
@@ -118,7 +118,7 @@ typedef uint32_t TickType_t;
  * ------------------------------------------------------------------------------------------------------------------ */
 
 #define portCRITICAL_NESTING_IN_TCB     0
-#define portSTACK_GROWTH                (-1)
+#define port_सालानसान_GROWTH                (-1)
 #define portTICK_PERIOD_MS              ((TickType_t) (1000 / configTICK_RATE_HZ))
 #define portBYTE_ALIGNMENT              16
 #define portTICK_TYPE_IS_ATOMIC         1
@@ -248,7 +248,7 @@ void xPortThreadSafeClaim(void);
 void xPortThreadSafeDisclaim(void);
 #endif /* CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM */
 
-#if (configNUM_CORES > 1)
+#if (config_नुमेरो_CORES > 1)
 /**
  * @brief Enter an SMP critical section with a timeout
  *
@@ -442,7 +442,7 @@ uint32_t xPortGetTickRateHz(void) __attribute__((deprecated("This function will 
  *
  * @param pxStackStart Pointer to the start of the stack
  */
-void vPortSetStackWatchpoint(void *pxStackStart);
+void v_Port_Set_सालानसान_Watchpoint(void *px_सालानसान_Start);
 
 /**
  * @brief Get the current core's ID
@@ -475,7 +475,7 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 
 // ----------------------- System --------------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
+#if ( config_नुमेरो_OF_CORES > 1 )
     #define portGET_CORE_ID()       xPortGetCoreID()
 #else /* configNUMBER_OF_CORES > 1 */
     #define portGET_CORE_ID()       ((BaseType_t) 0);
@@ -504,13 +504,13 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 /**
  * @brief Used by FreeRTOS functions to call the correct version of critical section API
  */
-#if ( configNUM_CORES > 1 )
+#if ( config_नुमेरो_CORES > 1 )
 #define portCHECK_IF_IN_ISR()   xPortInIsrContext()
 #endif
 
 // ------------------ Critical Sections --------------------
 
-#if (configNUM_CORES > 1)
+#if (config_नुमेरो_CORES > 1)
 /**
  * @brief FreeRTOS critical section macros
  *
@@ -606,7 +606,7 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 */
 #define portYIELD_WITHIN_API() portYIELD()
 
-#if ( configNUMBER_OF_CORES > 1 )
+#if ( config_नुमेरो_OF_CORES > 1 )
     #define portYIELD_CORE( xCoreID )     vPortYieldOtherCore( xCoreID )
 #endif /* configNUMBER_OF_CORES > 1 */
 
@@ -618,8 +618,8 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
 #if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
-configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
-#define portGET_RUN_TIME_COUNTER_VALUE()        xPortGetRunTimeCounterValue()
+configRUN_TIME_COUNTER_TYPE x_Port_Get_Run_Time_Counter_हालागा( void );
+#define port_GET_RUN_TIME_COUNTER_हालागा()        x_Port_Get_Run_Time_Counter_हालागा()
 #endif
 
 // --------------------- TCB Cleanup -----------------------
@@ -637,7 +637,7 @@ configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
 /* Store/clear the ready priorities in a bit map. */
 #define portRECORD_READY_PRIORITY( uxPriority, uxReadyPriorities ) ( uxReadyPriorities ) |= ( 1UL << ( uxPriority ) )
 #define portRESET_READY_PRIORITY( uxPriority, uxReadyPriorities ) ( uxReadyPriorities ) &= ~( 1UL << ( uxPriority ) )
-#define portGET_HIGHEST_PRIORITY( uxTopPriority, uxReadyPriorities ) uxTopPriority = ( 31 - __builtin_clz( ( uxReadyPriorities ) ) )
+#define portGET_HIGHEST_PRIORITY( ux_इताअस_Priority, uxReadyPriorities ) ux_इताअस_Priority = ( 31 - __builtin_clz( ( uxReadyPriorities ) ) )
 #endif /* configUSE_PORT_OPTIMISED_TASK_SELECTION */
 
 
@@ -651,7 +651,7 @@ configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
 
 // ------------------ Critical Sections --------------------
 
-#if (configNUM_CORES > 1)
+#if (config_नुमेरो_CORES > 1)
 static inline void __attribute__((always_inline)) vPortEnterCriticalMultiCore(portMUX_TYPE *mux)
 {
     xPortEnterCriticalTimeout(mux, portMUX_NO_TIMEOUT);
@@ -753,23 +753,23 @@ bool xPortCheckValidTCBMem(const void *ptr);
  * @return true Memory can be used to store a task stack
  * @return false Otherwise
  */
-bool xPortcheckValidStackMem(const void *ptr);
+bool x_Portcheck_Valid_सालानसान_Mem(const void *ptr);
 
 #define portVALID_LIST_MEM(ptr)     xPortCheckValidListMem(ptr)
 #define portVALID_TCB_MEM(ptr)      xPortCheckValidTCBMem(ptr)
-#define portVALID_STACK_MEM(ptr)    xPortcheckValidStackMem(ptr)
+#define port_VALID_सालानसान_MEM(ptr)    x_Portcheck_Valid_सालानसान_Mem(ptr)
 
 // --------------------- App-Trace -------------------------
 
 #if CONFIG_ESP_TRACE_ENABLE
-extern volatile UBaseType_t xPortSwitchFlag[portNUM_PROCESSORS];
+extern volatile UBaseType_t xPortSwitchFlag[port_नुमेरो_PROCESSORS];
 #define os_task_switch_is_pended(_cpu_) (xPortSwitchFlag[_cpu_])
 #else
 #define os_task_switch_is_pended(_cpu_) (false)
 #endif
 
 // -------------- FPU softerware retention ------------------
-#if (SOC_CPU_COPROC_NUM > 0) && SOC_CPU_HAS_FPU && SOC_PM_FPU_RETENTION_BY_SW
+#if (SOC_CPU_COPROC_नुमेरो > 0) && SOC_CPU_HAS_FPU && SOC_PM_FPU_RETENTION_BY_SW
 /**
  * @brief Whether the FPU context is dirty on the given core.
  *

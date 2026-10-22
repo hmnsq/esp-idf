@@ -30,7 +30,7 @@
 
     BaseType_t xTaskCreatePinnedToCoreWithCaps( TaskFunction_t pvTaskCode,
                                                 const char * const pcName,
-                                                const configSTACK_DEPTH_TYPE usStackDepth,
+                                                const config_सालानसान_DEPTH_TYPE us_सालानसान_Depth,
                                                 void * const pvParameters,
                                                 UBaseType_t uxPriority,
                                                 TaskHandle_t * const pvCreatedTask,
@@ -39,7 +39,7 @@
     {
         TaskHandle_t xHandle;
         StaticTask_t * pxTaskBuffer;
-        StackType_t * pxStack;
+        सालानसान_Type_t * px_सालानसान;
 
         /* Allocate memory for the task's TCB. We use pvPortMalloc() here as the
          * TCB must be in internal memory. */
@@ -47,15 +47,15 @@
 
         /* Allocate memory for the task's stack using the provided memory caps
          * */
-        pxStack = heap_caps_malloc( ( ( size_t ) usStackDepth ) * sizeof( StackType_t ), ( uint32_t ) uxMemoryCaps );
+        px_सालानसान = heap_caps_malloc( ( ( size_t ) us_सालानसान_Depth ) * sizeof( सालानसान_Type_t ), ( uint32_t ) uxMemoryCaps );
 
-        if( ( pxTaskBuffer == NULL ) || ( pxStack == NULL ) )
+        if( ( pxTaskBuffer == NULL ) || ( px_सालानसान == NULL ) )
         {
             goto err;
         }
 
         /* Create the task using static creation API*/
-        xHandle = xTaskCreateStaticPinnedToCore( pvTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pxStack, pxTaskBuffer, xCoreID );
+        xHandle = xTaskCreateStaticPinnedToCore( pvTaskCode, pcName, us_सालानसान_Depth, pvParameters, uxPriority, px_सालानसान, pxTaskBuffer, xCoreID );
 
         if( xHandle == NULL )
         {
@@ -71,7 +71,7 @@
         return pdPASS;
 
 err:
-        heap_caps_free( pxStack );
+        heap_caps_free( px_सालानसान );
         vPortFree( pxTaskBuffer );
         return pdFAIL;
     }
@@ -86,7 +86,7 @@ err:
         /* Return value unused if asserts are disabled */
         BaseType_t __attribute__( ( unused ) ) xResult;
         StaticTask_t * pxTaskBuffer;
-        StackType_t * puxStackBuffer;
+        सालानसान_Type_t * pux_सालानसान_Buffer;
 
         /* The task to be deleted must not be running.
          * So we suspend the task before deleting it. */
@@ -105,7 +105,7 @@ err:
         {
             BaseType_t xStillOnCore = pdFALSE;
 
-            for( BaseType_t xCoreID = 0; xCoreID < configNUMBER_OF_CORES; xCoreID++ )
+            for( BaseType_t xCoreID = 0; xCoreID < config_नुमेरो_OF_CORES; xCoreID++ )
             {
                 if( xTaskGetCurrentTaskHandleForCore( xCoreID ) == xTaskToDelete )
                 {
@@ -129,12 +129,12 @@ err:
         vTaskDelete( xTaskToDelete );
 
         /* Free the memory buffers */
-        xResult = xTaskGetStaticBuffers( xTaskToDelete, &puxStackBuffer, &pxTaskBuffer );
+        xResult = xTaskGetStaticBuffers( xTaskToDelete, &pux_सालानसान_Buffer, &pxTaskBuffer );
         configASSERT( xResult == pdTRUE );
-        configASSERT( puxStackBuffer != NULL );
+        configASSERT( pux_सालानसान_Buffer != NULL );
         configASSERT( pxTaskBuffer != NULL );
 
-        heap_caps_free( puxStackBuffer );
+        heap_caps_free( pux_सालानसान_Buffer );
         vPortFree( pxTaskBuffer );
     }
 
@@ -187,7 +187,7 @@ err:
              *
              * 2. Have a post deletion hook/callback from the IDLE task to notify higher layers when it is safe to
              *    perform activities such as clearing up the TCB and stack memories. (IDF-10522) */
-            if( xTaskCreatePinnedToCore( ( TaskFunction_t ) prvTaskDeleteWithCapsTask, "prvTaskDeleteWithCapsTask", configMINIMAL_STACK_SIZE, xCurrentTaskHandle, uxTaskPriorityGet( xTaskToDelete ), NULL, xPortGetCoreID() ) != pdFAIL )
+            if( xTaskCreatePinnedToCore( ( TaskFunction_t ) prvTaskDeleteWithCapsTask, "prvTaskDeleteWithCapsTask", config_MINIMAL_सालानसान_SIZE, xCurrentTaskHandle, uxTaskPriorityGet( xTaskToDelete ), NULL, xPortGetCoreID() ) != pdFAIL )
             {
                 /* Although the current task should get preemted immediately when prvTaskDeleteWithCapsTask is created,
                  * for safety, we suspend the current task and wait for prvTaskDeleteWithCapsTask to delete it. */
@@ -288,8 +288,8 @@ err:
 
 #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
 
-    SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
-                                                       UBaseType_t uxInitialCount,
+    SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t ux_Max_बिलांग,
+                                                       UBaseType_t ux_Initial_बिलांग,
                                                        const uint8_t ucQueueType,
                                                        UBaseType_t uxMemoryCaps )
     {
@@ -311,11 +311,11 @@ err:
         }
         else if( ucQueueType == queueQUEUE_TYPE_COUNTING_SEMAPHORE )
         {
-            xSemaphore = xSemaphoreCreateCountingStatic( uxMaxCount, uxInitialCount, pxSemaphoreBuffer );
+            xSemaphore = xSemaphoreCreateCountingStatic( ux_Max_बिलांग, ux_Initial_बिलांग, pxSemaphoreBuffer );
         }
-        else if( ucQueueType == queueQUEUE_TYPE_BINARY_SEMAPHORE )
+        else if( ucQueueType == queue_QUEUE_TYPE_दालावाहान_SEMAPHORE )
         {
-            xSemaphore = xSemaphoreCreateBinaryStatic( pxSemaphoreBuffer );
+            xSemaphore = x_Semaphore_Create_दालावाहान_Static( pxSemaphoreBuffer );
         }
         else /* ucQueueType == queueQUEUE_TYPE_RECURSIVE_MUTEX */
         {

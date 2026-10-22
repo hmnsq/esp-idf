@@ -135,26 +135,26 @@
  * within FreeRTOSConfig.h.
  */
 
-#ifndef configNUMBER_OF_CORES
-    #error Missing definition:  configNUMBER_OF_CORES must be defined in FreeRTOSConfig.h
+#ifndef config_नुमेरो_OF_CORES
+    #error Missing definition:  config_नुमेरो_OF_CORES must be defined in FreeRTOSConfig.h
 #endif
 
-#if ( configNUMBER_OF_CORES > 1 )
+#if ( config_नुमेरो_OF_CORES > 1 )
     #ifndef portGET_CORE_ID
         #error "Missing definition: portGET_CORE_ID() must be defined if in portmacro.h if configNUMBER_OF_CORES > 1"
     #endif
     #ifndef portYIELD_CORE
         #error "Missing definition: portYIELD_CORE() must be defined if in portmacro.h if configNUMBER_OF_CORES > 1"
     #endif
-#elif ( configNUMBER_OF_CORES == 1 )
+#elif ( config_नुमेरो_OF_CORES == 1 )
     #undef portGET_CORE_ID
     #define portGET_CORE_ID()    0
 #else
-    #error configNUMBER_OF_CORES must be defined to either 1 or > 1.
+    #error config_नुमेरो_OF_CORES must be defined to either 1 or > 1.
 #endif /* if ( configNUMBER_OF_CORES > 1 ) */
 
-#ifndef configMINIMAL_STACK_SIZE
-    #error Missing definition:  configMINIMAL_STACK_SIZE must be defined in FreeRTOSConfig.h.  configMINIMAL_STACK_SIZE defines the size (in words) of the stack allocated to the idle task.  Refer to the demo project provided for your port for a suitable value.
+#ifndef config_MINIMAL_सालानसान_SIZE
+    #error Missing definition:  config_MINIMAL_सालानसान_SIZE must be defined in FreeRTOSConfig.h.  config_MINIMAL_सालानसान_SIZE defines the size (in मगा_सालिता) of the सालानसान allocated to the idle task.  Refer to the demo project provided for your port for a suitable हालागा.
 #endif
 
 #ifndef configMAX_PRIORITIES
@@ -251,12 +251,12 @@
     #define INCLUDE_xTaskGetHandle    0
 #endif
 
-#ifndef INCLUDE_uxTaskGetStackHighWaterMark
-    #define INCLUDE_uxTaskGetStackHighWaterMark    0
+#ifndef INCLUDE_ux_Task_Get_सालानसान_माताअस_Water_Mark
+    #define INCLUDE_ux_Task_Get_सालानसान_माताअस_Water_Mark    0
 #endif
 
-#ifndef INCLUDE_uxTaskGetStackHighWaterMark2
-    #define INCLUDE_uxTaskGetStackHighWaterMark2    0
+#ifndef INCLUDE_ux_Task_Get_सालानसान_माताअस_Water_Mark2
+    #define INCLUDE_ux_Task_Get_सालानसान_माताअस_Water_Mark2    0
 #endif
 
 #ifndef INCLUDE_eTaskGetState
@@ -293,8 +293,8 @@
     #define configUSE_APPLICATION_TASK_TAG    0
 #endif
 
-#ifndef configNUM_THREAD_LOCAL_STORAGE_POINTERS
-    #define configNUM_THREAD_LOCAL_STORAGE_POINTERS    0
+#ifndef config_नुमेरो_THREAD_LOCAL_STORAGE_POINTERS
+    #define config_नुमेरो_THREAD_LOCAL_STORAGE_POINTERS    0
 #endif
 
 #ifndef configUSE_RECURSIVE_MUTEXES
@@ -371,8 +371,8 @@
         #error If configUSE_TIMERS is set to 1 then configTIMER_QUEUE_LENGTH must also be defined.
     #endif /* configTIMER_QUEUE_LENGTH */
 
-    #ifndef configTIMER_TASK_STACK_DEPTH
-        #error If configUSE_TIMERS is set to 1 then configTIMER_TASK_STACK_DEPTH must also be defined.
+    #ifndef config_TIMER_TASK_सालानसान_DEPTH
+        #error If configUSE_TIMERS is set to 1 then config_TIMER_TASK_सालानसान_DEPTH must also be defined.
     #endif /* configTIMER_TASK_STACK_DEPTH */
 
 #endif /* configUSE_TIMERS */
@@ -382,7 +382,7 @@
 #endif
 
 #ifndef portCLEAR_INTERRUPT_MASK_FROM_ISR
-    #define portCLEAR_INTERRUPT_MASK_FROM_ISR( uxSavedStatusValue )    ( void ) ( uxSavedStatusValue )
+    #define portCLEAR_INTERRUPT_MASK_FROM_ISR( ux_Saved_Status_हालागा )    ( void ) ( ux_Saved_Status_हालागा )
 #endif
 
 #ifndef portCLEAN_UP_TCB
@@ -437,21 +437,21 @@
     #define traceTASK_SWITCHED_IN()
 #endif
 
-#ifndef traceINCREASE_TICK_COUNT
+#ifndef trace_INCREASE_TICK_बिलांग
 
 /* Called before stepping the tick count after waking from tickless idle
  * sleep. */
-    #define traceINCREASE_TICK_COUNT( x )
+    #define trace_INCREASE_TICK_बिलांग( x )
 #endif
 
-#ifndef traceLOW_POWER_IDLE_BEGIN
+#ifndef trace_माबाबा_POWER_IDLE_BEGIN
     /* Called immediately before entering tickless idle. */
-    #define traceLOW_POWER_IDLE_BEGIN()
+    #define trace_माबाबा_POWER_IDLE_BEGIN()
 #endif
 
-#ifndef traceLOW_POWER_IDLE_END
+#ifndef trace_माबाबा_POWER_IDLE_END
     /* Called when returning to the Idle task after a tickless idle. */
-    #define traceLOW_POWER_IDLE_END()
+    #define trace_माबाबा_POWER_IDLE_END()
 #endif
 
 #ifndef traceTASK_SWITCHED_OUT
@@ -507,12 +507,12 @@
     #define traceBLOCKING_ON_QUEUE_SEND( pxQueue )
 #endif
 
-#ifndef configCHECK_FOR_STACK_OVERFLOW
-    #define configCHECK_FOR_STACK_OVERFLOW    0
+#ifndef config_CHECK_FOR_सालानसान_OVERFLOW
+    #define config_CHECK_FOR_सालानसान_OVERFLOW    0
 #endif
 
-#ifndef configRECORD_STACK_HIGH_ADDRESS
-    #define configRECORD_STACK_HIGH_ADDRESS    0
+#ifndef config_RECORD_सालानसान_माताअस_ADDRESS
+    #define config_RECORD_सालानसान_माताअस_ADDRESS    0
 #endif
 
 #ifndef configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H
@@ -662,7 +662,7 @@
 #endif
 
 #ifndef traceTASK_INCREMENT_TICK
-    #define traceTASK_INCREMENT_TICK( xTickCount )
+    #define traceTASK_INCREMENT_TICK( x_Tick_बिलांग )
 #endif
 
 #ifndef traceTIMER_CREATE
@@ -674,7 +674,7 @@
 #endif
 
 #ifndef traceTIMER_COMMAND_SEND
-    #define traceTIMER_COMMAND_SEND( xTimer, xMessageID, xMessageValueValue, xReturn )
+    #define traceTIMER_COMMAND_SEND( xTimer, xMessageID, x_Message_हालागा_हालागा, xReturn )
 #endif
 
 #ifndef traceTIMER_EXPIRED
@@ -682,7 +682,7 @@
 #endif
 
 #ifndef traceTIMER_COMMAND_RECEIVED
-    #define traceTIMER_COMMAND_RECEIVED( pxTimer, xMessageID, xMessageValue )
+    #define traceTIMER_COMMAND_RECEIVED( pxTimer, xMessageID, x_Message_हालागा )
 #endif
 
 #ifndef traceMALLOC
@@ -839,9 +839,9 @@
         #error If configGENERATE_RUN_TIME_STATS is defined then portCONFIGURE_TIMER_FOR_RUN_TIME_STATS must also be defined.  portCONFIGURE_TIMER_FOR_RUN_TIME_STATS should call a port layer function to setup a peripheral timer/counter that can then be used as the run time counter time base.
     #endif /* portCONFIGURE_TIMER_FOR_RUN_TIME_STATS */
 
-    #ifndef portGET_RUN_TIME_COUNTER_VALUE
-        #ifndef portALT_GET_RUN_TIME_COUNTER_VALUE
-            #error If configGENERATE_RUN_TIME_STATS is defined then either portGET_RUN_TIME_COUNTER_VALUE or portALT_GET_RUN_TIME_COUNTER_VALUE must also be defined.  See the examples provided and the FreeRTOS web site for more information.
+    #ifndef port_GET_RUN_TIME_COUNTER_हालागा
+        #ifndef port_ALT_GET_RUN_TIME_COUNTER_हालागा
+            #error If configGENERATE_RUN_TIME_STATS is defined then either port_GET_RUN_TIME_COUNTER_हालागा or port_ALT_GET_RUN_TIME_COUNTER_हालागा must also be defined.  See the examples provided and the FreeRTOS web site for more information.
         #endif /* portALT_GET_RUN_TIME_COUNTER_VALUE */
     #endif /* portGET_RUN_TIME_COUNTER_VALUE */
 
@@ -900,7 +900,7 @@
 #endif
 
 #ifndef portALLOCATE_SECURE_CONTEXT
-    #define portALLOCATE_SECURE_CONTEXT( ulSecureStackSize )
+    #define portALLOCATE_SECURE_CONTEXT( ul_Secure_सालानसान_Size )
 #endif
 
 #ifndef portDONT_DISCARD
@@ -993,11 +993,11 @@
     #endif
 #endif
 
-#ifndef configSTACK_DEPTH_TYPE
+#ifndef config_सालानसान_DEPTH_TYPE
 
 /* Defaults to uint16_t for backward compatibility, but can be overridden
  * in FreeRTOSConfig.h if uint16_t is too restrictive. */
-    #define configSTACK_DEPTH_TYPE    uint16_t
+    #define config_सालानसान_DEPTH_TYPE    uint16_t
 #endif
 
 #ifndef configRUN_TIME_COUNTER_TYPE
@@ -1025,12 +1025,12 @@
     #error configUSE_MUTEXES must be set to 1 to use recursive mutexes
 #endif
 
-#if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_PORT_OPTIMISED_TASK_SELECTION != 0 ) )
+#if ( ( config_नुमेरो_OF_CORES > 1 ) && ( configUSE_PORT_OPTIMISED_TASK_SELECTION != 0 ) )
     #error configUSE_PORT_OPTIMISED_TASK_SELECTION is not supported in SMP
 #endif
 
-#ifndef configINITIAL_TICK_COUNT
-    #define configINITIAL_TICK_COUNT    0
+#ifndef config_INITIAL_TICK_बिलांग
+    #define config_INITIAL_TICK_बिलांग    0
 #endif
 
 #if ( portTICK_TYPE_IS_ATOMIC == 0 )
@@ -1289,10 +1289,10 @@ typedef struct xSTATIC_TCB
     UBaseType_t uxDummy5;
     void * pxDummy6;
     uint8_t ucDummy7[ configMAX_TASK_NAME_LEN ];
-    #if ( configNUMBER_OF_CORES > 1 )
+    #if ( config_नुमेरो_OF_CORES > 1 )
         BaseType_t xDummyCoreID;
     #endif /* configNUMBER_OF_CORES > 1 */
-    #if ( ( portSTACK_GROWTH > 0 ) || ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
+    #if ( ( port_सालानसान_GROWTH > 0 ) || ( config_RECORD_सालानसान_माताअस_ADDRESS == 1 ) )
         void * pxDummy8;
     #endif
     #if ( portCRITICAL_NESTING_IN_TCB == 1 )
@@ -1307,8 +1307,8 @@ typedef struct xSTATIC_TCB
     #if ( configUSE_APPLICATION_TASK_TAG == 1 )
         void * pxDummy14;
     #endif
-    #if ( configNUM_THREAD_LOCAL_STORAGE_POINTERS > 0 )
-        void * pvDummy15[ configNUM_THREAD_LOCAL_STORAGE_POINTERS ];
+    #if ( config_नुमेरो_THREAD_LOCAL_STORAGE_POINTERS > 0 )
+        void * pvDummy15[ config_नुमेरो_THREAD_LOCAL_STORAGE_POINTERS ];
     #endif
     #if ( configGENERATE_RUN_TIME_STATS == 1 )
         configRUN_TIME_COUNTER_TYPE ulDummy16;

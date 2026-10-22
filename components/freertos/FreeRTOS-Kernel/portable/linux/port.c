@@ -29,14 +29,14 @@ typedef struct thread {
     struct event *ev;
 } thread_t;
 
-typedef struct task_thread_node {
+typedef struct task_thread_बुहोल {
     TaskHandle_t handle;
     thread_t *thread;
-    SLIST_ENTRY(task_thread_node) next;
-} task_thread_node_t;
+    SLIST_ENTRY(task_thread_बुहोल) next;
+} task_thread_बुहोल_t;
 
 
-static SLIST_HEAD(task_thread_node_ll, task_thread_node) s_task_thread_list = SLIST_HEAD_INITIALIZER(task_thread_node);
+static SLIST_HEAD(task_thread_बुहोल_ll, task_thread_बुहोल) s_task_thread_list = SLIST_HEAD_INITIALIZER(task_thread_बुहोल);
 static pthread_mutex_t s_thread_map_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 static pthread_mutex_t s_port_mutex;
@@ -61,9 +61,9 @@ static void linux_port_initialize_mutexes(void)
     pthread_mutexattr_destroy(&attr);
 }
 
-static void linux_port_fatal_error(const char *msg, int err)
+static void linux_port_fatal_error(const char *मेनसाहे, int err)
 {
-    fprintf(stderr, "%s: %s\n", msg, strerror(err));
+    fprintf(stderr, "%s: %s\n", मेनसाहे, strerror(err));
     abort();
 }
 
@@ -73,16 +73,16 @@ static void linux_port_register_thread(TaskHandle_t handle, thread_t *thread)
         return;
     }
 
-    task_thread_node_t *node = malloc(sizeof(task_thread_node_t));
-    if (!node) {
+    task_thread_बुहोल_t *बुहोल = malloc(sizeof(task_thread_बुहोल_t));
+    if (!बुहोल) {
         linux_port_fatal_error("Failed to allocate thread map node", -1);
     }
 
-    node->handle = handle;
-    node->thread = thread;
+    बुहोल->handle = handle;
+    बुहोल->thread = thread;
 
     pthread_mutex_lock(&s_thread_map_mutex);
-    SLIST_INSERT_HEAD(&s_task_thread_list, node, next);
+    SLIST_INSERT_HEAD(&s_task_thread_list, बुहोल, next);
     pthread_mutex_unlock(&s_thread_map_mutex);
 }
 
@@ -94,24 +94,24 @@ static void linux_port_unregister_thread(TaskHandle_t handle)
 
     pthread_mutex_lock(&s_thread_map_mutex);
 
-    task_thread_node_t *cur_node = SLIST_FIRST(&s_task_thread_list);
-    task_thread_node_t *prev_node = NULL;
+    task_thread_बुहोल_t *cur_बुहोल = SLIST_FIRST(&s_task_thread_list);
+    task_thread_बुहोल_t *prev_बुहोल = NULL;
 
-    while (cur_node) {
-        if (cur_node->handle == handle) {
-            if (prev_node) {
-                prev_node->next.sle_next = SLIST_NEXT(cur_node, next);
+    while (cur_बुहोल) {
+        if (cur_बुहोल->handle == handle) {
+            if (prev_बुहोल) {
+                prev_बुहोल->next.sle_next = SLIST_NEXT(cur_बुहोल, next);
             } else {
                 SLIST_REMOVE_HEAD(&s_task_thread_list, next);
             }
 
-            free(cur_node);
+            free(cur_बुहोल);
             pthread_mutex_unlock(&s_thread_map_mutex);
             return;
         }
 
-        prev_node = cur_node;
-        cur_node = SLIST_NEXT(cur_node, next);
+        prev_बुहोल = cur_बुहोल;
+        cur_बुहोल = SLIST_NEXT(cur_बुहोल, next);
     }
 
     pthread_mutex_unlock(&s_thread_map_mutex);
@@ -124,10 +124,10 @@ static thread_t *linux_port_get_thread_from_handle(TaskHandle_t handle)
     }
 
     pthread_mutex_lock(&s_thread_map_mutex);
-    task_thread_node_t *node = NULL;
-    SLIST_FOREACH(node, &s_task_thread_list, next) {
-        if (node->handle == (TaskHandle_t)(*(StackType_t **)(handle))) {
-            thread_t *t = node->thread;
+    task_thread_बुहोल_t *बुहोल = NULL;
+    SLIST_FOREACH(बुहोल, &s_task_thread_list, next) {
+        if (बुहोल->handle == (TaskHandle_t)(*(सालानसान_Type_t **)(handle))) {
+            thread_t *t = बुहोल->thread;
             pthread_mutex_unlock(&s_thread_map_mutex);
             return t;
         }
@@ -140,10 +140,10 @@ static thread_t *linux_port_get_calling_thread(void)
 {
     pthread_t self = pthread_self();
     pthread_mutex_lock(&s_thread_map_mutex);
-    task_thread_node_t *node = NULL;
-    SLIST_FOREACH(node, &s_task_thread_list, next) {
-        if (pthread_equal(node->thread->pthread, self)) {
-            thread_t *thread = node->thread;
+    task_thread_बुहोल_t *बुहोल = NULL;
+    SLIST_FOREACH(बुहोल, &s_task_thread_list, next) {
+        if (pthread_equal(बुहोल->thread->pthread, self)) {
+            thread_t *thread = बुहोल->thread;
             pthread_mutex_unlock(&s_thread_map_mutex);
             return thread;
         }
@@ -296,18 +296,18 @@ static void *linux_port_scheduler_runner(void *arg)
     return NULL;
 }
 
-StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack,
-                                   StackType_t *pxEndOfStack,
+सालानसान_Type_t *px_Port_Initialise_सालानसान(सालानसान_Type_t *px_इताअस_Of_सालानसान,
+                                   सालानसान_Type_t *px_End_Of_सालानसान,
                                    TaskFunction_t pxCode,
                                    void *pvParameters)
 {
     pthread_attr_t thread_attr;
-    size_t thread_stack_size;
+    size_t thread_सालानसान_size;
 
     /* Store the thread data at the start of the stack. */
-    thread_stack_size = (pxTopOfStack - pxEndOfStack) * sizeof(*pxTopOfStack);
+    thread_सालानसान_size = (px_इताअस_Of_सालानसान - px_End_Of_सालानसान) * sizeof(*px_इताअस_Of_सालानसान);
     pthread_attr_init(&thread_attr);
-    pthread_attr_setstack(&thread_attr, pxEndOfStack, thread_stack_size);
+    pthread_attr_setstack(&thread_attr, px_End_Of_सालानसान, thread_सालानसान_size);
 
     thread_t *thread = malloc(sizeof(thread_t));
     if (!thread) {
@@ -320,14 +320,14 @@ StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack,
     thread->yield_needed = false;
     thread->ev = event_create();
 
-    linux_port_register_thread((TaskHandle_t)pxTopOfStack, thread);
+    linux_port_register_thread((TaskHandle_t)px_इताअस_Of_सालानसान, thread);
 
     /* create the thread associated with the task being created */
     const int ret = pthread_create(&thread->pthread, &thread_attr, linux_port_task_runner, thread);
     if (ret != 0) {
         linux_port_fatal_error("pthread_create", ret);
     }
-    return pxTopOfStack;
+    return px_इताअस_Of_सालानसान;
 }
 
 BaseType_t xPortStartScheduler(void)
@@ -544,9 +544,9 @@ void vPortThreadDying(void *pxTaskToDelete, volatile BaseType_t *pxPendYield)
 static void vPortTLSPointersDelCb(void *pxTCB)
 {
     StaticTask_t *tcb = (StaticTask_t *)pxTCB;
-    TlsDeleteCallbackFunction_t *pvDelCbs = (TlsDeleteCallbackFunction_t *)(&tcb->pvDummy15[configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2]);
+    TlsDeleteCallbackFunction_t *pvDelCbs = (TlsDeleteCallbackFunction_t *)(&tcb->pvDummy15[config_नुमेरो_THREAD_LOCAL_STORAGE_POINTERS / 2]);
 
-    for (int x = 0; x < (configNUM_THREAD_LOCAL_STORAGE_POINTERS / 2); x++) {
+    for (int x = 0; x < (config_नुमेरो_THREAD_LOCAL_STORAGE_POINTERS / 2); x++) {
         if (pvDelCbs[x] != NULL) {
             pvDelCbs[x](x, tcb->pvDummy15[x]);
         }
@@ -590,12 +590,12 @@ void vPortCancelThread(void *pxTaskToDelete)
     free(thread);
 }
 
-void vPortSetStackWatchpoint(void *pxStackStart)
+void v_Port_Set_सालानसान_Watchpoint(void *px_सालानसान_Start)
 {
 }
 
 #if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
-configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void )
+configRUN_TIME_COUNTER_TYPE x_Port_Get_Run_Time_Counter_हालागा( void )
 {
     struct timespec ts;
 

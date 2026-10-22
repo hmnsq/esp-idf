@@ -48,7 +48,7 @@
 #define configTLS_BLOCK_TYPE               void *
 
 #define picolibcTLS_SIZE                   ( ( portPOINTER_SIZE_TYPE ) _tls_size() )
-#define picolibcSTACK_ALIGNMENT_MASK       ( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK )
+#define picolibc_सालानसान_ALIGNMENT_MASK       ( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK )
 
 #if __PICOLIBC_MAJOR__ > 1 || __PICOLIBC_MINOR__ >= 8
 
@@ -65,25 +65,25 @@
  * stack. The picolibcTLS_SIZE macro returns the size (in
  * bytes) of the total TLS area used by the application.
  * Calculate the top of stack address. */
-#if ( portSTACK_GROWTH < 0 )
+#if ( port_सालानसान_GROWTH < 0 )
 
-    #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )                                  \
+    #define configINIT_TLS_BLOCK( xTLSBlock, px_इताअस_Of_सालानसान )                                  \
     do {                                                                                     \
-        xTLSBlock = ( void * ) ( ( ( ( portPOINTER_SIZE_TYPE ) pxTopOfStack ) -              \
+        xTLSBlock = ( void * ) ( ( ( ( portPOINTER_SIZE_TYPE ) px_इताअस_Of_सालानसान ) -              \
                                    picolibcTLS_SIZE ) &                                      \
                                  ~picolibcTLS_ALIGNMENT_MASK );                              \
-        pxTopOfStack = ( StackType_t * ) ( ( ( ( portPOINTER_SIZE_TYPE ) xTLSBlock ) - 1 ) & \
-                                           ~picolibcSTACK_ALIGNMENT_MASK );                  \
+        px_इताअस_Of_सालानसान = ( सालानसान_Type_t * ) ( ( ( ( portPOINTER_SIZE_TYPE ) xTLSBlock ) - 1 ) & \
+                                           ~picolibc_सालानसान_ALIGNMENT_MASK );                  \
         _init_tls( xTLSBlock );                                                              \
     } while( 0 )
 #else /* portSTACK_GROWTH */
-    #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )                                          \
+    #define configINIT_TLS_BLOCK( xTLSBlock, px_इताअस_Of_सालानसान )                                          \
     do {                                                                                             \
-        xTLSBlock = ( void * ) ( ( ( portPOINTER_SIZE_TYPE ) pxTopOfStack +                          \
+        xTLSBlock = ( void * ) ( ( ( portPOINTER_SIZE_TYPE ) px_इताअस_Of_सालानसान +                          \
                                    picolibcTLS_ALIGNMENT_MASK ) & ~picolibcTLS_ALIGNMENT_MASK );     \
-        pxTopOfStack = ( StackType_t * ) ( ( ( ( ( portPOINTER_SIZE_TYPE ) xTLSBlock ) +             \
-                                               picolibcTLS_SIZE ) + picolibcSTACK_ALIGNMENT_MASK ) & \
-                                           ~picolibcSTACK_ALIGNMENT_MASK );                          \
+        px_इताअस_Of_सालानसान = ( सालानसान_Type_t * ) ( ( ( ( ( portPOINTER_SIZE_TYPE ) xTLSBlock ) +             \
+                                               picolibcTLS_SIZE ) + picolibc_सालानसान_ALIGNMENT_MASK ) & \
+                                           ~picolibc_सालानसान_ALIGNMENT_MASK );                          \
         _init_tls( xTLSBlock );                                                                      \
     } while( 0 )
 #endif /* portSTACK_GROWTH */

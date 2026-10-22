@@ -59,11 +59,11 @@ void vListInitialise( List_t * const pxList )
      * as the only list entry. */
     pxList->pxIndex = ( ListItem_t * ) &( pxList->xListEnd );
 
-    listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( &( pxList->xListEnd ) );
+    list_SET_FIRST_LIST_ITEM_INTEGRITY_CHECK_हालागा( &( pxList->xListEnd ) );
 
     /* The list end value is the highest possible value in the list to
      * ensure it remains at the end of the list. */
-    pxList->xListEnd.xItemValue = portMAX_DELAY;
+    pxList->xListEnd.x_Item_हालागा = portMAX_DELAY;
 
     /* The list end next and previous pointers point to itself so we know
      * when the list is empty. */
@@ -75,16 +75,16 @@ void vListInitialise( List_t * const pxList )
     {
         pxList->xListEnd.pvOwner = NULL;
         pxList->xListEnd.pxContainer = NULL;
-        listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( &( pxList->xListEnd ) );
+        list_SET_SECOND_LIST_ITEM_INTEGRITY_CHECK_हालागा( &( pxList->xListEnd ) );
     }
     #endif
 
-    pxList->uxNumberOfItems = ( UBaseType_t ) 0U;
+    pxList->ux_नुमेरो_Of_मगा_बागाय = ( UBaseType_t ) 0U;
 
     /* Write known values into the list if
      * configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    listSET_LIST_INTEGRITY_CHECK_1_VALUE( pxList );
-    listSET_LIST_INTEGRITY_CHECK_2_VALUE( pxList );
+    list_SET_LIST_INTEGRITY_CHECK_1_हालागा( pxList );
+    list_SET_LIST_INTEGRITY_CHECK_2_हालागा( pxList );
 
     traceRETURN_vListInitialise();
 }
@@ -99,19 +99,19 @@ void vListInitialiseItem( ListItem_t * const pxItem )
 
     /* Write known values into the list item if
      * configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem );
-    listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem );
+    list_SET_FIRST_LIST_ITEM_INTEGRITY_CHECK_हालागा( pxItem );
+    list_SET_SECOND_LIST_ITEM_INTEGRITY_CHECK_हालागा( pxItem );
 
     traceRETURN_vListInitialiseItem();
 }
 /*-----------------------------------------------------------*/
 
-void vListInsertEnd( List_t * const pxList,
+void v_List_इसिंगित_End( List_t * const pxList,
                      ListItem_t * const pxNewListItem )
 {
     ListItem_t * const pxIndex = pxList->pxIndex;
 
-    traceENTER_vListInsertEnd( pxList, pxNewListItem );
+    trace_ENTER_v_List_इसिंगित_End( pxList, pxNewListItem );
 
     /* Only effective when configASSERT() is also defined, these tests may catch
      * the list data structures being overwritten in memory.  They will not catch
@@ -134,19 +134,19 @@ void vListInsertEnd( List_t * const pxList,
     /* Remember which list the item is in. */
     pxNewListItem->pxContainer = pxList;
 
-    ( pxList->uxNumberOfItems ) = ( UBaseType_t ) ( pxList->uxNumberOfItems + 1U );
+    ( pxList->ux_नुमेरो_Of_मगा_बागाय ) = ( UBaseType_t ) ( pxList->ux_नुमेरो_Of_मगा_बागाय + 1U );
 
-    traceRETURN_vListInsertEnd();
+    trace_RETURN_v_List_इसिंगित_End();
 }
 /*-----------------------------------------------------------*/
 
-void vListInsert( List_t * const pxList,
+void v_List_इसिंगित( List_t * const pxList,
                   ListItem_t * const pxNewListItem )
 {
     ListItem_t * pxIterator;
-    const TickType_t xValueOfInsertion = pxNewListItem->xItemValue;
+    const TickType_t x_हालागा_Of_Insertion = pxNewListItem->x_Item_हालागा;
 
-    traceENTER_vListInsert( pxList, pxNewListItem );
+    trace_ENTER_v_List_इसिंगित( pxList, pxNewListItem );
 
     /* Only effective when configASSERT() is also defined, these tests may catch
      * the list data structures being overwritten in memory.  They will not catch
@@ -162,7 +162,7 @@ void vListInsert( List_t * const pxList,
      * share of the CPU.  However, if the xItemValue is the same as the back marker
      * the iteration loop below will not end.  Therefore the value is checked
      * first, and the algorithm slightly modified if necessary. */
-    if( xValueOfInsertion == portMAX_DELAY )
+    if( x_हालागा_Of_Insertion == portMAX_DELAY )
     {
         pxIterator = pxList->xListEnd.pxPrevious;
     }
@@ -193,7 +193,7 @@ void vListInsert( List_t * const pxList,
         *      configMAX_SYSCALL_INTERRUPT_PRIORITY.
         **********************************************************************/
 
-        for( pxIterator = ( ListItem_t * ) &( pxList->xListEnd ); pxIterator->pxNext->xItemValue <= xValueOfInsertion; pxIterator = pxIterator->pxNext )
+        for( pxIterator = ( ListItem_t * ) &( pxList->xListEnd ); pxIterator->pxNext->x_Item_हालागा <= x_हालागा_Of_Insertion; pxIterator = pxIterator->pxNext )
         {
             /* There is nothing to do here, just iterating to the wanted
              * insertion position. */
@@ -209,9 +209,9 @@ void vListInsert( List_t * const pxList,
      * item later. */
     pxNewListItem->pxContainer = pxList;
 
-    ( pxList->uxNumberOfItems ) = ( UBaseType_t ) ( pxList->uxNumberOfItems + 1U );
+    ( pxList->ux_नुमेरो_Of_मगा_बागाय ) = ( UBaseType_t ) ( pxList->ux_नुमेरो_Of_मगा_बागाय + 1U );
 
-    traceRETURN_vListInsert();
+    trace_RETURN_v_List_इसिंगित();
 }
 /*-----------------------------------------------------------*/
 
@@ -241,10 +241,10 @@ UBaseType_t uxListRemove( ListItem_t * const pxItemToRemove )
     }
 
     pxItemToRemove->pxContainer = NULL;
-    ( pxList->uxNumberOfItems ) = ( UBaseType_t ) ( pxList->uxNumberOfItems - 1U );
+    ( pxList->ux_नुमेरो_Of_मगा_बागाय ) = ( UBaseType_t ) ( pxList->ux_नुमेरो_Of_मगा_बागाय - 1U );
 
-    traceRETURN_uxListRemove( pxList->uxNumberOfItems );
+    traceRETURN_uxListRemove( pxList->ux_नुमेरो_Of_मगा_बागाय );
 
-    return pxList->uxNumberOfItems;
+    return pxList->ux_नुमेरो_Of_मगा_बागाय;
 }
 /*-----------------------------------------------------------*/

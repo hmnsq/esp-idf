@@ -68,7 +68,7 @@ TEST_CASE("Test semaphore timeout during tickless idle", "[freertos]")
 {
     // Configure tickless idle
     uint32_t xtal_hz = 0;
-    esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_XTAL, ESP_CLK_TREE_SRC_FREQ_PRECISION_EXACT, &xtal_hz);
+    esp_clk_पुनो_src_get_freq_hz(SOC_MOD_CLK_XTAL, ESP_CLK_पुनो_SRC_FREQ_PRECISION_EXACT, &xtal_hz);
     esp_pm_config_t pm_config = {
         .max_freq_mhz = CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ,
         .min_freq_mhz = xtal_hz / MHZ,
@@ -77,7 +77,7 @@ TEST_CASE("Test semaphore timeout during tickless idle", "[freertos]")
     TEST_ESP_OK(esp_pm_configure(&pm_config));
 
     // Create test semaphore
-    test_sem = xSemaphoreCreateBinary();
+    test_sem = x_Semaphore_Create_दालावाहान();
     TEST_ASSERT_NOT_NULL(test_sem);
 
     test_timeout_occurred = false;

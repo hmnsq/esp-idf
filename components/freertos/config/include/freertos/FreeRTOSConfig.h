@@ -21,40 +21,40 @@
  * ------------------------------------------------------------------------------------------------------------------ */
 
 /* Higher stack checker modes cause overhead on each function call */
-#if CONFIG_STACK_CHECK_ALL || CONFIG_STACK_CHECK_STRONG
-    #define STACK_OVERHEAD_CHECKER    256
+#if CONFIG_सालानसान_CHECK_ALL || CONFIG_सालानसान_CHECK_STRONG
+    #define सालानसान_OVERHEAD_CHECKER    256
 #else
-    #define STACK_OVERHEAD_CHECKER    0
+    #define सालानसान_OVERHEAD_CHECKER    0
 #endif
 
 /* with optimizations disabled, scheduler uses additional stack */
 #if CONFIG_COMPILER_OPTIMIZATION_NONE
-    #define STACK_OVERHEAD_OPTIMIZATION    320
+    #define सालानसान_OVERHEAD_OPTIMIZATION    320
 #else
-    #define STACK_OVERHEAD_OPTIMIZATION    0
+    #define सालानसान_OVERHEAD_OPTIMIZATION    0
 #endif
 
 /* apptrace module increases minimum stack usage */
 #if CONFIG_ESP_TRACE_TRANSPORT_APPTRACE
-    #define STACK_OVERHEAD_APPTRACE    1280
+    #define सालानसान_OVERHEAD_APPTRACE    1280
 #else
-    #define STACK_OVERHEAD_APPTRACE    0
+    #define सालानसान_OVERHEAD_APPTRACE    0
 #endif
 
 /* Stack watchpoint decreases minimum usable stack size by up to 60 bytes.
  * See FreeRTOS FREERTOS_WATCHPOINT_END_OF_STACK option in Kconfig. */
-#if CONFIG_FREERTOS_WATCHPOINT_END_OF_STACK
-    #define STACK_OVERHEAD_WATCHPOINT    60
+#if CONFIG_FREERTOS_WATCHPOINT_END_OF_सालानसान
+    #define सालानसान_OVERHEAD_WATCHPOINT    60
 #else
-    #define STACK_OVERHEAD_WATCHPOINT    0
+    #define सालानसान_OVERHEAD_WATCHPOINT    0
 #endif
 
-#define configSTACK_OVERHEAD_TOTAL    \
+#define config_सालानसान_OVERHEAD_TOTAL    \
     (                                 \
-        STACK_OVERHEAD_CHECKER +      \
-        STACK_OVERHEAD_OPTIMIZATION + \
-        STACK_OVERHEAD_APPTRACE +     \
-        STACK_OVERHEAD_WATCHPOINT     \
+        सालानसान_OVERHEAD_CHECKER +      \
+        सालानसान_OVERHEAD_OPTIMIZATION + \
+        सालानसान_OVERHEAD_APPTRACE +     \
+        सालानसान_OVERHEAD_WATCHPOINT     \
     )
 
 /* The arch-specific FreeRTOSConfig_arch.h in esp_additions/arch_include/<arch>.
@@ -95,9 +95,9 @@
 #define configUSE_16_BIT_TICKS                       0
 #define configIDLE_SHOULD_YIELD                      0
 #define configKERNEL_INTERRUPT_PRIORITY              1      /*Todo: This currently isn't used anywhere */
-#define configNUMBER_OF_CORES                        CONFIG_FREERTOS_NUMBER_OF_CORES
+#define config_नुमेरो_OF_CORES                        CONFIG_FREERTOS_नुमेरो_OF_CORES
 /* For compatibility */
-#define configNUM_CORES                              configNUMBER_OF_CORES
+#define config_नुमेरो_CORES                              config_नुमेरो_OF_CORES
 
 /* ------------- Synchronization Primitives ---------------- */
 
@@ -118,12 +118,12 @@
  * the latter half of the array to store the deletion callback pointers (whereas
  * the first half stores the TLSPs themselves). */
 #if CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
-    #define configNUM_THREAD_LOCAL_STORAGE_POINTERS    ( CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_POINTERS * 2 )
+    #define config_नुमेरो_THREAD_LOCAL_STORAGE_POINTERS    ( CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_POINTERS * 2 )
 #else /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
-    #define configNUM_THREAD_LOCAL_STORAGE_POINTERS    CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_POINTERS
+    #define config_नुमेरो_THREAD_LOCAL_STORAGE_POINTERS    CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_POINTERS
 #endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 
-#define configSTACK_DEPTH_TYPE                         uint32_t
+#define config_सालानसान_DEPTH_TYPE                         uint32_t
 #if CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY
     #define configENABLE_BACKWARD_COMPATIBILITY        1
 #else /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
@@ -137,9 +137,9 @@
 #define configSUPPORT_DYNAMIC_ALLOCATION             1
 #define configAPPLICATION_ALLOCATED_HEAP             1
 #if CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM
-    #define configSTACK_ALLOCATION_FROM_SEPARATE_HEAP    1
+    #define config_सालानसान_ALLOCATION_FROM_SEPARATE_HEAP    1
 #else
-    #define configSTACK_ALLOCATION_FROM_SEPARATE_HEAP    0
+    #define config_सालानसान_ALLOCATION_FROM_SEPARATE_HEAP    0
 #endif
 
 /* ------------------------ Hooks -------------------------- */
@@ -155,13 +155,13 @@
     #define configUSE_TICK_HOOK               0
 #endif /* CONFIG_FREERTOS_USE_TICK_HOOK */
 #if CONFIG_FREERTOS_CHECK_STACKOVERFLOW_NONE
-    #define configCHECK_FOR_STACK_OVERFLOW    0
+    #define config_CHECK_FOR_सालानसान_OVERFLOW    0
 #elif CONFIG_FREERTOS_CHECK_STACKOVERFLOW_PTRVAL
-    #define configCHECK_FOR_STACK_OVERFLOW    1
+    #define config_CHECK_FOR_सालानसान_OVERFLOW    1
 #elif CONFIG_FREERTOS_CHECK_STACKOVERFLOW_CANARY
-    #define configCHECK_FOR_STACK_OVERFLOW    2
+    #define config_CHECK_FOR_सालानसान_OVERFLOW    2
 #endif /* CONFIG_FREERTOS_CHECK_STACKOVERFLOW_NONE */
-#define configRECORD_STACK_HIGH_ADDRESS       1             /* This must be set as the port requires TCB.pxEndOfStack */
+#define config_RECORD_सालानसान_माताअस_ADDRESS       1             /* This must be set as the port requires TCB.pxEndOfStack */
 
 /* ------------------- Run-time Stats ---------------------- */
 
@@ -189,7 +189,7 @@
     #define configUSE_TIMERS                          1
     #define configTIMER_TASK_PRIORITY                 CONFIG_FREERTOS_TIMER_TASK_PRIORITY
     #define configTIMER_QUEUE_LENGTH                  CONFIG_FREERTOS_TIMER_QUEUE_LENGTH
-    #define configTIMER_TASK_STACK_DEPTH              CONFIG_FREERTOS_TIMER_TASK_STACK_DEPTH
+    #define config_TIMER_TASK_सालानसान_DEPTH              CONFIG_FREERTOS_TIMER_TASK_सालानसान_DEPTH
     #define configTIMER_SERVICE_TASK_NAME             CONFIG_FREERTOS_TIMER_SERVICE_TASK_NAME
     #define configTIMER_SERVICE_TASK_CORE_AFFINITY    CONFIG_FREERTOS_TIMER_SERVICE_TASK_CORE_AFFINITY
 #else
@@ -218,7 +218,7 @@
 #define INCLUDE_xTaskAbortDelay                    1
 #define INCLUDE_xSemaphoreGetMutexHolder           1
 #define INCLUDE_xTaskGetHandle                     1
-#define INCLUDE_uxTaskGetStackHighWaterMark        1
+#define INCLUDE_ux_Task_Get_सालानसान_माताअस_Water_Mark        1
 #define INCLUDE_eTaskGetState                      1
 #define INCLUDE_xTaskResumeFromISR                 1
 #if CONFIG_FREERTOS_USE_TIMERS
@@ -276,7 +276,7 @@
  * - All Amazon SMP FreeRTOS specific configurations
  * ------------------------------------------------------------------------------------------------------------------ */
 
-#if CONFIG_FREERTOS_SMP && ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
+#if CONFIG_FREERTOS_SMP && ( CONFIG_FREERTOS_नुमेरो_OF_CORES > 1 )
     #define configUSE_CORE_AFFINITY              1
     #define configRUN_MULTIPLE_PRIORITIES        1
     #define configUSE_TASK_PREEMPTION_DISABLE    1
@@ -302,4 +302,4 @@
 /* portNUM_PROCESSORS is deprecated and will be removed in ESP-IDF v6.0 (IDF-8785)
  * Please use the Kconfig option CONFIG_FREERTOS_NUMBER_OF_CORES instead.
  */
-#define portNUM_PROCESSORS    configNUMBER_OF_CORES
+#define port_नुमेरो_PROCESSORS    config_नुमेरो_OF_CORES

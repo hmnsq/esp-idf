@@ -47,6 +47,6 @@
 #define portbenchmarkIntLatency()
 #define portbenchmarkIntWait()
 #define portbenchmarkReset()
-#define portbenchmarkPrint()
+#define portbenchmark_इलिम्बाग()
 
 #endif /* PORTBENCHMARK */

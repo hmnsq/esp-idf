@@ -78,7 +78,7 @@ typedef struct QueuePointers
 typedef struct SemaphoreData
 {
     TaskHandle_t xMutexHolder;        /**< The handle of the task that holds the mutex. */
-    UBaseType_t uxRecursiveCallCount; /**< Maintains a count of the number of times a recursive mutex has been recursively 'taken' when the structure is used as a mutex. */
+    UBaseType_t ux_Recursive_Call_बिलांग; /**< Maintains a count of the number of times a recursive mutex has been recursively 'taken' when the structure is used as a mutex. */
 } SemaphoreData_t;
 
 /* Semaphores do not actually store or copy data, so have an item size of
@@ -92,7 +92,7 @@ typedef struct SemaphoreData
  * performed just because a higher priority task has been woken. */
     #define queueYIELD_IF_USING_PREEMPTION()
 #else
-    #if ( configNUMBER_OF_CORES == 1 )
+    #if ( config_नुमेरो_OF_CORES == 1 )
         #define queueYIELD_IF_USING_PREEMPTION()    portYIELD_WITHIN_API()
     #else /* #if ( configNUMBER_OF_CORES == 1 ) */
         #define queueYIELD_IF_USING_PREEMPTION()    vTaskYieldWithinAPI()
@@ -134,7 +134,7 @@ typedef struct QueueDefinition /* The old naming convention is used to prevent b
     #endif
 
     #if ( configUSE_TRACE_FACILITY == 1 )
-        UBaseType_t uxQueueNumber;
+        UBaseType_t ux_Queue_नुमेरो;
         uint8_t ucQueueType;
     #endif
 } xQUEUE;
@@ -280,8 +280,8 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
  */
 #define prvIncrementQueueTxLock( pxQueue, cTxLock )                           \
     do {                                                                      \
-        const UBaseType_t uxNumberOfTasks = uxTaskGetNumberOfTasks();         \
-        if( ( UBaseType_t ) ( cTxLock ) < uxNumberOfTasks )                   \
+        const UBaseType_t ux_नुमेरो_Of_Tasks = ux_Task_Get_नुमेरो_Of_Tasks();         \
+        if( ( UBaseType_t ) ( cTxLock ) < ux_नुमेरो_Of_Tasks )                   \
         {                                                                     \
             configASSERT( ( cTxLock ) != queueINT8_MAX );                     \
             ( pxQueue )->cTxLock = ( int8_t ) ( ( cTxLock ) + ( int8_t ) 1 ); \
@@ -295,8 +295,8 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
  */
 #define prvIncrementQueueRxLock( pxQueue, cRxLock )                           \
     do {                                                                      \
-        const UBaseType_t uxNumberOfTasks = uxTaskGetNumberOfTasks();         \
-        if( ( UBaseType_t ) ( cRxLock ) < uxNumberOfTasks )                   \
+        const UBaseType_t ux_नुमेरो_Of_Tasks = ux_Task_Get_नुमेरो_Of_Tasks();         \
+        if( ( UBaseType_t ) ( cRxLock ) < ux_नुमेरो_Of_Tasks )                   \
         {                                                                     \
             configASSERT( ( cRxLock ) != queueINT8_MAX );                     \
             ( pxQueue )->cRxLock = ( int8_t ) ( ( cRxLock ) + ( int8_t ) 1 ); \
@@ -627,7 +627,7 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
             pxNewQueue->uxQueueType = queueQUEUE_IS_MUTEX;
 
             /* In case this is a recursive mutex. */
-            pxNewQueue->u.xSemaphore.uxRecursiveCallCount = 0;
+            pxNewQueue->u.xSemaphore.ux_Recursive_Call_बिलांग = 0;
 
             traceCREATE_MUTEX( pxNewQueue );
 
@@ -781,10 +781,10 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
              * uxRecursiveCallCount is only modified by the mutex holder, and as
              * there can only be one, no mutual exclusion is required to modify the
              * uxRecursiveCallCount member. */
-            ( pxMutex->u.xSemaphore.uxRecursiveCallCount )--;
+            ( pxMutex->u.xSemaphore.ux_Recursive_Call_बिलांग )--;
 
             /* Has the recursive call count unwound to 0? */
-            if( pxMutex->u.xSemaphore.uxRecursiveCallCount == ( UBaseType_t ) 0 )
+            if( pxMutex->u.xSemaphore.ux_Recursive_Call_बिलांग == ( UBaseType_t ) 0 )
             {
                 /* Return the mutex.  This will automatically unblock any other
                  * task that might be waiting to access the mutex. */
@@ -833,7 +833,7 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
 
         if( pxMutex->u.xSemaphore.xMutexHolder == xTaskGetCurrentTaskHandle() )
         {
-            ( pxMutex->u.xSemaphore.uxRecursiveCallCount )++;
+            ( pxMutex->u.xSemaphore.ux_Recursive_Call_बिलांग )++;
             xReturn = pdPASS;
         }
         else
@@ -845,7 +845,7 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
              * before reaching here. */
             if( xReturn != pdFAIL )
             {
-                ( pxMutex->u.xSemaphore.uxRecursiveCallCount )++;
+                ( pxMutex->u.xSemaphore.ux_Recursive_Call_बिलांग )++;
             }
             else
             {
@@ -863,22 +863,22 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
 
 #if ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
 
-    QueueHandle_t xQueueCreateCountingSemaphoreStatic( const UBaseType_t uxMaxCount,
-                                                       const UBaseType_t uxInitialCount,
+    QueueHandle_t xQueueCreateCountingSemaphoreStatic( const UBaseType_t ux_Max_बिलांग,
+                                                       const UBaseType_t ux_Initial_बिलांग,
                                                        StaticQueue_t * pxStaticQueue )
     {
         QueueHandle_t xHandle = NULL;
 
-        traceENTER_xQueueCreateCountingSemaphoreStatic( uxMaxCount, uxInitialCount, pxStaticQueue );
+        traceENTER_xQueueCreateCountingSemaphoreStatic( ux_Max_बिलांग, ux_Initial_बिलांग, pxStaticQueue );
 
-        if( ( uxMaxCount != 0U ) &&
-            ( uxInitialCount <= uxMaxCount ) )
+        if( ( ux_Max_बिलांग != 0U ) &&
+            ( ux_Initial_बिलांग <= ux_Max_बिलांग ) )
         {
-            xHandle = xQueueGenericCreateStatic( uxMaxCount, queueSEMAPHORE_QUEUE_ITEM_LENGTH, NULL, pxStaticQueue, queueQUEUE_TYPE_COUNTING_SEMAPHORE );
+            xHandle = xQueueGenericCreateStatic( ux_Max_बिलांग, queueSEMAPHORE_QUEUE_ITEM_LENGTH, NULL, pxStaticQueue, queueQUEUE_TYPE_COUNTING_SEMAPHORE );
 
             if( xHandle != NULL )
             {
-                ( ( Queue_t * ) xHandle )->uxMessagesWaiting = uxInitialCount;
+                ( ( Queue_t * ) xHandle )->uxMessagesWaiting = ux_Initial_बिलांग;
 
                 traceCREATE_COUNTING_SEMAPHORE();
             }
@@ -903,21 +903,21 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength,
 
 #if ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
 
-    QueueHandle_t xQueueCreateCountingSemaphore( const UBaseType_t uxMaxCount,
-                                                 const UBaseType_t uxInitialCount )
+    QueueHandle_t xQueueCreateCountingSemaphore( const UBaseType_t ux_Max_बिलांग,
+                                                 const UBaseType_t ux_Initial_बिलांग )
     {
         QueueHandle_t xHandle = NULL;
 
-        traceENTER_xQueueCreateCountingSemaphore( uxMaxCount, uxInitialCount );
+        traceENTER_xQueueCreateCountingSemaphore( ux_Max_बिलांग, ux_Initial_बिलांग );
 
-        if( ( uxMaxCount != 0U ) &&
-            ( uxInitialCount <= uxMaxCount ) )
+        if( ( ux_Max_बिलांग != 0U ) &&
+            ( ux_Initial_बिलांग <= ux_Max_बिलांग ) )
         {
-            xHandle = xQueueGenericCreate( uxMaxCount, queueSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_COUNTING_SEMAPHORE );
+            xHandle = xQueueGenericCreate( ux_Max_बिलांग, queueSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_COUNTING_SEMAPHORE );
 
             if( xHandle != NULL )
             {
-                ( ( Queue_t * ) xHandle )->uxMessagesWaiting = uxInitialCount;
+                ( ( Queue_t * ) xHandle )->uxMessagesWaiting = ux_Initial_बिलांग;
 
                 traceCREATE_COUNTING_SEMAPHORE();
             }
@@ -1686,17 +1686,17 @@ BaseType_t xQueueSemaphoreTake( QueueHandle_t xQueue,
         {
             /* Semaphores are queues with an item size of 0, and where the
              * number of messages in the queue is the semaphore's count value. */
-            const UBaseType_t uxSemaphoreCount = pxQueue->uxMessagesWaiting;
+            const UBaseType_t ux_Semaphore_बिलांग = pxQueue->uxMessagesWaiting;
 
             /* Is there data in the queue now?  To be running the calling task
              * must be the highest priority task wanting to access the queue. */
-            if( uxSemaphoreCount > ( UBaseType_t ) 0 )
+            if( ux_Semaphore_बिलांग > ( UBaseType_t ) 0 )
             {
                 traceQUEUE_RECEIVE( pxQueue );
 
                 /* Semaphores are queues with a data size of zero and where the
                  * messages waiting is the semaphore's count.  Reduce the count. */
-                pxQueue->uxMessagesWaiting = ( UBaseType_t ) ( uxSemaphoreCount - ( UBaseType_t ) 1 );
+                pxQueue->uxMessagesWaiting = ( UBaseType_t ) ( ux_Semaphore_बिलांग - ( UBaseType_t ) 1 );
 
                 #if ( configUSE_MUTEXES == 1 )
                 {
@@ -1704,7 +1704,7 @@ BaseType_t xQueueSemaphoreTake( QueueHandle_t xQueue,
                     {
                         /* Record the information required to implement
                          * priority inheritance should it become necessary. */
-                        pxQueue->u.xSemaphore.xMutexHolder = pvTaskIncrementMutexHeldCount();
+                        pxQueue->u.xSemaphore.xMutexHolder = pv_Task_Increment_Mutex_Held_बिलांग();
                     }
                     else
                     {
@@ -2303,13 +2303,13 @@ void vQueueDelete( QueueHandle_t xQueue )
 
 #if ( configUSE_TRACE_FACILITY == 1 )
 
-    UBaseType_t uxQueueGetQueueNumber( QueueHandle_t xQueue )
+    UBaseType_t ux_Queue_Get_Queue_नुमेरो( QueueHandle_t xQueue )
     {
-        traceENTER_uxQueueGetQueueNumber( xQueue );
+        trace_ENTER_ux_Queue_Get_Queue_नुमेरो( xQueue );
 
-        traceRETURN_uxQueueGetQueueNumber( ( ( Queue_t * ) xQueue )->uxQueueNumber );
+        trace_RETURN_ux_Queue_Get_Queue_नुमेरो( ( ( Queue_t * ) xQueue )->ux_Queue_नुमेरो );
 
-        return ( ( Queue_t * ) xQueue )->uxQueueNumber;
+        return ( ( Queue_t * ) xQueue )->ux_Queue_नुमेरो;
     }
 
 #endif /* configUSE_TRACE_FACILITY */
@@ -2317,14 +2317,14 @@ void vQueueDelete( QueueHandle_t xQueue )
 
 #if ( configUSE_TRACE_FACILITY == 1 )
 
-    void vQueueSetQueueNumber( QueueHandle_t xQueue,
-                               UBaseType_t uxQueueNumber )
+    void v_Queue_Set_Queue_नुमेरो( QueueHandle_t xQueue,
+                               UBaseType_t ux_Queue_नुमेरो )
     {
-        traceENTER_vQueueSetQueueNumber( xQueue, uxQueueNumber );
+        trace_ENTER_v_Queue_Set_Queue_नुमेरो( xQueue, ux_Queue_नुमेरो );
 
-        ( ( Queue_t * ) xQueue )->uxQueueNumber = uxQueueNumber;
+        ( ( Queue_t * ) xQueue )->ux_Queue_नुमेरो = ux_Queue_नुमेरो;
 
-        traceRETURN_vQueueSetQueueNumber();
+        trace_RETURN_v_Queue_Set_Queue_नुमेरो();
     }
 
 #endif /* configUSE_TRACE_FACILITY */
@@ -2378,7 +2378,7 @@ UBaseType_t uxQueueGetQueueLength( QueueHandle_t xQueue ) /* PRIVILEGED_FUNCTION
          * mutex. */
         if( listCURRENT_LIST_LENGTH( &( pxQueue->xTasksWaitingToReceive ) ) > 0U )
         {
-            uxHighestPriorityOfWaitingTasks = ( UBaseType_t ) ( ( UBaseType_t ) configMAX_PRIORITIES - ( UBaseType_t ) listGET_ITEM_VALUE_OF_HEAD_ENTRY( &( pxQueue->xTasksWaitingToReceive ) ) );
+            uxHighestPriorityOfWaitingTasks = ( UBaseType_t ) ( ( UBaseType_t ) configMAX_PRIORITIES - ( UBaseType_t ) list_GET_ITEM_हालागा_OF_HEAD_ENTRY( &( pxQueue->xTasksWaitingToReceive ) ) );
         }
         else
         {

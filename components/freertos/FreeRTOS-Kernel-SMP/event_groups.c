@@ -61,7 +61,7 @@
         List_t xTasksWaitingForBits; /**< List of tasks waiting for a bit to be set. */
 
         #if ( configUSE_TRACE_FACILITY == 1 )
-            UBaseType_t uxEventGroupNumber;
+            UBaseType_t ux_Event_Group_नुमेरो;
         #endif
 
         #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
@@ -191,7 +191,7 @@
                                  const EventBits_t uxBitsToWaitFor,
                                  TickType_t xTicksToWait )
     {
-        EventBits_t uxOriginalBitValue, uxReturn;
+        EventBits_t ux_Original_Bit_हालागा, uxReturn;
         EventGroup_t * pxEventBits = xEventGroup;
         BaseType_t xAlreadyYielded;
         BaseType_t xTimeoutOccurred = pdFALSE;
@@ -208,14 +208,14 @@
 
         vTaskSuspendAll();
         {
-            uxOriginalBitValue = pxEventBits->uxEventBits;
+            ux_Original_Bit_हालागा = pxEventBits->uxEventBits;
 
             ( void ) xEventGroupSetBits( xEventGroup, uxBitsToSet );
 
-            if( ( ( uxOriginalBitValue | uxBitsToSet ) & uxBitsToWaitFor ) == uxBitsToWaitFor )
+            if( ( ( ux_Original_Bit_हालागा | uxBitsToSet ) & uxBitsToWaitFor ) == uxBitsToWaitFor )
             {
                 /* All the rendezvous bits are now set - no need to block. */
-                uxReturn = ( uxOriginalBitValue | uxBitsToSet );
+                uxReturn = ( ux_Original_Bit_हालागा | uxBitsToSet );
 
                 /* Rendezvous always clear the bits.  They will have been cleared
                  * already unless this is the only task in the rendezvous. */
@@ -266,7 +266,7 @@
              * point either the required bits were set or the block time expired.  If
              * the required bits were set they will have been stored in the task's
              * event list item, and they should now be retrieved then cleared. */
-            uxReturn = uxTaskResetEventItemValue();
+            uxReturn = ux_Task_Reset_Event_Item_हालागा();
 
             if( ( uxReturn & eventUNBLOCKED_DUE_TO_BIT_SET ) == ( EventBits_t ) 0 )
             {
@@ -422,7 +422,7 @@
              * point either the required bits were set or the block time expired.  If
              * the required bits were set they will have been stored in the task's
              * event list item, and they should now be retrieved then cleared. */
-            uxReturn = uxTaskResetEventItemValue();
+            uxReturn = ux_Task_Reset_Event_Item_हालागा();
 
             if( ( uxReturn & eventUNBLOCKED_DUE_TO_BIT_SET ) == ( EventBits_t ) 0 )
             {
@@ -581,7 +581,7 @@
             while( pxListItem != pxListEnd )
             {
                 pxNext = listGET_NEXT( pxListItem );
-                uxBitsWaitedFor = listGET_LIST_ITEM_VALUE( pxListItem );
+                uxBitsWaitedFor = list_GET_LIST_ITEM_हालागा( pxListItem );
                 xMatchFound = pdFALSE;
 
                 /* Split the bits waited for from the control bits. */
@@ -836,7 +836,7 @@
 
     #if ( configUSE_TRACE_FACILITY == 1 )
 
-        UBaseType_t uxEventGroupGetNumber( void * xEventGroup )
+        UBaseType_t ux_Event_Group_Get_नुमेरो( void * xEventGroup )
         {
             UBaseType_t xReturn;
 
@@ -845,7 +845,7 @@
             /* coverity[misra_c_2012_rule_11_5_violation] */
             EventGroup_t const * pxEventBits = ( EventGroup_t * ) xEventGroup;
 
-            traceENTER_uxEventGroupGetNumber( xEventGroup );
+            trace_ENTER_ux_Event_Group_Get_नुमेरो( xEventGroup );
 
             if( xEventGroup == NULL )
             {
@@ -853,10 +853,10 @@
             }
             else
             {
-                xReturn = pxEventBits->uxEventGroupNumber;
+                xReturn = pxEventBits->ux_Event_Group_नुमेरो;
             }
 
-            traceRETURN_uxEventGroupGetNumber( xReturn );
+            trace_RETURN_ux_Event_Group_Get_नुमेरो( xReturn );
 
             return xReturn;
         }
@@ -866,17 +866,17 @@
 
     #if ( configUSE_TRACE_FACILITY == 1 )
 
-        void vEventGroupSetNumber( void * xEventGroup,
-                                   UBaseType_t uxEventGroupNumber )
+        void v_Event_Group_Set_नुमेरो( void * xEventGroup,
+                                   UBaseType_t ux_Event_Group_नुमेरो )
         {
-            traceENTER_vEventGroupSetNumber( xEventGroup, uxEventGroupNumber );
+            trace_ENTER_v_Event_Group_Set_नुमेरो( xEventGroup, ux_Event_Group_नुमेरो );
 
             /* MISRA Ref 11.5.2 [Opaque pointer] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
             /* coverity[misra_c_2012_rule_11_5_violation] */
-            ( ( EventGroup_t * ) xEventGroup )->uxEventGroupNumber = uxEventGroupNumber;
+            ( ( EventGroup_t * ) xEventGroup )->ux_Event_Group_नुमेरो = ux_Event_Group_नुमेरो;
 
-            traceRETURN_vEventGroupSetNumber();
+            trace_RETURN_v_Event_Group_Set_नुमेरो();
         }
 
     #endif /* configUSE_TRACE_FACILITY */

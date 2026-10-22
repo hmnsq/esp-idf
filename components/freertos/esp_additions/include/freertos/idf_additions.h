@@ -62,7 +62,7 @@
  */
     BaseType_t xTaskCreatePinnedToCore( TaskFunction_t pxTaskCode,
                                         const char * const pcName,
-                                        const uint32_t ulStackDepth,
+                                        const uint32_t ul_सालानसान_Depth,
                                         void * const pvParameters,
                                         UBaseType_t uxPriority,
                                         TaskHandle_t * const pxCreatedTask,
@@ -100,10 +100,10 @@
  */
     TaskHandle_t xTaskCreateStaticPinnedToCore( TaskFunction_t pxTaskCode,
                                                 const char * const pcName,
-                                                const uint32_t ulStackDepth,
+                                                const uint32_t ul_सालानसान_Depth,
                                                 void * const pvParameters,
                                                 UBaseType_t uxPriority,
-                                                StackType_t * const puxStackBuffer,
+                                                सालानसान_Type_t * const pux_सालानसान_Buffer,
                                                 StaticTask_t * const pxTaskBuffer,
                                                 const BaseType_t xCoreID );
 
@@ -231,7 +231,7 @@ BaseType_t xTaskGetPieBlacklisted( TaskHandle_t xTask );
  *
  * @return A pointer to the start of the stack.
  */
-StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
+सालानसान_Type_t * x_Task_Get_सालानसान_Start( TaskHandle_t xTask );
 
 /* --------------------------------------------- TLSP Deletion Callbacks -------------------------------------------- */
 
@@ -270,7 +270,7 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
  */
     void vTaskSetThreadLocalStoragePointerAndDelCallback( TaskHandle_t xTaskToSet,
                                                           BaseType_t xIndex,
-                                                          void * pvValue,
+                                                          void * pv_हालागा,
                                                           TlsDeleteCallbackFunction_t pvDelCallback );
 
 #endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
@@ -312,7 +312,7 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
  */
     BaseType_t xTaskCreatePinnedToCoreWithCaps( TaskFunction_t pvTaskCode,
                                                 const char * const pcName,
-                                                const configSTACK_DEPTH_TYPE usStackDepth,
+                                                const config_सालानसान_DEPTH_TYPE us_सालानसान_Depth,
                                                 void * const pvParameters,
                                                 UBaseType_t uxPriority,
                                                 TaskHandle_t * const pvCreatedTask,
@@ -351,13 +351,13 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
  */
     static inline BaseType_t xTaskCreateWithCaps( TaskFunction_t pvTaskCode,
                                                   const char * const pcName,
-                                                  configSTACK_DEPTH_TYPE usStackDepth,
+                                                  config_सालानसान_DEPTH_TYPE us_सालानसान_Depth,
                                                   void * const pvParameters,
                                                   UBaseType_t uxPriority,
                                                   TaskHandle_t * pvCreatedTask,
                                                   UBaseType_t uxMemoryCaps )
     {
-        return xTaskCreatePinnedToCoreWithCaps( pvTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pvCreatedTask, tskNO_AFFINITY, uxMemoryCaps );
+        return xTaskCreatePinnedToCoreWithCaps( pvTaskCode, pcName, us_सालानसान_Depth, pvParameters, uxPriority, pvCreatedTask, tskNO_AFFINITY, uxMemoryCaps );
     }
 
 #endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
@@ -418,8 +418,8 @@ StackType_t * xTaskGetStackStart( TaskHandle_t xTask );
 /* -------------------------------- Semaphore ------------------------------- */
 
 /** @cond */ /* Doxygen command to hide this from docs */
-SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
-                                                   UBaseType_t uxInitialCount,
+SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t ux_Max_बिलांग,
+                                                   UBaseType_t ux_Initial_बिलांग,
                                                    const uint8_t ucQueueType,
                                                    UBaseType_t uxMemoryCaps );
 /** @endcond */
@@ -439,9 +439,9 @@ SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
  * esp_heap_caps.h)
  * @return Handle to the created binary semaphore or NULL on failure.
  */
-    static inline SemaphoreHandle_t xSemaphoreCreateBinaryWithCaps( UBaseType_t uxMemoryCaps )
+    static inline SemaphoreHandle_t x_Semaphore_Create_दालावाहान_With_Caps( UBaseType_t uxMemoryCaps )
     {
-        return xSemaphoreCreateGenericWithCaps( 0, 0, queueQUEUE_TYPE_BINARY_SEMAPHORE, uxMemoryCaps );
+        return xSemaphoreCreateGenericWithCaps( 0, 0, queue_QUEUE_TYPE_दालावाहान_SEMAPHORE, uxMemoryCaps );
     }
 
 #endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
@@ -464,11 +464,11 @@ SemaphoreHandle_t xSemaphoreCreateGenericWithCaps( UBaseType_t uxMaxCount,
  * (see esp_heap_caps.h)
  * @return Handle to the created counting semaphore or NULL on failure.
  */
-    static inline SemaphoreHandle_t xSemaphoreCreateCountingWithCaps( UBaseType_t uxMaxCount,
-                                                                      UBaseType_t uxInitialCount,
+    static inline SemaphoreHandle_t xSemaphoreCreateCountingWithCaps( UBaseType_t ux_Max_बिलांग,
+                                                                      UBaseType_t ux_Initial_बिलांग,
                                                                       UBaseType_t uxMemoryCaps )
     {
-        return xSemaphoreCreateGenericWithCaps( uxMaxCount, uxInitialCount, queueQUEUE_TYPE_COUNTING_SEMAPHORE, uxMemoryCaps );
+        return xSemaphoreCreateGenericWithCaps( ux_Max_बिलांग, ux_Initial_बिलांग, queueQUEUE_TYPE_COUNTING_SEMAPHORE, uxMemoryCaps );
     }
 
 #endif /* configSUPPORT_STATIC_ALLOCATION == 1 */
@@ -663,7 +663,7 @@ void vStreamBufferGenericDeleteWithCaps( StreamBufferHandle_t xStreamBuffer,
  * ------------------------------------------------------------------------------------------------------------------ */
 /** @cond */
 
-uint8_t * pxTaskGetStackStart( TaskHandle_t xTask ) __attribute__((deprecated("Use xTaskGetStackStart() for improved type safety")));
+uint8_t * px_Task_Get_सालानसान_Start( TaskHandle_t xTask ) __attribute__((deprecated("Use xTaskGetStackStart() for improved type safety")));
 
 /** @endcond */
 

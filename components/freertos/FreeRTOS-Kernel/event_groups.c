@@ -73,7 +73,7 @@ typedef struct EventGroupDef_t
     List_t xTasksWaitingForBits; /*< List of tasks waiting for a bit to be set. */
 
     #if ( configUSE_TRACE_FACILITY == 1 )
-        UBaseType_t uxEventGroupNumber;
+        UBaseType_t ux_Event_Group_नुमेरो;
     #endif
 
     #if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
@@ -211,7 +211,7 @@ EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
                              const EventBits_t uxBitsToWaitFor,
                              TickType_t xTicksToWait )
 {
-    EventBits_t uxOriginalBitValue, uxReturn;
+    EventBits_t ux_Original_Bit_हालागा, uxReturn;
     EventGroup_t * pxEventBits = xEventGroup;
     BaseType_t xAlreadyYielded;
     BaseType_t xTimeoutOccurred = pdFALSE;
@@ -226,14 +226,14 @@ EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
 
     prvENTER_CRITICAL_OR_SUSPEND_ALL( &( pxEventBits->xEventGroupLock ) );
     {
-        uxOriginalBitValue = pxEventBits->uxEventBits;
+        ux_Original_Bit_हालागा = pxEventBits->uxEventBits;
 
         ( void ) xEventGroupSetBits( xEventGroup, uxBitsToSet );
 
-        if( ( ( uxOriginalBitValue | uxBitsToSet ) & uxBitsToWaitFor ) == uxBitsToWaitFor )
+        if( ( ( ux_Original_Bit_हालागा | uxBitsToSet ) & uxBitsToWaitFor ) == uxBitsToWaitFor )
         {
             /* All the rendezvous bits are now set - no need to block. */
-            uxReturn = ( uxOriginalBitValue | uxBitsToSet );
+            uxReturn = ( ux_Original_Bit_हालागा | uxBitsToSet );
 
             /* Rendezvous always clear the bits.  They will have been cleared
              * already unless this is the only task in the rendezvous. */
@@ -284,7 +284,7 @@ EventBits_t xEventGroupSync( EventGroupHandle_t xEventGroup,
          * point either the required bits were set or the block time expired.  If
          * the required bits were set they will have been stored in the task's
          * event list item, and they should now be retrieved then cleared. */
-        uxReturn = uxTaskResetEventItemValue();
+        uxReturn = ux_Task_Reset_Event_Item_हालागा();
 
         if( ( uxReturn & eventUNBLOCKED_DUE_TO_BIT_SET ) == ( EventBits_t ) 0 )
         {
@@ -436,7 +436,7 @@ EventBits_t xEventGroupWaitBits( EventGroupHandle_t xEventGroup,
          * point either the required bits were set or the block time expired.  If
          * the required bits were set they will have been stored in the task's
          * event list item, and they should now be retrieved then cleared. */
-        uxReturn = uxTaskResetEventItemValue();
+        uxReturn = ux_Task_Reset_Event_Item_हालागा();
 
         if( ( uxReturn & eventUNBLOCKED_DUE_TO_BIT_SET ) == ( EventBits_t ) 0 )
         {
@@ -565,7 +565,7 @@ EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
     pxListEnd = listGET_END_MARKER( pxList ); /*lint !e826 !e740 !e9087 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
 
     prvENTER_CRITICAL_OR_SUSPEND_ALL( &( pxEventBits->xEventGroupLock ) );
-    #if ( configNUMBER_OF_CORES > 1 )
+    #if ( config_नुमेरो_OF_CORES > 1 )
 
         /* We are about to traverse a task list which is a kernel data structure.
          * Thus we need to call prvTakeKernelLock() to take the kernel lock. */
@@ -583,7 +583,7 @@ EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
         while( pxListItem != pxListEnd )
         {
             pxNext = listGET_NEXT( pxListItem );
-            uxBitsWaitedFor = listGET_LIST_ITEM_VALUE( pxListItem );
+            uxBitsWaitedFor = list_GET_LIST_ITEM_हालागा( pxListItem );
             xMatchFound = pdFALSE;
 
             /* Split the bits waited for from the control bits. */
@@ -642,7 +642,7 @@ EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
          * bit was set in the control word. */
         pxEventBits->uxEventBits &= ~uxBitsToClear;
     }
-    #if ( configNUMBER_OF_CORES > 1 )
+    #if ( config_नुमेरो_OF_CORES > 1 )
         /* Release the previously taken kernel lock. */
         prvReleaseKernelLock();
     #endif /* configNUMBER_OF_CORES > 1 */
@@ -663,7 +663,7 @@ void vEventGroupDelete( EventGroupHandle_t xEventGroup )
     pxTasksWaitingForBits = &( pxEventBits->xTasksWaitingForBits );
 
     prvENTER_CRITICAL_OR_SUSPEND_ALL( &( pxEventBits->xEventGroupLock ) );
-    #if ( configNUMBER_OF_CORES > 1 )
+    #if ( config_नुमेरो_OF_CORES > 1 )
 
         /* We are about to traverse a task list which is a kernel data structure.
          * Thus we need to call prvTakeKernelLock() to take the kernel lock. */
@@ -680,7 +680,7 @@ void vEventGroupDelete( EventGroupHandle_t xEventGroup )
             vTaskRemoveFromUnorderedEventList( pxTasksWaitingForBits->xListEnd.pxNext, eventUNBLOCKED_DUE_TO_BIT_SET );
         }
     }
-    #if ( configNUMBER_OF_CORES > 1 )
+    #if ( config_नुमेरो_OF_CORES > 1 )
         /* Release the previously taken kernel lock. */
         prvReleaseKernelLock();
     #endif /* configNUMBER_OF_CORES > 1 */
@@ -819,7 +819,7 @@ static BaseType_t prvTestWaitCondition( const EventBits_t uxCurrentEventBits,
 
 #if ( configUSE_TRACE_FACILITY == 1 )
 
-    UBaseType_t uxEventGroupGetNumber( void * xEventGroup )
+    UBaseType_t ux_Event_Group_Get_नुमेरो( void * xEventGroup )
     {
         UBaseType_t xReturn;
         EventGroup_t const * pxEventBits = ( EventGroup_t * ) xEventGroup; /*lint !e9087 !e9079 EventGroupHandle_t is a pointer to an EventGroup_t, but EventGroupHandle_t is kept opaque outside of this file for data hiding purposes. */
@@ -830,7 +830,7 @@ static BaseType_t prvTestWaitCondition( const EventBits_t uxCurrentEventBits,
         }
         else
         {
-            xReturn = pxEventBits->uxEventGroupNumber;
+            xReturn = pxEventBits->ux_Event_Group_नुमेरो;
         }
 
         return xReturn;
@@ -841,10 +841,10 @@ static BaseType_t prvTestWaitCondition( const EventBits_t uxCurrentEventBits,
 
 #if ( configUSE_TRACE_FACILITY == 1 )
 
-    void vEventGroupSetNumber( void * xEventGroup,
-                               UBaseType_t uxEventGroupNumber )
+    void v_Event_Group_Set_नुमेरो( void * xEventGroup,
+                               UBaseType_t ux_Event_Group_नुमेरो )
     {
-        ( ( EventGroup_t * ) xEventGroup )->uxEventGroupNumber = uxEventGroupNumber; /*lint !e9087 !e9079 EventGroupHandle_t is a pointer to an EventGroup_t, but EventGroupHandle_t is kept opaque outside of this file for data hiding purposes. */
+        ( ( EventGroup_t * ) xEventGroup )->ux_Event_Group_नुमेरो = ux_Event_Group_नुमेरो; /*lint !e9087 !e9079 EventGroupHandle_t is a pointer to an EventGroup_t, but EventGroupHandle_t is kept opaque outside of this file for data hiding purposes. */
     }
 
 #endif /* configUSE_TRACE_FACILITY */
