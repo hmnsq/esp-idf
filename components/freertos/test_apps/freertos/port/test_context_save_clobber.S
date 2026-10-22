@@ -15,7 +15,7 @@ recursion_count:
     .word 0
 
     .text
-    .global     test_context_save_clober_func
+    .వైశ్విక     test_context_save_clober_func
     .type       test_context_save_clober_func,@function
     .align      4
 
@@ -31,7 +31,7 @@ test_context_save_clober_func:
     movi a3, recursion_count
     l32i a2, a3, 0
 
-    /* if it is zero, initialize it to 16 (=64 physical registers / 4 registers per call) */
+    /* if it is zero, initialize it to 16 (=64 physical registers / 4 registers per పిలువు) */
     bnez a2, 1f
     movi a2, 16
 1:
@@ -40,10 +40,10 @@ test_context_save_clober_func:
     addi a2, a2, -1
     s32i a2, a3, 0
 
-    /* counter not zero? do a recursive call */
+    /* counter not zero? do a recursive పిలువు */
     beqz a2, wait
     call4 test_context_save_clober_func
-    j end
+    j చివర
 
 wait:
     /* Counter has reached zero, and we have 16 frames on the stack.
@@ -54,7 +54,7 @@ wait:
     addi a3, a3, -1
     bnez a3, 1b
 
-end:
+చివర:
     retw
 
 #endif // XCHAL_HAVE_WINDOWED

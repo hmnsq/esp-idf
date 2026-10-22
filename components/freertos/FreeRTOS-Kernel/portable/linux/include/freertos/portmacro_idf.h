@@ -10,32 +10,32 @@
  * FreeRTOS POSIX port code from the additional IDF POSIX port code.
  */
 
-#pragma once
+#సూచన once
 
-#include <stdint.h>
-#include <stdlib.h> // This is for malloc(), used by portmacro.h
-#include "sdkconfig.h"
-#include "esp_attr.h"
-#include "esp_task.h"
-#include "spinlock.h"
+#అన్తర్భావ <stdint.h>
+#అన్తర్భావ <stdlib.h> // This is for malloc(), used by portmacro.h
+#అన్తర్భావ "sdkconfig.h"
+#అన్తర్భావ "esp_attr.h"
+#అన్తర్భావ "esp_task.h"
+#అన్తర్భావ "spinlock.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#నిర్వచితమైతే __cplusplus
+బాహ్య "C" {
+#అయితే_ముగింపు
 
-typedef spinlock_t portMUX_TYPE;
+రకనిర్వచనం spinlock_t పోర్టు_MUX_TYPE;
 
 /**< Spinlock initializer */
-#define portMUX_INITIALIZER_UNLOCKED {                      \
-            .owner = portMUX_FREE_VAL,                      \
-            .count = 0,                                     \
+#నిర్వచించు పోర్టు_MUX_INITIALIZER_UNLOCKED {                      \
+            .owner = పోర్టు_MUX_FREE_VAL,                      \
+            .లెక్క = 0,                                     \
         }
-#define portMUX_FREE_VAL                    SPINLOCK_FREE           /**< Spinlock is free. [refactor-todo] check if this is still required */
+#నిర్వచించు పోర్టు_MUX_FREE_VAL                    SPINLOCK_FREE           /**< Spinlock is free. [refactor-todo] check if this is still required */
 
-void vPortYieldFromISR(void);
-void vPortYieldOtherCore(BaseType_t coreid);
+శూన్య v_పోర్టు_Yield_From_ISR(శూన్య);
+శూన్య v_పోర్టు_Yield_Other_Core(పునాది_Type_t coreid);
 
-#define portMUX_INITIALIZE(mux)             spinlock_initialize(mux)    /*< Initialize a spinlock to its unlocked state */
+#నిర్వచించు పోర్టు_MUX_INITIALIZE(mux)             spinlock_initialize(mux)    /*< Initialize a spinlock to its unlocked state */
 
 /**
  * @brief Get the current core's ID
@@ -43,9 +43,9 @@ void vPortYieldOtherCore(BaseType_t coreid);
  * @note dummy function for freertos simulator, always returns 0.
  @ return BaseType_t 0
  */
-static inline BaseType_t xPortGetCoreID(void)
+స్థిర అంతఃవరుస పునాది_Type_t x_పోర్టు_Get_Core_ID(శూన్య)
 {
-    return (BaseType_t) 0;
+    తిరిగి (పునాది_Type_t) 0;
 }
 
 /**
@@ -57,7 +57,7 @@ static inline BaseType_t xPortGetCoreID(void)
  * @return true Memory can be used to store a List
  * @return false Otherwise
  */
-bool xPortCheckValidListMem(const void *ptr);
+bool x_పోర్టు_Check_Valid_List_Mem(స్థిరరాశి శూన్య *ptr);
 
 /**
  * @brief Checks if a given piece of memory can be used to store a task's TCB
@@ -68,7 +68,7 @@ bool xPortCheckValidListMem(const void *ptr);
  * @return true Memory can be used to store a TCB
  * @return false Otherwise
  */
-bool xPortCheckValidTCBMem(const void *ptr);
+bool x_పోర్టు_Check_Valid_TCBMem(స్థిరరాశి శూన్య *ptr);
 
 /**
  * @brief Checks if a given piece of memory can be used to store a task's stack
@@ -79,13 +79,13 @@ bool xPortCheckValidTCBMem(const void *ptr);
  * @return true Memory can be used to store a task stack
  * @return false Otherwise
  */
-bool xPortcheckValidStackMem(const void *ptr);
+bool x_Portcheck_Valid_దొంతర_Mem(స్థిరరాశి శూన్య *ptr);
 
-#define portVALID_LIST_MEM(ptr)     xPortCheckValidListMem(ptr)
-#define portVALID_TCB_MEM(ptr)      xPortCheckValidTCBMem(ptr)
-#define portVALID_STACK_MEM(ptr)    xPortcheckValidStackMem(ptr)
+#నిర్వచించు పోర్టు_VALID_LIST_MEM(ptr)     x_పోర్టు_Check_Valid_List_Mem(ptr)
+#నిర్వచించు పోర్టు_VALID_TCB_MEM(ptr)      x_పోర్టు_Check_Valid_TCBMem(ptr)
+#నిర్వచించు పోర్టు_VALID_దొంతర_MEM(ptr)    x_Portcheck_Valid_దొంతర_Mem(ptr)
 
-BaseType_t xPortCheckIfInISR(void);
+పునాది_Type_t x_పోర్టు_Check_If_లోపల_ISR(శూన్య);
 
 /**
  * @brief Checks if the current core is in an ISR context
@@ -98,23 +98,23 @@ BaseType_t xPortCheckIfInISR(void);
  *  - pdTRUE if in ISR
  *  - pdFALSE otherwise
  */
-static inline BaseType_t xPortInIsrContext(void)
+స్థిర అంతఃవరుస పునాది_Type_t x_పోర్టు_లోపల_Isr_Context(శూన్య)
 {
     //Just call the FreeRTOS port interface version
-    return xPortCheckIfInISR();
+    తిరిగి x_పోర్టు_Check_If_లోపల_ISR();
 }
 
-static inline void vPortAssertIfInISR(void)
+స్థిర అంతఃవరుస శూన్య v_పోర్టు_Assert_If_లోపల_ISR(శూన్య)
 {
     /* Assert if the interrupt nesting count is > 0 */
-    configASSERT(xPortInIsrContext() == 0);
+    configASSERT(x_పోర్టు_లోపల_Isr_Context() == 0);
 }
 
 /**
  * @brief Assert if in ISR context
  */
-#define portASSERT_IF_IN_ISR() vPortAssertIfInISR()
+#నిర్వచించు పోర్టు_ASSERT_IF_లోపల_ISR() v_పోర్టు_Assert_If_లోపల_ISR()
 
-#ifdef __cplusplus
+#నిర్వచితమైతే __cplusplus
 }
-#endif
+#అయితే_ముగింపు

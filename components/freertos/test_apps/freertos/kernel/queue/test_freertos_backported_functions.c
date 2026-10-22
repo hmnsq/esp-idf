@@ -25,16 +25,16 @@
  *       the following test cases (see Queue Registry test cases instead)
  * For more details please refer the the ESP-IDF FreeRTOS changes documentation
  */
-#include "sdkconfig.h"
-#include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/timers.h"
-#include "freertos/queue.h"
-#include "freertos/semphr.h"
-#include "freertos/event_groups.h"
-#include "unity.h"
-#include "test_utils.h"
+#అన్తర్భావ "sdkconfig.h"
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "freertos/FreeRTOS.h"
+#అన్తర్భావ "freertos/task.h"
+#అన్తర్భావ "freertos/timers.h"
+#అన్తర్భావ "freertos/queue.h"
+#అన్తర్భావ "freertos/semphr.h"
+#అన్తర్భావ "freertos/event_groups.h"
+#అన్తర్భావ "unity.h"
+#అన్తర్భావ "test_utils.h"
 
 /* ---------------------Test 1: Backported Timer functions-----------------------
  * Test xTimerCreateStatic(), vTimerSetTimerId(), xTimerGetPeriod(), xTimerGetExpiryTime()
@@ -42,37 +42,37 @@
  * This test creates a one-shot static timer, sets/checks the timer's id and period. Then ensures
  * the timer cb is executed in a timely fashion.
  */
-#define TMR_PERIOD_TICKS  10
-#define TIMER_ID    0xFF
-#define TICK_DELTA  5
+#నిర్వచించు TMR_PERIOD_TICKS  10
+#నిర్వచించు TIMER_ID    0xFF
+#నిర్వచించు TICK_DELTA  5
 
-static StaticTimer_t timer_buffer;
-static TickType_t tmr_ideal_exp;
+స్థిర StaticTimer_t timer_బఫరు;
+స్థిర TickType_t tmr_ideal_exp;
 
-static void tmr_cb(TimerHandle_t xtimer)
+స్థిర శూన్య tmr_cb(TimerHandle_t xtimer)
 {
     //Check cb is called in timely fashion
-    TEST_ASSERT_UINT32_WITHIN(TICK_DELTA, tmr_ideal_exp, xTaskGetTickCount());
+    TEST_ASSERT_UINT32_WITHIN(TICK_DELTA, tmr_ideal_exp, x_Task_Get_Tick_లెక్క());
 }
 
 //No need for smp test as Timer Task always runs on core 0
 TEST_CASE("Test FreeRTOS backported timer functions", "[freertos]")
 {
     //Create one shot static timer with period TMR_PERIOD_TICKS
-    TimerHandle_t tmr_handle = xTimerCreateStatic("static_tmr", TMR_PERIOD_TICKS, pdFALSE, NULL, tmr_cb, &timer_buffer);
+    TimerHandle_t tmr_handle = xTimerCreateStatic("static_tmr", TMR_PERIOD_TICKS, pdFALSE, ఖాళీ, tmr_cb, &timer_బఫరు);
     TEST_ASSERT_EQUAL(TMR_PERIOD_TICKS, xTimerGetPeriod(tmr_handle));       //Test xTimerGetPeriod()
 
-    vTimerSetTimerID(tmr_handle, (void *)TIMER_ID);
+    v_Timer_సమితి_Timer_ID(tmr_handle, (శూన్య *)TIMER_ID);
     TEST_ASSERT_EQUAL(TIMER_ID, (uint32_t)pvTimerGetTimerID(tmr_handle));   //Test vTimerSetTimerID()
 
-    TEST_ASSERT_EQUAL(pdTRUE, xTimerStart(tmr_handle, 1));      //Start Timer
-    tmr_ideal_exp = xTaskGetTickCount() + TMR_PERIOD_TICKS;      //Calculate ideal expiration time
+    TEST_ASSERT_EQUAL(pdTRUE, x_Timer_ప్రారంభం(tmr_handle, 1));      //Start Timer
+    tmr_ideal_exp = x_Task_Get_Tick_లెక్క() + TMR_PERIOD_TICKS;      //Calculate ideal expiration time
     vTaskDelay(2);  //Need to yield to allow daemon task to process start command, or else expiration time will be NULL
 
-    TEST_ASSERT_UINT32_WITHIN(TICK_DELTA, tmr_ideal_exp, xTimerGetExpiryTime(tmr_handle));    //Test xTimerGetExpiryTime()
+    TEST_ASSERT_UINT32_WITHIN(TICK_DELTA, tmr_ideal_exp, x_Timer_Get_Expiry_సమయం(tmr_handle));    //Test xTimerGetExpiryTime()
 
     vTaskDelay(2 * TMR_PERIOD_TICKS);   //Delay until one shot timer has triggered
-    TEST_ASSERT_EQUAL(pdPASS, xTimerDelete(tmr_handle, portMAX_DELAY));     //Clean up
+    TEST_ASSERT_EQUAL(pdPASS, xTimerDelete(tmr_handle, పోర్టు_MAX_DELAY));     //Clean up
 
 }
 
@@ -86,33 +86,33 @@ TEST_CASE("Test FreeRTOS backported timer functions", "[freertos]")
  * doing a simple send/give and rec/take.
  */
 
-#define ITEM_SIZE       3
-#define NO_OF_ITEMS     3
-#define DELAY_TICKS     2
+#నిర్వచించు అంశం_కొలత       3
+#నిర్వచించు NO_యొక్క_వస్తువులు     3
+#నిర్వచించు DELAY_TICKS     2
 
-static StaticQueue_t queue_buffer;       //Queues, Semaphores, and Mutex use the same queue structure
-static uint8_t queue_storage_area[(ITEM_SIZE * NO_OF_ITEMS)];  //Queue storage provided in separate buffer to queue struct
+స్థిర Static_వరుస_t వరుస_బఫరు;       //Queues, Semaphores, and Mutex use the same queue structure
+స్థిర uint8_t వరుస_storage_area[(అంశం_కొలత * NO_యొక్క_వస్తువులు)];  //Queue storage provided in separate buffer to queue struct
 
 TEST_CASE("Test FreeRTOS backported Queue and Semphr functions", "[freertos]")
 {
     //Test static queue
-    uint8_t queue_item_to_send[ITEM_SIZE];
-    uint8_t queue_item_received[ITEM_SIZE];
-    for (int i = 0; i < ITEM_SIZE; i++) {
-        queue_item_to_send[i] = (0xF << i);
+    uint8_t వరుస_అంశం_గమ్యం_send[అంశం_కొలత];
+    uint8_t వరుస_అంశం_received[అంశం_కొలత];
+    కొరకు (పూర్ణాంకం i = 0; i < అంశం_కొలత; i++) {
+        వరుస_అంశం_గమ్యం_send[i] = (0xF << i);
     }
-    QueueHandle_t handle = xQueueCreateStatic(NO_OF_ITEMS, ITEM_SIZE, (uint8_t*) &queue_storage_area, &queue_buffer);
-    TEST_ASSERT_EQUAL(pdTRUE, xQueueSendToBack(handle, &queue_item_to_send, DELAY_TICKS));
+    వరుస_Handle_t handle = x_వరుస_Create_Static(NO_యొక్క_వస్తువులు, అంశం_కొలత, (uint8_t*) &వరుస_storage_area, &వరుస_బఫరు);
+    TEST_ASSERT_EQUAL(pdTRUE, x_వరుస_Send_గమ్యం_వెనుక(handle, &వరుస_అంశం_గమ్యం_send, DELAY_TICKS));
     vTaskDelay(1);
-    TEST_ASSERT_EQUAL(pdTRUE, xQueueReceive(handle, queue_item_received, DELAY_TICKS));
+    TEST_ASSERT_EQUAL(pdTRUE, x_వరుస_Receive(handle, వరుస_అంశం_received, DELAY_TICKS));
     vTaskDelay(1);
-    for (int i = 0; i < ITEM_SIZE; i++) {
-        TEST_ASSERT_EQUAL(queue_item_to_send[i], queue_item_received[i]);   //Check received contents are correct
+    కొరకు (పూర్ణాంకం i = 0; i < అంశం_కొలత; i++) {
+        TEST_ASSERT_EQUAL(వరుస_అంశం_గమ్యం_send[i], వరుస_అంశం_received[i]);   //Check received contents are correct
     }
-    vQueueDelete(handle);   //Technically not needed as deleting static queue/semphr doesn't clear static memory
+    v_వరుస_Delete(handle);   //Technically not needed as deleting static queue/semphr doesn't clear static memory
 
     //Test static binary semaphore
-    handle = xSemaphoreCreateBinaryStatic(&queue_buffer);   //Queue and Semphr handles are the same
+    handle = x_Semaphore_Create_ద్విమాన_Static(&వరుస_బఫరు);   //Queue and Semphr handles are the same
     TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGive(handle));
     vTaskDelay(1);
     TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTake(handle, DELAY_TICKS));
@@ -120,41 +120,41 @@ TEST_CASE("Test FreeRTOS backported Queue and Semphr functions", "[freertos]")
     vSemaphoreDelete(handle);
 
     //Test static counting semaphore and uxSemaphoreGetCount()
-    handle = xSemaphoreCreateCountingStatic(NO_OF_ITEMS, 0, &queue_buffer);
-    for (int i = 0; i < NO_OF_ITEMS; i++) {
+    handle = xSemaphoreCreateCountingStatic(NO_యొక్క_వస్తువులు, 0, &వరుస_బఫరు);
+    కొరకు (పూర్ణాంకం i = 0; i < NO_యొక్క_వస్తువులు; i++) {
         TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGive(handle));
     }
     vTaskDelay(1);
-    TEST_ASSERT_EQUAL(NO_OF_ITEMS, uxSemaphoreGetCount(handle));    //Test uxSemaphoreGetCount()
-    for (int i = 0; i < NO_OF_ITEMS; i++) {
+    TEST_ASSERT_EQUAL(NO_యొక్క_వస్తువులు, ux_Semaphore_Get_లెక్క(handle));    //Test uxSemaphoreGetCount()
+    కొరకు (పూర్ణాంకం i = 0; i < NO_యొక్క_వస్తువులు; i++) {
         TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTake(handle, DELAY_TICKS));
     }
     vTaskDelay(1);
-    TEST_ASSERT_EQUAL(0, uxSemaphoreGetCount(handle));
+    TEST_ASSERT_EQUAL(0, ux_Semaphore_Get_లెక్క(handle));
     vSemaphoreDelete(handle);
 
     //Test static mutex
-    handle = xSemaphoreCreateMutexStatic(&queue_buffer);
+    handle = xSemaphoreCreateMutexStatic(&వరుస_బఫరు);
     TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTake(handle, DELAY_TICKS));
     vTaskDelay(1);
-    TEST_ASSERT_EQUAL_PTR((void *)xTaskGetCurrentTaskHandle(), xSemaphoreGetMutexHolder(handle));   //Current task should now hold mutex
+    TEST_ASSERT_EQUAL_PTR((శూన్య *)xTaskGetCurrentTaskHandle(), xSemaphoreGetMutexHolder(handle));   //Current task should now hold mutex
     TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGive(handle));
     vTaskDelay(1);
-    TEST_ASSERT_EQUAL_PTR(NULL, xSemaphoreGetMutexHolder(handle));      //Mutex should have been released
+    TEST_ASSERT_EQUAL_PTR(ఖాళీ, xSemaphoreGetMutexHolder(handle));      //Mutex should have been released
     vSemaphoreDelete(handle);
 
     //Test static mutex recursive
-    handle = xSemaphoreCreateRecursiveMutexStatic(&queue_buffer);
-    for (int i = 0; i < NO_OF_ITEMS; i++) {
+    handle = xSemaphoreCreateRecursiveMutexStatic(&వరుస_బఫరు);
+    కొరకు (పూర్ణాంకం i = 0; i < NO_యొక్క_వస్తువులు; i++) {
         TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreTakeRecursive(handle, DELAY_TICKS));
     }
     vTaskDelay(1);
-    TEST_ASSERT_EQUAL_PTR((void *)xTaskGetCurrentTaskHandle(), xSemaphoreGetMutexHolder(handle));   //Current task should hold mutex
-    for (int i = 0; i < NO_OF_ITEMS; i++) {
+    TEST_ASSERT_EQUAL_PTR((శూన్య *)xTaskGetCurrentTaskHandle(), xSemaphoreGetMutexHolder(handle));   //Current task should hold mutex
+    కొరకు (పూర్ణాంకం i = 0; i < NO_యొక్క_వస్తువులు; i++) {
         TEST_ASSERT_EQUAL(pdTRUE, xSemaphoreGiveRecursive(handle));
     }
     vTaskDelay(1);
-    TEST_ASSERT_EQUAL_PTR(NULL, xSemaphoreGetMutexHolder(handle));      //Mutex should have been released
+    TEST_ASSERT_EQUAL_PTR(ఖాళీ, xSemaphoreGetMutexHolder(handle));      //Mutex should have been released
     vSemaphoreDelete(handle);
 
 }
@@ -164,28 +164,28 @@ TEST_CASE("Test FreeRTOS backported Queue and Semphr functions", "[freertos]")
  * and checking the task cb has run successfully.
  */
 
-#define STACK_SIZE  2048    //Task stack size
+#నిర్వచించు దొంతర_కొలత  2048    //Task stack size
 
-static StackType_t task_stack[STACK_SIZE];  //Static buffer for task stack
-static StaticTask_t task_buffer;            //Static buffer for TCB
-static bool has_run[CONFIG_FREERTOS_NUMBER_OF_CORES];
+స్థిర దొంతర_Type_t task_దొంతర[దొంతర_కొలత];  //Static buffer for task stack
+స్థిర StaticTask_t task_బఫరు;            //Static buffer for TCB
+స్థిర bool has_నిరంతరం[CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES];
 
-static void task(void *arg)
+స్థిర శూన్య task(శూన్య *arg)
 {
-    has_run[xPortGetCoreID()] = true;       //Signify static task cb has run
-    vTaskDelete(NULL);
+    has_నిరంతరం[x_పోర్టు_Get_Core_ID()] = true;       //Signify static task cb has run
+    vTaskDelete(ఖాళీ);
 }
 
 TEST_CASE("Test FreeRTOS static task allocation", "[freertos]")
 {
-    for (int core = 0; core < CONFIG_FREERTOS_NUMBER_OF_CORES; core++) {
-        has_run[core] = false;     //Clear has_run flag
-        TaskHandle_t handle = xTaskCreateStaticPinnedToCore(task, "static task", STACK_SIZE, NULL,
-                                                            UNITY_FREERTOS_PRIORITY + 1, (StackType_t *)&task_stack,
-                                                            (StaticTask_t *)&task_buffer, core);
+    కొరకు (పూర్ణాంకం core = 0; core < CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES; core++) {
+        has_నిరంతరం[core] = false;     //Clear has_run flag
+        TaskHandle_t handle = x_Task_Create_Static_Pinned_గమ్యం_Core(task, "static task", దొంతర_కొలత, ఖాళీ,
+                                                            UNITY_FREERTOS_ప్రాధాన్యత + 1, (దొంతర_Type_t *)&task_దొంతర,
+                                                            (StaticTask_t *)&task_బఫరు, core);
         vTaskDelay(5); //Allow for static task to run, delete, and idle to clean up
-        TEST_ASSERT_NOT_EQUAL(NULL, handle);    //Check static task was successfully allocated
-        TEST_ASSERT_TRUE(has_run[core]);    //Check static task has run
+        TEST_ASSERT_NOT_EQUAL(ఖాళీ, handle);    //Check static task was successfully allocated
+        TEST_ASSERT_TRUE(has_నిరంతరం[core]);    //Check static task has run
     }
 }
 
@@ -194,16 +194,16 @@ TEST_CASE("Test FreeRTOS static task allocation", "[freertos]")
  * for an event.
  */
 
-#define WAIT_BITS   0x01    //Wait for first bit
+#నిర్వచించు WAIT_బిట్లు   0x01    //Wait for first bit
 
-static StaticEventGroup_t event_group;
-static EventGroupHandle_t eg_handle;
+స్థిర Static_Event_సమూహం_t event_సమూహం;
+స్థిర Event_సమూహం_Handle_t eg_handle;
 
 TEST_CASE("Test FreeRTOS backported eventgroup functions", "[freertos]")
 {
-    eg_handle = xEventGroupCreateStatic((StaticEventGroup_t *)&event_group);
-    xEventGroupSetBits(eg_handle, WAIT_BITS);
-    TEST_ASSERT_EQUAL(WAIT_BITS, xEventGroupWaitBits(eg_handle, WAIT_BITS, pdTRUE, pdTRUE, portMAX_DELAY));
+    eg_handle = x_Event_సమూహం_Create_Static((Static_Event_సమూహం_t *)&event_సమూహం);
+    x_Event_సమూహం_సమితి_బిట్లు(eg_handle, WAIT_బిట్లు);
+    TEST_ASSERT_EQUAL(WAIT_బిట్లు, x_Event_సమూహం_Wait_బిట్లు(eg_handle, WAIT_బిట్లు, pdTRUE, pdTRUE, పోర్టు_MAX_DELAY));
     //Cleanup static event
-    vEventGroupDelete(eg_handle);
+    v_Event_సమూహం_Delete(eg_handle);
 }

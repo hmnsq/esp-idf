@@ -31,128 +31,128 @@
  */
 
 
-#include <stdlib.h>
+#అన్తర్భావ <stdlib.h>
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
  * task.h is included from an application file. */
-#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#నిర్వచించు MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#include "FreeRTOS.h"
-#include "list.h"
+#అన్తర్భావ "FreeRTOS.h"
+#అన్తర్భావ "list.h"
 
 /* The MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be
  * defined for the header files above, but not in this file, in order to
  * generate the correct privileged Vs unprivileged linkage and placement. */
-#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#నిర్వచనం_రద్దు MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /*-----------------------------------------------------------
 * PUBLIC LIST API documented in list.h
 *----------------------------------------------------------*/
 
-void vListInitialise( List_t * const pxList )
+శూన్య vListInitialise( List_t * స్థిరరాశి pxList )
 {
     traceENTER_vListInitialise( pxList );
 
     /* The list structure contains a list item which is used to mark the
      * end of the list.  To initialise the list the list end is inserted
      * as the only list entry. */
-    pxList->pxIndex = ( ListItem_t * ) &( pxList->xListEnd );
+    pxList->px_సూచీ = ( List_అంశం_t * ) &( pxList->x_List_చివర );
 
-    listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( &( pxList->xListEnd ) );
+    list_సమితి_మొదటి_LIST_అంశం_INTEGRITY_CHECK_విలువ( &( pxList->x_List_చివర ) );
 
     /* The list end value is the highest possible value in the list to
      * ensure it remains at the end of the list. */
-    pxList->xListEnd.xItemValue = portMAX_DELAY;
+    pxList->x_List_చివర.x_అంశం_విలువ = పోర్టు_MAX_DELAY;
 
     /* The list end next and previous pointers point to itself so we know
      * when the list is empty. */
-    pxList->xListEnd.pxNext = ( ListItem_t * ) &( pxList->xListEnd );
-    pxList->xListEnd.pxPrevious = ( ListItem_t * ) &( pxList->xListEnd );
+    pxList->x_List_చివర.px_తదుపరి = ( List_అంశం_t * ) &( pxList->x_List_చివర );
+    pxList->x_List_చివర.px_మునుపటి = ( List_అంశం_t * ) &( pxList->x_List_చివర );
 
     /* Initialize the remaining fields of xListEnd when it is a proper ListItem_t */
-    #if ( configUSE_MINI_LIST_ITEM == 0 )
+    #ఒకవేళ ( config_USE_MINI_LIST_అంశం == 0 )
     {
-        pxList->xListEnd.pvOwner = NULL;
-        pxList->xListEnd.pxContainer = NULL;
-        listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( &( pxList->xListEnd ) );
+        pxList->x_List_చివర.pvOwner = ఖాళీ;
+        pxList->x_List_చివర.pxContainer = ఖాళీ;
+        list_సమితి_రెండవ_LIST_అంశం_INTEGRITY_CHECK_విలువ( &( pxList->x_List_చివర ) );
     }
-    #endif
+    #అయితే_ముగింపు
 
-    pxList->uxNumberOfItems = ( UBaseType_t ) 0U;
+    pxList->ux_సంఖ్య_యొక్క_వస్తువులు = ( UBaseType_t ) 0U;
 
     /* Write known values into the list if
      * configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    listSET_LIST_INTEGRITY_CHECK_1_VALUE( pxList );
-    listSET_LIST_INTEGRITY_CHECK_2_VALUE( pxList );
+    list_సమితి_LIST_INTEGRITY_CHECK_1_విలువ( pxList );
+    list_సమితి_LIST_INTEGRITY_CHECK_2_విలువ( pxList );
 
     traceRETURN_vListInitialise();
 }
 /*-----------------------------------------------------------*/
 
-void vListInitialiseItem( ListItem_t * const pxItem )
+శూన్య v_List_Initialise_అంశం( List_అంశం_t * స్థిరరాశి px_అంశం )
 {
-    traceENTER_vListInitialiseItem( pxItem );
+    trace_ENTER_v_List_Initialise_అంశం( px_అంశం );
 
     /* Make sure the list item is not recorded as being on a list. */
-    pxItem->pxContainer = NULL;
+    px_అంశం->pxContainer = ఖాళీ;
 
     /* Write known values into the list item if
      * configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem );
-    listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem );
+    list_సమితి_మొదటి_LIST_అంశం_INTEGRITY_CHECK_విలువ( px_అంశం );
+    list_సమితి_రెండవ_LIST_అంశం_INTEGRITY_CHECK_విలువ( px_అంశం );
 
-    traceRETURN_vListInitialiseItem();
+    trace_RETURN_v_List_Initialise_అంశం();
 }
 /*-----------------------------------------------------------*/
 
-void vListInsertEnd( List_t * const pxList,
-                     ListItem_t * const pxNewListItem )
+శూన్య v_List_చొప్పించు_చివర( List_t * స్థిరరాశి pxList,
+                     List_అంశం_t * స్థిరరాశి px_New_List_అంశం )
 {
-    ListItem_t * const pxIndex = pxList->pxIndex;
+    List_అంశం_t * స్థిరరాశి px_సూచీ = pxList->px_సూచీ;
 
-    traceENTER_vListInsertEnd( pxList, pxNewListItem );
+    trace_ENTER_v_List_చొప్పించు_చివర( pxList, px_New_List_అంశం );
 
     /* Only effective when configASSERT() is also defined, these tests may catch
      * the list data structures being overwritten in memory.  They will not catch
      * data errors caused by incorrect configuration or use of FreeRTOS. */
     listTEST_LIST_INTEGRITY( pxList );
-    listTEST_LIST_ITEM_INTEGRITY( pxNewListItem );
+    list_TEST_LIST_అంశం_INTEGRITY( px_New_List_అంశం );
 
     /* Insert a new list item into pxList, but rather than sort the list,
      * makes the new list item the last item to be removed by a call to
      * listGET_OWNER_OF_NEXT_ENTRY(). */
-    pxNewListItem->pxNext = pxIndex;
-    pxNewListItem->pxPrevious = pxIndex->pxPrevious;
+    px_New_List_అంశం->px_తదుపరి = px_సూచీ;
+    px_New_List_అంశం->px_మునుపటి = px_సూచీ->px_మునుపటి;
 
     /* Only used during decision coverage testing. */
     mtCOVERAGE_TEST_DELAY();
 
-    pxIndex->pxPrevious->pxNext = pxNewListItem;
-    pxIndex->pxPrevious = pxNewListItem;
+    px_సూచీ->px_మునుపటి->px_తదుపరి = px_New_List_అంశం;
+    px_సూచీ->px_మునుపటి = px_New_List_అంశం;
 
     /* Remember which list the item is in. */
-    pxNewListItem->pxContainer = pxList;
+    px_New_List_అంశం->pxContainer = pxList;
 
-    ( pxList->uxNumberOfItems ) = ( UBaseType_t ) ( pxList->uxNumberOfItems + 1U );
+    ( pxList->ux_సంఖ్య_యొక్క_వస్తువులు ) = ( UBaseType_t ) ( pxList->ux_సంఖ్య_యొక్క_వస్తువులు + 1U );
 
-    traceRETURN_vListInsertEnd();
+    trace_RETURN_v_List_చొప్పించు_చివర();
 }
 /*-----------------------------------------------------------*/
 
-void vListInsert( List_t * const pxList,
-                  ListItem_t * const pxNewListItem )
+శూన్య v_List_చొప్పించు( List_t * స్థిరరాశి pxList,
+                  List_అంశం_t * స్థిరరాశి px_New_List_అంశం )
 {
-    ListItem_t * pxIterator;
-    const TickType_t xValueOfInsertion = pxNewListItem->xItemValue;
+    List_అంశం_t * pxIterator;
+    స్థిరరాశి TickType_t x_విలువ_యొక్క_Insertion = px_New_List_అంశం->x_అంశం_విలువ;
 
-    traceENTER_vListInsert( pxList, pxNewListItem );
+    trace_ENTER_v_List_చొప్పించు( pxList, px_New_List_అంశం );
 
     /* Only effective when configASSERT() is also defined, these tests may catch
      * the list data structures being overwritten in memory.  They will not catch
      * data errors caused by incorrect configuration or use of FreeRTOS. */
     listTEST_LIST_INTEGRITY( pxList );
-    listTEST_LIST_ITEM_INTEGRITY( pxNewListItem );
+    list_TEST_LIST_అంశం_INTEGRITY( px_New_List_అంశం );
 
     /* Insert the new list item into the list, sorted in xItemValue order.
      *
@@ -162,11 +162,11 @@ void vListInsert( List_t * const pxList,
      * share of the CPU.  However, if the xItemValue is the same as the back marker
      * the iteration loop below will not end.  Therefore the value is checked
      * first, and the algorithm slightly modified if necessary. */
-    if( xValueOfInsertion == portMAX_DELAY )
+    ఒకవేళ( x_విలువ_యొక్క_Insertion == పోర్టు_MAX_DELAY )
     {
-        pxIterator = pxList->xListEnd.pxPrevious;
+        pxIterator = pxList->x_List_చివర.px_మునుపటి;
     }
-    else
+    లేకపోతే
     {
         /* *** NOTE ***********************************************************
         *  If you find your application is crashing here then likely causes are
@@ -193,58 +193,58 @@ void vListInsert( List_t * const pxList,
         *      configMAX_SYSCALL_INTERRUPT_PRIORITY.
         **********************************************************************/
 
-        for( pxIterator = ( ListItem_t * ) &( pxList->xListEnd ); pxIterator->pxNext->xItemValue <= xValueOfInsertion; pxIterator = pxIterator->pxNext )
+        కొరకు( pxIterator = ( List_అంశం_t * ) &( pxList->x_List_చివర ); pxIterator->px_తదుపరి->x_అంశం_విలువ <= x_విలువ_యొక్క_Insertion; pxIterator = pxIterator->px_తదుపరి )
         {
             /* There is nothing to do here, just iterating to the wanted
              * insertion position. */
         }
     }
 
-    pxNewListItem->pxNext = pxIterator->pxNext;
-    pxNewListItem->pxNext->pxPrevious = pxNewListItem;
-    pxNewListItem->pxPrevious = pxIterator;
-    pxIterator->pxNext = pxNewListItem;
+    px_New_List_అంశం->px_తదుపరి = pxIterator->px_తదుపరి;
+    px_New_List_అంశం->px_తదుపరి->px_మునుపటి = px_New_List_అంశం;
+    px_New_List_అంశం->px_మునుపటి = pxIterator;
+    pxIterator->px_తదుపరి = px_New_List_అంశం;
 
     /* Remember which list the item is in.  This allows fast removal of the
      * item later. */
-    pxNewListItem->pxContainer = pxList;
+    px_New_List_అంశం->pxContainer = pxList;
 
-    ( pxList->uxNumberOfItems ) = ( UBaseType_t ) ( pxList->uxNumberOfItems + 1U );
+    ( pxList->ux_సంఖ్య_యొక్క_వస్తువులు ) = ( UBaseType_t ) ( pxList->ux_సంఖ్య_యొక్క_వస్తువులు + 1U );
 
-    traceRETURN_vListInsert();
+    trace_RETURN_v_List_చొప్పించు();
 }
 /*-----------------------------------------------------------*/
 
 
-UBaseType_t uxListRemove( ListItem_t * const pxItemToRemove )
+UBaseType_t uxListRemove( List_అంశం_t * స్థిరరాశి px_అంశం_గమ్యం_Remove )
 {
     /* The list item knows which list it is in.  Obtain the list from the list
      * item. */
-    List_t * const pxList = pxItemToRemove->pxContainer;
+    List_t * స్థిరరాశి pxList = px_అంశం_గమ్యం_Remove->pxContainer;
 
-    traceENTER_uxListRemove( pxItemToRemove );
+    traceENTER_uxListRemove( px_అంశం_గమ్యం_Remove );
 
-    pxItemToRemove->pxNext->pxPrevious = pxItemToRemove->pxPrevious;
-    pxItemToRemove->pxPrevious->pxNext = pxItemToRemove->pxNext;
+    px_అంశం_గమ్యం_Remove->px_తదుపరి->px_మునుపటి = px_అంశం_గమ్యం_Remove->px_మునుపటి;
+    px_అంశం_గమ్యం_Remove->px_మునుపటి->px_తదుపరి = px_అంశం_గమ్యం_Remove->px_తదుపరి;
 
     /* Only used during decision coverage testing. */
     mtCOVERAGE_TEST_DELAY();
 
     /* Make sure the index is left pointing to a valid item. */
-    if( pxList->pxIndex == pxItemToRemove )
+    ఒకవేళ( pxList->px_సూచీ == px_అంశం_గమ్యం_Remove )
     {
-        pxList->pxIndex = pxItemToRemove->pxPrevious;
+        pxList->px_సూచీ = px_అంశం_గమ్యం_Remove->px_మునుపటి;
     }
-    else
+    లేకపోతే
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    pxItemToRemove->pxContainer = NULL;
-    ( pxList->uxNumberOfItems ) = ( UBaseType_t ) ( pxList->uxNumberOfItems - 1U );
+    px_అంశం_గమ్యం_Remove->pxContainer = ఖాళీ;
+    ( pxList->ux_సంఖ్య_యొక్క_వస్తువులు ) = ( UBaseType_t ) ( pxList->ux_సంఖ్య_యొక్క_వస్తువులు - 1U );
 
-    traceRETURN_uxListRemove( pxList->uxNumberOfItems );
+    traceRETURN_uxListRemove( pxList->ux_సంఖ్య_యొక్క_వస్తువులు );
 
-    return pxList->uxNumberOfItems;
+    తిరిగి pxList->ux_సంఖ్య_యొక్క_వస్తువులు;
 }
 /*-----------------------------------------------------------*/

@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "test_utils.h"
+#అన్తర్భావ "test_utils.h"
 
-#define configTEST_DEFAULT_STACK_SIZE               4096
-#define configTEST_UNITY_TASK_PRIORITY              UNITY_FREERTOS_PRIORITY
+#నిర్వచించు config_TEST_DEFAULT_దొంతర_కొలత               4096
+#నిర్వచించు config_TEST_UNITY_TASK_ప్రాధాన్యత              UNITY_FREERTOS_ప్రాధాన్యత
 
-#define portTEST_REF_CLOCK_TYPE                     uint32_t
-#define portTEST_REF_CLOCK_INIT()                   ref_clock_init()
-#define portTEST_REF_CLOCK_DEINIT()                 ref_clock_deinit()
-#define portTEST_REF_CLOCK_GET_TIME()               ((uint32_t) ref_clock_get())
-#define portTEST_TICKS_TO_REF_CLOCK(ticks)          ((ticks) * (1000000/configTICK_RATE_HZ))
+#నిర్వచించు పోర్టు_TEST_REF_CLOCK_TYPE                     uint32_t
+#నిర్వచించు పోర్టు_TEST_REF_CLOCK_INIT()                   ref_clock_init()
+#నిర్వచించు పోర్టు_TEST_REF_CLOCK_DEINIT()                 ref_clock_deinit()
+#నిర్వచించు పోర్టు_TEST_REF_CLOCK_GET_సమయం()               ((uint32_t) ref_clock_get())
+#నిర్వచించు పోర్టు_TEST_TICKS_గమ్యం_REF_CLOCK(ticks)          ((ticks) * (1000000/config_TICK_రేటు_HZ))

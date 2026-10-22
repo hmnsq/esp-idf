@@ -4,21 +4,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#pragma once
+#సూచన once
 
 /*
  * This file is like "idf_additions.h" but for private API (i.e., only meant to
  * be called internally by other ESP-IDF components.
  */
 
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#అన్తర్భావ "sdkconfig.h"
+#అన్తర్భావ "freertos/FreeRTOS.h"
+#అన్తర్భావ "freertos/task.h"
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#నిర్వచితమైతే __cplusplus
+    బాహ్య "C" {
+#అయితే_ముగింపు
 /* *INDENT-ON* */
 
 /*------------------------------------------------------------------------------
@@ -36,117 +36,117 @@
  *      - Critical sections or disabling interrupts for deterministic operations
  * - SMP will always use critical sections (determinism is not supported)
  */
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#ఒకవేళ ( !CONFIG_FREERTOS_SMP && ( config_అంకె_CORES > 1 ) )
 
 /* Macros that use a critical section when building for SMP */
-    #define prvENTER_CRITICAL_OR_SUSPEND_ALL( pxLock )    taskENTER_CRITICAL( ( pxLock ) )
-    #define prvEXIT_CRITICAL_OR_RESUME_ALL( pxLock )      ( { taskEXIT_CRITICAL( ( pxLock ) ); pdFALSE; } )
-    #define prvENTER_CRITICAL_OR_MASK_ISR( pxLock, uxStatus ) \
+    #నిర్వచించు prvENTER_CRITICAL_OR_SUSPEND_ALL( px_తాళం )    taskENTER_CRITICAL( ( px_తాళం ) )
+    #నిర్వచించు prvEXIT_CRITICAL_OR_RESUME_ALL( px_తాళం )      ( { taskEXIT_CRITICAL( ( px_తాళం ) ); pdFALSE; } )
+    #నిర్వచించు prv_ENTER_CRITICAL_OR_ముసుగు_ISR( px_తాళం, ux_స్థితి ) \
     {                                                         \
-        taskENTER_CRITICAL_ISR( ( pxLock ) );                 \
-        ( void ) ( uxStatus );                                \
+        taskENTER_CRITICAL_ISR( ( px_తాళం ) );                 \
+        ( శూన్య ) ( ux_స్థితి );                                \
     }
-    #define prvEXIT_CRITICAL_OR_UNMASK_ISR( pxLock, uxStatus ) \
+    #నిర్వచించు prvEXIT_CRITICAL_OR_UNMASK_ISR( px_తాళం, ux_స్థితి ) \
     {                                                          \
-        taskEXIT_CRITICAL_ISR( ( pxLock ) );                   \
-        ( void ) ( uxStatus );                                 \
+        taskEXIT_CRITICAL_ISR( ( px_తాళం ) );                   \
+        ( శూన్య ) ( ux_స్థితి );                                 \
     }
 
 /* Macros that enter/exit a critical section only when building for SMP */
-    #define prvENTER_CRITICAL_SMP_ONLY( pxLock )         taskENTER_CRITICAL( pxLock )
-    #define prvEXIT_CRITICAL_SMP_ONLY( pxLock )          taskEXIT_CRITICAL( pxLock )
-    #define prvENTER_CRITICAL_ISR_SMP_ONLY( pxLock )     taskENTER_CRITICAL_ISR( pxLock )
-    #define prvEXIT_CRITICAL_ISR_SMP_ONLY( pxLock )      taskEXIT_CRITICAL_ISR( pxLock )
-    #define prvENTER_CRITICAL_SAFE_SMP_ONLY( pxLock )    prvTaskEnterCriticalSafeSMPOnly( pxLock )
-    #define prvEXIT_CRITICAL_SAFE_SMP_ONLY( pxLock )     prvTaskExitCriticalSafeSMPOnly( pxLock )
+    #నిర్వచించు prvENTER_CRITICAL_SMP_ONLY( px_తాళం )         taskENTER_CRITICAL( px_తాళం )
+    #నిర్వచించు prvEXIT_CRITICAL_SMP_ONLY( px_తాళం )          taskEXIT_CRITICAL( px_తాళం )
+    #నిర్వచించు prvENTER_CRITICAL_ISR_SMP_ONLY( px_తాళం )     taskENTER_CRITICAL_ISR( px_తాళం )
+    #నిర్వచించు prvEXIT_CRITICAL_ISR_SMP_ONLY( px_తాళం )      taskEXIT_CRITICAL_ISR( px_తాళం )
+    #నిర్వచించు prv_ENTER_CRITICAL_సురక్షిత_SMP_ONLY( px_తాళం )    prv_Task_Enter_Critical_సురక్షిత_SMPOnly( px_తాళం )
+    #నిర్వచించు prv_EXIT_CRITICAL_సురక్షిత_SMP_ONLY( px_తాళం )     prv_Task_Exit_Critical_సురక్షిత_SMPOnly( px_తాళం )
 
-    static inline __attribute__( ( always_inline ) )
-    void prvTaskEnterCriticalSafeSMPOnly( portMUX_TYPE * pxLock )
+    స్థిర అంతఃవరుస __attribute__( ( always_inline ) )
+    శూన్య prv_Task_Enter_Critical_సురక్షిత_SMPOnly( పోర్టు_MUX_TYPE * px_తాళం )
     {
-        if( portCHECK_IF_IN_ISR() == pdFALSE )
+        ఒకవేళ( పోర్టు_CHECK_IF_లోపల_ISR() == pdFALSE )
         {
-            taskENTER_CRITICAL( pxLock );
+            taskENTER_CRITICAL( px_తాళం );
         }
-        else
+        లేకపోతే
         {
-            #ifdef __clang_analyzer__
+            #నిర్వచితమైతే __clang_analyzer__
                 /* Teach clang-tidy that ISR version macro can be different */
                 configASSERT( 1 );
-            #endif
-            taskENTER_CRITICAL_ISR( pxLock );
+            #అయితే_ముగింపు
+            taskENTER_CRITICAL_ISR( px_తాళం );
         }
     }
 
-    static inline __attribute__( ( always_inline ) )
-    void prvTaskExitCriticalSafeSMPOnly( portMUX_TYPE * pxLock )
+    స్థిర అంతఃవరుస __attribute__( ( always_inline ) )
+    శూన్య prv_Task_Exit_Critical_సురక్షిత_SMPOnly( పోర్టు_MUX_TYPE * px_తాళం )
     {
-        if( portCHECK_IF_IN_ISR() == pdFALSE )
+        ఒకవేళ( పోర్టు_CHECK_IF_లోపల_ISR() == pdFALSE )
         {
-            taskEXIT_CRITICAL( pxLock );
+            taskEXIT_CRITICAL( px_తాళం );
         }
-        else
+        లేకపోతే
         {
-            #ifdef __clang_analyzer__
+            #నిర్వచితమైతే __clang_analyzer__
                 /* Teach clang-tidy that ISR version macro can be different */
                 configASSERT( 1 );
-            #endif
-            taskEXIT_CRITICAL_ISR( pxLock );
+            #అయితే_ముగింపు
+            taskEXIT_CRITICAL_ISR( px_తాళం );
         }
     }
 
 /* Macros that enter/exit a critical section only when building for single-core */
-    #define prvENTER_CRITICAL_SC_ONLY( pxLock )
-    #define prvEXIT_CRITICAL_SC_ONLY( pxLock )
+    #నిర్వచించు prvENTER_CRITICAL_SC_ONLY( px_తాళం )
+    #నిర్వచించు prvEXIT_CRITICAL_SC_ONLY( px_తాళం )
 
 /* Macros that enable/disable interrupts only when building for SMP */
-    #define prvDISABLE_INTERRUPTS_ISR_SMP_ONLY()             portSET_INTERRUPT_MASK_FROM_ISR()
-    #define prvENABLE_INTERRUPTS_ISR_SMP_ONLY( uxStatus )    portCLEAR_INTERRUPT_MASK_FROM_ISR( uxStatus )
+    #నిర్వచించు prvDISABLE_INTERRUPTS_ISR_SMP_ONLY()             పోర్టు_సమితి_అంతరాయం_ముసుగు_FROM_ISR()
+    #నిర్వచించు prvENABLE_INTERRUPTS_ISR_SMP_ONLY( ux_స్థితి )    పోర్టు_CLEAR_అంతరాయం_ముసుగు_FROM_ISR( ux_స్థితి )
 
-#elif ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES == 1 ) )
+#లేదావేళ ( !CONFIG_FREERTOS_SMP && ( config_అంకె_CORES == 1 ) )
 
 /* Macros that suspend the scheduler or disables interrupts when building for single-core */
-    #define prvENTER_CRITICAL_OR_SUSPEND_ALL( pxLock )    ( { vTaskSuspendAll(); ( void ) ( pxLock ); } )
-    #define prvEXIT_CRITICAL_OR_RESUME_ALL( pxLock )      xTaskResumeAll()
-    #define prvENTER_CRITICAL_OR_MASK_ISR( pxLock, uxStatus ) \
+    #నిర్వచించు prvENTER_CRITICAL_OR_SUSPEND_ALL( px_తాళం )    ( { vTaskSuspendAll(); ( శూన్య ) ( px_తాళం ); } )
+    #నిర్వచించు prvEXIT_CRITICAL_OR_RESUME_ALL( px_తాళం )      xTaskResumeAll()
+    #నిర్వచించు prv_ENTER_CRITICAL_OR_ముసుగు_ISR( px_తాళం, ux_స్థితి ) \
     {                                                         \
-        ( uxStatus ) = portSET_INTERRUPT_MASK_FROM_ISR();     \
-        ( void ) ( pxLock );                                  \
+        ( ux_స్థితి ) = పోర్టు_సమితి_అంతరాయం_ముసుగు_FROM_ISR();     \
+        ( శూన్య ) ( px_తాళం );                                  \
     }
-    #define prvEXIT_CRITICAL_OR_UNMASK_ISR( pxLock, uxStatus ) \
+    #నిర్వచించు prvEXIT_CRITICAL_OR_UNMASK_ISR( px_తాళం, ux_స్థితి ) \
     {                                                          \
-        portCLEAR_INTERRUPT_MASK_FROM_ISR( ( uxStatus ) );     \
-        ( void ) ( pxLock );                                   \
+        పోర్టు_CLEAR_అంతరాయం_ముసుగు_FROM_ISR( ( ux_స్థితి ) );     \
+        ( శూన్య ) ( px_తాళం );                                   \
     }
 
 /* Macros that enter/exit a critical section only when building for SMP */
-#if !defined prvENTER_CRITICAL_SMP_ONLY
-    #define prvENTER_CRITICAL_SMP_ONLY( pxLock )
-#endif
-#if !defined prvEXIT_CRITICAL_SMP_ONLY
-    #define prvEXIT_CRITICAL_SMP_ONLY( pxLock )
-#endif
-#if !defined prvENTER_CRITICAL_ISR_SMP_ONLY
-    #define prvENTER_CRITICAL_ISR_SMP_ONLY( pxLock )
-#endif
-#if !defined prvEXIT_CRITICAL_ISR_SMP_ONLY
-    #define prvEXIT_CRITICAL_ISR_SMP_ONLY( pxLock )
-#endif
-#if !defined prvENTER_CRITICAL_SAFE_SMP_ONLY
-    #define prvENTER_CRITICAL_SAFE_SMP_ONLY( pxLock )
-#endif
-#if !defined prvEXIT_CRITICAL_SAFE_SMP_ONLY
-    #define prvEXIT_CRITICAL_SAFE_SMP_ONLY( pxLock )
-#endif
+#ఒకవేళ !defined prvENTER_CRITICAL_SMP_ONLY
+    #నిర్వచించు prvENTER_CRITICAL_SMP_ONLY( px_తాళం )
+#అయితే_ముగింపు
+#ఒకవేళ !defined prvEXIT_CRITICAL_SMP_ONLY
+    #నిర్వచించు prvEXIT_CRITICAL_SMP_ONLY( px_తాళం )
+#అయితే_ముగింపు
+#ఒకవేళ !defined prvENTER_CRITICAL_ISR_SMP_ONLY
+    #నిర్వచించు prvENTER_CRITICAL_ISR_SMP_ONLY( px_తాళం )
+#అయితే_ముగింపు
+#ఒకవేళ !defined prvEXIT_CRITICAL_ISR_SMP_ONLY
+    #నిర్వచించు prvEXIT_CRITICAL_ISR_SMP_ONLY( px_తాళం )
+#అయితే_ముగింపు
+#ఒకవేళ !defined prv_ENTER_CRITICAL_సురక్షిత_SMP_ONLY
+    #నిర్వచించు prv_ENTER_CRITICAL_సురక్షిత_SMP_ONLY( px_తాళం )
+#అయితే_ముగింపు
+#ఒకవేళ !defined prv_EXIT_CRITICAL_సురక్షిత_SMP_ONLY
+    #నిర్వచించు prv_EXIT_CRITICAL_సురక్షిత_SMP_ONLY( px_తాళం )
+#అయితే_ముగింపు
 
 /* Macros that enter/exit a critical section only when building for single-core */
-    #define prvENTER_CRITICAL_SC_ONLY( pxLock )              taskENTER_CRITICAL( pxLock )
-    #define prvEXIT_CRITICAL_SC_ONLY( pxLock )               taskEXIT_CRITICAL( pxLock )
+    #నిర్వచించు prvENTER_CRITICAL_SC_ONLY( px_తాళం )              taskENTER_CRITICAL( px_తాళం )
+    #నిర్వచించు prvEXIT_CRITICAL_SC_ONLY( px_తాళం )               taskEXIT_CRITICAL( px_తాళం )
 
 /* Macros that enable/disable interrupts only when building for SMP */
-    #define prvDISABLE_INTERRUPTS_ISR_SMP_ONLY()             ( ( UBaseType_t ) 0 )
-    #define prvENABLE_INTERRUPTS_ISR_SMP_ONLY( uxStatus )    ( ( void ) uxStatus )
+    #నిర్వచించు prvDISABLE_INTERRUPTS_ISR_SMP_ONLY()             ( ( UBaseType_t ) 0 )
+    #నిర్వచించు prvENABLE_INTERRUPTS_ISR_SMP_ONLY( ux_స్థితి )    ( ( శూన్య ) ux_స్థితి )
 
-#endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES == 1 ) ) */
+#అయితే_ముగింపు /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES == 1 ) ) */
 
 /*
  * In ESP-IDF FreeRTOS under SMP builds, spinlocks are to protect different
@@ -166,14 +166,14 @@
  * (which are kernel data structures). Thus, a wrapper function must be provided
  * to take/release the "xKernelLock" from outside tasks.c.
  */
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#ఒకవేళ ( !CONFIG_FREERTOS_SMP && ( config_అంకె_CORES > 1 ) )
 
-    void prvTakeKernelLock( void );
-    void prvReleaseKernelLock( void );
+    శూన్య prv_Take_Kernel_తాళం( శూన్య );
+    శూన్య prv_Release_Kernel_తాళం( శూన్య );
 
-#endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
+#అయితే_ముగింపు /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 
-#if ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#ఒకవేళ ( CONFIG_FREERTOS_SMP && ( config_అంకె_CORES > 1 ) )
 
 /**
  * @brief Workaround for non-thread safe multi-core OS startup (see IDF-4524)
@@ -181,9 +181,9 @@
  * This function must be called with interrupts disabled on all cores other than
  * core 0 during startup.
  */
-    void prvStartSchedulerOtherCores( void );
+    శూన్య prv_ప్రారంభం_Scheduler_Other_Cores( శూన్య );
 
-#endif /* ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
+#అయితే_ముగింపు /* ( CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 
 /*
  * In ESP-IDF FreeRTOS (i.e., multi-core SMP), core 0 manages the the FreeRTOS
@@ -195,13 +195,13 @@
  * This function will check if the current core requires time slicing, and also
  * call the application tick hook. However, the tick count will remain unchanged.
  */
-#if ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) )
+#ఒకవేళ ( !CONFIG_FREERTOS_SMP && ( config_అంకె_CORES > 1 ) )
 
-    BaseType_t xTaskIncrementTickOtherCores( void );
+    పునాది_Type_t xTaskIncrementTickOtherCores( శూన్య );
 
-#endif /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
+#అయితే_ముగింపు /* ( !CONFIG_FREERTOS_SMP && ( configNUM_CORES > 1 ) ) */
 
-#if CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER
+#ఒకవేళ CONFIG_FREERTOS_SYSTICK_ఉపయోగిస్తుంది_SYSTIMER
 
 /*
  * Reconcile the given core's OS-tick accounting against the free-running counter while its
@@ -215,14 +215,14 @@
  *
  * @return Number of whole OS-tick periods that elapsed while masked.
  */
-    uint32_t xPortSysTickClaimElapsedTicks( int cpu_id );
+    uint32_t x_పోర్టు_Sys_Tick_Claim_Elapsed_Ticks( పూర్ణాంకం cpu_id );
 
-#endif /* CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER */
+#అయితే_ముగింపు /* CONFIG_FREERTOS_SYSTICK_USES_SYSTIMER */
 
 /*------------------------------------------------------------------------------
  * TASK UTILITIES (PRIVATE)
  *----------------------------------------------------------------------------*/
-#if ( INCLUDE_vTaskPrioritySet == 1 )
+#ఒకవేళ ( INCLUDE_v_Task_ప్రాధాన్యత_సమితి == 1 )
 
 /**
  * @brief Structure to save a task's previous priority
@@ -230,17 +230,17 @@
  * This structure is meant to be used with prvTaskPriorityRaise() and
  * prvTaskPriorityRestore().
  */
-    typedef struct
+    రకనిర్వచనం నిర్మాణం
     {
-        UBaseType_t uxPriority;
-        #if ( configUSE_MUTEXES == 1 )
-            UBaseType_t uxBasePriority;
-        #endif
-    } prvTaskSavedPriority_t;
+        UBaseType_t ux_ప్రాధాన్యత;
+        #ఒకవేళ ( configUSE_MUTEXES == 1 )
+            UBaseType_t ux_పునాది_ప్రాధాన్యత;
+        #అయితే_ముగింపు
+    } prv_Task_Saved_ప్రాధాన్యత_t;
 
-#endif /* INCLUDE_vTaskPrioritySet == 1 */
+#అయితే_ముగింపు /* INCLUDE_vTaskPrioritySet == 1 */
 
-#if ( INCLUDE_vTaskPrioritySet == 1 )
+#ఒకవేళ ( INCLUDE_v_Task_ప్రాధాన్యత_సమితి == 1 )
 
 /**
  * INCLUDE_vTaskPrioritySet must be defined as 1 for this function to be
@@ -275,12 +275,12 @@
  * @param uxNewPriority The priority to which the task's priority will be
  * set.
  */
-    void prvTaskPriorityRaise( prvTaskSavedPriority_t * pxSavedPriority,
-                               UBaseType_t uxNewPriority );
+    శూన్య prv_Task_ప్రాధాన్యత_Raise( prv_Task_Saved_ప్రాధాన్యత_t * px_Saved_ప్రాధాన్యత,
+                               UBaseType_t ux_New_ప్రాధాన్యత );
 
-#endif /* INCLUDE_vTaskPrioritySet == 1 */
+#అయితే_ముగింపు /* INCLUDE_vTaskPrioritySet == 1 */
 
-#if ( INCLUDE_vTaskPrioritySet == 1 )
+#ఒకవేళ ( INCLUDE_v_Task_ప్రాధాన్యత_సమితి == 1 )
 
 /**
  * INCLUDE_vTaskPrioritySet must be defined as 1 for this function to be
@@ -300,11 +300,11 @@
  * @param pxSavedPriority previously saved base and current priorities that need
  * to be restored
  */
-    void prvTaskPriorityRestore( prvTaskSavedPriority_t * pxSavedPriority );
+    శూన్య prv_Task_ప్రాధాన్యత_Restore( prv_Task_Saved_ప్రాధాన్యత_t * px_Saved_ప్రాధాన్యత );
 
-#endif /* INCLUDE_vTaskPrioritySet == 1 */
+#అయితే_ముగింపు /* INCLUDE_vTaskPrioritySet == 1 */
 
-#if CONFIG_SPIRAM
+#ఒకవేళ CONFIG_SPIRAM
 
 /**
  * Create a new task with stack having the desired heap capabilities and add it to the
@@ -364,30 +364,30 @@
  * @return pdPASS if the task was successfully created and added to a ready
  * list, otherwise an error code defined in the file projdefs.h
  */
-    #if CONFIG_FREERTOS_SMP
-        BaseType_t prvTaskCreateDynamicAffinitySetWithCaps( TaskFunction_t pxTaskCode,
-                                                            const char * const pcName,
-                                                            const configSTACK_DEPTH_TYPE usStackDepth,
-                                                            void * const pvParameters,
-                                                            UBaseType_t uxPriority,
-                                                            UBaseType_t uxCoreAffinityMask,
-                                                            UBaseType_t uxStackMemoryCaps,
-                                                            TaskHandle_t * const pxCreatedTask );
-    #else
-        BaseType_t prvTaskCreateDynamicPinnedToCoreWithCaps( TaskFunction_t pxTaskCode,
-                                                             const char * const pcName,
-                                                             const configSTACK_DEPTH_TYPE usStackDepth,
-                                                             void * const pvParameters,
-                                                             UBaseType_t uxPriority,
-                                                             const BaseType_t xCoreID,
-                                                             UBaseType_t uxStackMemoryCaps,
-                                                             TaskHandle_t * const pxCreatedTask );
-    #endif // CONFIG_FREERTOS_SMP
+    #ఒకవేళ CONFIG_FREERTOS_SMP
+        పునాది_Type_t prv_Task_Create_Dynamic_Affinity_సమితి_With_Caps( TaskFunction_t px_Task_సంకేతం,
+                                                            స్థిరరాశి అక్షరం * స్థిరరాశి pcName,
+                                                            స్థిరరాశి config_దొంతర_లోతు_TYPE us_దొంతర_లోతు,
+                                                            శూన్య * స్థిరరాశి pvParameters,
+                                                            UBaseType_t ux_ప్రాధాన్యత,
+                                                            UBaseType_t ux_Core_Affinity_ముసుగు,
+                                                            UBaseType_t ux_దొంతర_జ్ఞాపకం_Caps,
+                                                            TaskHandle_t * స్థిరరాశి pxCreatedTask );
+    #లేకపోతే
+        పునాది_Type_t prv_Task_Create_Dynamic_Pinned_గమ్యం_Core_With_Caps( TaskFunction_t px_Task_సంకేతం,
+                                                             స్థిరరాశి అక్షరం * స్థిరరాశి pcName,
+                                                             స్థిరరాశి config_దొంతర_లోతు_TYPE us_దొంతర_లోతు,
+                                                             శూన్య * స్థిరరాశి pvParameters,
+                                                             UBaseType_t ux_ప్రాధాన్యత,
+                                                             స్థిరరాశి పునాది_Type_t xCoreID,
+                                                             UBaseType_t ux_దొంతర_జ్ఞాపకం_Caps,
+                                                             TaskHandle_t * స్థిరరాశి pxCreatedTask );
+    #అయితే_ముగింపు // CONFIG_FREERTOS_SMP
 
-#endif // CONFIG_SPIRAM
+#అయితే_ముగింపు // CONFIG_SPIRAM
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#నిర్వచితమైతే __cplusplus
     }
-#endif
+#అయితే_ముగింపు
 /* *INDENT-ON* */

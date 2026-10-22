@@ -4,214 +4,214 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <assert.h>
-#include <unistd.h>
-#include <execinfo.h>
-#include <signal.h>
-#include <pthread.h>
+#అన్తర్భావ <string.h>
+#అన్తర్భావ <stdlib.h>
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ <assert.h>
+#అన్తర్భావ <unistd.h>
+#అన్తర్భావ <execinfo.h>
+#అన్తర్భావ <signal.h>
+#అన్తర్భావ <pthread.h>
 
-#include "FreeRTOS.h"
-#include "task.h"
-#include "esp_log.h"
-#include "utils/linux_port_utils.h"
+#అన్తర్భావ "FreeRTOS.h"
+#అన్తర్భావ "task.h"
+#అన్తర్భావ "esp_log.h"
+#అన్తర్భావ "utils/linux_port_utils.h"
 
-#define BACKTRACE_PC_ARRAY_SIZE 20
-#define FREERTOS_SIM_BACKTRACE_SIZE 16
-#define ON_SEGFAULT_MESSAGE "ERROR: Segmentation Fault, here's your backtrace:\n"
-#define ON_ABORT_MESSAGE "ERROR: Aborted\n"
+#నిర్వచించు BACKTRACE_PC_ARRAY_కొలత 20
+#నిర్వచించు FREERTOS_SIM_BACKTRACE_కొలత 16
+#నిర్వచించు ON_SEGFAULT_సందేశం "ERROR: Segmentation Fault, here's your backtrace:\n"
+#నిర్వచించు ON_ABORT_సందేశం "ERROR: Aborted\n"
 
-static void linux_port_backtrace_handler(int sig)
+స్థిర శూన్య linux_పోర్టు_backtrace_handler(పూర్ణాంకం sig)
 {
     /* All calls here must be async-signal-safe (no stdio, no malloc).
      * write() and backtrace_symbols_fd() write directly to the fd. */
-    void *buffer[FREERTOS_SIM_BACKTRACE_SIZE];
-    int nptrs = backtrace(buffer, FREERTOS_SIM_BACKTRACE_SIZE);
+    శూన్య *బఫరు[FREERTOS_SIM_BACKTRACE_కొలత];
+    పూర్ణాంకం nptrs = backtrace(బఫరు, FREERTOS_SIM_BACKTRACE_కొలత);
 
-    const char *name = pcTaskGetName(NULL); /* simple pointer dereference, no lock */
-    ssize_t ignore __attribute__((unused));
-    ignore = write(STDERR_FILENO, "=== Backtrace for task: ", 24);
-    if (name) {
+    స్థిరరాశి అక్షరం *name = pcTaskGetName(ఖాళీ); /* simple pointer dereference, no lock */
+    ssize_t ignore __attribute__((వాడని));
+    ignore = లిఖ(STDERR_FILENO, "=== Backtrace for task: ", 24);
+    ఒకవేళ (name) {
         size_t len = 0;
-        while (name[len] != '\0') {
+        అయితే (name[len] != '\0') {
             len++;
         }
-        ignore = write(STDERR_FILENO, name, len);
+        ignore = లిఖ(STDERR_FILENO, name, len);
     }
-    ignore = write(STDERR_FILENO, " ===\n", 5);
-    backtrace_symbols_fd(buffer, nptrs, STDERR_FILENO);
+    ignore = లిఖ(STDERR_FILENO, " ===\n", 5);
+    backtrace_symbols_fd(బఫరు, nptrs, STDERR_FILENO);
 }
 
-void linux_port_setup_backtrace_signal(void)
+శూన్య linux_పోర్టు_అమరిక_backtrace_signal(శూన్య)
 {
-    struct sigaction sa;
-    sa.sa_handler = linux_port_backtrace_handler;
+    నిర్మాణం sigaction sa;
+    sa.sa_handler = linux_పోర్టు_backtrace_handler;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_RESTART;
-    sigaction(SIGUSR1, &sa, NULL);
+    sigaction(SIGUSR1, &sa, ఖాళీ);
 }
 
-void linux_port_print_backtrace(void)
+శూన్య linux_పోర్టు_print_backtrace(శూన్య)
 {
-    pthread_kill(linux_port_get_scheduled_task_pthread(), SIGUSR1);
+    pthread_kill(linux_పోర్టు_get_scheduled_task_pthread(), SIGUSR1);
 }
 
-ESP_LOG_ATTR_TAG(LINUX_TAG, "port_idf_linux");
-ESP_LOG_ATTR_TAG(MAIN_TAG, "main_task");
+ESP_LOG_ATTR_ట్యాగ్(LINUX_ట్యాగ్, "port_idf_linux");
+ESP_LOG_ATTR_ట్యాగ్(MAIN_ట్యాగ్, "main_task");
 
-#if (defined(__APPLE__) && defined(__MACH__))
-typedef sig_t sighandler_t;
-#endif
+#ఒకవేళ (defined(__APPLE__) && defined(__MACH__))
+రకనిర్వచనం sig_t sighandler_t;
+#అయితే_ముగింపు
 
-static volatile UBaseType_t uxInterruptNesting = 0;
-BaseType_t xPortCheckIfInISR(void)
+స్థిర అస్థిర UBaseType_t ux_అంతరాయం_Nesting = 0;
+పునాది_Type_t x_పోర్టు_Check_If_లోపల_ISR(శూన్య)
 {
-    return uxInterruptNesting;
+    తిరిగి ux_అంతరాయం_Nesting;
 }
 
-#if CONFIG_COMPILER_OPTIMIZATION_DEBUG
-#define BACKTRACE_PC_ARRAY_SIZE_DUMMY 1
-static void load_libgcc(void)
+#ఒకవేళ CONFIG_COMPILER_OPTIMIZATION_DEBUG
+#నిర్వచించు BACKTRACE_PC_ARRAY_కొలత_DUMMY 1
+స్థిర శూన్య ఎక్కించు_libgcc(శూన్య)
 {
-    void *array[BACKTRACE_PC_ARRAY_SIZE_DUMMY];
-    size_t size = backtrace(array, BACKTRACE_PC_ARRAY_SIZE_DUMMY);
-    assert(size == 1);
+    శూన్య *array[BACKTRACE_PC_ARRAY_కొలత_DUMMY];
+    size_t కొలత = backtrace(array, BACKTRACE_PC_ARRAY_కొలత_DUMMY);
+    ప్రతిజ్ఞా(కొలత == 1);
 }
 
-static void segfault_handler(int sig)
+స్థిర శూన్య segfault_handler(పూర్ణాంకం sig)
 {
-    void *array[BACKTRACE_PC_ARRAY_SIZE];
-    size_t size = backtrace(array, BACKTRACE_PC_ARRAY_SIZE);
-    ssize_t ignore __attribute__((unused));
-    ignore = write(STDERR_FILENO, ON_SEGFAULT_MESSAGE, sizeof(ON_SEGFAULT_MESSAGE));
-    backtrace_symbols_fd(array, size, STDERR_FILENO);
+    శూన్య *array[BACKTRACE_PC_ARRAY_కొలత];
+    size_t కొలత = backtrace(array, BACKTRACE_PC_ARRAY_కొలత);
+    ssize_t ignore __attribute__((వాడని));
+    ignore = లిఖ(STDERR_FILENO, ON_SEGFAULT_సందేశం, పరిమాణం(ON_SEGFAULT_సందేశం));
+    backtrace_symbols_fd(array, కొలత, STDERR_FILENO);
     _exit(1);
 }
 
-static void abort_handler(int sig)
+స్థిర శూన్య abort_handler(పూర్ణాంకం sig)
 {
     // we need a raw file write here because other functions are not async-signal-safe
-    ssize_t ignore __attribute__((unused));
-    ignore = write(STDERR_FILENO, ON_ABORT_MESSAGE, sizeof(ON_ABORT_MESSAGE));
+    ssize_t ignore __attribute__((వాడని));
+    ignore = లిఖ(STDERR_FILENO, ON_ABORT_సందేశం, పరిమాణం(ON_ABORT_సందేశం));
     _exit(1);
 }
-#endif // CONFIG_COMPILER_OPTIMIZATION_DEBUG
+#అయితే_ముగింపు // CONFIG_COMPILER_OPTIMIZATION_DEBUG
 
 /*-----------------------------------------------------------
 * Main FreeRTOS task
 *-----------------------------------------------------------*/
-extern void app_main(void);
-static void main_task(void *args)
+బాహ్య శూన్య app_main(శూన్య);
+స్థిర శూన్య main_task(శూన్య *వాదనలు)
 {
-    (void)args;
-    ESP_LOGI(MAIN_TAG, "Started on CPU%d", (int)xPortGetCoreID());
+    (శూన్య)వాదనలు;
+    ESP_LOGI(MAIN_ట్యాగ్, "Started on CPU%d", (పూర్ణాంకం)x_పోర్టు_Get_Core_ID());
 
-    ESP_LOGI(MAIN_TAG, "Calling app_main()");
+    ESP_LOGI(MAIN_ట్యాగ్, "Calling app_main()");
 
     app_main();
 
-    ESP_LOGI(MAIN_TAG, "Returned from app_main()");
-    vTaskDelete(NULL);
+    ESP_LOGI(MAIN_ట్యాగ్, "Returned from app_main()");
+    vTaskDelete(ఖాళీ);
 }
 
-void esp_startup_start_app(void)
+శూన్య esp_startup_ప్రారంభం_app(శూన్య)
 {
-    setvbuf(stdout, NULL, _IONBF, 0);
+    setvbuf(stdout, ఖాళీ, _IONBF, 0);
 
-#if CONFIG_COMPILER_OPTIMIZATION_DEBUG
-    load_libgcc();
+#ఒకవేళ CONFIG_COMPILER_OPTIMIZATION_DEBUG
+    ఎక్కించు_libgcc();
     sighandler_t sig_res;
 
-    sig_res = signal(SIGSEGV, segfault_handler);
-    if (sig_res == SIG_ERR) {
+    sig_res = సంకేతం(SIGSEGV, segfault_handler);
+    ఒకవేళ (sig_res == SIG_ERR) {
         abort();
     }
 
-    sig_res = signal(SIGABRT, abort_handler);
-    if (sig_res == SIG_ERR) {
+    sig_res = సంకేతం(SIGABRT, abort_handler);
+    ఒకవేళ (sig_res == SIG_ERR) {
         abort();
     }
-#endif
+#అయితే_ముగింపు
 
     // Create main_task using FreeRTOS API
-    ESP_LOGI(LINUX_TAG, "Starting main task.");
-    assert(xTaskCreate(&main_task, "main", ESP_TASK_MAIN_STACK, NULL, ESP_TASK_MAIN_PRIO, NULL) == pdTRUE);
+    ESP_LOGI(LINUX_ట్యాగ్, "Starting main task.");
+    ప్రతిజ్ఞా(xTaskCreate(&main_task, "main", ESP_TASK_MAIN_దొంతర, ఖాళీ, ESP_TASK_MAIN_PRIO, ఖాళీ) == pdTRUE);
 
-    ESP_LOGI(LINUX_TAG, "Starting scheduler task.");
-    vTaskStartScheduler();
+    ESP_LOGI(LINUX_ట్యాగ్, "Starting scheduler task.");
+    v_Task_ప్రారంభం_Scheduler();
 
     // Should never reach here
-    assert(false);
+    ప్రతిజ్ఞా(false);
 }
 
 /*-----------------------------------------------------------
  * idle and tick hooks
  *-----------------------------------------------------------*/
-#if (configUSE_IDLE_HOOK > 0)
-void vApplicationIdleHook(void)
+#ఒకవేళ (configUSE_IDLE_HOOK > 0)
+శూన్య vApplicationIdleHook(శూన్య)
 {
 }
-#endif
+#అయితే_ముగింపు
 
-#if (configUSE_TICK_HOOK > 0)
-void vApplicationTickHook(void)
+#ఒకవేళ (configUSE_TICK_HOOK > 0)
+శూన్య vApplicationTickHook(శూన్య)
 {
-    extern void esp_vApplicationTickHook(void);
+    బాహ్య శూన్య esp_vApplicationTickHook(శూన్య);
     esp_vApplicationTickHook();
 }
-#else
-#endif
+#లేకపోతే
+#అయితే_ముగింపు
 
 /*-----------------------------------------------------------
  * Static allocation support
  *-----------------------------------------------------------*/
-#if (configSUPPORT_STATIC_ALLOCATION == 1)
+#ఒకవేళ (config_SUPPORT_STATIC_కేటాయింపు == 1)
 
-void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
-                                   StackType_t **ppxIdleTaskStackBuffer,
-                                   uint32_t *pulIdleTaskStackSize)
+శూన్య v_Application_Get_Idle_Task_జ్ఞాపకం(StaticTask_t **ppxIdleTaskTCBBuffer,
+                                   దొంతర_Type_t **ppx_Idle_Task_దొంతర_బఫరు,
+                                   uint32_t *pul_Idle_Task_దొంతర_కొలత)
 {
-    static StaticTask_t xIdleTaskTCB;
-    static StackType_t uxIdleTaskStack[configMINIMAL_STACK_SIZE];
+    స్థిర StaticTask_t xIdleTaskTCB;
+    స్థిర దొంతర_Type_t ux_Idle_Task_దొంతర[config_కనీస_దొంతర_కొలత];
 
     *ppxIdleTaskTCBBuffer = &xIdleTaskTCB;
-    *ppxIdleTaskStackBuffer = uxIdleTaskStack;
-    *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+    *ppx_Idle_Task_దొంతర_బఫరు = ux_Idle_Task_దొంతర;
+    *pul_Idle_Task_దొంతర_కొలత = config_కనీస_దొంతర_కొలత;
 }
 
-#if (configUSE_TIMERS == 1)
-StackType_t uxTimerTaskStack[configTIMER_TASK_STACK_DEPTH];
+#ఒకవేళ (configUSE_TIMERS == 1)
+దొంతర_Type_t ux_Timer_Task_దొంతర[config_TIMER_TASK_దొంతర_లోతు];
 
-void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
-                                    StackType_t **ppxTimerTaskStackBuffer,
-                                    uint32_t *pulTimerTaskStackSize)
+శూన్య v_Application_Get_Timer_Task_జ్ఞాపకం(StaticTask_t **ppxTimerTaskTCBBuffer,
+                                    దొంతర_Type_t **ppx_Timer_Task_దొంతర_బఫరు,
+                                    uint32_t *pul_Timer_Task_దొంతర_కొలత)
 {
-    static StaticTask_t xTimerTaskTCB;
+    స్థిర StaticTask_t xTimerTaskTCB;
     *ppxTimerTaskTCBBuffer = &xTimerTaskTCB;
-    *ppxTimerTaskStackBuffer = uxTimerTaskStack;
-    *pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
+    *ppx_Timer_Task_దొంతర_బఫరు = ux_Timer_Task_దొంతర;
+    *pul_Timer_Task_దొంతర_కొలత = config_TIMER_TASK_దొంతర_లోతు;
 }
-#endif
+#అయితే_ముగింపు
 
-#endif // configSUPPORT_STATIC_ALLOCATION
+#అయితే_ముగింపు // configSUPPORT_STATIC_ALLOCATION
 
 /*-----------------------------------------------------------
  * Stack overflow hook
  *-----------------------------------------------------------*/
-void __attribute__((weak)) vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
+శూన్య __attribute__((weak)) v_Application_దొంతర_అధికప్రవాహం_Hook(TaskHandle_t xTask, అక్షరం *pcTaskName)
 {
-#define ERR_STR1 "***ERROR*** A stack overflow in task "
-#define ERR_STR2 " has been detected."
-    const char *str[] = {ERR_STR1, pcTaskName, ERR_STR2};
+#నిర్వచించు ERR_STR1 "***ERROR*** A stack overflow in task "
+#నిర్వచించు ERR_STR2 " has been detected."
+    స్థిరరాశి అక్షరం *str[] = {ERR_STR1, pcTaskName, ERR_STR2};
 
-    char buf[sizeof(ERR_STR1) + CONFIG_FREERTOS_MAX_TASK_NAME_LEN + sizeof(ERR_STR2) + 1 /* null char */] = {0};
+    అక్షరం buf[పరిమాణం(ERR_STR1) + CONFIG_FREERTOS_MAX_TASK_NAME_LEN + పరిమాణం(ERR_STR2) + 1 /* null char */] = {0};
 
-    char *dest = buf;
-    for (int i = 0; i < sizeof(str) / sizeof(str[0]); i++) {
+    అక్షరం *dest = buf;
+    కొరకు (పూర్ణాంకం i = 0; i < పరిమాణం(str) / పరిమాణం(str[0]); i++) {
         dest = strcat(dest, str[i]);
     }
-	printf("%s\n", buf);
+	రాయి("%s\n", buf);
     abort();
 }

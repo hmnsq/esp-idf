@@ -4,62 +4,62 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#pragma once
+#సూచన once
 
-#include "sdkconfig.h"
+#అన్తర్భావ "sdkconfig.h"
 
 /* This file gets pulled into assembly sources. Therefore, some includes need to
  * be wrapped in #ifndef __ASSEMBLER__ */
 
-#ifndef __ASSEMBLER__
+#నిర్వచితం_కాకపోతే __ASSEMBLER__
     /* For configASSERT() */
-    #include <assert.h>
-#endif /* def __ASSEMBLER__ */
+    #అన్తర్భావ <assert.h>
+#అయితే_ముగింపు /* def __ASSEMBLER__ */
 
 /* ----------------------------------------------------- Helpers -------------------------------------------------------
  * - Macros that the FreeRTOS configuration macros depend on
  * ------------------------------------------------------------------------------------------------------------------ */
 
 /* Higher stack checker modes cause overhead on each function call */
-#if CONFIG_STACK_CHECK_ALL || CONFIG_STACK_CHECK_STRONG
-    #define STACK_OVERHEAD_CHECKER    256
-#else
-    #define STACK_OVERHEAD_CHECKER    0
-#endif
+#ఒకవేళ CONFIG_దొంతర_CHECK_ALL || CONFIG_దొంతర_CHECK_STRONG
+    #నిర్వచించు దొంతర_OVERHEAD_CHECKER    256
+#లేకపోతే
+    #నిర్వచించు దొంతర_OVERHEAD_CHECKER    0
+#అయితే_ముగింపు
 
 /* with optimizations disabled, scheduler uses additional stack */
-#if CONFIG_COMPILER_OPTIMIZATION_NONE
-    #define STACK_OVERHEAD_OPTIMIZATION    320
-#else
-    #define STACK_OVERHEAD_OPTIMIZATION    0
-#endif
+#ఒకవేళ CONFIG_COMPILER_OPTIMIZATION_NONE
+    #నిర్వచించు దొంతర_OVERHEAD_OPTIMIZATION    320
+#లేకపోతే
+    #నిర్వచించు దొంతర_OVERHEAD_OPTIMIZATION    0
+#అయితే_ముగింపు
 
 /* apptrace module increases minimum stack usage */
-#if CONFIG_ESP_TRACE_TRANSPORT_APPTRACE
-    #define STACK_OVERHEAD_APPTRACE    1280
-#else
-    #define STACK_OVERHEAD_APPTRACE    0
-#endif
+#ఒకవేళ CONFIG_ESP_TRACE_TRANSPORT_APPTRACE
+    #నిర్వచించు దొంతర_OVERHEAD_APPTRACE    1280
+#లేకపోతే
+    #నిర్వచించు దొంతర_OVERHEAD_APPTRACE    0
+#అయితే_ముగింపు
 
 /* Stack watchpoint decreases minimum usable stack size by up to 60 bytes.
  * See FreeRTOS FREERTOS_WATCHPOINT_END_OF_STACK option in Kconfig. */
-#if CONFIG_FREERTOS_WATCHPOINT_END_OF_STACK
-    #define STACK_OVERHEAD_WATCHPOINT    60
-#else
-    #define STACK_OVERHEAD_WATCHPOINT    0
-#endif
+#ఒకవేళ CONFIG_FREERTOS_WATCHPOINT_చివర_యొక్క_దొంతర
+    #నిర్వచించు దొంతర_OVERHEAD_WATCHPOINT    60
+#లేకపోతే
+    #నిర్వచించు దొంతర_OVERHEAD_WATCHPOINT    0
+#అయితే_ముగింపు
 
-#define configSTACK_OVERHEAD_TOTAL    \
+#నిర్వచించు config_దొంతర_OVERHEAD_మొత్తం    \
     (                                 \
-        STACK_OVERHEAD_CHECKER +      \
-        STACK_OVERHEAD_OPTIMIZATION + \
-        STACK_OVERHEAD_APPTRACE +     \
-        STACK_OVERHEAD_WATCHPOINT     \
+        దొంతర_OVERHEAD_CHECKER +      \
+        దొంతర_OVERHEAD_OPTIMIZATION + \
+        దొంతర_OVERHEAD_APPTRACE +     \
+        దొంతర_OVERHEAD_WATCHPOINT     \
     )
 
 /* The arch-specific FreeRTOSConfig_arch.h in esp_additions/arch_include/<arch>.
  * Placed here due to configSTACK_OVERHEAD_TOTAL. Todo: IDF-5712. */
-#include "freertos/FreeRTOSConfig_arch.h"
+#అన్తర్భావ "freertos/FreeRTOSConfig_arch.h"
 
 /* ------------------------------------------------- FreeRTOS Config ---------------------------------------------------
  * - All Vanilla FreeRTOS configuration goes into this section
@@ -83,151 +83,151 @@
 
 /* ------------------ Scheduler Related -------------------- */
 
-#define configUSE_PREEMPTION                         1
-#define configUSE_TICKLESS_IDLE                      CONFIG_FREERTOS_USE_TICKLESS_IDLE
-#if configUSE_TICKLESS_IDLE
-    #define configEXPECTED_IDLE_TIME_BEFORE_SLEEP    CONFIG_FREERTOS_IDLE_TIME_BEFORE_SLEEP
-#endif /* configUSE_TICKLESS_IDLE */
-#define configCPU_CLOCK_HZ                           ( CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ * 1000000 )
-#define configTICK_RATE_HZ                           CONFIG_FREERTOS_HZ
-#define configMAX_PRIORITIES                         ( 25 )
-#define configUSE_TIME_SLICING                       1
-#define configUSE_16_BIT_TICKS                       0
-#define configIDLE_SHOULD_YIELD                      0
-#define configKERNEL_INTERRUPT_PRIORITY              1      /*Todo: This currently isn't used anywhere */
-#define configNUMBER_OF_CORES                        CONFIG_FREERTOS_NUMBER_OF_CORES
+#నిర్వచించు configUSE_PREEMPTION                         1
+#నిర్వచించు configUSE_TICKLESS_IDLE                      CONFIG_FREERTOS_USE_TICKLESS_IDLE
+#ఒకవేళ configUSE_TICKLESS_IDLE
+    #నిర్వచించు config_EXPECTED_IDLE_సమయం_BEFORE_SLEEP    CONFIG_FREERTOS_IDLE_సమయం_BEFORE_SLEEP
+#అయితే_ముగింపు /* configUSE_TICKLESS_IDLE */
+#నిర్వచించు configCPU_CLOCK_HZ                           ( CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ * 1000000 )
+#నిర్వచించు config_TICK_రేటు_HZ                           CONFIG_FREERTOS_HZ
+#నిర్వచించు configMAX_PRIORITIES                         ( 25 )
+#నిర్వచించు config_USE_సమయం_SLICING                       1
+#నిర్వచించు config_USE_16_బిట్టు_TICKS                       0
+#నిర్వచించు configIDLE_SHOULD_YIELD                      0
+#నిర్వచించు config_KERNEL_అంతరాయం_ప్రాధాన్యత              1      /*Todo: This currently isn't used anywhere */
+#నిర్వచించు config_సంఖ్య_యొక్క_CORES                        CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES
 /* For compatibility */
-#define configNUM_CORES                              configNUMBER_OF_CORES
+#నిర్వచించు config_అంకె_CORES                              config_సంఖ్య_యొక్క_CORES
 
 /* ------------- Synchronization Primitives ---------------- */
 
-#define configUSE_MUTEXES                        1
-#define configUSE_RECURSIVE_MUTEXES              1
-#define configUSE_COUNTING_SEMAPHORES            1
-#define configUSE_QUEUE_SETS                     1
-#define configQUEUE_REGISTRY_SIZE                CONFIG_FREERTOS_QUEUE_REGISTRY_SIZE
-#define configUSE_TASK_NOTIFICATIONS             1
-#define configTASK_NOTIFICATION_ARRAY_ENTRIES    CONFIG_FREERTOS_TASK_NOTIFICATION_ARRAY_ENTRIES
+#నిర్వచించు configUSE_MUTEXES                        1
+#నిర్వచించు configUSE_RECURSIVE_MUTEXES              1
+#నిర్వచించు configUSE_COUNTING_SEMAPHORES            1
+#నిర్వచించు config_USE_వరుస_SETS                     1
+#నిర్వచించు config_వరుస_REGISTRY_కొలత                CONFIG_FREERTOS_వరుస_REGISTRY_కొలత
+#నిర్వచించు configUSE_TASK_NOTIFICATIONS             1
+#నిర్వచించు configTASK_NOTIFICATION_ARRAY_ENTRIES    CONFIG_FREERTOS_TASK_NOTIFICATION_ARRAY_ENTRIES
 
 /* ----------------------- System -------------------------- */
 
-#define configMAX_TASK_NAME_LEN    CONFIG_FREERTOS_MAX_TASK_NAME_LEN
+#నిర్వచించు configMAX_TASK_NAME_LEN    CONFIG_FREERTOS_MAX_TASK_NAME_LEN
 
 /* If deletion callbacks are enabled, the number of TLSP's are doubled (i.e.,
  * the length of the TCB's pvThreadLocalStoragePointersThis array). This allows
  * the latter half of the array to store the deletion callback pointers (whereas
  * the first half stores the TLSPs themselves). */
-#if CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
-    #define configNUM_THREAD_LOCAL_STORAGE_POINTERS    ( CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_POINTERS * 2 )
-#else /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
-    #define configNUM_THREAD_LOCAL_STORAGE_POINTERS    CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_POINTERS
-#endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+#ఒకవేళ CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
+    #నిర్వచించు config_అంకె_THREAD_LOCAL_STORAGE_సూచికలు    ( CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_సూచికలు * 2 )
+#లేకపోతే /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+    #నిర్వచించు config_అంకె_THREAD_LOCAL_STORAGE_సూచికలు    CONFIG_FREERTOS_THREAD_LOCAL_STORAGE_సూచికలు
+#అయితే_ముగింపు /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
 
-#define configSTACK_DEPTH_TYPE                         uint32_t
-#if CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY
-    #define configENABLE_BACKWARD_COMPATIBILITY        1
-#else /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
-    #define configENABLE_BACKWARD_COMPATIBILITY        0
-#endif /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
-#define configASSERT( a )    assert( a )
+#నిర్వచించు config_దొంతర_లోతు_TYPE                         uint32_t
+#ఒకవేళ CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY
+    #నిర్వచించు configENABLE_BACKWARD_COMPATIBILITY        1
+#లేకపోతే /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
+    #నిర్వచించు configENABLE_BACKWARD_COMPATIBILITY        0
+#అయితే_ముగింపు /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
+#నిర్వచించు configASSERT( a )    ప్రతిజ్ఞా( a )
 
 /* ----------------------- Memory  ------------------------- */
 
-#define configSUPPORT_STATIC_ALLOCATION              1
-#define configSUPPORT_DYNAMIC_ALLOCATION             1
-#define configAPPLICATION_ALLOCATED_HEAP             1
-#if CONFIG_FREERTOS_PLACE_TASK_STACKS_IN_EXT_RAM
-    #define configSTACK_ALLOCATION_FROM_SEPARATE_HEAP    1
-#else
-    #define configSTACK_ALLOCATION_FROM_SEPARATE_HEAP    0
-#endif
+#నిర్వచించు config_SUPPORT_STATIC_కేటాయింపు              1
+#నిర్వచించు config_SUPPORT_DYNAMIC_కేటాయింపు             1
+#నిర్వచించు config_APPLICATION_ALLOCATED_కుప్ప             1
+#ఒకవేళ CONFIG_FREERTOS_ఉంచు_TASK_STACKS_లోపల_EXT_RAM
+    #నిర్వచించు config_దొంతర_కేటాయింపు_FROM_SEPARATE_కుప్ప    1
+#లేకపోతే
+    #నిర్వచించు config_దొంతర_కేటాయింపు_FROM_SEPARATE_కుప్ప    0
+#అయితే_ముగింపు
 
 /* ------------------------ Hooks -------------------------- */
 
-#if CONFIG_FREERTOS_USE_IDLE_HOOK
-    #define configUSE_IDLE_HOOK               1
-#else /* CONFIG_FREERTOS_USE_IDLE_HOOK */
-    #define configUSE_IDLE_HOOK               0
-#endif /* CONFIG_FREERTOS_USE_IDLE_HOOK */
-#if CONFIG_FREERTOS_USE_TICK_HOOK
-    #define configUSE_TICK_HOOK               1
-#else /* CONFIG_FREERTOS_USE_TICK_HOOK */
-    #define configUSE_TICK_HOOK               0
-#endif /* CONFIG_FREERTOS_USE_TICK_HOOK */
-#if CONFIG_FREERTOS_CHECK_STACKOVERFLOW_NONE
-    #define configCHECK_FOR_STACK_OVERFLOW    0
-#elif CONFIG_FREERTOS_CHECK_STACKOVERFLOW_PTRVAL
-    #define configCHECK_FOR_STACK_OVERFLOW    1
-#elif CONFIG_FREERTOS_CHECK_STACKOVERFLOW_CANARY
-    #define configCHECK_FOR_STACK_OVERFLOW    2
-#endif /* CONFIG_FREERTOS_CHECK_STACKOVERFLOW_NONE */
-#define configRECORD_STACK_HIGH_ADDRESS       1             /* This must be set as the port requires TCB.pxEndOfStack */
+#ఒకవేళ CONFIG_FREERTOS_USE_IDLE_HOOK
+    #నిర్వచించు configUSE_IDLE_HOOK               1
+#లేకపోతే /* CONFIG_FREERTOS_USE_IDLE_HOOK */
+    #నిర్వచించు configUSE_IDLE_HOOK               0
+#అయితే_ముగింపు /* CONFIG_FREERTOS_USE_IDLE_HOOK */
+#ఒకవేళ CONFIG_FREERTOS_USE_TICK_HOOK
+    #నిర్వచించు configUSE_TICK_HOOK               1
+#లేకపోతే /* CONFIG_FREERTOS_USE_TICK_HOOK */
+    #నిర్వచించు configUSE_TICK_HOOK               0
+#అయితే_ముగింపు /* CONFIG_FREERTOS_USE_TICK_HOOK */
+#ఒకవేళ CONFIG_FREERTOS_CHECK_STACKOVERFLOW_NONE
+    #నిర్వచించు config_CHECK_FOR_దొంతర_అధికప్రవాహం    0
+#లేదావేళ CONFIG_FREERTOS_CHECK_STACKOVERFLOW_PTRVAL
+    #నిర్వచించు config_CHECK_FOR_దొంతర_అధికప్రవాహం    1
+#లేదావేళ CONFIG_FREERTOS_CHECK_STACKOVERFLOW_CANARY
+    #నిర్వచించు config_CHECK_FOR_దొంతర_అధికప్రవాహం    2
+#అయితే_ముగింపు /* CONFIG_FREERTOS_CHECK_STACKOVERFLOW_NONE */
+#నిర్వచించు config_రికార్డు_దొంతర_ఎగువ_చిరునామా       1             /* This must be set as the port requires TCB.pxEndOfStack */
 
 /* ------------------- Run-time Stats ---------------------- */
 
-#ifdef CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS
-    #define configGENERATE_RUN_TIME_STATS           1       /* Used by vTaskGetRunTimeStats() */
-#endif /* CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS */
-#ifdef CONFIG_FREERTOS_USE_STATS_FORMATTING_FUNCTIONS
-    #define configUSE_STATS_FORMATTING_FUNCTIONS    1       /* Used by vTaskList() */
-#endif /* CONFIG_FREERTOS_USE_STATS_FORMATTING_FUNCTIONS */
+#నిర్వచితమైతే CONFIG_FREERTOS_GENERATE_నిరంతరం_సమయం_STATS
+    #నిర్వచించు config_GENERATE_నిరంతరం_సమయం_STATS           1       /* Used by vTaskGetRunTimeStats() */
+#అయితే_ముగింపు /* CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS */
+#నిర్వచితమైతే CONFIG_FREERTOS_USE_STATS_FORMATTING_FUNCTIONS
+    #నిర్వచించు configUSE_STATS_FORMATTING_FUNCTIONS    1       /* Used by vTaskList() */
+#అయితే_ముగింపు /* CONFIG_FREERTOS_USE_STATS_FORMATTING_FUNCTIONS */
 
-#if CONFIG_FREERTOS_RUN_TIME_COUNTER_TYPE_U32
-    #define configRUN_TIME_COUNTER_TYPE    uint32_t
-#elif CONFIG_FREERTOS_RUN_TIME_COUNTER_TYPE_U64
-    #define configRUN_TIME_COUNTER_TYPE    uint64_t
-#endif /* CONFIG_FREERTOS_RUN_TIME_COUNTER_TYPE_U64 */
+#ఒకవేళ CONFIG_FREERTOS_నిరంతరం_సమయం_COUNTER_TYPE_U32
+    #నిర్వచించు config_నిరంతరం_సమయం_COUNTER_TYPE    uint32_t
+#లేదావేళ CONFIG_FREERTOS_నిరంతరం_సమయం_COUNTER_TYPE_U64
+    #నిర్వచించు config_నిరంతరం_సమయం_COUNTER_TYPE    uint64_t
+#అయితే_ముగింపు /* CONFIG_FREERTOS_RUN_TIME_COUNTER_TYPE_U64 */
 
 /* -------------------- Co-routines  ----------------------- */
 
-#define configUSE_CO_ROUTINES              0              /* CO_ROUTINES are not supported in ESP-IDF */
-#define configMAX_CO_ROUTINE_PRIORITIES    2
+#నిర్వచించు configUSE_CO_ROUTINES              0              /* CO_ROUTINES are not supported in ESP-IDF */
+#నిర్వచించు configMAX_CO_ROUTINE_PRIORITIES    2
 
 /* ------------------- Software Timer ---------------------- */
 
-#if CONFIG_FREERTOS_USE_TIMERS
-    #define configUSE_TIMERS                          1
-    #define configTIMER_TASK_PRIORITY                 CONFIG_FREERTOS_TIMER_TASK_PRIORITY
-    #define configTIMER_QUEUE_LENGTH                  CONFIG_FREERTOS_TIMER_QUEUE_LENGTH
-    #define configTIMER_TASK_STACK_DEPTH              CONFIG_FREERTOS_TIMER_TASK_STACK_DEPTH
-    #define configTIMER_SERVICE_TASK_NAME             CONFIG_FREERTOS_TIMER_SERVICE_TASK_NAME
-    #define configTIMER_SERVICE_TASK_CORE_AFFINITY    CONFIG_FREERTOS_TIMER_SERVICE_TASK_CORE_AFFINITY
-#else
-    #define configUSE_TIMERS                          0
-#endif
+#ఒకవేళ CONFIG_FREERTOS_USE_TIMERS
+    #నిర్వచించు configUSE_TIMERS                          1
+    #నిర్వచించు config_TIMER_TASK_ప్రాధాన్యత                 CONFIG_FREERTOS_TIMER_TASK_ప్రాధాన్యత
+    #నిర్వచించు config_TIMER_వరుస_నిడివి                  CONFIG_FREERTOS_TIMER_వరుస_నిడివి
+    #నిర్వచించు config_TIMER_TASK_దొంతర_లోతు              CONFIG_FREERTOS_TIMER_TASK_దొంతర_లోతు
+    #నిర్వచించు configTIMER_SERVICE_TASK_NAME             CONFIG_FREERTOS_TIMER_SERVICE_TASK_NAME
+    #నిర్వచించు configTIMER_SERVICE_TASK_CORE_AFFINITY    CONFIG_FREERTOS_TIMER_SERVICE_TASK_CORE_AFFINITY
+#లేకపోతే
+    #నిర్వచించు configUSE_TIMERS                          0
+#అయితే_ముగింపు
 
 
 /* ------------------------ List --------------------------- */
 
-#define configLIST_VOLATILE    volatile                     /* We define List elements as volatile to prevent the compiler from optimizing out essential code */
+#నిర్వచించు configLIST_VOLATILE    అస్థిర                     /* We define List elements as volatile to prevent the compiler from optimizing out essential code */
 
 /* -------------------- API Includes ----------------------- */
 
-#if CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY
-    #define configENABLE_BACKWARD_COMPATIBILITY    1
-#else /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
-    #define configENABLE_BACKWARD_COMPATIBILITY    0
-#endif /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
+#ఒకవేళ CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY
+    #నిర్వచించు configENABLE_BACKWARD_COMPATIBILITY    1
+#లేకపోతే /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
+    #నిర్వచించు configENABLE_BACKWARD_COMPATIBILITY    0
+#అయితే_ముగింపు /* CONFIG_FREERTOS_ENABLE_BACKWARD_COMPATIBILITY */
 
-#define INCLUDE_vTaskPrioritySet                   1
-#define INCLUDE_uxTaskPriorityGet                  1
-#define INCLUDE_vTaskDelete                        1
-#define INCLUDE_vTaskSuspend                       1
-#define INCLUDE_vTaskDelay                         1
-#define INCLUDE_xTaskGetIdleTaskHandle             1
-#define INCLUDE_xTaskAbortDelay                    1
-#define INCLUDE_xSemaphoreGetMutexHolder           1
-#define INCLUDE_xTaskGetHandle                     1
-#define INCLUDE_uxTaskGetStackHighWaterMark        1
-#define INCLUDE_eTaskGetState                      1
-#define INCLUDE_xTaskResumeFromISR                 1
-#if CONFIG_FREERTOS_USE_TIMERS
-  #define INCLUDE_xTimerPendFunctionCall           1
-#else
-  #define INCLUDE_xTimerPendFunctionCall           0
-#endif
-#define INCLUDE_xTaskGetSchedulerState             1
-#define INCLUDE_xTaskGetCurrentTaskHandle          1
+#నిర్వచించు INCLUDE_v_Task_ప్రాధాన్యత_సమితి                   1
+#నిర్వచించు INCLUDE_ux_Task_ప్రాధాన్యత_Get                  1
+#నిర్వచించు INCLUDE_vTaskDelete                        1
+#నిర్వచించు INCLUDE_vTaskSuspend                       1
+#నిర్వచించు INCLUDE_vTaskDelay                         1
+#నిర్వచించు INCLUDE_xTaskGetIdleTaskHandle             1
+#నిర్వచించు INCLUDE_xTaskAbortDelay                    1
+#నిర్వచించు INCLUDE_xSemaphoreGetMutexHolder           1
+#నిర్వచించు INCLUDE_xTaskGetHandle                     1
+#నిర్వచించు INCLUDE_ux_Task_Get_దొంతర_ఎగువ_Water_Mark        1
+#నిర్వచించు INCLUDE_eTaskGetState                      1
+#నిర్వచించు INCLUDE_xTaskResumeFromISR                 1
+#ఒకవేళ CONFIG_FREERTOS_USE_TIMERS
+  #నిర్వచించు INCLUDE_xTimerPendFunctionCall           1
+#లేకపోతే
+  #నిర్వచించు INCLUDE_xTimerPendFunctionCall           0
+#అయితే_ముగింపు
+#నిర్వచించు INCLUDE_xTaskGetSchedulerState             1
+#నిర్వచించు INCLUDE_xTaskGetCurrentTaskHandle          1
 
 /* -------------------- Trace Macros ----------------------- */
 
@@ -235,65 +235,65 @@
  * For trace macros.
  * Note: Include trace macros here and not above as trace macros are dependent on some of the FreeRTOS configs
  */
-#ifndef __ASSEMBLER__
-    #if CONFIG_ESP_TRACE_ENABLE
-        #include "esp_trace_freertos.h"
-    #endif
+#నిర్వచితం_కాకపోతే __ASSEMBLER__
+    #ఒకవేళ CONFIG_ESP_TRACE_ENABLE
+        #అన్తర్భావ "esp_trace_freertos.h"
+    #అయితే_ముగింపు
 
-    #if CONFIG_FREERTOS_SMP
+    #ఒకవేళ CONFIG_FREERTOS_SMP
 
 /* Default values for trace macros added to ESP-IDF implementation of SYSVIEW
  * that is not part of Amazon SMP FreeRTOS. */
-        #ifndef traceISR_EXIT
-            #define traceISR_EXIT()
-        #endif
-        #ifndef traceISR_ENTER
-            #define traceISR_ENTER( _n_ )
-        #endif
+        #నిర్వచితం_కాకపోతే traceISR_EXIT
+            #నిర్వచించు traceISR_EXIT()
+        #అయితే_ముగింపు
+        #నిర్వచితం_కాకపోతే traceISR_ENTER
+            #నిర్వచించు traceISR_ENTER( _n_ )
+        #అయితే_ముగింపు
 
-        #ifndef traceQUEUE_GIVE_FROM_ISR
-            #define traceQUEUE_GIVE_FROM_ISR( pxQueue )
-        #endif
+        #నిర్వచితం_కాకపోతే trace_వరుస_GIVE_FROM_ISR
+            #నిర్వచించు trace_వరుస_GIVE_FROM_ISR( px_వరుస )
+        #అయితే_ముగింపు
 
-        #ifndef traceQUEUE_GIVE_FROM_ISR_FAILED
-            #define traceQUEUE_GIVE_FROM_ISR_FAILED( pxQueue )
-        #endif
+        #నిర్వచితం_కాకపోతే trace_వరుస_GIVE_FROM_ISR_FAILED
+            #నిర్వచించు trace_వరుస_GIVE_FROM_ISR_FAILED( px_వరుస )
+        #అయితే_ముగింపు
 
-        #ifndef traceQUEUE_SEMAPHORE_RECEIVE
-            #define traceQUEUE_SEMAPHORE_RECEIVE( pxQueue )
-        #endif
-    #endif /* CONFIG_FREERTOS_SMP */
-#endif /* def __ASSEMBLER__ */
+        #నిర్వచితం_కాకపోతే trace_వరుస_SEMAPHORE_RECEIVE
+            #నిర్వచించు trace_వరుస_SEMAPHORE_RECEIVE( px_వరుస )
+        #అయితే_ముగింపు
+    #అయితే_ముగింపు /* CONFIG_FREERTOS_SMP */
+#అయితే_ముగింపు /* def __ASSEMBLER__ */
 
-#if CONFIG_FREERTOS_USE_APPLICATION_TASK_TAG
-    #define configUSE_APPLICATION_TASK_TAG    1
-#endif // CONFIG_FREERTOS_USE_APPLICATION_TASK_TAG
+#ఒకవేళ CONFIG_FREERTOS_USE_APPLICATION_TASK_ట్యాగ్
+    #నిర్వచించు config_USE_APPLICATION_TASK_ట్యాగ్    1
+#అయితే_ముగింపు // CONFIG_FREERTOS_USE_APPLICATION_TASK_TAG
 
 /* -------------- List Data Integrity Checks --------------- */
-#define configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES    CONFIG_FREERTOS_USE_LIST_DATA_INTEGRITY_CHECK_BYTES
+#నిర్వచించు config_USE_LIST_దత్తాంశం_INTEGRITY_CHECK_బైట్లు    CONFIG_FREERTOS_USE_LIST_దత్తాంశం_INTEGRITY_CHECK_బైట్లు
 
 /* ----------------------------------------------- Amazon SMP FreeRTOS -------------------------------------------------
  * - All Amazon SMP FreeRTOS specific configurations
  * ------------------------------------------------------------------------------------------------------------------ */
 
-#if CONFIG_FREERTOS_SMP && ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
-    #define configUSE_CORE_AFFINITY              1
-    #define configRUN_MULTIPLE_PRIORITIES        1
-    #define configUSE_TASK_PREEMPTION_DISABLE    1
-#endif /* CONFIG_FREERTOS_SMP && ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 ) */
+#ఒకవేళ CONFIG_FREERTOS_SMP && ( CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES > 1 )
+    #నిర్వచించు configUSE_CORE_AFFINITY              1
+    #నిర్వచించు config_నిరంతరం_గుణిజం_PRIORITIES        1
+    #నిర్వచించు configUSE_TASK_PREEMPTION_DISABLE    1
+#అయితే_ముగింపు /* CONFIG_FREERTOS_SMP && ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 ) */
 
 /* -------------------------------------------------- IDF FreeRTOS -----------------------------------------------------
  * - All IDF FreeRTOS specific configurations
  * ------------------------------------------------------------------------------------------------------------------ */
 
-#if !CONFIG_FREERTOS_SMP
-    #ifdef CONFIG_FREERTOS_VTASKLIST_INCLUDE_COREID
-        #define configTASKLIST_INCLUDE_COREID                  1
-    #endif /* CONFIG_FREERTOS_VTASKLIST_INCLUDE_COREID */
-    #ifdef CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
-        #define configTHREAD_LOCAL_STORAGE_DELETE_CALLBACKS    1
-    #endif /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
-#endif /* !CONFIG_FREERTOS_SMP */
+#ఒకవేళ !CONFIG_FREERTOS_SMP
+    #నిర్వచితమైతే CONFIG_FREERTOS_VTASKLIST_INCLUDE_COREID
+        #నిర్వచించు configTASKLIST_INCLUDE_COREID                  1
+    #అయితే_ముగింపు /* CONFIG_FREERTOS_VTASKLIST_INCLUDE_COREID */
+    #నిర్వచితమైతే CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS
+        #నిర్వచించు configTHREAD_LOCAL_STORAGE_DELETE_CALLBACKS    1
+    #అయితే_ముగింపు /* CONFIG_FREERTOS_TLSP_DELETION_CALLBACKS */
+#అయితే_ముగింపు /* !CONFIG_FREERTOS_SMP */
 
 /* ------------------------------------------------ ESP-IDF Additions --------------------------------------------------
  * - Any other macros required by the rest of ESP-IDF
@@ -302,4 +302,4 @@
 /* portNUM_PROCESSORS is deprecated and will be removed in ESP-IDF v6.0 (IDF-8785)
  * Please use the Kconfig option CONFIG_FREERTOS_NUMBER_OF_CORES instead.
  */
-#define portNUM_PROCESSORS    configNUMBER_OF_CORES
+#నిర్వచించు పోర్టు_అంకె_PROCESSORS    config_సంఖ్య_యొక్క_CORES

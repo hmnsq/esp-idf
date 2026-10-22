@@ -30,8 +30,8 @@
  *
  */
 
-#ifndef DEPRECATED_DEFINITIONS_H
-#define DEPRECATED_DEFINITIONS_H
+#నిర్వచితం_కాకపోతే DEPRECATED_DEFINITIONS_H
+#నిర్వచించు DEPRECATED_DEFINITIONS_H
 
 
 /* Each FreeRTOS port has a unique portmacro.h header file.  Originally a
@@ -43,243 +43,243 @@
  * definitions below remain in the code for backward compatibility only.  New
  * projects should not use them. */
 
-#ifdef OPEN_WATCOM_INDUSTRIAL_PC_PORT
-    #include "..\..\Source\portable\owatcom\16bitdos\pc\portmacro.h"
-    typedef void ( __interrupt __far * pxISR )();
-#endif
+#నిర్వచితమైతే OPEN_WATCOM_INDUSTRIAL_PC_పోర్టు
+    #అన్తర్భావ "..\..\Source\portable\owatcom\16bitdos\pc\portmacro.h"
+    రకనిర్వచనం శూన్య ( __interrupt __far * pxISR )();
+#అయితే_ముగింపు
 
-#ifdef OPEN_WATCOM_FLASH_LITE_186_PORT
-    #include "..\..\Source\portable\owatcom\16bitdos\flsh186\portmacro.h"
-    typedef void ( __interrupt __far * pxISR )();
-#endif
+#నిర్వచితమైతే OPEN_WATCOM_FLASH_LITE_186_పోర్టు
+    #అన్తర్భావ "..\..\Source\portable\owatcom\16bitdos\flsh186\portmacro.h"
+    రకనిర్వచనం శూన్య ( __interrupt __far * pxISR )();
+#అయితే_ముగింపు
 
-#ifdef GCC_MEGA_AVR
-    #include "../portable/GCC/ATMega323/portmacro.h"
-#endif
+#నిర్వచితమైతే GCC_MEGA_AVR
+    #అన్తర్భావ "../portable/GCC/ATMega323/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef IAR_MEGA_AVR
-    #include "../portable/IAR/ATMega323/portmacro.h"
-#endif
+#నిర్వచితమైతే IAR_MEGA_AVR
+    #అన్తర్భావ "../portable/IAR/ATMega323/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef MPLAB_PIC24_PORT
-    #include "../../Source/portable/MPLAB/PIC24_dsPIC/portmacro.h"
-#endif
+#నిర్వచితమైతే MPLAB_PIC24_పోర్టు
+    #అన్తర్భావ "../../Source/portable/MPLAB/PIC24_dsPIC/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef MPLAB_DSPIC_PORT
-    #include "../../Source/portable/MPLAB/PIC24_dsPIC/portmacro.h"
-#endif
+#నిర్వచితమైతే MPLAB_DSPIC_పోర్టు
+    #అన్తర్భావ "../../Source/portable/MPLAB/PIC24_dsPIC/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef MPLAB_PIC18F_PORT
-    #include "../../Source/portable/MPLAB/PIC18F/portmacro.h"
-#endif
+#నిర్వచితమైతే MPLAB_PIC18_F_పోర్టు
+    #అన్తర్భావ "../../Source/portable/MPLAB/PIC18F/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef MPLAB_PIC32MX_PORT
-    #include "../../Source/portable/MPLAB/PIC32MX/portmacro.h"
-#endif
+#నిర్వచితమైతే MPLAB_PIC32_MX_పోర్టు
+    #అన్తర్భావ "../../Source/portable/MPLAB/PIC32MX/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef _FEDPICC
-    #include "libFreeRTOS/Include/portmacro.h"
-#endif
+#నిర్వచితమైతే _FEDPICC
+    #అన్తర్భావ "libFreeRTOS/Include/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef SDCC_CYGNAL
-    #include "../../Source/portable/SDCC/Cygnal/portmacro.h"
-#endif
+#నిర్వచితమైతే SDCC_CYGNAL
+    #అన్తర్భావ "../../Source/portable/SDCC/Cygnal/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef GCC_ARM7
-    #include "../../Source/portable/GCC/ARM7_LPC2000/portmacro.h"
-#endif
+#నిర్వచితమైతే GCC_ARM7
+    #అన్తర్భావ "../../Source/portable/GCC/ARM7_LPC2000/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef GCC_ARM7_ECLIPSE
-    #include "portmacro.h"
-#endif
+#నిర్వచితమైతే GCC_ARM7_ECLIPSE
+    #అన్తర్భావ "portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef ROWLEY_LPC23xx
-    #include "../../Source/portable/GCC/ARM7_LPC23xx/portmacro.h"
-#endif
+#నిర్వచితమైతే ROWLEY_LPC23xx
+    #అన్తర్భావ "../../Source/portable/GCC/ARM7_LPC23xx/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef IAR_MSP430
-    #include "..\..\Source\portable\IAR\MSP430\portmacro.h"
-#endif
+#నిర్వచితమైతే IAR_MSP430
+    #అన్తర్భావ "..\..\Source\portable\IAR\MSP430\portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef GCC_MSP430
-    #include "../../Source/portable/GCC/MSP430F449/portmacro.h"
-#endif
+#నిర్వచితమైతే GCC_MSP430
+    #అన్తర్భావ "../../Source/portable/GCC/MSP430F449/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef ROWLEY_MSP430
-    #include "../../Source/portable/Rowley/MSP430F449/portmacro.h"
-#endif
+#నిర్వచితమైతే ROWLEY_MSP430
+    #అన్తర్భావ "../../Source/portable/Rowley/MSP430F449/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef ARM7_LPC21xx_KEIL_RVDS
-    #include "..\..\Source\portable\RVDS\ARM7_LPC21xx\portmacro.h"
-#endif
+#నిర్వచితమైతే ARM7_LPC21xx_KEIL_RVDS
+    #అన్తర్భావ "..\..\Source\portable\RVDS\ARM7_LPC21xx\portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef SAM7_GCC
-    #include "../../Source/portable/GCC/ARM7_AT91SAM7S/portmacro.h"
-#endif
+#నిర్వచితమైతే SAM7_GCC
+    #అన్తర్భావ "../../Source/portable/GCC/ARM7_AT91SAM7S/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef SAM7_IAR
-    #include "..\..\Source\portable\IAR\AtmelSAM7S64\portmacro.h"
-#endif
+#నిర్వచితమైతే SAM7_IAR
+    #అన్తర్భావ "..\..\Source\portable\IAR\AtmelSAM7S64\portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef SAM9XE_IAR
-    #include "..\..\Source\portable\IAR\AtmelSAM9XE\portmacro.h"
-#endif
+#నిర్వచితమైతే SAM9XE_IAR
+    #అన్తర్భావ "..\..\Source\portable\IAR\AtmelSAM9XE\portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef LPC2000_IAR
-    #include "..\..\Source\portable\IAR\LPC2000\portmacro.h"
-#endif
+#నిర్వచితమైతే LPC2000_IAR
+    #అన్తర్భావ "..\..\Source\portable\IAR\LPC2000\portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef STR71X_IAR
-    #include "..\..\Source\portable\IAR\STR71x\portmacro.h"
-#endif
+#నిర్వచితమైతే STR71X_IAR
+    #అన్తర్భావ "..\..\Source\portable\IAR\STR71x\portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef STR75X_IAR
-    #include "..\..\Source\portable\IAR\STR75x\portmacro.h"
-#endif
+#నిర్వచితమైతే STR75X_IAR
+    #అన్తర్భావ "..\..\Source\portable\IAR\STR75x\portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef STR75X_GCC
-    #include "..\..\Source\portable\GCC\STR75x\portmacro.h"
-#endif
+#నిర్వచితమైతే STR75X_GCC
+    #అన్తర్భావ "..\..\Source\portable\GCC\STR75x\portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef STR91X_IAR
-    #include "..\..\Source\portable\IAR\STR91x\portmacro.h"
-#endif
+#నిర్వచితమైతే STR91X_IAR
+    #అన్తర్భావ "..\..\Source\portable\IAR\STR91x\portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef GCC_H8S
-    #include "../../Source/portable/GCC/H8S2329/portmacro.h"
-#endif
+#నిర్వచితమైతే GCC_H8S
+    #అన్తర్భావ "../../Source/portable/GCC/H8S2329/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef GCC_AT91FR40008
-    #include "../../Source/portable/GCC/ARM7_AT91FR40008/portmacro.h"
-#endif
+#నిర్వచితమైతే GCC_AT91FR40008
+    #అన్తర్భావ "../../Source/portable/GCC/ARM7_AT91FR40008/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef RVDS_ARMCM3_LM3S102
-    #include "../../Source/portable/RVDS/ARM_CM3/portmacro.h"
-#endif
+#నిర్వచితమైతే RVDS_ARMCM3_LM3S102
+    #అన్తర్భావ "../../Source/portable/RVDS/ARM_CM3/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef GCC_ARMCM3_LM3S102
-    #include "../../Source/portable/GCC/ARM_CM3/portmacro.h"
-#endif
+#నిర్వచితమైతే GCC_ARMCM3_LM3S102
+    #అన్తర్భావ "../../Source/portable/GCC/ARM_CM3/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef GCC_ARMCM3
-    #include "../../Source/portable/GCC/ARM_CM3/portmacro.h"
-#endif
+#నిర్వచితమైతే GCC_ARMCM3
+    #అన్తర్భావ "../../Source/portable/GCC/ARM_CM3/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef IAR_ARM_CM3
-    #include "../../Source/portable/IAR/ARM_CM3/portmacro.h"
-#endif
+#నిర్వచితమైతే IAR_ARM_CM3
+    #అన్తర్భావ "../../Source/portable/IAR/ARM_CM3/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef IAR_ARMCM3_LM
-    #include "../../Source/portable/IAR/ARM_CM3/portmacro.h"
-#endif
+#నిర్వచితమైతే IAR_ARMCM3_LM
+    #అన్తర్భావ "../../Source/portable/IAR/ARM_CM3/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef HCS12_CODE_WARRIOR
-    #include "../../Source/portable/CodeWarrior/HCS12/portmacro.h"
-#endif
+#నిర్వచితమైతే HCS12_సంకేతం_WARRIOR
+    #అన్తర్భావ "../../Source/portable/CodeWarrior/HCS12/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef MICROBLAZE_GCC
-    #include "../../Source/portable/GCC/MicroBlaze/portmacro.h"
-#endif
+#నిర్వచితమైతే MICROBLAZE_GCC
+    #అన్తర్భావ "../../Source/portable/GCC/MicroBlaze/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef TERN_EE
-    #include "..\..\Source\portable\Paradigm\Tern_EE\small\portmacro.h"
-#endif
+#నిర్వచితమైతే TERN_EE
+    #అన్తర్భావ "..\..\Source\portable\Paradigm\Tern_EE\small\portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef GCC_HCS12
-    #include "../../Source/portable/GCC/HCS12/portmacro.h"
-#endif
+#నిర్వచితమైతే GCC_HCS12
+    #అన్తర్భావ "../../Source/portable/GCC/HCS12/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef GCC_MCF5235
-    #include "../../Source/portable/GCC/MCF5235/portmacro.h"
-#endif
+#నిర్వచితమైతే GCC_MCF5235
+    #అన్తర్భావ "../../Source/portable/GCC/MCF5235/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef COLDFIRE_V2_GCC
-    #include "../../../Source/portable/GCC/ColdFire_V2/portmacro.h"
-#endif
+#నిర్వచితమైతే COLDFIRE_V2_GCC
+    #అన్తర్భావ "../../../Source/portable/GCC/ColdFire_V2/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef COLDFIRE_V2_CODEWARRIOR
-    #include "../../Source/portable/CodeWarrior/ColdFire_V2/portmacro.h"
-#endif
+#నిర్వచితమైతే COLDFIRE_V2_CODEWARRIOR
+    #అన్తర్భావ "../../Source/portable/CodeWarrior/ColdFire_V2/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef GCC_PPC405
-    #include "../../Source/portable/GCC/PPC405_Xilinx/portmacro.h"
-#endif
+#నిర్వచితమైతే GCC_PPC405
+    #అన్తర్భావ "../../Source/portable/GCC/PPC405_Xilinx/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef GCC_PPC440
-    #include "../../Source/portable/GCC/PPC440_Xilinx/portmacro.h"
-#endif
+#నిర్వచితమైతే GCC_PPC440
+    #అన్తర్భావ "../../Source/portable/GCC/PPC440_Xilinx/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef _16FX_SOFTUNE
-    #include "..\..\Source\portable\Softune\MB96340\portmacro.h"
-#endif
+#నిర్వచితమైతే _16FX_SOFTUNE
+    #అన్తర్భావ "..\..\Source\portable\Softune\MB96340\portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef BCC_INDUSTRIAL_PC_PORT
-
-/* A short file name has to be used in place of the normal
- * FreeRTOSConfig.h when using the Borland compiler. */
-    #include "frconfig.h"
-    #include "..\portable\BCC\16BitDOS\PC\prtmacro.h"
-    typedef void ( __interrupt __far * pxISR )();
-#endif
-
-#ifdef BCC_FLASH_LITE_186_PORT
+#నిర్వచితమైతే BCC_INDUSTRIAL_PC_పోర్టు
 
 /* A short file name has to be used in place of the normal
  * FreeRTOSConfig.h when using the Borland compiler. */
-    #include "frconfig.h"
-    #include "..\portable\BCC\16BitDOS\flsh186\prtmacro.h"
-    typedef void ( __interrupt __far * pxISR )();
-#endif
+    #అన్తర్భావ "frconfig.h"
+    #అన్తర్భావ "..\portable\BCC\16BitDOS\PC\prtmacro.h"
+    రకనిర్వచనం శూన్య ( __interrupt __far * pxISR )();
+#అయితే_ముగింపు
 
-#ifdef __GNUC__
-    #ifdef __AVR32_AVR32A__
-        #include "portmacro.h"
-    #endif
-#endif
+#నిర్వచితమైతే BCC_FLASH_LITE_186_పోర్టు
 
-#ifdef __ICCAVR32__
-    #ifdef __CORE__
-        #if __CORE__ == __AVR32A__
-            #include "portmacro.h"
-        #endif
-    #endif
-#endif
+/* A short file name has to be used in place of the normal
+ * FreeRTOSConfig.h when using the Borland compiler. */
+    #అన్తర్భావ "frconfig.h"
+    #అన్తర్భావ "..\portable\BCC\16BitDOS\flsh186\prtmacro.h"
+    రకనిర్వచనం శూన్య ( __interrupt __far * pxISR )();
+#అయితే_ముగింపు
 
-#ifdef __91467D
-    #include "portmacro.h"
-#endif
+#నిర్వచితమైతే __GNUC__
+    #నిర్వచితమైతే __AVR32_AVR32A__
+        #అన్తర్భావ "portmacro.h"
+    #అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#ifdef __96340
-    #include "portmacro.h"
-#endif
+#నిర్వచితమైతే __ICCAVR32__
+    #నిర్వచితమైతే __CORE__
+        #ఒకవేళ __CORE__ == __AVR32A__
+            #అన్తర్భావ "portmacro.h"
+        #అయితే_ముగింపు
+    #అయితే_ముగింపు
+#అయితే_ముగింపు
+
+#నిర్వచితమైతే __91467D
+    #అన్తర్భావ "portmacro.h"
+#అయితే_ముగింపు
+
+#నిర్వచితమైతే __96340
+    #అన్తర్భావ "portmacro.h"
+#అయితే_ముగింపు
 
 
-#ifdef __IAR_V850ES_Fx3__
-    #include "../../Source/portable/IAR/V850ES/portmacro.h"
-#endif
+#నిర్వచితమైతే __IAR_V850ES_Fx3__
+    #అన్తర్భావ "../../Source/portable/IAR/V850ES/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef __IAR_V850ES_Jx3__
-    #include "../../Source/portable/IAR/V850ES/portmacro.h"
-#endif
+#నిర్వచితమైతే __IAR_V850ES_Jx3__
+    #అన్తర్భావ "../../Source/portable/IAR/V850ES/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef __IAR_V850ES_Jx3_L__
-    #include "../../Source/portable/IAR/V850ES/portmacro.h"
-#endif
+#నిర్వచితమైతే __IAR_V850ES_Jx3_L__
+    #అన్తర్భావ "../../Source/portable/IAR/V850ES/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef __IAR_V850ES_Jx2__
-    #include "../../Source/portable/IAR/V850ES/portmacro.h"
-#endif
+#నిర్వచితమైతే __IAR_V850ES_Jx2__
+    #అన్తర్భావ "../../Source/portable/IAR/V850ES/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef __IAR_V850ES_Hx2__
-    #include "../../Source/portable/IAR/V850ES/portmacro.h"
-#endif
+#నిర్వచితమైతే __IAR_V850ES_Hx2__
+    #అన్తర్భావ "../../Source/portable/IAR/V850ES/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef __IAR_78K0R_Kx3__
-    #include "../../Source/portable/IAR/78K0R/portmacro.h"
-#endif
+#నిర్వచితమైతే __IAR_78K0R_Kx3__
+    #అన్తర్భావ "../../Source/portable/IAR/78K0R/portmacro.h"
+#అయితే_ముగింపు
 
-#ifdef __IAR_78K0R_Kx3L__
-    #include "../../Source/portable/IAR/78K0R/portmacro.h"
-#endif
+#నిర్వచితమైతే __IAR_78K0R_Kx3L__
+    #అన్తర్భావ "../../Source/portable/IAR/78K0R/portmacro.h"
+#అయితే_ముగింపు
 
-#endif /* DEPRECATED_DEFINITIONS_H */
+#అయితే_ముగింపు /* DEPRECATED_DEFINITIONS_H */

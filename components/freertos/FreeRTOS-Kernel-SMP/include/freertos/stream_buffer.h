@@ -53,25 +53,25 @@
  *
  */
 
-#ifndef STREAM_BUFFER_H
-#define STREAM_BUFFER_H
+#నిర్వచితం_కాకపోతే ప్రవాహం_బఫరు_H
+#నిర్వచించు ప్రవాహం_బఫరు_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h must appear in source files before include stream_buffer.h"
-#endif
+#నిర్వచితం_కాకపోతే INC_FREERTOS_H
+    #దోషం "include FreeRTOS.h must appear in source files before include stream_buffer.h"
+#అయితే_ముగింపు
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
-    extern "C" {
-#endif
+#ఒకవేళ defined( __cplusplus )
+    బాహ్య "C" {
+#అయితే_ముగింపు
 /* *INDENT-ON* */
 
 /**
  * Type of stream buffer. For internal use only.
  */
-#define sbTYPE_STREAM_BUFFER             ( ( BaseType_t ) 0 )
-#define sbTYPE_MESSAGE_BUFFER            ( ( BaseType_t ) 1 )
-#define sbTYPE_STREAM_BATCHING_BUFFER    ( ( BaseType_t ) 2 )
+#నిర్వచించు sb_TYPE_ప్రవాహం_బఫరు             ( ( పునాది_Type_t ) 0 )
+#నిర్వచించు sb_TYPE_సందేశం_బఫరు            ( ( పునాది_Type_t ) 1 )
+#నిర్వచించు sb_TYPE_ప్రవాహం_BATCHING_బఫరు    ( ( పునాది_Type_t ) 2 )
 
 /**
  * Type by which stream buffers are referenced.  For example, a call to
@@ -79,15 +79,15 @@
  * then be used as a parameter to xStreamBufferSend(), xStreamBufferReceive(),
  * etc.
  */
-struct StreamBufferDef_t;
-typedef struct StreamBufferDef_t * StreamBufferHandle_t;
+నిర్మాణం ప్రవాహం_బఫరు_Def_t;
+రకనిర్వచనం నిర్మాణం ప్రవాహం_బఫరు_Def_t * ప్రవాహం_బఫరు_Handle_t;
 
 /**
  *  Type used as a stream buffer's optional callback.
  */
-typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuffer,
-                                                 BaseType_t xIsInsideISR,
-                                                 BaseType_t * const pxHigherPriorityTaskWoken );
+రకనిర్వచనం శూన్య (* ప్రవాహం_బఫరు_Callback_Function_t)( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు,
+                                                 పునాది_Type_t xIsInsideISR,
+                                                 పునాది_Type_t * స్థిరరాశి px_Higher_ప్రాధాన్యత_Task_Woken );
 
 /**
  * stream_buffer.h
@@ -167,13 +167,13 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  * \ingroup StreamBufferManagement
  */
 
-#define xStreamBufferCreate( xBufferSizeBytes, xTriggerLevelBytes ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BUFFER, NULL, NULL )
+#నిర్వచించు x_ప్రవాహం_బఫరు_Create( x_బఫరు_కొలత_బైట్లు, x_Trigger_Level_బైట్లు ) \
+    x_ప్రవాహం_బఫరు_Generic_Create( ( x_బఫరు_కొలత_బైట్లు ), ( x_Trigger_Level_బైట్లు ), sb_TYPE_ప్రవాహం_బఫరు, ఖాళీ, ఖాళీ )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-    #define xStreamBufferCreateWithCallback( xBufferSizeBytes, xTriggerLevelBytes, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BUFFER, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
-#endif
+#ఒకవేళ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #నిర్వచించు x_ప్రవాహం_బఫరు_Create_With_Callback( x_బఫరు_కొలత_బైట్లు, x_Trigger_Level_బైట్లు, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
+    x_ప్రవాహం_బఫరు_Generic_Create( ( x_బఫరు_కొలత_బైట్లు ), ( x_Trigger_Level_బైట్లు ), sb_TYPE_ప్రవాహం_బఫరు, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
+#అయితే_ముగింపు
 
 /**
  * stream_buffer.h
@@ -267,13 +267,13 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  * \ingroup StreamBufferManagement
  */
 
-#define xStreamBufferCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BUFFER, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), NULL, NULL )
+#నిర్వచించు x_ప్రవాహం_బఫరు_Create_Static( x_బఫరు_కొలత_బైట్లు, x_Trigger_Level_బైట్లు, puc_ప్రవాహం_బఫరు_Storage_Area, px_Static_ప్రవాహం_బఫరు ) \
+    x_ప్రవాహం_బఫరు_Generic_Create_Static( ( x_బఫరు_కొలత_బైట్లు ), ( x_Trigger_Level_బైట్లు ), sb_TYPE_ప్రవాహం_బఫరు, ( puc_ప్రవాహం_బఫరు_Storage_Area ), ( px_Static_ప్రవాహం_బఫరు ), ఖాళీ, ఖాళీ )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-    #define xStreamBufferCreateStaticWithCallback( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BUFFER, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
-#endif
+#ఒకవేళ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #నిర్వచించు x_ప్రవాహం_బఫరు_Create_Static_With_Callback( x_బఫరు_కొలత_బైట్లు, x_Trigger_Level_బైట్లు, puc_ప్రవాహం_బఫరు_Storage_Area, px_Static_ప్రవాహం_బఫరు, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
+    x_ప్రవాహం_బఫరు_Generic_Create_Static( ( x_బఫరు_కొలత_బైట్లు ), ( x_Trigger_Level_బైట్లు ), sb_TYPE_ప్రవాహం_బఫరు, ( puc_ప్రవాహం_బఫరు_Storage_Area ), ( px_Static_ప్రవాహం_బఫరు ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
+#అయితే_ముగింపు
 
 /**
  * stream_buffer.h
@@ -353,13 +353,13 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  * \ingroup StreamBatchingBufferManagement
  */
 
-#define xStreamBatchingBufferCreate( xBufferSizeBytes, xTriggerLevelBytes ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BATCHING_BUFFER, NULL, NULL )
+#నిర్వచించు x_ప్రవాహం_Batching_బఫరు_Create( x_బఫరు_కొలత_బైట్లు, x_Trigger_Level_బైట్లు ) \
+    x_ప్రవాహం_బఫరు_Generic_Create( ( x_బఫరు_కొలత_బైట్లు ), ( x_Trigger_Level_బైట్లు ), sb_TYPE_ప్రవాహం_BATCHING_బఫరు, ఖాళీ, ఖాళీ )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-    #define xStreamBatchingBufferCreateWithCallback( xBufferSizeBytes, xTriggerLevelBytes, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BATCHING_BUFFER, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
-#endif
+#ఒకవేళ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #నిర్వచించు x_ప్రవాహం_Batching_బఫరు_Create_With_Callback( x_బఫరు_కొలత_బైట్లు, x_Trigger_Level_బైట్లు, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
+    x_ప్రవాహం_బఫరు_Generic_Create( ( x_బఫరు_కొలత_బైట్లు ), ( x_Trigger_Level_బైట్లు ), sb_TYPE_ప్రవాహం_BATCHING_బఫరు, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
+#అయితే_ముగింపు
 
 /**
  * stream_buffer.h
@@ -455,13 +455,13 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  * \ingroup StreamBatchingBufferManagement
  */
 
-#define xStreamBatchingBufferCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BATCHING_BUFFER, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), NULL, NULL )
+#నిర్వచించు x_ప్రవాహం_Batching_బఫరు_Create_Static( x_బఫరు_కొలత_బైట్లు, x_Trigger_Level_బైట్లు, puc_ప్రవాహం_బఫరు_Storage_Area, px_Static_ప్రవాహం_బఫరు ) \
+    x_ప్రవాహం_బఫరు_Generic_Create_Static( ( x_బఫరు_కొలత_బైట్లు ), ( x_Trigger_Level_బైట్లు ), sb_TYPE_ప్రవాహం_BATCHING_బఫరు, ( puc_ప్రవాహం_బఫరు_Storage_Area ), ( px_Static_ప్రవాహం_బఫరు ), ఖాళీ, ఖాళీ )
 
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-    #define xStreamBatchingBufferCreateStaticWithCallback( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), ( xTriggerLevelBytes ), sbTYPE_STREAM_BATCHING_BUFFER, ( pucStreamBufferStorageArea ), ( pxStaticStreamBuffer ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
-#endif
+#ఒకవేళ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #నిర్వచించు x_ప్రవాహం_Batching_బఫరు_Create_Static_With_Callback( x_బఫరు_కొలత_బైట్లు, x_Trigger_Level_బైట్లు, puc_ప్రవాహం_బఫరు_Storage_Area, px_Static_ప్రవాహం_బఫరు, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
+    x_ప్రవాహం_బఫరు_Generic_Create_Static( ( x_బఫరు_కొలత_బైట్లు ), ( x_Trigger_Level_బైట్లు ), sb_TYPE_ప్రవాహం_BATCHING_బఫరు, ( puc_ప్రవాహం_బఫరు_Storage_Area ), ( px_Static_ప్రవాహం_బఫరు ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
+#అయితే_ముగింపు
 
 /**
  * stream_buffer.h
@@ -492,11 +492,11 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  * \defgroup xStreamBufferGetStaticBuffers xStreamBufferGetStaticBuffers
  * \ingroup StreamBufferManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    BaseType_t xStreamBufferGetStaticBuffers( StreamBufferHandle_t xStreamBuffer,
-                                              uint8_t ** ppucStreamBufferStorageArea,
-                                              StaticStreamBuffer_t ** ppxStaticStreamBuffer ) PRIVILEGED_FUNCTION;
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#ఒకవేళ ( config_SUPPORT_STATIC_కేటాయింపు == 1 )
+    పునాది_Type_t x_ప్రవాహం_బఫరు_Get_Static_Buffers( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు,
+                                              uint8_t ** ppuc_ప్రవాహం_బఫరు_Storage_Area,
+                                              Static_ప్రవాహం_బఫరు_t ** ppx_Static_ప్రవాహం_బఫరు ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  * stream_buffer.h
@@ -593,10 +593,10 @@ typedef void (* StreamBufferCallbackFunction_t)( StreamBufferHandle_t xStreamBuf
  * \defgroup xStreamBufferSend xStreamBufferSend
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
-                          const void * pvTxData,
-                          size_t xDataLengthBytes,
-                          TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+size_t x_ప్రవాహం_బఫరు_Send( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు,
+                          స్థిరరాశి శూన్య * pv_Tx_దత్తాంశం,
+                          size_t x_దత్తాంశం_నిడివి_బైట్లు,
+                          TickType_t x_Ticks_గమ్యం_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -697,10 +697,10 @@ size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
  * \defgroup xStreamBufferSendFromISR xStreamBufferSendFromISR
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
-                                 const void * pvTxData,
-                                 size_t xDataLengthBytes,
-                                 BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+size_t x_ప్రవాహం_బఫరు_Send_From_ISR( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు,
+                                 స్థిరరాశి శూన్య * pv_Tx_దత్తాంశం,
+                                 size_t x_దత్తాంశం_నిడివి_బైట్లు,
+                                 పునాది_Type_t * స్థిరరాశి px_Higher_ప్రాధాన్యత_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -789,10 +789,10 @@ size_t xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
  * \defgroup xStreamBufferReceive xStreamBufferReceive
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
-                             void * pvRxData,
-                             size_t xBufferLengthBytes,
-                             TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+size_t x_ప్రవాహం_బఫరు_Receive( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు,
+                             శూన్య * pv_Rx_దత్తాంశం,
+                             size_t x_బఫరు_నిడివి_బైట్లు,
+                             TickType_t x_Ticks_గమ్యం_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -878,10 +878,10 @@ size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
  * \defgroup xStreamBufferReceiveFromISR xStreamBufferReceiveFromISR
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
-                                    void * pvRxData,
-                                    size_t xBufferLengthBytes,
-                                    BaseType_t * const pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+size_t x_ప్రవాహం_బఫరు_Receive_From_ISR( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు,
+                                    శూన్య * pv_Rx_దత్తాంశం,
+                                    size_t x_బఫరు_నిడివి_బైట్లు,
+                                    పునాది_Type_t * స్థిరరాశి px_Higher_ప్రాధాన్యత_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -906,7 +906,7 @@ size_t xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
  * \defgroup vStreamBufferDelete vStreamBufferDelete
  * \ingroup StreamBufferManagement
  */
-void vStreamBufferDelete( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+శూన్య v_ప్రవాహం_బఫరు_Delete( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -929,7 +929,7 @@ void vStreamBufferDelete( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTI
  * \defgroup xStreamBufferIsFull xStreamBufferIsFull
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferIsFull( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+పునాది_Type_t x_ప్రవాహం_బఫరు_Is_నిండిన( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -952,7 +952,7 @@ BaseType_t xStreamBufferIsFull( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_
  * \defgroup xStreamBufferIsEmpty xStreamBufferIsEmpty
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferIsEmpty( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+పునాది_Type_t x_ప్రవాహం_బఫరు_Is_ఖాళీలు( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -982,7 +982,7 @@ BaseType_t xStreamBufferIsEmpty( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED
  * \defgroup xStreamBufferReset xStreamBufferReset
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferReset( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+పునాది_Type_t x_ప్రవాహం_బఫరు_Reset( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -1014,7 +1014,7 @@ BaseType_t xStreamBufferReset( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_F
  * \defgroup xStreamBufferResetFromISR xStreamBufferResetFromISR
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferResetFromISR( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+పునాది_Type_t x_ప్రవాహం_బఫరు_Reset_From_ISR( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -1038,7 +1038,7 @@ BaseType_t xStreamBufferResetFromISR( StreamBufferHandle_t xStreamBuffer ) PRIVI
  * \defgroup xStreamBufferSpacesAvailable xStreamBufferSpacesAvailable
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+size_t x_ప్రవాహం_బఫరు_Spaces_అందుబాటు( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -1062,7 +1062,7 @@ size_t xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVIL
  * \defgroup xStreamBufferBytesAvailable xStreamBufferBytesAvailable
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+size_t x_ప్రవాహం_బఫరు_బైట్లు_అందుబాటు( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -1102,7 +1102,7 @@ size_t xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer ) PRIVILE
  * \defgroup xStreamBufferSetTriggerLevel xStreamBufferSetTriggerLevel
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferSetTriggerLevel( StreamBufferHandle_t xStreamBuffer,
+పునాది_Type_t x_ప్రవాహం_బఫరు_సమితి_Trigger_Level( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు,
                                          size_t xTriggerLevel ) PRIVILEGED_FUNCTION;
 
 /**
@@ -1145,8 +1145,8 @@ BaseType_t xStreamBufferSetTriggerLevel( StreamBufferHandle_t xStreamBuffer,
  * \defgroup xStreamBufferSendCompletedFromISR xStreamBufferSendCompletedFromISR
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferSendCompletedFromISR( StreamBufferHandle_t xStreamBuffer,
-                                              BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+పునాది_Type_t x_ప్రవాహం_బఫరు_Send_Completed_From_ISR( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు,
+                                              పునాది_Type_t * px_Higher_ప్రాధాన్యత_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -1189,8 +1189,8 @@ BaseType_t xStreamBufferSendCompletedFromISR( StreamBufferHandle_t xStreamBuffer
  * \defgroup xStreamBufferReceiveCompletedFromISR xStreamBufferReceiveCompletedFromISR
  * \ingroup StreamBufferManagement
  */
-BaseType_t xStreamBufferReceiveCompletedFromISR( StreamBufferHandle_t xStreamBuffer,
-                                                 BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
+పునాది_Type_t x_ప్రవాహం_బఫరు_Receive_Completed_From_ISR( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు,
+                                                 పునాది_Type_t * px_Higher_ప్రాధాన్యత_Task_Woken ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -1216,7 +1216,7 @@ BaseType_t xStreamBufferReceiveCompletedFromISR( StreamBufferHandle_t xStreamBuf
  * \defgroup uxStreamBufferGetStreamBufferNotificationIndex uxStreamBufferGetStreamBufferNotificationIndex
  * \ingroup StreamBufferManagement
  */
-UBaseType_t uxStreamBufferGetStreamBufferNotificationIndex( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_ప్రవాహం_బఫరు_Get_ప్రవాహం_బఫరు_Notification_సూచీ( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు ) PRIVILEGED_FUNCTION;
 
 /**
  * stream_buffer.h
@@ -1246,39 +1246,39 @@ UBaseType_t uxStreamBufferGetStreamBufferNotificationIndex( StreamBufferHandle_t
  * \defgroup vStreamBufferSetStreamBufferNotificationIndex vStreamBufferSetStreamBufferNotificationIndex
  * \ingroup StreamBufferManagement
  */
-void vStreamBufferSetStreamBufferNotificationIndex( StreamBufferHandle_t xStreamBuffer,
-                                                    UBaseType_t uxNotificationIndex ) PRIVILEGED_FUNCTION;
+శూన్య v_ప్రవాహం_బఫరు_సమితి_ప్రవాహం_బఫరు_Notification_సూచీ( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు,
+                                                    UBaseType_t ux_Notification_సూచీ ) PRIVILEGED_FUNCTION;
 
 /* Functions below here are not part of the public API. */
-StreamBufferHandle_t xStreamBufferGenericCreate( size_t xBufferSizeBytes,
-                                                 size_t xTriggerLevelBytes,
-                                                 BaseType_t xStreamBufferType,
-                                                 StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                                 StreamBufferCallbackFunction_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
+ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు_Generic_Create( size_t x_బఫరు_కొలత_బైట్లు,
+                                                 size_t x_Trigger_Level_బైట్లు,
+                                                 పునాది_Type_t x_ప్రవాహం_బఫరు_Type,
+                                                 ప్రవాహం_బఫరు_Callback_Function_t pxSendCompletedCallback,
+                                                 ప్రవాహం_బఫరు_Callback_Function_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    StreamBufferHandle_t xStreamBufferGenericCreateStatic( size_t xBufferSizeBytes,
-                                                           size_t xTriggerLevelBytes,
-                                                           BaseType_t xStreamBufferType,
-                                                           uint8_t * const pucStreamBufferStorageArea,
-                                                           StaticStreamBuffer_t * const pxStaticStreamBuffer,
-                                                           StreamBufferCallbackFunction_t pxSendCompletedCallback,
-                                                           StreamBufferCallbackFunction_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( config_SUPPORT_STATIC_కేటాయింపు == 1 )
+    ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు_Generic_Create_Static( size_t x_బఫరు_కొలత_బైట్లు,
+                                                           size_t x_Trigger_Level_బైట్లు,
+                                                           పునాది_Type_t x_ప్రవాహం_బఫరు_Type,
+                                                           uint8_t * స్థిరరాశి puc_ప్రవాహం_బఫరు_Storage_Area,
+                                                           Static_ప్రవాహం_బఫరు_t * స్థిరరాశి px_Static_ప్రవాహం_బఫరు,
+                                                           ప్రవాహం_బఫరు_Callback_Function_t pxSendCompletedCallback,
+                                                           ప్రవాహం_బఫరు_Callback_Function_t pxReceiveCompletedCallback ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
-size_t xStreamBufferNextMessageLengthBytes( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
+size_t x_ప్రవాహం_బఫరు_తదుపరి_సందేశం_నిడివి_బైట్లు( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు ) PRIVILEGED_FUNCTION;
 
-#if ( configUSE_TRACE_FACILITY == 1 )
-    void vStreamBufferSetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer,
-                                             UBaseType_t uxStreamBufferNumber ) PRIVILEGED_FUNCTION;
-    UBaseType_t uxStreamBufferGetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
-    uint8_t ucStreamBufferGetStreamBufferType( StreamBufferHandle_t xStreamBuffer ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( configUSE_TRACE_FACILITY == 1 )
+    శూన్య v_ప్రవాహం_బఫరు_సమితి_ప్రవాహం_బఫరు_సంఖ్య( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు,
+                                             UBaseType_t ux_ప్రవాహం_బఫరు_సంఖ్య ) PRIVILEGED_FUNCTION;
+    UBaseType_t ux_ప్రవాహం_బఫరు_Get_ప్రవాహం_బఫరు_సంఖ్య( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు ) PRIVILEGED_FUNCTION;
+    uint8_t uc_ప్రవాహం_బఫరు_Get_ప్రవాహం_బఫరు_Type( ప్రవాహం_బఫరు_Handle_t x_ప్రవాహం_బఫరు ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
+#ఒకవేళ defined( __cplusplus )
     }
-#endif
+#అయితే_ముగింపు
 /* *INDENT-ON* */
 
-#endif /* !defined( STREAM_BUFFER_H ) */
+#అయితే_ముగింపు /* !defined( STREAM_BUFFER_H ) */

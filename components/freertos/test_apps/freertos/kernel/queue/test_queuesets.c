@@ -4,40 +4,40 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/queue.h"
-#include "freertos/semphr.h"
-#include "freertos/idf_additions.h"
-#include "unity.h"
-#include "test_utils.h"
+#అన్తర్భావ "sdkconfig.h"
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ <stdlib.h>
+#అన్తర్భావ "freertos/FreeRTOS.h"
+#అన్తర్భావ "freertos/task.h"
+#అన్తర్భావ "freertos/queue.h"
+#అన్తర్భావ "freertos/semphr.h"
+#అన్తర్భావ "freertos/idf_additions.h"
+#అన్తర్భావ "unity.h"
+#అన్తర్భావ "test_utils.h"
 
-#define QUEUE_LEN       4
+#నిర్వచించు వరుస_LEN       4
 
-static void allocate_resources(int num_queues, int queue_len, QueueHandle_t *queue_list_ret, QueueSetHandle_t *queue_set_ret)
+స్థిర శూన్య allocate_resources(పూర్ణాంకం అంకె_queues, పూర్ణాంకం వరుస_len, వరుస_Handle_t *వరుస_list_ret, వరుస_సమితి_Handle_t *వరుస_సమితి_ret)
 {
     // Create queue set
-    *queue_set_ret = xQueueCreateSet(num_queues * queue_len);
-    TEST_ASSERT_NOT_EQUAL(NULL, *queue_set_ret);
+    *వరుస_సమితి_ret = x_వరుస_Create_సమితి(అంకె_queues * వరుస_len);
+    TEST_ASSERT_NOT_EQUAL(ఖాళీ, *వరుస_సమితి_ret);
     // Create queues and add them to the queue set
-    for (int i = 0; i < num_queues; i++) {
-        queue_list_ret[i] = xQueueCreate(queue_len, sizeof(BaseType_t));
-        TEST_ASSERT_NOT_EQUAL(NULL, queue_list_ret[i]);
-        TEST_ASSERT_EQUAL(pdPASS, xQueueAddToSet(queue_list_ret[i], *queue_set_ret));
+    కొరకు (పూర్ణాంకం i = 0; i < అంకె_queues; i++) {
+        వరుస_list_ret[i] = x_వరుస_Create(వరుస_len, పరిమాణం(పునాది_Type_t));
+        TEST_ASSERT_NOT_EQUAL(ఖాళీ, వరుస_list_ret[i]);
+        TEST_ASSERT_EQUAL(pdPASS, x_వరుస_కూడు_గమ్యం_సమితి(వరుస_list_ret[i], *వరుస_సమితి_ret));
     }
 }
 
-static void free_resources(int num_queues, QueueHandle_t *queue_list, QueueSetHandle_t queue_set)
+స్థిర శూన్య free_resources(పూర్ణాంకం అంకె_queues, వరుస_Handle_t *వరుస_list, వరుస_సమితి_Handle_t వరుస_సమితి)
 {
     // Remove queues form queue set and delete the queues
-    for (int i = 0; i < num_queues; i++) {
-        TEST_ASSERT_EQUAL(pdPASS, xQueueRemoveFromSet(queue_list[i], queue_set));
-        vQueueDelete(queue_list[i]);
+    కొరకు (పూర్ణాంకం i = 0; i < అంకె_queues; i++) {
+        TEST_ASSERT_EQUAL(pdPASS, x_వరుస_Remove_From_సమితి(వరుస_list[i], వరుస_సమితి));
+        v_వరుస_Delete(వరుస_list[i]);
     }
-    vQueueDelete(queue_set);
+    v_వరుస_Delete(వరుస_సమితి);
 }
 
 /*
@@ -56,42 +56,42 @@ Expected:
     - The item sent by the xQueueSend() is correct when read
 */
 
-#define NUM_QUEUES      5
+#నిర్వచించు అంకె_QUEUES      5
 
 TEST_CASE("Test Queue sets", "[freertos]")
 {
     // Create queues and queue set
-    QueueHandle_t queues[NUM_QUEUES];
-    QueueSetHandle_t queue_set;
-    allocate_resources(NUM_QUEUES, QUEUE_LEN, queues, &queue_set);
+    వరుస_Handle_t queues[అంకె_QUEUES];
+    వరుస_సమితి_Handle_t వరుస_సమితి;
+    allocate_resources(అంకె_QUEUES, వరుస_LEN, queues, &వరుస_సమితి);
 
     // Fill each queue sequentially with QUEUE_LEN items
-    for (int i = 0; i < NUM_QUEUES; i++) {
-        for (int j = 0; j < QUEUE_LEN; j++) {
-            BaseType_t item = j;
-            TEST_ASSERT_EQUAL(pdTRUE, xQueueSend(queues[i], &item, 0));
+    కొరకు (పూర్ణాంకం i = 0; i < అంకె_QUEUES; i++) {
+        కొరకు (పూర్ణాంకం j = 0; j < వరుస_LEN; j++) {
+            పునాది_Type_t అంశం = j;
+            TEST_ASSERT_EQUAL(pdTRUE, x_వరుస_Send(queues[i], &అంశం, 0));
         }
     }
 
-    for (int i = 0; i < NUM_QUEUES; i++) {
-        for (int j = 0; j < QUEUE_LEN; j++) {
+    కొరకు (పూర్ణాంకం i = 0; i < అంకె_QUEUES; i++) {
+        కొరకు (పూర్ణాంకం j = 0; j < వరుస_LEN; j++) {
             // Check the queue set member
-            QueueSetMemberHandle_t member = xQueueSelectFromSet(queue_set, 0);
+            వరుస_సమితి_Member_Handle_t member = x_వరుస_Select_From_సమితి(వరుస_సమితి, 0);
             TEST_ASSERT_EQUAL(queues[i], member);
             // Check the queue's items
-            BaseType_t item;
-            TEST_ASSERT_EQUAL(pdTRUE, xQueueReceive(member, &item, 0));
-            TEST_ASSERT_EQUAL(j, item);
+            పునాది_Type_t అంశం;
+            TEST_ASSERT_EQUAL(pdTRUE, x_వరుస_Receive(member, &అంశం, 0));
+            TEST_ASSERT_EQUAL(j, అంశం);
         }
     }
     // Check that there are no more members
-    TEST_ASSERT_EQUAL(NULL, xQueueSelectFromSet(queue_set, 0));
+    TEST_ASSERT_EQUAL(ఖాళీ, x_వరుస_Select_From_సమితి(వరుస_సమితి, 0));
 
     // Cleanup queues and queue set
-    free_resources(NUM_QUEUES, queues, queue_set);
+    free_resources(అంకె_QUEUES, queues, వరుస_సమితి);
 }
 
-#ifndef CONFIG_FREERTOS_UNICORE
+#నిర్వచితం_కాకపోతే CONFIG_FREERTOS_UNICORE
 /*
 Test queue set SMP thread safety
 
@@ -108,81 +108,81 @@ Expected:
     - The item sent by the xQueueSend() is correct when read
 */
 
-static volatile bool start_other_cores;
-static SemaphoreHandle_t done_sem = NULL;
+స్థిర అస్థిర bool ప్రారంభం_other_cores;
+స్థిర SemaphoreHandle_t పూర్తి_sem = ఖాళీ;
 
-static void send_func(void *arg)
+స్థిర శూన్య send_func(శూన్య *arg)
 {
-    QueueHandle_t queue = (QueueHandle_t)arg;
-    BaseType_t core_id = xPortGetCoreID();
-    if (core_id == 0) {
+    వరుస_Handle_t వరుస = (వరుస_Handle_t)arg;
+    పునాది_Type_t core_id = x_పోర్టు_Get_Core_ID();
+    ఒకవేళ (core_id == 0) {
         // We are core 0. Trigger the other cores to start
-        start_other_cores = true;
-    } else {
+        ప్రారంభం_other_cores = true;
+    } లేకపోతే {
         // Wait to be started by main core
-        while (!start_other_cores) {
+        అయితే (!ప్రారంభం_other_cores) {
             ;
         }
     }
 
     // Fill the queue assigned to the current core
-    for (int i = 0; i < QUEUE_LEN; i++) {
-        TEST_ASSERT_EQUAL(pdTRUE, xQueueSend(queue, &core_id, 0));
+    కొరకు (పూర్ణాంకం i = 0; i < వరుస_LEN; i++) {
+        TEST_ASSERT_EQUAL(pdTRUE, x_వరుస_Send(వరుస, &core_id, 0));
     }
 
-    if (core_id != 0) {
+    ఒకవేళ (core_id != 0) {
         // Indicate completion to core 0 and self delete
-        xSemaphoreGive(done_sem);
-        vTaskDelete(NULL);
+        xSemaphoreGive(పూర్తి_sem);
+        vTaskDelete(ఖాళీ);
     }
 }
 
 TEST_CASE("Test queue sets multi-core", "[freertos]")
 {
     // Create done semaphore
-    done_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_NUMBER_OF_CORES - 1, 0);
-    TEST_ASSERT_NOT_EQUAL(NULL, done_sem);
+    పూర్తి_sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES - 1, 0);
+    TEST_ASSERT_NOT_EQUAL(ఖాళీ, పూర్తి_sem);
 
     // Create queues and queue set
-    QueueHandle_t queues[CONFIG_FREERTOS_NUMBER_OF_CORES];
-    QueueSetHandle_t queue_set;
-    allocate_resources(CONFIG_FREERTOS_NUMBER_OF_CORES, QUEUE_LEN, queues, &queue_set);
+    వరుస_Handle_t queues[CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES];
+    వరుస_సమితి_Handle_t వరుస_సమితి;
+    allocate_resources(CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES, వరుస_LEN, queues, &వరుస_సమితి);
 
     // Create tasks of the same priority for all cores except for core 0
-    for (int i = 1; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(send_func, "send", 2048, (void *)queues[i], UNITY_FREERTOS_PRIORITY, NULL, i));
+    కొరకు (పూర్ణాంకం i = 1; i < CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES; i++) {
+        TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_గమ్యం_Core(send_func, "send", 2048, (శూన్య *)queues[i], UNITY_FREERTOS_ప్రాధాన్యత, ఖాళీ, i));
     }
 
     // Core 0 calls send_func as well triggering the simultaneous sends from all cores
-    send_func((void *)queues[0]);
+    send_func((శూన్య *)queues[0]);
 
     // Wait for all other cores to be done
-    for (int i = 1; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        xSemaphoreTake(done_sem, portMAX_DELAY);
+    కొరకు (పూర్ణాంకం i = 1; i < CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES; i++) {
+        xSemaphoreTake(పూర్తి_sem, పోర్టు_MAX_DELAY);
     }
 
     // Read queues from the queue set, then read an item from the queue
-    uint32_t queues_check_count[CONFIG_FREERTOS_NUMBER_OF_CORES] = {0};
-    QueueSetMemberHandle_t member = xQueueSelectFromSet(queue_set, 0);
-    while (member != NULL) {
+    uint32_t queues_check_లెక్క[CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES] = {0};
+    వరుస_సమితి_Member_Handle_t member = x_వరుస_Select_From_సమితి(వరుస_సమితి, 0);
+    అయితే (member != ఖాళీ) {
         // Read the core ID from the queue, check that core ID is sane
-        BaseType_t core_id;
-        TEST_ASSERT_EQUAL(pdTRUE, xQueueReceive(member, &core_id, 0));
-        TEST_ASSERT_LESS_THAN(CONFIG_FREERTOS_NUMBER_OF_CORES, core_id);
-        queues_check_count[core_id]++;
+        పునాది_Type_t core_id;
+        TEST_ASSERT_EQUAL(pdTRUE, x_వరుస_Receive(member, &core_id, 0));
+        TEST_ASSERT_LESS_THAN(CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES, core_id);
+        queues_check_లెక్క[core_id]++;
 
         // Get next member
-        member = xQueueSelectFromSet(queue_set, 0);
+        member = x_వరుస_Select_From_సమితి(వరుస_సమితి, 0);
     }
     // Check that all items from all queues have been read
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        TEST_ASSERT_EQUAL(QUEUE_LEN, queues_check_count[i]);
+    కొరకు (పూర్ణాంకం i = 0; i < CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES; i++) {
+        TEST_ASSERT_EQUAL(వరుస_LEN, queues_check_లెక్క[i]);
     }
 
     // Cleanup queues and queue set
-    free_resources(CONFIG_FREERTOS_NUMBER_OF_CORES, queues, queue_set);
+    free_resources(CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES, queues, వరుస_సమితి);
     // Cleanup done sem
-    vSemaphoreDelete(done_sem);
-    done_sem = NULL;
+    vSemaphoreDelete(పూర్తి_sem);
+    పూర్తి_sem = ఖాళీ;
 }
-#endif // CONFIG_FREERTOS_UNICORE
+#అయితే_ముగింపు // CONFIG_FREERTOS_UNICORE

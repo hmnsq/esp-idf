@@ -31,8 +31,8 @@
  */
 
 
-#ifndef _MSC_VER /* Visual Studio doesn't support #warning. */
-    #warning The name of this file has changed to stack_macros.h.  Please update your code accordingly.  This source file (which has the original name) will be removed in a future release.
-#endif
+#నిర్వచితం_కాకపోతే _MSC_VER /* Visual Studio doesn't support #warning. */
+    #warning The name యొక్క this file has మారింది గమ్యం దొంతర_macros.h.  Please update your సంకేతం_2 accordingly.  This ఆధారం file (which has the original name) will be removed లోపల a future release.
+#అయితే_ముగింపు
 
-#include "stack_macros.h"
+#అన్తర్భావ "stack_macros.h"

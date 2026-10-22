@@ -34,8 +34,8 @@
 * Portable layer API.  Each function must be defined for each port.
 *----------------------------------------------------------*/
 
-#ifndef PORTABLE_H
-#define PORTABLE_H
+#నిర్వచితం_కాకపోతే PORTABLE_H
+#నిర్వచించు PORTABLE_H
 
 /* Each FreeRTOS port has a unique portmacro.h header file.  Originally a
  * pre-processor definition was used to ensure the pre-processor found the correct
@@ -47,60 +47,60 @@
  * to make it clear that new projects should not use it, support for the port
  * specific constants has been moved into the deprecated_definitions.h header
  * file. */
-#include "deprecated_definitions.h"
+#అన్తర్భావ "deprecated_definitions.h"
 
 /* If portENTER_CRITICAL is not defined then including deprecated_definitions.h
  * did not result in a portmacro.h header file being included - and it should be
  * included here.  In this case the path to the correct portmacro.h header file
  * must be set in the compiler's include path. */
-#ifndef portENTER_CRITICAL
-    #include "portmacro.h"
-#endif
+#నిర్వచితం_కాకపోతే పోర్టు_ENTER_CRITICAL
+    #అన్తర్భావ "portmacro.h"
+#అయితే_ముగింపు
 
-#if portBYTE_ALIGNMENT == 32
-    #define portBYTE_ALIGNMENT_MASK    ( 0x001f )
-#elif portBYTE_ALIGNMENT == 16
-    #define portBYTE_ALIGNMENT_MASK    ( 0x000f )
-#elif portBYTE_ALIGNMENT == 8
-    #define portBYTE_ALIGNMENT_MASK    ( 0x0007 )
-#elif portBYTE_ALIGNMENT == 4
-    #define portBYTE_ALIGNMENT_MASK    ( 0x0003 )
-#elif portBYTE_ALIGNMENT == 2
-    #define portBYTE_ALIGNMENT_MASK    ( 0x0001 )
-#elif portBYTE_ALIGNMENT == 1
-    #define portBYTE_ALIGNMENT_MASK    ( 0x0000 )
-#else /* if portBYTE_ALIGNMENT == 32 */
-    #error "Invalid portBYTE_ALIGNMENT definition"
-#endif /* if portBYTE_ALIGNMENT == 32 */
+#ఒకవేళ పోర్టు_BYTE_ALIGNMENT == 32
+    #నిర్వచించు పోర్టు_BYTE_ALIGNMENT_ముసుగు    ( 0x001f )
+#లేదావేళ పోర్టు_BYTE_ALIGNMENT == 16
+    #నిర్వచించు పోర్టు_BYTE_ALIGNMENT_ముసుగు    ( 0x000f )
+#లేదావేళ పోర్టు_BYTE_ALIGNMENT == 8
+    #నిర్వచించు పోర్టు_BYTE_ALIGNMENT_ముసుగు    ( 0x0007 )
+#లేదావేళ పోర్టు_BYTE_ALIGNMENT == 4
+    #నిర్వచించు పోర్టు_BYTE_ALIGNMENT_ముసుగు    ( 0x0003 )
+#లేదావేళ పోర్టు_BYTE_ALIGNMENT == 2
+    #నిర్వచించు పోర్టు_BYTE_ALIGNMENT_ముసుగు    ( 0x0001 )
+#లేదావేళ పోర్టు_BYTE_ALIGNMENT == 1
+    #నిర్వచించు పోర్టు_BYTE_ALIGNMENT_ముసుగు    ( 0x0000 )
+#లేకపోతే /* if portBYTE_ALIGNMENT == 32 */
+    #దోషం "Invalid portBYTE_ALIGNMENT definition"
+#అయితే_ముగింపు /* if portBYTE_ALIGNMENT == 32 */
 
-#ifndef portUSING_MPU_WRAPPERS
-    #define portUSING_MPU_WRAPPERS    0
-#endif
+#నిర్వచితం_కాకపోతే పోర్టు_USING_MPU_WRAPPERS
+    #నిర్వచించు పోర్టు_USING_MPU_WRAPPERS    0
+#అయితే_ముగింపు
 
-#ifndef portNUM_CONFIGURABLE_REGIONS
-    #define portNUM_CONFIGURABLE_REGIONS    1
-#endif
+#నిర్వచితం_కాకపోతే పోర్టు_అంకె_CONFIGURABLE_REGIONS
+    #నిర్వచించు పోర్టు_అంకె_CONFIGURABLE_REGIONS    1
+#అయితే_ముగింపు
 
-#ifndef portHAS_STACK_OVERFLOW_CHECKING
-    #define portHAS_STACK_OVERFLOW_CHECKING    0
-#endif
+#నిర్వచితం_కాకపోతే పోర్టు_HAS_దొంతర_అధికప్రవాహం_CHECKING
+    #నిర్వచించు పోర్టు_HAS_దొంతర_అధికప్రవాహం_CHECKING    0
+#అయితే_ముగింపు
 
-#ifndef portARCH_NAME
-    #define portARCH_NAME    NULL
-#endif
+#నిర్వచితం_కాకపోతే పోర్టు_ARCH_NAME
+    #నిర్వచించు పోర్టు_ARCH_NAME    ఖాళీ
+#అయితే_ముగింపు
 
-#ifndef configSTACK_ALLOCATION_FROM_SEPARATE_HEAP
+#నిర్వచితం_కాకపోతే config_దొంతర_కేటాయింపు_FROM_SEPARATE_కుప్ప
     /* Defaults to 0 for backward compatibility. */
-    #define configSTACK_ALLOCATION_FROM_SEPARATE_HEAP    0
-#endif
+    #నిర్వచించు config_దొంతర_కేటాయింపు_FROM_SEPARATE_కుప్ప    0
+#అయితే_ముగింపు
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#నిర్వచితమైతే __cplusplus
+    బాహ్య "C" {
+#అయితే_ముగింపు
 /* *INDENT-ON* */
 
-#include "mpu_wrappers.h"
+#అన్తర్భావ "mpu_wrappers.h"
 
 /*
  * Setup the stack of a new task so it is ready to be placed under the
@@ -108,51 +108,51 @@
  * the order that the port expects to find them.
  *
  */
-#if ( portUSING_MPU_WRAPPERS == 1 )
-    #if ( portHAS_STACK_OVERFLOW_CHECKING == 1 )
-        StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
-                                             StackType_t * pxEndOfStack,
-                                             TaskFunction_t pxCode,
-                                             void * pvParameters,
-                                             BaseType_t xRunPrivileged ) PRIVILEGED_FUNCTION;
-    #else
-        StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
-                                             TaskFunction_t pxCode,
-                                             void * pvParameters,
-                                             BaseType_t xRunPrivileged ) PRIVILEGED_FUNCTION;
-    #endif
-#else /* if ( portUSING_MPU_WRAPPERS == 1 ) */
-    #if ( portHAS_STACK_OVERFLOW_CHECKING == 1 )
-        StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
-                                             StackType_t * pxEndOfStack,
-                                             TaskFunction_t pxCode,
-                                             void * pvParameters ) PRIVILEGED_FUNCTION;
-    #else
-        StackType_t * pxPortInitialiseStack( StackType_t * pxTopOfStack,
-                                             TaskFunction_t pxCode,
-                                             void * pvParameters ) PRIVILEGED_FUNCTION;
-    #endif
-#endif /* if ( portUSING_MPU_WRAPPERS == 1 ) */
+#ఒకవేళ ( పోర్టు_USING_MPU_WRAPPERS == 1 )
+    #ఒకవేళ ( పోర్టు_HAS_దొంతర_అధికప్రవాహం_CHECKING == 1 )
+        దొంతర_Type_t * px_పోర్టు_Initialise_దొంతర( దొంతర_Type_t * px_శిఖరం_యొక్క_దొంతర,
+                                             దొంతర_Type_t * px_చివర_యొక్క_దొంతర,
+                                             TaskFunction_t px_సంకేతం,
+                                             శూన్య * pvParameters,
+                                             పునాది_Type_t x_నిరంతరం_Privileged ) PRIVILEGED_FUNCTION;
+    #లేకపోతే
+        దొంతర_Type_t * px_పోర్టు_Initialise_దొంతర( దొంతర_Type_t * px_శిఖరం_యొక్క_దొంతర,
+                                             TaskFunction_t px_సంకేతం,
+                                             శూన్య * pvParameters,
+                                             పునాది_Type_t x_నిరంతరం_Privileged ) PRIVILEGED_FUNCTION;
+    #అయితే_ముగింపు
+#లేకపోతే /* if ( portUSING_MPU_WRAPPERS == 1 ) */
+    #ఒకవేళ ( పోర్టు_HAS_దొంతర_అధికప్రవాహం_CHECKING == 1 )
+        దొంతర_Type_t * px_పోర్టు_Initialise_దొంతర( దొంతర_Type_t * px_శిఖరం_యొక్క_దొంతర,
+                                             దొంతర_Type_t * px_చివర_యొక్క_దొంతర,
+                                             TaskFunction_t px_సంకేతం,
+                                             శూన్య * pvParameters ) PRIVILEGED_FUNCTION;
+    #లేకపోతే
+        దొంతర_Type_t * px_పోర్టు_Initialise_దొంతర( దొంతర_Type_t * px_శిఖరం_యొక్క_దొంతర,
+                                             TaskFunction_t px_సంకేతం,
+                                             శూన్య * pvParameters ) PRIVILEGED_FUNCTION;
+    #అయితే_ముగింపు
+#అయితే_ముగింపు /* if ( portUSING_MPU_WRAPPERS == 1 ) */
 
 /* Used by heap_5.c to define the start address and size of each memory region
  * that together comprise the total FreeRTOS heap space. */
-typedef struct HeapRegion
+రకనిర్వచనం నిర్మాణం కుప్ప_Region
 {
-    uint8_t * pucStartAddress;
-    size_t xSizeInBytes;
-} HeapRegion_t;
+    uint8_t * puc_ప్రారంభం_చిరునామా;
+    size_t x_కొలత_లోపల_బైట్లు;
+} కుప్ప_Region_t;
 
 /* Used to pass information about the heap out of vPortGetHeapStats(). */
-typedef struct xHeapStats
+రకనిర్వచనం నిర్మాణం x_కుప్ప_Stats
 {
-    size_t xAvailableHeapSpaceInBytes;      /* The total heap size currently available - this is the sum of all the free blocks, not the largest block that can be allocated. */
-    size_t xSizeOfLargestFreeBlockInBytes;  /* The maximum size, in bytes, of all the free blocks within the heap at the time vPortGetHeapStats() is called. */
-    size_t xSizeOfSmallestFreeBlockInBytes; /* The minimum size, in bytes, of all the free blocks within the heap at the time vPortGetHeapStats() is called. */
-    size_t xNumberOfFreeBlocks;             /* The number of free memory blocks within the heap at the time vPortGetHeapStats() is called. */
-    size_t xMinimumEverFreeBytesRemaining;  /* The minimum amount of total free memory (sum of all free blocks) there has been in the heap since the system booted. */
-    size_t xNumberOfSuccessfulAllocations;  /* The number of calls to pvPortMalloc() that have returned a valid memory block. */
-    size_t xNumberOfSuccessfulFrees;        /* The number of calls to vPortFree() that has successfully freed a block of memory. */
-} HeapStats_t;
+    size_t x_అందుబాటు_కుప్ప_Space_లోపల_బైట్లు;      /* The total heap size currently available - this is the sum of all the free blocks, not the largest block that can be allocated. */
+    size_t x_కొలత_యొక్క_అతిపెద్ద_Free_ఖండం_లోపల_బైట్లు;  /* The maximum size, in bytes, of all the free blocks within the heap at the time vPortGetHeapStats() is called. */
+    size_t x_కొలత_యొక్క_అతిచిన్న_Free_ఖండం_లోపల_బైట్లు; /* The minimum size, in bytes, of all the free blocks within the heap at the time vPortGetHeapStats() is called. */
+    size_t x_సంఖ్య_యొక్క_Free_ఖండాలు;             /* The number of free memory blocks within the heap at the time vPortGetHeapStats() is called. */
+    size_t x_Minimum_Ever_Free_బైట్లు_మిగిలిన;  /* The minimum amount of total free memory (sum of all free blocks) there has been in the heap since the system booted. */
+    size_t x_సంఖ్య_యొక్క_Successful_Allocations;  /* The number of calls to pvPortMalloc() that have returned a valid memory block. */
+    size_t x_సంఖ్య_యొక్క_Successful_Frees;        /* The number of calls to vPortFree() that has successfully freed a block of memory. */
+} కుప్ప_Stats_t;
 
 /*
  * Used to define multiple heap regions for use by heap_5.c.  This function
@@ -165,34 +165,34 @@ typedef struct xHeapStats
  * terminated by a HeapRegions_t structure that has a size of 0.  The region
  * with the lowest start address must appear first in the array.
  */
-void vPortDefineHeapRegions( const HeapRegion_t * const pxHeapRegions ) PRIVILEGED_FUNCTION;
+శూన్య v_పోర్టు_Define_కుప్ప_Regions( స్థిరరాశి కుప్ప_Region_t * స్థిరరాశి px_కుప్ప_Regions ) PRIVILEGED_FUNCTION;
 
 /*
  * Returns a HeapStats_t structure filled with information about the current
  * heap state.
  */
-void vPortGetHeapStats( HeapStats_t * pxHeapStats );
+శూన్య v_పోర్టు_Get_కుప్ప_Stats( కుప్ప_Stats_t * px_కుప్ప_Stats );
 
 /*
  * Map to the memory management routines required for the port.
  */
-void * pvPortMalloc( size_t xSize ) PRIVILEGED_FUNCTION;
-void * pvPortCalloc( size_t xNum,
-                     size_t xSize ) PRIVILEGED_FUNCTION;
-void vPortFree( void * pv ) PRIVILEGED_FUNCTION;
-void vPortInitialiseBlocks( void ) PRIVILEGED_FUNCTION;
-size_t xPortGetFreeHeapSize( void ) PRIVILEGED_FUNCTION;
-size_t xPortGetMinimumEverFreeHeapSize( void ) PRIVILEGED_FUNCTION;
+శూన్య * pv_పోర్టు_Malloc( size_t x_కొలత ) PRIVILEGED_FUNCTION;
+శూన్య * pv_పోర్టు_Calloc( size_t x_అంకె,
+                     size_t x_కొలత ) PRIVILEGED_FUNCTION;
+శూన్య v_పోర్టు_Free( శూన్య * pv ) PRIVILEGED_FUNCTION;
+శూన్య v_పోర్టు_Initialise_ఖండాలు( శూన్య ) PRIVILEGED_FUNCTION;
+size_t x_పోర్టు_Get_Free_కుప్ప_కొలత( శూన్య ) PRIVILEGED_FUNCTION;
+size_t x_పోర్టు_Get_Minimum_Ever_Free_కుప్ప_కొలత( శూన్య ) PRIVILEGED_FUNCTION;
 
-#if ( configSTACK_ALLOCATION_FROM_SEPARATE_HEAP == 1 )
-    void * pvPortMallocStack( size_t xSize ) PRIVILEGED_FUNCTION;
-    void vPortFreeStack( void * pv ) PRIVILEGED_FUNCTION;
-#else
-    #define pvPortMallocStack    pvPortMalloc
-    #define vPortFreeStack       vPortFree
-#endif
+#ఒకవేళ ( config_దొంతర_కేటాయింపు_FROM_SEPARATE_కుప్ప == 1 )
+    శూన్య * pv_పోర్టు_Malloc_దొంతర( size_t x_కొలత ) PRIVILEGED_FUNCTION;
+    శూన్య v_పోర్టు_Free_దొంతర( శూన్య * pv ) PRIVILEGED_FUNCTION;
+#లేకపోతే
+    #నిర్వచించు pv_పోర్టు_Malloc_దొంతర    pv_పోర్టు_Malloc
+    #నిర్వచించు v_పోర్టు_Free_దొంతర       v_పోర్టు_Free
+#అయితే_ముగింపు
 
-#if ( configUSE_MALLOC_FAILED_HOOK == 1 )
+#ఒకవేళ ( configUSE_MALLOC_FAILED_HOOK == 1 )
 
 /**
  * task.h
@@ -202,21 +202,21 @@ size_t xPortGetMinimumEverFreeHeapSize( void ) PRIVILEGED_FUNCTION;
  *
  * This hook function is called when allocation failed.
  */
-    void vApplicationMallocFailedHook( void ); /*lint !e526 Symbol not defined as it is an application callback. */
-#endif
+    శూన్య vApplicationMallocFailedHook( శూన్య ); /*lint !e526 Symbol not defined as it is an application callback. */
+#అయితే_ముగింపు
 
 /*
  * Setup the hardware ready for the scheduler to take control.  This generally
  * sets up a tick interrupt and sets timers for the correct tick frequency.
  */
-BaseType_t xPortStartScheduler( void ) PRIVILEGED_FUNCTION;
+పునాది_Type_t x_పోర్టు_ప్రారంభం_Scheduler( శూన్య ) PRIVILEGED_FUNCTION;
 
 /*
  * Undo any hardware/ISR setup that was performed by xPortStartScheduler() so
  * the hardware is left in its original condition after the scheduler stops
  * executing.
  */
-void vPortEndScheduler( void ) PRIVILEGED_FUNCTION;
+శూన్య v_పోర్టు_చివర_Scheduler( శూన్య ) PRIVILEGED_FUNCTION;
 
 /*
  * The structures and methods of manipulating the MPU are contained within the
@@ -225,18 +225,18 @@ void vPortEndScheduler( void ) PRIVILEGED_FUNCTION;
  * Fills the xMPUSettings structure with the memory region information
  * contained in xRegions.
  */
-#if ( portUSING_MPU_WRAPPERS == 1 )
-    struct xMEMORY_REGION;
-    void vPortStoreTaskMPUSettings( xMPU_SETTINGS * xMPUSettings,
-                                    const struct xMEMORY_REGION * const xRegions,
-                                    StackType_t * pxBottomOfStack,
-                                    uint32_t ulStackDepth ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( పోర్టు_USING_MPU_WRAPPERS == 1 )
+    నిర్మాణం x_జ్ఞాపకం_REGION;
+    శూన్య v_పోర్టు_Store_Task_MPUSettings( xMPU_SETTINGS * xMPUSettings,
+                                    స్థిరరాశి నిర్మాణం x_జ్ఞాపకం_REGION * స్థిరరాశి xRegions,
+                                    దొంతర_Type_t * px_Bottom_యొక్క_దొంతర,
+                                    uint32_t ul_దొంతర_లోతు ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#నిర్వచితమైతే __cplusplus
     }
-#endif
+#అయితే_ముగింపు
 /* *INDENT-ON* */
 
-#endif /* PORTABLE_H */
+#అయితే_ముగింపు /* PORTABLE_H */

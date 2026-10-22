@@ -8,75 +8,75 @@
  Test for thread local storage support.
 */
 
-#include <string.h>
-#include <stdlib.h>
-#include <esp_types.h>
-#include <inttypes.h>
+#అన్తర్భావ <string.h>
+#అన్తర్భావ <stdlib.h>
+#అన్తర్భావ <esp_types.h>
+#అన్తర్భావ <inttypes.h>
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "unity.h"
-#include "test_utils.h"
-#include "sdkconfig.h"
+#అన్తర్భావ "freertos/FreeRTOS.h"
+#అన్తర్భావ "freertos/task.h"
+#అన్తర్భావ "unity.h"
+#అన్తర్భావ "test_utils.h"
+#అన్తర్భావ "sdkconfig.h"
 
-#if defined(__XTENSA__)
-#define GET_THREADPTR(tp_dest)  do { asm volatile ("rur.threadptr %0":"=r"(tp_dest)); } while(0)
-#elif defined (__riscv)
-#define GET_THREADPTR(tp_dest)  do { register uint32_t _tp asm("tp"); tp_dest = _tp; } while(0)
-#endif
+#ఒకవేళ defined(__XTENSA__)
+#నిర్వచించు GET_THREADPTR(tp_dest)  చేయి { asm అస్థిర ("rur.threadptr %0":"=r"(tp_dest)); } అయితే(0)
+#లేదావేళ defined (__riscv)
+#నిర్వచించు GET_THREADPTR(tp_dest)  చేయి { నమోదు uint32_t _tp asm("tp"); tp_dest = _tp; } అయితే(0)
+#అయితే_ముగింపు
 
-static __thread int tl_test_var1;
-static __thread uint8_t tl_test_var2 = 55;
-static __thread uint16_t tl_test_var3 = 44;
-static __thread uint8_t tl_test_arr_var[10];
-static __thread struct test_tls_var {
-    int f32;
+స్థిర __thread పూర్ణాంకం tl_test_var1;
+స్థిర __thread uint8_t tl_test_var2 = 55;
+స్థిర __thread uint16_t tl_test_var3 = 44;
+స్థిర __thread uint8_t tl_test_arr_var[10];
+స్థిర __thread నిర్మాణం test_tls_var {
+    పూర్ణాంకం f32;
     uint8_t f8;
     uint16_t f16;
     uint8_t farr[10];
 } tl_test_struct_var;
 
-static void task_test_tls(void *arg)
+స్థిర శూన్య task_test_tls(శూన్య *arg)
 {
     bool *running = (bool *)arg;
     uint32_t tp = (uint32_t) -1;
-    int test_var1_old = 0;
+    పూర్ణాంకం test_var1_old = 0;
     uint8_t test_var2_old = 0;
     uint16_t test_var3_old = 0;
-    int f32_old = 0;
+    పూర్ణాంకం f32_old = 0;
     uint8_t f8_old = 0;
     uint16_t f16_old = 0;
-    srand((int) xTaskGetCurrentTaskHandle());
-    int step = (rand() % 10) + 1;
+    srand((పూర్ణాంకం) xTaskGetCurrentTaskHandle());
+    పూర్ణాంకం అడుగు = (rand() % 10) + 1;
 
     GET_THREADPTR(tp);
-    for (int i = 0; i < 5; i++) {
-        printf("Task[%"PRIx32"]: var1 = %d var2 = 0x%"PRIx8" step=%d\n", tp, tl_test_var1, tl_test_var2, step);
-        if (i == 0) {
+    కొరకు (పూర్ణాంకం i = 0; i < 5; i++) {
+        రాయి("Task[%"PRIx32"]: var1 = %d var2 = 0x%"PRIx8" step=%d\n", tp, tl_test_var1, tl_test_var2, అడుగు);
+        ఒకవేళ (i == 0) {
             TEST_ASSERT_EQUAL(0, tl_test_var1);
             TEST_ASSERT_EQUAL(55, tl_test_var2);
             TEST_ASSERT_EQUAL(44, tl_test_var3);
-            for (int k = 0; k < sizeof(tl_test_arr_var); k++) {
+            కొరకు (పూర్ణాంకం k = 0; k < పరిమాణం(tl_test_arr_var); k++) {
                 TEST_ASSERT_EQUAL(0, tl_test_arr_var[k]);
             }
             TEST_ASSERT_EQUAL(0, tl_test_struct_var.f32);
             TEST_ASSERT_EQUAL(0, tl_test_struct_var.f8);
             TEST_ASSERT_EQUAL(0, tl_test_struct_var.f16);
-            for (int k = 0; k < sizeof(tl_test_struct_var.farr); k++) {
+            కొరకు (పూర్ణాంకం k = 0; k < పరిమాణం(tl_test_struct_var.farr); k++) {
                 TEST_ASSERT_EQUAL(0, tl_test_struct_var.farr[k]);
             }
-        } else {
-            TEST_ASSERT_EQUAL(test_var1_old + step, tl_test_var1);
-            TEST_ASSERT_EQUAL(test_var2_old + step, tl_test_var2);
-            TEST_ASSERT_EQUAL(test_var3_old + step, tl_test_var3);
-            for (int k = 0; k < sizeof(tl_test_arr_var); k++) {
-                TEST_ASSERT_EQUAL((i - 1) * step, tl_test_arr_var[k]);
+        } లేకపోతే {
+            TEST_ASSERT_EQUAL(test_var1_old + అడుగు, tl_test_var1);
+            TEST_ASSERT_EQUAL(test_var2_old + అడుగు, tl_test_var2);
+            TEST_ASSERT_EQUAL(test_var3_old + అడుగు, tl_test_var3);
+            కొరకు (పూర్ణాంకం k = 0; k < పరిమాణం(tl_test_arr_var); k++) {
+                TEST_ASSERT_EQUAL((i - 1) * అడుగు, tl_test_arr_var[k]);
             }
-            TEST_ASSERT_EQUAL(f32_old + step, tl_test_struct_var.f32);
-            TEST_ASSERT_EQUAL(f8_old + step, tl_test_struct_var.f8);
-            TEST_ASSERT_EQUAL(f16_old + step, tl_test_struct_var.f16);
-            for (int k = 0; k < sizeof(tl_test_struct_var.farr); k++) {
-                TEST_ASSERT_EQUAL((i - 1) * step, tl_test_struct_var.farr[k]);
+            TEST_ASSERT_EQUAL(f32_old + అడుగు, tl_test_struct_var.f32);
+            TEST_ASSERT_EQUAL(f8_old + అడుగు, tl_test_struct_var.f8);
+            TEST_ASSERT_EQUAL(f16_old + అడుగు, tl_test_struct_var.f16);
+            కొరకు (పూర్ణాంకం k = 0; k < పరిమాణం(tl_test_struct_var.farr); k++) {
+                TEST_ASSERT_EQUAL((i - 1) * అడుగు, tl_test_struct_var.farr[k]);
             }
         }
 
@@ -86,40 +86,40 @@ static void task_test_tls(void *arg)
         f32_old = tl_test_struct_var.f32;
         f8_old = tl_test_struct_var.f8;
         f16_old = tl_test_struct_var.f16;
-        tl_test_var1 += step;
-        tl_test_var2 += step;
-        tl_test_var3 += step;
-        memset(tl_test_arr_var, i * step, sizeof(tl_test_arr_var));
-        tl_test_struct_var.f32 += step;
-        tl_test_struct_var.f8 += step;
-        tl_test_struct_var.f16 += step;
-        memset(tl_test_struct_var.farr, i * step, sizeof(tl_test_struct_var.farr));
+        tl_test_var1 += అడుగు;
+        tl_test_var2 += అడుగు;
+        tl_test_var3 += అడుగు;
+        memset(tl_test_arr_var, i * అడుగు, పరిమాణం(tl_test_arr_var));
+        tl_test_struct_var.f32 += అడుగు;
+        tl_test_struct_var.f8 += అడుగు;
+        tl_test_struct_var.f16 += అడుగు;
+        memset(tl_test_struct_var.farr, i * అడుగు, పరిమాణం(tl_test_struct_var.farr));
         vTaskDelay(10);
     }
 
-    if (running) {
+    ఒకవేళ (running) {
         *running = false;
-        vTaskDelete(NULL);
+        vTaskDelete(ఖాళీ);
     }
 }
 
 TEST_CASE("TLS test", "[freertos]")
 {
-    const size_t stack_size = 3072;
-    StackType_t s_stack[stack_size]; /* with 8KB test task stack (default) this test still has ~3KB headroom */
+    స్థిరరాశి size_t దొంతర_కొలత_2 = 3072;
+    దొంతర_Type_t s_దొంతర[దొంతర_కొలత_2]; /* with 8KB test task stack (default) this test still has ~3KB headroom */
     StaticTask_t s_task;
     bool running[2] = {true, true};
-#if CONFIG_FREERTOS_UNICORE == 0
-    int other_core = 1;
-#else
-    int other_core = 0;
-#endif
+#ఒకవేళ CONFIG_FREERTOS_UNICORE == 0
+    పూర్ణాంకం other_core = 1;
+#లేకపోతే
+    పూర్ణాంకం other_core = 0;
+#అయితే_ముగింపు
 
-    xTaskCreatePinnedToCore((TaskFunction_t)&task_test_tls, "task_test_tls", stack_size, &running[0],
-                            UNITY_FREERTOS_PRIORITY, NULL, 0);
-    xTaskCreateStaticPinnedToCore((TaskFunction_t)&task_test_tls, "task_test_tls", stack_size, &running[1],
-                                  UNITY_FREERTOS_PRIORITY, s_stack, &s_task, other_core);
-    while (running[0] || running[1]) {
+    x_Task_Create_Pinned_గమ్యం_Core((TaskFunction_t)&task_test_tls, "task_test_tls", దొంతర_కొలత_2, &running[0],
+                            UNITY_FREERTOS_ప్రాధాన్యత, ఖాళీ, 0);
+    x_Task_Create_Static_Pinned_గమ్యం_Core((TaskFunction_t)&task_test_tls, "task_test_tls", దొంతర_కొలత_2, &running[1],
+                                  UNITY_FREERTOS_ప్రాధాన్యత, s_దొంతర, &s_task, other_core);
+    అయితే (running[0] || running[1]) {
         vTaskDelay(10);
     }
     vTaskDelay(10); /* Make sure idle task can clean up s_task, before it goes out of scope */

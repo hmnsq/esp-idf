@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "unity.h"
-#include "test_utils.h"
+#అన్తర్భావ "sdkconfig.h"
+#అన్తర్భావ "freertos/FreeRTOS.h"
+#అన్తర్భావ "freertos/task.h"
+#అన్తర్భావ "unity.h"
+#అన్తర్భావ "test_utils.h"
 
 /*
 Test eTaskGetState()
@@ -25,45 +25,45 @@ Expected:
     - eTaskGetState() should return the correct state for each created task
 */
 
-static void blocked_task(void *arg)
+స్థిర శూన్య blocked_task(శూన్య *arg)
 {
-    vTaskDelay(portMAX_DELAY - 1);
+    vTaskDelay(పోర్టు_MAX_DELAY - 1);
     // Shouldn't need to self delete, but added for extra safety
-    vTaskDelete(NULL);
+    vTaskDelete(ఖాళీ);
 }
 
-static void suspended_task(void *arg)
+స్థిర శూన్య suspended_task(శూన్య *arg)
 {
-    vTaskSuspend(NULL);
+    vTaskSuspend(ఖాళీ);
     // Shouldn't need to self delete, but added for extra safety
-    vTaskDelete(NULL);
+    vTaskDelete(ఖాళీ);
 }
 
-static void loop_task(void *arg)
+స్థిర శూన్య loop_task(శూన్య *arg)
 {
     // Short delay to allow other created tasks to run
     vTaskDelay(2);
-    while (1) {
+    అయితే (1) {
         ;
     }
 }
 
 TEST_CASE("Test eTaskGetState", "[freertos]")
 {
-    TaskHandle_t blocked_tasks[CONFIG_FREERTOS_NUMBER_OF_CORES];
-    TaskHandle_t suspended_tasks[CONFIG_FREERTOS_NUMBER_OF_CORES];
-    TaskHandle_t ready_tasks[CONFIG_FREERTOS_NUMBER_OF_CORES];
-    TaskHandle_t running_tasks[CONFIG_FREERTOS_NUMBER_OF_CORES];
+    TaskHandle_t blocked_tasks[CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES];
+    TaskHandle_t suspended_tasks[CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES];
+    TaskHandle_t ready_tasks[CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES];
+    TaskHandle_t running_tasks[CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES];
 
     // Create tasks of each state on each core
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
-        TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCore(blocked_task, "blkd", configMINIMAL_STACK_SIZE * 2, NULL, UNITY_FREERTOS_PRIORITY - 1, &blocked_tasks[i], i));
-        TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCore(suspended_task, "susp", configMINIMAL_STACK_SIZE * 2, NULL, UNITY_FREERTOS_PRIORITY - 1, &suspended_tasks[i], i));
-        TEST_ASSERT_EQUAL(pdPASS, xTaskCreatePinnedToCore(loop_task, "rdy", configMINIMAL_STACK_SIZE * 2, NULL, UNITY_FREERTOS_PRIORITY - 1, &ready_tasks[i], i));
-        if (i == UNITY_FREERTOS_CPU) {
+    కొరకు (పూర్ణాంకం i = 0; i < CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES; i++) {
+        TEST_ASSERT_EQUAL(pdPASS, x_Task_Create_Pinned_గమ్యం_Core(blocked_task, "blkd", config_కనీస_దొంతర_కొలత * 2, ఖాళీ, UNITY_FREERTOS_ప్రాధాన్యత - 1, &blocked_tasks[i], i));
+        TEST_ASSERT_EQUAL(pdPASS, x_Task_Create_Pinned_గమ్యం_Core(suspended_task, "susp", config_కనీస_దొంతర_కొలత * 2, ఖాళీ, UNITY_FREERTOS_ప్రాధాన్యత - 1, &suspended_tasks[i], i));
+        TEST_ASSERT_EQUAL(pdPASS, x_Task_Create_Pinned_గమ్యం_Core(loop_task, "rdy", config_కనీస_దొంతర_కొలత * 2, ఖాళీ, UNITY_FREERTOS_ప్రాధాన్యత - 1, &ready_tasks[i], i));
+        ఒకవేళ (i == UNITY_FREERTOS_CPU) {
             running_tasks[i] = xTaskGetCurrentTaskHandle();
-        } else {
-            xTaskCreatePinnedToCore(loop_task, "run", configMINIMAL_STACK_SIZE * 2, NULL, UNITY_FREERTOS_PRIORITY, &running_tasks[i], i);
+        } లేకపోతే {
+            x_Task_Create_Pinned_గమ్యం_Core(loop_task, "run", config_కనీస_దొంతర_కొలత * 2, ఖాళీ, UNITY_FREERTOS_ప్రాధాన్యత, &running_tasks[i], i);
         }
     }
 
@@ -71,7 +71,7 @@ TEST_CASE("Test eTaskGetState", "[freertos]")
     vTaskDelay(10);
 
     // Check the state of the created tasks
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    కొరకు (పూర్ణాంకం i = 0; i < CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES; i++) {
         TEST_ASSERT_EQUAL(eBlocked, eTaskGetState(blocked_tasks[i]));
         TEST_ASSERT_EQUAL(eSuspended, eTaskGetState(suspended_tasks[i]));
         TEST_ASSERT_EQUAL(eReady, eTaskGetState(ready_tasks[i]));
@@ -79,11 +79,11 @@ TEST_CASE("Test eTaskGetState", "[freertos]")
     }
 
     // Clean up created tasks
-    for (int i = 0; i < CONFIG_FREERTOS_NUMBER_OF_CORES; i++) {
+    కొరకు (పూర్ణాంకం i = 0; i < CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES; i++) {
         vTaskDelete(blocked_tasks[i]);
         vTaskDelete(suspended_tasks[i]);
         vTaskDelete(ready_tasks[i]);
-        if (i != UNITY_FREERTOS_CPU) {
+        ఒకవేళ (i != UNITY_FREERTOS_CPU) {
             vTaskDelete(running_tasks[i]);
         }
     }

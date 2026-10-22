@@ -64,20 +64,20 @@
  * of the message).
  */
 
-#ifndef FREERTOS_MESSAGE_BUFFER_H
-#define FREERTOS_MESSAGE_BUFFER_H
+#నిర్వచితం_కాకపోతే FREERTOS_సందేశం_బఫరు_H
+#నిర్వచించు FREERTOS_సందేశం_బఫరు_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h must appear in source files before include message_buffer.h"
-#endif
+#నిర్వచితం_కాకపోతే INC_FREERTOS_H
+    #దోషం "include FreeRTOS.h must appear in source files before include message_buffer.h"
+#అయితే_ముగింపు
 
 /* Message buffers are built onto of stream buffers. */
-#include "stream_buffer.h"
+#అన్తర్భావ "stream_buffer.h"
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
-    extern "C" {
-#endif
+#ఒకవేళ defined( __cplusplus )
+    బాహ్య "C" {
+#అయితే_ముగింపు
 /* *INDENT-ON* */
 
 /**
@@ -87,7 +87,7 @@
  * etc. Message buffer is essentially built as a stream buffer hence its handle
  * is also set to same type as a stream buffer handle.
  */
-typedef StreamBufferHandle_t MessageBufferHandle_t;
+రకనిర్వచనం ప్రవాహం_బఫరు_Handle_t సందేశం_బఫరు_Handle_t;
 
 /*-----------------------------------------------------------*/
 
@@ -154,13 +154,13 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \ingroup MessageBufferManagement
  */
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
-#define xMessageBufferCreate( xBufferSizeBytes ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( size_t ) 0, pdTRUE, NULL, NULL )
+#నిర్వచించు x_సందేశం_బఫరు_Create( x_బఫరు_కొలత_బైట్లు ) \
+    x_ప్రవాహం_బఫరు_Generic_Create( ( x_బఫరు_కొలత_బైట్లు ), ( size_t ) 0, pdTRUE, ఖాళీ, ఖాళీ )
 /** @endcond */
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-    #define xMessageBufferCreateWithCallback( xBufferSizeBytes, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
-    xStreamBufferGenericCreate( ( xBufferSizeBytes ), ( size_t ) 0, pdTRUE, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
-#endif
+#ఒకవేళ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #నిర్వచించు x_సందేశం_బఫరు_Create_With_Callback( x_బఫరు_కొలత_బైట్లు, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
+    x_ప్రవాహం_బఫరు_Generic_Create( ( x_బఫరు_కొలత_బైట్లు ), ( size_t ) 0, pdTRUE, ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
+#అయితే_ముగింపు
 
 /**
  * Creates a new message buffer using statically allocated memory.  See
@@ -229,13 +229,13 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * \ingroup MessageBufferManagement
  */
 /** @cond !DOC_EXCLUDE_HEADER_SECTION */
-#define xMessageBufferCreateStatic( xBufferSizeBytes, pucMessageBufferStorageArea, pxStaticMessageBuffer ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), 0, pdTRUE, ( pucMessageBufferStorageArea ), ( pxStaticMessageBuffer ), NULL, NULL )
+#నిర్వచించు x_సందేశం_బఫరు_Create_Static( x_బఫరు_కొలత_బైట్లు, puc_సందేశం_బఫరు_Storage_Area, px_Static_సందేశం_బఫరు ) \
+    x_ప్రవాహం_బఫరు_Generic_Create_Static( ( x_బఫరు_కొలత_బైట్లు ), 0, pdTRUE, ( puc_సందేశం_బఫరు_Storage_Area ), ( px_Static_సందేశం_బఫరు ), ఖాళీ, ఖాళీ )
 /** @endcond */
-#if ( configUSE_SB_COMPLETED_CALLBACK == 1 )
-    #define xMessageBufferCreateStaticWithCallback( xBufferSizeBytes, pucMessageBufferStorageArea, pxStaticMessageBuffer, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
-    xStreamBufferGenericCreateStatic( ( xBufferSizeBytes ), 0, pdTRUE, ( pucMessageBufferStorageArea ), ( pxStaticMessageBuffer ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
-#endif
+#ఒకవేళ ( configUSE_SB_COMPLETED_CALLBACK == 1 )
+    #నిర్వచించు x_సందేశం_బఫరు_Create_Static_With_Callback( x_బఫరు_కొలత_బైట్లు, puc_సందేశం_బఫరు_Storage_Area, px_Static_సందేశం_బఫరు, pxSendCompletedCallback, pxReceiveCompletedCallback ) \
+    x_ప్రవాహం_బఫరు_Generic_Create_Static( ( x_బఫరు_కొలత_బైట్లు ), 0, pdTRUE, ( puc_సందేశం_బఫరు_Storage_Area ), ( px_Static_సందేశం_బఫరు ), ( pxSendCompletedCallback ), ( pxReceiveCompletedCallback ) )
+#అయితే_ముగింపు
 
 /**
  *
@@ -255,10 +255,10 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  *
  * \ingroup MessageBufferManagement
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xMessageBufferGetStaticBuffers( xMessageBuffer, ppucMessageBufferStorageArea, ppxStaticMessageBuffer ) \
-    xStreamBufferGetStaticBuffers( ( xMessageBuffer ), ( ppucMessageBufferStorageArea ), ( ppxStaticMessageBuffer ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#ఒకవేళ ( config_SUPPORT_STATIC_కేటాయింపు == 1 )
+    #నిర్వచించు x_సందేశం_బఫరు_Get_Static_Buffers( x_సందేశం_బఫరు, ppuc_సందేశం_బఫరు_Storage_Area, ppx_Static_సందేశం_బఫరు ) \
+    x_ప్రవాహం_బఫరు_Get_Static_Buffers( ( x_సందేశం_బఫరు ), ( ppuc_సందేశం_బఫరు_Storage_Area ), ( ppx_Static_సందేశం_బఫరు ) )
+#అయితే_ముగింపు /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  *
@@ -348,8 +348,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * @endcode
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferSend( xMessageBuffer, pvTxData, xDataLengthBytes, xTicksToWait ) \
-    xStreamBufferSend( ( xMessageBuffer ), ( pvTxData ), ( xDataLengthBytes ), ( xTicksToWait ) )
+#నిర్వచించు x_సందేశం_బఫరు_Send( x_సందేశం_బఫరు, pv_Tx_దత్తాంశం, x_దత్తాంశం_నిడివి_బైట్లు, x_Ticks_గమ్యం_Wait ) \
+    x_ప్రవాహం_బఫరు_Send( ( x_సందేశం_బఫరు ), ( pv_Tx_దత్తాంశం ), ( x_దత్తాంశం_నిడివి_బైట్లు ), ( x_Ticks_గమ్యం_Wait ) )
 
 /**
  *
@@ -444,8 +444,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * @endcode
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferSendFromISR( xMessageBuffer, pvTxData, xDataLengthBytes, pxHigherPriorityTaskWoken ) \
-    xStreamBufferSendFromISR( ( xMessageBuffer ), ( pvTxData ), ( xDataLengthBytes ), ( pxHigherPriorityTaskWoken ) )
+#నిర్వచించు x_సందేశం_బఫరు_Send_From_ISR( x_సందేశం_బఫరు, pv_Tx_దత్తాంశం, x_దత్తాంశం_నిడివి_బైట్లు, px_Higher_ప్రాధాన్యత_Task_Woken ) \
+    x_ప్రవాహం_బఫరు_Send_From_ISR( ( x_సందేశం_బఫరు ), ( pv_Tx_దత్తాంశం ), ( x_దత్తాంశం_నిడివి_బైట్లు ), ( px_Higher_ప్రాధాన్యత_Task_Woken ) )
 
 /**
  *
@@ -524,8 +524,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * @endcode
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferReceive( xMessageBuffer, pvRxData, xBufferLengthBytes, xTicksToWait ) \
-    xStreamBufferReceive( ( xMessageBuffer ), ( pvRxData ), ( xBufferLengthBytes ), ( xTicksToWait ) )
+#నిర్వచించు x_సందేశం_బఫరు_Receive( x_సందేశం_బఫరు, pv_Rx_దత్తాంశం, x_బఫరు_నిడివి_బైట్లు, x_Ticks_గమ్యం_Wait ) \
+    x_ప్రవాహం_బఫరు_Receive( ( x_సందేశం_బఫరు ), ( pv_Rx_దత్తాంశం ), ( x_బఫరు_నిడివి_బైట్లు ), ( x_Ticks_గమ్యం_Wait ) )
 
 
 /**
@@ -617,8 +617,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * @endcode
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferReceiveFromISR( xMessageBuffer, pvRxData, xBufferLengthBytes, pxHigherPriorityTaskWoken ) \
-    xStreamBufferReceiveFromISR( ( xMessageBuffer ), ( pvRxData ), ( xBufferLengthBytes ), ( pxHigherPriorityTaskWoken ) )
+#నిర్వచించు x_సందేశం_బఫరు_Receive_From_ISR( x_సందేశం_బఫరు, pv_Rx_దత్తాంశం, x_బఫరు_నిడివి_బైట్లు, px_Higher_ప్రాధాన్యత_Task_Woken ) \
+    x_ప్రవాహం_బఫరు_Receive_From_ISR( ( x_సందేశం_బఫరు ), ( pv_Rx_దత్తాంశం ), ( x_బఫరు_నిడివి_బైట్లు ), ( px_Higher_ప్రాధాన్యత_Task_Woken ) )
 
 /**
  *
@@ -633,8 +633,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * @param xMessageBuffer The handle of the message buffer to be deleted.
  *
  */
-#define vMessageBufferDelete( xMessageBuffer ) \
-    vStreamBufferDelete( xMessageBuffer )
+#నిర్వచించు v_సందేశం_బఫరు_Delete( x_సందేశం_బఫరు ) \
+    v_ప్రవాహం_బఫరు_Delete( x_సందేశం_బఫరు )
 
 /**
  *
@@ -647,8 +647,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * @return If the message buffer referenced by xMessageBuffer is full then
  * pdTRUE is returned.  Otherwise pdFALSE is returned.
  */
-#define xMessageBufferIsFull( xMessageBuffer ) \
-    xStreamBufferIsFull( xMessageBuffer )
+#నిర్వచించు x_సందేశం_బఫరు_Is_నిండిన( x_సందేశం_బఫరు ) \
+    x_ప్రవాహం_బఫరు_Is_నిండిన( x_సందేశం_బఫరు )
 
 /**
  *
@@ -660,8 +660,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  * pdTRUE is returned.  Otherwise pdFALSE is returned.
  *
  */
-#define xMessageBufferIsEmpty( xMessageBuffer ) \
-    xStreamBufferIsEmpty( xMessageBuffer )
+#నిర్వచించు x_సందేశం_బఫరు_Is_ఖాళీలు( x_సందేశం_బఫరు ) \
+    x_ప్రవాహం_బఫరు_Is_ఖాళీలు( x_సందేశం_బఫరు )
 
 /**
  *
@@ -679,8 +679,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  *
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferReset( xMessageBuffer ) \
-    xStreamBufferReset( xMessageBuffer )
+#నిర్వచించు x_సందేశం_బఫరు_Reset( x_సందేశం_బఫరు ) \
+    x_ప్రవాహం_బఫరు_Reset( x_సందేశం_బఫరు )
 
 
 /**
@@ -701,10 +701,10 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  *
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferSpaceAvailable( xMessageBuffer ) \
-    xStreamBufferSpacesAvailable( xMessageBuffer )
-#define xMessageBufferSpacesAvailable( xMessageBuffer ) \
-    xStreamBufferSpacesAvailable( xMessageBuffer ) /* Corrects typo in original macro name. */
+#నిర్వచించు x_సందేశం_బఫరు_Space_అందుబాటు( x_సందేశం_బఫరు ) \
+    x_ప్రవాహం_బఫరు_Spaces_అందుబాటు( x_సందేశం_బఫరు )
+#నిర్వచించు x_సందేశం_బఫరు_Spaces_అందుబాటు( x_సందేశం_బఫరు ) \
+    x_ప్రవాహం_బఫరు_Spaces_అందుబాటు( x_సందేశం_బఫరు ) /* Corrects typo in original macro name. */
 
 /**
  * Returns the length (in bytes) of the next message in a message buffer.
@@ -718,8 +718,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  *
  * \ingroup MessageBufferManagement
  */
-#define xMessageBufferNextLengthBytes( xMessageBuffer ) \
-    xStreamBufferNextMessageLengthBytes( xMessageBuffer )
+#నిర్వచించు x_సందేశం_బఫరు_తదుపరి_నిడివి_బైట్లు( x_సందేశం_బఫరు ) \
+    x_ప్రవాహం_బఫరు_తదుపరి_సందేశం_నిడివి_బైట్లు( x_సందేశం_బఫరు )
 
 /**
  *
@@ -752,8 +752,8 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  *
  * \ingroup StreamBufferManagement
  */
-#define xMessageBufferSendCompletedFromISR( xMessageBuffer, pxHigherPriorityTaskWoken ) \
-    xStreamBufferSendCompletedFromISR( ( xMessageBuffer ), ( pxHigherPriorityTaskWoken ) )
+#నిర్వచించు x_సందేశం_బఫరు_Send_Completed_From_ISR( x_సందేశం_బఫరు, px_Higher_ప్రాధాన్యత_Task_Woken ) \
+    x_ప్రవాహం_బఫరు_Send_Completed_From_ISR( ( x_సందేశం_బఫరు ), ( px_Higher_ప్రాధాన్యత_Task_Woken ) )
 
 /**
  *
@@ -787,13 +787,13 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
  *
  * \ingroup StreamBufferManagement
  */
-#define xMessageBufferReceiveCompletedFromISR( xMessageBuffer, pxHigherPriorityTaskWoken ) \
-    xStreamBufferReceiveCompletedFromISR( ( xMessageBuffer ), ( pxHigherPriorityTaskWoken ) )
+#నిర్వచించు x_సందేశం_బఫరు_Receive_Completed_From_ISR( x_సందేశం_బఫరు, px_Higher_ప్రాధాన్యత_Task_Woken ) \
+    x_ప్రవాహం_బఫరు_Receive_Completed_From_ISR( ( x_సందేశం_బఫరు ), ( px_Higher_ప్రాధాన్యత_Task_Woken ) )
 
 /* *INDENT-OFF* */
-#if defined( __cplusplus )
+#ఒకవేళ defined( __cplusplus )
     } /* extern "C" */
-#endif
+#అయితే_ముగింపు
 /* *INDENT-ON* */
 
-#endif /* !defined( FREERTOS_MESSAGE_BUFFER_H ) */
+#అయితే_ముగింపు /* !defined( FREERTOS_MESSAGE_BUFFER_H ) */

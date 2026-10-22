@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <string.h>
-#include "FreeRTOS.h"
-#include "task.h"
-#include "esp_system.h"
-#include "esp_memory_utils.h"
-#include "sdkconfig.h"
+#అన్తర్భావ <string.h>
+#అన్తర్భావ "FreeRTOS.h"
+#అన్తర్భావ "task.h"
+#అన్తర్భావ "esp_system.h"
+#అన్తర్భావ "esp_memory_utils.h"
+#అన్తర్భావ "sdkconfig.h"
 
 /* ----------------------------------------- Port Implementations (Common)  --------------------------------------------
  * - Common FreeRTOS port function implementations
@@ -24,82 +24,82 @@ enabled and is used by FreeRTOS to obtain memory for its IDLE/Timer tasks.
 
 We simply allocate the IDLE/Timer tasks memory from the FreeRTOS heap.
 */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
-                                   StackType_t **ppxIdleTaskStackBuffer,
-                                   uint32_t *pulIdleTaskStackSize)
+#ఒకవేళ ( config_SUPPORT_STATIC_కేటాయింపు == 1 )
+శూన్య v_Application_Get_Idle_Task_జ్ఞాపకం(StaticTask_t **ppxIdleTaskTCBBuffer,
+                                   దొంతర_Type_t **ppx_Idle_Task_దొంతర_బఫరు,
+                                   uint32_t *pul_Idle_Task_దొంతర_కొలత)
 {
-    StaticTask_t *pxTCBBufferTemp;
-    StackType_t *pxStackBufferTemp;
+    StaticTask_t *px_TCBBuffer_తాత్కాలిక;
+    దొంతర_Type_t *px_దొంతర_బఫరు_తాత్కాలిక;
 
     /* Allocate TCB and stack buffer from the FreeRTOS heap
      *
      * If the stack grows down then allocate the stack then the TCB so the stack
      * does not grow into the TCB.  Likewise if the stack grows up then allocate
      * the TCB then the stack. */
-#if (portSTACK_GROWTH > 0)
+#ఒకవేళ (పోర్టు_దొంతర_GROWTH > 0)
     {
-        pxTCBBufferTemp = pvPortMalloc(sizeof(StaticTask_t));
-        pxStackBufferTemp = pvPortMalloc(configMINIMAL_STACK_SIZE);
+        px_TCBBuffer_తాత్కాలిక = pv_పోర్టు_Malloc(పరిమాణం(StaticTask_t));
+        px_దొంతర_బఫరు_తాత్కాలిక = pv_పోర్టు_Malloc(config_కనీస_దొంతర_కొలత);
     }
-#else /* portSTACK_GROWTH */
+#లేకపోతే /* portSTACK_GROWTH */
     {
-        pxStackBufferTemp = pvPortMalloc(configMINIMAL_STACK_SIZE);
-        pxTCBBufferTemp = pvPortMalloc(sizeof(StaticTask_t));
+        px_దొంతర_బఫరు_తాత్కాలిక = pv_పోర్టు_Malloc(config_కనీస_దొంతర_కొలత);
+        px_TCBBuffer_తాత్కాలిక = pv_పోర్టు_Malloc(పరిమాణం(StaticTask_t));
     }
-#endif /* portSTACK_GROWTH */
+#అయితే_ముగింపు /* portSTACK_GROWTH */
 
-    assert(pxTCBBufferTemp != NULL);
-    assert(pxStackBufferTemp != NULL);
+    ప్రతిజ్ఞా(px_TCBBuffer_తాత్కాలిక != ఖాళీ);
+    ప్రతిజ్ఞా(px_దొంతర_బఫరు_తాత్కాలిక != ఖాళీ);
     //Write back pointers
-    *ppxIdleTaskTCBBuffer = pxTCBBufferTemp;
-    *ppxIdleTaskStackBuffer = pxStackBufferTemp;
-    *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+    *ppxIdleTaskTCBBuffer = px_TCBBuffer_తాత్కాలిక;
+    *ppx_Idle_Task_దొంతర_బఫరు = px_దొంతర_బఫరు_తాత్కాలిక;
+    *pul_Idle_Task_దొంతర_కొలత = config_కనీస_దొంతర_కొలత;
 }
 
-#if ( ( CONFIG_FREERTOS_SMP ) && ( configNUMBER_OF_CORES > 1 ) )
-void vApplicationGetPassiveIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer,
-                                          StackType_t ** ppxIdleTaskStackBuffer,
-                                          uint32_t * pulIdleTaskStackSize,
-                                          BaseType_t xPassiveIdleTaskIndex)
+#ఒకవేళ ( ( CONFIG_FREERTOS_SMP ) && ( config_సంఖ్య_యొక్క_CORES > 1 ) )
+శూన్య v_Application_Get_Passive_Idle_Task_జ్ఞాపకం(StaticTask_t ** ppxIdleTaskTCBBuffer,
+                                          దొంతర_Type_t ** ppx_Idle_Task_దొంతర_బఫరు,
+                                          uint32_t * pul_Idle_Task_దొంతర_కొలత,
+                                          పునాది_Type_t x_Passive_Idle_Task_సూచీ)
 {
-    vApplicationGetIdleTaskMemory(ppxIdleTaskTCBBuffer, ppxIdleTaskStackBuffer, pulIdleTaskStackSize);
+    v_Application_Get_Idle_Task_జ్ఞాపకం(ppxIdleTaskTCBBuffer, ppx_Idle_Task_దొంతర_బఫరు, pul_Idle_Task_దొంతర_కొలత);
 }
-#endif /* ( ( CONFIG_FREERTOS_SMP ) && ( configNUMBER_OF_CORES > 1 ) ) */
+#అయితే_ముగింపు /* ( ( CONFIG_FREERTOS_SMP ) && ( configNUMBER_OF_CORES > 1 ) ) */
 
-#if configUSE_TIMERS
+#ఒకవేళ configUSE_TIMERS
 
-void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer,
-                                    StackType_t **ppxTimerTaskStackBuffer,
-                                    uint32_t *pulTimerTaskStackSize)
+శూన్య v_Application_Get_Timer_Task_జ్ఞాపకం(StaticTask_t **ppxTimerTaskTCBBuffer,
+                                    దొంతర_Type_t **ppx_Timer_Task_దొంతర_బఫరు,
+                                    uint32_t *pul_Timer_Task_దొంతర_కొలత)
 {
-    StaticTask_t *pxTCBBufferTemp;
-    StackType_t *pxStackBufferTemp;
+    StaticTask_t *px_TCBBuffer_తాత్కాలిక;
+    దొంతర_Type_t *px_దొంతర_బఫరు_తాత్కాలిక;
 
     /* Allocate TCB and stack buffer from the FreeRTOS heap
      *
      * If the stack grows down then allocate the stack then the TCB so the stack
      * does not grow into the TCB.  Likewise if the stack grows up then allocate
      * the TCB then the stack. */
-#if (portSTACK_GROWTH > 0)
+#ఒకవేళ (పోర్టు_దొంతర_GROWTH > 0)
     {
-        pxTCBBufferTemp = pvPortMalloc(sizeof(StaticTask_t));
-        pxStackBufferTemp = pvPortMalloc(configTIMER_TASK_STACK_DEPTH);
+        px_TCBBuffer_తాత్కాలిక = pv_పోర్టు_Malloc(పరిమాణం(StaticTask_t));
+        px_దొంతర_బఫరు_తాత్కాలిక = pv_పోర్టు_Malloc(config_TIMER_TASK_దొంతర_లోతు);
     }
-#else /* portSTACK_GROWTH */
+#లేకపోతే /* portSTACK_GROWTH */
     {
-        pxStackBufferTemp = pvPortMalloc(configTIMER_TASK_STACK_DEPTH);
-        pxTCBBufferTemp = pvPortMalloc(sizeof(StaticTask_t));
+        px_దొంతర_బఫరు_తాత్కాలిక = pv_పోర్టు_Malloc(config_TIMER_TASK_దొంతర_లోతు);
+        px_TCBBuffer_తాత్కాలిక = pv_పోర్టు_Malloc(పరిమాణం(StaticTask_t));
     }
-#endif /* portSTACK_GROWTH */
+#అయితే_ముగింపు /* portSTACK_GROWTH */
 
-    assert(pxTCBBufferTemp != NULL);
-    assert(pxStackBufferTemp != NULL);
+    ప్రతిజ్ఞా(px_TCBBuffer_తాత్కాలిక != ఖాళీ);
+    ప్రతిజ్ఞా(px_దొంతర_బఫరు_తాత్కాలిక != ఖాళీ);
     //Write back pointers
-    *ppxTimerTaskTCBBuffer = pxTCBBufferTemp;
-    *ppxTimerTaskStackBuffer = pxStackBufferTemp;
-    *pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
+    *ppxTimerTaskTCBBuffer = px_TCBBuffer_తాత్కాలిక;
+    *ppx_Timer_Task_దొంతర_బఫరు = px_దొంతర_బఫరు_తాత్కాలిక;
+    *pul_Timer_Task_దొంతర_కొలత = config_TIMER_TASK_దొంతర_లోతు;
 }
-#endif //configUSE_TIMERS
+#అయితే_ముగింపు //configUSE_TIMERS
 
-#endif // configSUPPORT_STATIC_ALLOCATION == 1
+#అయితే_ముగింపు // configSUPPORT_STATIC_ALLOCATION == 1

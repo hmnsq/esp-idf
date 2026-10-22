@@ -47,20 +47,20 @@
  * atomics in ISRs.
  */
 
-#ifndef ATOMIC_H
-#define ATOMIC_H
+#నిర్వచితం_కాకపోతే ATOMIC_H
+#నిర్వచించు ATOMIC_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h must appear in source files before include atomic.h"
-#endif
+#నిర్వచితం_కాకపోతే INC_FREERTOS_H
+    #దోషం "include FreeRTOS.h must appear in source files before include atomic.h"
+#అయితే_ముగింపు
 
 /* Standard includes. */
-#include <stdint.h>
+#అన్తర్భావ <stdint.h>
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#నిర్వచితమైతే __cplusplus
+    బాహ్య "C" {
+#అయితే_ముగింపు
 /* *INDENT-ON* */
 
 /*
@@ -71,22 +71,22 @@
  * ATOMIC_ENTER_CRITICAL().
  *
  */
-#if ( portHAS_NESTED_INTERRUPTS == 1 )
+#ఒకవేళ ( పోర్టు_HAS_NESTED_INTERRUPTS == 1 )
 
 /* Nested interrupt scheme is supported in this port. */
-    #define ATOMIC_ENTER_CRITICAL() \
-    UBaseType_t uxCriticalSectionType = portSET_INTERRUPT_MASK_FROM_ISR()
+    #నిర్వచించు ATOMIC_ENTER_CRITICAL() \
+    UBaseType_t uxCriticalSectionType = పోర్టు_సమితి_అంతరాయం_ముసుగు_FROM_ISR()
 
-    #define ATOMIC_EXIT_CRITICAL() \
-    portCLEAR_INTERRUPT_MASK_FROM_ISR( uxCriticalSectionType )
+    #నిర్వచించు ATOMIC_EXIT_CRITICAL() \
+    పోర్టు_CLEAR_అంతరాయం_ముసుగు_FROM_ISR( uxCriticalSectionType )
 
-#else
+#లేకపోతే
 
 /* Nested interrupt scheme is NOT supported in this port. */
-    #define ATOMIC_ENTER_CRITICAL()    portENTER_CRITICAL()
-    #define ATOMIC_EXIT_CRITICAL()     portEXIT_CRITICAL()
+    #నిర్వచించు ATOMIC_ENTER_CRITICAL()    పోర్టు_ENTER_CRITICAL()
+    #నిర్వచించు ATOMIC_EXIT_CRITICAL()     పోర్టు_EXIT_CRITICAL()
 
-#endif /* portSET_INTERRUPT_MASK_FROM_ISR() */
+#అయితే_ముగింపు /* portSET_INTERRUPT_MASK_FROM_ISR() */
 
 /*
  * Port specific definition -- "always inline".
@@ -95,12 +95,12 @@
  * for atomic.  Thus, if portFORCE_INLINE is not provided by portmacro.h,
  * instead of resulting error, simply define it away.
  */
-#ifndef portFORCE_INLINE
-    #define portFORCE_INLINE
-#endif
+#నిర్వచితం_కాకపోతే పోర్టు_FORCE_INLINE
+    #నిర్వచించు పోర్టు_FORCE_INLINE
+#అయితే_ముగింపు
 
-#define ATOMIC_COMPARE_AND_SWAP_SUCCESS    0x1U     /**< Compare and swap succeeded, swapped. */
-#define ATOMIC_COMPARE_AND_SWAP_FAILURE    0x0U     /**< Compare and swap failed, did not swap. */
+#నిర్వచించు ATOMIC_COMPARE_AND_మార్పిడి_SUCCESS    0x1U     /**< Compare and swap succeeded, swapped. */
+#నిర్వచించు ATOMIC_COMPARE_AND_మార్పిడి_FAILURE    0x0U     /**< Compare and swap failed, did not swap. */
 
 /*----------------------------- Swap && CAS ------------------------------*/
 
@@ -119,27 +119,27 @@
  * @note This function only swaps *pulDestination with ulExchange, if previous
  *       *pulDestination value equals ulComparand.
  */
-static portFORCE_INLINE uint32_t Atomic_CompareAndSwap_u32( uint32_t volatile * pulDestination,
+స్థిర పోర్టు_FORCE_INLINE uint32_t Atomic_Compare_And_మార్పిడి_u32( uint32_t అస్థిర * pulDestination,
                                                             uint32_t ulExchange,
                                                             uint32_t ulComparand )
 {
-    uint32_t ulReturnValue;
+    uint32_t ul_Return_విలువ;
 
     ATOMIC_ENTER_CRITICAL();
     {
-        if( *pulDestination == ulComparand )
+        ఒకవేళ( *pulDestination == ulComparand )
         {
             *pulDestination = ulExchange;
-            ulReturnValue = ATOMIC_COMPARE_AND_SWAP_SUCCESS;
+            ul_Return_విలువ = ATOMIC_COMPARE_AND_మార్పిడి_SUCCESS;
         }
-        else
+        లేకపోతే
         {
-            ulReturnValue = ATOMIC_COMPARE_AND_SWAP_FAILURE;
+            ul_Return_విలువ = ATOMIC_COMPARE_AND_మార్పిడి_FAILURE;
         }
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulReturnValue;
+    తిరిగి ul_Return_విలువ;
 }
 /*-----------------------------------------------------------*/
 
@@ -155,19 +155,19 @@ static portFORCE_INLINE uint32_t Atomic_CompareAndSwap_u32( uint32_t volatile * 
  *
  * @return The initial value of *ppvDestination.
  */
-static portFORCE_INLINE void * Atomic_SwapPointers_p32( void * volatile * ppvDestination,
-                                                        void * pvExchange )
+స్థిర పోర్టు_FORCE_INLINE శూన్య * Atomic_మార్పిడి_సూచికలు_p32( శూన్య * అస్థిర * ppvDestination,
+                                                        శూన్య * pvExchange )
 {
-    void * pReturnValue;
+    శూన్య * p_Return_విలువ;
 
     ATOMIC_ENTER_CRITICAL();
     {
-        pReturnValue = *ppvDestination;
+        p_Return_విలువ = *ppvDestination;
         *ppvDestination = pvExchange;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return pReturnValue;
+    తిరిగి p_Return_విలువ;
 }
 /*-----------------------------------------------------------*/
 
@@ -187,23 +187,23 @@ static portFORCE_INLINE void * Atomic_SwapPointers_p32( void * volatile * ppvDes
  * @note This function only swaps *ppvDestination with pvExchange, if previous
  *       *ppvDestination value equals pvComparand.
  */
-static portFORCE_INLINE uint32_t Atomic_CompareAndSwapPointers_p32( void * volatile * ppvDestination,
-                                                                    void * pvExchange,
-                                                                    void * pvComparand )
+స్థిర పోర్టు_FORCE_INLINE uint32_t Atomic_Compare_And_మార్పిడి_సూచికలు_p32( శూన్య * అస్థిర * ppvDestination,
+                                                                    శూన్య * pvExchange,
+                                                                    శూన్య * pvComparand )
 {
-    uint32_t ulReturnValue = ATOMIC_COMPARE_AND_SWAP_FAILURE;
+    uint32_t ul_Return_విలువ = ATOMIC_COMPARE_AND_మార్పిడి_FAILURE;
 
     ATOMIC_ENTER_CRITICAL();
     {
-        if( *ppvDestination == pvComparand )
+        ఒకవేళ( *ppvDestination == pvComparand )
         {
             *ppvDestination = pvExchange;
-            ulReturnValue = ATOMIC_COMPARE_AND_SWAP_SUCCESS;
+            ul_Return_విలువ = ATOMIC_COMPARE_AND_మార్పిడి_SUCCESS;
         }
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulReturnValue;
+    తిరిగి ul_Return_విలువ;
 }
 
 
@@ -220,19 +220,19 @@ static portFORCE_INLINE uint32_t Atomic_CompareAndSwapPointers_p32( void * volat
  *
  * @return previous *pulAddend value.
  */
-static portFORCE_INLINE uint32_t Atomic_Add_u32( uint32_t volatile * pulAddend,
-                                                 uint32_t ulCount )
+స్థిర పోర్టు_FORCE_INLINE uint32_t Atomic_కూడు_u32( uint32_t అస్థిర * pulAddend,
+                                                 uint32_t ul_లెక్క )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulAddend;
-        *pulAddend += ulCount;
+        *pulAddend += ul_లెక్క;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    తిరిగి ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -248,19 +248,19 @@ static portFORCE_INLINE uint32_t Atomic_Add_u32( uint32_t volatile * pulAddend,
  *
  * @return previous *pulAddend value.
  */
-static portFORCE_INLINE uint32_t Atomic_Subtract_u32( uint32_t volatile * pulAddend,
-                                                      uint32_t ulCount )
+స్థిర పోర్టు_FORCE_INLINE uint32_t Atomic_వ్యవకలనం_u32( uint32_t అస్థిర * pulAddend,
+                                                      uint32_t ul_లెక్క )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulAddend;
-        *pulAddend -= ulCount;
+        *pulAddend -= ul_లెక్క;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    తిరిగి ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -274,7 +274,7 @@ static portFORCE_INLINE uint32_t Atomic_Subtract_u32( uint32_t volatile * pulAdd
  *
  * @return *pulAddend value before increment.
  */
-static portFORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t volatile * pulAddend )
+స్థిర పోర్టు_FORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t అస్థిర * pulAddend )
 {
     uint32_t ulCurrent;
 
@@ -285,7 +285,7 @@ static portFORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t volatile * pulAd
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    తిరిగి ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -299,7 +299,7 @@ static portFORCE_INLINE uint32_t Atomic_Increment_u32( uint32_t volatile * pulAd
  *
  * @return *pulAddend value before decrement.
  */
-static portFORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t volatile * pulAddend )
+స్థిర పోర్టు_FORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t అస్థిర * pulAddend )
 {
     uint32_t ulCurrent;
 
@@ -310,7 +310,7 @@ static portFORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t volatile * pulAd
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    తిరిగి ulCurrent;
 }
 
 /*----------------------------- Bitwise Logical ------------------------------*/
@@ -326,19 +326,19 @@ static portFORCE_INLINE uint32_t Atomic_Decrement_u32( uint32_t volatile * pulAd
  *
  * @return The original value of *pulDestination.
  */
-static portFORCE_INLINE uint32_t Atomic_OR_u32( uint32_t volatile * pulDestination,
-                                                uint32_t ulValue )
+స్థిర పోర్టు_FORCE_INLINE uint32_t Atomic_OR_u32( uint32_t అస్థిర * pulDestination,
+                                                uint32_t ul_విలువ )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulDestination;
-        *pulDestination |= ulValue;
+        *pulDestination |= ul_విలువ;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    తిరిగి ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -353,19 +353,19 @@ static portFORCE_INLINE uint32_t Atomic_OR_u32( uint32_t volatile * pulDestinati
  *
  * @return The original value of *pulDestination.
  */
-static portFORCE_INLINE uint32_t Atomic_AND_u32( uint32_t volatile * pulDestination,
-                                                 uint32_t ulValue )
+స్థిర పోర్టు_FORCE_INLINE uint32_t Atomic_AND_u32( uint32_t అస్థిర * pulDestination,
+                                                 uint32_t ul_విలువ )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulDestination;
-        *pulDestination &= ulValue;
+        *pulDestination &= ul_విలువ;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    తిరిగి ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -380,19 +380,19 @@ static portFORCE_INLINE uint32_t Atomic_AND_u32( uint32_t volatile * pulDestinat
  *
  * @return The original value of *pulDestination.
  */
-static portFORCE_INLINE uint32_t Atomic_NAND_u32( uint32_t volatile * pulDestination,
-                                                  uint32_t ulValue )
+స్థిర పోర్టు_FORCE_INLINE uint32_t Atomic_NAND_u32( uint32_t అస్థిర * pulDestination,
+                                                  uint32_t ul_విలువ )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulDestination;
-        *pulDestination = ~( ulCurrent & ulValue );
+        *pulDestination = ~( ulCurrent & ul_విలువ );
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    తిరిగి ulCurrent;
 }
 /*-----------------------------------------------------------*/
 
@@ -407,25 +407,25 @@ static portFORCE_INLINE uint32_t Atomic_NAND_u32( uint32_t volatile * pulDestina
  *
  * @return The original value of *pulDestination.
  */
-static portFORCE_INLINE uint32_t Atomic_XOR_u32( uint32_t volatile * pulDestination,
-                                                 uint32_t ulValue )
+స్థిర పోర్టు_FORCE_INLINE uint32_t Atomic_XOR_u32( uint32_t అస్థిర * pulDestination,
+                                                 uint32_t ul_విలువ )
 {
     uint32_t ulCurrent;
 
     ATOMIC_ENTER_CRITICAL();
     {
         ulCurrent = *pulDestination;
-        *pulDestination ^= ulValue;
+        *pulDestination ^= ul_విలువ;
     }
     ATOMIC_EXIT_CRITICAL();
 
-    return ulCurrent;
+    తిరిగి ulCurrent;
 }
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#నిర్వచితమైతే __cplusplus
     }
-#endif
+#అయితే_ముగింపు
 /* *INDENT-ON* */
 
-#endif /* ATOMIC_H */
+#అయితే_ముగింపు /* ATOMIC_H */

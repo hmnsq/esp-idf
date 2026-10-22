@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#pragma once
+#సూచన once
 
 /* Xtensa Architecture specific configuration. This file is included in the common FreeRTOSConfig.h. */
 
-#include "sdkconfig.h"
+#అన్తర్భావ "sdkconfig.h"
 
 /* Required for configuration-dependent settings. */
-#include "xtensa_config.h"
+#అన్తర్భావ "xtensa_config.h"
 
 /* -------------------------------------------- Xtensa Additional Config  ----------------------------------------------
  * - Provide Xtensa definitions usually given by -D option when building with xt-make (see readme_xtensa.txt)
@@ -26,16 +26,16 @@
  *      - XT_USE_SWPRI         We don't define this (unused)
  * ------------------------------------------------------------------------------------------------------------------ */
 
-#define configXT_SIMULATOR          0
-#define configXT_BOARD              1                           /* Board mode */
-#if CONFIG_FREERTOS_CORETIMER_0
-    #define configXT_TIMER_INDEX    0
-#elif CONFIG_FREERTOS_CORETIMER_1
-    #define configXT_TIMER_INDEX    1
-#endif
-#define configXT_INTEXC_HOOKS       0
+#నిర్వచించు configXT_SIMULATOR          0
+#నిర్వచించు configXT_BOARD              1                           /* Board mode */
+#ఒకవేళ CONFIG_FREERTOS_CORETIMER_0
+    #నిర్వచించు config_XT_TIMER_సూచీ    0
+#లేదావేళ CONFIG_FREERTOS_CORETIMER_1
+    #నిర్వచించు config_XT_TIMER_సూచీ    1
+#అయితే_ముగింపు
+#నిర్వచించు configXT_INTEXC_HOOKS       0
 
-#define configBENCHMARK             0
+#నిర్వచించు configBENCHMARK             0
 
 /* ------------------------------------------------- FreeRTOS Config ---------------------------------------------------
  * - All Vanilla FreeRTOS configuration goes into this section
@@ -43,64 +43,64 @@
 
 /* ------------------ Scheduler Related -------------------- */
 
-#ifdef CONFIG_FREERTOS_OPTIMIZED_SCHEDULER
-    #define configUSE_PORT_OPTIMISED_TASK_SELECTION    1
-#else
-    #define configUSE_PORT_OPTIMISED_TASK_SELECTION    0
-#endif /* CONFIG_FREERTOS_OPTIMIZED_SCHEDULER */
-#define configMINIMAL_STACK_SIZE                       ( CONFIG_FREERTOS_IDLE_TASK_STACKSIZE + configSTACK_OVERHEAD_TOTAL )
-#define configMAX_API_CALL_INTERRUPT_PRIORITY          XCHAL_EXCM_LEVEL
+#నిర్వచితమైతే CONFIG_FREERTOS_OPTIMIZED_SCHEDULER
+    #నిర్వచించు config_USE_పోర్టు_OPTIMISED_TASK_SELECTION    1
+#లేకపోతే
+    #నిర్వచించు config_USE_పోర్టు_OPTIMISED_TASK_SELECTION    0
+#అయితే_ముగింపు /* CONFIG_FREERTOS_OPTIMIZED_SCHEDULER */
+#నిర్వచించు config_కనీస_దొంతర_కొలత                       ( CONFIG_FREERTOS_IDLE_TASK_STACKSIZE + config_దొంతర_OVERHEAD_మొత్తం )
+#నిర్వచించు config_MAX_API_CALL_అంతరాయం_ప్రాధాన్యత          XCHAL_EXCM_LEVEL
 
 /* ---------------- Amazon SMP FreeRTOS -------------------- */
 
-#if CONFIG_FREERTOS_SMP
+#ఒకవేళ CONFIG_FREERTOS_SMP
 
 /* This is always enabled to call IDF style idle hooks, by can be "--Wl,--wrap"
  * if users enable CONFIG_FREERTOS_USE_PASSIVE_IDLE_HOOK. */
-    #define configUSE_PASSIVE_IDLE_HOOK    1
-#endif
+    #నిర్వచించు configUSE_PASSIVE_IDLE_HOOK    1
+#అయితే_ముగింపు
 
 /* ----------------------- System -------------------------- */
 
-#if CONFIG_LIBC_NEWLIB
-#define configUSE_NEWLIB_REENTRANT    1
-#else
-#define configUSE_NEWLIB_REENTRANT    0
-#endif
+#ఒకవేళ CONFIG_LIBC_NEWLIB
+#నిర్వచించు configUSE_NEWLIB_REENTRANT    1
+#లేకపోతే
+#నిర్వచించు configUSE_NEWLIB_REENTRANT    0
+#అయితే_ముగింపు
 
 /* - FreeRTOS provides default for configTLS_BLOCK_TYPE.
  * - We simply provide our own INIT and DEINIT functions
  * - We set "SET" to a blank macro since there is no need to set the reentrancy
  * pointer. All newlib functions calls __getreent. */
-#if CONFIG_FREERTOS_SMP
-    #define configINIT_TLS_BLOCK( xTLSBlock, pxTopOfStack )    esp_reent_init( &( xTLSBlock ) )
-#else /* CONFIG_FREERTOS_SMP */
-    #define configINIT_TLS_BLOCK( xTLSBlock )                  esp_reent_init( &( xTLSBlock ) )
-#endif /* CONFIG_FREERTOS_SMP */
-#define configSET_TLS_BLOCK( xTLSBlock )
-#define configDEINIT_TLS_BLOCK( xTLSBlock )                    _reclaim_reent( &( xTLSBlock ) )
+#ఒకవేళ CONFIG_FREERTOS_SMP
+    #నిర్వచించు config_INIT_TLS_ఖండం( xTLSBlock, px_శిఖరం_యొక్క_దొంతర )    esp_reent_init( &( xTLSBlock ) )
+#లేకపోతే /* CONFIG_FREERTOS_SMP */
+    #నిర్వచించు config_INIT_TLS_ఖండం( xTLSBlock )                  esp_reent_init( &( xTLSBlock ) )
+#అయితే_ముగింపు /* CONFIG_FREERTOS_SMP */
+#నిర్వచించు config_సమితి_TLS_ఖండం( xTLSBlock )
+#నిర్వచించు config_DEINIT_TLS_ఖండం( xTLSBlock )                    _reclaim_reent( &( xTLSBlock ) )
 
-#define configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H    1
+#నిర్వచించు configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H    1
 
 /* ----------------------- Memory  ------------------------- */
 
 /* This isn't used as FreeRTOS will only allocate from internal memory (see
  * heap_idf.c). We simply define this macro to span all non-statically-allocated
  * shared RAM. */
-#define configTOTAL_HEAP_SIZE    ( &_heap_end - &_heap_start )
+#నిర్వచించు config_మొత్తం_కుప్ప_కొలత    ( &కుప్ప_చివర - &కుప్ప_ప్రారంభం )
 
 /* ------------------- Run-time Stats ---------------------- */
 
-#if CONFIG_FREERTOS_USE_TRACE_FACILITY
+#ఒకవేళ CONFIG_FREERTOS_USE_TRACE_FACILITY
     /* Used by uxTaskGetSystemState(), and other trace facility functions */
-    #define configUSE_TRACE_FACILITY    1
-#endif /* CONFIG_FREERTOS_USE_TRACE_FACILITY */
+    #నిర్వచించు configUSE_TRACE_FACILITY    1
+#అయితే_ముగింపు /* CONFIG_FREERTOS_USE_TRACE_FACILITY */
 
 /* -------------------- API Includes ----------------------- */
 
 /* Todo: Reconcile INCLUDE_option differences (IDF-8186) */
-#define INCLUDE_xTaskDelayUntil                 1
-#define INCLUDE_uxTaskGetStackHighWaterMark2    1
+#నిర్వచించు INCLUDE_xTaskDelayUntil                 1
+#నిర్వచించు INCLUDE_ux_Task_Get_దొంతర_ఎగువ_Water_Mark2    1
 
 /* ------------------------------------------------ ESP-IDF Additions --------------------------------------------------
  *
@@ -111,7 +111,7 @@
  * Size needs to be aligned to the stack increment, since the location of
  * the stack for the 2nd CPU will be calculated using configISR_STACK_SIZE.
  */
-#define configSTACK_ALIGNMENT       16
-#ifndef configISR_STACK_SIZE
-    #define configISR_STACK_SIZE    ( ( CONFIG_FREERTOS_ISR_STACKSIZE + configSTACK_ALIGNMENT - 1 ) & ( ~( configSTACK_ALIGNMENT - 1 ) ) )
-#endif
+#నిర్వచించు config_దొంతర_ALIGNMENT       16
+#నిర్వచితం_కాకపోతే config_ISR_దొంతర_కొలత
+    #నిర్వచించు config_ISR_దొంతర_కొలత    ( ( CONFIG_FREERTOS_ISR_STACKSIZE + config_దొంతర_ALIGNMENT - 1 ) & ( ~( config_దొంతర_ALIGNMENT - 1 ) ) )
+#అయితే_ముగింపు

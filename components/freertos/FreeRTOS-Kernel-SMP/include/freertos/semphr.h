@@ -30,20 +30,20 @@
  *
  */
 
-#ifndef SEMAPHORE_H
-#define SEMAPHORE_H
+#నిర్వచితం_కాకపోతే SEMAPHORE_H
+#నిర్వచించు SEMAPHORE_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h" must appear in source files before "include semphr.h"
-#endif
+#నిర్వచితం_కాకపోతే INC_FREERTOS_H
+    #దోషం "include FreeRTOS.h" must appear లోపల ఆధారం files before "include semphr.h"
+#అయితే_ముగింపు
 
-#include "queue.h"
+#అన్తర్భావ "queue.h"
 
-typedef QueueHandle_t SemaphoreHandle_t;
+రకనిర్వచనం వరుస_Handle_t SemaphoreHandle_t;
 
-#define semBINARY_SEMAPHORE_QUEUE_LENGTH    ( ( uint8_t ) 1U )
-#define semSEMAPHORE_QUEUE_ITEM_LENGTH      ( ( uint8_t ) 0U )
-#define semGIVE_BLOCK_TIME                  ( ( TickType_t ) 0U )
+#నిర్వచించు sem_ద్విమాన_SEMAPHORE_వరుస_నిడివి    ( ( uint8_t ) 1U )
+#నిర్వచించు sem_SEMAPHORE_వరుస_అంశం_నిడివి      ( ( uint8_t ) 0U )
+#నిర్వచించు sem_GIVE_ఖండం_సమయం                  ( ( TickType_t ) 0U )
 
 
 /**
@@ -97,16 +97,16 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup vSemaphoreCreateBinary vSemaphoreCreateBinary
  * \ingroup Semaphores
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    #define vSemaphoreCreateBinary( xSemaphore )                                                                                     \
-    do {                                                                                                                             \
-        ( xSemaphore ) = xQueueGenericCreate( ( UBaseType_t ) 1, semSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_BINARY_SEMAPHORE ); \
-        if( ( xSemaphore ) != NULL )                                                                                                 \
+#ఒకవేళ ( config_SUPPORT_DYNAMIC_కేటాయింపు == 1 )
+    #నిర్వచించు v_Semaphore_Create_ద్విమాన( xSemaphore )                                                                                     \
+    చేయి {                                                                                                                             \
+        ( xSemaphore ) = x_వరుస_Generic_Create( ( UBaseType_t ) 1, sem_SEMAPHORE_వరుస_అంశం_నిడివి, వరుస_వరుస_TYPE_ద్విమాన_SEMAPHORE ); \
+        ఒకవేళ( ( xSemaphore ) != ఖాళీ )                                                                                                 \
         {                                                                                                                            \
-            ( void ) xSemaphoreGive( ( xSemaphore ) );                                                                               \
+            ( శూన్య ) xSemaphoreGive( ( xSemaphore ) );                                                                               \
         }                                                                                                                            \
-    } while( 0 )
-#endif
+    } అయితే( 0 )
+#అయితే_ముగింపు
 
 /**
  * semphr. h
@@ -167,9 +167,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreCreateBinary xSemaphoreCreateBinary
  * \ingroup Semaphores
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    #define xSemaphoreCreateBinary()    xQueueGenericCreate( ( UBaseType_t ) 1, semSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_BINARY_SEMAPHORE )
-#endif
+#ఒకవేళ ( config_SUPPORT_DYNAMIC_కేటాయింపు == 1 )
+    #నిర్వచించు x_Semaphore_Create_ద్విమాన()    x_వరుస_Generic_Create( ( UBaseType_t ) 1, sem_SEMAPHORE_వరుస_అంశం_నిడివి, వరుస_వరుస_TYPE_ద్విమాన_SEMAPHORE )
+#అయితే_ముగింపు
 
 /**
  * semphr. h
@@ -228,9 +228,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreCreateBinaryStatic xSemaphoreCreateBinaryStatic
  * \ingroup Semaphores
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xSemaphoreCreateBinaryStatic( pxStaticSemaphore )    xQueueGenericCreateStatic( ( UBaseType_t ) 1, semSEMAPHORE_QUEUE_ITEM_LENGTH, NULL, ( pxStaticSemaphore ), queueQUEUE_TYPE_BINARY_SEMAPHORE )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#ఒకవేళ ( config_SUPPORT_STATIC_కేటాయింపు == 1 )
+    #నిర్వచించు x_Semaphore_Create_ద్విమాన_Static( pxStaticSemaphore )    x_వరుస_Generic_Create_Static( ( UBaseType_t ) 1, sem_SEMAPHORE_వరుస_అంశం_నిడివి, ఖాళీ, ( pxStaticSemaphore ), వరుస_వరుస_TYPE_ద్విమాన_SEMAPHORE )
+#అయితే_ముగింపు /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  * semphr. h
@@ -299,7 +299,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreTake xSemaphoreTake
  * \ingroup Semaphores
  */
-#define xSemaphoreTake( xSemaphore, xBlockTime )    xQueueSemaphoreTake( ( xSemaphore ), ( xBlockTime ) )
+#నిర్వచించు xSemaphoreTake( xSemaphore, x_ఖండం_సమయం )    x_వరుస_Semaphore_Take( ( xSemaphore ), ( x_ఖండం_సమయం ) )
 
 /**
  * semphr. h
@@ -394,9 +394,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreTakeRecursive xSemaphoreTakeRecursive
  * \ingroup Semaphores
  */
-#if ( configUSE_RECURSIVE_MUTEXES == 1 )
-    #define xSemaphoreTakeRecursive( xMutex, xBlockTime )    xQueueTakeMutexRecursive( ( xMutex ), ( xBlockTime ) )
-#endif
+#ఒకవేళ ( configUSE_RECURSIVE_MUTEXES == 1 )
+    #నిర్వచించు xSemaphoreTakeRecursive( xMutex, x_ఖండం_సమయం )    x_వరుస_Take_Mutex_Recursive( ( xMutex ), ( x_ఖండం_సమయం ) )
+#అయితే_ముగింపు
 
 /**
  * semphr. h
@@ -461,7 +461,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreGive xSemaphoreGive
  * \ingroup Semaphores
  */
-#define xSemaphoreGive( xSemaphore )    xQueueGenericSend( ( QueueHandle_t ) ( xSemaphore ), NULL, semGIVE_BLOCK_TIME, queueSEND_TO_BACK )
+#నిర్వచించు xSemaphoreGive( xSemaphore )    x_వరుస_Generic_Send( ( వరుస_Handle_t ) ( xSemaphore ), ఖాళీ, sem_GIVE_ఖండం_సమయం, వరుస_SEND_గమ్యం_వెనుక )
 
 /**
  * semphr. h
@@ -547,9 +547,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreGiveRecursive xSemaphoreGiveRecursive
  * \ingroup Semaphores
  */
-#if ( configUSE_RECURSIVE_MUTEXES == 1 )
-    #define xSemaphoreGiveRecursive( xMutex )    xQueueGiveMutexRecursive( ( xMutex ) )
-#endif
+#ఒకవేళ ( configUSE_RECURSIVE_MUTEXES == 1 )
+    #నిర్వచించు xSemaphoreGiveRecursive( xMutex )    x_వరుస_Give_Mutex_Recursive( ( xMutex ) )
+#అయితే_ముగింపు
 
 /**
  * semphr. h
@@ -641,7 +641,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreGiveFromISR xSemaphoreGiveFromISR
  * \ingroup Semaphores
  */
-#define xSemaphoreGiveFromISR( xSemaphore, pxHigherPriorityTaskWoken )    xQueueGiveFromISR( ( QueueHandle_t ) ( xSemaphore ), ( pxHigherPriorityTaskWoken ) )
+#నిర్వచించు xSemaphoreGiveFromISR( xSemaphore, px_Higher_ప్రాధాన్యత_Task_Woken )    x_వరుస_Give_From_ISR( ( వరుస_Handle_t ) ( xSemaphore ), ( px_Higher_ప్రాధాన్యత_Task_Woken ) )
 
 /**
  * semphr. h
@@ -676,7 +676,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * @return pdTRUE if the semaphore was successfully taken, otherwise
  * pdFALSE
  */
-#define xSemaphoreTakeFromISR( xSemaphore, pxHigherPriorityTaskWoken )    xQueueReceiveFromISR( ( QueueHandle_t ) ( xSemaphore ), NULL, ( pxHigherPriorityTaskWoken ) )
+#నిర్వచించు xSemaphoreTakeFromISR( xSemaphore, px_Higher_ప్రాధాన్యత_Task_Woken )    x_వరుస_Receive_From_ISR( ( వరుస_Handle_t ) ( xSemaphore ), ఖాళీ, ( px_Higher_ప్రాధాన్యత_Task_Woken ) )
 
 /**
  * semphr. h
@@ -735,9 +735,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreCreateMutex xSemaphoreCreateMutex
  * \ingroup Semaphores
  */
-#if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configUSE_MUTEXES == 1 ) )
-    #define xSemaphoreCreateMutex()    xQueueCreateMutex( queueQUEUE_TYPE_MUTEX )
-#endif
+#ఒకవేళ ( ( config_SUPPORT_DYNAMIC_కేటాయింపు == 1 ) && ( configUSE_MUTEXES == 1 ) )
+    #నిర్వచించు xSemaphoreCreateMutex()    x_వరుస_Create_Mutex( వరుస_వరుస_TYPE_MUTEX )
+#అయితే_ముగింపు
 
 /**
  * semphr. h
@@ -798,9 +798,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreCreateMutexStatic xSemaphoreCreateMutexStatic
  * \ingroup Semaphores
  */
-#if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configUSE_MUTEXES == 1 ) )
-    #define xSemaphoreCreateMutexStatic( pxMutexBuffer )    xQueueCreateMutexStatic( queueQUEUE_TYPE_MUTEX, ( pxMutexBuffer ) )
-#endif
+#ఒకవేళ ( ( config_SUPPORT_STATIC_కేటాయింపు == 1 ) && ( configUSE_MUTEXES == 1 ) )
+    #నిర్వచించు xSemaphoreCreateMutexStatic( px_Mutex_బఫరు )    x_వరుస_Create_Mutex_Static( వరుస_వరుస_TYPE_MUTEX, ( px_Mutex_బఫరు ) )
+#అయితే_ముగింపు
 
 
 /**
@@ -868,9 +868,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreCreateRecursiveMutex xSemaphoreCreateRecursiveMutex
  * \ingroup Semaphores
  */
-#if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configUSE_RECURSIVE_MUTEXES == 1 ) )
-    #define xSemaphoreCreateRecursiveMutex()    xQueueCreateMutex( queueQUEUE_TYPE_RECURSIVE_MUTEX )
-#endif
+#ఒకవేళ ( ( config_SUPPORT_DYNAMIC_కేటాయింపు == 1 ) && ( configUSE_RECURSIVE_MUTEXES == 1 ) )
+    #నిర్వచించు xSemaphoreCreateRecursiveMutex()    x_వరుస_Create_Mutex( వరుస_వరుస_TYPE_RECURSIVE_MUTEX )
+#అయితే_ముగింపు
 
 /**
  * semphr. h
@@ -943,9 +943,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreCreateRecursiveMutexStatic xSemaphoreCreateRecursiveMutexStatic
  * \ingroup Semaphores
  */
-#if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configUSE_RECURSIVE_MUTEXES == 1 ) )
-    #define xSemaphoreCreateRecursiveMutexStatic( pxStaticSemaphore )    xQueueCreateMutexStatic( queueQUEUE_TYPE_RECURSIVE_MUTEX, ( pxStaticSemaphore ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#ఒకవేళ ( ( config_SUPPORT_STATIC_కేటాయింపు == 1 ) && ( configUSE_RECURSIVE_MUTEXES == 1 ) )
+    #నిర్వచించు xSemaphoreCreateRecursiveMutexStatic( pxStaticSemaphore )    x_వరుస_Create_Mutex_Static( వరుస_వరుస_TYPE_RECURSIVE_MUTEX, ( pxStaticSemaphore ) )
+#అయితే_ముగింపు /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  * semphr. h
@@ -1025,9 +1025,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreCreateCounting xSemaphoreCreateCounting
  * \ingroup Semaphores
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    #define xSemaphoreCreateCounting( uxMaxCount, uxInitialCount )    xQueueCreateCountingSemaphore( ( uxMaxCount ), ( uxInitialCount ) )
-#endif
+#ఒకవేళ ( config_SUPPORT_DYNAMIC_కేటాయింపు == 1 )
+    #నిర్వచించు xSemaphoreCreateCounting( ux_Max_లెక్క, ux_Initial_లెక్క )    x_వరుస_Create_Counting_Semaphore( ( ux_Max_లెక్క ), ( ux_Initial_లెక్క ) )
+#అయితే_ముగింపు
 
 /**
  * semphr. h
@@ -1112,9 +1112,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup xSemaphoreCreateCountingStatic xSemaphoreCreateCountingStatic
  * \ingroup Semaphores
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xSemaphoreCreateCountingStatic( uxMaxCount, uxInitialCount, pxSemaphoreBuffer )    xQueueCreateCountingSemaphoreStatic( ( uxMaxCount ), ( uxInitialCount ), ( pxSemaphoreBuffer ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#ఒకవేళ ( config_SUPPORT_STATIC_కేటాయింపు == 1 )
+    #నిర్వచించు xSemaphoreCreateCountingStatic( ux_Max_లెక్క, ux_Initial_లెక్క, px_Semaphore_బఫరు )    x_వరుస_Create_Counting_Semaphore_Static( ( ux_Max_లెక్క ), ( ux_Initial_లెక్క ), ( px_Semaphore_బఫరు ) )
+#అయితే_ముగింపు /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  * semphr. h
@@ -1130,7 +1130,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * \defgroup vSemaphoreDelete vSemaphoreDelete
  * \ingroup Semaphores
  */
-#define vSemaphoreDelete( xSemaphore )    vQueueDelete( ( QueueHandle_t ) ( xSemaphore ) )
+#నిర్వచించు vSemaphoreDelete( xSemaphore )    v_వరుస_Delete( ( వరుస_Handle_t ) ( xSemaphore ) )
 
 /**
  * semphr.h
@@ -1147,9 +1147,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * the holder may change between the function exiting and the returned value
  * being tested.
  */
-#if ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
-    #define xSemaphoreGetMutexHolder( xSemaphore )    xQueueGetMutexHolder( ( xSemaphore ) )
-#endif
+#ఒకవేళ ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
+    #నిర్వచించు xSemaphoreGetMutexHolder( xSemaphore )    x_వరుస_Get_Mutex_Holder( ( xSemaphore ) )
+#అయితే_ముగింపు
 
 /**
  * semphr.h
@@ -1162,9 +1162,9 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * by a task), return NULL.
  *
  */
-#if ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
-    #define xSemaphoreGetMutexHolderFromISR( xSemaphore )    xQueueGetMutexHolderFromISR( ( xSemaphore ) )
-#endif
+#ఒకవేళ ( ( configUSE_MUTEXES == 1 ) && ( INCLUDE_xSemaphoreGetMutexHolder == 1 ) )
+    #నిర్వచించు xSemaphoreGetMutexHolderFromISR( xSemaphore )    x_వరుస_Get_Mutex_Holder_From_ISR( ( xSemaphore ) )
+#అయితే_ముగింపు
 
 /**
  * semphr.h
@@ -1178,7 +1178,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * semaphore is not available.
  *
  */
-#define uxSemaphoreGetCount( xSemaphore )           uxQueueMessagesWaiting( ( QueueHandle_t ) ( xSemaphore ) )
+#నిర్వచించు ux_Semaphore_Get_లెక్క( xSemaphore )           ux_వరుస_Messages_నిరీక్షణ( ( వరుస_Handle_t ) ( xSemaphore ) )
 
 /**
  * semphr.h
@@ -1192,7 +1192,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
  * semaphore is not available.
  *
  */
-#define uxSemaphoreGetCountFromISR( xSemaphore )    uxQueueMessagesWaitingFromISR( ( QueueHandle_t ) ( xSemaphore ) )
+#నిర్వచించు ux_Semaphore_Get_లెక్క_From_ISR( xSemaphore )    ux_వరుస_Messages_నిరీక్షణ_From_ISR( ( వరుస_Handle_t ) ( xSemaphore ) )
 
 /**
  * semphr.h
@@ -1212,8 +1212,8 @@ typedef QueueHandle_t SemaphoreHandle_t;
  *
  * @return pdTRUE if buffer was retrieved, pdFALSE otherwise.
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    #define xSemaphoreGetStaticBuffer( xSemaphore, ppxSemaphoreBuffer )    xQueueGenericGetStaticBuffers( ( QueueHandle_t ) ( xSemaphore ), NULL, ( ppxSemaphoreBuffer ) )
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#ఒకవేళ ( config_SUPPORT_STATIC_కేటాయింపు == 1 )
+    #నిర్వచించు x_Semaphore_Get_Static_బఫరు( xSemaphore, ppx_Semaphore_బఫరు )    x_వరుస_Generic_Get_Static_Buffers( ( వరుస_Handle_t ) ( xSemaphore ), ఖాళీ, ( ppx_Semaphore_బఫరు ) )
+#అయితే_ముగింపు /* configSUPPORT_STATIC_ALLOCATION */
 
-#endif /* SEMAPHORE_H */
+#అయితే_ముగింపు /* SEMAPHORE_H */

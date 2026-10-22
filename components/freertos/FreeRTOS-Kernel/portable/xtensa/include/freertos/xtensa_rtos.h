@@ -46,71 +46,71 @@
  * Should be included by all Xtensa generic and RTOS port-specific sources.
  */
 
-#ifndef XTENSA_RTOS_H
-#define XTENSA_RTOS_H
+#నిర్వచితం_కాకపోతే XTENSA_RTOS_H
+#నిర్వచించు XTENSA_RTOS_H
 
-#ifdef __ASSEMBLER__
-#include    <xtensa/coreasm.h>
-#else
-#include    <xtensa/config/core.h>
-#endif
+#నిర్వచితమైతే __ASSEMBLER__
+#అన్తర్భావ    <xtensa/coreasm.h>
+#లేకపోతే
+#అన్తర్భావ    <xtensa/config/core.h>
+#అయితే_ముగింపు
 
-#include    <xtensa/corebits.h>
-#include    <xtensa/config/system.h>
-#include    "sdkconfig.h"
+#అన్తర్భావ    <xtensa/corebits.h>
+#అన్తర్భావ    <xtensa/config/system.h>
+#అన్తర్భావ    "sdkconfig.h"
 
 /*
 Include any RTOS specific definitions that are needed by this header.
 */
-#include    "freertos/FreeRTOSConfig.h"
+#అన్తర్భావ    "freertos/FreeRTOSConfig.h"
 
 /*
 Convert FreeRTOSConfig definitions to XTENSA definitions.
 However these can still be overridden from the command line.
 */
 
-#ifndef XT_SIMULATOR
-  #if configXT_SIMULATOR
-    #define XT_SIMULATOR             1  /* Simulator mode */
-  #endif
-#endif
+#నిర్వచితం_కాకపోతే XT_SIMULATOR
+  #ఒకవేళ configXT_SIMULATOR
+    #నిర్వచించు XT_SIMULATOR             1  /* Simulator mode */
+  #అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#ifndef XT_BOARD
-  #if configXT_BOARD
-    #define XT_BOARD                 1  /* Board mode */
-  #endif
-#endif
+#నిర్వచితం_కాకపోతే XT_BOARD
+  #ఒకవేళ configXT_BOARD
+    #నిర్వచించు XT_BOARD                 1  /* Board mode */
+  #అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#ifndef XT_TIMER_INDEX
-  #if defined configXT_TIMER_INDEX
-    #define XT_TIMER_INDEX           configXT_TIMER_INDEX  /* Index of hardware timer to be used */
-  #endif
-#endif
+#నిర్వచితం_కాకపోతే XT_TIMER_సూచీ
+  #ఒకవేళ defined config_XT_TIMER_సూచీ
+    #నిర్వచించు XT_TIMER_సూచీ           config_XT_TIMER_సూచీ  /* Index of hardware timer to be used */
+  #అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#ifndef XT_INTEXC_HOOKS
-  #if configXT_INTEXC_HOOKS
-    #define XT_INTEXC_HOOKS          1  /* Enables exception hooks */
-  #endif
-#endif
+#నిర్వచితం_కాకపోతే XT_INTEXC_HOOKS
+  #ఒకవేళ configXT_INTEXC_HOOKS
+    #నిర్వచించు XT_INTEXC_HOOKS          1  /* Enables exception hooks */
+  #అయితే_ముగింపు
+#అయితే_ముగింపు
 
-#if (!XT_SIMULATOR) && (!XT_BOARD)
-  #error Either XT_SIMULATOR or XT_BOARD must be defined.
-#endif
+#ఒకవేళ (!XT_SIMULATOR) && (!XT_BOARD)
+  #దోషం Either XT_SIMULATOR or XT_BOARD must be defined.
+#అయితే_ముగింపు
 
 
 /*
 Name of RTOS (for messages).
 */
-#define XT_RTOS_NAME    FreeRTOS
+#నిర్వచించు XT_RTOS_NAME    FreeRTOS
 
 /*
 Check some Xtensa configuration requirements and report error if not met.
 Error messages can be customize to the RTOS port.
 */
 
-#if !XCHAL_HAVE_XEA2
-#error "FreeRTOS/Xtensa requires XEA2 (exception architecture 2)."
-#endif
+#ఒకవేళ !XCHAL_HAVE_XEA2
+#దోషం "FreeRTOS/Xtensa requires XEA2 (exception architecture 2)."
+#అయితే_ముగింపు
 
 
 /*******************************************************************************
@@ -131,7 +131,7 @@ RTOS port can call0 _xt_context_save to save the rest of the context.
 May only be called from assembly code by the 'call0' instruction.
 */
 // void XT_RTOS_INT_ENTER(void)
-#define XT_RTOS_INT_ENTER   _frxt_int_enter
+#నిర్వచించు XT_RTOS_INT_ENTER   _frxt_int_enter
 
 /*
 Inform RTOS of completion of an interrupt handler, and give control to
@@ -144,7 +144,7 @@ dispatcher. This function does not return to the place it was called from.
 May only be called from assembly code by the 'call0' instruction.
 */
 // void XT_RTOS_INT_EXIT(void)
-#define XT_RTOS_INT_EXIT    _frxt_int_exit
+#నిర్వచించు XT_RTOS_INT_EXIT    _frxt_int_exit
 
 /*
 Inform RTOS of the occurrence of a tick timer interrupt.
@@ -153,10 +153,10 @@ May be coded in or called from C or assembly, per ABI conventions.
 RTOS may optionally define XT_TICK_PER_SEC in its own way (eg. macro).
 */
 // void XT_RTOS_TIMER_INT(void)
-#ifdef CONFIG_FREERTOS_SYSTICK_USES_CCOUNT
-#define XT_RTOS_TIMER_INT   _frxt_timer_int
-#endif
-#define XT_TICK_PER_SEC     configTICK_RATE_HZ
+#నిర్వచితమైతే CONFIG_FREERTOS_SYSTICK_ఉపయోగిస్తుంది_CCOUNT
+#నిర్వచించు XT_RTOS_TIMER_INT   _frxt_timer_int
+#అయితే_ముగింపు
+#నిర్వచించు XT_TICK_చొప్పున_SEC     config_TICK_రేటు_HZ
 
 /*
 Return in a15 the base address of the co-processor state save area for the
@@ -168,7 +168,7 @@ and by the 'call0' instruction. A result of 0 indicates an unrecoverable error.
 The implementation may use only a2-4, a15 (all other regs must be preserved).
 */
 // void* XT_RTOS_CP_STATE(void)
-#define XT_RTOS_CP_STATE    _frxt_task_coproc_state
+#నిర్వచించు XT_RTOS_CP_STATE    _frxt_task_coproc_state
 
 /*
 RTOS provided hook function that is called on every coprocessor exception. May
@@ -176,9 +176,9 @@ only be called from assembly code and by the 'call0' instruction.
 The implementation may use only a2-4, a15 (all other regs must be preserved).
 */
 // void XT_RTOS_CP_EXC_HOOK(void)
-#if XCHAL_CP_NUM > 0
-#define XT_RTOS_CP_EXC_HOOK   _frxt_coproc_exc_hook
-#endif
+#ఒకవేళ XCHAL_CP_అంకె > 0
+#నిర్వచించు XT_RTOS_CP_EXC_HOOK   _frxt_coproc_exc_hook
+#అయితే_ముగింపు
 
 /*******************************************************************************
 
@@ -214,12 +214,12 @@ To enable interrupt/exception hooks, compile the RTOS with '-DXT_INTEXC_HOOKS'.
 
 *******************************************************************************/
 
-#define XT_INTEXC_HOOK_NUM  (1 + XCHAL_NUM_INTLEVELS + XCHAL_HAVE_NMI)
+#నిర్వచించు XT_INTEXC_HOOK_అంకె  (1 + XCHAL_అంకె_INTLEVELS + XCHAL_HAVE_NMI)
 
-#ifndef __ASSEMBLER__
-typedef unsigned (*XT_INTEXC_HOOK)(unsigned cause);
-extern  volatile XT_INTEXC_HOOK _xt_intexc_hooks[XT_INTEXC_HOOK_NUM];
-#endif
+#నిర్వచితం_కాకపోతే __ASSEMBLER__
+రకనిర్వచనం గుర్తులేని (*XT_INTEXC_HOOK)(గుర్తులేని cause);
+బాహ్య  అస్థిర XT_INTEXC_HOOK _xt_intexc_hooks[XT_INTEXC_HOOK_అంకె];
+#అయితే_ముగింపు
 
 
 /*******************************************************************************
@@ -231,11 +231,11 @@ These headers are included last so they can use the RTOS definitions above.
 
 *******************************************************************************/
 
-#include    "xtensa_context.h"
+#అన్తర్భావ    "xtensa_context.h"
 
-#ifdef XT_RTOS_TIMER_INT
-#include    "xtensa_timer.h"
-#endif
+#నిర్వచితమైతే XT_RTOS_TIMER_INT
+#అన్తర్భావ    "xtensa_timer.h"
+#అయితే_ముగింపు
 
 
 /*******************************************************************************
@@ -244,7 +244,7 @@ Xtensa Port Version.
 
 *******************************************************************************/
 
-#define XTENSA_PORT_VERSION             1.7
-#define XTENSA_PORT_VERSION_STRING      "1.7"
+#నిర్వచించు XTENSA_పోర్టు_సంస్కరణ             1.7
+#నిర్వచించు XTENSA_పోర్టు_సంస్కరణ_STRING      "1.7"
 
-#endif /* XTENSA_RTOS_H */
+#అయితే_ముగింపు /* XTENSA_RTOS_H */

@@ -30,17 +30,17 @@
  *
  */
 
-#ifndef MPU_WRAPPERS_H
-#define MPU_WRAPPERS_H
+#నిర్వచితం_కాకపోతే MPU_WRAPPERS_H
+#నిర్వచించు MPU_WRAPPERS_H
 
 /* This file redefines API functions to be called through a wrapper macro, but
  * only for ports that are using the MPU. */
-#if ( portUSING_MPU_WRAPPERS == 1 )
+#ఒకవేళ ( పోర్టు_USING_MPU_WRAPPERS == 1 )
 
 /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE will be defined when this file is
  * included from queue.c or task.c to prevent it from having an effect within
  * those files. */
-    #ifndef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+    #నిర్వచితం_కాకపోతే MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /*
  * Map standard (non MPU) API functions to equivalents that start
@@ -51,138 +51,138 @@
  */
 
 /* Map standard task.h API functions to the MPU equivalents. */
-        #define xTaskCreate                            MPU_xTaskCreate
-        #define xTaskCreateStatic                      MPU_xTaskCreateStatic
-        #define vTaskDelete                            MPU_vTaskDelete
-        #define vTaskDelay                             MPU_vTaskDelay
-        #define xTaskDelayUntil                        MPU_xTaskDelayUntil
-        #define xTaskAbortDelay                        MPU_xTaskAbortDelay
-        #define uxTaskPriorityGet                      MPU_uxTaskPriorityGet
-        #define eTaskGetState                          MPU_eTaskGetState
-        #define vTaskGetInfo                           MPU_vTaskGetInfo
-        #define vTaskPrioritySet                       MPU_vTaskPrioritySet
-        #define vTaskSuspend                           MPU_vTaskSuspend
-        #define vTaskResume                            MPU_vTaskResume
-        #define vTaskSuspendAll                        MPU_vTaskSuspendAll
-        #define xTaskResumeAll                         MPU_xTaskResumeAll
-        #define xTaskGetTickCount                      MPU_xTaskGetTickCount
-        #define uxTaskGetNumberOfTasks                 MPU_uxTaskGetNumberOfTasks
-        #define pcTaskGetName                          MPU_pcTaskGetName
-        #define xTaskGetHandle                         MPU_xTaskGetHandle
-        #define uxTaskGetStackHighWaterMark            MPU_uxTaskGetStackHighWaterMark
-        #define uxTaskGetStackHighWaterMark2           MPU_uxTaskGetStackHighWaterMark2
-        #define vTaskSetApplicationTaskTag             MPU_vTaskSetApplicationTaskTag
-        #define xTaskGetApplicationTaskTag             MPU_xTaskGetApplicationTaskTag
-        #define vTaskSetThreadLocalStoragePointer      MPU_vTaskSetThreadLocalStoragePointer
-        #define pvTaskGetThreadLocalStoragePointer     MPU_pvTaskGetThreadLocalStoragePointer
-        #define xTaskCallApplicationTaskHook           MPU_xTaskCallApplicationTaskHook
-        #define xTaskGetIdleTaskHandle                 MPU_xTaskGetIdleTaskHandle
-        #define uxTaskGetSystemState                   MPU_uxTaskGetSystemState
-        #define vTaskList                              MPU_vTaskList
-        #define vTaskGetRunTimeStats                   MPU_vTaskGetRunTimeStats
-        #define ulTaskGetIdleRunTimeCounter            MPU_ulTaskGetIdleRunTimeCounter
-        #define ulTaskGetIdleRunTimePercent            MPU_ulTaskGetIdleRunTimePercent
-        #define xTaskGenericNotify                     MPU_xTaskGenericNotify
-        #define xTaskGenericNotifyWait                 MPU_xTaskGenericNotifyWait
-        #define ulTaskGenericNotifyTake                MPU_ulTaskGenericNotifyTake
-        #define xTaskGenericNotifyStateClear           MPU_xTaskGenericNotifyStateClear
-        #define ulTaskGenericNotifyValueClear          MPU_ulTaskGenericNotifyValueClear
-        #define xTaskCatchUpTicks                      MPU_xTaskCatchUpTicks
+        #నిర్వచించు xTaskCreate                            MPU_xTaskCreate
+        #నిర్వచించు xTaskCreateStatic                      MPU_xTaskCreateStatic
+        #నిర్వచించు vTaskDelete                            MPU_vTaskDelete
+        #నిర్వచించు vTaskDelay                             MPU_vTaskDelay
+        #నిర్వచించు xTaskDelayUntil                        MPU_xTaskDelayUntil
+        #నిర్వచించు xTaskAbortDelay                        MPU_xTaskAbortDelay
+        #నిర్వచించు ux_Task_ప్రాధాన్యత_Get                      MPU_ux_Task_ప్రాధాన్యత_Get
+        #నిర్వచించు eTaskGetState                          MPU_eTaskGetState
+        #నిర్వచించు vTaskGetInfo                           MPU_vTaskGetInfo
+        #నిర్వచించు v_Task_ప్రాధాన్యత_సమితి                       MPU_v_Task_ప్రాధాన్యత_సమితి
+        #నిర్వచించు vTaskSuspend                           MPU_vTaskSuspend
+        #నిర్వచించు vTaskResume                            MPU_vTaskResume
+        #నిర్వచించు vTaskSuspendAll                        MPU_vTaskSuspendAll
+        #నిర్వచించు xTaskResumeAll                         MPU_xTaskResumeAll
+        #నిర్వచించు x_Task_Get_Tick_లెక్క                      MPU_x_Task_Get_Tick_లెక్క
+        #నిర్వచించు ux_Task_Get_సంఖ్య_యొక్క_Tasks                 MPU_ux_Task_Get_సంఖ్య_యొక్క_Tasks
+        #నిర్వచించు pcTaskGetName                          MPU_pcTaskGetName
+        #నిర్వచించు xTaskGetHandle                         MPU_xTaskGetHandle
+        #నిర్వచించు ux_Task_Get_దొంతర_ఎగువ_Water_Mark            MPU_ux_Task_Get_దొంతర_ఎగువ_Water_Mark
+        #నిర్వచించు ux_Task_Get_దొంతర_ఎగువ_Water_Mark2           MPU_ux_Task_Get_దొంతర_ఎగువ_Water_Mark2
+        #నిర్వచించు v_Task_సమితి_Application_Task_ట్యాగ్             MPU_v_Task_సమితి_Application_Task_ట్యాగ్
+        #నిర్వచించు x_Task_Get_Application_Task_ట్యాగ్             MPU_x_Task_Get_Application_Task_ట్యాగ్
+        #నిర్వచించు v_Task_సమితి_Thread_Local_Storage_సూచిక      MPU_v_Task_సమితి_Thread_Local_Storage_సూచిక
+        #నిర్వచించు pv_Task_Get_Thread_Local_Storage_సూచిక     MPU_pv_Task_Get_Thread_Local_Storage_సూచిక
+        #నిర్వచించు xTaskCallApplicationTaskHook           MPU_xTaskCallApplicationTaskHook
+        #నిర్వచించు xTaskGetIdleTaskHandle                 MPU_xTaskGetIdleTaskHandle
+        #నిర్వచించు uxTaskGetSystemState                   MPU_uxTaskGetSystemState
+        #నిర్వచించు vTaskList                              MPU_vTaskList
+        #నిర్వచించు v_Task_Get_నిరంతరం_సమయం_Stats                   MPU_v_Task_Get_నిరంతరం_సమయం_Stats
+        #నిర్వచించు ul_Task_Get_Idle_నిరంతరం_సమయం_Counter            MPU_ul_Task_Get_Idle_నిరంతరం_సమయం_Counter
+        #నిర్వచించు ul_Task_Get_Idle_నిరంతరం_సమయం_Percent            MPU_ul_Task_Get_Idle_నిరంతరం_సమయం_Percent
+        #నిర్వచించు xTaskGenericNotify                     MPU_xTaskGenericNotify
+        #నిర్వచించు xTaskGenericNotifyWait                 MPU_xTaskGenericNotifyWait
+        #నిర్వచించు ulTaskGenericNotifyTake                MPU_ulTaskGenericNotifyTake
+        #నిర్వచించు xTaskGenericNotifyStateClear           MPU_xTaskGenericNotifyStateClear
+        #నిర్వచించు ul_Task_Generic_Notify_విలువ_Clear          MPU_ul_Task_Generic_Notify_విలువ_Clear
+        #నిర్వచించు x_Task_Catch_పైకి_Ticks                      MPU_x_Task_Catch_పైకి_Ticks
 
-        #define xTaskGetCurrentTaskHandle              MPU_xTaskGetCurrentTaskHandle
-        #define vTaskSetTimeOutState                   MPU_vTaskSetTimeOutState
-        #define xTaskCheckForTimeOut                   MPU_xTaskCheckForTimeOut
-        #define xTaskGetSchedulerState                 MPU_xTaskGetSchedulerState
+        #నిర్వచించు xTaskGetCurrentTaskHandle              MPU_xTaskGetCurrentTaskHandle
+        #నిర్వచించు v_Task_సమితి_సమయం_బహిర్గతం_State                   MPU_v_Task_సమితి_సమయం_బహిర్గతం_State
+        #నిర్వచించు x_Task_Check_For_సమయం_బహిర్గతం                   MPU_x_Task_Check_For_సమయం_బహిర్గతం
+        #నిర్వచించు xTaskGetSchedulerState                 MPU_xTaskGetSchedulerState
 
 /* Map standard queue.h API functions to the MPU equivalents. */
-        #define xQueueGenericSend                      MPU_xQueueGenericSend
-        #define xQueueReceive                          MPU_xQueueReceive
-        #define xQueuePeek                             MPU_xQueuePeek
-        #define xQueueSemaphoreTake                    MPU_xQueueSemaphoreTake
-        #define uxQueueMessagesWaiting                 MPU_uxQueueMessagesWaiting
-        #define uxQueueSpacesAvailable                 MPU_uxQueueSpacesAvailable
-        #define vQueueDelete                           MPU_vQueueDelete
-        #define xQueueCreateMutex                      MPU_xQueueCreateMutex
-        #define xQueueCreateMutexStatic                MPU_xQueueCreateMutexStatic
-        #define xQueueCreateCountingSemaphore          MPU_xQueueCreateCountingSemaphore
-        #define xQueueCreateCountingSemaphoreStatic    MPU_xQueueCreateCountingSemaphoreStatic
-        #define xQueueGetMutexHolder                   MPU_xQueueGetMutexHolder
-        #define xQueueTakeMutexRecursive               MPU_xQueueTakeMutexRecursive
-        #define xQueueGiveMutexRecursive               MPU_xQueueGiveMutexRecursive
-        #define xQueueGenericCreate                    MPU_xQueueGenericCreate
-        #define xQueueGenericCreateStatic              MPU_xQueueGenericCreateStatic
-        #define xQueueCreateSet                        MPU_xQueueCreateSet
-        #define xQueueAddToSet                         MPU_xQueueAddToSet
-        #define xQueueRemoveFromSet                    MPU_xQueueRemoveFromSet
-        #define xQueueSelectFromSet                    MPU_xQueueSelectFromSet
-        #define xQueueGenericReset                     MPU_xQueueGenericReset
+        #నిర్వచించు x_వరుస_Generic_Send                      MPU_x_వరుస_Generic_Send
+        #నిర్వచించు x_వరుస_Receive                          MPU_x_వరుస_Receive
+        #నిర్వచించు x_వరుస_Peek                             MPU_x_వరుస_Peek
+        #నిర్వచించు x_వరుస_Semaphore_Take                    MPU_x_వరుస_Semaphore_Take
+        #నిర్వచించు ux_వరుస_Messages_నిరీక్షణ                 MPU_ux_వరుస_Messages_నిరీక్షణ
+        #నిర్వచించు ux_వరుస_Spaces_అందుబాటు                 MPU_ux_వరుస_Spaces_అందుబాటు
+        #నిర్వచించు v_వరుస_Delete                           MPU_v_వరుస_Delete
+        #నిర్వచించు x_వరుస_Create_Mutex                      MPU_x_వరుస_Create_Mutex
+        #నిర్వచించు x_వరుస_Create_Mutex_Static                MPU_x_వరుస_Create_Mutex_Static
+        #నిర్వచించు x_వరుస_Create_Counting_Semaphore          MPU_x_వరుస_Create_Counting_Semaphore
+        #నిర్వచించు x_వరుస_Create_Counting_Semaphore_Static    MPU_x_వరుస_Create_Counting_Semaphore_Static
+        #నిర్వచించు x_వరుస_Get_Mutex_Holder                   MPU_x_వరుస_Get_Mutex_Holder
+        #నిర్వచించు x_వరుస_Take_Mutex_Recursive               MPU_x_వరుస_Take_Mutex_Recursive
+        #నిర్వచించు x_వరుస_Give_Mutex_Recursive               MPU_x_వరుస_Give_Mutex_Recursive
+        #నిర్వచించు x_వరుస_Generic_Create                    MPU_x_వరుస_Generic_Create
+        #నిర్వచించు x_వరుస_Generic_Create_Static              MPU_x_వరుస_Generic_Create_Static
+        #నిర్వచించు x_వరుస_Create_సమితి                        MPU_x_వరుస_Create_సమితి
+        #నిర్వచించు x_వరుస_కూడు_గమ్యం_సమితి                         MPU_x_వరుస_కూడు_గమ్యం_సమితి
+        #నిర్వచించు x_వరుస_Remove_From_సమితి                    MPU_x_వరుస_Remove_From_సమితి
+        #నిర్వచించు x_వరుస_Select_From_సమితి                    MPU_x_వరుస_Select_From_సమితి
+        #నిర్వచించు x_వరుస_Generic_Reset                     MPU_x_వరుస_Generic_Reset
 
-        #if ( configQUEUE_REGISTRY_SIZE > 0 )
-            #define vQueueAddToRegistry                MPU_vQueueAddToRegistry
-            #define vQueueUnregisterQueue              MPU_vQueueUnregisterQueue
-            #define pcQueueGetName                     MPU_pcQueueGetName
-        #endif
+        #ఒకవేళ ( config_వరుస_REGISTRY_కొలత > 0 )
+            #నిర్వచించు v_వరుస_కూడు_గమ్యం_Registry                MPU_v_వరుస_కూడు_గమ్యం_Registry
+            #నిర్వచించు v_వరుస_Unregister_వరుస              MPU_v_వరుస_Unregister_వరుస
+            #నిర్వచించు pc_వరుస_Get_Name                     MPU_pc_వరుస_Get_Name
+        #అయితే_ముగింపు
 
 /* Map standard timer.h API functions to the MPU equivalents. */
-        #define pvTimerGetTimerID                      MPU_pvTimerGetTimerID
-        #define vTimerSetTimerID                       MPU_vTimerSetTimerID
-        #define xTimerIsTimerActive                    MPU_xTimerIsTimerActive
-        #define xTimerGetTimerDaemonTaskHandle         MPU_xTimerGetTimerDaemonTaskHandle
-        #define pcTimerGetName                         MPU_pcTimerGetName
-        #define vTimerSetReloadMode                    MPU_vTimerSetReloadMode
-        #define uxTimerGetReloadMode                   MPU_uxTimerGetReloadMode
-        #define xTimerGetPeriod                        MPU_xTimerGetPeriod
-        #define xTimerGetExpiryTime                    MPU_xTimerGetExpiryTime
-        #define xTimerGenericCommand                   MPU_xTimerGenericCommand
+        #నిర్వచించు pvTimerGetTimerID                      MPU_pvTimerGetTimerID
+        #నిర్వచించు v_Timer_సమితి_Timer_ID                       MPU_v_Timer_సమితి_Timer_ID
+        #నిర్వచించు x_Timer_Is_Timer_చురుకైన                    MPU_x_Timer_Is_Timer_చురుకైన
+        #నిర్వచించు xTimerGetTimerDaemonTaskHandle         MPU_xTimerGetTimerDaemonTaskHandle
+        #నిర్వచించు pcTimerGetName                         MPU_pcTimerGetName
+        #నిర్వచించు v_Timer_సమితి_Reload_బహుళకం                    MPU_v_Timer_సమితి_Reload_బహుళకం
+        #నిర్వచించు ux_Timer_Get_Reload_బహుళకం                   MPU_ux_Timer_Get_Reload_బహుళకం
+        #నిర్వచించు xTimerGetPeriod                        MPU_xTimerGetPeriod
+        #నిర్వచించు x_Timer_Get_Expiry_సమయం                    MPU_x_Timer_Get_Expiry_సమయం
+        #నిర్వచించు xTimerGenericCommand                   MPU_xTimerGenericCommand
 
 /* Map standard event_group.h API functions to the MPU equivalents. */
-        #define xEventGroupCreate                      MPU_xEventGroupCreate
-        #define xEventGroupCreateStatic                MPU_xEventGroupCreateStatic
-        #define xEventGroupWaitBits                    MPU_xEventGroupWaitBits
-        #define xEventGroupClearBits                   MPU_xEventGroupClearBits
-        #define xEventGroupSetBits                     MPU_xEventGroupSetBits
-        #define xEventGroupSync                        MPU_xEventGroupSync
-        #define vEventGroupDelete                      MPU_vEventGroupDelete
+        #నిర్వచించు x_Event_సమూహం_Create                      MPU_x_Event_సమూహం_Create
+        #నిర్వచించు x_Event_సమూహం_Create_Static                MPU_x_Event_సమూహం_Create_Static
+        #నిర్వచించు x_Event_సమూహం_Wait_బిట్లు                    MPU_x_Event_సమూహం_Wait_బిట్లు
+        #నిర్వచించు x_Event_సమూహం_Clear_బిట్లు                   MPU_x_Event_సమూహం_Clear_బిట్లు
+        #నిర్వచించు x_Event_సమూహం_సమితి_బిట్లు                     MPU_x_Event_సమూహం_సమితి_బిట్లు
+        #నిర్వచించు x_Event_సమూహం_Sync                        MPU_x_Event_సమూహం_Sync
+        #నిర్వచించు v_Event_సమూహం_Delete                      MPU_v_Event_సమూహం_Delete
 
 /* Map standard message/stream_buffer.h API functions to the MPU
  * equivalents. */
-        #define xStreamBufferSend                      MPU_xStreamBufferSend
-        #define xStreamBufferReceive                   MPU_xStreamBufferReceive
-        #define xStreamBufferNextMessageLengthBytes    MPU_xStreamBufferNextMessageLengthBytes
-        #define vStreamBufferDelete                    MPU_vStreamBufferDelete
-        #define xStreamBufferIsFull                    MPU_xStreamBufferIsFull
-        #define xStreamBufferIsEmpty                   MPU_xStreamBufferIsEmpty
-        #define xStreamBufferReset                     MPU_xStreamBufferReset
-        #define xStreamBufferSpacesAvailable           MPU_xStreamBufferSpacesAvailable
-        #define xStreamBufferBytesAvailable            MPU_xStreamBufferBytesAvailable
-        #define xStreamBufferSetTriggerLevel           MPU_xStreamBufferSetTriggerLevel
-        #define xStreamBufferGenericCreate             MPU_xStreamBufferGenericCreate
-        #define xStreamBufferGenericCreateStatic       MPU_xStreamBufferGenericCreateStatic
+        #నిర్వచించు x_ప్రవాహం_బఫరు_Send                      MPU_x_ప్రవాహం_బఫరు_Send
+        #నిర్వచించు x_ప్రవాహం_బఫరు_Receive                   MPU_x_ప్రవాహం_బఫరు_Receive
+        #నిర్వచించు x_ప్రవాహం_బఫరు_తదుపరి_సందేశం_నిడివి_బైట్లు    MPU_x_ప్రవాహం_బఫరు_తదుపరి_సందేశం_నిడివి_బైట్లు
+        #నిర్వచించు v_ప్రవాహం_బఫరు_Delete                    MPU_v_ప్రవాహం_బఫరు_Delete
+        #నిర్వచించు x_ప్రవాహం_బఫరు_Is_నిండిన                    MPU_x_ప్రవాహం_బఫరు_Is_నిండిన
+        #నిర్వచించు x_ప్రవాహం_బఫరు_Is_ఖాళీలు                   MPU_x_ప్రవాహం_బఫరు_Is_ఖాళీలు
+        #నిర్వచించు x_ప్రవాహం_బఫరు_Reset                     MPU_x_ప్రవాహం_బఫరు_Reset
+        #నిర్వచించు x_ప్రవాహం_బఫరు_Spaces_అందుబాటు           MPU_x_ప్రవాహం_బఫరు_Spaces_అందుబాటు
+        #నిర్వచించు x_ప్రవాహం_బఫరు_బైట్లు_అందుబాటు            MPU_x_ప్రవాహం_బఫరు_బైట్లు_అందుబాటు
+        #నిర్వచించు x_ప్రవాహం_బఫరు_సమితి_Trigger_Level           MPU_x_ప్రవాహం_బఫరు_సమితి_Trigger_Level
+        #నిర్వచించు x_ప్రవాహం_బఫరు_Generic_Create             MPU_x_ప్రవాహం_బఫరు_Generic_Create
+        #నిర్వచించు x_ప్రవాహం_బఫరు_Generic_Create_Static       MPU_x_ప్రవాహం_బఫరు_Generic_Create_Static
 
 
 /* Remove the privileged function macro, but keep the PRIVILEGED_DATA
  * macro so applications can place data in privileged access sections
  * (useful when using statically allocated objects). */
-        #define PRIVILEGED_FUNCTION
-        #define PRIVILEGED_DATA    __attribute__( ( section( "privileged_data" ) ) )
-        #define FREERTOS_SYSTEM_CALL
+        #నిర్వచించు PRIVILEGED_FUNCTION
+        #నిర్వచించు PRIVILEGED_దత్తాంశం    __attribute__( ( section( "privileged_data" ) ) )
+        #నిర్వచించు FREERTOS_SYSTEM_CALL
 
-    #else /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
+    #లేకపోతే /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
 
 /* Ensure API functions go in the privileged execution section. */
-        #define PRIVILEGED_FUNCTION     __attribute__( ( section( "privileged_functions" ) ) )
-        #define PRIVILEGED_DATA         __attribute__( ( section( "privileged_data" ) ) )
-        #define FREERTOS_SYSTEM_CALL    __attribute__( ( section( "freertos_system_calls" ) ) )
+        #నిర్వచించు PRIVILEGED_FUNCTION     __attribute__( ( section( "privileged_functions" ) ) )
+        #నిర్వచించు PRIVILEGED_దత్తాంశం         __attribute__( ( section( "privileged_data" ) ) )
+        #నిర్వచించు FREERTOS_SYSTEM_CALL    __attribute__( ( section( "freertos_system_calls" ) ) )
 
-    #endif /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
+    #అయితే_ముగింపు /* MPU_WRAPPERS_INCLUDED_FROM_API_FILE */
 
-#else /* portUSING_MPU_WRAPPERS */
+#లేకపోతే /* portUSING_MPU_WRAPPERS */
 
-    #define PRIVILEGED_FUNCTION
-    #define PRIVILEGED_DATA
-    #define FREERTOS_SYSTEM_CALL
+    #నిర్వచించు PRIVILEGED_FUNCTION
+    #నిర్వచించు PRIVILEGED_దత్తాంశం
+    #నిర్వచించు FREERTOS_SYSTEM_CALL
 
-#endif /* portUSING_MPU_WRAPPERS */
+#అయితే_ముగింపు /* portUSING_MPU_WRAPPERS */
 
 
-#endif /* MPU_WRAPPERS_H */
+#అయితే_ముగింపు /* MPU_WRAPPERS_H */

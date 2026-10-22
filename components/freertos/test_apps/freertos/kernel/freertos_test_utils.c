@@ -4,71 +4,71 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include "FreeRTOS.h"
-#include "semphr.h"
-#include "freertos_test_utils.h"
+#అన్తర్భావ "sdkconfig.h"
+#అన్తర్భావ "FreeRTOS.h"
+#అన్తర్భావ "semphr.h"
+#అన్తర్భావ "freertos_test_utils.h"
 
-#if ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 )
+#ఒకవేళ ( CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES > 1 )
 
-typedef struct {
-    const TestFunction_t pxTestCode;
-    void * const pvTestCodeArg;
-    const SemaphoreHandle_t xTaskDoneSem;
-} TestArgs_t;
+రకనిర్వచనం నిర్మాణం {
+    స్థిరరాశి TestFunction_t px_Test_సంకేతం;
+    శూన్య * స్థిరరాశి pv_Test_సంకేతం_Arg;
+    స్థిరరాశి SemaphoreHandle_t x_Task_పూర్తి_Sem;
+} Test_వాదనలు_t;
 
-static void test_func_task(void * pvParameters)
+స్థిర శూన్య test_func_task(శూన్య * pvParameters)
 {
-    TestArgs_t * pxTestArgs = (TestArgs_t *) pvParameters;
+    Test_వాదనలు_t * px_Test_వాదనలు = (Test_వాదనలు_t *) pvParameters;
     /* Call the test function */
-    pxTestArgs->pxTestCode(pxTestArgs->pvTestCodeArg);
+    px_Test_వాదనలు->px_Test_సంకేతం(px_Test_వాదనలు->pv_Test_సంకేతం_Arg);
     /* Indicate completion to the creation task and wait to be deleted. */
-    xSemaphoreGive(pxTestArgs->xTaskDoneSem);
-    vTaskSuspend(NULL);
+    xSemaphoreGive(px_Test_వాదనలు->x_Task_పూర్తి_Sem);
+    vTaskSuspend(ఖాళీ);
 }
 
-void vTestOnAllCores(TestFunction_t pxTestCode, void * pvTestCodeArg, uint32_t ulStackDepth, UBaseType_t uxPriority)
+శూన్య vTestOnAllCores(TestFunction_t px_Test_సంకేతం, శూన్య * pv_Test_సంకేతం_Arg, uint32_t ul_దొంతర_లోతు, UBaseType_t ux_ప్రాధాన్యత)
 {
-    SemaphoreHandle_t xTaskDoneSem = xSemaphoreCreateCounting(CONFIG_FREERTOS_NUMBER_OF_CORES, 0);
-    TaskHandle_t xTaskHandles[ CONFIG_FREERTOS_NUMBER_OF_CORES ];
-    TestArgs_t xTestArgs = {
-        .pxTestCode = pxTestCode,
-        .pvTestCodeArg = pvTestCodeArg,
-        .xTaskDoneSem = xTaskDoneSem,
+    SemaphoreHandle_t x_Task_పూర్తి_Sem = xSemaphoreCreateCounting(CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES, 0);
+    TaskHandle_t xTaskHandles[ CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES ];
+    Test_వాదనలు_t x_Test_వాదనలు = {
+        .px_Test_సంకేతం = px_Test_సంకేతం,
+        .pv_Test_సంకేతం_Arg = pv_Test_సంకేతం_Arg,
+        .x_Task_పూర్తి_Sem = x_Task_పూర్తి_Sem,
     };
 
     /* Create a separate task on each core to run the test function */
-    for (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_NUMBER_OF_CORES; xCoreID++) {
-#if ( CONFIG_FREERTOS_SMP == 1 )
-        xTaskCreateAffinitySet(test_func_task,
+    కొరకు (పునాది_Type_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES; xCoreID++) {
+#ఒకవేళ ( CONFIG_FREERTOS_SMP == 1 )
+        x_Task_Create_Affinity_సమితి(test_func_task,
                                "task",
-                               ulStackDepth,
-                               (void *) &xTestArgs,
-                               uxPriority,
+                               ul_దొంతర_లోతు,
+                               (శూన్య *) &x_Test_వాదనలు,
+                               ux_ప్రాధాన్యత,
                                (UBaseType_t)(1 << xCoreID),
                                &(xTaskHandles[ xCoreID ]));
-#else
-        xTaskCreatePinnedToCore(test_func_task,
+#లేకపోతే
+        x_Task_Create_Pinned_గమ్యం_Core(test_func_task,
                                 "task",
-                                ulStackDepth,
-                                (void *) &xTestArgs,
-                                uxPriority,
+                                ul_దొంతర_లోతు,
+                                (శూన్య *) &x_Test_వాదనలు,
+                                ux_ప్రాధాన్యత,
                                 &(xTaskHandles[ xCoreID ]),
                                 xCoreID);
-#endif
+#అయితే_ముగింపు
     }
 
     /* Wait for each tasks to complete test */
-    for (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_NUMBER_OF_CORES; xCoreID++) {
-        xSemaphoreTake(xTaskDoneSem, portMAX_DELAY);
+    కొరకు (పునాది_Type_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES; xCoreID++) {
+        xSemaphoreTake(x_Task_పూర్తి_Sem, పోర్టు_MAX_DELAY);
     }
 
     /* Cleanup */
-    for (BaseType_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_NUMBER_OF_CORES; xCoreID++) {
+    కొరకు (పునాది_Type_t xCoreID = 0; xCoreID < CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES; xCoreID++) {
         vTaskDelete(xTaskHandles[ xCoreID ]);
     }
-    vSemaphoreDelete(xTaskDoneSem);
+    vSemaphoreDelete(x_Task_పూర్తి_Sem);
     vTaskDelay(10); // Short delay to allow task memory to be freed
 }
 
-#endif /* ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 ) */
+#అయితే_ముగింపు /* ( CONFIG_FREERTOS_NUMBER_OF_CORES > 1 ) */

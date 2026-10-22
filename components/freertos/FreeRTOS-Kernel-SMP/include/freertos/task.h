@@ -31,19 +31,19 @@
  */
 
 
-#ifndef INC_TASK_H
-#define INC_TASK_H
+#నిర్వచితం_కాకపోతే INC_TASK_H
+#నిర్వచించు INC_TASK_H
 
-#ifndef INC_FREERTOS_H
-    #error "include FreeRTOS.h must appear in source files before include task.h"
-#endif
+#నిర్వచితం_కాకపోతే INC_FREERTOS_H
+    #దోషం "include FreeRTOS.h must appear in source files before include task.h"
+#అయితే_ముగింపు
 
-#include "list.h"
+#అన్తర్భావ "list.h"
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
-    extern "C" {
-#endif
+#నిర్వచితమైతే __cplusplus
+    బాహ్య "C" {
+#అయితే_ముగింపు
 /* *INDENT-ON* */
 
 /*-----------------------------------------------------------
@@ -57,30 +57,30 @@
  * The tskKERNEL_VERSION_MAJOR, tskKERNEL_VERSION_MINOR, tskKERNEL_VERSION_BUILD
  * values will reflect the last released version number.
  */
-#define tskKERNEL_VERSION_NUMBER       "V11.1.0"
-#define tskKERNEL_VERSION_MAJOR        11
-#define tskKERNEL_VERSION_MINOR        1
-#define tskKERNEL_VERSION_BUILD        0
+#నిర్వచించు tsk_KERNEL_సంస్కరణ_సంఖ్య       "V11.1.0"
+#నిర్వచించు tsk_KERNEL_సంస్కరణ_MAJOR        11
+#నిర్వచించు tsk_KERNEL_సంస్కరణ_MINOR        1
+#నిర్వచించు tsk_KERNEL_సంస్కరణ_BUILD        0
 
 /* MPU region parameters passed in ulParameters
  * of MemoryRegion_t struct. */
-#define tskMPU_REGION_READ_ONLY        ( 1U << 0U )
-#define tskMPU_REGION_READ_WRITE       ( 1U << 1U )
-#define tskMPU_REGION_EXECUTE_NEVER    ( 1U << 2U )
-#define tskMPU_REGION_NORMAL_MEMORY    ( 1U << 3U )
-#define tskMPU_REGION_DEVICE_MEMORY    ( 1U << 4U )
+#నిర్వచించు tskMPU_REGION_READ_ONLY        ( 1U << 0U )
+#నిర్వచించు tskMPU_REGION_READ_WRITE       ( 1U << 1U )
+#నిర్వచించు tskMPU_REGION_EXECUTE_NEVER    ( 1U << 2U )
+#నిర్వచించు tsk_MPU_REGION_సాధారణ_జ్ఞాపకం    ( 1U << 3U )
+#నిర్వచించు tsk_MPU_REGION_DEVICE_జ్ఞాపకం    ( 1U << 4U )
 
 /* MPU region permissions stored in MPU settings to
  * authorize access requests. */
-#define tskMPU_READ_PERMISSION         ( 1U << 0U )
-#define tskMPU_WRITE_PERMISSION        ( 1U << 1U )
+#నిర్వచించు tskMPU_READ_PERMISSION         ( 1U << 0U )
+#నిర్వచించు tskMPU_WRITE_PERMISSION        ( 1U << 1U )
 
 /* The direct to task notification feature used to have only a single notification
  * per task.  Now there is an array of notifications per task that is dimensioned by
  * configTASK_NOTIFICATION_ARRAY_ENTRIES.  For backward compatibility, any use of the
  * original direct to task notification defaults to using the first index in the
  * array. */
-#define tskDEFAULT_INDEX_TO_NOTIFY     ( 0 )
+#నిర్వచించు tsk_DEFAULT_సూచీ_గమ్యం_NOTIFY     ( 0 )
 
 /**
  * task. h
@@ -92,18 +92,18 @@
  * \defgroup TaskHandle_t TaskHandle_t
  * \ingroup Tasks
  */
-struct tskTaskControlBlock; /* The old naming convention is used to prevent breaking kernel aware debuggers. */
-typedef struct tskTaskControlBlock         * TaskHandle_t;
-typedef const struct tskTaskControlBlock   * ConstTaskHandle_t;
+నిర్మాణం tsk_Task_Control_ఖండం; /* The old naming convention is used to prevent breaking kernel aware debuggers. */
+రకనిర్వచనం నిర్మాణం tsk_Task_Control_ఖండం         * TaskHandle_t;
+రకనిర్వచనం స్థిరరాశి నిర్మాణం tsk_Task_Control_ఖండం   * ConstTaskHandle_t;
 
 /*
  * Defines the prototype to which the application task hook function must
  * conform.
  */
-typedef BaseType_t (* TaskHookFunction_t)( void * arg );
+రకనిర్వచనం పునాది_Type_t (* TaskHookFunction_t)( శూన్య * arg );
 
 /* Task states returned by eTaskGetState. */
-typedef enum
+రకనిర్వచనం గణన
 {
     eRunning = 0, /* A task is querying the state of itself, so must be running. */
     eReady,       /* The task being queried is in a ready or pending ready list. */
@@ -114,97 +114,97 @@ typedef enum
 } eTaskState;
 
 /* Actions that can be performed when vTaskNotify() is called. */
-typedef enum
+రకనిర్వచనం గణన
 {
     eNoAction = 0,            /* Notify the task without updating its notify value. */
-    eSetBits,                 /* Set bits in the task's notification value. */
+    e_సమితి_బిట్లు,                 /* Set bits in the task's notification value. */
     eIncrement,               /* Increment the task's notification value. */
-    eSetValueWithOverwrite,   /* Set the task's notification value to a specific value even if the previous value has not yet been read by the task. */
-    eSetValueWithoutOverwrite /* Set the task's notification value if the previous value has been read by the task. */
+    e_సమితి_విలువ_With_Overwrite,   /* Set the task's notification value to a specific value even if the previous value has not yet been read by the task. */
+    e_సమితి_విలువ_Without_Overwrite /* Set the task's notification value if the previous value has been read by the task. */
 } eNotifyAction;
 
 /*
  * Used internally only.
  */
-typedef struct xTIME_OUT
+రకనిర్వచనం నిర్మాణం x_సమయం_బహిర్గతం
 {
-    BaseType_t xOverflowCount;
-    TickType_t xTimeOnEntering;
-} TimeOut_t;
+    పునాది_Type_t x_అధికప్రవాహం_లెక్క;
+    TickType_t x_సమయం_On_Entering;
+} సమయం_బహిర్గతం_t;
 
 /*
  * Defines the memory ranges allocated to the task when an MPU is used.
  */
-typedef struct xMEMORY_REGION
+రకనిర్వచనం నిర్మాణం x_జ్ఞాపకం_REGION
 {
-    void * pvBaseAddress;
-    uint32_t ulLengthInBytes;
+    శూన్య * pv_పునాది_చిరునామా;
+    uint32_t ul_నిడివి_లోపల_బైట్లు;
     uint32_t ulParameters;
-} MemoryRegion_t;
+} జ్ఞాపకం_Region_t;
 
 /*
  * Parameters required to create an MPU protected task.
  */
-typedef struct xTASK_PARAMETERS
+రకనిర్వచనం నిర్మాణం xTASK_PARAMETERS
 {
-    TaskFunction_t pvTaskCode;
-    const char * pcName;
-    configSTACK_DEPTH_TYPE usStackDepth;
-    void * pvParameters;
-    UBaseType_t uxPriority;
-    StackType_t * puxStackBuffer;
-    MemoryRegion_t xRegions[ portNUM_CONFIGURABLE_REGIONS ];
-    #if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
-        StaticTask_t * const pxTaskBuffer;
-    #endif
+    TaskFunction_t pv_Task_సంకేతం;
+    స్థిరరాశి అక్షరం * pcName;
+    config_దొంతర_లోతు_TYPE us_దొంతర_లోతు;
+    శూన్య * pvParameters;
+    UBaseType_t ux_ప్రాధాన్యత;
+    దొంతర_Type_t * pux_దొంతర_బఫరు;
+    జ్ఞాపకం_Region_t xRegions[ పోర్టు_అంకె_CONFIGURABLE_REGIONS ];
+    #ఒకవేళ ( ( పోర్టు_USING_MPU_WRAPPERS == 1 ) && ( config_SUPPORT_STATIC_కేటాయింపు == 1 ) )
+        StaticTask_t * స్థిరరాశి px_Task_బఫరు;
+    #అయితే_ముగింపు
 } TaskParameters_t;
 
 /* Used with the uxTaskGetSystemState() function to return the state of each task
  * in the system. */
-typedef struct xTASK_STATUS
+రకనిర్వచనం నిర్మాణం x_TASK_స్థితి
 {
     TaskHandle_t xHandle;                         /* The handle of the task to which the rest of the information in the structure relates. */
-    const char * pcTaskName;                      /* A pointer to the task's name.  This value will be invalid if the task was deleted since the structure was populated! */
-    UBaseType_t xTaskNumber;                      /* A number unique to the task. */
+    స్థిరరాశి అక్షరం * pcTaskName;                      /* A pointer to the task's name.  This value will be invalid if the task was deleted since the structure was populated! */
+    UBaseType_t x_Task_సంఖ్య;                      /* A number unique to the task. */
     eTaskState eCurrentState;                     /* The state in which the task existed when the structure was populated. */
-    UBaseType_t uxCurrentPriority;                /* The priority at which the task was running (may be inherited) when the structure was populated. */
-    UBaseType_t uxBasePriority;                   /* The priority to which the task will return if the task's current priority has been inherited to avoid unbounded priority inversion when obtaining a mutex.  Only valid if configUSE_MUTEXES is defined as 1 in FreeRTOSConfig.h. */
-    configRUN_TIME_COUNTER_TYPE ulRunTimeCounter; /* The total run time allocated to the task so far, as defined by the run time stats clock.  See https://www.FreeRTOS.org/rtos-run-time-stats.html.  Only valid when configGENERATE_RUN_TIME_STATS is defined as 1 in FreeRTOSConfig.h. */
-    StackType_t * pxStackBase;                    /* Points to the lowest address of the task's stack area. */
-    #if ( ( portSTACK_GROWTH > 0 ) || ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
-        StackType_t * pxTopOfStack;               /* Points to the top address of the task's stack area. */
-        StackType_t * pxEndOfStack;               /* Points to the end address of the task's stack area. */
-    #endif
-    configSTACK_DEPTH_TYPE usStackHighWaterMark;  /* The minimum amount of stack space that has remained for the task since the task was created.  The closer this value is to zero the closer the task has come to overflowing its stack. */
-    #if ( ( configUSE_CORE_AFFINITY == 1 ) && ( configNUMBER_OF_CORES > 1 ) )
-        UBaseType_t uxCoreAffinityMask;           /* The core affinity mask for the task */
-    #endif
-} TaskStatus_t;
+    UBaseType_t ux_Current_ప్రాధాన్యత;                /* The priority at which the task was running (may be inherited) when the structure was populated. */
+    UBaseType_t ux_పునాది_ప్రాధాన్యత;                   /* The priority to which the task will return if the task's current priority has been inherited to avoid unbounded priority inversion when obtaining a mutex.  Only valid if configUSE_MUTEXES is defined as 1 in FreeRTOSConfig.h. */
+    config_నిరంతరం_సమయం_COUNTER_TYPE ul_నిరంతరం_సమయం_Counter; /* The total run time allocated to the task so far, as defined by the run time stats clock.  See https://www.FreeRTOS.org/rtos-run-time-stats.html.  Only valid when configGENERATE_RUN_TIME_STATS is defined as 1 in FreeRTOSConfig.h. */
+    దొంతర_Type_t * px_దొంతర_పునాది;                    /* Points to the lowest address of the task's stack area. */
+    #ఒకవేళ ( ( పోర్టు_దొంతర_GROWTH > 0 ) || ( config_రికార్డు_దొంతర_ఎగువ_చిరునామా == 1 ) )
+        దొంతర_Type_t * px_శిఖరం_యొక్క_దొంతర;               /* Points to the top address of the task's stack area. */
+        దొంతర_Type_t * px_చివర_యొక్క_దొంతర;               /* Points to the end address of the task's stack area. */
+    #అయితే_ముగింపు
+    config_దొంతర_లోతు_TYPE us_దొంతర_ఎగువ_Water_Mark;  /* The minimum amount of stack space that has remained for the task since the task was created.  The closer this value is to zero the closer the task has come to overflowing its stack. */
+    #ఒకవేళ ( ( configUSE_CORE_AFFINITY == 1 ) && ( config_సంఖ్య_యొక్క_CORES > 1 ) )
+        UBaseType_t ux_Core_Affinity_ముసుగు;           /* The core affinity mask for the task */
+    #అయితే_ముగింపు
+} Task_స్థితి_t;
 
 /* Possible return values for eTaskConfirmSleepModeStatus(). */
-typedef enum
+రకనిర్వచనం గణన
 {
     eAbortSleep = 0, /* A task has been made ready or a context switch pended since portSUPPRESS_TICKS_AND_SLEEP() was called - abort entering a sleep mode. */
     eStandardSleep   /* Enter a sleep mode that will not last any longer than the expected idle time. */
-    #if ( INCLUDE_vTaskSuspend == 1 )
+    #ఒకవేళ ( INCLUDE_vTaskSuspend == 1 )
         ,
-        eNoTasksWaitingTimeout /* No tasks are waiting for a timeout so it is safe to enter a sleep mode that can only be exited by an external interrupt. */
-    #endif /* INCLUDE_vTaskSuspend */
-} eSleepModeStatus;
+        e_No_Tasks_నిరీక్షణ_Timeout /* No tasks are waiting for a timeout so it is safe to enter a sleep mode that can only be exited by an external interrupt. */
+    #అయితే_ముగింపు /* INCLUDE_vTaskSuspend */
+} e_Sleep_బహుళకం_స్థితి;
 
 /**
  * Defines the priority used by the idle task.  This must not be modified.
  *
  * \ingroup TaskUtils
  */
-#define tskIDLE_PRIORITY    ( ( UBaseType_t ) 0U )
+#నిర్వచించు tsk_IDLE_ప్రాధాన్యత    ( ( UBaseType_t ) 0U )
 
 /**
  * Defines affinity to all available cores.
  *
  * \ingroup TaskUtils
  */
-#define tskNO_AFFINITY      ( ( UBaseType_t ) -1 )
+#నిర్వచించు tskNO_AFFINITY      ( ( UBaseType_t ) -1 )
 
 /**
  * task. h
@@ -214,7 +214,7 @@ typedef enum
  * \defgroup taskYIELD taskYIELD
  * \ingroup SchedulerControl
  */
-#define taskYIELD()                          portYIELD()
+#నిర్వచించు taskYIELD()                          పోర్టు_YIELD()
 
 /**
  * task. h
@@ -228,12 +228,12 @@ typedef enum
  * \defgroup taskENTER_CRITICAL taskENTER_CRITICAL
  * \ingroup SchedulerControl
  */
-#define taskENTER_CRITICAL()                 portENTER_CRITICAL()
-#if ( configNUMBER_OF_CORES == 1 )
-    #define taskENTER_CRITICAL_FROM_ISR()    portSET_INTERRUPT_MASK_FROM_ISR()
-#else
-    #define taskENTER_CRITICAL_FROM_ISR()    portENTER_CRITICAL_FROM_ISR()
-#endif
+#నిర్వచించు taskENTER_CRITICAL()                 పోర్టు_ENTER_CRITICAL()
+#ఒకవేళ ( config_సంఖ్య_యొక్క_CORES == 1 )
+    #నిర్వచించు taskENTER_CRITICAL_FROM_ISR()    పోర్టు_సమితి_అంతరాయం_ముసుగు_FROM_ISR()
+#లేకపోతే
+    #నిర్వచించు taskENTER_CRITICAL_FROM_ISR()    పోర్టు_ENTER_CRITICAL_FROM_ISR()
+#అయితే_ముగింపు
 
 /**
  * task. h
@@ -247,12 +247,12 @@ typedef enum
  * \defgroup taskEXIT_CRITICAL taskEXIT_CRITICAL
  * \ingroup SchedulerControl
  */
-#define taskEXIT_CRITICAL()                    portEXIT_CRITICAL()
-#if ( configNUMBER_OF_CORES == 1 )
-    #define taskEXIT_CRITICAL_FROM_ISR( x )    portCLEAR_INTERRUPT_MASK_FROM_ISR( x )
-#else
-    #define taskEXIT_CRITICAL_FROM_ISR( x )    portEXIT_CRITICAL_FROM_ISR( x )
-#endif
+#నిర్వచించు taskEXIT_CRITICAL()                    పోర్టు_EXIT_CRITICAL()
+#ఒకవేళ ( config_సంఖ్య_యొక్క_CORES == 1 )
+    #నిర్వచించు taskEXIT_CRITICAL_FROM_ISR( x )    పోర్టు_CLEAR_అంతరాయం_ముసుగు_FROM_ISR( x )
+#లేకపోతే
+    #నిర్వచించు taskEXIT_CRITICAL_FROM_ISR( x )    పోర్టు_EXIT_CRITICAL_FROM_ISR( x )
+#అయితే_ముగింపు
 
 /**
  * task. h
@@ -262,7 +262,7 @@ typedef enum
  * \defgroup taskDISABLE_INTERRUPTS taskDISABLE_INTERRUPTS
  * \ingroup SchedulerControl
  */
-#define taskDISABLE_INTERRUPTS()    portDISABLE_INTERRUPTS()
+#నిర్వచించు taskDISABLE_INTERRUPTS()    పోర్టు_DISABLE_INTERRUPTS()
 
 /**
  * task. h
@@ -272,17 +272,17 @@ typedef enum
  * \defgroup taskENABLE_INTERRUPTS taskENABLE_INTERRUPTS
  * \ingroup SchedulerControl
  */
-#define taskENABLE_INTERRUPTS()     portENABLE_INTERRUPTS()
+#నిర్వచించు taskENABLE_INTERRUPTS()     పోర్టు_ENABLE_INTERRUPTS()
 
 /* Definitions returned by xTaskGetSchedulerState().  taskSCHEDULER_SUSPENDED is
  * 0 to generate more optimal code when configASSERT() is defined as the constant
  * is used in assert() statements. */
-#define taskSCHEDULER_SUSPENDED      ( ( BaseType_t ) 0 )
-#define taskSCHEDULER_NOT_STARTED    ( ( BaseType_t ) 1 )
-#define taskSCHEDULER_RUNNING        ( ( BaseType_t ) 2 )
+#నిర్వచించు taskSCHEDULER_SUSPENDED      ( ( పునాది_Type_t ) 0 )
+#నిర్వచించు taskSCHEDULER_NOT_STARTED    ( ( పునాది_Type_t ) 1 )
+#నిర్వచించు taskSCHEDULER_RUNNING        ( ( పునాది_Type_t ) 2 )
 
 /* Checks if core ID is valid. */
-#define taskVALID_CORE_ID( xCoreID )    ( ( ( ( ( BaseType_t ) 0 <= ( xCoreID ) ) && ( ( xCoreID ) < ( BaseType_t ) configNUMBER_OF_CORES ) ) ) ? ( pdTRUE ) : ( pdFALSE ) )
+#నిర్వచించు taskVALID_CORE_ID( xCoreID )    ( ( ( ( ( పునాది_Type_t ) 0 <= ( xCoreID ) ) && ( ( xCoreID ) < ( పునాది_Type_t ) config_సంఖ్య_యొక్క_CORES ) ) ) ? ( pdTRUE ) : ( pdFALSE ) )
 
 /*-----------------------------------------------------------
 * TASK CREATION API
@@ -382,24 +382,24 @@ typedef enum
  * \defgroup xTaskCreate xTaskCreate
  * \ingroup Tasks
  */
-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-    BaseType_t xTaskCreate( TaskFunction_t pxTaskCode,
-                            const char * const pcName,
-                            const configSTACK_DEPTH_TYPE uxStackDepth,
-                            void * const pvParameters,
-                            UBaseType_t uxPriority,
-                            TaskHandle_t * const pxCreatedTask ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( config_SUPPORT_DYNAMIC_కేటాయింపు == 1 )
+    పునాది_Type_t xTaskCreate( TaskFunction_t px_Task_సంకేతం,
+                            స్థిరరాశి అక్షరం * స్థిరరాశి pcName,
+                            స్థిరరాశి config_దొంతర_లోతు_TYPE ux_దొంతర_లోతు,
+                            శూన్య * స్థిరరాశి pvParameters,
+                            UBaseType_t ux_ప్రాధాన్యత,
+                            TaskHandle_t * స్థిరరాశి pxCreatedTask ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
-#if ( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
-    BaseType_t xTaskCreateAffinitySet( TaskFunction_t pxTaskCode,
-                                       const char * const pcName,
-                                       const configSTACK_DEPTH_TYPE uxStackDepth,
-                                       void * const pvParameters,
-                                       UBaseType_t uxPriority,
-                                       UBaseType_t uxCoreAffinityMask,
-                                       TaskHandle_t * const pxCreatedTask ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( ( config_SUPPORT_DYNAMIC_కేటాయింపు == 1 ) && ( config_సంఖ్య_యొక్క_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+    పునాది_Type_t x_Task_Create_Affinity_సమితి( TaskFunction_t px_Task_సంకేతం,
+                                       స్థిరరాశి అక్షరం * స్థిరరాశి pcName,
+                                       స్థిరరాశి config_దొంతర_లోతు_TYPE ux_దొంతర_లోతు,
+                                       శూన్య * స్థిరరాశి pvParameters,
+                                       UBaseType_t ux_ప్రాధాన్యత,
+                                       UBaseType_t ux_Core_Affinity_ముసుగు,
+                                       TaskHandle_t * స్థిరరాశి pxCreatedTask ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /**
  * task. h
@@ -509,26 +509,26 @@ typedef enum
  * \defgroup xTaskCreateStatic xTaskCreateStatic
  * \ingroup Tasks
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    TaskHandle_t xTaskCreateStatic( TaskFunction_t pxTaskCode,
-                                    const char * const pcName,
-                                    const configSTACK_DEPTH_TYPE uxStackDepth,
-                                    void * const pvParameters,
-                                    UBaseType_t uxPriority,
-                                    StackType_t * const puxStackBuffer,
-                                    StaticTask_t * const pxTaskBuffer ) PRIVILEGED_FUNCTION;
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#ఒకవేళ ( config_SUPPORT_STATIC_కేటాయింపు == 1 )
+    TaskHandle_t xTaskCreateStatic( TaskFunction_t px_Task_సంకేతం,
+                                    స్థిరరాశి అక్షరం * స్థిరరాశి pcName,
+                                    స్థిరరాశి config_దొంతర_లోతు_TYPE ux_దొంతర_లోతు,
+                                    శూన్య * స్థిరరాశి pvParameters,
+                                    UBaseType_t ux_ప్రాధాన్యత,
+                                    దొంతర_Type_t * స్థిరరాశి pux_దొంతర_బఫరు,
+                                    StaticTask_t * స్థిరరాశి px_Task_బఫరు ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు /* configSUPPORT_STATIC_ALLOCATION */
 
-#if ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
-    TaskHandle_t xTaskCreateStaticAffinitySet( TaskFunction_t pxTaskCode,
-                                               const char * const pcName,
-                                               const configSTACK_DEPTH_TYPE uxStackDepth,
-                                               void * const pvParameters,
-                                               UBaseType_t uxPriority,
-                                               StackType_t * const puxStackBuffer,
-                                               StaticTask_t * const pxTaskBuffer,
-                                               UBaseType_t uxCoreAffinityMask ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( ( config_SUPPORT_STATIC_కేటాయింపు == 1 ) && ( config_సంఖ్య_యొక్క_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+    TaskHandle_t x_Task_Create_Static_Affinity_సమితి( TaskFunction_t px_Task_సంకేతం,
+                                               స్థిరరాశి అక్షరం * స్థిరరాశి pcName,
+                                               స్థిరరాశి config_దొంతర_లోతు_TYPE ux_దొంతర_లోతు,
+                                               శూన్య * స్థిరరాశి pvParameters,
+                                               UBaseType_t ux_ప్రాధాన్యత,
+                                               దొంతర_Type_t * స్థిరరాశి pux_దొంతర_బఫరు,
+                                               StaticTask_t * స్థిరరాశి px_Task_బఫరు,
+                                               UBaseType_t ux_Core_Affinity_ముసుగు ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /**
  * task. h
@@ -603,16 +603,16 @@ typedef enum
  * \defgroup xTaskCreateRestricted xTaskCreateRestricted
  * \ingroup Tasks
  */
-#if ( portUSING_MPU_WRAPPERS == 1 )
-    BaseType_t xTaskCreateRestricted( const TaskParameters_t * const pxTaskDefinition,
+#ఒకవేళ ( పోర్టు_USING_MPU_WRAPPERS == 1 )
+    పునాది_Type_t xTaskCreateRestricted( స్థిరరాశి TaskParameters_t * స్థిరరాశి pxTaskDefinition,
                                       TaskHandle_t * pxCreatedTask ) PRIVILEGED_FUNCTION;
-#endif
+#అయితే_ముగింపు
 
-#if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
-    BaseType_t xTaskCreateRestrictedAffinitySet( const TaskParameters_t * const pxTaskDefinition,
-                                                 UBaseType_t uxCoreAffinityMask,
+#ఒకవేళ ( ( పోర్టు_USING_MPU_WRAPPERS == 1 ) && ( config_సంఖ్య_యొక్క_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+    పునాది_Type_t x_Task_Create_Restricted_Affinity_సమితి( స్థిరరాశి TaskParameters_t * స్థిరరాశి pxTaskDefinition,
+                                                 UBaseType_t ux_Core_Affinity_ముసుగు,
                                                  TaskHandle_t * pxCreatedTask ) PRIVILEGED_FUNCTION;
-#endif
+#అయితే_ముగింపు
 
 /**
  * task. h
@@ -699,16 +699,16 @@ typedef enum
  * \defgroup xTaskCreateRestrictedStatic xTaskCreateRestrictedStatic
  * \ingroup Tasks
  */
-#if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
-    BaseType_t xTaskCreateRestrictedStatic( const TaskParameters_t * const pxTaskDefinition,
+#ఒకవేళ ( ( పోర్టు_USING_MPU_WRAPPERS == 1 ) && ( config_SUPPORT_STATIC_కేటాయింపు == 1 ) )
+    పునాది_Type_t xTaskCreateRestrictedStatic( స్థిరరాశి TaskParameters_t * స్థిరరాశి pxTaskDefinition,
                                             TaskHandle_t * pxCreatedTask ) PRIVILEGED_FUNCTION;
-#endif
+#అయితే_ముగింపు
 
-#if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
-    BaseType_t xTaskCreateRestrictedStaticAffinitySet( const TaskParameters_t * const pxTaskDefinition,
-                                                       UBaseType_t uxCoreAffinityMask,
+#ఒకవేళ ( ( పోర్టు_USING_MPU_WRAPPERS == 1 ) && ( config_SUPPORT_STATIC_కేటాయింపు == 1 ) && ( config_సంఖ్య_యొక్క_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+    పునాది_Type_t x_Task_Create_Restricted_Static_Affinity_సమితి( స్థిరరాశి TaskParameters_t * స్థిరరాశి pxTaskDefinition,
+                                                       UBaseType_t ux_Core_Affinity_ముసుగు,
                                                        TaskHandle_t * pxCreatedTask ) PRIVILEGED_FUNCTION;
-#endif
+#అయితే_ముగింపు
 
 /**
  * task. h
@@ -757,10 +757,10 @@ typedef enum
  * \defgroup vTaskAllocateMPURegions vTaskAllocateMPURegions
  * \ingroup Tasks
  */
-#if ( portUSING_MPU_WRAPPERS == 1 )
-    void vTaskAllocateMPURegions( TaskHandle_t xTaskToModify,
-                                  const MemoryRegion_t * const pxRegions ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( పోర్టు_USING_MPU_WRAPPERS == 1 )
+    శూన్య vTaskAllocateMPURegions( TaskHandle_t x_Task_గమ్యం_Modify,
+                                  స్థిరరాశి జ్ఞాపకం_Region_t * స్థిరరాశి pxRegions ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /**
  * task. h
@@ -803,7 +803,7 @@ typedef enum
  * \defgroup vTaskDelete vTaskDelete
  * \ingroup Tasks
  */
-void vTaskDelete( TaskHandle_t xTaskToDelete ) PRIVILEGED_FUNCTION;
+శూన్య vTaskDelete( TaskHandle_t x_Task_గమ్యం_Delete ) PRIVILEGED_FUNCTION;
 
 /*-----------------------------------------------------------
 * TASK CONTROL API
@@ -857,7 +857,7 @@ void vTaskDelete( TaskHandle_t xTaskToDelete ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskDelay vTaskDelay
  * \ingroup TaskCtrl
  */
-void vTaskDelay( const TickType_t xTicksToDelay ) PRIVILEGED_FUNCTION;
+శూన్య vTaskDelay( స్థిరరాశి TickType_t x_Ticks_గమ్యం_Delay ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -924,17 +924,17 @@ void vTaskDelay( const TickType_t xTicksToDelay ) PRIVILEGED_FUNCTION;
  * \defgroup xTaskDelayUntil xTaskDelayUntil
  * \ingroup TaskCtrl
  */
-BaseType_t xTaskDelayUntil( TickType_t * const pxPreviousWakeTime,
-                            const TickType_t xTimeIncrement ) PRIVILEGED_FUNCTION;
+పునాది_Type_t xTaskDelayUntil( TickType_t * స్థిరరాశి px_మునుపటి_Wake_సమయం,
+                            స్థిరరాశి TickType_t x_సమయం_Increment ) PRIVILEGED_FUNCTION;
 
 /*
  * vTaskDelayUntil() is the older version of xTaskDelayUntil() and does not
  * return a value.
  */
-#define vTaskDelayUntil( pxPreviousWakeTime, xTimeIncrement )                   \
-    do {                                                                        \
-        ( void ) xTaskDelayUntil( ( pxPreviousWakeTime ), ( xTimeIncrement ) ); \
-    } while( 0 )
+#నిర్వచించు vTaskDelayUntil( px_మునుపటి_Wake_సమయం, x_సమయం_Increment )                   \
+    చేయి {                                                                        \
+        ( శూన్య ) xTaskDelayUntil( ( px_మునుపటి_Wake_సమయం ), ( x_సమయం_Increment ) ); \
+    } అయితే( 0 )
 
 
 /**
@@ -967,9 +967,9 @@ BaseType_t xTaskDelayUntil( TickType_t * const pxPreviousWakeTime,
  * \defgroup xTaskAbortDelay xTaskAbortDelay
  * \ingroup TaskCtrl
  */
-#if ( INCLUDE_xTaskAbortDelay == 1 )
-    BaseType_t xTaskAbortDelay( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( INCLUDE_xTaskAbortDelay == 1 )
+    పునాది_Type_t xTaskAbortDelay( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /**
  * task. h
@@ -1018,7 +1018,7 @@ BaseType_t xTaskDelayUntil( TickType_t * const pxPreviousWakeTime,
  * \defgroup uxTaskPriorityGet uxTaskPriorityGet
  * \ingroup TaskCtrl
  */
-UBaseType_t uxTaskPriorityGet( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_Task_ప్రాధాన్యత_Get( స్థిరరాశి TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1028,7 +1028,7 @@ UBaseType_t uxTaskPriorityGet( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
  *
  * A version of uxTaskPriorityGet() that can be used from an ISR.
  */
-UBaseType_t uxTaskPriorityGetFromISR( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_Task_ప్రాధాన్యత_Get_From_ISR( స్థిరరాశి TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1049,7 +1049,7 @@ UBaseType_t uxTaskPriorityGetFromISR( const TaskHandle_t xTask ) PRIVILEGED_FUNC
  * \defgroup uxTaskPriorityGet uxTaskBasePriorityGet
  * \ingroup TaskCtrl
  */
-UBaseType_t uxTaskBasePriorityGet( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_Task_పునాది_ప్రాధాన్యత_Get( స్థిరరాశి TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1059,7 +1059,7 @@ UBaseType_t uxTaskBasePriorityGet( const TaskHandle_t xTask ) PRIVILEGED_FUNCTIO
  *
  * A version of uxTaskBasePriorityGet() that can be used from an ISR.
  */
-UBaseType_t uxTaskBasePriorityGetFromISR( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_Task_పునాది_ప్రాధాన్యత_Get_From_ISR( స్థిరరాశి TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1079,9 +1079,9 @@ UBaseType_t uxTaskBasePriorityGetFromISR( const TaskHandle_t xTask ) PRIVILEGED_
  * state of the task might change between the function being called, and the
  * functions return value being tested by the calling task.
  */
-#if ( ( INCLUDE_eTaskGetState == 1 ) || ( configUSE_TRACE_FACILITY == 1 ) || ( INCLUDE_xTaskAbortDelay == 1 ) )
+#ఒకవేళ ( ( INCLUDE_eTaskGetState == 1 ) || ( configUSE_TRACE_FACILITY == 1 ) || ( INCLUDE_xTaskAbortDelay == 1 ) )
     eTaskState eTaskGetState( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-#endif
+#అయితే_ముగింపు
 
 /**
  * task. h
@@ -1139,12 +1139,12 @@ UBaseType_t uxTaskBasePriorityGetFromISR( const TaskHandle_t xTask ) PRIVILEGED_
  * \defgroup vTaskGetInfo vTaskGetInfo
  * \ingroup TaskCtrl
  */
-#if ( configUSE_TRACE_FACILITY == 1 )
-    void vTaskGetInfo( TaskHandle_t xTask,
-                       TaskStatus_t * pxTaskStatus,
-                       BaseType_t xGetFreeStackSpace,
+#ఒకవేళ ( configUSE_TRACE_FACILITY == 1 )
+    శూన్య vTaskGetInfo( TaskHandle_t xTask,
+                       Task_స్థితి_t * px_Task_స్థితి,
+                       పునాది_Type_t x_Get_Free_దొంతర_Space,
                        eTaskState eState ) PRIVILEGED_FUNCTION;
-#endif
+#అయితే_ముగింపు
 
 /**
  * task. h
@@ -1188,8 +1188,8 @@ UBaseType_t uxTaskBasePriorityGetFromISR( const TaskHandle_t xTask ) PRIVILEGED_
  * \defgroup vTaskPrioritySet vTaskPrioritySet
  * \ingroup TaskCtrl
  */
-void vTaskPrioritySet( TaskHandle_t xTask,
-                       UBaseType_t uxNewPriority ) PRIVILEGED_FUNCTION;
+శూన్య v_Task_ప్రాధాన్యత_సమితి( TaskHandle_t xTask,
+                       UBaseType_t ux_New_ప్రాధాన్యత ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1242,7 +1242,7 @@ void vTaskPrioritySet( TaskHandle_t xTask,
  * \defgroup vTaskSuspend vTaskSuspend
  * \ingroup TaskCtrl
  */
-void vTaskSuspend( TaskHandle_t xTaskToSuspend ) PRIVILEGED_FUNCTION;
+శూన్య vTaskSuspend( TaskHandle_t x_Task_గమ్యం_Suspend ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1293,7 +1293,7 @@ void vTaskSuspend( TaskHandle_t xTaskToSuspend ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskResume vTaskResume
  * \ingroup TaskCtrl
  */
-void vTaskResume( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
+శూన్య vTaskResume( TaskHandle_t x_Task_గమ్యం_Resume ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1324,9 +1324,9 @@ void vTaskResume( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskResumeFromISR vTaskResumeFromISR
  * \ingroup TaskCtrl
  */
-BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
+పునాది_Type_t xTaskResumeFromISR( TaskHandle_t x_Task_గమ్యం_Resume ) PRIVILEGED_FUNCTION;
 
-#if ( configUSE_CORE_AFFINITY == 1 )
+#ఒకవేళ ( configUSE_CORE_AFFINITY == 1 )
 
 /**
  * @brief Sets the core affinity mask for a task.
@@ -1361,11 +1361,11 @@ BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
  *      vTaskCoreAffinitySet( xHandle, uxCoreAffinityMask );
  * }
  */
-    void vTaskCoreAffinitySet( const TaskHandle_t xTask,
-                               UBaseType_t uxCoreAffinityMask );
-#endif
+    శూన్య v_Task_Core_Affinity_సమితి( స్థిరరాశి TaskHandle_t xTask,
+                               UBaseType_t ux_Core_Affinity_ముసుగు );
+#అయితే_ముగింపు
 
-#if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+#ఒకవేళ ( ( config_సంఖ్య_యొక్క_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
 
 /**
  * @brief Gets the core affinity mask for a task.
@@ -1414,9 +1414,9 @@ BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
  * }
  */
     UBaseType_t vTaskCoreAffinityGet( ConstTaskHandle_t xTask );
-#endif
+#అయితే_ముగింపు
 
-#if ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
+#ఒకవేళ ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
 
 /**
  * @brief Disables preemption for a task.
@@ -1447,10 +1447,10 @@ BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
  *     }
  * }
  */
-    void vTaskPreemptionDisable( const TaskHandle_t xTask );
-#endif
+    శూన్య vTaskPreemptionDisable( స్థిరరాశి TaskHandle_t xTask );
+#అయితే_ముగింపు
 
-#if ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
+#ఒకవేళ ( configUSE_TASK_PREEMPTION_DISABLE == 1 )
 
 /**
  * @brief Enables preemption for a task.
@@ -1481,8 +1481,8 @@ BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
  *     }
  * }
  */
-    void vTaskPreemptionEnable( const TaskHandle_t xTask );
-#endif
+    శూన్య vTaskPreemptionEnable( స్థిరరాశి TaskHandle_t xTask );
+#అయితే_ముగింపు
 
 /*-----------------------------------------------------------
 * SCHEDULER CONTROL
@@ -1517,7 +1517,7 @@ BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskStartScheduler vTaskStartScheduler
  * \ingroup SchedulerControl
  */
-void vTaskStartScheduler( void ) PRIVILEGED_FUNCTION;
+శూన్య v_Task_ప్రారంభం_Scheduler( శూన్య ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1575,7 +1575,7 @@ void vTaskStartScheduler( void ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskEndScheduler vTaskEndScheduler
  * \ingroup SchedulerControl
  */
-void vTaskEndScheduler( void ) PRIVILEGED_FUNCTION;
+శూన్య v_Task_చివర_Scheduler( శూన్య ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1628,7 +1628,7 @@ void vTaskEndScheduler( void ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskSuspendAll vTaskSuspendAll
  * \ingroup SchedulerControl
  */
-void vTaskSuspendAll( void ) PRIVILEGED_FUNCTION;
+శూన్య vTaskSuspendAll( శూన్య ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1684,7 +1684,7 @@ void vTaskSuspendAll( void ) PRIVILEGED_FUNCTION;
  * \defgroup xTaskResumeAll xTaskResumeAll
  * \ingroup SchedulerControl
  */
-BaseType_t xTaskResumeAll( void ) PRIVILEGED_FUNCTION;
+పునాది_Type_t xTaskResumeAll( శూన్య ) PRIVILEGED_FUNCTION;
 
 /*-----------------------------------------------------------
 * TASK UTILITIES
@@ -1701,7 +1701,7 @@ BaseType_t xTaskResumeAll( void ) PRIVILEGED_FUNCTION;
  * \defgroup xTaskGetTickCount xTaskGetTickCount
  * \ingroup TaskUtils
  */
-TickType_t xTaskGetTickCount( void ) PRIVILEGED_FUNCTION;
+TickType_t x_Task_Get_Tick_లెక్క( శూన్య ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1719,7 +1719,7 @@ TickType_t xTaskGetTickCount( void ) PRIVILEGED_FUNCTION;
  * \defgroup xTaskGetTickCountFromISR xTaskGetTickCountFromISR
  * \ingroup TaskUtils
  */
-TickType_t xTaskGetTickCountFromISR( void ) PRIVILEGED_FUNCTION;
+TickType_t x_Task_Get_Tick_లెక్క_From_ISR( శూన్య ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1735,7 +1735,7 @@ TickType_t xTaskGetTickCountFromISR( void ) PRIVILEGED_FUNCTION;
  * \defgroup uxTaskGetNumberOfTasks uxTaskGetNumberOfTasks
  * \ingroup TaskUtils
  */
-UBaseType_t uxTaskGetNumberOfTasks( void ) PRIVILEGED_FUNCTION;
+UBaseType_t ux_Task_Get_సంఖ్య_యొక్క_Tasks( శూన్య ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1750,7 +1750,7 @@ UBaseType_t uxTaskGetNumberOfTasks( void ) PRIVILEGED_FUNCTION;
  * \defgroup pcTaskGetName pcTaskGetName
  * \ingroup TaskUtils
  */
-char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
+అక్షరం * pcTaskGetName( TaskHandle_t x_Task_గమ్యం_Query ) PRIVILEGED_FUNCTION;
 
 /**
  * task. h
@@ -1768,9 +1768,9 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup pcTaskGetHandle pcTaskGetHandle
  * \ingroup TaskUtils
  */
-#if ( INCLUDE_xTaskGetHandle == 1 )
-    TaskHandle_t xTaskGetHandle( const char * pcNameToQuery ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( INCLUDE_xTaskGetHandle == 1 )
+    TaskHandle_t xTaskGetHandle( స్థిరరాశి అక్షరం * pc_Name_గమ్యం_Query ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /**
  * task. h
@@ -1796,11 +1796,11 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup xTaskGetStaticBuffers xTaskGetStaticBuffers
  * \ingroup TaskUtils
  */
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-    BaseType_t xTaskGetStaticBuffers( TaskHandle_t xTask,
-                                      StackType_t ** ppuxStackBuffer,
-                                      StaticTask_t ** ppxTaskBuffer ) PRIVILEGED_FUNCTION;
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+#ఒకవేళ ( config_SUPPORT_STATIC_కేటాయింపు == 1 )
+    పునాది_Type_t xTaskGetStaticBuffers( TaskHandle_t xTask,
+                                      దొంతర_Type_t ** ppux_దొంతర_బఫరు,
+                                      StaticTask_t ** ppx_Task_బఫరు ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  * task.h
@@ -1829,9 +1829,9 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * actual spaces on the stack rather than bytes) since the task referenced by
  * xTask was created.
  */
-#if ( INCLUDE_uxTaskGetStackHighWaterMark == 1 )
-    UBaseType_t uxTaskGetStackHighWaterMark( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( INCLUDE_ux_Task_Get_దొంతర_ఎగువ_Water_Mark == 1 )
+    UBaseType_t ux_Task_Get_దొంతర_ఎగువ_Water_Mark( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /**
  * task.h
@@ -1860,9 +1860,9 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * actual spaces on the stack rather than bytes) since the task referenced by
  * xTask was created.
  */
-#if ( INCLUDE_uxTaskGetStackHighWaterMark2 == 1 )
-    configSTACK_DEPTH_TYPE uxTaskGetStackHighWaterMark2( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( INCLUDE_ux_Task_Get_దొంతర_ఎగువ_Water_Mark2 == 1 )
+    config_దొంతర_లోతు_TYPE ux_Task_Get_దొంతర_ఎగువ_Water_Mark2( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /* When using trace macros it is sometimes necessary to include task.h before
  * FreeRTOS.h.  When this is done TaskHookFunction_t will not yet have been defined,
@@ -1870,8 +1870,8 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * fixed by simply guarding against the inclusion of these two prototypes unless
  * they are explicitly required by the configUSE_APPLICATION_TASK_TAG configuration
  * constant. */
-#ifdef configUSE_APPLICATION_TASK_TAG
-    #if configUSE_APPLICATION_TASK_TAG == 1
+#నిర్వచితమైతే config_USE_APPLICATION_TASK_ట్యాగ్
+    #ఒకవేళ config_USE_APPLICATION_TASK_ట్యాగ్ == 1
 
 /**
  * task.h
@@ -1883,7 +1883,7 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * Passing xTask as NULL has the effect of setting the calling tasks hook
  * function.
  */
-        void vTaskSetApplicationTaskTag( TaskHandle_t xTask,
+        శూన్య v_Task_సమితి_Application_Task_ట్యాగ్( TaskHandle_t xTask,
                                          TaskHookFunction_t pxHookFunction ) PRIVILEGED_FUNCTION;
 
 /**
@@ -1896,7 +1896,7 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * call from an interrupt service routine - call
  * xTaskGetApplicationTaskTagFromISR() instead.
  */
-        TaskHookFunction_t xTaskGetApplicationTaskTag( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+        TaskHookFunction_t x_Task_Get_Application_Task_ట్యాగ్( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
 
 /**
  * task.h
@@ -1907,26 +1907,26 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * Returns the pxHookFunction value assigned to the task xTask.  Can
  * be called from an interrupt service routine.
  */
-        TaskHookFunction_t xTaskGetApplicationTaskTagFromISR( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-    #endif /* configUSE_APPLICATION_TASK_TAG ==1 */
-#endif /* ifdef configUSE_APPLICATION_TASK_TAG */
+        TaskHookFunction_t x_Task_Get_Application_Task_ట్యాగ్_From_ISR( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+    #అయితే_ముగింపు /* configUSE_APPLICATION_TASK_TAG ==1 */
+#అయితే_ముగింపు /* ifdef configUSE_APPLICATION_TASK_TAG */
 
-#if ( configNUM_THREAD_LOCAL_STORAGE_POINTERS > 0 )
+#ఒకవేళ ( config_అంకె_THREAD_LOCAL_STORAGE_సూచికలు > 0 )
 
 /* Each task contains an array of pointers that is dimensioned by the
  * configNUM_THREAD_LOCAL_STORAGE_POINTERS setting in FreeRTOSConfig.h.  The
  * kernel does not use the pointers itself, so the application writer can use
  * the pointers for any purpose they wish.  The following two functions are
  * used to set and query a pointer respectively. */
-    void vTaskSetThreadLocalStoragePointer( TaskHandle_t xTaskToSet,
-                                            BaseType_t xIndex,
-                                            void * pvValue ) PRIVILEGED_FUNCTION;
-    void * pvTaskGetThreadLocalStoragePointer( TaskHandle_t xTaskToQuery,
-                                               BaseType_t xIndex ) PRIVILEGED_FUNCTION;
+    శూన్య v_Task_సమితి_Thread_Local_Storage_సూచిక( TaskHandle_t x_Task_గమ్యం_సమితి,
+                                            పునాది_Type_t x_సూచీ,
+                                            శూన్య * pv_విలువ ) PRIVILEGED_FUNCTION;
+    శూన్య * pv_Task_Get_Thread_Local_Storage_సూచిక( TaskHandle_t x_Task_గమ్యం_Query,
+                                               పునాది_Type_t x_సూచీ ) PRIVILEGED_FUNCTION;
 
-#endif
+#అయితే_ముగింపు
 
-#if ( configCHECK_FOR_STACK_OVERFLOW > 0 )
+#ఒకవేళ ( config_CHECK_FOR_దొంతర_అధికప్రవాహం > 0 )
 
 /**
  * task.h
@@ -1944,12 +1944,12 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
     /* MISRA Ref 8.6.1 [External linkage] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-86 */
     /* coverity[misra_c_2012_rule_8_6_violation] */
-    void vApplicationStackOverflowHook( TaskHandle_t xTask,
-                                        char * pcTaskName );
+    శూన్య v_Application_దొంతర_అధికప్రవాహం_Hook( TaskHandle_t xTask,
+                                        అక్షరం * pcTaskName );
 
-#endif
+#అయితే_ముగింపు
 
-#if ( configUSE_IDLE_HOOK == 1 )
+#ఒకవేళ ( configUSE_IDLE_HOOK == 1 )
 
 /**
  * task.h
@@ -1965,12 +1965,12 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
     /* MISRA Ref 8.6.1 [External linkage] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-86 */
     /* coverity[misra_c_2012_rule_8_6_violation] */
-    void vApplicationIdleHook( void );
+    శూన్య vApplicationIdleHook( శూన్య );
 
-#endif
+#అయితే_ముగింపు
 
 
-#if  ( configUSE_TICK_HOOK != 0 )
+#ఒకవేళ  ( configUSE_TICK_HOOK != 0 )
 
 /**
  *  task.h
@@ -1983,11 +1983,11 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
     /* MISRA Ref 8.6.1 [External linkage] */
     /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-86 */
     /* coverity[misra_c_2012_rule_8_6_violation] */
-    void vApplicationTickHook( void );
+    శూన్య vApplicationTickHook( శూన్య );
 
-#endif
+#అయితే_ముగింపు
 
-#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+#ఒకవేళ ( config_SUPPORT_STATIC_కేటాయింపు == 1 )
 
 /**
  * task.h
@@ -2002,9 +2002,9 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * @param ppxIdleTaskStackBuffer A handle to a statically allocated Stack buffer for the idle task
  * @param puxIdleTaskStackSize A pointer to the number of elements that will fit in the allocated stack buffer
  */
-    void vApplicationGetIdleTaskMemory( StaticTask_t ** ppxIdleTaskTCBBuffer,
-                                        StackType_t ** ppxIdleTaskStackBuffer,
-                                        configSTACK_DEPTH_TYPE * puxIdleTaskStackSize );
+    శూన్య v_Application_Get_Idle_Task_జ్ఞాపకం( StaticTask_t ** ppxIdleTaskTCBBuffer,
+                                        దొంతర_Type_t ** ppx_Idle_Task_దొంతర_బఫరు,
+                                        config_దొంతర_లోతు_TYPE * pux_Idle_Task_దొంతర_కొలత );
 
 /**
  * task.h
@@ -2030,13 +2030,13 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * @param puxIdleTaskStackSize A pointer to the number of elements that will fit in the allocated stack buffer
  * @param xPassiveIdleTaskIndex The passive idle task index of the idle task buffer
  */
-    #if ( configNUMBER_OF_CORES > 1 )
-        void vApplicationGetPassiveIdleTaskMemory( StaticTask_t ** ppxIdleTaskTCBBuffer,
-                                                   StackType_t ** ppxIdleTaskStackBuffer,
-                                                   configSTACK_DEPTH_TYPE * puxIdleTaskStackSize,
-                                                   BaseType_t xPassiveIdleTaskIndex );
-    #endif /* #if ( configNUMBER_OF_CORES > 1 ) */
-#endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+    #ఒకవేళ ( config_సంఖ్య_యొక్క_CORES > 1 )
+        శూన్య v_Application_Get_Passive_Idle_Task_జ్ఞాపకం( StaticTask_t ** ppxIdleTaskTCBBuffer,
+                                                   దొంతర_Type_t ** ppx_Idle_Task_దొంతర_బఫరు,
+                                                   config_దొంతర_లోతు_TYPE * pux_Idle_Task_దొంతర_కొలత,
+                                                   పునాది_Type_t x_Passive_Idle_Task_సూచీ );
+    #అయితే_ముగింపు /* #if ( configNUMBER_OF_CORES > 1 ) */
+#అయితే_ముగింపు /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 
 /**
  * task.h
@@ -2051,10 +2051,10 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * wants.  The return value is the value returned by the task hook function
  * registered by the user.
  */
-#if ( configUSE_APPLICATION_TASK_TAG == 1 )
-    BaseType_t xTaskCallApplicationTaskHook( TaskHandle_t xTask,
-                                             void * pvParameter ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( config_USE_APPLICATION_TASK_ట్యాగ్ == 1 )
+    పునాది_Type_t xTaskCallApplicationTaskHook( TaskHandle_t xTask,
+                                             శూన్య * pvParameter ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /**
  * xTaskGetIdleTaskHandle() is only available if
@@ -2073,13 +2073,13 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * idle task handle. Call xTaskGetIdleTaskHandleForCore() with xCoreID set to
  * 1,2 ... ( configNUMBER_OF_CORES - 1 ) to get the Passive idle task handles.
  */
-#if ( INCLUDE_xTaskGetIdleTaskHandle == 1 )
-    #if ( configNUMBER_OF_CORES == 1 )
-        TaskHandle_t xTaskGetIdleTaskHandle( void ) PRIVILEGED_FUNCTION;
-    #endif /* #if ( configNUMBER_OF_CORES == 1 ) */
+#ఒకవేళ ( INCLUDE_xTaskGetIdleTaskHandle == 1 )
+    #ఒకవేళ ( config_సంఖ్య_యొక్క_CORES == 1 )
+        TaskHandle_t xTaskGetIdleTaskHandle( శూన్య ) PRIVILEGED_FUNCTION;
+    #అయితే_ముగింపు /* #if ( configNUMBER_OF_CORES == 1 ) */
 
-    TaskHandle_t xTaskGetIdleTaskHandleForCore( BaseType_t xCoreID ) PRIVILEGED_FUNCTION;
-#endif /* #if ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) */
+    TaskHandle_t xTaskGetIdleTaskHandleForCore( పునాది_Type_t xCoreID ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు /* #if ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) */
 
 /**
  * configUSE_TRACE_FACILITY must be defined as 1 in FreeRTOSConfig.h for
@@ -2178,11 +2178,11 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  *  }
  *  @endcode
  */
-#if ( configUSE_TRACE_FACILITY == 1 )
-    UBaseType_t uxTaskGetSystemState( TaskStatus_t * const pxTaskStatusArray,
-                                      const UBaseType_t uxArraySize,
-                                      configRUN_TIME_COUNTER_TYPE * const pulTotalRunTime ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( configUSE_TRACE_FACILITY == 1 )
+    UBaseType_t uxTaskGetSystemState( Task_స్థితి_t * స్థిరరాశి px_Task_స్థితి_Array,
+                                      స్థిరరాశి UBaseType_t ux_Array_కొలత,
+                                      config_నిరంతరం_సమయం_COUNTER_TYPE * స్థిరరాశి pul_మొత్తం_నిరంతరం_సమయం ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /**
  * task. h
@@ -2235,10 +2235,10 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskListTasks vTaskListTasks
  * \ingroup TaskUtils
  */
-#if ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) )
-    void vTaskListTasks( char * pcWriteBuffer,
-                         size_t uxBufferLength ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) )
+    శూన్య vTaskListTasks( అక్షరం * pc_Write_బఫరు,
+                         size_t ux_బఫరు_నిడివి ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /**
  * task. h
@@ -2294,7 +2294,7 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskList vTaskList
  * \ingroup TaskUtils
  */
-#define vTaskList( pcWriteBuffer )    vTaskListTasks( ( pcWriteBuffer ), configSTATS_BUFFER_MAX_LENGTH )
+#నిర్వచించు vTaskList( pc_Write_బఫరు )    vTaskListTasks( ( pc_Write_బఫరు ), config_STATS_బఫరు_MAX_నిడివి )
 
 /**
  * task. h
@@ -2352,10 +2352,10 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskGetRunTimeStatistics vTaskGetRunTimeStatistics
  * \ingroup TaskUtils
  */
-#if ( ( configGENERATE_RUN_TIME_STATS == 1 ) && ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configUSE_TRACE_FACILITY == 1 ) )
-    void vTaskGetRunTimeStatistics( char * pcWriteBuffer,
-                                    size_t uxBufferLength ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( ( config_GENERATE_నిరంతరం_సమయం_STATS == 1 ) && ( configUSE_STATS_FORMATTING_FUNCTIONS > 0 ) && ( configUSE_TRACE_FACILITY == 1 ) )
+    శూన్య v_Task_Get_నిరంతరం_సమయం_Statistics( అక్షరం * pc_Write_బఫరు,
+                                    size_t ux_బఫరు_నిడివి ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /**
  * task. h
@@ -2417,7 +2417,7 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskGetRunTimeStats vTaskGetRunTimeStats
  * \ingroup TaskUtils
  */
-#define vTaskGetRunTimeStats( pcWriteBuffer )    vTaskGetRunTimeStatistics( ( pcWriteBuffer ), configSTATS_BUFFER_MAX_LENGTH )
+#నిర్వచించు v_Task_Get_నిరంతరం_సమయం_Stats( pc_Write_బఫరు )    v_Task_Get_నిరంతరం_సమయం_Statistics( ( pc_Write_బఫరు ), config_STATS_బఫరు_MAX_నిడివి )
 
 /**
  * task. h
@@ -2452,10 +2452,10 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup ulTaskGetRunTimeCounter ulTaskGetRunTimeCounter
  * \ingroup TaskUtils
  */
-#if ( configGENERATE_RUN_TIME_STATS == 1 )
-    configRUN_TIME_COUNTER_TYPE ulTaskGetRunTimeCounter( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-    configRUN_TIME_COUNTER_TYPE ulTaskGetRunTimePercent( const TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( config_GENERATE_నిరంతరం_సమయం_STATS == 1 )
+    config_నిరంతరం_సమయం_COUNTER_TYPE ul_Task_Get_నిరంతరం_సమయం_Counter( స్థిరరాశి TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+    config_నిరంతరం_సమయం_COUNTER_TYPE ul_Task_Get_నిరంతరం_సమయం_Percent( స్థిరరాశి TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /**
  * task. h
@@ -2494,10 +2494,10 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup ulTaskGetIdleRunTimeCounter ulTaskGetIdleRunTimeCounter
  * \ingroup TaskUtils
  */
-#if ( ( configGENERATE_RUN_TIME_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
-    configRUN_TIME_COUNTER_TYPE ulTaskGetIdleRunTimeCounter( void ) PRIVILEGED_FUNCTION;
-    configRUN_TIME_COUNTER_TYPE ulTaskGetIdleRunTimePercent( void ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( ( config_GENERATE_నిరంతరం_సమయం_STATS == 1 ) && ( INCLUDE_xTaskGetIdleTaskHandle == 1 ) )
+    config_నిరంతరం_సమయం_COUNTER_TYPE ul_Task_Get_Idle_నిరంతరం_సమయం_Counter( శూన్య ) PRIVILEGED_FUNCTION;
+    config_నిరంతరం_సమయం_COUNTER_TYPE ul_Task_Get_Idle_నిరంతరం_సమయం_Percent( శూన్య ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /**
  * task. h
@@ -2607,15 +2607,15 @@ char * pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION;
  * \defgroup xTaskNotifyIndexed xTaskNotifyIndexed
  * \ingroup TaskNotifications
  */
-BaseType_t xTaskGenericNotify( TaskHandle_t xTaskToNotify,
-                               UBaseType_t uxIndexToNotify,
-                               uint32_t ulValue,
+పునాది_Type_t xTaskGenericNotify( TaskHandle_t x_Task_గమ్యం_Notify,
+                               UBaseType_t ux_సూచీ_గమ్యం_Notify,
+                               uint32_t ul_విలువ,
                                eNotifyAction eAction,
-                               uint32_t * pulPreviousNotificationValue ) PRIVILEGED_FUNCTION;
-#define xTaskNotify( xTaskToNotify, ulValue, eAction ) \
-    xTaskGenericNotify( ( xTaskToNotify ), ( tskDEFAULT_INDEX_TO_NOTIFY ), ( ulValue ), ( eAction ), NULL )
-#define xTaskNotifyIndexed( xTaskToNotify, uxIndexToNotify, ulValue, eAction ) \
-    xTaskGenericNotify( ( xTaskToNotify ), ( uxIndexToNotify ), ( ulValue ), ( eAction ), NULL )
+                               uint32_t * pul_మునుపటి_Notification_విలువ ) PRIVILEGED_FUNCTION;
+#నిర్వచించు xTaskNotify( x_Task_గమ్యం_Notify, ul_విలువ, eAction ) \
+    xTaskGenericNotify( ( x_Task_గమ్యం_Notify ), ( tsk_DEFAULT_సూచీ_గమ్యం_NOTIFY ), ( ul_విలువ ), ( eAction ), ఖాళీ )
+#నిర్వచించు x_Task_Notify_సూచీకృత( x_Task_గమ్యం_Notify, ux_సూచీ_గమ్యం_Notify, ul_విలువ, eAction ) \
+    xTaskGenericNotify( ( x_Task_గమ్యం_Notify ), ( ux_సూచీ_గమ్యం_Notify ), ( ul_విలువ ), ( eAction ), ఖాళీ )
 
 /**
  * task. h
@@ -2641,10 +2641,10 @@ BaseType_t xTaskGenericNotify( TaskHandle_t xTaskToNotify,
  * \defgroup xTaskNotifyAndQueryIndexed xTaskNotifyAndQueryIndexed
  * \ingroup TaskNotifications
  */
-#define xTaskNotifyAndQuery( xTaskToNotify, ulValue, eAction, pulPreviousNotifyValue ) \
-    xTaskGenericNotify( ( xTaskToNotify ), ( tskDEFAULT_INDEX_TO_NOTIFY ), ( ulValue ), ( eAction ), ( pulPreviousNotifyValue ) )
-#define xTaskNotifyAndQueryIndexed( xTaskToNotify, uxIndexToNotify, ulValue, eAction, pulPreviousNotifyValue ) \
-    xTaskGenericNotify( ( xTaskToNotify ), ( uxIndexToNotify ), ( ulValue ), ( eAction ), ( pulPreviousNotifyValue ) )
+#నిర్వచించు xTaskNotifyAndQuery( x_Task_గమ్యం_Notify, ul_విలువ, eAction, pul_మునుపటి_Notify_విలువ ) \
+    xTaskGenericNotify( ( x_Task_గమ్యం_Notify ), ( tsk_DEFAULT_సూచీ_గమ్యం_NOTIFY ), ( ul_విలువ ), ( eAction ), ( pul_మునుపటి_Notify_విలువ ) )
+#నిర్వచించు x_Task_Notify_And_Query_సూచీకృత( x_Task_గమ్యం_Notify, ux_సూచీ_గమ్యం_Notify, ul_విలువ, eAction, pul_మునుపటి_Notify_విలువ ) \
+    xTaskGenericNotify( ( x_Task_గమ్యం_Notify ), ( ux_సూచీ_గమ్యం_Notify ), ( ul_విలువ ), ( eAction ), ( pul_మునుపటి_Notify_విలువ ) )
 
 /**
  * task. h
@@ -2759,16 +2759,16 @@ BaseType_t xTaskGenericNotify( TaskHandle_t xTaskToNotify,
  * \defgroup xTaskNotifyIndexedFromISR xTaskNotifyIndexedFromISR
  * \ingroup TaskNotifications
  */
-BaseType_t xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify,
-                                      UBaseType_t uxIndexToNotify,
-                                      uint32_t ulValue,
+పునాది_Type_t xTaskGenericNotifyFromISR( TaskHandle_t x_Task_గమ్యం_Notify,
+                                      UBaseType_t ux_సూచీ_గమ్యం_Notify,
+                                      uint32_t ul_విలువ,
                                       eNotifyAction eAction,
-                                      uint32_t * pulPreviousNotificationValue,
-                                      BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
-#define xTaskNotifyFromISR( xTaskToNotify, ulValue, eAction, pxHigherPriorityTaskWoken ) \
-    xTaskGenericNotifyFromISR( ( xTaskToNotify ), ( tskDEFAULT_INDEX_TO_NOTIFY ), ( ulValue ), ( eAction ), NULL, ( pxHigherPriorityTaskWoken ) )
-#define xTaskNotifyIndexedFromISR( xTaskToNotify, uxIndexToNotify, ulValue, eAction, pxHigherPriorityTaskWoken ) \
-    xTaskGenericNotifyFromISR( ( xTaskToNotify ), ( uxIndexToNotify ), ( ulValue ), ( eAction ), NULL, ( pxHigherPriorityTaskWoken ) )
+                                      uint32_t * pul_మునుపటి_Notification_విలువ,
+                                      పునాది_Type_t * px_Higher_ప్రాధాన్యత_Task_Woken ) PRIVILEGED_FUNCTION;
+#నిర్వచించు xTaskNotifyFromISR( x_Task_గమ్యం_Notify, ul_విలువ, eAction, px_Higher_ప్రాధాన్యత_Task_Woken ) \
+    xTaskGenericNotifyFromISR( ( x_Task_గమ్యం_Notify ), ( tsk_DEFAULT_సూచీ_గమ్యం_NOTIFY ), ( ul_విలువ ), ( eAction ), ఖాళీ, ( px_Higher_ప్రాధాన్యత_Task_Woken ) )
+#నిర్వచించు x_Task_Notify_సూచీకృత_From_ISR( x_Task_గమ్యం_Notify, ux_సూచీ_గమ్యం_Notify, ul_విలువ, eAction, px_Higher_ప్రాధాన్యత_Task_Woken ) \
+    xTaskGenericNotifyFromISR( ( x_Task_గమ్యం_Notify ), ( ux_సూచీ_గమ్యం_Notify ), ( ul_విలువ ), ( eAction ), ఖాళీ, ( px_Higher_ప్రాధాన్యత_Task_Woken ) )
 
 /**
  * task. h
@@ -2794,10 +2794,10 @@ BaseType_t xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify,
  * \defgroup xTaskNotifyAndQueryIndexedFromISR xTaskNotifyAndQueryIndexedFromISR
  * \ingroup TaskNotifications
  */
-#define xTaskNotifyAndQueryIndexedFromISR( xTaskToNotify, uxIndexToNotify, ulValue, eAction, pulPreviousNotificationValue, pxHigherPriorityTaskWoken ) \
-    xTaskGenericNotifyFromISR( ( xTaskToNotify ), ( uxIndexToNotify ), ( ulValue ), ( eAction ), ( pulPreviousNotificationValue ), ( pxHigherPriorityTaskWoken ) )
-#define xTaskNotifyAndQueryFromISR( xTaskToNotify, ulValue, eAction, pulPreviousNotificationValue, pxHigherPriorityTaskWoken ) \
-    xTaskGenericNotifyFromISR( ( xTaskToNotify ), ( tskDEFAULT_INDEX_TO_NOTIFY ), ( ulValue ), ( eAction ), ( pulPreviousNotificationValue ), ( pxHigherPriorityTaskWoken ) )
+#నిర్వచించు x_Task_Notify_And_Query_సూచీకృత_From_ISR( x_Task_గమ్యం_Notify, ux_సూచీ_గమ్యం_Notify, ul_విలువ, eAction, pul_మునుపటి_Notification_విలువ, px_Higher_ప్రాధాన్యత_Task_Woken ) \
+    xTaskGenericNotifyFromISR( ( x_Task_గమ్యం_Notify ), ( ux_సూచీ_గమ్యం_Notify ), ( ul_విలువ ), ( eAction ), ( pul_మునుపటి_Notification_విలువ ), ( px_Higher_ప్రాధాన్యత_Task_Woken ) )
+#నిర్వచించు xTaskNotifyAndQueryFromISR( x_Task_గమ్యం_Notify, ul_విలువ, eAction, pul_మునుపటి_Notification_విలువ, px_Higher_ప్రాధాన్యత_Task_Woken ) \
+    xTaskGenericNotifyFromISR( ( x_Task_గమ్యం_Notify ), ( tsk_DEFAULT_సూచీ_గమ్యం_NOTIFY ), ( ul_విలువ ), ( eAction ), ( pul_మునుపటి_Notification_విలువ ), ( px_Higher_ప్రాధాన్యత_Task_Woken ) )
 
 /**
  * task. h
@@ -2903,15 +2903,15 @@ BaseType_t xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify,
  * \defgroup xTaskNotifyWaitIndexed xTaskNotifyWaitIndexed
  * \ingroup TaskNotifications
  */
-BaseType_t xTaskGenericNotifyWait( UBaseType_t uxIndexToWaitOn,
-                                   uint32_t ulBitsToClearOnEntry,
-                                   uint32_t ulBitsToClearOnExit,
-                                   uint32_t * pulNotificationValue,
-                                   TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
-#define xTaskNotifyWait( ulBitsToClearOnEntry, ulBitsToClearOnExit, pulNotificationValue, xTicksToWait ) \
-    xTaskGenericNotifyWait( tskDEFAULT_INDEX_TO_NOTIFY, ( ulBitsToClearOnEntry ), ( ulBitsToClearOnExit ), ( pulNotificationValue ), ( xTicksToWait ) )
-#define xTaskNotifyWaitIndexed( uxIndexToWaitOn, ulBitsToClearOnEntry, ulBitsToClearOnExit, pulNotificationValue, xTicksToWait ) \
-    xTaskGenericNotifyWait( ( uxIndexToWaitOn ), ( ulBitsToClearOnEntry ), ( ulBitsToClearOnExit ), ( pulNotificationValue ), ( xTicksToWait ) )
+పునాది_Type_t xTaskGenericNotifyWait( UBaseType_t ux_సూచీ_గమ్యం_Wait_On,
+                                   uint32_t ul_బిట్లు_గమ్యం_Clear_On_నమోదు,
+                                   uint32_t ul_బిట్లు_గమ్యం_Clear_On_Exit,
+                                   uint32_t * pul_Notification_విలువ,
+                                   TickType_t x_Ticks_గమ్యం_Wait ) PRIVILEGED_FUNCTION;
+#నిర్వచించు xTaskNotifyWait( ul_బిట్లు_గమ్యం_Clear_On_నమోదు, ul_బిట్లు_గమ్యం_Clear_On_Exit, pul_Notification_విలువ, x_Ticks_గమ్యం_Wait ) \
+    xTaskGenericNotifyWait( tsk_DEFAULT_సూచీ_గమ్యం_NOTIFY, ( ul_బిట్లు_గమ్యం_Clear_On_నమోదు ), ( ul_బిట్లు_గమ్యం_Clear_On_Exit ), ( pul_Notification_విలువ ), ( x_Ticks_గమ్యం_Wait ) )
+#నిర్వచించు x_Task_Notify_Wait_సూచీకృత( ux_సూచీ_గమ్యం_Wait_On, ul_బిట్లు_గమ్యం_Clear_On_నమోదు, ul_బిట్లు_గమ్యం_Clear_On_Exit, pul_Notification_విలువ, x_Ticks_గమ్యం_Wait ) \
+    xTaskGenericNotifyWait( ( ux_సూచీ_గమ్యం_Wait_On ), ( ul_బిట్లు_గమ్యం_Clear_On_నమోదు ), ( ul_బిట్లు_గమ్యం_Clear_On_Exit ), ( pul_Notification_విలువ ), ( x_Ticks_గమ్యం_Wait ) )
 
 /**
  * task. h
@@ -2985,10 +2985,10 @@ BaseType_t xTaskGenericNotifyWait( UBaseType_t uxIndexToWaitOn,
  * \defgroup xTaskNotifyGiveIndexed xTaskNotifyGiveIndexed
  * \ingroup TaskNotifications
  */
-#define xTaskNotifyGive( xTaskToNotify ) \
-    xTaskGenericNotify( ( xTaskToNotify ), ( tskDEFAULT_INDEX_TO_NOTIFY ), ( 0 ), eIncrement, NULL )
-#define xTaskNotifyGiveIndexed( xTaskToNotify, uxIndexToNotify ) \
-    xTaskGenericNotify( ( xTaskToNotify ), ( uxIndexToNotify ), ( 0 ), eIncrement, NULL )
+#నిర్వచించు xTaskNotifyGive( x_Task_గమ్యం_Notify ) \
+    xTaskGenericNotify( ( x_Task_గమ్యం_Notify ), ( tsk_DEFAULT_సూచీ_గమ్యం_NOTIFY ), ( 0 ), eIncrement, ఖాళీ )
+#నిర్వచించు x_Task_Notify_Give_సూచీకృత( x_Task_గమ్యం_Notify, ux_సూచీ_గమ్యం_Notify ) \
+    xTaskGenericNotify( ( x_Task_గమ్యం_Notify ), ( ux_సూచీ_గమ్యం_Notify ), ( 0 ), eIncrement, ఖాళీ )
 
 /**
  * task. h
@@ -3069,13 +3069,13 @@ BaseType_t xTaskGenericNotifyWait( UBaseType_t uxIndexToWaitOn,
  * \defgroup vTaskNotifyGiveIndexedFromISR vTaskNotifyGiveIndexedFromISR
  * \ingroup TaskNotifications
  */
-void vTaskGenericNotifyGiveFromISR( TaskHandle_t xTaskToNotify,
-                                    UBaseType_t uxIndexToNotify,
-                                    BaseType_t * pxHigherPriorityTaskWoken ) PRIVILEGED_FUNCTION;
-#define vTaskNotifyGiveFromISR( xTaskToNotify, pxHigherPriorityTaskWoken ) \
-    vTaskGenericNotifyGiveFromISR( ( xTaskToNotify ), ( tskDEFAULT_INDEX_TO_NOTIFY ), ( pxHigherPriorityTaskWoken ) )
-#define vTaskNotifyGiveIndexedFromISR( xTaskToNotify, uxIndexToNotify, pxHigherPriorityTaskWoken ) \
-    vTaskGenericNotifyGiveFromISR( ( xTaskToNotify ), ( uxIndexToNotify ), ( pxHigherPriorityTaskWoken ) )
+శూన్య vTaskGenericNotifyGiveFromISR( TaskHandle_t x_Task_గమ్యం_Notify,
+                                    UBaseType_t ux_సూచీ_గమ్యం_Notify,
+                                    పునాది_Type_t * px_Higher_ప్రాధాన్యత_Task_Woken ) PRIVILEGED_FUNCTION;
+#నిర్వచించు vTaskNotifyGiveFromISR( x_Task_గమ్యం_Notify, px_Higher_ప్రాధాన్యత_Task_Woken ) \
+    vTaskGenericNotifyGiveFromISR( ( x_Task_గమ్యం_Notify ), ( tsk_DEFAULT_సూచీ_గమ్యం_NOTIFY ), ( px_Higher_ప్రాధాన్యత_Task_Woken ) )
+#నిర్వచించు v_Task_Notify_Give_సూచీకృత_From_ISR( x_Task_గమ్యం_Notify, ux_సూచీ_గమ్యం_Notify, px_Higher_ప్రాధాన్యత_Task_Woken ) \
+    vTaskGenericNotifyGiveFromISR( ( x_Task_గమ్యం_Notify ), ( ux_సూచీ_గమ్యం_Notify ), ( px_Higher_ప్రాధాన్యత_Task_Woken ) )
 
 /**
  * task. h
@@ -3175,13 +3175,13 @@ void vTaskGenericNotifyGiveFromISR( TaskHandle_t xTaskToNotify,
  * \defgroup ulTaskNotifyTakeIndexed ulTaskNotifyTakeIndexed
  * \ingroup TaskNotifications
  */
-uint32_t ulTaskGenericNotifyTake( UBaseType_t uxIndexToWaitOn,
-                                  BaseType_t xClearCountOnExit,
-                                  TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
-#define ulTaskNotifyTake( xClearCountOnExit, xTicksToWait ) \
-    ulTaskGenericNotifyTake( ( tskDEFAULT_INDEX_TO_NOTIFY ), ( xClearCountOnExit ), ( xTicksToWait ) )
-#define ulTaskNotifyTakeIndexed( uxIndexToWaitOn, xClearCountOnExit, xTicksToWait ) \
-    ulTaskGenericNotifyTake( ( uxIndexToWaitOn ), ( xClearCountOnExit ), ( xTicksToWait ) )
+uint32_t ulTaskGenericNotifyTake( UBaseType_t ux_సూచీ_గమ్యం_Wait_On,
+                                  పునాది_Type_t x_Clear_లెక్క_On_Exit,
+                                  TickType_t x_Ticks_గమ్యం_Wait ) PRIVILEGED_FUNCTION;
+#నిర్వచించు ulTaskNotifyTake( x_Clear_లెక్క_On_Exit, x_Ticks_గమ్యం_Wait ) \
+    ulTaskGenericNotifyTake( ( tsk_DEFAULT_సూచీ_గమ్యం_NOTIFY ), ( x_Clear_లెక్క_On_Exit ), ( x_Ticks_గమ్యం_Wait ) )
+#నిర్వచించు ul_Task_Notify_Take_సూచీకృత( ux_సూచీ_గమ్యం_Wait_On, x_Clear_లెక్క_On_Exit, x_Ticks_గమ్యం_Wait ) \
+    ulTaskGenericNotifyTake( ( ux_సూచీ_గమ్యం_Wait_On ), ( x_Clear_లెక్క_On_Exit ), ( x_Ticks_గమ్యం_Wait ) )
 
 /**
  * task. h
@@ -3240,12 +3240,12 @@ uint32_t ulTaskGenericNotifyTake( UBaseType_t uxIndexToWaitOn,
  * \defgroup xTaskNotifyStateClearIndexed xTaskNotifyStateClearIndexed
  * \ingroup TaskNotifications
  */
-BaseType_t xTaskGenericNotifyStateClear( TaskHandle_t xTask,
-                                         UBaseType_t uxIndexToClear ) PRIVILEGED_FUNCTION;
-#define xTaskNotifyStateClear( xTask ) \
-    xTaskGenericNotifyStateClear( ( xTask ), ( tskDEFAULT_INDEX_TO_NOTIFY ) )
-#define xTaskNotifyStateClearIndexed( xTask, uxIndexToClear ) \
-    xTaskGenericNotifyStateClear( ( xTask ), ( uxIndexToClear ) )
+పునాది_Type_t xTaskGenericNotifyStateClear( TaskHandle_t xTask,
+                                         UBaseType_t ux_సూచీ_గమ్యం_Clear ) PRIVILEGED_FUNCTION;
+#నిర్వచించు xTaskNotifyStateClear( xTask ) \
+    xTaskGenericNotifyStateClear( ( xTask ), ( tsk_DEFAULT_సూచీ_గమ్యం_NOTIFY ) )
+#నిర్వచించు x_Task_Notify_State_Clear_సూచీకృత( xTask, ux_సూచీ_గమ్యం_Clear ) \
+    xTaskGenericNotifyStateClear( ( xTask ), ( ux_సూచీ_గమ్యం_Clear ) )
 
 /**
  * task. h
@@ -3305,13 +3305,13 @@ BaseType_t xTaskGenericNotifyStateClear( TaskHandle_t xTask,
  * \defgroup ulTaskNotifyValueClear ulTaskNotifyValueClear
  * \ingroup TaskNotifications
  */
-uint32_t ulTaskGenericNotifyValueClear( TaskHandle_t xTask,
-                                        UBaseType_t uxIndexToClear,
-                                        uint32_t ulBitsToClear ) PRIVILEGED_FUNCTION;
-#define ulTaskNotifyValueClear( xTask, ulBitsToClear ) \
-    ulTaskGenericNotifyValueClear( ( xTask ), ( tskDEFAULT_INDEX_TO_NOTIFY ), ( ulBitsToClear ) )
-#define ulTaskNotifyValueClearIndexed( xTask, uxIndexToClear, ulBitsToClear ) \
-    ulTaskGenericNotifyValueClear( ( xTask ), ( uxIndexToClear ), ( ulBitsToClear ) )
+uint32_t ul_Task_Generic_Notify_విలువ_Clear( TaskHandle_t xTask,
+                                        UBaseType_t ux_సూచీ_గమ్యం_Clear,
+                                        uint32_t ul_బిట్లు_గమ్యం_Clear ) PRIVILEGED_FUNCTION;
+#నిర్వచించు ul_Task_Notify_విలువ_Clear( xTask, ul_బిట్లు_గమ్యం_Clear ) \
+    ul_Task_Generic_Notify_విలువ_Clear( ( xTask ), ( tsk_DEFAULT_సూచీ_గమ్యం_NOTIFY ), ( ul_బిట్లు_గమ్యం_Clear ) )
+#నిర్వచించు ul_Task_Notify_విలువ_Clear_సూచీకృత( xTask, ux_సూచీ_గమ్యం_Clear, ul_బిట్లు_గమ్యం_Clear ) \
+    ul_Task_Generic_Notify_విలువ_Clear( ( xTask ), ( ux_సూచీ_గమ్యం_Clear ), ( ul_బిట్లు_గమ్యం_Clear ) )
 
 /**
  * task.h
@@ -3327,7 +3327,7 @@ uint32_t ulTaskGenericNotifyValueClear( TaskHandle_t xTask,
  * \defgroup vTaskSetTimeOutState vTaskSetTimeOutState
  * \ingroup TaskCtrl
  */
-void vTaskSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNCTION;
+శూన్య v_Task_సమితి_సమయం_బహిర్గతం_State( సమయం_బహిర్గతం_t * స్థిరరాశి px_సమయం_బహిర్గతం ) PRIVILEGED_FUNCTION;
 
 /**
  * task.h
@@ -3412,8 +3412,8 @@ void vTaskSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNCTION;
  * \defgroup xTaskCheckForTimeOut xTaskCheckForTimeOut
  * \ingroup TaskCtrl
  */
-BaseType_t xTaskCheckForTimeOut( TimeOut_t * const pxTimeOut,
-                                 TickType_t * const pxTicksToWait ) PRIVILEGED_FUNCTION;
+పునాది_Type_t x_Task_Check_For_సమయం_బహిర్గతం( సమయం_బహిర్గతం_t * స్థిరరాశి px_సమయం_బహిర్గతం,
+                                 TickType_t * స్థిరరాశి px_Ticks_గమ్యం_Wait ) PRIVILEGED_FUNCTION;
 
 /**
  * task.h
@@ -3441,7 +3441,7 @@ BaseType_t xTaskCheckForTimeOut( TimeOut_t * const pxTimeOut,
  * \defgroup xTaskCatchUpTicks xTaskCatchUpTicks
  * \ingroup TaskCtrl
  */
-BaseType_t xTaskCatchUpTicks( TickType_t xTicksToCatchUp ) PRIVILEGED_FUNCTION;
+పునాది_Type_t x_Task_Catch_పైకి_Ticks( TickType_t x_Ticks_గమ్యం_Catch_పైకి ) PRIVILEGED_FUNCTION;
 
 /**
  * task.h
@@ -3455,18 +3455,18 @@ BaseType_t xTaskCatchUpTicks( TickType_t xTicksToCatchUp ) PRIVILEGED_FUNCTION;
  * \defgroup vTaskResetState vTaskResetState
  * \ingroup SchedulerControl
  */
-void vTaskResetState( void ) PRIVILEGED_FUNCTION;
+శూన్య vTaskResetState( శూన్య ) PRIVILEGED_FUNCTION;
 
 
 /*-----------------------------------------------------------
 * SCHEDULER INTERNALS AVAILABLE FOR PORTING PURPOSES
 *----------------------------------------------------------*/
 
-#if ( configNUMBER_OF_CORES == 1 )
-    #define taskYIELD_WITHIN_API()    portYIELD_WITHIN_API()
-#else /* #if ( configNUMBER_OF_CORES == 1 ) */
-    #define taskYIELD_WITHIN_API()    vTaskYieldWithinAPI()
-#endif /* #if ( configNUMBER_OF_CORES == 1 ) */
+#ఒకవేళ ( config_సంఖ్య_యొక్క_CORES == 1 )
+    #నిర్వచించు taskYIELD_WITHIN_API()    పోర్టు_YIELD_WITHIN_API()
+#లేకపోతే /* #if ( configNUMBER_OF_CORES == 1 ) */
+    #నిర్వచించు taskYIELD_WITHIN_API()    vTaskYieldWithinAPI()
+#అయితే_ముగింపు /* #if ( configNUMBER_OF_CORES == 1 ) */
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS ONLY
@@ -3483,7 +3483,7 @@ void vTaskResetState( void ) PRIVILEGED_FUNCTION;
  *   + Time slicing is in use and there is a task of equal priority to the
  *     currently running task.
  */
-BaseType_t xTaskIncrementTick( void ) PRIVILEGED_FUNCTION;
+పునాది_Type_t xTaskIncrementTick( శూన్య ) PRIVILEGED_FUNCTION;
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS AN
@@ -3516,11 +3516,11 @@ BaseType_t xTaskIncrementTick( void ) PRIVILEGED_FUNCTION;
  * portTICK_PERIOD_MS can be used to convert kernel ticks into a real time
  * period.
  */
-void vTaskPlaceOnEventList( List_t * const pxEventList,
-                            const TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
-void vTaskPlaceOnUnorderedEventList( List_t * pxEventList,
-                                     const TickType_t xItemValue,
-                                     const TickType_t xTicksToWait ) PRIVILEGED_FUNCTION;
+శూన్య v_Task_ఉంచు_On_Event_List( List_t * స్థిరరాశి pxEventList,
+                            స్థిరరాశి TickType_t x_Ticks_గమ్యం_Wait ) PRIVILEGED_FUNCTION;
+శూన్య v_Task_ఉంచు_On_Unordered_Event_List( List_t * pxEventList,
+                                     స్థిరరాశి TickType_t x_అంశం_విలువ,
+                                     స్థిరరాశి TickType_t x_Ticks_గమ్యం_Wait ) PRIVILEGED_FUNCTION;
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS AN
@@ -3533,9 +3533,9 @@ void vTaskPlaceOnUnorderedEventList( List_t * pxEventList,
  * indefinitely, whereas vTaskPlaceOnEventList() does.
  *
  */
-void vTaskPlaceOnEventListRestricted( List_t * const pxEventList,
-                                      TickType_t xTicksToWait,
-                                      const BaseType_t xWaitIndefinitely ) PRIVILEGED_FUNCTION;
+శూన్య v_Task_ఉంచు_On_Event_List_Restricted( List_t * స్థిరరాశి pxEventList,
+                                      TickType_t x_Ticks_గమ్యం_Wait,
+                                      స్థిరరాశి పునాది_Type_t xWaitIndefinitely ) PRIVILEGED_FUNCTION;
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS AN
@@ -3561,9 +3561,9 @@ void vTaskPlaceOnEventListRestricted( List_t * const pxEventList,
  * @return pdTRUE if the task being removed has a higher priority than the task
  * making the call, otherwise pdFALSE.
  */
-BaseType_t xTaskRemoveFromEventList( const List_t * const pxEventList ) PRIVILEGED_FUNCTION;
-void vTaskRemoveFromUnorderedEventList( ListItem_t * pxEventListItem,
-                                        const TickType_t xItemValue ) PRIVILEGED_FUNCTION;
+పునాది_Type_t xTaskRemoveFromEventList( స్థిరరాశి List_t * స్థిరరాశి pxEventList ) PRIVILEGED_FUNCTION;
+శూన్య vTaskRemoveFromUnorderedEventList( List_అంశం_t * px_Event_List_అంశం,
+                                        స్థిరరాశి TickType_t x_అంశం_విలువ ) PRIVILEGED_FUNCTION;
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS ONLY
@@ -3573,51 +3573,51 @@ void vTaskRemoveFromUnorderedEventList( ListItem_t * pxEventListItem,
  * Sets the pointer to the current TCB to the TCB of the highest priority task
  * that is ready to run.
  */
-#if ( configNUMBER_OF_CORES == 1 )
-    portDONT_DISCARD void vTaskSwitchContext( void ) PRIVILEGED_FUNCTION;
-#else
-    portDONT_DISCARD void vTaskSwitchContext( BaseType_t xCoreID ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( config_సంఖ్య_యొక్క_CORES == 1 )
+    పోర్టు_DONT_DISCARD శూన్య vTaskSwitchContext( శూన్య ) PRIVILEGED_FUNCTION;
+#లేకపోతే
+    పోర్టు_DONT_DISCARD శూన్య vTaskSwitchContext( పునాది_Type_t xCoreID ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /*
  * THESE FUNCTIONS MUST NOT BE USED FROM APPLICATION CODE.  THEY ARE USED BY
  * THE EVENT BITS MODULE.
  */
-TickType_t uxTaskResetEventItemValue( void ) PRIVILEGED_FUNCTION;
+TickType_t ux_Task_Reset_Event_అంశం_విలువ( శూన్య ) PRIVILEGED_FUNCTION;
 
 /*
  * Return the handle of the calling task.
  */
-TaskHandle_t xTaskGetCurrentTaskHandle( void ) PRIVILEGED_FUNCTION;
+TaskHandle_t xTaskGetCurrentTaskHandle( శూన్య ) PRIVILEGED_FUNCTION;
 
 /*
  * Return the handle of the task running on specified core.
  */
-TaskHandle_t xTaskGetCurrentTaskHandleForCore( BaseType_t xCoreID ) PRIVILEGED_FUNCTION;
+TaskHandle_t xTaskGetCurrentTaskHandleForCore( పునాది_Type_t xCoreID ) PRIVILEGED_FUNCTION;
 
 /*
  * Shortcut used by the queue implementation to prevent unnecessary call to
  * taskYIELD();
  */
-void vTaskMissedYield( void ) PRIVILEGED_FUNCTION;
+శూన్య vTaskMissedYield( శూన్య ) PRIVILEGED_FUNCTION;
 
 /*
  * Returns the scheduler state as taskSCHEDULER_RUNNING,
  * taskSCHEDULER_NOT_STARTED or taskSCHEDULER_SUSPENDED.
  */
-BaseType_t xTaskGetSchedulerState( void ) PRIVILEGED_FUNCTION;
+పునాది_Type_t xTaskGetSchedulerState( శూన్య ) PRIVILEGED_FUNCTION;
 
 /*
  * Raises the priority of the mutex holder to that of the calling task should
  * the mutex holder have a priority less than the calling task.
  */
-BaseType_t xTaskPriorityInherit( TaskHandle_t const pxMutexHolder ) PRIVILEGED_FUNCTION;
+పునాది_Type_t x_Task_ప్రాధాన్యత_Inherit( TaskHandle_t స్థిరరాశి pxMutexHolder ) PRIVILEGED_FUNCTION;
 
 /*
  * Set the priority of a task back to its proper priority in the case that it
  * inherited a higher priority while it was holding a semaphore.
  */
-BaseType_t xTaskPriorityDisinherit( TaskHandle_t const pxMutexHolder ) PRIVILEGED_FUNCTION;
+పునాది_Type_t x_Task_ప్రాధాన్యత_Disinherit( TaskHandle_t స్థిరరాశి pxMutexHolder ) PRIVILEGED_FUNCTION;
 
 /*
  * If a higher priority task attempting to obtain a mutex caused a lower
@@ -3627,24 +3627,24 @@ BaseType_t xTaskPriorityDisinherit( TaskHandle_t const pxMutexHolder ) PRIVILEGE
  * the highest priority task that is still waiting for the mutex (if there were
  * more than one task waiting for the mutex).
  */
-void vTaskPriorityDisinheritAfterTimeout( TaskHandle_t const pxMutexHolder,
-                                          UBaseType_t uxHighestPriorityWaitingTask ) PRIVILEGED_FUNCTION;
+శూన్య v_Task_ప్రాధాన్యత_Disinherit_After_Timeout( TaskHandle_t స్థిరరాశి pxMutexHolder,
+                                          UBaseType_t ux_Highest_ప్రాధాన్యత_నిరీక్షణ_Task ) PRIVILEGED_FUNCTION;
 
 /*
  * Get the uxTaskNumber assigned to the task referenced by the xTask parameter.
  */
-#if ( configUSE_TRACE_FACILITY == 1 )
-    UBaseType_t uxTaskGetTaskNumber( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( configUSE_TRACE_FACILITY == 1 )
+    UBaseType_t ux_Task_Get_Task_సంఖ్య( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /*
  * Set the uxTaskNumber of the task referenced by the xTask parameter to
  * uxHandle.
  */
-#if ( configUSE_TRACE_FACILITY == 1 )
-    void vTaskSetTaskNumber( TaskHandle_t xTask,
-                             const UBaseType_t uxHandle ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( configUSE_TRACE_FACILITY == 1 )
+    శూన్య v_Task_సమితి_Task_సంఖ్య( TaskHandle_t xTask,
+                             స్థిరరాశి UBaseType_t uxHandle ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /*
  * Only available when configUSE_TICKLESS_IDLE is set to 1.
@@ -3654,9 +3654,9 @@ void vTaskPriorityDisinheritAfterTimeout( TaskHandle_t const pxMutexHolder,
  * to date with the actual execution time by being skipped forward by a time
  * equal to the idle period.
  */
-#if ( configUSE_TICKLESS_IDLE != 0 )
-    void vTaskStepTick( TickType_t xTicksToJump ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( configUSE_TICKLESS_IDLE != 0 )
+    శూన్య v_Task_అడుగు_Tick( TickType_t x_Ticks_గమ్యం_Jump ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /*
  * Only available when configUSE_TICKLESS_IDLE is set to 1.
@@ -3672,29 +3672,29 @@ void vTaskPriorityDisinheritAfterTimeout( TaskHandle_t const pxMutexHolder,
  * critical section between the timer being stopped and the sleep mode being
  * entered to ensure it is ok to proceed into the sleep mode.
  */
-#if ( configUSE_TICKLESS_IDLE != 0 )
-    eSleepModeStatus eTaskConfirmSleepModeStatus( void ) PRIVILEGED_FUNCTION;
-#endif
+#ఒకవేళ ( configUSE_TICKLESS_IDLE != 0 )
+    e_Sleep_బహుళకం_స్థితి e_Task_Confirm_Sleep_బహుళకం_స్థితి( శూన్య ) PRIVILEGED_FUNCTION;
+#అయితే_ముగింపు
 
 /*
  * For internal use only.  Increment the mutex held count when a mutex is
  * taken and return the handle of the task that has taken the mutex.
  */
-TaskHandle_t pvTaskIncrementMutexHeldCount( void ) PRIVILEGED_FUNCTION;
+TaskHandle_t pv_Task_Increment_Mutex_Held_లెక్క( శూన్య ) PRIVILEGED_FUNCTION;
 
 /*
  * For internal use only.  Same as vTaskSetTimeOutState(), but without a critical
  * section.
  */
-void vTaskInternalSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNCTION;
+శూన్య v_Task_అంతర్గత_సమితి_సమయం_బహిర్గతం_State( సమయం_బహిర్గతం_t * స్థిరరాశి px_సమయం_బహిర్గతం ) PRIVILEGED_FUNCTION;
 
 /*
  * For internal use only. Same as portYIELD_WITHIN_API() in single core FreeRTOS.
  * For SMP this is not defined by the port.
  */
-#if ( configNUMBER_OF_CORES > 1 )
-    void vTaskYieldWithinAPI( void );
-#endif
+#ఒకవేళ ( config_సంఖ్య_యొక్క_CORES > 1 )
+    శూన్య vTaskYieldWithinAPI( శూన్య );
+#అయితే_ముగింపు
 
 /*
  * This function is only intended for use when implementing a port of the scheduler
@@ -3704,9 +3704,9 @@ void vTaskInternalSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNC
  * It should be used in the implementation of portENTER_CRITICAL if port is running a
  * multiple core FreeRTOS.
  */
-#if ( ( portCRITICAL_NESTING_IN_TCB == 1 ) || ( configNUMBER_OF_CORES > 1 ) )
-    void vTaskEnterCritical( void );
-#endif
+#ఒకవేళ ( ( పోర్టు_CRITICAL_NESTING_లోపల_TCB == 1 ) || ( config_సంఖ్య_యొక్క_CORES > 1 ) )
+    శూన్య vTaskEnterCritical( శూన్య );
+#అయితే_ముగింపు
 
 /*
  * This function is only intended for use when implementing a port of the scheduler
@@ -3716,9 +3716,9 @@ void vTaskInternalSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNC
  * It should be used in the implementation of portEXIT_CRITICAL if port is running a
  * multiple core FreeRTOS.
  */
-#if ( ( portCRITICAL_NESTING_IN_TCB == 1 ) || ( configNUMBER_OF_CORES > 1 ) )
-    void vTaskExitCritical( void );
-#endif
+#ఒకవేళ ( ( పోర్టు_CRITICAL_NESTING_లోపల_TCB == 1 ) || ( config_సంఖ్య_యొక్క_CORES > 1 ) )
+    శూన్య vTaskExitCritical( శూన్య );
+#అయితే_ముగింపు
 
 /*
  * This function is only intended for use when implementing a port of the scheduler
@@ -3726,9 +3726,9 @@ void vTaskInternalSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNC
  * should be used in the implementation of portENTER_CRITICAL_FROM_ISR if port is
  * running a multiple core FreeRTOS.
  */
-#if ( configNUMBER_OF_CORES > 1 )
-    UBaseType_t vTaskEnterCriticalFromISR( void );
-#endif
+#ఒకవేళ ( config_సంఖ్య_యొక్క_CORES > 1 )
+    UBaseType_t vTaskEnterCriticalFromISR( శూన్య );
+#అయితే_ముగింపు
 
 /*
  * This function is only intended for use when implementing a port of the scheduler
@@ -3736,43 +3736,43 @@ void vTaskInternalSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNC
  * should be used in the implementation of portEXIT_CRITICAL_FROM_ISR if port is
  * running a multiple core FreeRTOS.
  */
-#if ( configNUMBER_OF_CORES > 1 )
-    void vTaskExitCriticalFromISR( UBaseType_t uxSavedInterruptStatus );
-#endif
+#ఒకవేళ ( config_సంఖ్య_యొక్క_CORES > 1 )
+    శూన్య vTaskExitCriticalFromISR( UBaseType_t ux_Saved_అంతరాయం_స్థితి );
+#అయితే_ముగింపు
 
-#if ( portUSING_MPU_WRAPPERS == 1 )
+#ఒకవేళ ( పోర్టు_USING_MPU_WRAPPERS == 1 )
 
 /*
  * For internal use only.  Get MPU settings associated with a task.
  */
     xMPU_SETTINGS * xTaskGetMPUSettings( TaskHandle_t xTask ) PRIVILEGED_FUNCTION;
 
-#endif /* portUSING_MPU_WRAPPERS */
+#అయితే_ముగింపు /* portUSING_MPU_WRAPPERS */
 
 
-#if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) )
+#ఒకవేళ ( ( పోర్టు_USING_MPU_WRAPPERS == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) )
 
 /*
  * For internal use only.  Grant/Revoke a task's access to a kernel object.
  */
-    void vGrantAccessToKernelObject( TaskHandle_t xExternalTaskHandle,
+    శూన్య v_Grant_Access_గమ్యం_Kernel_Object( TaskHandle_t xExternalTaskHandle,
                                      int32_t lExternalKernelObjectHandle ) PRIVILEGED_FUNCTION;
-    void vRevokeAccessToKernelObject( TaskHandle_t xExternalTaskHandle,
+    శూన్య v_Revoke_Access_గమ్యం_Kernel_Object( TaskHandle_t xExternalTaskHandle,
                                       int32_t lExternalKernelObjectHandle ) PRIVILEGED_FUNCTION;
 
 /*
  * For internal use only.  Grant/Revoke a task's access to a kernel object.
  */
-    void vPortGrantAccessToKernelObject( TaskHandle_t xInternalTaskHandle,
-                                         int32_t lInternalIndexOfKernelObject ) PRIVILEGED_FUNCTION;
-    void vPortRevokeAccessToKernelObject( TaskHandle_t xInternalTaskHandle,
-                                          int32_t lInternalIndexOfKernelObject ) PRIVILEGED_FUNCTION;
+    శూన్య v_పోర్టు_Grant_Access_గమ్యం_Kernel_Object( TaskHandle_t x_అంతర్గత_Task_Handle,
+                                         int32_t l_అంతర్గత_సూచీ_యొక్క_Kernel_Object ) PRIVILEGED_FUNCTION;
+    శూన్య v_పోర్టు_Revoke_Access_గమ్యం_Kernel_Object( TaskHandle_t x_అంతర్గత_Task_Handle,
+                                          int32_t l_అంతర్గత_సూచీ_యొక్క_Kernel_Object ) PRIVILEGED_FUNCTION;
 
-#endif /* #if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) ) */
+#అయితే_ముగింపు /* #if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) ) */
 
 /* *INDENT-OFF* */
-#ifdef __cplusplus
+#నిర్వచితమైతే __cplusplus
     }
-#endif
+#అయితే_ముగింపు
 /* *INDENT-ON* */
-#endif /* INC_TASK_H */
+#అయితే_ముగింపు /* INC_TASK_H */

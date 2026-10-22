@@ -4,55 +4,55 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <stdio.h>
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/semphr.h"
-#include "freertos/queue.h"
-#include "freertos/event_groups.h"
-#include "driver/gptimer.h"
-#include "unity.h"
-#include "unity_test_utils.h"
+#అన్తర్భావ <stdio.h>
+#అన్తర్భావ "sdkconfig.h"
+#అన్తర్భావ "freertos/FreeRTOS.h"
+#అన్తర్భావ "freertos/task.h"
+#అన్తర్భావ "freertos/semphr.h"
+#అన్తర్భావ "freertos/queue.h"
+#అన్తర్భావ "freertos/event_groups.h"
+#అన్తర్భావ "driver/gptimer.h"
+#అన్తర్భావ "unity.h"
+#అన్తర్భావ "unity_test_utils.h"
 
-#define NUM_TASKS               8
-#define ALL_TASK_BITS           ((1 << NUM_TASKS) - 1)
-#define BIT_CALL(task)          (1 << (task))
-#define BIT_RESPONSE(task)      (1 << ((task) + NUM_TASKS))
-#define ALL_CALL_BITS           (ALL_TASK_BITS)
-#define ALL_RESPONSE_BITS       (ALL_TASK_BITS << NUM_TASKS)
+#నిర్వచించు అంకె_TASKS               8
+#నిర్వచించు ALL_TASK_బిట్లు           ((1 << అంకె_TASKS) - 1)
+#నిర్వచించు బిట్టు_CALL(task)          (1 << (task))
+#నిర్వచించు బిట్టు_RESPONSE(task)      (1 << ((task) + అంకె_TASKS))
+#నిర్వచించు ALL_CALL_బిట్లు           (ALL_TASK_బిట్లు)
+#నిర్వచించు ALL_RESPONSE_బిట్లు       (ALL_TASK_బిట్లు << అంకె_TASKS)
 
-static const int COUNT = 1000;
-static EventGroupHandle_t eg;
-static SemaphoreHandle_t done_sem;
+స్థిర స్థిరరాశి పూర్ణాంకం లెక్క_2 = 1000;
+స్థిర Event_సమూహం_Handle_t eg;
+స్థిర SemaphoreHandle_t పూర్తి_sem;
 
-static void task_event_group_call_response(void *param)
+స్థిర శూన్య task_event_సమూహం_call_response(శూన్య *param)
 {
-    int task_num = (int)param;
+    పూర్ణాంకం task_అంకె = (పూర్ణాంకం)param;
 
-    printf("Started %d\n", task_num);
+    రాయి("Started %d\n", task_అంకె);
 
-    for (int i = 0; i < COUNT; i++) {
+    కొరకు (పూర్ణాంకం i = 0; i < లెక్క_2; i++) {
         /* Wait until the common "call" bit is set, starts off all tasks
            (clear on return) */
-        TEST_ASSERT(xEventGroupWaitBits(eg, BIT_CALL(task_num), true, false, portMAX_DELAY));
+        TEST_ASSERT(x_Event_సమూహం_Wait_బిట్లు(eg, బిట్టు_CALL(task_అంకె), true, false, పోర్టు_MAX_DELAY));
 
         /* Set our individual "response" bit */
-        xEventGroupSetBits(eg, BIT_RESPONSE(task_num));
+        x_Event_సమూహం_సమితి_బిట్లు(eg, బిట్టు_RESPONSE(task_అంకె));
     }
 
-    printf("Task %d done\n", task_num);
-    xSemaphoreGive(done_sem);
+    రాయి("Task %d done\n", task_అంకె);
+    xSemaphoreGive(పూర్తి_sem);
     // Wait to be deleted
-    vTaskSuspend(NULL);
+    vTaskSuspend(ఖాళీ);
 }
 
 TEST_CASE("FreeRTOS Event Groups", "[freertos]")
 {
-    eg = xEventGroupCreate();
-    done_sem = xSemaphoreCreateCounting(NUM_TASKS, 0);
+    eg = x_Event_సమూహం_Create();
+    పూర్తి_sem = xSemaphoreCreateCounting(అంకె_TASKS, 0);
 
-    TaskHandle_t task_handles[NUM_TASKS];
+    TaskHandle_t task_handles[అంకె_TASKS];
 
     /* Note: task_event_group_call_response all have higher priority than this task, so on this core
        they will always preempt this task.
@@ -60,82 +60,82 @@ TEST_CASE("FreeRTOS Event Groups", "[freertos]")
        This is important because we need to know all tasks have blocked on their own BIT_CALL(task_num) each time we
        signal it, or they get out of sync.
      */
-    for (int c = 0; c < NUM_TASKS; c++) {
-        xTaskCreatePinnedToCore(task_event_group_call_response, "tsk_call_resp", 4096, (void *)c, configMAX_PRIORITIES - 1, &task_handles[c], c % CONFIG_FREERTOS_NUMBER_OF_CORES);
+    కొరకు (పూర్ణాంకం c = 0; c < అంకె_TASKS; c++) {
+        x_Task_Create_Pinned_గమ్యం_Core(task_event_సమూహం_call_response, "tsk_call_resp", 4096, (శూన్య *)c, configMAX_PRIORITIES - 1, &task_handles[c], c % CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES);
     }
 
     /* Tasks all start instantly, but this task will resume running at the same time as the higher priority tasks on the
        other processor may still be setting up, so allow time for them to also block on BIT_CALL()... */
     vTaskDelay(10);
 
-    for (int i = 0; i < COUNT; i++) {
+    కొరకు (పూర్ణాంకం i = 0; i < లెక్క_2; i++) {
         /* signal all the "CALL" bits of each task */
-        xEventGroupSetBits(eg, ALL_CALL_BITS);
+        x_Event_సమూహం_సమితి_బిట్లు(eg, ALL_CALL_బిట్లు);
 
         /* Wait until all tasks have set their respective response bits */
-        TEST_ASSERT_EQUAL_HEX16(ALL_RESPONSE_BITS, xEventGroupWaitBits(eg, ALL_RESPONSE_BITS, true, true, portMAX_DELAY));
+        TEST_ASSERT_EQUAL_HEX16(ALL_RESPONSE_బిట్లు, x_Event_సమూహం_Wait_బిట్లు(eg, ALL_RESPONSE_బిట్లు, true, true, పోర్టు_MAX_DELAY));
     }
 
     /* Ensure all tasks have suspend themselves */
-    for (int c = 0; c < NUM_TASKS; c++) {
-        TEST_ASSERT(xSemaphoreTake(done_sem, 100 / portTICK_PERIOD_MS));
+    కొరకు (పూర్ణాంకం c = 0; c < అంకె_TASKS; c++) {
+        TEST_ASSERT(xSemaphoreTake(పూర్తి_sem, 100 / పోర్టు_TICK_PERIOD_MS));
     }
 
-    for (int c = 0; c < NUM_TASKS; c++) {
+    కొరకు (పూర్ణాంకం c = 0; c < అంకె_TASKS; c++) {
         unity_utils_task_delete(task_handles[c]);
     }
 
-    vSemaphoreDelete(done_sem);
-    vEventGroupDelete(eg);
+    vSemaphoreDelete(పూర్తి_sem);
+    v_Event_సమూహం_Delete(eg);
 }
 
-static void task_test_sync(void *param)
+స్థిర శూన్య task_test_sync(శూన్య *param)
 {
-    int task_num = (int)param;
+    పూర్ణాంకం task_అంకె = (పూర్ణాంకం)param;
 
-    printf("Started %d\n", task_num);
+    రాయి("Started %d\n", task_అంకె);
 
-    for (int i = 0; i < COUNT; i++) {
+    కొరకు (పూర్ణాంకం i = 0; i < లెక్క_2; i++) {
         /* set our bit, and wait on all tasks to set their bits */
-        xEventGroupSync(eg, BIT_CALL(task_num), ALL_CALL_BITS, portMAX_DELAY);
+        x_Event_సమూహం_Sync(eg, బిట్టు_CALL(task_అంకె), ALL_CALL_బిట్లు, పోర్టు_MAX_DELAY);
         /* clear our bit */
-        xEventGroupClearBits(eg, BIT_CALL(task_num));
+        x_Event_సమూహం_Clear_బిట్లు(eg, బిట్టు_CALL(task_అంకె));
     }
-    int after_done = xEventGroupSetBits(eg, BIT_RESPONSE(task_num));
+    పూర్ణాంకం after_పూర్తి = x_Event_సమూహం_సమితి_బిట్లు(eg, బిట్టు_RESPONSE(task_అంకె));
 
-    printf("Done %d = 0x%08x\n", task_num, after_done);
+    రాయి("Done %d = 0x%08x\n", task_అంకె, after_పూర్తి);
 
-    xSemaphoreGive(done_sem);
-    vTaskDelete(NULL);
+    xSemaphoreGive(పూర్తి_sem);
+    vTaskDelete(ఖాళీ);
 }
 
 TEST_CASE("FreeRTOS Event Group Sync", "[freertos]")
 {
-    eg = xEventGroupCreate();
-    done_sem = xSemaphoreCreateCounting(NUM_TASKS, 0);
+    eg = x_Event_సమూహం_Create();
+    పూర్తి_sem = xSemaphoreCreateCounting(అంకె_TASKS, 0);
 
-    for (int c = 0; c < NUM_TASKS; c++) {
-        xTaskCreatePinnedToCore(task_test_sync, "task_test_sync", 4096, (void *)c, configMAX_PRIORITIES - 1, NULL, c % CONFIG_FREERTOS_NUMBER_OF_CORES);
+    కొరకు (పూర్ణాంకం c = 0; c < అంకె_TASKS; c++) {
+        x_Task_Create_Pinned_గమ్యం_Core(task_test_sync, "task_test_sync", 4096, (శూన్య *)c, configMAX_PRIORITIES - 1, ఖాళీ, c % CONFIG_FREERTOS_సంఖ్య_యొక్క_CORES);
     }
 
-    for (int c = 0; c < NUM_TASKS; c++) {
-        printf("Waiting on %d (0x%08x)\n", c, BIT_RESPONSE(c));
-        TEST_ASSERT(xEventGroupWaitBits(eg, BIT_RESPONSE(c), false, false, portMAX_DELAY));
+    కొరకు (పూర్ణాంకం c = 0; c < అంకె_TASKS; c++) {
+        రాయి("Waiting on %d (0x%08x)\n", c, బిట్టు_RESPONSE(c));
+        TEST_ASSERT(x_Event_సమూహం_Wait_బిట్లు(eg, బిట్టు_RESPONSE(c), false, false, పోర్టు_MAX_DELAY));
     }
 
     /* Ensure all tasks cleaned up correctly */
-    for (int c = 0; c < NUM_TASKS; c++) {
-        TEST_ASSERT(xSemaphoreTake(done_sem, 100 / portTICK_PERIOD_MS));
+    కొరకు (పూర్ణాంకం c = 0; c < అంకె_TASKS; c++) {
+        TEST_ASSERT(xSemaphoreTake(పూర్తి_sem, 100 / పోర్టు_TICK_PERIOD_MS));
     }
 
-    vSemaphoreDelete(done_sem);
-    vEventGroupDelete(eg);
+    vSemaphoreDelete(పూర్తి_sem);
+    v_Event_సమూహం_Delete(eg);
 }
 
-static TaskHandle_t run_order[2];
-static uint32_t run_order_index = 0;
+స్థిర TaskHandle_t నిరంతరం_క్రమం[2];
+స్థిర uint32_t నిరంతరం_క్రమం_సూచీ = 0;
 
-void task_test_eg_prio(void *arg)
+శూన్య task_test_eg_prio(శూన్య *arg)
 {
     TaskHandle_t main_task_hdl = (TaskHandle_t)arg;
 
@@ -143,124 +143,124 @@ void task_test_eg_prio(void *arg)
     xTaskNotifyGive(main_task_hdl);
 
     /* Wait for the event group bits to be set */
-    TEST_ASSERT_EQUAL(1, xEventGroupWaitBits(eg, 1, pdTRUE, pdTRUE, portMAX_DELAY));
+    TEST_ASSERT_EQUAL(1, x_Event_సమూహం_Wait_బిట్లు(eg, 1, pdTRUE, pdTRUE, పోర్టు_MAX_DELAY));
 
     /* Record the task handle in the run order array */
-    run_order[run_order_index++] = xTaskGetCurrentTaskHandle();
+    నిరంతరం_క్రమం[నిరంతరం_క్రమం_సూచీ++] = xTaskGetCurrentTaskHandle();
 
     /* Suspend the task */
-    vTaskSuspend(NULL);
+    vTaskSuspend(ఖాళీ);
 }
 
 TEST_CASE("FreeRTOS Event Groups do not cause priority inversion when higher priority task is unblocked", "[freertos]")
 {
-    run_order[0] = NULL;
-    run_order[1] = NULL;
-    run_order_index = 0;
+    నిరంతరం_క్రమం[0] = ఖాళీ;
+    నిరంతరం_క్రమం[1] = ఖాళీ;
+    నిరంతరం_క్రమం_సూచీ = 0;
 
     /* Initialize the event group */
-    eg = xEventGroupCreate();
+    eg = x_Event_సమూహం_Create();
 
     /* Create a task with higher priority than the task that will set the event group bits */
     TaskHandle_t higher_prio_hdl;
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskCreatePinnedToCore(task_test_eg_prio, "task_test_eg_prio", 2048, (void *)xTaskGetCurrentTaskHandle(), CONFIG_UNITY_FREERTOS_PRIORITY + 1, &higher_prio_hdl, CONFIG_UNITY_FREERTOS_CPU));
+    TEST_ASSERT_EQUAL(pdTRUE, x_Task_Create_Pinned_గమ్యం_Core(task_test_eg_prio, "task_test_eg_prio", 2048, (శూన్య *)xTaskGetCurrentTaskHandle(), CONFIG_UNITY_FREERTOS_ప్రాధాన్యత + 1, &higher_prio_hdl, CONFIG_UNITY_FREERTOS_CPU));
 
     /* Wait for the task to be created */
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, పోర్టు_MAX_DELAY);
 
     /* Set the event group bits */
-    xEventGroupSetBits(eg, 1);
+    x_Event_సమూహం_సమితి_బిట్లు(eg, 1);
 
     /* Record the task handle in the run order array */
-    run_order[run_order_index++] = xTaskGetCurrentTaskHandle();
+    నిరంతరం_క్రమం[నిరంతరం_క్రమం_సూచీ++] = xTaskGetCurrentTaskHandle();
 
     /* Verify that the higher priority task was unblocked and immediately scheduled and the lower priority task was preempted */
-    TEST_ASSERT_EQUAL(higher_prio_hdl, run_order[0]);
-    TEST_ASSERT_EQUAL(xTaskGetCurrentTaskHandle(), run_order[1]);
+    TEST_ASSERT_EQUAL(higher_prio_hdl, నిరంతరం_క్రమం[0]);
+    TEST_ASSERT_EQUAL(xTaskGetCurrentTaskHandle(), నిరంతరం_క్రమం[1]);
 
     /* Clean up */
-    vEventGroupDelete(eg);
+    v_Event_సమూహం_Delete(eg);
     vTaskDelete(higher_prio_hdl);
 }
 
 /*-----------------Test case for event group trace facilities-----------------*/
-#ifdef  CONFIG_FREERTOS_USE_TRACE_FACILITY
-#if SOC_GPTIMER_SUPPORTED
+#నిర్వచితమైతే  CONFIG_FREERTOS_USE_TRACE_FACILITY
+#ఒకవేళ SOC_GPTIMER_SUPPORTED
 /*
  * Test event group Trace Facility functions such as
  * xEventGroupClearBitsFromISR(), xEventGroupSetBitsFromISR()
  */
 
 //Use a timer to trigger an ISr
-#define BITS            0xAA
-static gptimer_handle_t gptimer;
-static bool test_set_bits;
-static bool test_clear_bits;
+#నిర్వచించు బిట్లు            0xAA
+స్థిర gptimer_handle_t gptimer;
+స్థిర bool test_సమితి_బిట్లు;
+స్థిర bool test_clear_బిట్లు;
 
-static bool on_timer_alarm_cb(gptimer_handle_t timer, const gptimer_alarm_event_data_t *edata, void *user_ctx)
+స్థిర bool on_timer_alarm_cb(gptimer_handle_t timer, స్థిరరాశి gptimer_alarm_event_దత్తాంశం_t *edata, శూన్య *user_ctx)
 {
-    BaseType_t task_woken = pdFALSE;
+    పునాది_Type_t task_woken = pdFALSE;
 
     gptimer_stop(timer);
 
-    if (test_set_bits) {
-        xEventGroupSetBitsFromISR(eg, BITS, &task_woken);
-        test_set_bits = false;
-    } else if (test_clear_bits) {
-        xEventGroupClearBitsFromISR(eg, BITS);
-        xSemaphoreGiveFromISR(done_sem, &task_woken);
-        test_clear_bits = false;
+    ఒకవేళ (test_సమితి_బిట్లు) {
+        x_Event_సమూహం_సమితి_బిట్లు_From_ISR(eg, బిట్లు, &task_woken);
+        test_సమితి_బిట్లు = false;
+    } లేకపోతే ఒకవేళ (test_clear_బిట్లు) {
+        x_Event_సమూహం_Clear_బిట్లు_From_ISR(eg, బిట్లు);
+        xSemaphoreGiveFromISR(పూర్తి_sem, &task_woken);
+        test_clear_బిట్లు = false;
     }
     //Switch context if necessary
-    return task_woken == pdTRUE;
+    తిరిగి task_woken == pdTRUE;
 }
 
 TEST_CASE("FreeRTOS Event Group ISR", "[freertos]")
 {
-    done_sem = xSemaphoreCreateBinary();
-    eg = xEventGroupCreate();
-    test_set_bits = false;
-    test_clear_bits = false;
+    పూర్తి_sem = x_Semaphore_Create_ద్విమాన();
+    eg = x_Event_సమూహం_Create();
+    test_సమితి_బిట్లు = false;
+    test_clear_బిట్లు = false;
     //Setup timer for ISR
     gptimer_config_t config = {
         .clk_src = GPTIMER_CLK_SRC_DEFAULT,
-        .direction = GPTIMER_COUNT_UP,
+        .direction = GPTIMER_లెక్క_పైకి,
         .resolution_hz = 1000000,
     };
     TEST_ESP_OK(gptimer_new_timer(&config, &gptimer));
     gptimer_alarm_config_t alarm_config = {
-        .reload_count = 0,
-        .alarm_count = 200000,
+        .reload_లెక్క = 0,
+        .alarm_లెక్క = 200000,
     };
     gptimer_event_callbacks_t cbs = {
         .on_alarm = on_timer_alarm_cb,
     };
-    TEST_ESP_OK(gptimer_register_event_callbacks(gptimer, &cbs, NULL));
+    TEST_ESP_OK(gptimer_రిజిస్టరు_event_callbacks(gptimer, &cbs, ఖాళీ));
     TEST_ESP_OK(gptimer_enable(gptimer));
-    TEST_ESP_OK(gptimer_set_alarm_action(gptimer, &alarm_config));
+    TEST_ESP_OK(gptimer_సమితి_alarm_action(gptimer, &alarm_config));
 
     //Test set bits
-    printf("test set bits\r\n");
-    test_set_bits = true;
-    TEST_ESP_OK(gptimer_start(gptimer));
-    TEST_ASSERT_EQUAL(BITS, xEventGroupWaitBits(eg, BITS, pdFALSE, pdTRUE, portMAX_DELAY));     //Let ISR set event group bits
+    రాయి("test set bits\r\n");
+    test_సమితి_బిట్లు = true;
+    TEST_ESP_OK(gptimer_ప్రారంభం(gptimer));
+    TEST_ASSERT_EQUAL(బిట్లు, x_Event_సమూహం_Wait_బిట్లు(eg, బిట్లు, pdFALSE, pdTRUE, పోర్టు_MAX_DELAY));     //Let ISR set event group bits
 
     //Test clear bits
-    printf("test clear bits\r\n");
-    xEventGroupSetBits(eg, BITS);                   //Set bits to be cleared
-    test_clear_bits = true;
-    TEST_ESP_OK(gptimer_set_raw_count(gptimer, 0));
-    TEST_ESP_OK(gptimer_start(gptimer));
-    xSemaphoreTake(done_sem, portMAX_DELAY);        //Wait for ISR to clear bits
+    రాయి("test clear bits\r\n");
+    x_Event_సమూహం_సమితి_బిట్లు(eg, బిట్లు);                   //Set bits to be cleared
+    test_clear_బిట్లు = true;
+    TEST_ESP_OK(gptimer_సమితి_raw_లెక్క(gptimer, 0));
+    TEST_ESP_OK(gptimer_ప్రారంభం(gptimer));
+    xSemaphoreTake(పూర్తి_sem, పోర్టు_MAX_DELAY);        //Wait for ISR to clear bits
     vTaskDelay(10);                                 //Event group clear bits runs via daemon task, delay so daemon can run
-    TEST_ASSERT_EQUAL(0, xEventGroupGetBits(eg));   //Check bits are cleared
+    TEST_ASSERT_EQUAL(0, x_Event_సమూహం_Get_బిట్లు(eg));   //Check bits are cleared
 
     //Clean up
     TEST_ESP_OK(gptimer_disable(gptimer));
     TEST_ESP_OK(gptimer_del_timer(gptimer));
-    vEventGroupDelete(eg);
-    vSemaphoreDelete(done_sem);
+    v_Event_సమూహం_Delete(eg);
+    vSemaphoreDelete(పూర్తి_sem);
     vTaskDelay(10);     //Give time for idle task to clear up deleted tasks
 }
-#endif //SOC_GPTIMER_SUPPORTED
-#endif      //CONFIG_FREERTOS_USE_TRACE_FACILITY
+#అయితే_ముగింపు //SOC_GPTIMER_SUPPORTED
+#అయితే_ముగింపు      //CONFIG_FREERTOS_USE_TRACE_FACILITY

@@ -4,32 +4,32 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "unity.h"
-#include "test_utils.h"
+#అన్తర్భావ "sdkconfig.h"
+#అన్తర్భావ "freertos/FreeRTOS.h"
+#అన్తర్భావ "freertos/task.h"
+#అన్తర్భావ "unity.h"
+#అన్తర్భావ "test_utils.h"
 
-#if CONFIG_FREERTOS_USE_APPLICATION_TASK_TAG
+#ఒకవేళ CONFIG_FREERTOS_USE_APPLICATION_TASK_ట్యాగ్
 
-static BaseType_t tag_cb(void *arg)
+స్థిర పునాది_Type_t ట్యాగ్_cb(శూన్య *arg)
 {
-    BaseType_t *tag_cb_called = (BaseType_t *)arg;
-    *tag_cb_called = pdTRUE;
-    return pdTRUE;
+    పునాది_Type_t *ట్యాగ్_cb_called = (పునాది_Type_t *)arg;
+    *ట్యాగ్_cb_called = pdTRUE;
+    తిరిగి pdTRUE;
 }
 
 TEST_CASE("Test application task tag", "[freertos]")
 {
-    BaseType_t tag_cb_called = pdFALSE;
+    పునాది_Type_t ట్యాగ్_cb_called = pdFALSE;
 
     // Set the app task tag for current task
-    vTaskSetApplicationTaskTag(NULL, tag_cb);
+    v_Task_సమితి_Application_Task_ట్యాగ్(ఖాళీ, ట్యాగ్_cb);
     // Check app task tag is correct
-    TEST_ASSERT_EQUAL(tag_cb, xTaskGetApplicationTaskTag(NULL));
+    TEST_ASSERT_EQUAL(ట్యాగ్_cb, x_Task_Get_Application_Task_ట్యాగ్(ఖాళీ));
     // Test the app task tag by calling it
-    TEST_ASSERT_EQUAL(pdTRUE, xTaskCallApplicationTaskHook(NULL, (void *)&tag_cb_called));
-    TEST_ASSERT_EQUAL(pdTRUE, tag_cb_called);
+    TEST_ASSERT_EQUAL(pdTRUE, xTaskCallApplicationTaskHook(ఖాళీ, (శూన్య *)&ట్యాగ్_cb_called));
+    TEST_ASSERT_EQUAL(pdTRUE, ట్యాగ్_cb_called);
 }
 
-#endif // CONFIG_FREERTOS_USE_APPLICATION_TASK_TAG
+#అయితే_ముగింపు // CONFIG_FREERTOS_USE_APPLICATION_TASK_TAG

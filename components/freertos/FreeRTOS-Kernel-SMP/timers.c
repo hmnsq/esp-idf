@@ -31,112 +31,112 @@
  */
 
 /* Standard includes. */
-#include <stdlib.h>
+#అన్తర్భావ <stdlib.h>
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
  * task.h is included from an application file. */
-#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#నిర్వచించు MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
-#include "timers.h"
+#అన్తర్భావ "FreeRTOS.h"
+#అన్తర్భావ "task.h"
+#అన్తర్భావ "queue.h"
+#అన్తర్భావ "timers.h"
 
-#if ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 0 )
-    #error configUSE_TIMERS must be set to 1 to make the xTimerPendFunctionCall() function available.
-#endif
+#ఒకవేళ ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 0 )
+    #దోషం configUSE_TIMERS must be సమితి గమ్యం 1 గమ్యం make the xTimerPendFunctionCall() function అందుబాటు.
+#అయితే_ముగింపు
 
 /* The MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined
  * for the header files above, but not in this file, in order to generate the
  * correct privileged Vs unprivileged linkage and placement. */
-#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+#నిర్వచనం_రద్దు MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 
 /* This entire source file will be skipped if the application is not configured
  * to include software timer functionality.  This #if is closed at the very bottom
  * of this file.  If you want to include software timer functionality then ensure
  * configUSE_TIMERS is set to 1 in FreeRTOSConfig.h. */
-#if ( configUSE_TIMERS == 1 )
+#ఒకవేళ ( configUSE_TIMERS == 1 )
 
 /* Misc definitions. */
-    #define tmrNO_DELAY                    ( ( TickType_t ) 0U )
-    #define tmrMAX_TIME_BEFORE_OVERFLOW    ( ( TickType_t ) -1 )
+    #నిర్వచించు tmrNO_DELAY                    ( ( TickType_t ) 0U )
+    #నిర్వచించు tmr_MAX_సమయం_BEFORE_అధికప్రవాహం    ( ( TickType_t ) -1 )
 
 /* The name assigned to the timer service task. This can be overridden by
  * defining configTIMER_SERVICE_TASK_NAME in FreeRTOSConfig.h. */
-    #ifndef configTIMER_SERVICE_TASK_NAME
-        #define configTIMER_SERVICE_TASK_NAME    "Tmr Svc"
-    #endif
+    #నిర్వచితం_కాకపోతే configTIMER_SERVICE_TASK_NAME
+        #నిర్వచించు configTIMER_SERVICE_TASK_NAME    "Tmr Svc"
+    #అయితే_ముగింపు
 
-    #if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+    #ఒకవేళ ( ( config_సంఖ్య_యొక్క_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
 
 /* The core affinity assigned to the timer service task on SMP systems.
  * This can be overridden by defining configTIMER_SERVICE_TASK_CORE_AFFINITY in FreeRTOSConfig.h. */
-        #ifndef configTIMER_SERVICE_TASK_CORE_AFFINITY
-            #define configTIMER_SERVICE_TASK_CORE_AFFINITY    tskNO_AFFINITY
-        #endif
-    #endif /* #if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
+        #నిర్వచితం_కాకపోతే configTIMER_SERVICE_TASK_CORE_AFFINITY
+            #నిర్వచించు configTIMER_SERVICE_TASK_CORE_AFFINITY    tskNO_AFFINITY
+        #అయితే_ముగింపు
+    #అయితే_ముగింపు /* #if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
 
 /* Bit definitions used in the ucStatus member of a timer structure. */
-    #define tmrSTATUS_IS_ACTIVE                  ( 0x01U )
-    #define tmrSTATUS_IS_STATICALLY_ALLOCATED    ( 0x02U )
-    #define tmrSTATUS_IS_AUTORELOAD              ( 0x04U )
+    #నిర్వచించు tmr_స్థితి_IS_చురుకైన                  ( 0x01U )
+    #నిర్వచించు tmr_స్థితి_IS_STATICALLY_ALLOCATED    ( 0x02U )
+    #నిర్వచించు tmr_స్థితి_IS_AUTORELOAD              ( 0x04U )
 
 /* The definition of the timers themselves. */
-    typedef struct tmrTimerControl                                               /* The old naming convention is used to prevent breaking kernel aware debuggers. */
+    రకనిర్వచనం నిర్మాణం tmrTimerControl                                               /* The old naming convention is used to prevent breaking kernel aware debuggers. */
     {
-        const char * pcTimerName;                                                /**< Text name.  This is not used by the kernel, it is included simply to make debugging easier. */
-        ListItem_t xTimerListItem;                                               /**< Standard linked list item as used by all kernel features for event management. */
-        TickType_t xTimerPeriodInTicks;                                          /**< How quickly and often the timer expires. */
-        void * pvTimerID;                                                        /**< An ID to identify the timer.  This allows the timer to be identified when the same callback is used for multiple timers. */
-        portTIMER_CALLBACK_ATTRIBUTE TimerCallbackFunction_t pxCallbackFunction; /**< The function that will be called when the timer expires. */
-        #if ( configUSE_TRACE_FACILITY == 1 )
-            UBaseType_t uxTimerNumber;                                           /**< An ID assigned by trace tools such as FreeRTOS+Trace */
-        #endif
-        uint8_t ucStatus;                                                        /**< Holds bits to say if the timer was statically allocated or not, and if it is active or not. */
+        స్థిరరాశి అక్షరం * pcTimerName;                                                /**< Text name.  This is not used by the kernel, it is included simply to make debugging easier. */
+        List_అంశం_t x_Timer_List_అంశం;                                               /**< Standard linked list item as used by all kernel features for event management. */
+        TickType_t x_Timer_Period_లోపల_Ticks;                                          /**< How quickly and often the timer expires. */
+        శూన్య * pvTimerID;                                                        /**< An ID to identify the timer.  This allows the timer to be identified when the same callback is used for multiple timers. */
+        పోర్టు_TIMER_CALLBACK_ATTRIBUTE TimerCallbackFunction_t pxCallbackFunction; /**< The function that will be called when the timer expires. */
+        #ఒకవేళ ( configUSE_TRACE_FACILITY == 1 )
+            UBaseType_t ux_Timer_సంఖ్య;                                           /**< An ID assigned by trace tools such as FreeRTOS+Trace */
+        #అయితే_ముగింపు
+        uint8_t uc_స్థితి;                                                        /**< Holds bits to say if the timer was statically allocated or not, and if it is active or not. */
     } xTIMER;
 
 /* The old xTIMER name is maintained above then typedefed to the new Timer_t
  * name below to enable the use of older kernel aware debuggers. */
-    typedef xTIMER Timer_t;
+    రకనిర్వచనం xTIMER Timer_t;
 
 /* The definition of messages that can be sent and received on the timer queue.
  * Two types of message can be queued - messages that manipulate a software timer,
  * and messages that request the execution of a non-timer related callback.  The
  * two message types are defined in two separate structures, xTimerParametersType
  * and xCallbackParametersType respectively. */
-    typedef struct tmrTimerParameters
+    రకనిర్వచనం నిర్మాణం tmrTimerParameters
     {
-        TickType_t xMessageValue; /**< An optional value used by a subset of commands, for example, when changing the period of a timer. */
+        TickType_t x_సందేశం_విలువ; /**< An optional value used by a subset of commands, for example, when changing the period of a timer. */
         Timer_t * pxTimer;        /**< The timer to which the command will be applied. */
     } TimerParameter_t;
 
 
-    typedef struct tmrCallbackParameters
+    రకనిర్వచనం నిర్మాణం tmrCallbackParameters
     {
-        portTIMER_CALLBACK_ATTRIBUTE
+        పోర్టు_TIMER_CALLBACK_ATTRIBUTE
         PendedFunction_t pxCallbackFunction; /* << The callback function to execute. */
-        void * pvParameter1;                 /* << The value that will be used as the callback functions first parameter. */
+        శూన్య * pvParameter1;                 /* << The value that will be used as the callback functions first parameter. */
         uint32_t ulParameter2;               /* << The value that will be used as the callback functions second parameter. */
     } CallbackParameters_t;
 
 /* The structure that contains the two message types, along with an identifier
  * that is used to determine which message type is valid. */
-    typedef struct tmrTimerQueueMessage
+    రకనిర్వచనం నిర్మాణం tmr_Timer_వరుస_సందేశం
     {
-        BaseType_t xMessageID; /**< The command being sent to the timer service task. */
-        union
+        పునాది_Type_t x_సందేశం_ID; /**< The command being sent to the timer service task. */
+        సంఘం
         {
             TimerParameter_t xTimerParameters;
 
             /* Don't include xCallbackParameters if it is not going to be used as
              * it makes the structure (and therefore the timer queue) larger. */
-            #if ( INCLUDE_xTimerPendFunctionCall == 1 )
+            #ఒకవేళ ( INCLUDE_xTimerPendFunctionCall == 1 )
                 CallbackParameters_t xCallbackParameters;
-            #endif /* INCLUDE_xTimerPendFunctionCall */
+            #అయితే_ముగింపు /* INCLUDE_xTimerPendFunctionCall */
         } u;
-    } DaemonTaskMessage_t;
+    } Daemon_Task_సందేశం_t;
 
 /* The list in which active timers are stored.  Timers are referenced in expire
  * time order, with the nearest expiry time at the front of the list.  Only the
@@ -144,14 +144,14 @@
  * xActiveTimerList1 and xActiveTimerList2 could be at function scope but that
  * breaks some kernel aware debuggers, and debuggers that reply on removing the
  * static qualifier. */
-    PRIVILEGED_DATA static List_t xActiveTimerList1;
-    PRIVILEGED_DATA static List_t xActiveTimerList2;
-    PRIVILEGED_DATA static List_t * pxCurrentTimerList;
-    PRIVILEGED_DATA static List_t * pxOverflowTimerList;
+    PRIVILEGED_దత్తాంశం స్థిర List_t x_చురుకైన_Timer_List1;
+    PRIVILEGED_దత్తాంశం స్థిర List_t x_చురుకైన_Timer_List2;
+    PRIVILEGED_దత్తాంశం స్థిర List_t * pxCurrentTimerList;
+    PRIVILEGED_దత్తాంశం స్థిర List_t * px_అధికప్రవాహం_Timer_List;
 
 /* A queue that is used to send commands to the timer service task. */
-    PRIVILEGED_DATA static QueueHandle_t xTimerQueue = NULL;
-    PRIVILEGED_DATA static TaskHandle_t xTimerTaskHandle = NULL;
+    PRIVILEGED_దత్తాంశం స్థిర వరుస_Handle_t x_Timer_వరుస = ఖాళీ;
+    PRIVILEGED_దత్తాంశం స్థిర TaskHandle_t xTimerTaskHandle = ఖాళీ;
 
 /*-----------------------------------------------------------*/
 
@@ -159,57 +159,57 @@
  * Initialise the infrastructure used by the timer service task if it has not
  * been initialised already.
  */
-    static void prvCheckForValidListAndQueue( void ) PRIVILEGED_FUNCTION;
+    స్థిర శూన్య prv_Check_For_Valid_List_And_వరుస( శూన్య ) PRIVILEGED_FUNCTION;
 
 /*
  * The timer service task (daemon).  Timer functionality is controlled by this
  * task.  Other tasks communicate with the timer service task using the
  * xTimerQueue queue.
  */
-    static portTASK_FUNCTION_PROTO( prvTimerTask, pvParameters ) PRIVILEGED_FUNCTION;
+    స్థిర పోర్టు_TASK_FUNCTION_PROTO( prvTimerTask, pvParameters ) PRIVILEGED_FUNCTION;
 
 /*
  * Called by the timer service task to interpret and process a command it
  * received on the timer queue.
  */
-    static void prvProcessReceivedCommands( void ) PRIVILEGED_FUNCTION;
+    స్థిర శూన్య prvProcessReceivedCommands( శూన్య ) PRIVILEGED_FUNCTION;
 
 /*
  * Insert the timer into either xActiveTimerList1, or xActiveTimerList2,
  * depending on if the expire time causes a timer counter overflow.
  */
-    static BaseType_t prvInsertTimerInActiveList( Timer_t * const pxTimer,
-                                                  const TickType_t xNextExpiryTime,
-                                                  const TickType_t xTimeNow,
-                                                  const TickType_t xCommandTime ) PRIVILEGED_FUNCTION;
+    స్థిర పునాది_Type_t prv_చొప్పించు_Timer_లోపల_చురుకైన_List( Timer_t * స్థిరరాశి pxTimer,
+                                                  స్థిరరాశి TickType_t x_తదుపరి_Expiry_సమయం,
+                                                  స్థిరరాశి TickType_t x_సమయం_Now,
+                                                  స్థిరరాశి TickType_t x_Command_సమయం ) PRIVILEGED_FUNCTION;
 
 /*
  * Reload the specified auto-reload timer.  If the reloading is backlogged,
  * clear the backlog, calling the callback for each additional reload.  When
  * this function returns, the next expiry time is after xTimeNow.
  */
-    static void prvReloadTimer( Timer_t * const pxTimer,
-                                TickType_t xExpiredTime,
-                                const TickType_t xTimeNow ) PRIVILEGED_FUNCTION;
+    స్థిర శూన్య prvReloadTimer( Timer_t * స్థిరరాశి pxTimer,
+                                TickType_t x_Expired_సమయం,
+                                స్థిరరాశి TickType_t x_సమయం_Now ) PRIVILEGED_FUNCTION;
 
 /*
  * An active timer has reached its expire time.  Reload the timer if it is an
  * auto-reload timer, then call its callback.
  */
-    static void prvProcessExpiredTimer( const TickType_t xNextExpireTime,
-                                        const TickType_t xTimeNow ) PRIVILEGED_FUNCTION;
+    స్థిర శూన్య prvProcessExpiredTimer( స్థిరరాశి TickType_t x_తదుపరి_Expire_సమయం,
+                                        స్థిరరాశి TickType_t x_సమయం_Now ) PRIVILEGED_FUNCTION;
 
 /*
  * The tick count has overflowed.  Switch the timer lists after ensuring the
  * current timer list does not still reference some timers.
  */
-    static void prvSwitchTimerLists( void ) PRIVILEGED_FUNCTION;
+    స్థిర శూన్య prvSwitchTimerLists( శూన్య ) PRIVILEGED_FUNCTION;
 
 /*
  * Obtain the current tick count, setting *pxTimerListsWereSwitched to pdTRUE
  * if a tick count overflow occurred since prvSampleTimeNow() was last called.
  */
-    static TickType_t prvSampleTimeNow( BaseType_t * const pxTimerListsWereSwitched ) PRIVILEGED_FUNCTION;
+    స్థిర TickType_t prv_Sample_సమయం_Now( పునాది_Type_t * స్థిరరాశి pxTimerListsWereSwitched ) PRIVILEGED_FUNCTION;
 
 /*
  * If the timer list contains any active timers then return the expire time of
@@ -217,30 +217,30 @@
  * timer list does not contain any timers then return 0 and set *pxListWasEmpty
  * to pdTRUE.
  */
-    static TickType_t prvGetNextExpireTime( BaseType_t * const pxListWasEmpty ) PRIVILEGED_FUNCTION;
+    స్థిర TickType_t prv_Get_తదుపరి_Expire_సమయం( పునాది_Type_t * స్థిరరాశి px_List_Was_ఖాళీలు ) PRIVILEGED_FUNCTION;
 
 /*
  * If a timer has expired, process it.  Otherwise, block the timer service task
  * until either a timer does expire or a command is received.
  */
-    static void prvProcessTimerOrBlockTask( const TickType_t xNextExpireTime,
-                                            BaseType_t xListWasEmpty ) PRIVILEGED_FUNCTION;
+    స్థిర శూన్య prv_Process_Timer_Or_ఖండం_Task( స్థిరరాశి TickType_t x_తదుపరి_Expire_సమయం,
+                                            పునాది_Type_t x_List_Was_ఖాళీలు ) PRIVILEGED_FUNCTION;
 
 /*
  * Called after a Timer_t structure has been allocated either statically or
  * dynamically to fill in the structure's members.
  */
-    static void prvInitialiseNewTimer( const char * const pcTimerName,
-                                       const TickType_t xTimerPeriodInTicks,
-                                       const BaseType_t xAutoReload,
-                                       void * const pvTimerID,
+    స్థిర శూన్య prvInitialiseNewTimer( స్థిరరాశి అక్షరం * స్థిరరాశి pcTimerName,
+                                       స్థిరరాశి TickType_t x_Timer_Period_లోపల_Ticks,
+                                       స్థిరరాశి పునాది_Type_t xAutoReload,
+                                       శూన్య * స్థిరరాశి pvTimerID,
                                        TimerCallbackFunction_t pxCallbackFunction,
                                        Timer_t * pxNewTimer ) PRIVILEGED_FUNCTION;
 /*-----------------------------------------------------------*/
 
-    BaseType_t xTimerCreateTimerTask( void )
+    పునాది_Type_t xTimerCreateTimerTask( శూన్య )
     {
-        BaseType_t xReturn = pdFAIL;
+        పునాది_Type_t xReturn = pdFAIL;
 
         traceENTER_xTimerCreateTimerTask();
 
@@ -248,81 +248,81 @@
          * configUSE_TIMERS is set to 1.  Check that the infrastructure used by the
          * timer service task has been created/initialised.  If timers have already
          * been created then the initialisation will already have been performed. */
-        prvCheckForValidListAndQueue();
+        prv_Check_For_Valid_List_And_వరుస();
 
-        if( xTimerQueue != NULL )
+        ఒకవేళ( x_Timer_వరుస != ఖాళీ )
         {
-            #if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
+            #ఒకవేళ ( ( config_సంఖ్య_యొక్క_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) )
             {
-                #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+                #ఒకవేళ ( config_SUPPORT_STATIC_కేటాయింపు == 1 )
                 {
-                    StaticTask_t * pxTimerTaskTCBBuffer = NULL;
-                    StackType_t * pxTimerTaskStackBuffer = NULL;
-                    configSTACK_DEPTH_TYPE uxTimerTaskStackSize;
+                    StaticTask_t * pxTimerTaskTCBBuffer = ఖాళీ;
+                    దొంతర_Type_t * px_Timer_Task_దొంతర_బఫరు = ఖాళీ;
+                    config_దొంతర_లోతు_TYPE ux_Timer_Task_దొంతర_కొలత;
 
-                    vApplicationGetTimerTaskMemory( &pxTimerTaskTCBBuffer, &pxTimerTaskStackBuffer, &uxTimerTaskStackSize );
-                    xTimerTaskHandle = xTaskCreateStaticAffinitySet( prvTimerTask,
+                    v_Application_Get_Timer_Task_జ్ఞాపకం( &pxTimerTaskTCBBuffer, &px_Timer_Task_దొంతర_బఫరు, &ux_Timer_Task_దొంతర_కొలత );
+                    xTimerTaskHandle = x_Task_Create_Static_Affinity_సమితి( prvTimerTask,
                                                                      configTIMER_SERVICE_TASK_NAME,
-                                                                     uxTimerTaskStackSize,
-                                                                     NULL,
-                                                                     ( ( UBaseType_t ) configTIMER_TASK_PRIORITY ) | portPRIVILEGE_BIT,
-                                                                     pxTimerTaskStackBuffer,
+                                                                     ux_Timer_Task_దొంతర_కొలత,
+                                                                     ఖాళీ,
+                                                                     ( ( UBaseType_t ) config_TIMER_TASK_ప్రాధాన్యత ) | పోర్టు_PRIVILEGE_బిట్టు,
+                                                                     px_Timer_Task_దొంతర_బఫరు,
                                                                      pxTimerTaskTCBBuffer,
                                                                      configTIMER_SERVICE_TASK_CORE_AFFINITY );
 
-                    if( xTimerTaskHandle != NULL )
+                    ఒకవేళ( xTimerTaskHandle != ఖాళీ )
                     {
                         xReturn = pdPASS;
                     }
                 }
-                #else /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+                #లేకపోతే /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
                 {
-                    xReturn = xTaskCreateAffinitySet( prvTimerTask,
+                    xReturn = x_Task_Create_Affinity_సమితి( prvTimerTask,
                                                       configTIMER_SERVICE_TASK_NAME,
-                                                      configTIMER_TASK_STACK_DEPTH,
-                                                      NULL,
-                                                      ( ( UBaseType_t ) configTIMER_TASK_PRIORITY ) | portPRIVILEGE_BIT,
+                                                      config_TIMER_TASK_దొంతర_లోతు,
+                                                      ఖాళీ,
+                                                      ( ( UBaseType_t ) config_TIMER_TASK_ప్రాధాన్యత ) | పోర్టు_PRIVILEGE_బిట్టు,
                                                       configTIMER_SERVICE_TASK_CORE_AFFINITY,
                                                       &xTimerTaskHandle );
                 }
-                #endif /* configSUPPORT_STATIC_ALLOCATION */
+                #అయితే_ముగింపు /* configSUPPORT_STATIC_ALLOCATION */
             }
-            #else /* #if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
+            #లేకపోతే /* #if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
             {
-                #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+                #ఒకవేళ ( config_SUPPORT_STATIC_కేటాయింపు == 1 )
                 {
-                    StaticTask_t * pxTimerTaskTCBBuffer = NULL;
-                    StackType_t * pxTimerTaskStackBuffer = NULL;
-                    configSTACK_DEPTH_TYPE uxTimerTaskStackSize;
+                    StaticTask_t * pxTimerTaskTCBBuffer = ఖాళీ;
+                    దొంతర_Type_t * px_Timer_Task_దొంతర_బఫరు = ఖాళీ;
+                    config_దొంతర_లోతు_TYPE ux_Timer_Task_దొంతర_కొలత;
 
-                    vApplicationGetTimerTaskMemory( &pxTimerTaskTCBBuffer, &pxTimerTaskStackBuffer, &uxTimerTaskStackSize );
+                    v_Application_Get_Timer_Task_జ్ఞాపకం( &pxTimerTaskTCBBuffer, &px_Timer_Task_దొంతర_బఫరు, &ux_Timer_Task_దొంతర_కొలత );
                     xTimerTaskHandle = xTaskCreateStatic( prvTimerTask,
                                                           configTIMER_SERVICE_TASK_NAME,
-                                                          uxTimerTaskStackSize,
-                                                          NULL,
-                                                          ( ( UBaseType_t ) configTIMER_TASK_PRIORITY ) | portPRIVILEGE_BIT,
-                                                          pxTimerTaskStackBuffer,
+                                                          ux_Timer_Task_దొంతర_కొలత,
+                                                          ఖాళీ,
+                                                          ( ( UBaseType_t ) config_TIMER_TASK_ప్రాధాన్యత ) | పోర్టు_PRIVILEGE_బిట్టు,
+                                                          px_Timer_Task_దొంతర_బఫరు,
                                                           pxTimerTaskTCBBuffer );
 
-                    if( xTimerTaskHandle != NULL )
+                    ఒకవేళ( xTimerTaskHandle != ఖాళీ )
                     {
                         xReturn = pdPASS;
                     }
                 }
-                #else /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+                #లేకపోతే /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
                 {
                     xReturn = xTaskCreate( prvTimerTask,
                                            configTIMER_SERVICE_TASK_NAME,
-                                           configTIMER_TASK_STACK_DEPTH,
-                                           NULL,
-                                           ( ( UBaseType_t ) configTIMER_TASK_PRIORITY ) | portPRIVILEGE_BIT,
+                                           config_TIMER_TASK_దొంతర_లోతు,
+                                           ఖాళీ,
+                                           ( ( UBaseType_t ) config_TIMER_TASK_ప్రాధాన్యత ) | పోర్టు_PRIVILEGE_బిట్టు,
                                            &xTimerTaskHandle );
                 }
-                #endif /* configSUPPORT_STATIC_ALLOCATION */
+                #అయితే_ముగింపు /* configSUPPORT_STATIC_ALLOCATION */
             }
-            #endif /* #if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
+            #అయితే_ముగింపు /* #if ( ( configNUMBER_OF_CORES > 1 ) && ( configUSE_CORE_AFFINITY == 1 ) ) */
         }
-        else
+        లేకపోతే
         {
             mtCOVERAGE_TEST_MARKER();
         }
@@ -331,230 +331,230 @@
 
         traceRETURN_xTimerCreateTimerTask( xReturn );
 
-        return xReturn;
+        తిరిగి xReturn;
     }
 /*-----------------------------------------------------------*/
 
-    #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+    #ఒకవేళ ( config_SUPPORT_DYNAMIC_కేటాయింపు == 1 )
 
-        TimerHandle_t xTimerCreate( const char * const pcTimerName,
-                                    const TickType_t xTimerPeriodInTicks,
-                                    const BaseType_t xAutoReload,
-                                    void * const pvTimerID,
+        TimerHandle_t xTimerCreate( స్థిరరాశి అక్షరం * స్థిరరాశి pcTimerName,
+                                    స్థిరరాశి TickType_t x_Timer_Period_లోపల_Ticks,
+                                    స్థిరరాశి పునాది_Type_t xAutoReload,
+                                    శూన్య * స్థిరరాశి pvTimerID,
                                     TimerCallbackFunction_t pxCallbackFunction )
         {
             Timer_t * pxNewTimer;
 
-            traceENTER_xTimerCreate( pcTimerName, xTimerPeriodInTicks, xAutoReload, pvTimerID, pxCallbackFunction );
+            traceENTER_xTimerCreate( pcTimerName, x_Timer_Period_లోపల_Ticks, xAutoReload, pvTimerID, pxCallbackFunction );
 
             /* MISRA Ref 11.5.1 [Malloc memory assignment] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
             /* coverity[misra_c_2012_rule_11_5_violation] */
-            pxNewTimer = ( Timer_t * ) pvPortMalloc( sizeof( Timer_t ) );
+            pxNewTimer = ( Timer_t * ) pv_పోర్టు_Malloc( పరిమాణం( Timer_t ) );
 
-            if( pxNewTimer != NULL )
+            ఒకవేళ( pxNewTimer != ఖాళీ )
             {
                 /* Status is thus far zero as the timer is not created statically
                  * and has not been started.  The auto-reload bit may get set in
                  * prvInitialiseNewTimer. */
-                pxNewTimer->ucStatus = 0x00;
-                prvInitialiseNewTimer( pcTimerName, xTimerPeriodInTicks, xAutoReload, pvTimerID, pxCallbackFunction, pxNewTimer );
+                pxNewTimer->uc_స్థితి = 0x00;
+                prvInitialiseNewTimer( pcTimerName, x_Timer_Period_లోపల_Ticks, xAutoReload, pvTimerID, pxCallbackFunction, pxNewTimer );
             }
 
             traceRETURN_xTimerCreate( pxNewTimer );
 
-            return pxNewTimer;
+            తిరిగి pxNewTimer;
         }
 
-    #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
+    #అయితే_ముగింపు /* configSUPPORT_DYNAMIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-    #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+    #ఒకవేళ ( config_SUPPORT_STATIC_కేటాయింపు == 1 )
 
-        TimerHandle_t xTimerCreateStatic( const char * const pcTimerName,
-                                          const TickType_t xTimerPeriodInTicks,
-                                          const BaseType_t xAutoReload,
-                                          void * const pvTimerID,
+        TimerHandle_t xTimerCreateStatic( స్థిరరాశి అక్షరం * స్థిరరాశి pcTimerName,
+                                          స్థిరరాశి TickType_t x_Timer_Period_లోపల_Ticks,
+                                          స్థిరరాశి పునాది_Type_t xAutoReload,
+                                          శూన్య * స్థిరరాశి pvTimerID,
                                           TimerCallbackFunction_t pxCallbackFunction,
-                                          StaticTimer_t * pxTimerBuffer )
+                                          StaticTimer_t * px_Timer_బఫరు )
         {
             Timer_t * pxNewTimer;
 
-            traceENTER_xTimerCreateStatic( pcTimerName, xTimerPeriodInTicks, xAutoReload, pvTimerID, pxCallbackFunction, pxTimerBuffer );
+            traceENTER_xTimerCreateStatic( pcTimerName, x_Timer_Period_లోపల_Ticks, xAutoReload, pvTimerID, pxCallbackFunction, px_Timer_బఫరు );
 
-            #if ( configASSERT_DEFINED == 1 )
+            #ఒకవేళ ( configASSERT_DEFINED == 1 )
             {
                 /* Sanity check that the size of the structure used to declare a
                  * variable of type StaticTimer_t equals the size of the real timer
                  * structure. */
-                volatile size_t xSize = sizeof( StaticTimer_t );
-                configASSERT( xSize == sizeof( Timer_t ) );
-                ( void ) xSize; /* Prevent unused variable warning when configASSERT() is not defined. */
+                అస్థిర size_t x_కొలత = పరిమాణం( StaticTimer_t );
+                configASSERT( x_కొలత == పరిమాణం( Timer_t ) );
+                ( శూన్య ) x_కొలత; /* Prevent unused variable warning when configASSERT() is not defined. */
             }
-            #endif /* configASSERT_DEFINED */
+            #అయితే_ముగింపు /* configASSERT_DEFINED */
 
             /* A pointer to a StaticTimer_t structure MUST be provided, use it. */
-            configASSERT( pxTimerBuffer );
+            configASSERT( px_Timer_బఫరు );
             /* MISRA Ref 11.3.1 [Misaligned access] */
             /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-113 */
             /* coverity[misra_c_2012_rule_11_3_violation] */
-            pxNewTimer = ( Timer_t * ) pxTimerBuffer;
+            pxNewTimer = ( Timer_t * ) px_Timer_బఫరు;
 
-            if( pxNewTimer != NULL )
+            ఒకవేళ( pxNewTimer != ఖాళీ )
             {
                 /* Timers can be created statically or dynamically so note this
                  * timer was created statically in case it is later deleted.  The
                  * auto-reload bit may get set in prvInitialiseNewTimer(). */
-                pxNewTimer->ucStatus = ( uint8_t ) tmrSTATUS_IS_STATICALLY_ALLOCATED;
+                pxNewTimer->uc_స్థితి = ( uint8_t ) tmr_స్థితి_IS_STATICALLY_ALLOCATED;
 
-                prvInitialiseNewTimer( pcTimerName, xTimerPeriodInTicks, xAutoReload, pvTimerID, pxCallbackFunction, pxNewTimer );
+                prvInitialiseNewTimer( pcTimerName, x_Timer_Period_లోపల_Ticks, xAutoReload, pvTimerID, pxCallbackFunction, pxNewTimer );
             }
 
             traceRETURN_xTimerCreateStatic( pxNewTimer );
 
-            return pxNewTimer;
+            తిరిగి pxNewTimer;
         }
 
-    #endif /* configSUPPORT_STATIC_ALLOCATION */
+    #అయితే_ముగింపు /* configSUPPORT_STATIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-    static void prvInitialiseNewTimer( const char * const pcTimerName,
-                                       const TickType_t xTimerPeriodInTicks,
-                                       const BaseType_t xAutoReload,
-                                       void * const pvTimerID,
+    స్థిర శూన్య prvInitialiseNewTimer( స్థిరరాశి అక్షరం * స్థిరరాశి pcTimerName,
+                                       స్థిరరాశి TickType_t x_Timer_Period_లోపల_Ticks,
+                                       స్థిరరాశి పునాది_Type_t xAutoReload,
+                                       శూన్య * స్థిరరాశి pvTimerID,
                                        TimerCallbackFunction_t pxCallbackFunction,
                                        Timer_t * pxNewTimer )
     {
         /* 0 is not a valid value for xTimerPeriodInTicks. */
-        configASSERT( ( xTimerPeriodInTicks > 0 ) );
+        configASSERT( ( x_Timer_Period_లోపల_Ticks > 0 ) );
 
         /* Ensure the infrastructure used by the timer service task has been
          * created/initialised. */
-        prvCheckForValidListAndQueue();
+        prv_Check_For_Valid_List_And_వరుస();
 
         /* Initialise the timer structure members using the function
          * parameters. */
         pxNewTimer->pcTimerName = pcTimerName;
-        pxNewTimer->xTimerPeriodInTicks = xTimerPeriodInTicks;
+        pxNewTimer->x_Timer_Period_లోపల_Ticks = x_Timer_Period_లోపల_Ticks;
         pxNewTimer->pvTimerID = pvTimerID;
         pxNewTimer->pxCallbackFunction = pxCallbackFunction;
-        vListInitialiseItem( &( pxNewTimer->xTimerListItem ) );
+        v_List_Initialise_అంశం( &( pxNewTimer->x_Timer_List_అంశం ) );
 
-        if( xAutoReload != pdFALSE )
+        ఒకవేళ( xAutoReload != pdFALSE )
         {
-            pxNewTimer->ucStatus |= ( uint8_t ) tmrSTATUS_IS_AUTORELOAD;
+            pxNewTimer->uc_స్థితి |= ( uint8_t ) tmr_స్థితి_IS_AUTORELOAD;
         }
 
         traceTIMER_CREATE( pxNewTimer );
     }
 /*-----------------------------------------------------------*/
 
-    BaseType_t xTimerGenericCommandFromTask( TimerHandle_t xTimer,
-                                             const BaseType_t xCommandID,
-                                             const TickType_t xOptionalValue,
-                                             BaseType_t * const pxHigherPriorityTaskWoken,
-                                             const TickType_t xTicksToWait )
+    పునాది_Type_t xTimerGenericCommandFromTask( TimerHandle_t xTimer,
+                                             స్థిరరాశి పునాది_Type_t xCommandID,
+                                             స్థిరరాశి TickType_t x_Optional_విలువ,
+                                             పునాది_Type_t * స్థిరరాశి px_Higher_ప్రాధాన్యత_Task_Woken,
+                                             స్థిరరాశి TickType_t x_Ticks_గమ్యం_Wait )
     {
-        BaseType_t xReturn = pdFAIL;
-        DaemonTaskMessage_t xMessage;
+        పునాది_Type_t xReturn = pdFAIL;
+        Daemon_Task_సందేశం_t x_సందేశం;
 
-        ( void ) pxHigherPriorityTaskWoken;
+        ( శూన్య ) px_Higher_ప్రాధాన్యత_Task_Woken;
 
-        traceENTER_xTimerGenericCommandFromTask( xTimer, xCommandID, xOptionalValue, pxHigherPriorityTaskWoken, xTicksToWait );
+        traceENTER_xTimerGenericCommandFromTask( xTimer, xCommandID, x_Optional_విలువ, px_Higher_ప్రాధాన్యత_Task_Woken, x_Ticks_గమ్యం_Wait );
 
         configASSERT( xTimer );
 
         /* Send a message to the timer service task to perform a particular action
          * on a particular timer definition. */
-        if( xTimerQueue != NULL )
+        ఒకవేళ( x_Timer_వరుస != ఖాళీ )
         {
             /* Send a command to the timer service task to start the xTimer timer. */
-            xMessage.xMessageID = xCommandID;
-            xMessage.u.xTimerParameters.xMessageValue = xOptionalValue;
-            xMessage.u.xTimerParameters.pxTimer = xTimer;
+            x_సందేశం.x_సందేశం_ID = xCommandID;
+            x_సందేశం.u.xTimerParameters.x_సందేశం_విలువ = x_Optional_విలువ;
+            x_సందేశం.u.xTimerParameters.pxTimer = xTimer;
 
-            configASSERT( xCommandID < tmrFIRST_FROM_ISR_COMMAND );
+            configASSERT( xCommandID < tmr_మొదటి_FROM_ISR_COMMAND );
 
-            if( xCommandID < tmrFIRST_FROM_ISR_COMMAND )
+            ఒకవేళ( xCommandID < tmr_మొదటి_FROM_ISR_COMMAND )
             {
-                if( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
+                ఒకవేళ( xTaskGetSchedulerState() == taskSCHEDULER_RUNNING )
                 {
-                    xReturn = xQueueSendToBack( xTimerQueue, &xMessage, xTicksToWait );
+                    xReturn = x_వరుస_Send_గమ్యం_వెనుక( x_Timer_వరుస, &x_సందేశం, x_Ticks_గమ్యం_Wait );
                 }
-                else
+                లేకపోతే
                 {
-                    xReturn = xQueueSendToBack( xTimerQueue, &xMessage, tmrNO_DELAY );
+                    xReturn = x_వరుస_Send_గమ్యం_వెనుక( x_Timer_వరుస, &x_సందేశం, tmrNO_DELAY );
                 }
             }
 
-            traceTIMER_COMMAND_SEND( xTimer, xCommandID, xOptionalValue, xReturn );
+            traceTIMER_COMMAND_SEND( xTimer, xCommandID, x_Optional_విలువ, xReturn );
         }
-        else
+        లేకపోతే
         {
             mtCOVERAGE_TEST_MARKER();
         }
 
         traceRETURN_xTimerGenericCommandFromTask( xReturn );
 
-        return xReturn;
+        తిరిగి xReturn;
     }
 /*-----------------------------------------------------------*/
 
-    BaseType_t xTimerGenericCommandFromISR( TimerHandle_t xTimer,
-                                            const BaseType_t xCommandID,
-                                            const TickType_t xOptionalValue,
-                                            BaseType_t * const pxHigherPriorityTaskWoken,
-                                            const TickType_t xTicksToWait )
+    పునాది_Type_t xTimerGenericCommandFromISR( TimerHandle_t xTimer,
+                                            స్థిరరాశి పునాది_Type_t xCommandID,
+                                            స్థిరరాశి TickType_t x_Optional_విలువ,
+                                            పునాది_Type_t * స్థిరరాశి px_Higher_ప్రాధాన్యత_Task_Woken,
+                                            స్థిరరాశి TickType_t x_Ticks_గమ్యం_Wait )
     {
-        BaseType_t xReturn = pdFAIL;
-        DaemonTaskMessage_t xMessage;
+        పునాది_Type_t xReturn = pdFAIL;
+        Daemon_Task_సందేశం_t x_సందేశం;
 
-        ( void ) xTicksToWait;
+        ( శూన్య ) x_Ticks_గమ్యం_Wait;
 
-        traceENTER_xTimerGenericCommandFromISR( xTimer, xCommandID, xOptionalValue, pxHigherPriorityTaskWoken, xTicksToWait );
+        traceENTER_xTimerGenericCommandFromISR( xTimer, xCommandID, x_Optional_విలువ, px_Higher_ప్రాధాన్యత_Task_Woken, x_Ticks_గమ్యం_Wait );
 
         configASSERT( xTimer );
 
         /* Send a message to the timer service task to perform a particular action
          * on a particular timer definition. */
-        if( xTimerQueue != NULL )
+        ఒకవేళ( x_Timer_వరుస != ఖాళీ )
         {
             /* Send a command to the timer service task to start the xTimer timer. */
-            xMessage.xMessageID = xCommandID;
-            xMessage.u.xTimerParameters.xMessageValue = xOptionalValue;
-            xMessage.u.xTimerParameters.pxTimer = xTimer;
+            x_సందేశం.x_సందేశం_ID = xCommandID;
+            x_సందేశం.u.xTimerParameters.x_సందేశం_విలువ = x_Optional_విలువ;
+            x_సందేశం.u.xTimerParameters.pxTimer = xTimer;
 
-            configASSERT( xCommandID >= tmrFIRST_FROM_ISR_COMMAND );
+            configASSERT( xCommandID >= tmr_మొదటి_FROM_ISR_COMMAND );
 
-            if( xCommandID >= tmrFIRST_FROM_ISR_COMMAND )
+            ఒకవేళ( xCommandID >= tmr_మొదటి_FROM_ISR_COMMAND )
             {
-                xReturn = xQueueSendToBackFromISR( xTimerQueue, &xMessage, pxHigherPriorityTaskWoken );
+                xReturn = x_వరుస_Send_గమ్యం_వెనుక_From_ISR( x_Timer_వరుస, &x_సందేశం, px_Higher_ప్రాధాన్యత_Task_Woken );
             }
 
-            traceTIMER_COMMAND_SEND( xTimer, xCommandID, xOptionalValue, xReturn );
+            traceTIMER_COMMAND_SEND( xTimer, xCommandID, x_Optional_విలువ, xReturn );
         }
-        else
+        లేకపోతే
         {
             mtCOVERAGE_TEST_MARKER();
         }
 
         traceRETURN_xTimerGenericCommandFromISR( xReturn );
 
-        return xReturn;
+        తిరిగి xReturn;
     }
 /*-----------------------------------------------------------*/
 
-    TaskHandle_t xTimerGetTimerDaemonTaskHandle( void )
+    TaskHandle_t xTimerGetTimerDaemonTaskHandle( శూన్య )
     {
         traceENTER_xTimerGetTimerDaemonTaskHandle();
 
         /* If xTimerGetTimerDaemonTaskHandle() is called before the scheduler has been
          * started, then xTimerTaskHandle will be NULL. */
-        configASSERT( ( xTimerTaskHandle != NULL ) );
+        configASSERT( ( xTimerTaskHandle != ఖాళీ ) );
 
         traceRETURN_xTimerGetTimerDaemonTaskHandle( xTimerTaskHandle );
 
-        return xTimerTaskHandle;
+        తిరిగి xTimerTaskHandle;
     }
 /*-----------------------------------------------------------*/
 
@@ -566,53 +566,53 @@
 
         configASSERT( xTimer );
 
-        traceRETURN_xTimerGetPeriod( pxTimer->xTimerPeriodInTicks );
+        traceRETURN_xTimerGetPeriod( pxTimer->x_Timer_Period_లోపల_Ticks );
 
-        return pxTimer->xTimerPeriodInTicks;
+        తిరిగి pxTimer->x_Timer_Period_లోపల_Ticks;
     }
 /*-----------------------------------------------------------*/
 
-    void vTimerSetReloadMode( TimerHandle_t xTimer,
-                              const BaseType_t xAutoReload )
+    శూన్య v_Timer_సమితి_Reload_బహుళకం( TimerHandle_t xTimer,
+                              స్థిరరాశి పునాది_Type_t xAutoReload )
     {
         Timer_t * pxTimer = xTimer;
 
-        traceENTER_vTimerSetReloadMode( xTimer, xAutoReload );
+        trace_ENTER_v_Timer_సమితి_Reload_బహుళకం( xTimer, xAutoReload );
 
         configASSERT( xTimer );
         taskENTER_CRITICAL();
         {
-            if( xAutoReload != pdFALSE )
+            ఒకవేళ( xAutoReload != pdFALSE )
             {
-                pxTimer->ucStatus |= ( uint8_t ) tmrSTATUS_IS_AUTORELOAD;
+                pxTimer->uc_స్థితి |= ( uint8_t ) tmr_స్థితి_IS_AUTORELOAD;
             }
-            else
+            లేకపోతే
             {
-                pxTimer->ucStatus &= ( ( uint8_t ) ~tmrSTATUS_IS_AUTORELOAD );
+                pxTimer->uc_స్థితి &= ( ( uint8_t ) ~tmr_స్థితి_IS_AUTORELOAD );
             }
         }
         taskEXIT_CRITICAL();
 
-        traceRETURN_vTimerSetReloadMode();
+        trace_RETURN_v_Timer_సమితి_Reload_బహుళకం();
     }
 /*-----------------------------------------------------------*/
 
-    BaseType_t xTimerGetReloadMode( TimerHandle_t xTimer )
+    పునాది_Type_t x_Timer_Get_Reload_బహుళకం( TimerHandle_t xTimer )
     {
         Timer_t * pxTimer = xTimer;
-        BaseType_t xReturn;
+        పునాది_Type_t xReturn;
 
-        traceENTER_xTimerGetReloadMode( xTimer );
+        trace_ENTER_x_Timer_Get_Reload_బహుళకం( xTimer );
 
         configASSERT( xTimer );
         taskENTER_CRITICAL();
         {
-            if( ( pxTimer->ucStatus & tmrSTATUS_IS_AUTORELOAD ) == 0U )
+            ఒకవేళ( ( pxTimer->uc_స్థితి & tmr_స్థితి_IS_AUTORELOAD ) == 0U )
             {
                 /* Not an auto-reload timer. */
                 xReturn = pdFALSE;
             }
-            else
+            లేకపోతే
             {
                 /* Is an auto-reload timer. */
                 xReturn = pdTRUE;
@@ -620,73 +620,73 @@
         }
         taskEXIT_CRITICAL();
 
-        traceRETURN_xTimerGetReloadMode( xReturn );
+        trace_RETURN_x_Timer_Get_Reload_బహుళకం( xReturn );
 
-        return xReturn;
+        తిరిగి xReturn;
     }
 
-    UBaseType_t uxTimerGetReloadMode( TimerHandle_t xTimer )
+    UBaseType_t ux_Timer_Get_Reload_బహుళకం( TimerHandle_t xTimer )
     {
         UBaseType_t uxReturn;
 
-        traceENTER_uxTimerGetReloadMode( xTimer );
+        trace_ENTER_ux_Timer_Get_Reload_బహుళకం( xTimer );
 
-        uxReturn = ( UBaseType_t ) xTimerGetReloadMode( xTimer );
+        uxReturn = ( UBaseType_t ) x_Timer_Get_Reload_బహుళకం( xTimer );
 
-        traceRETURN_uxTimerGetReloadMode( uxReturn );
+        trace_RETURN_ux_Timer_Get_Reload_బహుళకం( uxReturn );
 
-        return uxReturn;
+        తిరిగి uxReturn;
     }
 /*-----------------------------------------------------------*/
 
-    TickType_t xTimerGetExpiryTime( TimerHandle_t xTimer )
+    TickType_t x_Timer_Get_Expiry_సమయం( TimerHandle_t xTimer )
     {
         Timer_t * pxTimer = xTimer;
         TickType_t xReturn;
 
-        traceENTER_xTimerGetExpiryTime( xTimer );
+        trace_ENTER_x_Timer_Get_Expiry_సమయం( xTimer );
 
         configASSERT( xTimer );
-        xReturn = listGET_LIST_ITEM_VALUE( &( pxTimer->xTimerListItem ) );
+        xReturn = list_GET_LIST_అంశం_విలువ( &( pxTimer->x_Timer_List_అంశం ) );
 
-        traceRETURN_xTimerGetExpiryTime( xReturn );
+        trace_RETURN_x_Timer_Get_Expiry_సమయం( xReturn );
 
-        return xReturn;
+        తిరిగి xReturn;
     }
 /*-----------------------------------------------------------*/
 
-    #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
-        BaseType_t xTimerGetStaticBuffer( TimerHandle_t xTimer,
-                                          StaticTimer_t ** ppxTimerBuffer )
+    #ఒకవేళ ( config_SUPPORT_STATIC_కేటాయింపు == 1 )
+        పునాది_Type_t x_Timer_Get_Static_బఫరు( TimerHandle_t xTimer,
+                                          StaticTimer_t ** ppx_Timer_బఫరు )
         {
-            BaseType_t xReturn;
+            పునాది_Type_t xReturn;
             Timer_t * pxTimer = xTimer;
 
-            traceENTER_xTimerGetStaticBuffer( xTimer, ppxTimerBuffer );
+            trace_ENTER_x_Timer_Get_Static_బఫరు( xTimer, ppx_Timer_బఫరు );
 
-            configASSERT( ppxTimerBuffer != NULL );
+            configASSERT( ppx_Timer_బఫరు != ఖాళీ );
 
-            if( ( pxTimer->ucStatus & tmrSTATUS_IS_STATICALLY_ALLOCATED ) != 0U )
+            ఒకవేళ( ( pxTimer->uc_స్థితి & tmr_స్థితి_IS_STATICALLY_ALLOCATED ) != 0U )
             {
                 /* MISRA Ref 11.3.1 [Misaligned access] */
                 /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-113 */
                 /* coverity[misra_c_2012_rule_11_3_violation] */
-                *ppxTimerBuffer = ( StaticTimer_t * ) pxTimer;
+                *ppx_Timer_బఫరు = ( StaticTimer_t * ) pxTimer;
                 xReturn = pdTRUE;
             }
-            else
+            లేకపోతే
             {
                 xReturn = pdFALSE;
             }
 
-            traceRETURN_xTimerGetStaticBuffer( xReturn );
+            trace_RETURN_x_Timer_Get_Static_బఫరు( xReturn );
 
-            return xReturn;
+            తిరిగి xReturn;
         }
-    #endif /* configSUPPORT_STATIC_ALLOCATION */
+    #అయితే_ముగింపు /* configSUPPORT_STATIC_ALLOCATION */
 /*-----------------------------------------------------------*/
 
-    const char * pcTimerGetName( TimerHandle_t xTimer )
+    స్థిరరాశి అక్షరం * pcTimerGetName( TimerHandle_t xTimer )
     {
         Timer_t * pxTimer = xTimer;
 
@@ -696,21 +696,21 @@
 
         traceRETURN_pcTimerGetName( pxTimer->pcTimerName );
 
-        return pxTimer->pcTimerName;
+        తిరిగి pxTimer->pcTimerName;
     }
 /*-----------------------------------------------------------*/
 
-    static void prvReloadTimer( Timer_t * const pxTimer,
-                                TickType_t xExpiredTime,
-                                const TickType_t xTimeNow )
+    స్థిర శూన్య prvReloadTimer( Timer_t * స్థిరరాశి pxTimer,
+                                TickType_t x_Expired_సమయం,
+                                స్థిరరాశి TickType_t x_సమయం_Now )
     {
         /* Insert the timer into the appropriate list for the next expiry time.
          * If the next expiry time has already passed, advance the expiry time,
          * call the callback function, and try again. */
-        while( prvInsertTimerInActiveList( pxTimer, ( xExpiredTime + pxTimer->xTimerPeriodInTicks ), xTimeNow, xExpiredTime ) != pdFALSE )
+        అయితే( prv_చొప్పించు_Timer_లోపల_చురుకైన_List( pxTimer, ( x_Expired_సమయం + pxTimer->x_Timer_Period_లోపల_Ticks ), x_సమయం_Now, x_Expired_సమయం ) != pdFALSE )
         {
             /* Advance the expiry time. */
-            xExpiredTime += pxTimer->xTimerPeriodInTicks;
+            x_Expired_సమయం += pxTimer->x_Timer_Period_లోపల_Ticks;
 
             /* Call the timer callback. */
             traceTIMER_EXPIRED( pxTimer );
@@ -719,28 +719,28 @@
     }
 /*-----------------------------------------------------------*/
 
-    static void prvProcessExpiredTimer( const TickType_t xNextExpireTime,
-                                        const TickType_t xTimeNow )
+    స్థిర శూన్య prvProcessExpiredTimer( స్థిరరాశి TickType_t x_తదుపరి_Expire_సమయం,
+                                        స్థిరరాశి TickType_t x_సమయం_Now )
     {
         /* MISRA Ref 11.5.3 [Void pointer assignment] */
         /* More details at: https://github.com/FreeRTOS/FreeRTOS-Kernel/blob/main/MISRA.md#rule-115 */
         /* coverity[misra_c_2012_rule_11_5_violation] */
-        Timer_t * const pxTimer = ( Timer_t * ) listGET_OWNER_OF_HEAD_ENTRY( pxCurrentTimerList );
+        Timer_t * స్థిరరాశి pxTimer = ( Timer_t * ) list_GET_OWNER_యొక్క_తల_నమోదు( pxCurrentTimerList );
 
         /* Remove the timer from the list of active timers.  A check has already
          * been performed to ensure the list is not empty. */
 
-        ( void ) uxListRemove( &( pxTimer->xTimerListItem ) );
+        ( శూన్య ) uxListRemove( &( pxTimer->x_Timer_List_అంశం ) );
 
         /* If the timer is an auto-reload timer then calculate the next
          * expiry time and re-insert the timer in the list of active timers. */
-        if( ( pxTimer->ucStatus & tmrSTATUS_IS_AUTORELOAD ) != 0U )
+        ఒకవేళ( ( pxTimer->uc_స్థితి & tmr_స్థితి_IS_AUTORELOAD ) != 0U )
         {
-            prvReloadTimer( pxTimer, xNextExpireTime, xTimeNow );
+            prvReloadTimer( pxTimer, x_తదుపరి_Expire_సమయం, x_సమయం_Now );
         }
-        else
+        లేకపోతే
         {
-            pxTimer->ucStatus &= ( ( uint8_t ) ~tmrSTATUS_IS_ACTIVE );
+            pxTimer->uc_స్థితి &= ( ( uint8_t ) ~tmr_స్థితి_IS_చురుకైన );
         }
 
         /* Call the timer callback. */
@@ -749,15 +749,15 @@
     }
 /*-----------------------------------------------------------*/
 
-    static portTASK_FUNCTION( prvTimerTask, pvParameters )
+    స్థిర పోర్టు_TASK_FUNCTION( prvTimerTask, pvParameters )
     {
-        TickType_t xNextExpireTime;
-        BaseType_t xListWasEmpty;
+        TickType_t x_తదుపరి_Expire_సమయం;
+        పునాది_Type_t x_List_Was_ఖాళీలు;
 
         /* Just to avoid compiler warnings. */
-        ( void ) pvParameters;
+        ( శూన్య ) pvParameters;
 
-        #if ( configUSE_DAEMON_TASK_STARTUP_HOOK == 1 )
+        #ఒకవేళ ( configUSE_DAEMON_TASK_STARTUP_HOOK == 1 )
         {
             /* Allow the application writer to execute some code in the context of
              * this task at the point the task starts executing.  This is useful if the
@@ -765,17 +765,17 @@
              * executing after the scheduler has been started. */
             vApplicationDaemonTaskStartupHook();
         }
-        #endif /* configUSE_DAEMON_TASK_STARTUP_HOOK */
+        #అయితే_ముగింపు /* configUSE_DAEMON_TASK_STARTUP_HOOK */
 
-        for( ; configCONTROL_INFINITE_LOOP(); )
+        కొరకు( ; configCONTROL_INFINITE_LOOP(); )
         {
             /* Query the timers list to see if it contains any timers, and if so,
              * obtain the time at which the next timer will expire. */
-            xNextExpireTime = prvGetNextExpireTime( &xListWasEmpty );
+            x_తదుపరి_Expire_సమయం = prv_Get_తదుపరి_Expire_సమయం( &x_List_Was_ఖాళీలు );
 
             /* If a timer has expired, process it.  Otherwise, block this task
              * until either a timer does expire, or a command is received. */
-            prvProcessTimerOrBlockTask( xNextExpireTime, xListWasEmpty );
+            prv_Process_Timer_Or_ఖండం_Task( x_తదుపరి_Expire_సమయం, x_List_Was_ఖాళీలు );
 
             /* Empty the command queue. */
             prvProcessReceivedCommands();
@@ -783,11 +783,11 @@
     }
 /*-----------------------------------------------------------*/
 
-    static void prvProcessTimerOrBlockTask( const TickType_t xNextExpireTime,
-                                            BaseType_t xListWasEmpty )
+    స్థిర శూన్య prv_Process_Timer_Or_ఖండం_Task( స్థిరరాశి TickType_t x_తదుపరి_Expire_సమయం,
+                                            పునాది_Type_t x_List_Was_ఖాళీలు )
     {
-        TickType_t xTimeNow;
-        BaseType_t xTimerListsWereSwitched;
+        TickType_t x_సమయం_Now;
+        పునాది_Type_t xTimerListsWereSwitched;
 
         vTaskSuspendAll();
         {
@@ -796,17 +796,17 @@
              * then don't process this timer as any timers that remained in the list
              * when the lists were switched will have been processed within the
              * prvSampleTimeNow() function. */
-            xTimeNow = prvSampleTimeNow( &xTimerListsWereSwitched );
+            x_సమయం_Now = prv_Sample_సమయం_Now( &xTimerListsWereSwitched );
 
-            if( xTimerListsWereSwitched == pdFALSE )
+            ఒకవేళ( xTimerListsWereSwitched == pdFALSE )
             {
                 /* The tick count has not overflowed, has the timer expired? */
-                if( ( xListWasEmpty == pdFALSE ) && ( xNextExpireTime <= xTimeNow ) )
+                ఒకవేళ( ( x_List_Was_ఖాళీలు == pdFALSE ) && ( x_తదుపరి_Expire_సమయం <= x_సమయం_Now ) )
                 {
-                    ( void ) xTaskResumeAll();
-                    prvProcessExpiredTimer( xNextExpireTime, xTimeNow );
+                    ( శూన్య ) xTaskResumeAll();
+                    prvProcessExpiredTimer( x_తదుపరి_Expire_సమయం, x_సమయం_Now );
                 }
-                else
+                లేకపోతే
                 {
                     /* The tick count has not overflowed, and the next expire
                      * time has not been reached yet.  This task should therefore
@@ -814,16 +814,16 @@
                      * received - whichever comes first.  The following line cannot
                      * be reached unless xNextExpireTime > xTimeNow, except in the
                      * case when the current timer list is empty. */
-                    if( xListWasEmpty != pdFALSE )
+                    ఒకవేళ( x_List_Was_ఖాళీలు != pdFALSE )
                     {
                         /* The current timer list is empty - is the overflow list
                          * also empty? */
-                        xListWasEmpty = listLIST_IS_EMPTY( pxOverflowTimerList );
+                        x_List_Was_ఖాళీలు = list_LIST_IS_ఖాళీలు( px_అధికప్రవాహం_Timer_List );
                     }
 
-                    vQueueWaitForMessageRestricted( xTimerQueue, ( xNextExpireTime - xTimeNow ), xListWasEmpty );
+                    v_వరుస_Wait_For_సందేశం_Restricted( x_Timer_వరుస, ( x_తదుపరి_Expire_సమయం - x_సమయం_Now ), x_List_Was_ఖాళీలు );
 
-                    if( xTaskResumeAll() == pdFALSE )
+                    ఒకవేళ( xTaskResumeAll() == pdFALSE )
                     {
                         /* Yield to wait for either a command to arrive, or the
                          * block time to expire.  If a command arrived between the
@@ -831,23 +831,23 @@
                          * will not cause the task to block. */
                         taskYIELD_WITHIN_API();
                     }
-                    else
+                    లేకపోతే
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
             }
-            else
+            లేకపోతే
             {
-                ( void ) xTaskResumeAll();
+                ( శూన్య ) xTaskResumeAll();
             }
         }
     }
 /*-----------------------------------------------------------*/
 
-    static TickType_t prvGetNextExpireTime( BaseType_t * const pxListWasEmpty )
+    స్థిర TickType_t prv_Get_తదుపరి_Expire_సమయం( పునాది_Type_t * స్థిరరాశి px_List_Was_ఖాళీలు )
     {
-        TickType_t xNextExpireTime;
+        TickType_t x_తదుపరి_Expire_సమయం;
 
         /* Timers are listed in expiry time order, with the head of the list
          * referencing the task that will expire first.  Obtain the time at which
@@ -856,105 +856,105 @@
          * this task to unblock when the tick count overflows, at which point the
          * timer lists will be switched and the next expiry time can be
          * re-assessed.  */
-        *pxListWasEmpty = listLIST_IS_EMPTY( pxCurrentTimerList );
+        *px_List_Was_ఖాళీలు = list_LIST_IS_ఖాళీలు( pxCurrentTimerList );
 
-        if( *pxListWasEmpty == pdFALSE )
+        ఒకవేళ( *px_List_Was_ఖాళీలు == pdFALSE )
         {
-            xNextExpireTime = listGET_ITEM_VALUE_OF_HEAD_ENTRY( pxCurrentTimerList );
+            x_తదుపరి_Expire_సమయం = list_GET_అంశం_విలువ_యొక్క_తల_నమోదు( pxCurrentTimerList );
         }
-        else
+        లేకపోతే
         {
             /* Ensure the task unblocks when the tick count rolls over. */
-            xNextExpireTime = ( TickType_t ) 0U;
+            x_తదుపరి_Expire_సమయం = ( TickType_t ) 0U;
         }
 
-        return xNextExpireTime;
+        తిరిగి x_తదుపరి_Expire_సమయం;
     }
 /*-----------------------------------------------------------*/
 
-    static TickType_t prvSampleTimeNow( BaseType_t * const pxTimerListsWereSwitched )
+    స్థిర TickType_t prv_Sample_సమయం_Now( పునాది_Type_t * స్థిరరాశి pxTimerListsWereSwitched )
     {
-        TickType_t xTimeNow;
-        PRIVILEGED_DATA static TickType_t xLastTime = ( TickType_t ) 0U;
+        TickType_t x_సమయం_Now;
+        PRIVILEGED_దత్తాంశం స్థిర TickType_t x_చివరి_సమయం = ( TickType_t ) 0U;
 
-        xTimeNow = xTaskGetTickCount();
+        x_సమయం_Now = x_Task_Get_Tick_లెక్క();
 
-        if( xTimeNow < xLastTime )
+        ఒకవేళ( x_సమయం_Now < x_చివరి_సమయం )
         {
             prvSwitchTimerLists();
             *pxTimerListsWereSwitched = pdTRUE;
         }
-        else
+        లేకపోతే
         {
             *pxTimerListsWereSwitched = pdFALSE;
         }
 
-        xLastTime = xTimeNow;
+        x_చివరి_సమయం = x_సమయం_Now;
 
-        return xTimeNow;
+        తిరిగి x_సమయం_Now;
     }
 /*-----------------------------------------------------------*/
 
-    static BaseType_t prvInsertTimerInActiveList( Timer_t * const pxTimer,
-                                                  const TickType_t xNextExpiryTime,
-                                                  const TickType_t xTimeNow,
-                                                  const TickType_t xCommandTime )
+    స్థిర పునాది_Type_t prv_చొప్పించు_Timer_లోపల_చురుకైన_List( Timer_t * స్థిరరాశి pxTimer,
+                                                  స్థిరరాశి TickType_t x_తదుపరి_Expiry_సమయం,
+                                                  స్థిరరాశి TickType_t x_సమయం_Now,
+                                                  స్థిరరాశి TickType_t x_Command_సమయం )
     {
-        BaseType_t xProcessTimerNow = pdFALSE;
+        పునాది_Type_t xProcessTimerNow = pdFALSE;
 
-        listSET_LIST_ITEM_VALUE( &( pxTimer->xTimerListItem ), xNextExpiryTime );
-        listSET_LIST_ITEM_OWNER( &( pxTimer->xTimerListItem ), pxTimer );
+        list_సమితి_LIST_అంశం_విలువ( &( pxTimer->x_Timer_List_అంశం ), x_తదుపరి_Expiry_సమయం );
+        list_సమితి_LIST_అంశం_OWNER( &( pxTimer->x_Timer_List_అంశం ), pxTimer );
 
-        if( xNextExpiryTime <= xTimeNow )
+        ఒకవేళ( x_తదుపరి_Expiry_సమయం <= x_సమయం_Now )
         {
             /* Has the expiry time elapsed between the command to start/reset a
              * timer was issued, and the time the command was processed? */
-            if( ( ( TickType_t ) ( xTimeNow - xCommandTime ) ) >= pxTimer->xTimerPeriodInTicks )
+            ఒకవేళ( ( ( TickType_t ) ( x_సమయం_Now - x_Command_సమయం ) ) >= pxTimer->x_Timer_Period_లోపల_Ticks )
             {
                 /* The time between a command being issued and the command being
                  * processed actually exceeds the timers period.  */
                 xProcessTimerNow = pdTRUE;
             }
-            else
+            లేకపోతే
             {
-                vListInsert( pxOverflowTimerList, &( pxTimer->xTimerListItem ) );
+                v_List_చొప్పించు( px_అధికప్రవాహం_Timer_List, &( pxTimer->x_Timer_List_అంశం ) );
             }
         }
-        else
+        లేకపోతే
         {
-            if( ( xTimeNow < xCommandTime ) && ( xNextExpiryTime >= xCommandTime ) )
+            ఒకవేళ( ( x_సమయం_Now < x_Command_సమయం ) && ( x_తదుపరి_Expiry_సమయం >= x_Command_సమయం ) )
             {
                 /* If, since the command was issued, the tick count has overflowed
                  * but the expiry time has not, then the timer must have already passed
                  * its expiry time and should be processed immediately. */
                 xProcessTimerNow = pdTRUE;
             }
-            else
+            లేకపోతే
             {
-                vListInsert( pxCurrentTimerList, &( pxTimer->xTimerListItem ) );
+                v_List_చొప్పించు( pxCurrentTimerList, &( pxTimer->x_Timer_List_అంశం ) );
             }
         }
 
-        return xProcessTimerNow;
+        తిరిగి xProcessTimerNow;
     }
 /*-----------------------------------------------------------*/
 
-    static void prvProcessReceivedCommands( void )
+    స్థిర శూన్య prvProcessReceivedCommands( శూన్య )
     {
-        DaemonTaskMessage_t xMessage = { 0 };
+        Daemon_Task_సందేశం_t x_సందేశం = { 0 };
         Timer_t * pxTimer;
-        BaseType_t xTimerListsWereSwitched;
-        TickType_t xTimeNow;
+        పునాది_Type_t xTimerListsWereSwitched;
+        TickType_t x_సమయం_Now;
 
-        while( xQueueReceive( xTimerQueue, &xMessage, tmrNO_DELAY ) != pdFAIL )
+        అయితే( x_వరుస_Receive( x_Timer_వరుస, &x_సందేశం, tmrNO_DELAY ) != pdFAIL )
         {
-            #if ( INCLUDE_xTimerPendFunctionCall == 1 )
+            #ఒకవేళ ( INCLUDE_xTimerPendFunctionCall == 1 )
             {
                 /* Negative commands are pended function calls rather than timer
                  * commands. */
-                if( xMessage.xMessageID < ( BaseType_t ) 0 )
+                ఒకవేళ( x_సందేశం.x_సందేశం_ID < ( పునాది_Type_t ) 0 )
                 {
-                    const CallbackParameters_t * const pxCallback = &( xMessage.u.xCallbackParameters );
+                    స్థిరరాశి CallbackParameters_t * స్థిరరాశి pxCallback = &( x_సందేశం.u.xCallbackParameters );
 
                     /* The timer uses the xCallbackParameters member to request a
                      * callback be executed.  Check the callback is not NULL. */
@@ -963,32 +963,32 @@
                     /* Call the function. */
                     pxCallback->pxCallbackFunction( pxCallback->pvParameter1, pxCallback->ulParameter2 );
                 }
-                else
+                లేకపోతే
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
             }
-            #endif /* INCLUDE_xTimerPendFunctionCall */
+            #అయితే_ముగింపు /* INCLUDE_xTimerPendFunctionCall */
 
             /* Commands that are positive are timer commands rather than pended
              * function calls. */
-            if( xMessage.xMessageID >= ( BaseType_t ) 0 )
+            ఒకవేళ( x_సందేశం.x_సందేశం_ID >= ( పునాది_Type_t ) 0 )
             {
                 /* The messages uses the xTimerParameters member to work on a
                  * software timer. */
-                pxTimer = xMessage.u.xTimerParameters.pxTimer;
+                pxTimer = x_సందేశం.u.xTimerParameters.pxTimer;
 
-                if( listIS_CONTAINED_WITHIN( NULL, &( pxTimer->xTimerListItem ) ) == pdFALSE )
+                ఒకవేళ( listIS_CONTAINED_WITHIN( ఖాళీ, &( pxTimer->x_Timer_List_అంశం ) ) == pdFALSE )
                 {
                     /* The timer is in a list, remove it. */
-                    ( void ) uxListRemove( &( pxTimer->xTimerListItem ) );
+                    ( శూన్య ) uxListRemove( &( pxTimer->x_Timer_List_అంశం ) );
                 }
-                else
+                లేకపోతే
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
 
-                traceTIMER_COMMAND_RECEIVED( pxTimer, xMessage.xMessageID, xMessage.u.xTimerParameters.xMessageValue );
+                traceTIMER_COMMAND_RECEIVED( pxTimer, x_సందేశం.x_సందేశం_ID, x_సందేశం.u.xTimerParameters.x_సందేశం_విలువ );
 
                 /* In this case the xTimerListsWereSwitched parameter is not used, but
                  *  it must be present in the function call.  prvSampleTimeNow() must be
@@ -996,52 +996,52 @@
                  *  possibility of a higher priority task adding a message to the message
                  *  queue with a time that is ahead of the timer daemon task (because it
                  *  pre-empted the timer daemon task after the xTimeNow value was set). */
-                xTimeNow = prvSampleTimeNow( &xTimerListsWereSwitched );
+                x_సమయం_Now = prv_Sample_సమయం_Now( &xTimerListsWereSwitched );
 
-                switch( xMessage.xMessageID )
+                ఎంపిక( x_సందేశం.x_సందేశం_ID )
                 {
-                    case tmrCOMMAND_START:
-                    case tmrCOMMAND_START_FROM_ISR:
-                    case tmrCOMMAND_RESET:
-                    case tmrCOMMAND_RESET_FROM_ISR:
+                    స్థితి tmr_COMMAND_ప్రారంభం:
+                    స్థితి tmr_COMMAND_ప్రారంభం_FROM_ISR:
+                    స్థితి tmrCOMMAND_RESET:
+                    స్థితి tmrCOMMAND_RESET_FROM_ISR:
                         /* Start or restart a timer. */
-                        pxTimer->ucStatus |= ( uint8_t ) tmrSTATUS_IS_ACTIVE;
+                        pxTimer->uc_స్థితి |= ( uint8_t ) tmr_స్థితి_IS_చురుకైన;
 
-                        if( prvInsertTimerInActiveList( pxTimer, xMessage.u.xTimerParameters.xMessageValue + pxTimer->xTimerPeriodInTicks, xTimeNow, xMessage.u.xTimerParameters.xMessageValue ) != pdFALSE )
+                        ఒకవేళ( prv_చొప్పించు_Timer_లోపల_చురుకైన_List( pxTimer, x_సందేశం.u.xTimerParameters.x_సందేశం_విలువ + pxTimer->x_Timer_Period_లోపల_Ticks, x_సమయం_Now, x_సందేశం.u.xTimerParameters.x_సందేశం_విలువ ) != pdFALSE )
                         {
                             /* The timer expired before it was added to the active
                              * timer list.  Process it now. */
-                            if( ( pxTimer->ucStatus & tmrSTATUS_IS_AUTORELOAD ) != 0U )
+                            ఒకవేళ( ( pxTimer->uc_స్థితి & tmr_స్థితి_IS_AUTORELOAD ) != 0U )
                             {
-                                prvReloadTimer( pxTimer, xMessage.u.xTimerParameters.xMessageValue + pxTimer->xTimerPeriodInTicks, xTimeNow );
+                                prvReloadTimer( pxTimer, x_సందేశం.u.xTimerParameters.x_సందేశం_విలువ + pxTimer->x_Timer_Period_లోపల_Ticks, x_సమయం_Now );
                             }
-                            else
+                            లేకపోతే
                             {
-                                pxTimer->ucStatus &= ( ( uint8_t ) ~tmrSTATUS_IS_ACTIVE );
+                                pxTimer->uc_స్థితి &= ( ( uint8_t ) ~tmr_స్థితి_IS_చురుకైన );
                             }
 
                             /* Call the timer callback. */
                             traceTIMER_EXPIRED( pxTimer );
                             pxTimer->pxCallbackFunction( ( TimerHandle_t ) pxTimer );
                         }
-                        else
+                        లేకపోతే
                         {
                             mtCOVERAGE_TEST_MARKER();
                         }
 
-                        break;
+                        ఆపు;
 
-                    case tmrCOMMAND_STOP:
-                    case tmrCOMMAND_STOP_FROM_ISR:
+                    స్థితి tmrCOMMAND_STOP:
+                    స్థితి tmrCOMMAND_STOP_FROM_ISR:
                         /* The timer has already been removed from the active list. */
-                        pxTimer->ucStatus &= ( ( uint8_t ) ~tmrSTATUS_IS_ACTIVE );
-                        break;
+                        pxTimer->uc_స్థితి &= ( ( uint8_t ) ~tmr_స్థితి_IS_చురుకైన );
+                        ఆపు;
 
-                    case tmrCOMMAND_CHANGE_PERIOD:
-                    case tmrCOMMAND_CHANGE_PERIOD_FROM_ISR:
-                        pxTimer->ucStatus |= ( uint8_t ) tmrSTATUS_IS_ACTIVE;
-                        pxTimer->xTimerPeriodInTicks = xMessage.u.xTimerParameters.xMessageValue;
-                        configASSERT( ( pxTimer->xTimerPeriodInTicks > 0 ) );
+                    స్థితి tmrCOMMAND_CHANGE_PERIOD:
+                    స్థితి tmrCOMMAND_CHANGE_PERIOD_FROM_ISR:
+                        pxTimer->uc_స్థితి |= ( uint8_t ) tmr_స్థితి_IS_చురుకైన;
+                        pxTimer->x_Timer_Period_లోపల_Ticks = x_సందేశం.u.xTimerParameters.x_సందేశం_విలువ;
+                        configASSERT( ( pxTimer->x_Timer_Period_లోపల_Ticks > 0 ) );
 
                         /* The new period does not really have a reference, and can
                          * be longer or shorter than the old one.  The command time is
@@ -1049,112 +1049,112 @@
                          * be zero the next expiry time can only be in the future,
                          * meaning (unlike for the xTimerStart() case above) there is
                          * no fail case that needs to be handled here. */
-                        ( void ) prvInsertTimerInActiveList( pxTimer, ( xTimeNow + pxTimer->xTimerPeriodInTicks ), xTimeNow, xTimeNow );
-                        break;
+                        ( శూన్య ) prv_చొప్పించు_Timer_లోపల_చురుకైన_List( pxTimer, ( x_సమయం_Now + pxTimer->x_Timer_Period_లోపల_Ticks ), x_సమయం_Now, x_సమయం_Now );
+                        ఆపు;
 
-                    case tmrCOMMAND_DELETE:
-                        #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+                    స్థితి tmrCOMMAND_DELETE:
+                        #ఒకవేళ ( config_SUPPORT_DYNAMIC_కేటాయింపు == 1 )
                         {
                             /* The timer has already been removed from the active list,
                              * just free up the memory if the memory was dynamically
                              * allocated. */
-                            if( ( pxTimer->ucStatus & tmrSTATUS_IS_STATICALLY_ALLOCATED ) == ( uint8_t ) 0 )
+                            ఒకవేళ( ( pxTimer->uc_స్థితి & tmr_స్థితి_IS_STATICALLY_ALLOCATED ) == ( uint8_t ) 0 )
                             {
-                                vPortFree( pxTimer );
+                                v_పోర్టు_Free( pxTimer );
                             }
-                            else
+                            లేకపోతే
                             {
-                                pxTimer->ucStatus &= ( ( uint8_t ) ~tmrSTATUS_IS_ACTIVE );
+                                pxTimer->uc_స్థితి &= ( ( uint8_t ) ~tmr_స్థితి_IS_చురుకైన );
                             }
                         }
-                        #else /* if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) */
+                        #లేకపోతే /* if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) */
                         {
                             /* If dynamic allocation is not enabled, the memory
                              * could not have been dynamically allocated. So there is
                              * no need to free the memory - just mark the timer as
                              * "not active". */
-                            pxTimer->ucStatus &= ( ( uint8_t ) ~tmrSTATUS_IS_ACTIVE );
+                            pxTimer->uc_స్థితి &= ( ( uint8_t ) ~tmr_స్థితి_IS_చురుకైన );
                         }
-                        #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
-                        break;
+                        #అయితే_ముగింపు /* configSUPPORT_DYNAMIC_ALLOCATION */
+                        ఆపు;
 
-                    default:
+                    అప్రమేయ:
                         /* Don't expect to get here. */
-                        break;
+                        ఆపు;
                 }
             }
         }
     }
 /*-----------------------------------------------------------*/
 
-    static void prvSwitchTimerLists( void )
+    స్థిర శూన్య prvSwitchTimerLists( శూన్య )
     {
-        TickType_t xNextExpireTime;
-        List_t * pxTemp;
+        TickType_t x_తదుపరి_Expire_సమయం;
+        List_t * px_తాత్కాలిక;
 
         /* The tick count has overflowed.  The timer lists must be switched.
          * If there are any timers still referenced from the current timer list
          * then they must have expired and should be processed before the lists
          * are switched. */
-        while( listLIST_IS_EMPTY( pxCurrentTimerList ) == pdFALSE )
+        అయితే( list_LIST_IS_ఖాళీలు( pxCurrentTimerList ) == pdFALSE )
         {
-            xNextExpireTime = listGET_ITEM_VALUE_OF_HEAD_ENTRY( pxCurrentTimerList );
+            x_తదుపరి_Expire_సమయం = list_GET_అంశం_విలువ_యొక్క_తల_నమోదు( pxCurrentTimerList );
 
             /* Process the expired timer.  For auto-reload timers, be careful to
              * process only expirations that occur on the current list.  Further
              * expirations must wait until after the lists are switched. */
-            prvProcessExpiredTimer( xNextExpireTime, tmrMAX_TIME_BEFORE_OVERFLOW );
+            prvProcessExpiredTimer( x_తదుపరి_Expire_సమయం, tmr_MAX_సమయం_BEFORE_అధికప్రవాహం );
         }
 
-        pxTemp = pxCurrentTimerList;
-        pxCurrentTimerList = pxOverflowTimerList;
-        pxOverflowTimerList = pxTemp;
+        px_తాత్కాలిక = pxCurrentTimerList;
+        pxCurrentTimerList = px_అధికప్రవాహం_Timer_List;
+        px_అధికప్రవాహం_Timer_List = px_తాత్కాలిక;
     }
 /*-----------------------------------------------------------*/
 
-    static void prvCheckForValidListAndQueue( void )
+    స్థిర శూన్య prv_Check_For_Valid_List_And_వరుస( శూన్య )
     {
         /* Check that the list from which active timers are referenced, and the
          * queue used to communicate with the timer service, have been
          * initialised. */
         taskENTER_CRITICAL();
         {
-            if( xTimerQueue == NULL )
+            ఒకవేళ( x_Timer_వరుస == ఖాళీ )
             {
-                vListInitialise( &xActiveTimerList1 );
-                vListInitialise( &xActiveTimerList2 );
-                pxCurrentTimerList = &xActiveTimerList1;
-                pxOverflowTimerList = &xActiveTimerList2;
+                vListInitialise( &x_చురుకైన_Timer_List1 );
+                vListInitialise( &x_చురుకైన_Timer_List2 );
+                pxCurrentTimerList = &x_చురుకైన_Timer_List1;
+                px_అధికప్రవాహం_Timer_List = &x_చురుకైన_Timer_List2;
 
-                #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+                #ఒకవేళ ( config_SUPPORT_STATIC_కేటాయింపు == 1 )
                 {
                     /* The timer queue is allocated statically in case
                      * configSUPPORT_DYNAMIC_ALLOCATION is 0. */
-                    PRIVILEGED_DATA static StaticQueue_t xStaticTimerQueue;
-                    PRIVILEGED_DATA static uint8_t ucStaticTimerQueueStorage[ ( size_t ) configTIMER_QUEUE_LENGTH * sizeof( DaemonTaskMessage_t ) ];
+                    PRIVILEGED_దత్తాంశం స్థిర Static_వరుస_t x_Static_Timer_వరుస;
+                    PRIVILEGED_దత్తాంశం స్థిర uint8_t uc_Static_Timer_వరుస_Storage[ ( size_t ) config_TIMER_వరుస_నిడివి * పరిమాణం( Daemon_Task_సందేశం_t ) ];
 
-                    xTimerQueue = xQueueCreateStatic( ( UBaseType_t ) configTIMER_QUEUE_LENGTH, ( UBaseType_t ) sizeof( DaemonTaskMessage_t ), &( ucStaticTimerQueueStorage[ 0 ] ), &xStaticTimerQueue );
+                    x_Timer_వరుస = x_వరుస_Create_Static( ( UBaseType_t ) config_TIMER_వరుస_నిడివి, ( UBaseType_t ) పరిమాణం( Daemon_Task_సందేశం_t ), &( uc_Static_Timer_వరుస_Storage[ 0 ] ), &x_Static_Timer_వరుస );
                 }
-                #else
+                #లేకపోతే
                 {
-                    xTimerQueue = xQueueCreate( ( UBaseType_t ) configTIMER_QUEUE_LENGTH, ( UBaseType_t ) sizeof( DaemonTaskMessage_t ) );
+                    x_Timer_వరుస = x_వరుస_Create( ( UBaseType_t ) config_TIMER_వరుస_నిడివి, ( UBaseType_t ) పరిమాణం( Daemon_Task_సందేశం_t ) );
                 }
-                #endif /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
+                #అయితే_ముగింపు /* if ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 
-                #if ( configQUEUE_REGISTRY_SIZE > 0 )
+                #ఒకవేళ ( config_వరుస_REGISTRY_కొలత > 0 )
                 {
-                    if( xTimerQueue != NULL )
+                    ఒకవేళ( x_Timer_వరుస != ఖాళీ )
                     {
-                        vQueueAddToRegistry( xTimerQueue, "TmrQ" );
+                        v_వరుస_కూడు_గమ్యం_Registry( x_Timer_వరుస, "TmrQ" );
                     }
-                    else
+                    లేకపోతే
                     {
                         mtCOVERAGE_TEST_MARKER();
                     }
                 }
-                #endif /* configQUEUE_REGISTRY_SIZE */
+                #అయితే_ముగింపు /* configQUEUE_REGISTRY_SIZE */
             }
-            else
+            లేకపోతే
             {
                 mtCOVERAGE_TEST_MARKER();
             }
@@ -1163,39 +1163,39 @@
     }
 /*-----------------------------------------------------------*/
 
-    BaseType_t xTimerIsTimerActive( TimerHandle_t xTimer )
+    పునాది_Type_t x_Timer_Is_Timer_చురుకైన( TimerHandle_t xTimer )
     {
-        BaseType_t xReturn;
+        పునాది_Type_t xReturn;
         Timer_t * pxTimer = xTimer;
 
-        traceENTER_xTimerIsTimerActive( xTimer );
+        trace_ENTER_x_Timer_Is_Timer_చురుకైన( xTimer );
 
         configASSERT( xTimer );
 
         /* Is the timer in the list of active timers? */
         taskENTER_CRITICAL();
         {
-            if( ( pxTimer->ucStatus & tmrSTATUS_IS_ACTIVE ) == 0U )
+            ఒకవేళ( ( pxTimer->uc_స్థితి & tmr_స్థితి_IS_చురుకైన ) == 0U )
             {
                 xReturn = pdFALSE;
             }
-            else
+            లేకపోతే
             {
                 xReturn = pdTRUE;
             }
         }
         taskEXIT_CRITICAL();
 
-        traceRETURN_xTimerIsTimerActive( xReturn );
+        trace_RETURN_x_Timer_Is_Timer_చురుకైన( xReturn );
 
-        return xReturn;
+        తిరిగి xReturn;
     }
 /*-----------------------------------------------------------*/
 
-    void * pvTimerGetTimerID( const TimerHandle_t xTimer )
+    శూన్య * pvTimerGetTimerID( స్థిరరాశి TimerHandle_t xTimer )
     {
-        Timer_t * const pxTimer = xTimer;
-        void * pvReturn;
+        Timer_t * స్థిరరాశి pxTimer = xTimer;
+        శూన్య * pvReturn;
 
         traceENTER_pvTimerGetTimerID( xTimer );
 
@@ -1209,16 +1209,16 @@
 
         traceRETURN_pvTimerGetTimerID( pvReturn );
 
-        return pvReturn;
+        తిరిగి pvReturn;
     }
 /*-----------------------------------------------------------*/
 
-    void vTimerSetTimerID( TimerHandle_t xTimer,
-                           void * pvNewID )
+    శూన్య v_Timer_సమితి_Timer_ID( TimerHandle_t xTimer,
+                           శూన్య * pvNewID )
     {
-        Timer_t * const pxTimer = xTimer;
+        Timer_t * స్థిరరాశి pxTimer = xTimer;
 
-        traceENTER_vTimerSetTimerID( xTimer, pvNewID );
+        trace_ENTER_v_Timer_సమితి_Timer_ID( xTimer, pvNewID );
 
         configASSERT( xTimer );
 
@@ -1228,102 +1228,102 @@
         }
         taskEXIT_CRITICAL();
 
-        traceRETURN_vTimerSetTimerID();
+        trace_RETURN_v_Timer_సమితి_Timer_ID();
     }
 /*-----------------------------------------------------------*/
 
-    #if ( INCLUDE_xTimerPendFunctionCall == 1 )
+    #ఒకవేళ ( INCLUDE_xTimerPendFunctionCall == 1 )
 
-        BaseType_t xTimerPendFunctionCallFromISR( PendedFunction_t xFunctionToPend,
-                                                  void * pvParameter1,
+        పునాది_Type_t xTimerPendFunctionCallFromISR( PendedFunction_t x_Function_గమ్యం_Pend,
+                                                  శూన్య * pvParameter1,
                                                   uint32_t ulParameter2,
-                                                  BaseType_t * pxHigherPriorityTaskWoken )
+                                                  పునాది_Type_t * px_Higher_ప్రాధాన్యత_Task_Woken )
         {
-            DaemonTaskMessage_t xMessage;
-            BaseType_t xReturn;
+            Daemon_Task_సందేశం_t x_సందేశం;
+            పునాది_Type_t xReturn;
 
-            traceENTER_xTimerPendFunctionCallFromISR( xFunctionToPend, pvParameter1, ulParameter2, pxHigherPriorityTaskWoken );
+            traceENTER_xTimerPendFunctionCallFromISR( x_Function_గమ్యం_Pend, pvParameter1, ulParameter2, px_Higher_ప్రాధాన్యత_Task_Woken );
 
             /* Complete the message with the function parameters and post it to the
              * daemon task. */
-            xMessage.xMessageID = tmrCOMMAND_EXECUTE_CALLBACK_FROM_ISR;
-            xMessage.u.xCallbackParameters.pxCallbackFunction = xFunctionToPend;
-            xMessage.u.xCallbackParameters.pvParameter1 = pvParameter1;
-            xMessage.u.xCallbackParameters.ulParameter2 = ulParameter2;
+            x_సందేశం.x_సందేశం_ID = tmrCOMMAND_EXECUTE_CALLBACK_FROM_ISR;
+            x_సందేశం.u.xCallbackParameters.pxCallbackFunction = x_Function_గమ్యం_Pend;
+            x_సందేశం.u.xCallbackParameters.pvParameter1 = pvParameter1;
+            x_సందేశం.u.xCallbackParameters.ulParameter2 = ulParameter2;
 
-            xReturn = xQueueSendFromISR( xTimerQueue, &xMessage, pxHigherPriorityTaskWoken );
+            xReturn = x_వరుస_Send_From_ISR( x_Timer_వరుస, &x_సందేశం, px_Higher_ప్రాధాన్యత_Task_Woken );
 
-            tracePEND_FUNC_CALL_FROM_ISR( xFunctionToPend, pvParameter1, ulParameter2, xReturn );
+            tracePEND_FUNC_CALL_FROM_ISR( x_Function_గమ్యం_Pend, pvParameter1, ulParameter2, xReturn );
             traceRETURN_xTimerPendFunctionCallFromISR( xReturn );
 
-            return xReturn;
+            తిరిగి xReturn;
         }
 
-    #endif /* INCLUDE_xTimerPendFunctionCall */
+    #అయితే_ముగింపు /* INCLUDE_xTimerPendFunctionCall */
 /*-----------------------------------------------------------*/
 
-    #if ( INCLUDE_xTimerPendFunctionCall == 1 )
+    #ఒకవేళ ( INCLUDE_xTimerPendFunctionCall == 1 )
 
-        BaseType_t xTimerPendFunctionCall( PendedFunction_t xFunctionToPend,
-                                           void * pvParameter1,
+        పునాది_Type_t xTimerPendFunctionCall( PendedFunction_t x_Function_గమ్యం_Pend,
+                                           శూన్య * pvParameter1,
                                            uint32_t ulParameter2,
-                                           TickType_t xTicksToWait )
+                                           TickType_t x_Ticks_గమ్యం_Wait )
         {
-            DaemonTaskMessage_t xMessage;
-            BaseType_t xReturn;
+            Daemon_Task_సందేశం_t x_సందేశం;
+            పునాది_Type_t xReturn;
 
-            traceENTER_xTimerPendFunctionCall( xFunctionToPend, pvParameter1, ulParameter2, xTicksToWait );
+            traceENTER_xTimerPendFunctionCall( x_Function_గమ్యం_Pend, pvParameter1, ulParameter2, x_Ticks_గమ్యం_Wait );
 
             /* This function can only be called after a timer has been created or
              * after the scheduler has been started because, until then, the timer
              * queue does not exist. */
-            configASSERT( xTimerQueue );
+            configASSERT( x_Timer_వరుస );
 
             /* Complete the message with the function parameters and post it to the
              * daemon task. */
-            xMessage.xMessageID = tmrCOMMAND_EXECUTE_CALLBACK;
-            xMessage.u.xCallbackParameters.pxCallbackFunction = xFunctionToPend;
-            xMessage.u.xCallbackParameters.pvParameter1 = pvParameter1;
-            xMessage.u.xCallbackParameters.ulParameter2 = ulParameter2;
+            x_సందేశం.x_సందేశం_ID = tmrCOMMAND_EXECUTE_CALLBACK;
+            x_సందేశం.u.xCallbackParameters.pxCallbackFunction = x_Function_గమ్యం_Pend;
+            x_సందేశం.u.xCallbackParameters.pvParameter1 = pvParameter1;
+            x_సందేశం.u.xCallbackParameters.ulParameter2 = ulParameter2;
 
-            xReturn = xQueueSendToBack( xTimerQueue, &xMessage, xTicksToWait );
+            xReturn = x_వరుస_Send_గమ్యం_వెనుక( x_Timer_వరుస, &x_సందేశం, x_Ticks_గమ్యం_Wait );
 
-            tracePEND_FUNC_CALL( xFunctionToPend, pvParameter1, ulParameter2, xReturn );
+            tracePEND_FUNC_CALL( x_Function_గమ్యం_Pend, pvParameter1, ulParameter2, xReturn );
             traceRETURN_xTimerPendFunctionCall( xReturn );
 
-            return xReturn;
+            తిరిగి xReturn;
         }
 
-    #endif /* INCLUDE_xTimerPendFunctionCall */
+    #అయితే_ముగింపు /* INCLUDE_xTimerPendFunctionCall */
 /*-----------------------------------------------------------*/
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ఒకవేళ ( configUSE_TRACE_FACILITY == 1 )
 
-        UBaseType_t uxTimerGetTimerNumber( TimerHandle_t xTimer )
+        UBaseType_t ux_Timer_Get_Timer_సంఖ్య( TimerHandle_t xTimer )
         {
-            traceENTER_uxTimerGetTimerNumber( xTimer );
+            trace_ENTER_ux_Timer_Get_Timer_సంఖ్య( xTimer );
 
-            traceRETURN_uxTimerGetTimerNumber( ( ( Timer_t * ) xTimer )->uxTimerNumber );
+            trace_RETURN_ux_Timer_Get_Timer_సంఖ్య( ( ( Timer_t * ) xTimer )->ux_Timer_సంఖ్య );
 
-            return ( ( Timer_t * ) xTimer )->uxTimerNumber;
+            తిరిగి ( ( Timer_t * ) xTimer )->ux_Timer_సంఖ్య;
         }
 
-    #endif /* configUSE_TRACE_FACILITY */
+    #అయితే_ముగింపు /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
-    #if ( configUSE_TRACE_FACILITY == 1 )
+    #ఒకవేళ ( configUSE_TRACE_FACILITY == 1 )
 
-        void vTimerSetTimerNumber( TimerHandle_t xTimer,
-                                   UBaseType_t uxTimerNumber )
+        శూన్య v_Timer_సమితి_Timer_సంఖ్య( TimerHandle_t xTimer,
+                                   UBaseType_t ux_Timer_సంఖ్య )
         {
-            traceENTER_vTimerSetTimerNumber( xTimer, uxTimerNumber );
+            trace_ENTER_v_Timer_సమితి_Timer_సంఖ్య( xTimer, ux_Timer_సంఖ్య );
 
-            ( ( Timer_t * ) xTimer )->uxTimerNumber = uxTimerNumber;
+            ( ( Timer_t * ) xTimer )->ux_Timer_సంఖ్య = ux_Timer_సంఖ్య;
 
-            traceRETURN_vTimerSetTimerNumber();
+            trace_RETURN_v_Timer_సమితి_Timer_సంఖ్య();
         }
 
-    #endif /* configUSE_TRACE_FACILITY */
+    #అయితే_ముగింపు /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
 
 /*
@@ -1331,14 +1331,14 @@
  * This function must be called by the application before restarting the
  * scheduler.
  */
-    void vTimerResetState( void )
+    శూన్య vTimerResetState( శూన్య )
     {
-        xTimerQueue = NULL;
-        xTimerTaskHandle = NULL;
+        x_Timer_వరుస = ఖాళీ;
+        xTimerTaskHandle = ఖాళీ;
     }
 /*-----------------------------------------------------------*/
 
 /* This entire source file will be skipped if the application is not configured
  * to include software timer functionality.  If you want to include software timer
  * functionality then ensure configUSE_TIMERS is set to 1 in FreeRTOSConfig.h. */
-#endif /* configUSE_TIMERS == 1 */
+#అయితే_ముగింపు /* configUSE_TIMERS == 1 */
