@@ -120,7 +120,7 @@ isr_skip_decrement:
     sw  ra, 0(sp)
     /* vTaskSwitchContext(xCoreID) now expects xCoreID as an argument, so the assembly calls below have been modified. xCoreID is hard-wired to 0 for single-core risc-v. */
     li a0, 0
-    call vTaskSwitchContext
+    نادي vTaskSwitchContext
     lw  ra, 0(sp)
     addi sp, sp, 16
 

@@ -15,84 +15,84 @@
  * Real libc entry points are resolved via dlsym(RTLD_NEXT, …).
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <stdarg.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/uio.h>
-#include <sys/socket.h>
-#include <sys/select.h>
-#include <sys/time.h>
-#include <time.h>
-#include <poll.h>
-#include <dlfcn.h>
-#include <pthread.h>
+#ضمن <stdio.h>
+#ضمن <stdlib.h>
+#ضمن <string.h>
+#ضمن <errno.h>
+#ضمن <fcntl.h>
+#ضمن <stdarg.h>
+#ضمن <unistd.h>
+#ضمن <sys/types.h>
+#ضمن <sys/uio.h>
+#ضمن <sys/socket.h>
+#ضمن <sys/select.h>
+#ضمن <sys/time.h>
+#ضمن <time.h>
+#ضمن <poll.h>
+#ضمن <dlfcn.h>
+#ضمن <pthread.h>
 
-#include "linux_port_coop_internal.h"
-#include "esp_private/freertos_linux_coop_syscalls.h"
+#ضمن "linux_port_coop_internal.h"
+#ضمن "esp_private/freertos_linux_coop_syscalls.h"
 
-static ssize_t  (*real_readv)(int, const struct iovec *, int);
-static ssize_t  (*real_writev)(int, const struct iovec *, int);
-static ssize_t  (*real_recv)(int, void *, size_t, int);
-static ssize_t  (*real_send)(int, const void *, size_t, int);
-static ssize_t  (*real_recvfrom)(int, void *, size_t, int,
-                                 struct sockaddr *, socklen_t *);
-static ssize_t  (*real_sendto)(int, const void *, size_t, int,
-                                const struct sockaddr *, socklen_t);
-static ssize_t  (*real_recvmsg)(int, struct msghdr *, int);
-static ssize_t  (*real_sendmsg)(int, const struct msghdr *, int);
-static int      (*real_connect)(int, const struct sockaddr *, socklen_t);
-static int      (*real_accept)(int, struct sockaddr *, socklen_t *);
-static int      (*real_pselect)(int, fd_set *, fd_set *, fd_set *,
-                                const struct timespec *, const sigset_t *);
-static int      (*real_poll)(struct pollfd *, nfds_t, int);
-static int      (*real_socket)(int, int, int);
-static int      (*real_socketpair)(int, int, int, int[2]);
-static int      (*real_pipe)(int[2]);
-static int      (*real_pipe2)(int[2], int);
-static int      (*real_dup)(int);
-static int      (*real_dup2)(int, int);
-static int      (*real_nanosleep)(const struct timespec *, struct timespec *);
-static ssize_t  (*real_read)(int, void *, size_t);
-static ssize_t  (*real_write)(int, const void *, size_t);
-static ssize_t  (*real_pread)(int, void *, size_t, off_t);
-static ssize_t  (*real_pwrite)(int, const void *, size_t, off_t);
-static int      (*real_close)(int);
-static int      (*real_select)(int, fd_set *, fd_set *, fd_set *,
-                                struct timeval *);
+ساكن ssize_t  (*real_readv)(صحيح, ثابت بنية iovec *, صحيح);
+ساكن ssize_t  (*real_writev)(صحيح, ثابت بنية iovec *, صحيح);
+ساكن ssize_t  (*real_recv)(صحيح, فراغ *, size_t, صحيح);
+ساكن ssize_t  (*real_send)(صحيح, ثابت فراغ *, size_t, صحيح);
+ساكن ssize_t  (*real_recvfrom)(صحيح, فراغ *, size_t, صحيح,
+                                 بنية sockaddr *, socklen_t *);
+ساكن ssize_t  (*real_sendto)(صحيح, ثابت فراغ *, size_t, صحيح,
+                                ثابت بنية sockaddr *, socklen_t);
+ساكن ssize_t  (*real_recvmsg)(صحيح, بنية msghdr *, صحيح);
+ساكن ssize_t  (*real_sendmsg)(صحيح, ثابت بنية msghdr *, صحيح);
+ساكن صحيح      (*real_connect)(صحيح, ثابت بنية sockaddr *, socklen_t);
+ساكن صحيح      (*real_accept)(صحيح, بنية sockaddr *, socklen_t *);
+ساكن صحيح      (*real_pselect)(صحيح, fd_set *, fd_set *, fd_set *,
+                                ثابت بنية timespec *, ثابت sigset_t *);
+ساكن صحيح      (*real_poll)(بنية pollfd *, nfds_t, صحيح);
+ساكن صحيح      (*real_socket)(صحيح, صحيح, صحيح);
+ساكن صحيح      (*real_socketpair)(صحيح, صحيح, صحيح, صحيح[2]);
+ساكن صحيح      (*real_pipe)(صحيح[2]);
+ساكن صحيح      (*real_pipe2)(صحيح[2], صحيح);
+ساكن صحيح      (*real_dup)(صحيح);
+ساكن صحيح      (*real_dup2)(صحيح, صحيح);
+ساكن صحيح      (*real_nanosleep)(ثابت بنية timespec *, بنية timespec *);
+ساكن ssize_t  (*real_read)(صحيح, فراغ *, size_t);
+ساكن ssize_t  (*real_write)(صحيح, ثابت فراغ *, size_t);
+ساكن ssize_t  (*real_pread)(صحيح, فراغ *, size_t, off_t);
+ساكن ssize_t  (*real_pwrite)(صحيح, ثابت فراغ *, size_t, off_t);
+ساكن صحيح      (*real_close)(صحيح);
+ساكن صحيح      (*real_select)(صحيح, fd_set *, fd_set *, fd_set *,
+                                بنية timeval *);
 
-typedef int (*linux_coop_fcntl_fn_t)(int, int, ...);
-static linux_coop_fcntl_fn_t real_fcntl;
+تعريفنوع صحيح (*linux_coop_fcntl_fn_t)(صحيح, صحيح, ...);
+ساكن linux_coop_fcntl_fn_t real_fcntl;
 
-typedef int (*linux_coop_open_fn_t)(const char *, int, mode_t);
-static linux_coop_open_fn_t real_open;
+تعريفنوع صحيح (*linux_coop_open_fn_t)(ثابت حرف *, صحيح, mode_t);
+ساكن linux_coop_open_fn_t real_open;
 
-typedef struct linux_coop_fd_state {
-    int fd;
-    int user_flags;
-    struct linux_coop_fd_state *next;
+تعريفنوع بنية linux_coop_fd_state {
+    صحيح fd;
+    صحيح user_flags;
+    بنية linux_coop_fd_state *next;
 } linux_coop_fd_state_t;
 
-static linux_coop_fd_state_t *s_fd_state_list;
-static pthread_mutex_t s_fd_state_lock = PTHREAD_MUTEX_INITIALIZER;
+ساكن linux_coop_fd_state_t *s_fd_state_list;
+ساكن pthread_mutex_t s_fd_state_lock = PTHREAD_MUTEX_INITIALIZER;
 
-static linux_coop_fd_state_t *linux_coop_find_fd_locked(int fd)
+ساكن linux_coop_fd_state_t *linux_coop_find_fd_locked(صحيح fd)
 {
-    linux_coop_fd_state_t *node = s_fd_state_list;
-    while (node != NULL) {
-        if (node->fd == fd) {
-            return node;
+    linux_coop_fd_state_t *تۈگۈن = s_fd_state_list;
+    طالما (تۈگۈن != عدم) {
+        إذا (تۈگۈن->fd == fd) {
+            أرجع تۈگۈن;
         }
-        node = node->next;
+        تۈگۈن = تۈگۈن->next;
     }
-    return NULL;
+    أرجع عدم;
 }
 
-static void __attribute__((constructor)) linux_coop_resolve_all(void)
+ساكن فراغ __attribute__((constructor)) linux_coop_resolve_all(فراغ)
 {
     LINUX_COOP_RESOLVE(readv);
     LINUX_COOP_RESOLVE(writev);
@@ -114,8 +114,8 @@ static void __attribute__((constructor)) linux_coop_resolve_all(void)
     LINUX_COOP_RESOLVE(dup2);
     LINUX_COOP_RESOLVE(nanosleep);
     LINUX_COOP_RESOLVE(fcntl);
-    LINUX_COOP_RESOLVE(read);
-    LINUX_COOP_RESOLVE(write);
+    LINUX_COOP_RESOLVE(اقرأ);
+    LINUX_COOP_RESOLVE(اكتب);
     LINUX_COOP_RESOLVE(pread);
     LINUX_COOP_RESOLVE(pwrite);
     LINUX_COOP_RESOLVE(close);
@@ -123,169 +123,169 @@ static void __attribute__((constructor)) linux_coop_resolve_all(void)
     LINUX_COOP_RESOLVE(open);
 }
 
-void linux_coop_set_nonblocking(int fd)
+فراغ linux_coop_set_nonblocking(صحيح fd)
 {
-    if (fd >= 0) {
-        int flags = real_fcntl(fd, F_GETFL, 0);
-        if (flags >= 0) {
+    إذا (fd >= 0) {
+        صحيح flags = real_fcntl(fd, F_GETFL, 0);
+        إذا (flags >= 0) {
             real_fcntl(fd, F_SETFL, flags | O_NONBLOCK);
         }
     }
 }
 
-void linux_coop_track_fd(int fd, int user_flags)
+فراغ linux_coop_track_fd(صحيح fd, صحيح user_flags)
 {
-    if (fd < 0) {
-        return;
+    إذا (fd < 0) {
+        أرجع;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
-    linux_coop_fd_state_t *node = linux_coop_find_fd_locked(fd);
-    if (node != NULL) {
-        node->user_flags = user_flags;
+    linux_coop_fd_state_t *تۈگۈن = linux_coop_find_fd_locked(fd);
+    إذا (تۈگۈن != عدم) {
+        تۈگۈن->user_flags = user_flags;
         pthread_mutex_unlock(&s_fd_state_lock);
-        return;
+        أرجع;
     }
 
-    node = calloc(1, sizeof(*node));
-    if (node != NULL) {
-        node->fd = fd;
-        node->user_flags = user_flags;
-        node->next = s_fd_state_list;
-        s_fd_state_list = node;
+    تۈگۈن = calloc(1, حجم(*تۈگۈن));
+    إذا (تۈگۈن != عدم) {
+        تۈگۈن->fd = fd;
+        تۈگۈن->user_flags = user_flags;
+        تۈگۈن->next = s_fd_state_list;
+        s_fd_state_list = تۈگۈن;
     }
     pthread_mutex_unlock(&s_fd_state_lock);
 }
 
-void linux_coop_untrack_fd(int fd)
+فراغ linux_coop_untrack_fd(صحيح fd)
 {
-    if (fd < 0) {
-        return;
+    إذا (fd < 0) {
+        أرجع;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
-    linux_coop_fd_state_t *prev = NULL;
-    linux_coop_fd_state_t *node = s_fd_state_list;
-    while (node != NULL) {
-        if (node->fd == fd) {
-            if (prev == NULL) {
-                s_fd_state_list = node->next;
-            } else {
-                prev->next = node->next;
+    linux_coop_fd_state_t *prev = عدم;
+    linux_coop_fd_state_t *تۈگۈن = s_fd_state_list;
+    طالما (تۈگۈن != عدم) {
+        إذا (تۈگۈن->fd == fd) {
+            إذا (prev == عدم) {
+                s_fd_state_list = تۈگۈن->next;
+            } وإلا {
+                prev->next = تۈگۈن->next;
             }
-            free(node);
-            break;
+            حرر(تۈگۈن);
+            اكسر;
         }
-        prev = node;
-        node = node->next;
+        prev = تۈگۈن;
+        تۈگۈن = تۈگۈن->next;
     }
     pthread_mutex_unlock(&s_fd_state_lock);
 }
 
-void linux_coop_set_user_flags(int fd, int user_flags)
+فراغ linux_coop_set_user_flags(صحيح fd, صحيح user_flags)
 {
     linux_coop_track_fd(fd, user_flags);
 }
 
-bool linux_coop_get_user_flags(int fd, int *flags)
+bool linux_coop_get_user_flags(صحيح fd, صحيح *flags)
 {
-    if (fd < 0 || flags == NULL) {
-        return false;
+    إذا (fd < 0 || flags == عدم) {
+        أرجع false;
     }
 
     pthread_mutex_lock(&s_fd_state_lock);
-    linux_coop_fd_state_t *node = linux_coop_find_fd_locked(fd);
-    if (node == NULL) {
+    linux_coop_fd_state_t *تۈگۈن = linux_coop_find_fd_locked(fd);
+    إذا (تۈگۈن == عدم) {
         pthread_mutex_unlock(&s_fd_state_lock);
-        return false;
+        أرجع false;
     }
-    *flags = node->user_flags;
+    *flags = تۈگۈن->user_flags;
     pthread_mutex_unlock(&s_fd_state_lock);
-    return true;
+    أرجع true;
 }
 
-bool linux_coop_fd_user_nonblocking(int fd)
+bool linux_coop_fd_user_nonblocking(صحيح fd)
 {
-    int user_flags = 0;
-    if (linux_coop_get_user_flags(fd, &user_flags)) {
-        return (user_flags & O_NONBLOCK) != 0;
+    صحيح user_flags = 0;
+    إذا (linux_coop_get_user_flags(fd, &user_flags)) {
+        أرجع (user_flags & O_NONBLOCK) != 0;
     }
-    return false;
+    أرجع false;
 }
 
 
-ssize_t freertos_linux_coop_read(int fd, void *buf, size_t count)
+ssize_t freertos_linux_coop_read(صحيح fd, فراغ *buf, size_t سانى)
 {
-    LINUX_COOP_IO_LOOP(fd, real_read(fd, buf, count))
+    LINUX_COOP_IO_LOOP(fd, real_read(fd, buf, سانى))
 }
 
-ssize_t freertos_linux_coop_write(int fd, const void *buf, size_t count)
+ssize_t freertos_linux_coop_write(صحيح fd, ثابت فراغ *buf, size_t سانى)
 {
-    LINUX_COOP_IO_LOOP(fd, real_write(fd, buf, count))
+    LINUX_COOP_IO_LOOP(fd, real_write(fd, buf, سانى))
 }
 
-ssize_t freertos_linux_coop_pread(int fd, void *buf, size_t count, off_t offset)
+ssize_t freertos_linux_coop_pread(صحيح fd, فراغ *buf, size_t سانى, off_t offset)
 {
-    LINUX_COOP_IO_LOOP(fd, real_pread(fd, buf, count, offset))
+    LINUX_COOP_IO_LOOP(fd, real_pread(fd, buf, سانى, offset))
 }
 
-ssize_t freertos_linux_coop_pwrite(int fd, const void *buf, size_t count, off_t offset)
+ssize_t freertos_linux_coop_pwrite(صحيح fd, ثابت فراغ *buf, size_t سانى, off_t offset)
 {
-    LINUX_COOP_IO_LOOP(fd, real_pwrite(fd, buf, count, offset))
+    LINUX_COOP_IO_LOOP(fd, real_pwrite(fd, buf, سانى, offset))
 }
 
-int freertos_linux_coop_open(const char *path, int flags, int mode)
+صحيح freertos_linux_coop_open(ثابت حرف *path, صحيح flags, صحيح mode)
 {
-    int fd = real_open(path, flags, (mode_t)mode);
+    صحيح fd = real_open(path, flags, (mode_t)mode);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, flags & O_NONBLOCK);
-    return fd;
+    أرجع fd;
 }
 
-int freertos_linux_coop_close(int fd)
+صحيح freertos_linux_coop_close(صحيح fd)
 {
-    int ret = real_close(fd);
-    if (ret == 0 || errno == EINTR) {
+    صحيح ret = real_close(fd);
+    إذا (ret == 0 || errno == EINTR) {
         /* On Linux, close() always releases the fd even when returning
          * EINTR.  Retrying would risk closing a fd reused by another
          * thread.  Treat EINTR as success. */
         linux_coop_untrack_fd(fd);
-        return 0;
+        أرجع 0;
     }
-    return -1;
+    أرجع -1;
 }
 
-int freertos_linux_coop_fcntl(int fd, int cmd, int arg)
+صحيح freertos_linux_coop_fcntl(صحيح fd, صحيح cmd, صحيح arg)
 {
-    if (cmd == F_GETFL) {
-        int real_flags = real_fcntl(fd, F_GETFL, 0);
-        if (real_flags < 0) {
-            return -1;
+    إذا (cmd == F_GETFL) {
+        صحيح real_flags = real_fcntl(fd, F_GETFL, 0);
+        إذا (real_flags < 0) {
+            أرجع -1;
         }
-        int user_flags = 0;
-        if (linux_coop_get_user_flags(fd, &user_flags)) {
+        صحيح user_flags = 0;
+        إذا (linux_coop_get_user_flags(fd, &user_flags)) {
             real_flags &= ~O_NONBLOCK;
             real_flags |= (user_flags & O_NONBLOCK);
         }
-        return real_flags;
+        أرجع real_flags;
     }
-    if (cmd == F_SETFL) {
+    إذا (cmd == F_SETFL) {
         linux_coop_set_user_flags(fd, arg);
-        int internal_flags = arg | O_NONBLOCK;
-        return real_fcntl(fd, F_SETFL, internal_flags);
+        صحيح internal_flags = arg | O_NONBLOCK;
+        أرجع real_fcntl(fd, F_SETFL, internal_flags);
     }
-    return real_fcntl(fd, cmd, arg);
+    أرجع real_fcntl(fd, cmd, arg);
 }
 
-int freertos_linux_coop_select(int nfds, fd_set *readfds, fd_set *writefds,
-                      fd_set *exceptfds, struct timeval *timeout)
+صحيح freertos_linux_coop_select(صحيح nfds, fd_set *readfds, fd_set *writefds,
+                      fd_set *exceptfds, بنية timeval *timeout)
 {
     long timeout_ms = -1;
-    if (timeout != NULL) {
+    إذا (timeout != عدم) {
         timeout_ms = (long)timeout->tv_sec * 1000 +
                      (timeout->tv_usec + 999) / 1000;
-        if (timeout_ms == 0) {
-            return real_select(nfds, readfds, writefds, exceptfds, timeout);
+        إذا (timeout_ms == 0) {
+            أرجع real_select(nfds, readfds, writefds, exceptfds, timeout);
         }
     }
 
@@ -294,45 +294,45 @@ int freertos_linux_coop_select(int nfds, fd_set *readfds, fd_set *writefds,
      * iterations we must snapshot the caller's sets and restore them on every
      * loop. */
     fd_set rfds_in, wfds_in, efds_in;
-    if (readfds != NULL) {
+    إذا (readfds != عدم) {
         rfds_in = *readfds;
     }
-    if (writefds != NULL) {
+    إذا (writefds != عدم) {
         wfds_in = *writefds;
     }
-    if (exceptfds != NULL) {
+    إذا (exceptfds != عدم) {
         efds_in = *exceptfds;
     }
 
     long waited_ms = 0;
-    while (1) {
-        if (readfds != NULL) {
+    طالما (1) {
+        إذا (readfds != عدم) {
             *readfds = rfds_in;
         }
-        if (writefds != NULL) {
+        إذا (writefds != عدم) {
             *writefds = wfds_in;
         }
-        if (exceptfds != NULL) {
+        إذا (exceptfds != عدم) {
             *exceptfds = efds_in;
         }
 
-        struct timeval zero_tv = {0, 0};
-        int ret = real_select(nfds, readfds, writefds, exceptfds, &zero_tv);
-        if (ret != 0) {
-            return ret;
+        بنية timeval zero_tv = {0, 0};
+        صحيح ret = real_select(nfds, readfds, writefds, exceptfds, &zero_tv);
+        إذا (ret != 0) {
+            أرجع ret;
         }
-        if (timeout_ms == 0) {
-            return 0;
+        إذا (timeout_ms == 0) {
+            أرجع 0;
         }
-        if (timeout_ms > 0 && waited_ms >= timeout_ms) {
-            return 0;
+        إذا (timeout_ms > 0 && waited_ms >= timeout_ms) {
+            أرجع 0;
         }
         linux_coop_yield(LINUX_COOP_TICK_MS);
         waited_ms += LINUX_COOP_TICK_MS;
     }
 }
 
-void freertos_linux_coop_syscalls_init(void)
+فراغ freertos_linux_coop_syscalls_init(فراغ)
 {
     linux_coop_set_nonblocking(STDIN_FILENO);
     linux_coop_set_nonblocking(STDOUT_FILENO);
@@ -346,252 +346,252 @@ void freertos_linux_coop_syscalls_init(void)
  * is linked.  When VFS is absent the weak versions provide cooperative
  * behaviour directly via real libc. */
 
-__attribute__((weak)) ssize_t read(int fd, void *buf, size_t count)
+__attribute__((weak)) ssize_t اقرأ(صحيح fd, فراغ *buf, size_t سانى)
 {
-    return freertos_linux_coop_read(fd, buf, count);
+    أرجع freertos_linux_coop_read(fd, buf, سانى);
 }
 
-__attribute__((weak)) ssize_t write(int fd, const void *buf, size_t count)
+__attribute__((weak)) ssize_t اكتب(صحيح fd, ثابت فراغ *buf, size_t سانى)
 {
-    return freertos_linux_coop_write(fd, buf, count);
+    أرجع freertos_linux_coop_write(fd, buf, سانى);
 }
 
-__attribute__((weak)) ssize_t pread(int fd, void *buf, size_t count, off_t offset)
+__attribute__((weak)) ssize_t pread(صحيح fd, فراغ *buf, size_t سانى, off_t offset)
 {
-    return freertos_linux_coop_pread(fd, buf, count, offset);
+    أرجع freertos_linux_coop_pread(fd, buf, سانى, offset);
 }
 
-__attribute__((weak)) ssize_t pwrite(int fd, const void *buf, size_t count, off_t offset)
+__attribute__((weak)) ssize_t pwrite(صحيح fd, ثابت فراغ *buf, size_t سانى, off_t offset)
 {
-    return freertos_linux_coop_pwrite(fd, buf, count, offset);
+    أرجع freertos_linux_coop_pwrite(fd, buf, سانى, offset);
 }
 
-__attribute__((weak)) int open(const char *path, int flags, ...)
+__attribute__((weak)) صحيح open(ثابت حرف *path, صحيح flags, ...)
 {
-    int mode = 0;
-    if (flags & O_CREAT) {
+    صحيح mode = 0;
+    إذا (flags & O_CREAT) {
         va_list ap;
         va_start(ap, flags);
-        mode = va_arg(ap, int);
+        mode = va_arg(ap, صحيح);
         va_end(ap);
     }
-    return freertos_linux_coop_open(path, flags, mode);
+    أرجع freertos_linux_coop_open(path, flags, mode);
 }
 
-__attribute__((weak)) int close(int fd)
+__attribute__((weak)) صحيح close(صحيح fd)
 {
-    return freertos_linux_coop_close(fd);
+    أرجع freertos_linux_coop_close(fd);
 }
 
-__attribute__((weak)) int fcntl(int fd, int cmd, ...)
+__attribute__((weak)) صحيح fcntl(صحيح fd, صحيح cmd, ...)
 {
-    int arg = 0;
-    if (cmd != F_GETFL) {
+    صحيح arg = 0;
+    إذا (cmd != F_GETFL) {
         va_list list;
         va_start(list, cmd);
-        arg = va_arg(list, int);
+        arg = va_arg(list, صحيح);
         va_end(list);
     }
-    return freertos_linux_coop_fcntl(fd, cmd, arg);
+    أرجع freertos_linux_coop_fcntl(fd, cmd, arg);
 }
 
-__attribute__((weak)) int select(int nfds, fd_set *readfds, fd_set *writefds,
-                                 fd_set *exceptfds, struct timeval *timeout)
+__attribute__((weak)) صحيح select(صحيح nfds, fd_set *readfds, fd_set *writefds,
+                                 fd_set *exceptfds, بنية timeval *timeout)
 {
-    return freertos_linux_coop_select(nfds, readfds, writefds, exceptfds, timeout);
+    أرجع freertos_linux_coop_select(nfds, readfds, writefds, exceptfds, timeout);
 }
 
-ssize_t freertos_linux_coop_readv(int fd, const struct iovec *iov, int iovcnt)
+ssize_t freertos_linux_coop_readv(صحيح fd, ثابت بنية iovec *iov, صحيح iovcnt)
 {
     LINUX_COOP_IO_LOOP(fd, real_readv(fd, iov, iovcnt))
 }
 
-ssize_t freertos_linux_coop_writev(int fd, const struct iovec *iov, int iovcnt)
+ssize_t freertos_linux_coop_writev(صحيح fd, ثابت بنية iovec *iov, صحيح iovcnt)
 {
     LINUX_COOP_IO_LOOP(fd, real_writev(fd, iov, iovcnt))
 }
 
-ssize_t freertos_linux_coop_recv(int sockfd, void *buf, size_t len, int flags)
+ssize_t freertos_linux_coop_recv(صحيح sockfd, فراغ *buf, size_t len, صحيح flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recv(sockfd, buf, len, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_send(int sockfd, const void *buf, size_t len, int flags)
+ssize_t freertos_linux_coop_send(صحيح sockfd, ثابت فراغ *buf, size_t len, صحيح flags)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_send(sockfd, buf, len, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_recvfrom(int sockfd, void *buf, size_t len, int flags,
-                 struct sockaddr *src_addr, socklen_t *addrlen)
+ssize_t freertos_linux_coop_recvfrom(صحيح sockfd, فراغ *buf, size_t len, صحيح flags,
+                 بنية sockaddr *src_addr, socklen_t *addrlen)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_recvfrom(sockfd, buf, len, flags | MSG_DONTWAIT,
                             src_addr, addrlen))
 }
 
-ssize_t freertos_linux_coop_sendto(int sockfd, const void *buf, size_t len, int flags,
-               const struct sockaddr *dest_addr, socklen_t addrlen)
+ssize_t freertos_linux_coop_sendto(صحيح sockfd, ثابت فراغ *buf, size_t len, صحيح flags,
+               ثابت بنية sockaddr *dest_addr, socklen_t addrlen)
 {
     LINUX_COOP_IO_LOOP(sockfd, real_sendto(sockfd, buf, len, flags | MSG_DONTWAIT,
                           dest_addr, addrlen))
 }
 
-ssize_t freertos_linux_coop_recvmsg(int sockfd, struct msghdr *msg, int flags)
+ssize_t freertos_linux_coop_recvmsg(صحيح sockfd, بنية msghdr *ئۇچۇر, صحيح flags)
 {
-    LINUX_COOP_IO_LOOP(sockfd, real_recvmsg(sockfd, msg, flags | MSG_DONTWAIT))
+    LINUX_COOP_IO_LOOP(sockfd, real_recvmsg(sockfd, ئۇچۇر, flags | MSG_DONTWAIT))
 }
 
-ssize_t freertos_linux_coop_sendmsg(int sockfd, const struct msghdr *msg, int flags)
+ssize_t freertos_linux_coop_sendmsg(صحيح sockfd, ثابت بنية msghdr *ئۇچۇر, صحيح flags)
 {
-    LINUX_COOP_IO_LOOP(sockfd, real_sendmsg(sockfd, msg, flags | MSG_DONTWAIT))
+    LINUX_COOP_IO_LOOP(sockfd, real_sendmsg(sockfd, ئۇچۇر, flags | MSG_DONTWAIT))
 }
 
-__attribute__((weak)) ssize_t readv(int fd, const struct iovec *iov, int iovcnt)
+__attribute__((weak)) ssize_t readv(صحيح fd, ثابت بنية iovec *iov, صحيح iovcnt)
 {
-    return freertos_linux_coop_readv(fd, iov, iovcnt);
+    أرجع freertos_linux_coop_readv(fd, iov, iovcnt);
 }
 
-__attribute__((weak)) ssize_t writev(int fd, const struct iovec *iov, int iovcnt)
+__attribute__((weak)) ssize_t writev(صحيح fd, ثابت بنية iovec *iov, صحيح iovcnt)
 {
-    return freertos_linux_coop_writev(fd, iov, iovcnt);
+    أرجع freertos_linux_coop_writev(fd, iov, iovcnt);
 }
 
-__attribute__((weak)) ssize_t recv(int sockfd, void *buf, size_t len, int flags)
+__attribute__((weak)) ssize_t recv(صحيح sockfd, فراغ *buf, size_t len, صحيح flags)
 {
-    return freertos_linux_coop_recv(sockfd, buf, len, flags);
+    أرجع freertos_linux_coop_recv(sockfd, buf, len, flags);
 }
 
-__attribute__((weak)) ssize_t send(int sockfd, const void *buf, size_t len, int flags)
+__attribute__((weak)) ssize_t send(صحيح sockfd, ثابت فراغ *buf, size_t len, صحيح flags)
 {
-    return freertos_linux_coop_send(sockfd, buf, len, flags);
+    أرجع freertos_linux_coop_send(sockfd, buf, len, flags);
 }
 
-__attribute__((weak)) ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
-                 struct sockaddr *src_addr, socklen_t *addrlen)
+__attribute__((weak)) ssize_t recvfrom(صحيح sockfd, فراغ *buf, size_t len, صحيح flags,
+                 بنية sockaddr *src_addr, socklen_t *addrlen)
 {
-    return freertos_linux_coop_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
+    أرجع freertos_linux_coop_recvfrom(sockfd, buf, len, flags, src_addr, addrlen);
 }
 
-__attribute__((weak)) ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
-               const struct sockaddr *dest_addr, socklen_t addrlen)
+__attribute__((weak)) ssize_t sendto(صحيح sockfd, ثابت فراغ *buf, size_t len, صحيح flags,
+               ثابت بنية sockaddr *dest_addr, socklen_t addrlen)
 {
-    return freertos_linux_coop_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
+    أرجع freertos_linux_coop_sendto(sockfd, buf, len, flags, dest_addr, addrlen);
 }
 
-__attribute__((weak)) ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
+__attribute__((weak)) ssize_t recvmsg(صحيح sockfd, بنية msghdr *ئۇچۇر, صحيح flags)
 {
-    return freertos_linux_coop_recvmsg(sockfd, msg, flags);
+    أرجع freertos_linux_coop_recvmsg(sockfd, ئۇچۇر, flags);
 }
 
-__attribute__((weak)) ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags)
+__attribute__((weak)) ssize_t sendmsg(صحيح sockfd, ثابت بنية msghdr *ئۇچۇر, صحيح flags)
 {
-    return freertos_linux_coop_sendmsg(sockfd, msg, flags);
+    أرجع freertos_linux_coop_sendmsg(sockfd, ئۇچۇر, flags);
 }
 
-int freertos_linux_coop_connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+صحيح freertos_linux_coop_connect(صحيح sockfd, ثابت بنية sockaddr *addr, socklen_t addrlen)
 {
-    while (1)
+    طالما (1)
     {
-        int ret = real_connect(sockfd, addr, addrlen);
-        if (ret == 0) {
-            return ret;
+        صحيح ret = real_connect(sockfd, addr, addrlen);
+        إذا (ret == 0) {
+            أرجع ret;
         }
 
-        if (errno == EINPROGRESS || errno == EALREADY) {
-            struct pollfd pfd;
+        إذا (errno == EINPROGRESS || errno == EALREADY) {
+            بنية pollfd pfd;
             pfd.fd = sockfd;
             pfd.events = POLLOUT;
             pfd.revents = 0;
 
-            int poll_retries = 0;
-            while (1)
+            صحيح poll_retries = 0;
+            طالما (1)
             {
-                int press = real_poll(&pfd, 1, 0);
-                if (press > 0) {
-                    int so_err = 0;
-                    socklen_t len = sizeof(so_err);
-                    if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
+                صحيح press = real_poll(&pfd, 1, 0);
+                إذا (press > 0) {
+                    صحيح so_err = 0;
+                    socklen_t len = حجم(so_err);
+                    إذا (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
                                    &so_err, &len) < 0) {
-                        return -1;
+                        أرجع -1;
                     }
-                    if (so_err == 0) {
-                        return 0;
-                    } else {
+                    إذا (so_err == 0) {
+                        أرجع 0;
+                    } وإلا {
                         errno = so_err;
-                        return -1;
+                        أرجع -1;
                     }
-                } else if (press == 0) {
+                } وإلا إذا (press == 0) {
                     linux_coop_yield(LINUX_COOP_TICK_MS);
-                    continue;
-                } else {
-                    if (errno == EINTR) {
-                        continue;
+                    استمر;
+                } وإلا {
+                    إذا (errno == EINTR) {
+                        استمر;
                     }
                     /* Non-EINTR poll error; bail out after a few retries */
-                    if (++poll_retries > 3) {
-                        return -1;
+                    إذا (++poll_retries > 3) {
+                        أرجع -1;
                     }
                     linux_coop_yield(LINUX_COOP_TICK_MS);
-                    continue;
+                    استمر;
                 }
             }
         }
 
-        if (errno == EINTR) {
-            return -1;
+        إذا (errno == EINTR) {
+            أرجع -1;
         }
 
-        return -1;
+        أرجع -1;
     }
 }
 
-int freertos_linux_coop_accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+صحيح freertos_linux_coop_accept(صحيح sockfd, بنية sockaddr *addr, socklen_t *addrlen)
 {
-    while (1)
+    طالما (1)
     {
-        int fd = real_accept(sockfd, addr, addrlen);
-        if (fd >= 0) {
+        صحيح fd = real_accept(sockfd, addr, addrlen);
+        إذا (fd >= 0) {
             linux_coop_set_nonblocking(fd);
             linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(sockfd) ? O_NONBLOCK : 0);
-            return fd;
+            أرجع fd;
         }
-        if (errno == EAGAIN || errno == EWOULDBLOCK) {
-            if (linux_coop_fd_user_nonblocking(sockfd)) {
-                return -1;
+        إذا (errno == EAGAIN || errno == EWOULDBLOCK) {
+            إذا (linux_coop_fd_user_nonblocking(sockfd)) {
+                أرجع -1;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
-            continue;
+            استمر;
         }
-        return -1;
+        أرجع -1;
     }
 }
 
-int freertos_linux_coop_pselect(int nfds, fd_set *readfds, fd_set *writefds,
-            fd_set *exceptfds, const struct timespec *timeout,
-            const sigset_t *sigmask)
+صحيح freertos_linux_coop_pselect(صحيح nfds, fd_set *readfds, fd_set *writefds,
+            fd_set *exceptfds, ثابت بنية timespec *timeout,
+            ثابت sigset_t *sigmask)
 {
     long timeout_ms = -1;
-    if (timeout != NULL) {
+    إذا (timeout != عدم) {
         timeout_ms = (long)timeout->tv_sec * 1000 +
                      (timeout->tv_nsec + 999999) / 1000000;
-        if (timeout_ms == 0) {
-            return real_pselect(nfds, readfds, writefds, exceptfds,
+        إذا (timeout_ms == 0) {
+            أرجع real_pselect(nfds, readfds, writefds, exceptfds,
                                 timeout, sigmask);
         }
     }
 
     long waited_ms = 0;
-    while (1)
+    طالما (1)
     {
-        struct timespec zero_ts = {0, 0};
-        int ret = real_pselect(nfds, readfds, writefds, exceptfds,
+        بنية timespec zero_ts = {0, 0};
+        صحيح ret = real_pselect(nfds, readfds, writefds, exceptfds,
                                &zero_ts, sigmask);
-        if (ret != 0) {
-            return ret;
+        إذا (ret != 0) {
+            أرجع ret;
         }
 
-        if (timeout_ms == 0 ||
+        إذا (timeout_ms == 0 ||
             (timeout_ms > 0 && waited_ms >= timeout_ms)) {
-            return 0;
+            أرجع 0;
         }
 
         linux_coop_yield(LINUX_COOP_TICK_MS);
@@ -599,197 +599,197 @@ int freertos_linux_coop_pselect(int nfds, fd_set *readfds, fd_set *writefds,
     }
 }
 
-int freertos_linux_coop_poll(struct pollfd *fds, nfds_t nfds, int timeout)
+صحيح freertos_linux_coop_poll(بنية pollfd *fds, nfds_t nfds, صحيح timeout)
 {
-    if (timeout == 0) {
-        return real_poll(fds, nfds, 0);
+    إذا (timeout == 0) {
+        أرجع real_poll(fds, nfds, 0);
     }
 
     long timeout_ms = -1;
-    if (timeout > 0) {
+    إذا (timeout > 0) {
         timeout_ms = timeout;
     }
 
     long waited_ms = 0;
 
-    while (1)
+    طالما (1)
     {
-        int ret = real_poll(fds, nfds, 0);
-        if (ret > 0) {
-            return ret;
-        } else if (ret == 0) {
-            if (timeout_ms == 0 ||
+        صحيح ret = real_poll(fds, nfds, 0);
+        إذا (ret > 0) {
+            أرجع ret;
+        } وإلا إذا (ret == 0) {
+            إذا (timeout_ms == 0 ||
                 (timeout_ms > 0 && waited_ms >= timeout_ms)) {
-                return 0;
+                أرجع 0;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
             waited_ms += LINUX_COOP_TICK_MS;
-            continue;
-        } else {
-            if (errno == EINTR) {
-                continue;
+            استمر;
+        } وإلا {
+            إذا (errno == EINTR) {
+                استمر;
             }
             linux_coop_yield(LINUX_COOP_TICK_MS);
-            if (timeout_ms > 0 && waited_ms >= timeout_ms) {
-                return -1;
+            إذا (timeout_ms > 0 && waited_ms >= timeout_ms) {
+                أرجع -1;
             }
             waited_ms += LINUX_COOP_TICK_MS;
         }
     }
 }
 
-int nanosleep(const struct timespec *req, struct timespec *rem)
+صحيح nanosleep(ثابت بنية timespec *req, بنية timespec *rem)
 {
-    if (req == NULL) {
+    إذا (req == عدم) {
         errno = EFAULT;
-        return -1;
+        أرجع -1;
     }
-    if (!linux_port_in_freertos_task()) {
-        return real_nanosleep(req, rem);
+    إذا (!linux_port_in_freertos_task()) {
+        أرجع real_nanosleep(req, rem);
     }
     long ms = req->tv_sec * 1000 + (req->tv_nsec + 999999) / 1000000;
-    if (ms <= 0) {
+    إذا (ms <= 0) {
         ms = 1;
     }
     vTaskDelay(ms);
-    if (rem) {
+    إذا (rem) {
         rem->tv_sec = 0;
         rem->tv_nsec = 0;
     }
-    return 0;
+    أرجع 0;
 }
 
-unsigned int sleep(unsigned int seconds)
+unsigned صحيح sleep(unsigned صحيح seconds)
 {
     linux_coop_yield(seconds * 1000);
-    return 0;
+    أرجع 0;
 }
 
-int usleep(useconds_t usec)
+صحيح usleep(useconds_t usec)
 {
     linux_coop_yield(usec / 1000);
-    return 0;
+    أرجع 0;
 }
 
-int freertos_linux_coop_socket(int domain, int type, int protocol)
+صحيح freertos_linux_coop_socket(صحيح domain, صحيح type, صحيح protocol)
 {
-    int fd = real_socket(domain, type, protocol);
+    صحيح fd = real_socket(domain, type, protocol);
     linux_coop_set_nonblocking(fd);
 #ifdef SOCK_NONBLOCK
-    const int user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
-#else
-    const int user_flags = 0;
+    ثابت صحيح user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
+#وإلا
+    ثابت صحيح user_flags = 0;
 #endif
     linux_coop_track_fd(fd, user_flags);
-    return fd;
+    أرجع fd;
 }
 
-int freertos_linux_coop_socketpair(int domain, int type, int protocol, int *sv)
+صحيح freertos_linux_coop_socketpair(صحيح domain, صحيح type, صحيح protocol, صحيح *sv)
 {
-    int ret = real_socketpair(domain, type, protocol, sv);
-    if (ret == 0) {
+    صحيح ret = real_socketpair(domain, type, protocol, sv);
+    إذا (ret == 0) {
         linux_coop_set_nonblocking(sv[0]);
         linux_coop_set_nonblocking(sv[1]);
 #ifdef SOCK_NONBLOCK
-        const int user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
-#else
-        const int user_flags = 0;
+        ثابت صحيح user_flags = (type & SOCK_NONBLOCK) ? O_NONBLOCK : 0;
+#وإلا
+        ثابت صحيح user_flags = 0;
 #endif
         linux_coop_track_fd(sv[0], user_flags);
         linux_coop_track_fd(sv[1], user_flags);
     }
-    return ret;
+    أرجع ret;
 }
 
-int freertos_linux_coop_pipe(int *fds)
+صحيح freertos_linux_coop_pipe(صحيح *fds)
 {
-    int ret = real_pipe(fds);
-    if (ret == 0) {
+    صحيح ret = real_pipe(fds);
+    إذا (ret == 0) {
         linux_coop_set_nonblocking(fds[0]);
         linux_coop_set_nonblocking(fds[1]);
         linux_coop_track_fd(fds[0], 0);
         linux_coop_track_fd(fds[1], 0);
     }
-    return ret;
+    أرجع ret;
 }
 
-int freertos_linux_coop_pipe2(int *fds, int flags)
+صحيح freertos_linux_coop_pipe2(صحيح *fds, صحيح flags)
 {
-    int ret = real_pipe2(fds, flags);
-    if (ret == 0) {
+    صحيح ret = real_pipe2(fds, flags);
+    إذا (ret == 0) {
         linux_coop_set_nonblocking(fds[0]);
         linux_coop_set_nonblocking(fds[1]);
-        const int user_flags = (flags & O_NONBLOCK) ? O_NONBLOCK : 0;
+        ثابت صحيح user_flags = (flags & O_NONBLOCK) ? O_NONBLOCK : 0;
         linux_coop_track_fd(fds[0], user_flags);
         linux_coop_track_fd(fds[1], user_flags);
     }
-    return ret;
+    أرجع ret;
 }
 
-int freertos_linux_coop_dup(int oldfd)
+صحيح freertos_linux_coop_dup(صحيح oldfd)
 {
-    int fd = real_dup(oldfd);
+    صحيح fd = real_dup(oldfd);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(oldfd) ? O_NONBLOCK : 0);
-    return fd;
+    أرجع fd;
 }
 
-int freertos_linux_coop_dup2(int oldfd, int newfd)
+صحيح freertos_linux_coop_dup2(صحيح oldfd, صحيح newfd)
 {
-    int fd = real_dup2(oldfd, newfd);
+    صحيح fd = real_dup2(oldfd, newfd);
     linux_coop_set_nonblocking(fd);
     linux_coop_track_fd(fd, linux_coop_fd_user_nonblocking(oldfd) ? O_NONBLOCK : 0);
-    return fd;
+    أرجع fd;
 }
 
-__attribute__((weak)) int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+__attribute__((weak)) صحيح connect(صحيح sockfd, ثابت بنية sockaddr *addr, socklen_t addrlen)
 {
-    return freertos_linux_coop_connect(sockfd, addr, addrlen);
+    أرجع freertos_linux_coop_connect(sockfd, addr, addrlen);
 }
 
-__attribute__((weak)) int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+__attribute__((weak)) صحيح accept(صحيح sockfd, بنية sockaddr *addr, socklen_t *addrlen)
 {
-    return freertos_linux_coop_accept(sockfd, addr, addrlen);
+    أرجع freertos_linux_coop_accept(sockfd, addr, addrlen);
 }
 
-__attribute__((weak)) int pselect(int nfds, fd_set *readfds, fd_set *writefds,
-            fd_set *exceptfds, const struct timespec *timeout,
-            const sigset_t *sigmask)
+__attribute__((weak)) صحيح pselect(صحيح nfds, fd_set *readfds, fd_set *writefds,
+            fd_set *exceptfds, ثابت بنية timespec *timeout,
+            ثابت sigset_t *sigmask)
 {
-    return freertos_linux_coop_pselect(nfds, readfds, writefds, exceptfds, timeout, sigmask);
+    أرجع freertos_linux_coop_pselect(nfds, readfds, writefds, exceptfds, timeout, sigmask);
 }
 
-__attribute__((weak)) int poll(struct pollfd *fds, nfds_t nfds, int timeout)
+__attribute__((weak)) صحيح poll(بنية pollfd *fds, nfds_t nfds, صحيح timeout)
 {
-    return freertos_linux_coop_poll(fds, nfds, timeout);
+    أرجع freertos_linux_coop_poll(fds, nfds, timeout);
 }
 
-__attribute__((weak)) int socket(int domain, int type, int protocol)
+__attribute__((weak)) صحيح socket(صحيح domain, صحيح type, صحيح protocol)
 {
-    return freertos_linux_coop_socket(domain, type, protocol);
+    أرجع freertos_linux_coop_socket(domain, type, protocol);
 }
 
-__attribute__((weak)) int socketpair(int domain, int type, int protocol, int sv[2])
+__attribute__((weak)) صحيح socketpair(صحيح domain, صحيح type, صحيح protocol, صحيح sv[2])
 {
-    return freertos_linux_coop_socketpair(domain, type, protocol, sv);
+    أرجع freertos_linux_coop_socketpair(domain, type, protocol, sv);
 }
 
-__attribute__((weak)) int pipe(int fds[2])
+__attribute__((weak)) صحيح pipe(صحيح fds[2])
 {
-    return freertos_linux_coop_pipe(fds);
+    أرجع freertos_linux_coop_pipe(fds);
 }
 
-__attribute__((weak)) int pipe2(int fds[2], int flags)
+__attribute__((weak)) صحيح pipe2(صحيح fds[2], صحيح flags)
 {
-    return freertos_linux_coop_pipe2(fds, flags);
+    أرجع freertos_linux_coop_pipe2(fds, flags);
 }
 
-__attribute__((weak)) int dup(int oldfd)
+__attribute__((weak)) صحيح dup(صحيح oldfd)
 {
-    return freertos_linux_coop_dup(oldfd);
+    أرجع freertos_linux_coop_dup(oldfd);
 }
 
-__attribute__((weak)) int dup2(int oldfd, int newfd)
+__attribute__((weak)) صحيح dup2(صحيح oldfd, صحيح newfd)
 {
-    return freertos_linux_coop_dup2(oldfd, newfd);
+    أرجع freertos_linux_coop_dup2(oldfd, newfd);
 }
