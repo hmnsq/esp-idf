@@ -30,8 +30,8 @@
  *
  */
 
-#ifndef STACK_MACROS_H
-#define STACK_MACROS_H
+#ifndef ರಾಶಿ_MACROS_H
+#define ರಾಶಿ_MACROS_H
 
 /*
  * Call the stack overflow hook function if the stack of the task being swapped
@@ -53,78 +53,78 @@
  * portSTACK_LIMIT_PADDING is a number of extra words to consider to be in
  * use on the stack.
  */
-#ifndef portSTACK_LIMIT_PADDING
-    #define portSTACK_LIMIT_PADDING    0
+#ifndef port_ರಾಶಿ_LIMIT_PADDING
+    #define port_ರಾಶಿ_LIMIT_PADDING    0
 #endif
 
-#if ( ( configCHECK_FOR_STACK_OVERFLOW == 1 ) && ( portSTACK_GROWTH < 0 ) )
+#ಯದಿ ( ( config_CHECK_FOR_ರಾಶಿ_OVERFLOW == 1 ) && ( port_ರಾಶಿ_GROWTH < 0 ) )
 
 /* Only the current stack state is to be checked. */
-    #define taskCHECK_FOR_STACK_OVERFLOW( xCurCoreID )                                                                              \
+    #define task_CHECK_FOR_ರಾಶಿ_OVERFLOW( xCurCoreID )                                                                              \
     {                                                                                                                               \
         /* Is the currently saved stack pointer within the stack limit? */                                                          \
-        if( pxCurrentTCBs[ xCurCoreID ]->pxTopOfStack <= pxCurrentTCBs[ xCurCoreID ]->pxStack + portSTACK_LIMIT_PADDING )           \
+        ಯದಿ( pxCurrentTCBs[ xCurCoreID ]->px_ತುದಿ_Of_ರಾಶಿ <= pxCurrentTCBs[ xCurCoreID ]->px_ರಾಶಿ + port_ರಾಶಿ_LIMIT_PADDING )           \
         {                                                                                                                           \
-            vApplicationStackOverflowHook( ( TaskHandle_t ) pxCurrentTCBs[ xCurCoreID ], pxCurrentTCBs[ xCurCoreID ]->pcTaskName ); \
+            v_Application_ರಾಶಿ_Overflow_Hook( ( TaskHandle_t ) pxCurrentTCBs[ xCurCoreID ], pxCurrentTCBs[ xCurCoreID ]->pcTaskName ); \
         }                                                                                                                           \
     }
 
 #endif /* configCHECK_FOR_STACK_OVERFLOW == 1 */
 /*-----------------------------------------------------------*/
 
-#if ( ( configCHECK_FOR_STACK_OVERFLOW == 1 ) && ( portSTACK_GROWTH > 0 ) )
+#ಯದಿ ( ( config_CHECK_FOR_ರಾಶಿ_OVERFLOW == 1 ) && ( port_ರಾಶಿ_GROWTH > 0 ) )
 
 /* Only the current stack state is to be checked. */
-    #define taskCHECK_FOR_STACK_OVERFLOW( xCurCoreID )                                                                              \
+    #define task_CHECK_FOR_ರಾಶಿ_OVERFLOW( xCurCoreID )                                                                              \
     {                                                                                                                               \
                                                                                                                                     \
         /* Is the currently saved stack pointer within the stack limit? */                                                          \
-        if( pxCurrentTCBs[ xCurCoreID ]->pxTopOfStack >= pxCurrentTCBs[ xCurCoreID ]->pxEndOfStack - portSTACK_LIMIT_PADDING )      \
+        ಯದಿ( pxCurrentTCBs[ xCurCoreID ]->px_ತುದಿ_Of_ರಾಶಿ >= pxCurrentTCBs[ xCurCoreID ]->px_End_Of_ರಾಶಿ - port_ರಾಶಿ_LIMIT_PADDING )      \
         {                                                                                                                           \
-            vApplicationStackOverflowHook( ( TaskHandle_t ) pxCurrentTCBs[ xCurCoreID ], pxCurrentTCBs[ xCurCoreID ]->pcTaskName ); \
+            v_Application_ರಾಶಿ_Overflow_Hook( ( TaskHandle_t ) pxCurrentTCBs[ xCurCoreID ], pxCurrentTCBs[ xCurCoreID ]->pcTaskName ); \
         }                                                                                                                           \
     }
 
 #endif /* configCHECK_FOR_STACK_OVERFLOW == 1 */
 /*-----------------------------------------------------------*/
 
-#if ( ( configCHECK_FOR_STACK_OVERFLOW > 1 ) && ( portSTACK_GROWTH < 0 ) )
+#ಯದಿ ( ( config_CHECK_FOR_ರಾಶಿ_OVERFLOW > 1 ) && ( port_ರಾಶಿ_GROWTH < 0 ) )
 
-    #define taskCHECK_FOR_STACK_OVERFLOW( xCurCoreID )                                                                              \
+    #define task_CHECK_FOR_ರಾಶಿ_OVERFLOW( xCurCoreID )                                                                              \
     {                                                                                                                               \
-        const uint32_t * const pulStack = ( uint32_t * ) pxCurrentTCBs[ xCurCoreID ]->pxStack;                                      \
-        const uint32_t ulCheckValue = ( uint32_t ) 0xa5a5a5a5;                                                                      \
+        ಧ್ರುವ uint32_t * ಧ್ರುವ pul_ರಾಶಿ = ( uint32_t * ) pxCurrentTCBs[ xCurCoreID ]->px_ರಾಶಿ;                                      \
+        ಧ್ರುವ uint32_t ul_Check_ಮೌಲ್ಯ = ( uint32_t ) 0xa5a5a5a5;                                                                      \
                                                                                                                                     \
-        if( ( pulStack[ 0 ] != ulCheckValue ) ||                                                                                    \
-            ( pulStack[ 1 ] != ulCheckValue ) ||                                                                                    \
-            ( pulStack[ 2 ] != ulCheckValue ) ||                                                                                    \
-            ( pulStack[ 3 ] != ulCheckValue ) )                                                                                     \
+        ಯದಿ( ( pul_ರಾಶಿ[ 0 ] != ul_Check_ಮೌಲ್ಯ ) ||                                                                                    \
+            ( pul_ರಾಶಿ[ 1 ] != ul_Check_ಮೌಲ್ಯ ) ||                                                                                    \
+            ( pul_ರಾಶಿ[ 2 ] != ul_Check_ಮೌಲ್ಯ ) ||                                                                                    \
+            ( pul_ರಾಶಿ[ 3 ] != ul_Check_ಮೌಲ್ಯ ) )                                                                                     \
         {                                                                                                                           \
-            vApplicationStackOverflowHook( ( TaskHandle_t ) pxCurrentTCBs[ xCurCoreID ], pxCurrentTCBs[ xCurCoreID ]->pcTaskName ); \
+            v_Application_ರಾಶಿ_Overflow_Hook( ( TaskHandle_t ) pxCurrentTCBs[ xCurCoreID ], pxCurrentTCBs[ xCurCoreID ]->pcTaskName ); \
         }                                                                                                                           \
     }
 
 #endif /* #if( configCHECK_FOR_STACK_OVERFLOW > 1 ) */
 /*-----------------------------------------------------------*/
 
-#if ( ( configCHECK_FOR_STACK_OVERFLOW > 1 ) && ( portSTACK_GROWTH > 0 ) )
+#ಯದಿ ( ( config_CHECK_FOR_ರಾಶಿ_OVERFLOW > 1 ) && ( port_ರಾಶಿ_GROWTH > 0 ) )
 
-    #define taskCHECK_FOR_STACK_OVERFLOW( xCurCoreID )                                                                                    \
+    #define task_CHECK_FOR_ರಾಶಿ_OVERFLOW( xCurCoreID )                                                                                    \
     {                                                                                                                                     \
-        int8_t * pcEndOfStack = ( int8_t * ) pxCurrentTCBs[ xCurCoreID ]->pxEndOfStack;                                                   \
-        static const uint8_t ucExpectedStackBytes[] = { tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE,   \
-                                                        tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE,   \
-                                                        tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE,   \
-                                                        tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE,   \
-                                                        tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE, tskSTACK_FILL_BYTE }; \
+        int8_t * pc_End_Of_ರಾಶಿ = ( int8_t * ) pxCurrentTCBs[ xCurCoreID ]->px_End_Of_ರಾಶಿ;                                                   \
+        ಸ್ಥಿರ ಧ್ರುವ uint8_t uc_Expected_ರಾಶಿ_Bytes[] = { tsk_ರಾಶಿ_FILL_BYTE, tsk_ರಾಶಿ_FILL_BYTE, tsk_ರಾಶಿ_FILL_BYTE, tsk_ರಾಶಿ_FILL_BYTE,   \
+                                                        tsk_ರಾಶಿ_FILL_BYTE, tsk_ರಾಶಿ_FILL_BYTE, tsk_ರಾಶಿ_FILL_BYTE, tsk_ರಾಶಿ_FILL_BYTE,   \
+                                                        tsk_ರಾಶಿ_FILL_BYTE, tsk_ರಾಶಿ_FILL_BYTE, tsk_ರಾಶಿ_FILL_BYTE, tsk_ರಾಶಿ_FILL_BYTE,   \
+                                                        tsk_ರಾಶಿ_FILL_BYTE, tsk_ರಾಶಿ_FILL_BYTE, tsk_ರಾಶಿ_FILL_BYTE, tsk_ರಾಶಿ_FILL_BYTE,   \
+                                                        tsk_ರಾಶಿ_FILL_BYTE, tsk_ರಾಶಿ_FILL_BYTE, tsk_ರಾಶಿ_FILL_BYTE, tsk_ರಾಶಿ_FILL_BYTE }; \
                                                                                                                                           \
                                                                                                                                           \
-        pcEndOfStack -= sizeof( ucExpectedStackBytes );                                                                                   \
+        pc_End_Of_ರಾಶಿ -= ಪರಿಮಾಣ( uc_Expected_ರಾಶಿ_Bytes );                                                                                   \
                                                                                                                                           \
         /* Has the extremity of the task stack ever been written over? */                                                                 \
-        if( memcmp( ( void * ) pcEndOfStack, ( void * ) ucExpectedStackBytes, sizeof( ucExpectedStackBytes ) ) != 0 )                     \
+        ಯದಿ( memcmp( ( ಶೂನ್ಯ * ) pc_End_Of_ರಾಶಿ, ( ಶೂನ್ಯ * ) uc_Expected_ರಾಶಿ_Bytes, ಪರಿಮಾಣ( uc_Expected_ರಾಶಿ_Bytes ) ) != 0 )                     \
         {                                                                                                                                 \
-            vApplicationStackOverflowHook( ( TaskHandle_t ) pxCurrentTCBs[ xCurCoreID ], pxCurrentTCBs[ xCurCoreID ]->pcTaskName );       \
+            v_Application_ರಾಶಿ_Overflow_Hook( ( TaskHandle_t ) pxCurrentTCBs[ xCurCoreID ], pxCurrentTCBs[ xCurCoreID ]->pcTaskName );       \
         }                                                                                                                                 \
     }
 
@@ -132,8 +132,8 @@
 /*-----------------------------------------------------------*/
 
 /* Remove stack overflow macro if not being used. */
-#ifndef taskCHECK_FOR_STACK_OVERFLOW
-    #define taskCHECK_FOR_STACK_OVERFLOW( xCurCoreID )
+#ifndef task_CHECK_FOR_ರಾಶಿ_OVERFLOW
+    #define task_CHECK_FOR_ರಾಶಿ_OVERFLOW( xCurCoreID )
 #endif
 
 

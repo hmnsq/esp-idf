@@ -6,19 +6,19 @@
 
 #pragma once
 
-#include "sdkconfig.h"
-#include <stdint.h>
-#include "spinlock.h"
-#include "xtensa/xtruntime.h"
-#include "xtensa/config/core.h"
-#include "xtensa/config/core-isa.h"
-#include "xtensa/config/xt_specreg.h"
-#include "xt_instr_macros.h"
-#include "portbenchmark.h"
-#include "esp_macros.h"
-#include "esp_cpu.h"
-#include "esp_private/crosscore_int.h"
-#include "esp_memory_utils.h"
+#ಅನ್ತರ್ಭಾವ "sdkconfig.h"
+#ಅನ್ತರ್ಭಾವ <stdint.h>
+#ಅನ್ತರ್ಭಾವ "spinlock.h"
+#ಅನ್ತರ್ಭಾವ "xtensa/xtruntime.h"
+#ಅನ್ತರ್ಭಾವ "xtensa/config/core.h"
+#ಅನ್ತರ್ಭಾವ "xtensa/config/core-isa.h"
+#ಅನ್ತರ್ಭಾವ "xtensa/config/xt_specreg.h"
+#ಅನ್ತರ್ಭಾವ "xt_instr_macros.h"
+#ಅನ್ತರ್ಭಾವ "portbenchmark.h"
+#ಅನ್ತರ್ಭಾವ "esp_macros.h"
+#ಅನ್ತರ್ಭಾವ "esp_cpu.h"
+#ಅನ್ತರ್ಭಾವ "esp_private/crosscore_int.h"
+#ಅನ್ತರ್ಭಾವ "esp_memory_utils.h"
 
 /*
 Note: We should not include any FreeRTOS headers (directly or indirectly) here as this will create a reverse dependency
@@ -30,7 +30,7 @@ Note: We should not include any FreeRTOS headers (directly or indirectly) here a
 */
 
 #ifdef __cplusplus
-extern "C" {
+ಬಾಹ್ಯ "C" {
 #endif
 
 /* --------------------------------------------------- Port Types ------------------------------------------------------
@@ -41,28 +41,28 @@ extern "C" {
  * ------------------------------------------------------------------------------------------------------------------ */
 
 #define portCHAR                    int8_t
-#define portFLOAT                   float
-#define portDOUBLE                  double
+#define portFLOAT                   ಭಿನ್ನ
+#define portDOUBLE                  ದ್ವಿಗುಣ
 #define portLONG                    int32_t
 #define portSHORT                   int16_t
-#define portSTACK_TYPE              uint8_t
-#define portBASE_TYPE               int
+#define port_ರಾಶಿ_TYPE              uint8_t
+#define portBASE_TYPE               ಪೂರ್ಣಾಙ್ಕ
 
-typedef portSTACK_TYPE              StackType_t;
-typedef portBASE_TYPE               BaseType_t;
-typedef unsigned portBASE_TYPE      UBaseType_t;
+ಪ್ರಕಾರನಿರ್ದೇಶ port_ರಾಶಿ_TYPE              ರಾಶಿ_Type_t;
+ಪ್ರಕಾರನಿರ್ದೇಶ portBASE_TYPE               BaseType_t;
+ಪ್ರಕಾರನಿರ್ದೇಶ unsigned portBASE_TYPE      UBaseType_t;
 
-#if( configUSE_16_BIT_TICKS == 1 )
-typedef uint16_t TickType_t;
+#ಯದಿ( configUSE_16_BIT_TICKS == 1 )
+ಪ್ರಕಾರನಿರ್ದೇಶ uint16_t TickType_t;
 #define portMAX_DELAY ( TickType_t ) 0xffff
-#else
-typedef uint32_t TickType_t;
+#ಅನ್ಯಥಾ
+ಪ್ರಕಾರನಿರ್ದೇಶ uint32_t TickType_t;
 #define portMAX_DELAY ( TickType_t ) 0xffffffffUL
 #endif
 
 /* Task function macros as described on the FreeRTOS.org WEB site. */
-#define portTASK_FUNCTION_PROTO( vFunction, pvParameters )  void vFunction( void *pvParameters )
-#define portTASK_FUNCTION( vFunction, pvParameters )        void vFunction( void *pvParameters )
+#define portTASK_FUNCTION_PROTO( vFunction, pvParameters )  ಶೂನ್ಯ vFunction( ಶೂನ್ಯ *pvParameters )
+#define portTASK_FUNCTION( vFunction, pvParameters )        ಶೂನ್ಯ vFunction( ಶೂನ್ಯ *pvParameters )
 
 /* ----------------------------------------------- Port Configurations -------------------------------------------------
  * - Configurations values supplied by each port
@@ -70,7 +70,7 @@ typedef uint32_t TickType_t;
  * ------------------------------------------------------------------------------------------------------------------ */
 
 #define portCRITICAL_NESTING_IN_TCB     1
-#define portSTACK_GROWTH                ( -1 )
+#define port_ರಾಶಿ_GROWTH                ( -1 )
 #define portTICK_PERIOD_MS              ( ( TickType_t ) 1000 / configTICK_RATE_HZ )
 #define portBYTE_ALIGNMENT              16    // Xtensa Windowed ABI requires the stack pointer to always be 16-byte aligned. See "isa_rm.pdf 8.1.1 Windowed Register Usage and Stack Layout"
 #define portNOP()                       XT_NOP()    //Todo: Check if XT_NOP exists
@@ -82,7 +82,7 @@ typedef uint32_t TickType_t;
 
 // ---------------------- Spinlocks ------------------------
 
-typedef spinlock_t                          portMUX_TYPE;               /**< Spinlock type used by FreeRTOS critical sections */
+ಪ್ರಕಾರನಿರ್ದೇಶ spinlock_t                          portMUX_TYPE;               /**< Spinlock type used by FreeRTOS critical sections */
 #define portMUX_INITIALIZER_UNLOCKED        SPINLOCK_INITIALIZER        /**< Spinlock initializer */
 #define portMUX_FREE_VAL                    SPINLOCK_FREE               /**< Spinlock is free. [refactor-todo] check if this is still required */
 #define portMUX_NO_TIMEOUT                  SPINLOCK_WAIT_FOREVER       /**< When passed for 'timeout_cycles', spin forever if necessary. [refactor-todo] check if this is still required */
@@ -93,39 +93,39 @@ typedef spinlock_t                          portMUX_TYPE;               /**< Spi
 
 // --------------------- Interrupts ------------------------
 
-BaseType_t xPortCheckIfInISR(void);
+BaseType_t xPortCheckIfInISR(ಶೂನ್ಯ);
 
 /**
  * @brief Assert if in ISR context
  *
  * - Asserts on xPortCheckIfInISR() internally
  */
-void vPortAssertIfInISR(void);
+ಶೂನ್ಯ vPortAssertIfInISR(ಶೂನ್ಯ);
 
 // ------------------ Critical Sections --------------------
 
-UBaseType_t uxPortEnterCriticalFromISR( void );
-void vPortExitCriticalFromISR( UBaseType_t level );
+UBaseType_t uxPortEnterCriticalFromISR( ಶೂನ್ಯ );
+ಶೂನ್ಯ vPortExitCriticalFromISR( UBaseType_t level );
 
-#if ( configNUMBER_OF_CORES > 1 )
+#ಯದಿ ( config_ಸಂಖ್ಯೆ_OF_CORES > 1 )
 /*
 These are always called with interrupts already disabled. We simply need to get/release the spinlocks
 */
-extern portMUX_TYPE port_xTaskLock;
-extern portMUX_TYPE port_xISRLock;
+ಬಾಹ್ಯ portMUX_TYPE port_xTaskLock;
+ಬಾಹ್ಯ portMUX_TYPE port_xISRLock;
 
-void vPortTakeLock( portMUX_TYPE *lock );
-void vPortReleaseLock( portMUX_TYPE *lock );
+ಶೂನ್ಯ vPortTakeLock( portMUX_TYPE *lock );
+ಶೂನ್ಯ vPortReleaseLock( portMUX_TYPE *lock );
 #endif /* configNUMBER_OF_CORES > 1 */
 
 // ---------------------- Yielding -------------------------
 
-void vPortYield( void );
-static inline void __attribute__((always_inline)) vPortYieldCore( BaseType_t xCoreID );
-static inline void __attribute__((always_inline)) vPortYieldFromISR( void );
+ಶೂನ್ಯ vPortYield( ಶೂನ್ಯ );
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ __attribute__((always_inline)) vPortYieldCore( BaseType_t xCoreID );
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ __attribute__((always_inline)) vPortYieldFromISR( ಶೂನ್ಯ );
 
 #define portYIELD_FROM_ISR_CHECK(x)     ({ \
-    if ( (x) == pdTRUE ) { \
+    ಯದಿ ( (x) == pdTRUE ) { \
         vPortYieldFromISR(); \
     } \
 })
@@ -133,7 +133,7 @@ static inline void __attribute__((always_inline)) vPortYieldFromISR( void );
 
 // ----------------------- System --------------------------
 
-static inline BaseType_t __attribute__((always_inline)) xPortGetCoreID( void );
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ BaseType_t __attribute__((always_inline)) xPortGetCoreID( ಶೂನ್ಯ );
 
 // --------------------- TCB Cleanup -----------------------
 
@@ -144,7 +144,7 @@ static inline BaseType_t __attribute__((always_inline)) xPortGetCoreID( void );
  * deleted task's memory is freed. We map that macro to this internal function
  * so that IDF FreeRTOS ports can inject some task pre-deletion operations.
  */
-void vPortTCBPreDeleteHook( void *pxTCB );
+ಶೂನ್ಯ vPortTCBPreDeleteHook( ಶೂನ್ಯ *pxTCB );
 
 
 /* ----------------------------------------- FreeRTOS SMP Porting Interface --------------------------------------------
@@ -157,7 +157,7 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 // --------------------- Interrupts ------------------------
 
 #define portSET_INTERRUPT_MASK()            ({ \
-    unsigned int prev_level = XTOS_SET_INTLEVEL(XCHAL_EXCM_LEVEL); \
+    unsigned ಪೂರ್ಣಾಙ್ಕ prev_level = XTOS_SET_INTLEVEL(XCHAL_EXCM_LEVEL); \
     portbenchmarkINTERRUPT_DISABLE(); \
     prev_level = ((prev_level >> XCHAL_PS_INTLEVEL_SHIFT) & XCHAL_PS_INTLEVEL_MASK); \
     prev_level; \
@@ -177,7 +177,7 @@ void vPortTCBPreDeleteHook( void *pxTCB );
 Note: XTOS_RESTORE_INTLEVEL() will overwrite entire PS register on XEA2. So we need to set the value of the INTLEVEL field ourselves
 */
 #define portCLEAR_INTERRUPT_MASK(x)         ({ \
-    unsigned int ps_reg; \
+    unsigned ಪೂರ್ಣಾಙ್ಕ ps_reg; \
     RSR(XT_REG_PS, ps_reg); \
     ps_reg = (ps_reg & ~XCHAL_PS_INTLEVEL_MASK); \
     ps_reg |= ((x << XCHAL_PS_INTLEVEL_SHIFT) & XCHAL_PS_INTLEVEL_MASK); \
@@ -194,7 +194,7 @@ Note: XTOS_RESTORE_INTLEVEL() will overwrite entire PS register on XEA2. So we n
 
 // ------------------ Critical Sections --------------------
 
-#if ( configNUMBER_OF_CORES > 1 )
+#ಯದಿ ( config_ಸಂಖ್ಯೆ_OF_CORES > 1 )
 #define portGET_TASK_LOCK()                         vPortTakeLock(&port_xTaskLock)
 #define portRELEASE_TASK_LOCK()                     vPortReleaseLock(&port_xTaskLock)
 #define portGET_ISR_LOCK()                          vPortTakeLock(&port_xISRLock)
@@ -202,30 +202,30 @@ Note: XTOS_RESTORE_INTLEVEL() will overwrite entire PS register on XEA2. So we n
 #endif /* configNUMBER_OF_CORES > 1 */
 
 //Critical sections used by FreeRTOS SMP
-extern void vTaskEnterCritical( void );
-extern void vTaskExitCritical( void );
+ಬಾಹ್ಯ ಶೂನ್ಯ vTaskEnterCritical( ಶೂನ್ಯ );
+ಬಾಹ್ಯ ಶೂನ್ಯ vTaskExitCritical( ಶೂನ್ಯ );
 #define portENTER_CRITICAL_SMP()                    vTaskEnterCritical();
 #define portEXIT_CRITICAL_SMP()                     vTaskExitCritical();
 
-#if defined(__cplusplus) && (__cplusplus >  201703L)
+#ಯದಿ defined(__cplusplus) && (__cplusplus >  201703L)
 #define portENTER_CRITICAL(...)                     CHOOSE_MACRO_VA_ARG(portENTER_CRITICAL_IDF, portENTER_CRITICAL_SMP __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
 #define portEXIT_CRITICAL(...)                      CHOOSE_MACRO_VA_ARG(portEXIT_CRITICAL_IDF, portEXIT_CRITICAL_SMP __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
-#else
+#ಅನ್ಯಥಾ
 #define portENTER_CRITICAL(...)                     CHOOSE_MACRO_VA_ARG(portENTER_CRITICAL_IDF, portENTER_CRITICAL_SMP, ##__VA_ARGS__)(__VA_ARGS__)
 #define portEXIT_CRITICAL(...)                      CHOOSE_MACRO_VA_ARG(portEXIT_CRITICAL_IDF, portEXIT_CRITICAL_SMP, ##__VA_ARGS__)(__VA_ARGS__)
 #endif
 
-extern UBaseType_t vTaskEnterCriticalFromISR( void );
-extern void vTaskExitCriticalFromISR( UBaseType_t uxSavedInterruptStatus );
+ಬಾಹ್ಯ UBaseType_t vTaskEnterCriticalFromISR( ಶೂನ್ಯ );
+ಬಾಹ್ಯ ಶೂನ್ಯ vTaskExitCriticalFromISR( UBaseType_t uxSavedInterruptStatus );
 #define portENTER_CRITICAL_FROM_ISR() vTaskEnterCriticalFromISR()
 #define portEXIT_CRITICAL_FROM_ISR(x) vTaskExitCriticalFromISR(x)
 
 // ---------------------- Yielding -------------------------
 
 #define portYIELD()                                 vPortYield()
-#if defined(__cplusplus) && (__cplusplus >  201703L)
+#ಯದಿ defined(__cplusplus) && (__cplusplus >  201703L)
 #define portYIELD_FROM_ISR(...)                     CHOOSE_MACRO_VA_ARG(portYIELD_FROM_ISR_CHECK, portYIELD_FROM_ISR_NO_CHECK __VA_OPT__(,) __VA_ARGS__)(__VA_ARGS__)
-#else
+#ಅನ್ಯಥಾ
 #define portYIELD_FROM_ISR(...)                     CHOOSE_MACRO_VA_ARG(portYIELD_FROM_ISR_CHECK, portYIELD_FROM_ISR_NO_CHECK, ##__VA_ARGS__)(__VA_ARGS__)
 #endif
 #define portYIELD_CORE(x)                           vPortYieldCore(x)
@@ -239,9 +239,9 @@ extern void vTaskExitCriticalFromISR( UBaseType_t uxSavedInterruptStatus );
 
 //Timers are already configured, so nothing to do for configuration of run time stats timer
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
-#if ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
-configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
-#define portGET_RUN_TIME_COUNTER_VALUE()        xPortGetRunTimeCounterValue()
+#ಯದಿ ( CONFIG_FREERTOS_GENERATE_RUN_TIME_STATS )
+configRUN_TIME_COUNTER_TYPE x_Port_Get_Run_Time_Counter_ಮೌಲ್ಯ( ಶೂನ್ಯ );
+#define port_GET_RUN_TIME_COUNTER_ಮೌಲ್ಯ()        x_Port_Get_Run_Time_Counter_ಮೌಲ್ಯ()
 #endif
 
 // --------------------- TCB Cleanup -----------------------
@@ -260,14 +260,14 @@ configRUN_TIME_COUNTER_TYPE xPortGetRunTimeCounterValue( void );
 
 // ---------------------- Yielding -------------------------
 
-extern void _frxt_setup_switch( void );     //Defined in portasm.S
+ಬಾಹ್ಯ ಶೂನ್ಯ _frxt_setup_switch( ಶೂನ್ಯ );     //Defined in portasm.S
 
-static inline void __attribute__((always_inline)) vPortYieldCore( BaseType_t xCoreID )
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ __attribute__((always_inline)) vPortYieldCore( BaseType_t xCoreID )
 {
     esp_crosscore_int_send_yield( xCoreID );
 }
 
-static inline void __attribute__((always_inline)) vPortYieldFromISR( void )
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ __attribute__((always_inline)) vPortYieldFromISR( ಶೂನ್ಯ )
 {
     //traceISR_EXIT_TO_SCHEDULER();
     _frxt_setup_switch();
@@ -275,9 +275,9 @@ static inline void __attribute__((always_inline)) vPortYieldFromISR( void )
 
 // ----------------------- System --------------------------
 
-static inline BaseType_t __attribute__((always_inline)) xPortGetCoreID( void )
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ BaseType_t __attribute__((always_inline)) xPortGetCoreID( ಶೂನ್ಯ )
 {
-    return (BaseType_t) esp_cpu_get_core_id();
+    ಪ್ರತ್ಯಾಗಮ (BaseType_t) esp_cpu_get_core_id();
 }
 
 /* ------------------------------------------------ IDF Compatibility --------------------------------------------------
@@ -286,49 +286,49 @@ static inline BaseType_t __attribute__((always_inline)) xPortGetCoreID( void )
 
 // --------------------- Interrupts ------------------------
 
-static inline BaseType_t xPortInIsrContext(void)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ BaseType_t xPortInIsrContext(ಶೂನ್ಯ)
 {
     //Just call the FreeRTOS port interface version
-    return xPortCheckIfInISR();
+    ಪ್ರತ್ಯಾಗಮ xPortCheckIfInISR();
 }
 
-BaseType_t xPortInterruptedFromISRContext(void);
+BaseType_t xPortInterruptedFromISRContext(ಶೂನ್ಯ);
 
-static inline UBaseType_t xPortSetInterruptMaskFromISR(void)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ UBaseType_t xPortSetInterruptMaskFromISR(ಶೂನ್ಯ)
 {
     UBaseType_t prev_int_level = XTOS_SET_INTLEVEL(XCHAL_EXCM_LEVEL);
     portbenchmarkINTERRUPT_DISABLE();
-    return prev_int_level;
+    ಪ್ರತ್ಯಾಗಮ prev_int_level;
 }
 
-static inline void vPortClearInterruptMaskFromISR(UBaseType_t prev_level)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ vPortClearInterruptMaskFromISR(UBaseType_t prev_level)
 {
     portbenchmarkINTERRUPT_RESTORE(prev_level);
-    XTOS_RESTORE_JUST_INTLEVEL((int) prev_level);
+    XTOS_RESTORE_JUST_INTLEVEL((ಪೂರ್ಣಾಙ್ಕ) prev_level);
 }
 
 // ---------------------- Spinlocks ------------------------
 
-static inline bool __attribute__((always_inline)) vPortCPUAcquireMutexTimeout(portMUX_TYPE *mux, int timeout)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ bool __attribute__((always_inline)) vPortCPUAcquireMutexTimeout(portMUX_TYPE *mux, ಪೂರ್ಣಾಙ್ಕ timeout)
 {
-    return (spinlock_acquire(mux, timeout));
+    ಪ್ರತ್ಯಾಗಮ (spinlock_acquire(mux, timeout));
 }
 
-static inline void __attribute__((always_inline)) vPortCPUReleaseMutex(portMUX_TYPE *mux)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ __attribute__((always_inline)) vPortCPUReleaseMutex(portMUX_TYPE *mux)
 {
     spinlock_release(mux);
 }
 
 // ------------------ Critical Sections --------------------
 
-#if CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
+#ಯದಿ CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM
 /**
  * @brief Claim thread-safe region start
  *        If claimed, vPortEnterCritical/vPortExitCritical on the current core are no-ops.
  *        Only can be used in single-core running context with interrupts disabled.
  * @note !!! Caller must guarantee thread safety between Claim and Disclaim !!!
  */
-void xPortThreadSafeClaim(void);
+ಶೂನ್ಯ xPortThreadSafeClaim(ಶೂನ್ಯ);
 
 /**
  * @brief Claim thread-safe region end
@@ -336,26 +336,26 @@ void xPortThreadSafeClaim(void);
  *        Only can be used in single-core running context with interrupts disabled.
  * @note !!! Caller must guarantee thread safety between Claim and Disclaim !!!
  */
-void xPortThreadSafeDisclaim(void);
+ಶೂನ್ಯ xPortThreadSafeDisclaim(ಶೂನ್ಯ);
 
-extern volatile bool port_xThreadSafeClaimed;
+ಬಾಹ್ಯ ಚಞ್ಚಲ bool port_xThreadSafeClaimed;
 #endif /* CONFIG_FREERTOS_PORT_THREAD_SAFE_CLAIM */
 
 BaseType_t xPortEnterCriticalTimeout(portMUX_TYPE *lock, BaseType_t timeout);
 
-static inline void __attribute__((always_inline)) vPortEnterCriticalIDF(portMUX_TYPE *lock)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ __attribute__((always_inline)) vPortEnterCriticalIDF(portMUX_TYPE *lock)
 {
     xPortEnterCriticalTimeout(lock, portMUX_NO_TIMEOUT);
 }
 
-void vPortExitCriticalIDF(portMUX_TYPE *lock);
+ಶೂನ್ಯ vPortExitCriticalIDF(portMUX_TYPE *lock);
 
 /*
 In case any IDF libs called the port critical functions directly instead of through the macros.
 The will just call the vPort...CriticalIDF() functions
 */
-void vPortEnterCritical(portMUX_TYPE *lock);
-void vPortExitCritical(portMUX_TYPE *lock);
+ಶೂನ್ಯ vPortEnterCritical(portMUX_TYPE *lock);
+ಶೂನ್ಯ vPortExitCritical(portMUX_TYPE *lock);
 
 //IDF task critical sections
 #define portTRY_ENTER_CRITICAL(lock, timeout)       xPortEnterCriticalTimeout(lock, timeout)
@@ -371,7 +371,7 @@ void vPortExitCritical(portMUX_TYPE *lock);
 
 // ---------------------- Yielding -------------------------
 
-static inline bool xPortCanYield(void)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ bool xPortCanYield(ಶೂನ್ಯ)
 {
     uint32_t ps_reg = 0;
 
@@ -385,7 +385,7 @@ static inline bool xPortCanYield(void)
      * However, just return true, only intlevel is zero.
      */
 
-    return ((ps_reg & PS_INTLEVEL_MASK) == 0);
+    ಪ್ರತ್ಯಾಗಮ ((ps_reg & PS_INTLEVEL_MASK) == 0);
 }
 
 // Defined even for configNUMBER_OF_CORES > 1 for IDF compatibility
@@ -393,7 +393,7 @@ static inline bool xPortCanYield(void)
 
 // ----------------------- System --------------------------
 
-void vPortSetStackWatchpoint(void *pxStackStart);
+ಶೂನ್ಯ v_Port_Set_ರಾಶಿ_Watchpoint(ಶೂನ್ಯ *px_ರಾಶಿ_Start);
 
 // -------------------- Heap Related -----------------------
 
@@ -406,7 +406,7 @@ void vPortSetStackWatchpoint(void *pxStackStart);
  * @return true Memory can be used to store a List
  * @return false Otherwise
  */
-bool xPortCheckValidListMem(const void *ptr);
+bool xPortCheckValidListMem(ಧ್ರುವ ಶೂನ್ಯ *ptr);
 
 /**
  * @brief Checks if a given piece of memory can be used to store a task's TCB
@@ -417,7 +417,7 @@ bool xPortCheckValidListMem(const void *ptr);
  * @return true Memory can be used to store a TCB
  * @return false Otherwise
  */
-bool xPortCheckValidTCBMem(const void *ptr);
+bool xPortCheckValidTCBMem(ಧ್ರುವ ಶೂನ್ಯ *ptr);
 
 /**
  * @brief Checks if a given piece of memory can be used to store a task's stack
@@ -428,11 +428,11 @@ bool xPortCheckValidTCBMem(const void *ptr);
  * @return true Memory can be used to store a task stack
  * @return false Otherwise
  */
-bool xPortcheckValidStackMem(const void *ptr);
+bool x_Portcheck_Valid_ರಾಶಿ_Mem(ಧ್ರುವ ಶೂನ್ಯ *ptr);
 
 #define portVALID_LIST_MEM(ptr)     xPortCheckValidListMem(ptr)
 #define portVALID_TCB_MEM(ptr)      xPortCheckValidTCBMem(ptr)
-#define portVALID_STACK_MEM(ptr)    xPortcheckValidStackMem(ptr)
+#define port_VALID_ರಾಶಿ_MEM(ptr)    x_Portcheck_Valid_ರಾಶಿ_Mem(ptr)
 
 /* ------------------------------------------------------ Misc ---------------------------------------------------------
  * - Miscellaneous porting macros
@@ -441,10 +441,10 @@ bool xPortcheckValidStackMem(const void *ptr);
 
 // --------------------- App-Trace -------------------------
 
-#if CONFIG_ESP_TRACE_ENABLE
-extern volatile BaseType_t xPortSwitchFlag;
+#ಯದಿ CONFIG_ESP_TRACE_ENABLE
+ಬಾಹ್ಯ ಚಞ್ಚಲ BaseType_t xPortSwitchFlag;
 #define os_task_switch_is_pended(_cpu_) (xPortSwitchFlag)
-#else
+#ಅನ್ಯಥಾ
 #define os_task_switch_is_pended(_cpu_) (false)
 #endif
 
@@ -456,19 +456,19 @@ portmacro.h. Therefore, we need to keep these headers around for now to allow th
 [refactor-todo] Clean up ESP-IDF inclusion dependencies and add a inclusion check.
 */
 
-#include <stdlib.h>
-#include <stdbool.h>
-#include <stdarg.h>
-#include <xtensa/hal.h>
-#include "esp_attr.h"
-#include "esp_newlib.h"
-#include "esp_heap_caps.h"
-#include "esp_rom_sys.h"
-#include "esp_system.h"
-#include "portbenchmark.h"
-#include <limits.h>
-#include <xtensa/config/system.h>
-#include <xtensa_api.h>
+#ಅನ್ತರ್ಭಾವ <stdlib.h>
+#ಅನ್ತರ್ಭಾವ <stdbool.h>
+#ಅನ್ತರ್ಭಾವ <stdarg.h>
+#ಅನ್ತರ್ಭಾವ <xtensa/hal.h>
+#ಅನ್ತರ್ಭಾವ "esp_attr.h"
+#ಅನ್ತರ್ಭಾವ "esp_newlib.h"
+#ಅನ್ತರ್ಭಾವ "esp_heap_caps.h"
+#ಅನ್ತರ್ಭಾವ "esp_rom_sys.h"
+#ಅನ್ತರ್ಭಾವ "esp_system.h"
+#ಅನ್ತರ್ಭಾವ "portbenchmark.h"
+#ಅನ್ತರ್ಭಾವ <limits.h>
+#ಅನ್ತರ್ಭಾವ <xtensa/config/system.h>
+#ಅನ್ತರ್ಭಾವ <xtensa_api.h>
 
 #ifdef __cplusplus
 }

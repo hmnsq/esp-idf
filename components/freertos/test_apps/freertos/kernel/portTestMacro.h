@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "test_utils.h"
+#ಅನ್ತರ್ಭಾವ "test_utils.h"
 
-#define configTEST_DEFAULT_STACK_SIZE               4096
+#define config_TEST_DEFAULT_ರಾಶಿ_SIZE               4096
 #define configTEST_UNITY_TASK_PRIORITY              UNITY_FREERTOS_PRIORITY
 
 #define portTEST_REF_CLOCK_TYPE                     uint32_t

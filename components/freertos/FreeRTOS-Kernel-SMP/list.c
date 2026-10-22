@@ -31,15 +31,15 @@
  */
 
 
-#include <stdlib.h>
+#ಅನ್ತರ್ಭಾವ <stdlib.h>
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
  * task.h is included from an application file. */
 #define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#include "FreeRTOS.h"
-#include "list.h"
+#ಅನ್ತರ್ಭಾವ "FreeRTOS.h"
+#ಅನ್ತರ್ಭಾವ "list.h"
 
 /* The MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be
  * defined for the header files above, but not in this file, in order to
@@ -50,7 +50,7 @@
 * PUBLIC LIST API documented in list.h
 *----------------------------------------------------------*/
 
-void vListInitialise( List_t * const pxList )
+ಶೂನ್ಯ vListInitialise( List_t * ಧ್ರುವ pxList )
 {
     traceENTER_vListInitialise( pxList );
 
@@ -59,11 +59,11 @@ void vListInitialise( List_t * const pxList )
      * as the only list entry. */
     pxList->pxIndex = ( ListItem_t * ) &( pxList->xListEnd );
 
-    listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( &( pxList->xListEnd ) );
+    list_SET_FIRST_LIST_ITEM_INTEGRITY_CHECK_ಮೌಲ್ಯ( &( pxList->xListEnd ) );
 
     /* The list end value is the highest possible value in the list to
      * ensure it remains at the end of the list. */
-    pxList->xListEnd.xItemValue = portMAX_DELAY;
+    pxList->xListEnd.x_Item_ಮೌಲ್ಯ = portMAX_DELAY;
 
     /* The list end next and previous pointers point to itself so we know
      * when the list is empty. */
@@ -71,47 +71,47 @@ void vListInitialise( List_t * const pxList )
     pxList->xListEnd.pxPrevious = ( ListItem_t * ) &( pxList->xListEnd );
 
     /* Initialize the remaining fields of xListEnd when it is a proper ListItem_t */
-    #if ( configUSE_MINI_LIST_ITEM == 0 )
+    #ಯದಿ ( configUSE_MINI_LIST_ITEM == 0 )
     {
-        pxList->xListEnd.pvOwner = NULL;
-        pxList->xListEnd.pxContainer = NULL;
-        listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( &( pxList->xListEnd ) );
+        pxList->xListEnd.pvOwner = ರಿಕ್ತ;
+        pxList->xListEnd.pxContainer = ರಿಕ್ತ;
+        list_SET_SECOND_LIST_ITEM_INTEGRITY_CHECK_ಮೌಲ್ಯ( &( pxList->xListEnd ) );
     }
     #endif
 
-    pxList->uxNumberOfItems = ( UBaseType_t ) 0U;
+    pxList->ux_ಸಂಖ್ಯೆ_Of_ವಸ್ತುಗಳು = ( UBaseType_t ) 0U;
 
     /* Write known values into the list if
      * configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    listSET_LIST_INTEGRITY_CHECK_1_VALUE( pxList );
-    listSET_LIST_INTEGRITY_CHECK_2_VALUE( pxList );
+    list_SET_LIST_INTEGRITY_CHECK_1_ಮೌಲ್ಯ( pxList );
+    list_SET_LIST_INTEGRITY_CHECK_2_ಮೌಲ್ಯ( pxList );
 
     traceRETURN_vListInitialise();
 }
 /*-----------------------------------------------------------*/
 
-void vListInitialiseItem( ListItem_t * const pxItem )
+ಶೂನ್ಯ vListInitialiseItem( ListItem_t * ಧ್ರುವ pxItem )
 {
     traceENTER_vListInitialiseItem( pxItem );
 
     /* Make sure the list item is not recorded as being on a list. */
-    pxItem->pxContainer = NULL;
+    pxItem->pxContainer = ರಿಕ್ತ;
 
     /* Write known values into the list item if
      * configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES is set to 1. */
-    listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem );
-    listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE( pxItem );
+    list_SET_FIRST_LIST_ITEM_INTEGRITY_CHECK_ಮೌಲ್ಯ( pxItem );
+    list_SET_SECOND_LIST_ITEM_INTEGRITY_CHECK_ಮೌಲ್ಯ( pxItem );
 
     traceRETURN_vListInitialiseItem();
 }
 /*-----------------------------------------------------------*/
 
-void vListInsertEnd( List_t * const pxList,
-                     ListItem_t * const pxNewListItem )
+ಶೂನ್ಯ v_List_ಸೇರಿಸು_End( List_t * ಧ್ರುವ pxList,
+                     ListItem_t * ಧ್ರುವ pxNewListItem )
 {
-    ListItem_t * const pxIndex = pxList->pxIndex;
+    ListItem_t * ಧ್ರುವ pxIndex = pxList->pxIndex;
 
-    traceENTER_vListInsertEnd( pxList, pxNewListItem );
+    trace_ENTER_v_List_ಸೇರಿಸು_End( pxList, pxNewListItem );
 
     /* Only effective when configASSERT() is also defined, these tests may catch
      * the list data structures being overwritten in memory.  They will not catch
@@ -134,19 +134,19 @@ void vListInsertEnd( List_t * const pxList,
     /* Remember which list the item is in. */
     pxNewListItem->pxContainer = pxList;
 
-    ( pxList->uxNumberOfItems ) = ( UBaseType_t ) ( pxList->uxNumberOfItems + 1U );
+    ( pxList->ux_ಸಂಖ್ಯೆ_Of_ವಸ್ತುಗಳು ) = ( UBaseType_t ) ( pxList->ux_ಸಂಖ್ಯೆ_Of_ವಸ್ತುಗಳು + 1U );
 
-    traceRETURN_vListInsertEnd();
+    trace_RETURN_v_List_ಸೇರಿಸು_End();
 }
 /*-----------------------------------------------------------*/
 
-void vListInsert( List_t * const pxList,
-                  ListItem_t * const pxNewListItem )
+ಶೂನ್ಯ v_List_ಸೇರಿಸು( List_t * ಧ್ರುವ pxList,
+                  ListItem_t * ಧ್ರುವ pxNewListItem )
 {
     ListItem_t * pxIterator;
-    const TickType_t xValueOfInsertion = pxNewListItem->xItemValue;
+    ಧ್ರುವ TickType_t x_ಮೌಲ್ಯ_Of_Insertion = pxNewListItem->x_Item_ಮೌಲ್ಯ;
 
-    traceENTER_vListInsert( pxList, pxNewListItem );
+    trace_ENTER_v_List_ಸೇರಿಸು( pxList, pxNewListItem );
 
     /* Only effective when configASSERT() is also defined, these tests may catch
      * the list data structures being overwritten in memory.  They will not catch
@@ -162,11 +162,11 @@ void vListInsert( List_t * const pxList,
      * share of the CPU.  However, if the xItemValue is the same as the back marker
      * the iteration loop below will not end.  Therefore the value is checked
      * first, and the algorithm slightly modified if necessary. */
-    if( xValueOfInsertion == portMAX_DELAY )
+    ಯದಿ( x_ಮೌಲ್ಯ_Of_Insertion == portMAX_DELAY )
     {
         pxIterator = pxList->xListEnd.pxPrevious;
     }
-    else
+    ಅನ್ಯಥಾ
     {
         /* *** NOTE ***********************************************************
         *  If you find your application is crashing here then likely causes are
@@ -193,7 +193,7 @@ void vListInsert( List_t * const pxList,
         *      configMAX_SYSCALL_INTERRUPT_PRIORITY.
         **********************************************************************/
 
-        for( pxIterator = ( ListItem_t * ) &( pxList->xListEnd ); pxIterator->pxNext->xItemValue <= xValueOfInsertion; pxIterator = pxIterator->pxNext )
+        ಪ್ರತಿ( pxIterator = ( ListItem_t * ) &( pxList->xListEnd ); pxIterator->pxNext->x_Item_ಮೌಲ್ಯ <= x_ಮೌಲ್ಯ_Of_Insertion; pxIterator = pxIterator->pxNext )
         {
             /* There is nothing to do here, just iterating to the wanted
              * insertion position. */
@@ -209,18 +209,18 @@ void vListInsert( List_t * const pxList,
      * item later. */
     pxNewListItem->pxContainer = pxList;
 
-    ( pxList->uxNumberOfItems ) = ( UBaseType_t ) ( pxList->uxNumberOfItems + 1U );
+    ( pxList->ux_ಸಂಖ್ಯೆ_Of_ವಸ್ತುಗಳು ) = ( UBaseType_t ) ( pxList->ux_ಸಂಖ್ಯೆ_Of_ವಸ್ತುಗಳು + 1U );
 
-    traceRETURN_vListInsert();
+    trace_RETURN_v_List_ಸೇರಿಸು();
 }
 /*-----------------------------------------------------------*/
 
 
-UBaseType_t uxListRemove( ListItem_t * const pxItemToRemove )
+UBaseType_t uxListRemove( ListItem_t * ಧ್ರುವ pxItemToRemove )
 {
     /* The list item knows which list it is in.  Obtain the list from the list
      * item. */
-    List_t * const pxList = pxItemToRemove->pxContainer;
+    List_t * ಧ್ರುವ pxList = pxItemToRemove->pxContainer;
 
     traceENTER_uxListRemove( pxItemToRemove );
 
@@ -231,20 +231,20 @@ UBaseType_t uxListRemove( ListItem_t * const pxItemToRemove )
     mtCOVERAGE_TEST_DELAY();
 
     /* Make sure the index is left pointing to a valid item. */
-    if( pxList->pxIndex == pxItemToRemove )
+    ಯದಿ( pxList->pxIndex == pxItemToRemove )
     {
         pxList->pxIndex = pxItemToRemove->pxPrevious;
     }
-    else
+    ಅನ್ಯಥಾ
     {
         mtCOVERAGE_TEST_MARKER();
     }
 
-    pxItemToRemove->pxContainer = NULL;
-    ( pxList->uxNumberOfItems ) = ( UBaseType_t ) ( pxList->uxNumberOfItems - 1U );
+    pxItemToRemove->pxContainer = ರಿಕ್ತ;
+    ( pxList->ux_ಸಂಖ್ಯೆ_Of_ವಸ್ತುಗಳು ) = ( UBaseType_t ) ( pxList->ux_ಸಂಖ್ಯೆ_Of_ವಸ್ತುಗಳು - 1U );
 
-    traceRETURN_uxListRemove( pxList->uxNumberOfItems );
+    traceRETURN_uxListRemove( pxList->ux_ಸಂಖ್ಯೆ_Of_ವಸ್ತುಗಳು );
 
-    return pxList->uxNumberOfItems;
+    ಪ್ರತ್ಯಾಗಮ pxList->ux_ಸಂಖ್ಯೆ_Of_ವಸ್ತುಗಳು;
 }
 /*-----------------------------------------------------------*/

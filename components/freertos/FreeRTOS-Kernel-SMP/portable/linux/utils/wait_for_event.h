@@ -34,17 +34,17 @@
 #ifndef _WAIT_FOR_EVENT_H_
 #define _WAIT_FOR_EVENT_H_
 
-#include <stdbool.h>
-#include <time.h>
+#ಅನ್ತರ್ಭಾವ <stdbool.h>
+#ಅನ್ತರ್ಭಾವ <time.h>
 
-struct event;
+ಸಂರಚನಾ event;
 
-struct event * event_create(void);
-void event_delete( struct event * );
-bool event_wait( struct event * ev );
-bool event_wait_timed( struct event * ev,
+ಸಂರಚನಾ event * event_create(ಶೂನ್ಯ);
+ಶೂನ್ಯ event_delete( ಸಂರಚನಾ event * );
+bool event_wait( ಸಂರಚನಾ event * ev );
+bool event_wait_timed( ಸಂರಚನಾ event * ev,
                        time_t ms );
-void event_signal( struct event * ev );
+ಶೂನ್ಯ event_signal( ಸಂರಚನಾ event * ev );
 
 
 
